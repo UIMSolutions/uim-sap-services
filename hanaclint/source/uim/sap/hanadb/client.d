@@ -154,7 +154,7 @@ class SAPHanaDBClient {
         SAPHanaDBResultSet resultSet;
 
         if ("columns" in payload && payload["columns"].type == Json.Type.array) {
-            foreach (col; payload["columns"].array) {
+            foreach (col; payload["columns"]) {
                 if (col.type == Json.Type.string) {
                     resultSet.columns ~= col.get!string;
                 }
@@ -162,14 +162,14 @@ class SAPHanaDBClient {
         }
 
         if ("rows" in payload && payload["rows"].type == Json.Type.array) {
-            foreach (row; payload["rows"].array) {
+            foreach (row; payload["rows"]) {
                 resultSet.rows ~= row;
             }
             resultSet.rowCount = cast(long)resultSet.rows.length;
         } else if ("d" in payload && payload["d"].type == Json.Type.object && "results" in payload["d"]) {
             auto results = payload["d"]["results"];
             if (results.type == Json.Type.array) {
-                foreach (row; results.array) {
+                foreach (row; results) {
                     resultSet.rows ~= row;
                 }
                 resultSet.rowCount = cast(long)resultSet.rows.length;
