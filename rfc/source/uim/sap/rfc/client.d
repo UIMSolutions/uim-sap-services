@@ -27,7 +27,7 @@ class SAPRFCClient {
         _config = config;
     }
 
-    @property SAPRFCConfig config() const {
+    @property const(SAPRFCConfig) config() const {
         return _config;
     }
 
@@ -92,10 +92,6 @@ class SAPRFCClient {
                         response.statusCode = res.statusCode;
                         response.success = res.statusCode >= 200 && res.statusCode < 300;
 
-                        foreach (key, value; res.headers) {
-                            response.headers[key] = value;
-                        }
-
                         try {
                             response.data = res.readJson();
                         } catch (Exception) {
@@ -140,7 +136,8 @@ class SAPRFCClient {
             case SAPRFCAuthType.None:
                 break;
             case SAPRFCAuthType.Basic:
-                auto token = Base64.encode(_config.username ~ ":" ~ _config.password);
+                auto creds = _config.username ~ ":" ~ _config.password;
+                auto token = Base64.encode(cast(const(ubyte)[])creds);
                 req.headers["Authorization"] = "Basic " ~ token;
                 break;
             case SAPRFCAuthType.Bearer:
