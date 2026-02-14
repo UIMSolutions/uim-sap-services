@@ -24,7 +24,7 @@ struct SAPHanaDBResultSet {
     long rowCount;
 }
 
-struct SAPHanaDBResponse {
+struct HDBResponse {
     bool success;
     int statusCode;
     string errorMessage;

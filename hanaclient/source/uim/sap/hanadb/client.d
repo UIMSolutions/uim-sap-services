@@ -53,7 +53,7 @@ class SAPHanaDBClient {
         }
     }
 
-    SAPHanaDBResponse query(string sql, Json parameters = Json.emptyArray) {
+    HDBResponse query(string sql, Json parameters = Json.emptyArray) {
         if (sql.length == 0) {
             throw new SAPHanaDBQueryException("SQL statement cannot be empty");
         }
@@ -65,12 +65,12 @@ class SAPHanaDBClient {
         return executeRequest(request);
     }
 
-    SAPHanaDBResponse execute(string sql, Json parameters = Json.emptyArray) {
+    HDBResponse execute(string sql, Json parameters = Json.emptyArray) {
         return query(sql, parameters);
     }
 
-    SAPHanaDBResponse[] executeBatch(string[] sqlStatements) {
-        SAPHanaDBResponse[] responses;
+    HDBResponse[] executeBatch(string[] sqlStatements) {
+        HDBResponse[] responses;
         foreach (statement; sqlStatements) {
             responses ~= query(statement);
         }
@@ -89,12 +89,12 @@ class SAPHanaDBClient {
         query("ROLLBACK");
     }
 
-    private SAPHanaDBResponse executeRequest(SAPHanaDBQueryRequest request) {
+    private HDBResponse executeRequest(SAPHanaDBQueryRequest request) {
         uint attempts = 0;
 
         while (attempts <= _config.maxRetries) {
             try {
-                SAPHanaDBResponse response;
+                HDBResponse response;
                 response.timestamp = Clock.currTime();
 
                 requestHTTP(_config.sqlUrl(),
