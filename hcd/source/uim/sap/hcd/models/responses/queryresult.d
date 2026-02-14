@@ -5,7 +5,7 @@
  * License: Apache-2.0
  * Authors: Ozan Nurettin Süel
  */
-module uim.hanacloud.models.responses.queryresult;
+module uim.sap.hcd.models.responses.queryresult;
 
 import uim.sap.hcd;
 

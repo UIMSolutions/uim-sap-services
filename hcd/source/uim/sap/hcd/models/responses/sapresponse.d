@@ -5,7 +5,7 @@
  * License: Apache-2.0
  * Authors: Ozan Nurettin Süel
  */
-module uim.hanacloud.models.responses.sapresponse;
+module uim.sap.hcd.models.responses.sapresponse;
 
 import vibe.data.json;
 import std.datetime : SysTime;
