@@ -12,7 +12,6 @@ module uim.sap.fiori;
 
 // Public imports
 public import uim.sap.fiori.client;
-public import uim.sap.fiori.odata;
 public import uim.sap.fiori.launchpad;
 public import uim.sap.fiori.models;
 public import uim.sap.fiori.exceptions;
