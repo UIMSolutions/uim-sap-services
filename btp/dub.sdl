@@ -10,7 +10,7 @@ targetName "uim-sap-btp"
 
 // Dependencies
 
-dependency "uim-framework" version="~>26.2.1"
+dependency "uim-framework" version="~>26.2.2"
 dependency "vibe-d" version="*"
 
 // Source files
