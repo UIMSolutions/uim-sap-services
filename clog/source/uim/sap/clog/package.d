@@ -1,6 +1,3 @@
-/**
- * UIM SAP Cloud Logging Service (SCI)
- */
 module uim.sap.clog;
 
 public import uim.sap.clog.config;

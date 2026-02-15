@@ -12,10 +12,10 @@ import vibe.http.server : HTTPServerRequest, HTTPServerResponse, HTTPServerSetti
 import uim.sap.clog.exceptions;
 import uim.sap.clog.service;
 
-class SCIServer {
-    private SCIService _service;
+class ClogServer {
+    private ClogService _service;
 
-    this(SCIService service) {
+    this(ClogService service) {
         _service = service;
     }
 

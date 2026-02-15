@@ -10,17 +10,17 @@ import uim.sap.clog.exceptions;
 import uim.sap.clog.models;
 import uim.sap.clog.store;
 
-class SCIService {
-    private SCIConfig _config;
-    private SCILogStore _store;
+class ClogService {
+    private ClogConfig _config;
+    private ClogLogStore _store;
 
-    this(SCIConfig config) {
+    this(ClogConfig config) {
         config.validate();
         _config = config;
-        _store = new SCILogStore(config.maxEntries);
+        _store = new ClogLogStore(config.maxEntries);
     }
 
-    @property const(SCIConfig) config() const {
+    @property const(ClogConfig) config() const {
         return _config;
     }
 
@@ -41,7 +41,7 @@ class SCIService {
     }
 
     Json ingest(Json payload) {
-        auto entry = SCILogEntry.fromJson(payload);
+        auto entry = ClogLogEntry.fromJson(payload);
         validateEntry(entry);
         _store.append(entry);
 
@@ -53,12 +53,12 @@ class SCIService {
 
     Json ingestBatch(Json payload) {
         if (!("logs" in payload) || payload["logs"].type != Json.Type.array) {
-            throw new SCILogValidationException("Payload must contain 'logs' array");
+            throw new ClogLogValidationException("Payload must contain 'logs' array");
         }
 
-        SCILogEntry[] logs;
+        ClogLogEntry[] logs;
         foreach (item; payload["logs"]) {
-            auto entry = SCILogEntry.fromJson(item);
+            auto entry = ClogLogEntry.fromJson(item);
             validateEntry(entry);
             logs ~= entry;
         }
@@ -71,7 +71,7 @@ class SCIService {
     }
 
     Json query(Json payload) {
-        auto queryRequest = SCILogQuery.fromJson(payload, _config.defaultQueryLimit);
+        auto queryRequest = ClogLogQuery.fromJson(payload, _config.defaultQueryLimit);
         auto logs = _store.query(queryRequest);
 
         Json response = Json.emptyObject;
@@ -84,13 +84,13 @@ class SCIService {
         return _store.metrics().toJson();
     }
 
-    private void validateEntry(scope const SCILogEntry entry) {
+    private void validateEntry(scope const ClogLogEntry entry) {
         if (entry.message.length == 0) {
-            throw new SCILogValidationException("Log message cannot be empty");
+            throw new ClogLogValidationException("Log message cannot be empty");
         }
 
         if (entry.source.length == 0) {
-            throw new SCILogValidationException("Log source cannot be empty");
+            throw new ClogLogValidationException("Log source cannot be empty");
         }
     }
 }
