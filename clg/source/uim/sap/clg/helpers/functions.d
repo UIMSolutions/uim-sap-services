@@ -17,7 +17,7 @@ string formatLevel(CLGLogLevel level) {
     }
 }
 
-Json logsToJsonArray(scope const(CLGEntry)[] logs) {
+Json logsToJsonArray(scope const(CLGLogEntry)[] logs) {
     Json arr = Json.emptyArray;
     foreach (logEntry; logs) {
         arr ~= logEntry.toJson();

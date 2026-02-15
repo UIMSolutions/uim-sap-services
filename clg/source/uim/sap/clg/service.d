@@ -3,12 +3,11 @@
  */
 module uim.sap.clg.service;
 
-import vibe.data.json : Json;
+import uim.sap.clg;
 
-import uim.sap.clg.config;
-import uim.sap.clg.exceptions;
-import uim.sap.clg.models;
-import uim.sap.clg.store;
+mixin(ShowModule!());
+
+@safe:
 
 class CLGService {
     private CLGConfig _config;
@@ -52,12 +51,12 @@ class CLGService {
     }
 
     Json ingestBatch(Json payload) {
-        if (!("logs" in payload) || payload["logs"].type != Json.Type.array) {
+        if (!("logs" in payload) || !payload["logs"].isArray) {
             throw new CLGLogValidationException("Payload must contain 'logs' array");
         }
 
         CLGLogEntry[] logs;
-        foreach (item; payload["logs"]) {
+        foreach (item; payload["logs"].toArray) {
             auto entry = CLGLogEntry.fromJson(item);
             validateEntry(entry);
             logs ~= entry;

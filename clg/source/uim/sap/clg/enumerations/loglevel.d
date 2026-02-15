@@ -1,4 +1,4 @@
-module uim.sap.clg.exceptions.exception;
+module uim.sap.clg.enumerations.loglevel;
 
 import uim.sap.clg;
 

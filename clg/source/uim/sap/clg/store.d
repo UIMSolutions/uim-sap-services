@@ -4,11 +4,11 @@
 module uim.sap.clg.store;
 
 import core.sync.mutex : Mutex;
-import std.algorithm.searching : canFind;
-import std.algorithm.comparison : min;
-import std.string : toLower;
+import uim.sap.clg;
 
-import uim.sap.clg.models;
+mixin(ShowModule!());
+
+@safe:
 
 class CLGLogStore {
     private CLGLogEntry[] _entries;

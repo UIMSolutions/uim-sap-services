@@ -1,7 +1,5 @@
-module uim.sap.clg.exceptions.exception;
+module uim.sap.clg.enumerations;
 
-import uim.sap.clg;
-
-mixin(ShowModule!());
-
-@safe:
+public {
+  import uim.sap.clg.enumerations.loglevel;
+}

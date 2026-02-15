@@ -11,11 +11,11 @@ targetPath "build"
 sourcePaths "source"
 importPaths "source"
 
-dependency "uim-framework" version="~>26.2.2"
+dependency "uim-framework:errors" version="~>26.2.2"
 
 // Configurations
 configuration "default" {
-	targetType "library"
+	targetType "executable"
 }
 
 configuration "modules" {

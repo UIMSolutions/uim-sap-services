@@ -8,7 +8,7 @@ import uim.sap.clg;
 
 void main() {
     CLGConfig config;
-    config.host = envOr("CLG_HOST", "0.0.0.0");
+    config.host = envOr("CLG_HOST", "127.0.0.1");
     config.port = readPort(envOr("CLG_PORT", "8081"), 8081);
     config.basePath = envOr("CLG_BASE_PATH", "/uim/cloud/logging/v1");
     config.serviceName = envOr("CLG_SERVICE_NAME", "uim-sap-clg");

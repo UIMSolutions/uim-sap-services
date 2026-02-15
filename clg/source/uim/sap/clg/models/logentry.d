@@ -1,3 +1,11 @@
+module uim.sap.clg.models.logentry;
+
+import uim.sap.clg;
+
+mixin(ShowModule!());
+
+@safe:
+
 struct CLGLogEntry {
     string id;
     SysTime timestamp;

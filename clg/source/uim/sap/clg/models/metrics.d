@@ -1,3 +1,11 @@
+module uim.sap.clg.models.metrics;
+
+import uim.sap.clg;
+
+mixin(ShowModule!());
+
+@safe:
+
 struct CLGMetrics {
     size_t totalEntries;
     long[CLGLogLevel] entriesByLevel;

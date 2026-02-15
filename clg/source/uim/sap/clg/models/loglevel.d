@@ -1,3 +1,11 @@
+module uim.sap.clg.models.loglevel;
+
+import uim.sap.clg;
+
+mixin(ShowModule!());
+
+@safe:
+
 CLGLogLevel parseLevel(string input) {
     switch (toUpper(strip(input))) {
         case "TRACE": return CLGLogLevel.TRACE;

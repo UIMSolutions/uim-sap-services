@@ -1,3 +1,11 @@
+module uim.sap.clg.models.logquery;
+
+import uim.sap.clg;
+
+mixin(ShowModule!());
+
+@safe:
+
 struct CLGLogQuery {
     string tenant;
     string source;

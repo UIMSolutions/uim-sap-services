@@ -3,9 +3,11 @@
  */
 module uim.sap.clg.config;
 
-import std.string : startsWith;
+import uim.sap.clg;
 
-import uim.sap.clg.exceptions;
+mixin(ShowModule!());
+
+@safe:
 
 struct CLGConfig {
     string host = "0.0.0.0";

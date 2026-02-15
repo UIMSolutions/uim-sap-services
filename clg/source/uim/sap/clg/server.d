@@ -3,14 +3,11 @@
  */
 module uim.sap.clg.server;
 
-import std.string : startsWith, endsWith;
+import uim.sap.clg;
 
-import vibe.data.json : Json;
-import vibe.http.common : HTTPMethod;
-import vibe.http.server : HTTPServerRequest, HTTPServerResponse, HTTPServerSettings, listenHTTP;
+mixin(ShowModule!());
 
-import uim.sap.clg.exceptions;
-import uim.sap.clg.service;
+@safe:
 
 class CLGServer {
     private CLGService _service;
@@ -78,7 +75,7 @@ class CLGServer {
     private void handleAuthorizedRequest(
         HTTPServerRequest req,
         HTTPServerResponse res,
-        Json delegate(Json) action
+        Json delegate(Json) @safe action
     ) {
         try {
             validateAuth(req);
