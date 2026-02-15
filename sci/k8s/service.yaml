@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: uim-sap-sci
+  labels:
+    app: uim-sap-sci
+spec:
+  selector:
+    app: uim-sap-sci
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 8081
+  type: ClusterIP

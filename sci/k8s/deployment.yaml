@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uim-sap-sci
+  labels:
+    app: uim-sap-sci
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: uim-sap-sci
+  template:
+    metadata:
+      labels:
+        app: uim-sap-sci
+    spec:
+      containers:
+        - name: uim-sap-sci
+          image: ghcr.io/uimsolutions/uim-sap-sci:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8081
+          envFrom:
+            - configMapRef:
+                name: uim-sap-sci-config
+          env:
+            - name: SCI_AUTH_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: uim-sap-sci-secret
+                  key: auth-token
+                  optional: true
+          readinessProbe:
+            httpGet:
+              path: /sap/cloud/logging/v1/ready
+              port: http
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /sap/cloud/logging/v1/health
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi

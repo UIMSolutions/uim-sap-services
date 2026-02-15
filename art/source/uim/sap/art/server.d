@@ -3,8 +3,7 @@
  */
 module uim.sap.art.server;
 
-import std.algorithm.searching : canFind;
-import std.string : endsWith;
+import std.string : endsWith, startsWith;
 
 import vibe.data.json : Json;
 import vibe.http.common : HTTPMethod;
@@ -53,7 +52,11 @@ class SAPABAPRuntimeServer {
 
         if (path.endsWith("/programs") && req.method == HTTPMethod.GET) {
             Json payload = Json.emptyObject;
-            payload["programs"] = Json(_runtime.listPrograms());
+            Json programs = Json.emptyArray;
+            foreach (name; _runtime.listPrograms()) {
+                programs ~= Json(name);
+            }
+            payload["programs"] = programs;
             payload["count"] = cast(long)_runtime.registeredProgramCount;
             res.statusCode = 200;
             res.writeJsonBody(payload);
@@ -63,7 +66,7 @@ class SAPABAPRuntimeServer {
         if (path.endsWith("/run") && req.method == HTTPMethod.POST) {
             try {
                 validateAuth(req);
-                auto input = req.readJson();
+                auto input = req.json;
                 auto programRequest = SAPABAPProgramRequest.fromJson(input);
                 auto output = _runtime.execute(programRequest);
                 res.statusCode = output.statusCode;

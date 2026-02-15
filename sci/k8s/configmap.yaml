@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: uim-sap-sci-config
+  labels:
+    app: uim-sap-sci
+data:
+  SCI_HOST: "0.0.0.0"
+  SCI_PORT: "8081"
+  SCI_BASE_PATH: "/sap/cloud/logging/v1"
+  SCI_SERVICE_NAME: "uim-sap-sci"
+  SCI_SERVICE_VERSION: "1.0.0"
+  SCI_MAX_ENTRIES: "20000"
+  SCI_DEFAULT_QUERY_LIMIT: "200"
