@@ -8,15 +8,15 @@ import uim.sap.clog;
 
 void main() {
     SCIConfig config;
-    config.host = envOr("SCI_HOST", "0.0.0.0");
-    config.port = readPort(envOr("SCI_PORT", "8081"), 8081);
-    config.basePath = envOr("SCI_BASE_PATH", "/sap/cloud/logging/v1");
-    config.serviceName = envOr("SCI_SERVICE_NAME", "uim-sap-sci");
-    config.serviceVersion = envOr("SCI_SERVICE_VERSION", UIM_SAP_SCI_VERSION);
-    config.maxEntries = readSize(envOr("SCI_MAX_ENTRIES", "10000"), 10000);
-    config.defaultQueryLimit = readSize(envOr("SCI_DEFAULT_QUERY_LIMIT", "100"), 100);
+    config.host = envOr("CLOG_HOST", "0.0.0.0");
+    config.port = readPort(envOr("CLOG_PORT", "8081"), 8081);
+    config.basePath = envOr("CLOG_BASE_PATH", "/sap/cloud/logging/v1");
+    config.serviceName = envOr("CLOG_SERVICE_NAME", "uim-sap-sci");
+    config.serviceVersion = envOr("CLOG_SERVICE_VERSION", UIM_SAP_CLOG_VERSION);
+    config.maxEntries = readSize(envOr("CLOG_MAX_ENTRIES", "10000"), 10000);
+    config.defaultQueryLimit = readSize(envOr("CLOG_DEFAULT_QUERY_LIMIT", "100"), 100);
 
-    auto token = envOr("SCI_AUTH_TOKEN", "");
+    auto token = envOr("CLOG_AUTH_TOKEN", "");
     if (token.length > 0) {
         config.requireAuthToken = true;
         config.authToken = token;
@@ -28,7 +28,7 @@ void main() {
     auto service = new SCIService(config);
     auto server = new SCIServer(service);
 
-    writeln("Starting SCI Cloud Logging service on ", config.host, ":", config.port);
+    writeln("Starting Cloud Logging service on ", config.host, ":", config.port);
     writeln("Base path: ", config.basePath);
     server.run();
 }

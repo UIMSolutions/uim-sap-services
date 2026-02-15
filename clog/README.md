@@ -1,6 +1,6 @@
-# UIM SAP Cloud Logging Service (SCI)
+# UIM Cloud Logging Service (CLOG)
 
-Kubernetes-ready SAP Cloud Logging style service implemented with D, `uim-framework`, and `vibe.d`.
+Kubernetes-ready Cloud Logging service implemented with D, `uim-framework`, and `vibe.d`.
 
 ## Features
 
@@ -21,16 +21,16 @@ dub build
 
 Environment variables:
 
-- `SCI_HOST` (default: `0.0.0.0`)
-- `SCI_PORT` (default: `8081`)
-- `SCI_BASE_PATH` (default: `/sap/cloud/logging/v1`)
-- `SCI_MAX_ENTRIES` (default: `10000`)
-- `SCI_DEFAULT_QUERY_LIMIT` (default: `100`)
-- `SCI_AUTH_TOKEN` (optional bearer token)
+- `CLOG_HOST` (default: `0.0.0.0`)
+- `CLOG_PORT` (default: `8081`)
+- `CLOG_BASE_PATH` (default: `/uim/cloud/logging/v1`)
+- `CLOG_MAX_ENTRIES` (default: `10000`)
+- `CLOG_DEFAULT_QUERY_LIMIT` (default: `100`)
+- `CLOG_AUTH_TOKEN` (optional bearer token)
 
 ## API
 
-Base path: `/sap/cloud/logging/v1`
+Base path: `/uim/cloud/logging/v1`
 
 - `GET /health`
 - `GET /ready`
@@ -42,7 +42,7 @@ Base path: `/sap/cloud/logging/v1`
 ### Ingest example
 
 ```bash
-curl -X POST http://localhost:8081/sap/cloud/logging/v1/logs \
+curl -X POST http://localhost:8081/uim/cloud/logging/v1/logs \
   -H 'Content-Type: application/json' \
   -d '{
     "tenant": "ACME",
@@ -56,7 +56,7 @@ curl -X POST http://localhost:8081/sap/cloud/logging/v1/logs \
 ### Query example
 
 ```bash
-curl -X POST http://localhost:8081/sap/cloud/logging/v1/logs/query \
+curl -X POST http://localhost:8081/uim/cloud/logging/v1/logs/query \
   -H 'Content-Type: application/json' \
   -d '{
     "tenant": "ACME",
