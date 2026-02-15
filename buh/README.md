@@ -19,6 +19,18 @@ dub build
 ./build/uim-sap-buh-service
 ```
 
+## Docker
+
+```bash
+cd buh
+docker build -t uim-sap-buh:latest .
+
+docker run --rm -p 8083:8083 \
+  -e BUH_HOST=0.0.0.0 \
+  -e BUH_PORT=8083 \
+  uim-sap-buh:latest
+```
+
 Environment variables:
 
 - `BUH_HOST` (default `0.0.0.0`)
