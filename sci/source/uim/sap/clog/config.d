@@ -1,11 +1,11 @@
 /**
  * Configuration for SCI Cloud Logging service
  */
-module uim.sap.sci.config;
+module uim.sap.clog.config;
 
 import std.string : startsWith;
 
-import uim.sap.sci.exceptions;
+import uim.sap.clog.exceptions;
 
 struct SCIConfig {
     string host = "0.0.0.0";

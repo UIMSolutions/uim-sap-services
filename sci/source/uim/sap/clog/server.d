@@ -1,7 +1,7 @@
 /**
  * HTTP server for SCI cloud logging service
  */
-module uim.sap.sci.server;
+module uim.sap.clog.server;
 
 import std.string : startsWith, endsWith;
 
@@ -9,8 +9,8 @@ import vibe.data.json : Json;
 import vibe.http.common : HTTPMethod;
 import vibe.http.server : HTTPServerRequest, HTTPServerResponse, HTTPServerSettings, listenHTTP;
 
-import uim.sap.sci.exceptions;
-import uim.sap.sci.service;
+import uim.sap.clog.exceptions;
+import uim.sap.clog.service;
 
 class SCIServer {
     private SCIService _service;

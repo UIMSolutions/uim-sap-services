@@ -4,7 +4,7 @@ import std.conv : to;
 import std.process : environment;
 import std.stdio : writeln;
 
-import uim.sap.sci;
+import uim.sap.clog;
 
 void main() {
     SCIConfig config;

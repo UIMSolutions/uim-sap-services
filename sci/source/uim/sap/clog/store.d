@@ -1,14 +1,14 @@
 /**
  * In-memory store for SCI logs
  */
-module uim.sap.sci.store;
+module uim.sap.clog.store;
 
 import core.sync.mutex : Mutex;
 import std.algorithm.searching : canFind;
 import std.algorithm.comparison : min;
 import std.string : toLower;
 
-import uim.sap.sci.models;
+import uim.sap.clog.models;
 
 class SCILogStore {
     private SCILogEntry[] _entries;

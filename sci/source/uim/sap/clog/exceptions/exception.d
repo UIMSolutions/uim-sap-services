@@ -1,4 +1,4 @@
-module uim.sap.sci.exceptions.exception;
+module uim.sap.clog.exceptions.exception;
 
 class SCIException : Exception {
     this(string msg, string file = __FILE__, size_t line = __LINE__, Throwable next = null) {

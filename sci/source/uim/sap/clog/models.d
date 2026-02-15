@@ -1,7 +1,7 @@
 /**
  * Models for SCI Cloud Logging service
  */
-module uim.sap.sci.models;
+module uim.sap.clog.models;
 
 import std.datetime : Clock, SysTime;
 import std.string : strip, toUpper;

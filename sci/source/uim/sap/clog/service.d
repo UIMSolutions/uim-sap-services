@@ -1,14 +1,14 @@
 /**
  * Domain service for SCI cloud logging
  */
-module uim.sap.sci.service;
+module uim.sap.clog.service;
 
 import vibe.data.json : Json;
 
-import uim.sap.sci.config;
-import uim.sap.sci.exceptions;
-import uim.sap.sci.models;
-import uim.sap.sci.store;
+import uim.sap.clog.config;
+import uim.sap.clog.exceptions;
+import uim.sap.clog.models;
+import uim.sap.clog.store;
 
 class SCIService {
     private SCIConfig _config;
