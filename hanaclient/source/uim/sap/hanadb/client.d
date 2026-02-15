@@ -15,16 +15,16 @@ import uim.sap.hanadb.config;
 import uim.sap.hanadb.exceptions;
 import uim.sap.hanadb.models;
 
-class SAPHanaDBClient {
-    private SAPHanaDBConfig _config;
+class HanaDBClient {
+    private HanaDBConfig _config;
     private bool _connected;
 
-    this(SAPHanaDBConfig config) {
+    this(HanaDBConfig config) {
         config.validate();
         _config = config;
     }
 
-    @property const(SAPHanaDBConfig) config() const {
+    @property const(HanaDBConfig) config() const {
         return _config;
     }
 
@@ -35,7 +35,7 @@ class SAPHanaDBClient {
     void connect() {
         auto response = query("SELECT 1 AS HEALTH_CHECK FROM DUMMY");
         if (!response.success) {
-            throw new SAPHanaDBConnectionException("Failed to establish SAP HANA DB connection");
+            throw new HanaDBConnectionException("Failed to establish SAP HANA DB connection");
         }
         _connected = true;
     }
@@ -55,10 +55,10 @@ class SAPHanaDBClient {
 
     HDBResponse query(string sql, Json parameters = Json.emptyArray) {
         if (sql.length == 0) {
-            throw new SAPHanaDBQueryException("SQL statement cannot be empty");
+            throw new HanaDBQueryException("SQL statement cannot be empty");
         }
 
-        SAPHanaDBQueryRequest request;
+        HanaDBQueryRequest request;
         request.statement = sql;
         request.parameters = parameters;
 
@@ -89,7 +89,7 @@ class SAPHanaDBClient {
         query("ROLLBACK");
     }
 
-    private HDBResponse executeRequest(SAPHanaDBQueryRequest request) {
+    private HDBResponse executeRequest(HanaDBQueryRequest request) {
         uint attempts = 0;
 
         while (attempts <= _config.maxRetries) {
@@ -131,27 +131,27 @@ class SAPHanaDBClient {
                 );
 
                 if (!response.success) {
-                    throw new SAPHanaDBQueryException(response.errorMessage, response.statusCode);
+                    throw new HanaDBQueryException(response.errorMessage, response.statusCode);
                 }
 
                 return response;
-            } catch (SAPHanaDBQueryException e) {
+            } catch (HanaDBQueryException e) {
                 throw e;
             } catch (Exception e) {
                 attempts++;
                 if (attempts > _config.maxRetries) {
-                    throw new SAPHanaDBConnectionException(
+                    throw new HanaDBConnectionException(
                         format("SAP HANA request failed after %d retries: %s", attempts, e.msg)
                     );
                 }
             }
         }
 
-        throw new SAPHanaDBConnectionException("SAP HANA request failed with unknown error");
+        throw new HanaDBConnectionException("SAP HANA request failed with unknown error");
     }
 
-    private SAPHanaDBResultSet parseResultSet(Json payload) {
-        SAPHanaDBResultSet resultSet;
+    private HanaDBResultSet parseResultSet(Json payload) {
+        HanaDBResultSet resultSet;
 
         if ("columns" in payload && payload["columns"].type == Json.Type.array) {
             foreach (col; payload["columns"]) {
@@ -202,12 +202,12 @@ class SAPHanaDBClient {
 
     private void applyAuth(HTTPClientRequest req) {
         final switch (_config.authType) {
-            case SAPHanaDBAuthType.Basic:
+            case HanaDBAuthType.Basic:
                 auto creds = _config.username ~ ":" ~ _config.password;
                 auto token = Base64.encode(cast(const(ubyte)[])creds).idup;
                 req.headers["Authorization"] = "Basic " ~ token;
                 break;
-            case SAPHanaDBAuthType.Bearer:
+            case HanaDBAuthType.Bearer:
                 req.headers["Authorization"] = "Bearer " ~ _config.bearerToken;
                 break;
         }

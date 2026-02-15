@@ -36,7 +36,7 @@ import uim.sap.hanadb;
 import vibe.data.json : Json;
 
 void main() {
-    auto cfg = SAPHanaDBConfig.createBasic(
+    auto cfg = HanaDBConfig.createBasic(
         "https://my-hana.example.com",
         "MY_SCHEMA",
         "DBUSER",
@@ -45,7 +45,7 @@ void main() {
 
     cfg.endpointPath = "/sql";
 
-    auto client = new SAPHanaDBClient(cfg);
+    auto client = new HanaDBClient(cfg);
     client.connect();
 
     auto result = client.query("SELECT CURRENT_USER FROM DUMMY");

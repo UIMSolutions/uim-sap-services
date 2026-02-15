@@ -8,7 +8,7 @@ import vibe.data.json : Json;
 import std.stdio : writeln;
 
 void main() {
-    auto cfg = SAPHanaDBConfig.createBasic(
+    auto cfg = HanaDBConfig.createBasic(
         "https://my-hana.example.com",
         "MY_SCHEMA",
         "DBUSER",
@@ -17,7 +17,7 @@ void main() {
 
     cfg.endpointPath = "/sql";
 
-    auto client = new SAPHanaDBClient(cfg);
+    auto client = new HanaDBClient(cfg);
 
     try {
         client.connect();
@@ -35,7 +35,7 @@ void main() {
         client.beginTransaction();
         client.execute("UPDATE PRODUCTS SET LAST_CHECK = CURRENT_UTCTIMESTAMP WHERE CATEGORY = 'A'");
         client.commit();
-    } catch (SAPHanaDBException e) {
+    } catch (HanaDBException e) {
         writeln("HANA DB error: ", e.msg);
         try {
             client.rollback();

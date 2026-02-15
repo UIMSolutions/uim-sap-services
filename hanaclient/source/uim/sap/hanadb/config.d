@@ -8,12 +8,12 @@ import std.string : format, startsWith;
 
 import uim.sap.hanadb.exceptions;
 
-enum SAPHanaDBAuthType {
+enum HanaDBAuthType {
     Basic,
     Bearer
 }
 
-struct SAPHanaDBConfig {
+struct HanaDBConfig {
     string host;
     ushort port = 443;
     bool useSSL = true;
@@ -22,7 +22,7 @@ struct SAPHanaDBConfig {
     string database;
     string endpointPath = "/sql";
 
-    SAPHanaDBAuthType authType = SAPHanaDBAuthType.Basic;
+    HanaDBAuthType authType = HanaDBAuthType.Basic;
     string username;
     string password;
     string bearerToken;
@@ -34,23 +34,23 @@ struct SAPHanaDBConfig {
 
     void validate() const {
         if (host.length == 0) {
-            throw new SAPHanaDBConfigurationException("Host cannot be empty");
+            throw new HanaDBConfigurationException("Host cannot be empty");
         }
 
         if (database.length == 0) {
-            throw new SAPHanaDBConfigurationException("Database cannot be empty");
+            throw new HanaDBConfigurationException("Database cannot be empty");
         }
 
-        if (authType == SAPHanaDBAuthType.Basic) {
+        if (authType == HanaDBAuthType.Basic) {
             if (username.length == 0 || password.length == 0) {
-                throw new SAPHanaDBConfigurationException(
+                throw new HanaDBConfigurationException(
                     "Username and password are required for Basic authentication"
                 );
             }
         }
 
-        if (authType == SAPHanaDBAuthType.Bearer && bearerToken.length == 0) {
-            throw new SAPHanaDBConfigurationException(
+        if (authType == HanaDBAuthType.Bearer && bearerToken.length == 0) {
+            throw new HanaDBConfigurationException(
                 "Bearer token is required for Bearer authentication"
             );
         }
@@ -77,31 +77,31 @@ struct SAPHanaDBConfig {
         return (baseUrl() ~ normalizedPath).idup;
     }
 
-    static SAPHanaDBConfig createBasic(
+    static HanaDBConfig createBasic(
         string host,
         string database,
         string username,
         string password
     ) {
-        SAPHanaDBConfig cfg;
+        HanaDBConfig cfg;
         cfg.host = host;
         cfg.database = database;
         cfg.username = username;
         cfg.password = password;
-        cfg.authType = SAPHanaDBAuthType.Basic;
+        cfg.authType = HanaDBAuthType.Basic;
         return cfg;
     }
 
-    static SAPHanaDBConfig createBearer(
+    static HanaDBConfig createBearer(
         string host,
         string database,
         string bearerToken
     ) {
-        SAPHanaDBConfig cfg;
+        HanaDBConfig cfg;
         cfg.host = host;
         cfg.database = database;
         cfg.bearerToken = bearerToken;
-        cfg.authType = SAPHanaDBAuthType.Bearer;
+        cfg.authType = HanaDBAuthType.Bearer;
         return cfg;
     }
 
