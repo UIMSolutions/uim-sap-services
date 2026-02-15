@@ -1,6 +1,6 @@
-module uim.sap.clog.models;
+module uim.sap.scl.models;
 
 public {
-  import uim.sap.clog.models.logentry;
-  import uim.sap.clog.models.query;
+  import uim.sap.scl.models.logentry;
+  import uim.sap.scl.models.query;
 }

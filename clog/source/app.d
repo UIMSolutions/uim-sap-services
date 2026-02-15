@@ -4,19 +4,19 @@ import std.conv : to;
 import std.process : environment;
 import std.stdio : writeln;
 
-import uim.sap.clog;
+import uim.sap.scl;
 
 void main() {
-    SCIConfig config;
-    config.host = envOr("CLOG_HOST", "0.0.0.0");
-    config.port = readPort(envOr("CLOG_PORT", "8081"), 8081);
-    config.basePath = envOr("CLOG_BASE_PATH", "/uim/cloud/logging/v1");
-    config.serviceName = envOr("CLOG_SERVICE_NAME", "uim-sap-sci");
-    config.serviceVersion = envOr("CLOG_SERVICE_VERSION", UIM_SAP_CLOG_VERSION);
-    config.maxEntries = readSize(envOr("CLOG_MAX_ENTRIES", "10000"), 10000);
-    config.defaultQueryLimit = readSize(envOr("CLOG_DEFAULT_QUERY_LIMIT", "100"), 100);
+    SCLConfig config;
+    config.host = envOr("SCL_HOST", "0.0.0.0");
+    config.port = readPort(envOr("SCL_PORT", "8081"), 8081);
+    config.basePath = envOr("SCL_BASE_PATH", "/uim/cloud/logging/v1");
+    config.serviceName = envOr("SCL_SERVICE_NAME", "uim-sap-scl");
+    config.serviceVersion = envOr("SCL_SERVICE_VERSION", UIM_SAP_SCL_VERSION);
+    config.maxEntries = readSize(envOr("SCL_MAX_ENTRIES", "10000"), 10000);
+    config.defaultQueryLimit = readSize(envOr("SCL_DEFAULT_QUERY_LIMIT", "100"), 100);
 
-    auto token = envOr("CLOG_AUTH_TOKEN", "");
+    auto token = envOr("SCL_AUTH_TOKEN", "");
     if (token.length > 0) {
         config.requireAuthToken = true;
         config.authToken = token;
@@ -25,8 +25,8 @@ void main() {
     config.customHeaders["X-Service"] = config.serviceName;
     config.customHeaders["X-Version"] = config.serviceVersion;
 
-    auto service = new ClogService(config);
-    auto server = new ClogServer(service);
+    auto service = new SCLService(config);
+    auto server = new SCLServer(service);
 
     writeln("Starting Cloud Logging service on ", config.host, ":", config.port);
     writeln("Base path: ", config.basePath);

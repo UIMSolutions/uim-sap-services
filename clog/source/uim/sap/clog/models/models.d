@@ -1,4 +1,4 @@
-module uim.sap.clog.models;
+module uim.sap.scl.models;
 
 import std.datetime : Clock, SysTime;
 import std.string : strip, toUpper;

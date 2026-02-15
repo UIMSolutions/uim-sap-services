@@ -1,14 +1,14 @@
-struct ClogLogEntry {
+struct SCLLogEntry {
     string id;
     SysTime timestamp;
     string tenant;
     string source;
-    ClogLogLevel level = ClogLogLevel.INFO;
+    SCLLogLevel level = SCLLogLevel.INFO;
     string message;
     Json attributes = Json.emptyObject;
 
-    static ClogLogEntry fromJson(Json payload) {
-        ClogLogEntry entry;
+    static SCLLogEntry fromJson(Json payload) {
+        SCLLogEntry entry;
         entry.id = randomUUID().toString();
         entry.timestamp = Clock.currTime();
 

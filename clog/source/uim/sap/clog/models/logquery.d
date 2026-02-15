@@ -1,12 +1,12 @@
-struct ClogLogQuery {
+struct SCLLogQuery {
     string tenant;
     string source;
     string contains;
-    Nullable!ClogLogLevel level;
+    Nullable!SCLLogLevel level;
     size_t limit = 100;
 
-    static ClogLogQuery fromJson(Json payload, size_t fallbackLimit) {
-        ClogLogQuery query;
+    static SCLLogQuery fromJson(Json payload, size_t fallbackLimit) {
+        SCLLogQuery query;
         query.limit = fallbackLimit;
 
         if ("tenant" in payload && payload["tenant"].type == Json.Type.string) {
@@ -19,7 +19,7 @@ struct ClogLogQuery {
             query.contains = payload["contains"].get!string;
         }
         if ("level" in payload && payload["level"].type == Json.Type.string) {
-            query.level = Nullable!ClogLogLevel(parseLevel(payload["level"].get!string));
+            query.level = Nullable!SCLLogLevel(parseLevel(payload["level"].get!string));
         }
         if ("limit" in payload && payload["limit"].type == Json.Type.int_) {
             auto parsed = payload["limit"].get!long;

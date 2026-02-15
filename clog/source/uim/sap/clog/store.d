@@ -1,17 +1,17 @@
 /**
- * In-memory store for SCI logs
+ * In-memory store for SCL logs
  */
-module uim.sap.clog.store;
+module uim.sap.scl.store;
 
 import core.sync.mutex : Mutex;
 import std.algorithm.searching : canFind;
 import std.algorithm.comparison : min;
 import std.string : toLower;
 
-import uim.sap.clog.models;
+import uim.sap.scl.models;
 
-class SCILogStore {
-    private SCILogEntry[] _entries;
+class SCLLogStore {
+    private SCLLogEntry[] _entries;
     private size_t _maxEntries;
     private Mutex _lock;
 
@@ -26,14 +26,14 @@ class SCILogStore {
         }
     }
 
-    void append(SCILogEntry entry) {
+    void append(SCLLogEntry entry) {
         synchronized (_lock) {
             _entries ~= entry;
             trimIfNeeded();
         }
     }
 
-    void appendBatch(scope const(SCILogEntry)[] logs) {
+    void appendBatch(scope const(SCLLogEntry)[] logs) {
         synchronized (_lock) {
             foreach (entry; logs) {
                 _entries ~= entry;
@@ -42,8 +42,8 @@ class SCILogStore {
         }
     }
 
-    SCILogEntry[] query(SCILogQuery queryRequest) {
-        SCILogEntry[] result;
+    SCLLogEntry[] query(SCLLogQuery queryRequest) {
+        SCLLogEntry[] result;
 
         synchronized (_lock) {
             foreach_reverse (entry; _entries) {
@@ -77,8 +77,8 @@ class SCILogStore {
         return result;
     }
 
-    SCIMetrics metrics() {
-        SCIMetrics metrics;
+    SCLMetrics metrics() {
+        SCLMetrics metrics;
         synchronized (_lock) {
             metrics.totalEntries = _entries.length;
             foreach (entry; _entries) {

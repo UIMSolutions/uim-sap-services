@@ -1,15 +1,15 @@
-string formatLevel(CLOGLogLevel level) {
+string formatLevel(SCLLogLevel level) {
     final switch (level) {
-        case CLOGLogLevel.TRACE: return "TRACE";
-        case CLOGLogLevel.DEBUG: return "DEBUG";
-        case CLOGLogLevel.INFO: return "INFO";
-        case CLOGLogLevel.WARN: return "WARN";
-        case CLOGLogLevel.ERROR: return "ERROR";
-        case CLOGLogLevel.FATAL: return "FATAL";
+        case SCLLogLevel.TRACE: return "TRACE";
+        case SCLLogLevel.DEBUG: return "DEBUG";
+        case SCLLogLevel.INFO: return "INFO";
+        case SCLLogLevel.WARN: return "WARN";
+        case SCLLogLevel.ERROR: return "ERROR";
+        case SCLLogLevel.FATAL: return "FATAL";
     }
 }
 
-Json logsToJsonArray(scope const(CLogEntry)[] logs) {
+Json logsToJsonArray(scope const(SCLEntry)[] logs) {
     Json arr = Json.emptyArray;
     foreach (logEntry; logs) {
         arr ~= logEntry.toJson();

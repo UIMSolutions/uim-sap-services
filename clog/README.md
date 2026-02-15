@@ -1,4 +1,4 @@
-# UIM Cloud Logging Service (CLOG)
+# UIM Cloud Logging Service (SCL)
 
 Kubernetes-ready Cloud Logging service implemented with D, `uim-framework`, and `vibe.d`.
 
@@ -14,19 +14,19 @@ Kubernetes-ready Cloud Logging service implemented with D, `uim-framework`, and 
 ## Build & Run
 
 ```bash
-cd sci
+cd scl
 dub build
-./build/uim-sap-sci-service
+./build/uim-sap-scl-service
 ```
 
 Environment variables:
 
-- `CLOG_HOST` (default: `0.0.0.0`)
-- `CLOG_PORT` (default: `8081`)
-- `CLOG_BASE_PATH` (default: `/uim/cloud/logging/v1`)
-- `CLOG_MAX_ENTRIES` (default: `10000`)
-- `CLOG_DEFAULT_QUERY_LIMIT` (default: `100`)
-- `CLOG_AUTH_TOKEN` (optional bearer token)
+- `SCL_HOST` (default: `0.0.0.0`)
+- `SCL_PORT` (default: `8081`)
+- `SCL_BASE_PATH` (default: `/uim/cloud/logging/v1`)
+- `SCL_MAX_ENTRIES` (default: `10000`)
+- `SCL_DEFAULT_QUERY_LIMIT` (default: `100`)
+- `SCL_AUTH_TOKEN` (optional bearer token)
 
 ## API
 

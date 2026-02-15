@@ -1,7 +1,7 @@
 /**
- * HTTP server for SCI cloud logging service
+ * HTTP server for SCL cloud logging service
  */
-module uim.sap.clog.server;
+module uim.sap.scl.server;
 
 import std.string : startsWith, endsWith;
 
@@ -9,13 +9,13 @@ import vibe.data.json : Json;
 import vibe.http.common : HTTPMethod;
 import vibe.http.server : HTTPServerRequest, HTTPServerResponse, HTTPServerSettings, listenHTTP;
 
-import uim.sap.clog.exceptions;
-import uim.sap.clog.service;
+import uim.sap.scl.exceptions;
+import uim.sap.scl.service;
 
-class ClogServer {
-    private ClogService _service;
+class SCLServer {
+    private SCLService _service;
 
-    this(ClogService service) {
+    this(SCLService service) {
         _service = service;
     }
 
@@ -86,11 +86,11 @@ class ClogServer {
             auto output = action(input);
             res.statusCode = 200;
             res.writeJsonBody(output);
-        } catch (SCIAuthorizationException e) {
+        } catch (SCLAuthorizationException e) {
             respondError(res, e.msg, 401);
-        } catch (SCILogValidationException e) {
+        } catch (SCLLogValidationException e) {
             respondError(res, e.msg, 422);
-        } catch (SCIException e) {
+        } catch (SCLException e) {
             respondError(res, e.msg, 500);
         } catch (Exception e) {
             respondError(res, e.msg, 500);
@@ -103,12 +103,12 @@ class ClogServer {
         }
 
         if (!("Authorization" in req.headers)) {
-            throw new SCIAuthorizationException("Missing Authorization header");
+            throw new SCLAuthorizationException("Missing Authorization header");
         }
 
         auto expected = "Bearer " ~ _service.config.authToken;
         if (req.headers["Authorization"] != expected) {
-            throw new SCIAuthorizationException("Invalid token");
+            throw new SCLAuthorizationException("Invalid token");
         }
     }
 

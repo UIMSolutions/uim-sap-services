@@ -1,11 +1,11 @@
-ClogLogLevel parseLevel(string input) {
+SCLLogLevel parseLevel(string input) {
     switch (toUpper(strip(input))) {
-        case "TRACE": return ClogLogLevel.TRACE;
-        case "DEBUG": return ClogLogLevel.DEBUG;
-        case "INFO": return ClogLogLevel.INFO;
-        case "WARN": return ClogLogLevel.WARN;
-        case "ERROR": return ClogLogLevel.ERROR;
-        case "FATAL": return ClogLogLevel.FATAL;
-        default: return ClogLogLevel.INFO;
+        case "TRACE": return SCLLogLevel.TRACE;
+        case "DEBUG": return SCLLogLevel.DEBUG;
+        case "INFO": return SCLLogLevel.INFO;
+        case "WARN": return SCLLogLevel.WARN;
+        case "ERROR": return SCLLogLevel.ERROR;
+        case "FATAL": return SCLLogLevel.FATAL;
+        default: return SCLLogLevel.INFO;
     }
 }

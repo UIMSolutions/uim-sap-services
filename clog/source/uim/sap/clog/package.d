@@ -1,10 +1,10 @@
-module uim.sap.clog;
+module uim.sap.scl;
 
-public import uim.sap.clog.config;
-public import uim.sap.clog.exceptions;
-public import uim.sap.clog.models;
-public import uim.sap.clog.store;
-public import uim.sap.clog.service;
-public import uim.sap.clog.server;
+public import uim.sap.scl.config;
+public import uim.sap.scl.exceptions;
+public import uim.sap.scl.models;
+public import uim.sap.scl.store;
+public import uim.sap.scl.service;
+public import uim.sap.scl.server;
 
-enum UIM_SAP_SCI_VERSION = "1.0.0";
+enum UIM_SAP_SCL_VERSION = "1.0.0";

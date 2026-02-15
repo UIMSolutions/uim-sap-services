@@ -1,18 +1,18 @@
 /**
- * Configuration for SCI Cloud Logging service
+ * Configuration for SCL Cloud Logging service
  */
-module uim.sap.clog.config;
+module uim.sap.scl.config;
 
 import std.string : startsWith;
 
-import uim.sap.clog.exceptions;
+import uim.sap.scl.exceptions;
 
-struct ClogConfig {
+struct SCLConfig {
     string host = "0.0.0.0";
     ushort port = 8081;
     string basePath = "/sap/cloud/logging/v1";
 
-    string serviceName = "uim-sap-sci";
+    string serviceName = "uim-sap-scl";
     string serviceVersion = "1.0.0";
 
     size_t maxEntries = 10000;
@@ -25,27 +25,27 @@ struct ClogConfig {
 
     void validate() const {
         if (host.length == 0) {
-            throw new ClogConfigurationException("Host cannot be empty");
+            throw new SCLConfigurationException("Host cannot be empty");
         }
 
         if (port == 0) {
-            throw new ClogConfigurationException("Port must be greater than zero");
+            throw new SCLConfigurationException("Port must be greater than zero");
         }
 
         if (basePath.length == 0 || !basePath.startsWith("/")) {
-            throw new ClogConfigurationException("Base path must start with '/'");
+            throw new SCLConfigurationException("Base path must start with '/'");
         }
 
         if (maxEntries == 0) {
-            throw new ClogConfigurationException("maxEntries must be greater than zero");
+            throw new SCLConfigurationException("maxEntries must be greater than zero");
         }
 
         if (defaultQueryLimit == 0) {
-            throw new ClogConfigurationException("defaultQueryLimit must be greater than zero");
+            throw new SCLConfigurationException("defaultQueryLimit must be greater than zero");
         }
 
         if (requireAuthToken && authToken.length == 0) {
-            throw new ClogConfigurationException("authToken is required when requireAuthToken is enabled");
+            throw new SCLConfigurationException("authToken is required when requireAuthToken is enabled");
         }
     }
 }

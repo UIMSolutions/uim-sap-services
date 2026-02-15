@@ -1,26 +1,26 @@
 /**
- * Domain service for SCI cloud logging
+ * Domain service for SCL cloud logging
  */
-module uim.sap.clog.service;
+module uim.sap.scl.service;
 
 import vibe.data.json : Json;
 
-import uim.sap.clog.config;
-import uim.sap.clog.exceptions;
-import uim.sap.clog.models;
-import uim.sap.clog.store;
+import uim.sap.scl.config;
+import uim.sap.scl.exceptions;
+import uim.sap.scl.models;
+import uim.sap.scl.store;
 
-class ClogService {
-    private ClogConfig _config;
-    private ClogLogStore _store;
+class SCLService {
+    private SCLConfig _config;
+    private SCLLogStore _store;
 
-    this(ClogConfig config) {
+    this(SCLConfig config) {
         config.validate();
         _config = config;
-        _store = new ClogLogStore(config.maxEntries);
+        _store = new SCLLogStore(config.maxEntries);
     }
 
-    @property const(ClogConfig) config() const {
+    @property const(SCLConfig) config() const {
         return _config;
     }
 
@@ -41,7 +41,7 @@ class ClogService {
     }
 
     Json ingest(Json payload) {
-        auto entry = ClogLogEntry.fromJson(payload);
+        auto entry = SCLLogEntry.fromJson(payload);
         validateEntry(entry);
         _store.append(entry);
 
@@ -53,12 +53,12 @@ class ClogService {
 
     Json ingestBatch(Json payload) {
         if (!("logs" in payload) || payload["logs"].type != Json.Type.array) {
-            throw new ClogLogValidationException("Payload must contain 'logs' array");
+            throw new SCLLogValidationException("Payload must contain 'logs' array");
         }
 
-        ClogLogEntry[] logs;
+        SCLLogEntry[] logs;
         foreach (item; payload["logs"]) {
-            auto entry = ClogLogEntry.fromJson(item);
+            auto entry = SCLLogEntry.fromJson(item);
             validateEntry(entry);
             logs ~= entry;
         }
@@ -71,7 +71,7 @@ class ClogService {
     }
 
     Json query(Json payload) {
-        auto queryRequest = ClogLogQuery.fromJson(payload, _config.defaultQueryLimit);
+        auto queryRequest = SCLLogQuery.fromJson(payload, _config.defaultQueryLimit);
         auto logs = _store.query(queryRequest);
 
         Json response = Json.emptyObject;
@@ -84,13 +84,13 @@ class ClogService {
         return _store.metrics().toJson();
     }
 
-    private void validateEntry(scope const ClogLogEntry entry) {
+    private void validateEntry(scope const SCLLogEntry entry) {
         if (entry.message.length == 0) {
-            throw new ClogLogValidationException("Log message cannot be empty");
+            throw new SCLLogValidationException("Log message cannot be empty");
         }
 
         if (entry.source.length == 0) {
-            throw new ClogLogValidationException("Log source cannot be empty");
+            throw new SCLLogValidationException("Log source cannot be empty");
         }
     }
 }

@@ -1,9 +1,9 @@
-module uim.sap.clog.exceptions;
+module uim.sap.scl.exceptions;
 
 public {
-  import uim.sap.clog.exceptions.exception;
+  import uim.sap.scl.exceptions.exception;
 
-  import uim.sap.clog.exceptions.authorization;
-  import uim.sap.clog.exceptions.configuration;
-  import uim.sap.clog.exceptions.logvalidation;
+  import uim.sap.scl.exceptions.authorization;
+  import uim.sap.scl.exceptions.configuration;
+  import uim.sap.scl.exceptions.logvalidation;
 }
