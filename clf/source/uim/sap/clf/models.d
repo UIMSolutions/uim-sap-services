@@ -3,10 +3,11 @@
  */
 module uim.sap.clf.models;
 
-import std.datetime : Clock, SysTime;
-import std.uuid : randomUUID;
+import uim.sap.clf;
 
-import vibe.data.json : Json;
+mixin(ShowModule!());
+
+@safe:
 
 struct CLFOrg {
     string guid;

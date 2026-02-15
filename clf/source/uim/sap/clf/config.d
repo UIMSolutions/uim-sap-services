@@ -3,9 +3,11 @@
  */
 module uim.sap.clf.config;
 
-import std.string : startsWith;
+import uim.sap.clf;
 
-import uim.sap.clf.exceptions;
+mixin(ShowModule!());
+
+@safe:
 
 struct CLFConfig {
     string host = "0.0.0.0";

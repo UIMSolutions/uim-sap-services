@@ -11,3 +11,9 @@ mixin(ShowModule!());
 
 @safe:
 
+// Exception for not found entities, e.g. missing configuration, missing user, etc.
+class CLFNotFoundException : CLFException {
+  this(string entityType, string id, string file = __FILE__, size_t line = __LINE__, Throwable next = null) {
+    super(entityType ~ " not found: " ~ id, file, line, next);
+  }
+}

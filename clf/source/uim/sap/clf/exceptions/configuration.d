@@ -10,3 +10,10 @@ import uim.sap.clf;
 mixin(ShowModule!());
 
 @safe:
+
+// Exception for configuration errors, e.g. invalid configuration values, missing required configuration, etc.
+class CLFConfigurationException : CLFException {
+    this(string msg, string file = __FILE__, size_t line = __LINE__, Throwable next = null) {
+        super(msg, file, line, next);
+    }
+}

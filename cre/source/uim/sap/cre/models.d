@@ -1,6 +1,7 @@
 module uim.sap.cre.models;
 
 import std.datetime : Clock, SysTime;
+import std.string : replace;
 import std.uuid : randomUUID;
 
 import vibe.data.json : Json;

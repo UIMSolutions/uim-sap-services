@@ -10,3 +10,10 @@ import uim.sap.clf;
 mixin(ShowModule!());
 
 @safe:
+
+// Exception for validation errors, e.g. invalid input, failed preconditions, etc.
+class CLFValidationException : CLFException {
+    this(string msg, string file = __FILE__, size_t line = __LINE__, Throwable next = null) {
+        super(msg, file, line, next);
+    }
+}

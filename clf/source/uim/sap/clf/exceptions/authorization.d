@@ -11,6 +11,7 @@ mixin(ShowModule!());
 
 @safe:
 
+// Exception for authorization failures, e.g. insufficient permissions, invalid credentials, etc.
 class CLFAuthorizationException : CLFException {
   this(string msg = "Unauthorized", string file = __FILE__, size_t line = __LINE__, Throwable next = null) {
     super(msg, file, line, next);

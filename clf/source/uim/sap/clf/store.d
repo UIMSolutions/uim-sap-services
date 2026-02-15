@@ -4,8 +4,11 @@
 module uim.sap.clf.store;
 
 import core.sync.mutex : Mutex;
+import uim.sap.clf;
 
-import uim.sap.clf.models;
+mixin(ShowModule!());
+
+@safe:
 
 class CLFStore {
     private CLFOrg[string] _orgs;
