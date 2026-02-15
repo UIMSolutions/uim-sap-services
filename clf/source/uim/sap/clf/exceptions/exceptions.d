@@ -23,8 +23,3 @@ class CLFNotFoundException : CLFException {
     }
 }
 
-class CLFAuthorizationException : CLFException {
-    this(string msg = "Unauthorized", string file = __FILE__, size_t line = __LINE__, Throwable next = null) {
-        super(msg, file, line, next);
-    }
-}

@@ -1,0 +1,7 @@
+{
+    "fileVersion": 1,
+    "versions": {
+        "uim-framework": "26.2.1",
+        "vibe-d": "0.10.2"
+    }
+}
