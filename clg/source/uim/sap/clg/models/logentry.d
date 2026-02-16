@@ -20,16 +20,16 @@ struct CLGLogEntry {
         entry.id = randomUUID().toString();
         entry.timestamp = Clock.currTime();
 
-        if ("tenant" in payload && payload["tenant"].type == Json.Type.string) {
+        if ("tenant" in payload && payload["tenant"].isString) {
             entry.tenant = payload["tenant"].get!string;
         }
-        if ("source" in payload && payload["source"].type == Json.Type.string) {
+        if ("source" in payload && payload["source"].isString) {
             entry.source = payload["source"].get!string;
         }
-        if ("level" in payload && payload["level"].type == Json.Type.string) {
+        if ("level" in payload && payload["level"].isString) {
             entry.level = parseLevel(payload["level"].get!string);
         }
-        if ("message" in payload && payload["message"].type == Json.Type.string) {
+        if ("message" in payload && payload["message"].isString) {
             entry.message = payload["message"].get!string;
         }
         if ("attributes" in payload) {

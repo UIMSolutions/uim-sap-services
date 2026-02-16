@@ -306,13 +306,13 @@ class MONService {
         auto base = pulse(databaseId);
         return [
             metricSample("database", databaseId, "db.connections.active", 10 + fmod(base, 350), "count"),
-            metricSample("database", databaseId, "db.storage.used", 1024 + fmod(base * 4, 20000), "MiB"),
+            metricSample("database", databaseId, "db.storage.used", 1024 + fmod(base * 4, 20_000), "MiB"),
             metricSample("database", databaseId, "db.response.time", 3 + fmod(base * 2, 250), "ms")
         ];
     }
 
     private double pulse(string source) {
-        auto nowTick = cast(double)(Clock.currTime().stdTime % 1000000L);
+        auto nowTick = cast(double)(Clock.currTime().stdTime % 1_000_000L);
         return nowTick + cast(double)(source.length * 131);
     }
 

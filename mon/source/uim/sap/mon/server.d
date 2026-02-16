@@ -57,57 +57,114 @@ class MONServer {
 
             auto segments = normalizedSegments(subPath);
 
-            if (segments.length == 4 && segments[0] == "v1" && segments[1] == "applications" && segments[3] == "metrics" && req.method == HTTPMethod.GET) {
+            if (segments.length == 4 &&
+                segments[0] == "v1" &&
+                segments[1] == "applications" &&
+                segments[3] == "metrics" &&
+                req.method == HTTPMethod.GET)
+            {
                 res.writeJsonBody(_service.fetchApplicationMetrics(segments[2]), 200);
                 return;
             }
 
-            if (segments.length == 4 && segments[0] == "v1" && segments[1] == "databases" && segments[3] == "metrics" && req.method == HTTPMethod.GET) {
+            if (segments.length == 4 &&
+                segments[0] == "v1" &&
+                segments[1] == "databases" &&
+                segments[3] == "metrics" &&
+                req.method == HTTPMethod.GET)
+            {
                 res.writeJsonBody(_service.fetchDatabaseMetrics(segments[2]), 200);
                 return;
             }
 
-            if (segments.length == 5 && segments[0] == "v1" && segments[1] == "metrics" && segments[2] == "history" && req.method == HTTPMethod.GET) {
+            if (segments.length == 5 &&
+                segments[0] == "v1" &&
+                segments[1] == "metrics" &&
+                segments[2] == "history" &&
+                req.method == HTTPMethod.GET)
+            {
                 res.writeJsonBody(_service.metricHistory(segments[3], segments[4]), 200);
                 return;
             }
 
-            if (segments.length == 3 && segments[0] == "v1" && segments[1] == "checks" && segments[2] == "availability" && req.method == HTTPMethod.POST) {
+            if (segments.length == 3 &&
+                segments[0] == "v1" &&
+                segments[1] == "checks" &&
+                segments[2] == "availability" &&
+                req.method == HTTPMethod.POST)
+            {
                 res.writeJsonBody(_service.registerAvailabilityCheck(req.json), 201);
                 return;
             }
 
-            if (segments.length == 4 && segments[0] == "v1" && segments[1] == "alerts" && segments[2] == "channels" && segments[3] == "email" && req.method == HTTPMethod.PUT) {
+            if (segments.length == 4 &&
+                segments[0] == "v1" &&
+                segments[1] == "alerts" &&
+                segments[2] == "channels" &&
+                segments[3] == "email" &&
+                req.method == HTTPMethod.PUT)
+            {
                 res.writeJsonBody(_service.setAlertEmailChannel(req.json), 200);
                 return;
             }
 
-            if (segments.length == 4 && segments[0] == "v1" && segments[1] == "alerts" && segments[2] == "channels" && segments[3] == "webhook" && req.method == HTTPMethod.PUT) {
+            if (segments.length == 4 &&
+                segments[0] == "v1" &&
+                segments[1] == "alerts" &&
+                segments[2] == "channels" &&
+                segments[3] == "webhook" &&
+                req.method == HTTPMethod.PUT)
+            {
                 res.writeJsonBody(_service.setAlertWebhookChannel(req.json), 200);
                 return;
             }
 
-            if (segments.length == 3 && segments[0] == "v1" && segments[1] == "alerts" && segments[2] == "channels" && req.method == HTTPMethod.GET) {
+            if (segments.length == 3 &&
+                segments[0] == "v1" &&
+                segments[1] == "alerts" &&
+                segments[2] == "channels" &&
+                req.method == HTTPMethod.GET)
+            {
                 res.writeJsonBody(_service.getAlertChannels(), 200);
                 return;
             }
 
-            if (segments.length == 3 && segments[0] == "v1" && segments[1] == "checks" && segments[2] == "jmx" && req.method == HTTPMethod.POST) {
+            if (segments.length == 3 &&
+                segments[0] == "v1" &&
+                segments[1] == "checks" &&
+                segments[2] == "jmx" &&
+                req.method == HTTPMethod.POST)
+            {
                 res.writeJsonBody(_service.configureJMXCheck(req.json), 201);
                 return;
             }
 
-            if (segments.length == 3 && segments[0] == "v1" && segments[1] == "jmx" && segments[2] == "operations" && req.method == HTTPMethod.POST) {
+            if (segments.length == 3 &&
+                segments[0] == "v1" &&
+                segments[1] == "jmx" &&
+                segments[2] == "operations" &&
+                req.method == HTTPMethod.POST)
+            {
                 res.writeJsonBody(_service.performJMXOperation(req.json), 200);
                 return;
             }
 
-            if (segments.length == 3 && segments[0] == "v1" && segments[1] == "checks" && segments[2] == "custom" && req.method == HTTPMethod.POST) {
+            if (segments.length == 3 &&
+                segments[0] == "v1" &&
+                segments[1] == "checks" &&
+                segments[2] == "custom" &&
+                req.method == HTTPMethod.POST)
+            {
                 res.writeJsonBody(_service.registerCustomCheck(req.json), 201);
                 return;
             }
 
-            if (segments.length == 5 && segments[0] == "v1" && segments[1] == "checks" && segments[2] == "default" && segments[4] == "thresholds") {
+            if (segments.length == 5 &&
+                segments[0] == "v1" &&
+                segments[1] == "checks" &&
+                segments[2] == "default" &&
+                segments[4] == "thresholds")
+            {
                 if (req.method == HTTPMethod.PUT) {
                     res.writeJsonBody(_service.overrideDefaultThreshold(segments[3], req.json), 200);
                     return;
