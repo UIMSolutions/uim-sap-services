@@ -5,7 +5,6 @@ authors "Ozan Nurettin Süel" "UI Manufaktur"
 copyright "Copyright © 2018-2026, Ozan Nurettin Süel"
 license "Apache-2.0"
 
-targetType "executable"
 targetName "uim-sap-clg-service"
 targetPath "build"
 sourcePaths "source"
