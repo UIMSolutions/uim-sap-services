@@ -1,4 +1,4 @@
-module uim.sap.mon.models;
+module uim.sap.mon.models.models;
 
 import std.datetime : Clock, SysTime;
 import std.uuid : randomUUID;

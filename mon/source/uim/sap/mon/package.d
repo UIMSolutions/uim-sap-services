@@ -3,11 +3,15 @@
  */
 module uim.sap.mon;
 
-public import uim.sap.mon.config;
-public import uim.sap.mon.exceptions;
-public import uim.sap.mon.models;
-public import uim.sap.mon.store;
-public import uim.sap.mon.service;
-public import uim.sap.mon.server;
+public {
+    import uim.oop;
+    
+    import uim.sap.mon.config;
+    import uim.sap.mon.exceptions;
+    import uim.sap.mon.models;
+    import uim.sap.mon.store;
+    import uim.sap.mon.service;
+    import uim.sap.mon.server;
+}
 
 enum UIM_SAP_MON_VERSION = "1.0.0";

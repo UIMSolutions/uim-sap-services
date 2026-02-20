@@ -1,4 +1,4 @@
-module uim.sap.mon.exceptions;
+module uim.sap.mon.exceptions.exceptions;
 
 class MONException : Exception {
     this(string msg) {
