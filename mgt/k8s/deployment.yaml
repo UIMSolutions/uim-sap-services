@@ -1,0 +1,82 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uim-sap-mgt
+  labels:
+    app: uim-sap-mgt
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: uim-sap-mgt
+  template:
+    metadata:
+      labels:
+        app: uim-sap-mgt
+    spec:
+      containers:
+      - name: uim-sap-mgt
+        image: localhost/uim-sap-mgt:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 8088
+        envFrom:
+        - configMapRef:
+            name: uim-sap-mgt-config
+        env:
+        - name: MGT_AUTH_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: uim-sap-mgt-secret
+              key: auth-token
+              optional: true
+        - name: MGT_BTP_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: uim-sap-mgt-secret
+              key: btp-username
+              optional: true
+        - name: MGT_BTP_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: uim-sap-mgt-secret
+              key: btp-password
+              optional: true
+        - name: MGT_BTP_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: uim-sap-mgt-secret
+              key: btp-client-id
+              optional: true
+        - name: MGT_BTP_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: uim-sap-mgt-secret
+              key: btp-client-secret
+              optional: true
+        - name: MGT_BTP_ACCESS_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: uim-sap-mgt-secret
+              key: btp-access-token
+              optional: true
+        readinessProbe:
+          httpGet:
+            path: /api/mgt/ready
+            port: http
+          initialDelaySeconds: 3
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /api/mgt/health
+            port: http
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi

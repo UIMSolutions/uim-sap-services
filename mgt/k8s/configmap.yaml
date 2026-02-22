@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: uim-sap-mgt-config
+  labels:
+    app: uim-sap-mgt
+data:
+  MGT_HOST: "0.0.0.0"
+  MGT_PORT: "8088"
+  MGT_BASE_PATH: "/api/mgt"
+  MGT_SERVICE_NAME: "uim-sap-mgt"
+  MGT_SERVICE_VERSION: "1.0.0"
+  MGT_BTP_TENANT: ""
+  MGT_BTP_SUBDOMAIN: ""
+  MGT_BTP_REGION: "api.sap.hana.ondemand.com"
+  MGT_BTP_USE_OAUTH2: "true"
