@@ -93,3 +93,116 @@ kubectl apply -f k8s/configmap.yaml
 kubectl apply -f k8s/deployment.yaml
 kubectl apply -f k8s/service.yaml
 ```
+
+## UML Description
+
+### Class Diagram
+
+```mermaid
+classDiagram
+    class CPSConfig {
+      +string host
+      +ushort port
+      +string basePath
+      +string serviceName
+      +string serviceVersion
+      +string defaultTheme
+      +bool requireAuthToken
+      +string authToken
+      +validate() void
+    }
+
+    class CPSSite {
+      +string tenantId
+      +string siteId
+      +string name
+      +string design
+      +Json[] pages
+      +Json[] widgets
+      +Json[] apps
+      +Json[] menu
+      +toJson() Json
+    }
+
+    class CPSSiteAdministration {
+      +string tenantId
+      +string theme
+      +bool transportEnabled
+      +bool translationEnabled
+      +bool templatesEnabled
+      +bool extensionsEnabled
+      +toJson() Json
+    }
+
+    class CPSStore {
+      +upsertSite(site) CPSSite
+      +listSites(tenantId) CPSSite[]
+      +getSite(tenantId, siteId) Nullable!CPSSite
+      +deleteSite(tenantId, siteId) bool
+      +upsertSiteAdministration(admin) CPSSiteAdministration
+      +getSiteAdministration(tenantId) Nullable!CPSSiteAdministration
+    }
+
+    class CPSService {
+      +health() Json
+      +ready() Json
+      +listSites(tenantId) Json
+      +upsertSite(tenantId, payload) Json
+      +resolveNavigation(tenantId, payload) Json
+      +listContent(tenantId, contentType) Json
+      +upsertContent(tenantId, contentType, payload) Json
+      +consumeProvider(tenantId, providerId) Json
+    }
+
+    class CPSServer {
+      +run() void
+      -handleRequest(req, res) void
+      -validateAuth(req) void
+      -respondError(res, message, statusCode) void
+    }
+
+    CPSServer --> CPSService : routes to
+    CPSService --> CPSConfig : uses
+    CPSService --> CPSStore : orchestrates
+    CPSStore --> CPSSite : persists
+    CPSStore --> CPSSiteAdministration : persists
+```
+
+### Sequence Diagram (Create/Update Site)
+
+```mermaid
+sequenceDiagram
+    actor Admin as Portal Admin
+    participant API as CPSServer
+    participant Svc as CPSService
+    participant Store as CPSStore
+
+    Admin->>API: POST/PUT /v1/tenants/{tenant}/sites[/siteId]
+    API->>API: validateAuth()
+    API->>Svc: upsertSite(tenantId, payload)
+    Svc->>Svc: validate tenant and site payload
+    Svc->>Store: getSite(tenantId, siteId)
+    Store-->>Svc: existing/new
+    Svc->>Store: upsertSite(site)
+    Store-->>Svc: persisted site
+    Svc-->>API: { message, site }
+    API-->>Admin: 200 OK
+```
+
+### Sequence Diagram (Role-based Navigation Resolution)
+
+```mermaid
+sequenceDiagram
+    actor User as End User
+    participant API as CPSServer
+    participant Svc as CPSService
+    participant Store as CPSStore
+
+    User->>API: POST /v1/tenants/{tenant}/navigation/resolve
+    API->>Svc: resolveNavigation(tenantId, {roles})
+    Svc->>Store: listSites(tenantId)
+    Store-->>Svc: tenant sites
+    Svc->>Svc: filter apps/menu by required_role
+    Svc-->>API: resolved entry points + SSO flags
+    API-->>User: 200 OK
+```

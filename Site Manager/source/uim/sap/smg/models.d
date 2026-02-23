@@ -23,9 +23,17 @@ struct SMGSite {
         payload["site_name"] = siteName;
         payload["description"] = description;
         payload["lifecycle"] = lifecycle;
-        payload["assigned_roles"] = assignedRoles;
-        payload["pages"] = pages;
-        payload["catalogs"] = catalogs;
+        Json assignedRoleValues = Json.emptyArray;
+        foreach (role; assignedRoles) assignedRoleValues ~= role;
+        payload["assigned_roles"] = assignedRoleValues;
+
+        Json pageValues = Json.emptyArray;
+        foreach (page; pages) pageValues ~= page;
+        payload["pages"] = pageValues;
+
+        Json catalogValues = Json.emptyArray;
+        foreach (catalog; catalogs) catalogValues ~= catalog;
+        payload["catalogs"] = catalogValues;
         payload["created_at"] = createdAt.toISOExtString();
         payload["updated_at"] = updatedAt.toISOExtString();
         return payload;

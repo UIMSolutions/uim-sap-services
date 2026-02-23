@@ -2,6 +2,7 @@ module uim.sap.smg.store;
 
 import core.sync.mutex : Mutex;
 
+import std.datetime : Clock;
 import std.datetime : SysTime;
 import std.typecons : Nullable;
 
@@ -51,7 +52,7 @@ class SMGStore {
             if (auto settings = settingsKey in _subaccountSettings) {
                 if (settings.defaultSiteId == siteId) {
                     settings.defaultSiteId = "";
-                    settings.updatedAt = SysTime.currTime();
+                    settings.updatedAt = Clock.currTime();
                     _subaccountSettings[settingsKey] = *settings;
                 }
             }

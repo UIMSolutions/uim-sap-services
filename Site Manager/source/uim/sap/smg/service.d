@@ -20,7 +20,7 @@ class SMGService {
         _store = new SMGStore;
     }
 
-    @property SMGConfig config() const {
+    @property const(SMGConfig) config() const {
         return _config;
     }
 
@@ -36,18 +36,21 @@ class SMGService {
     Json ready() const {
         Json payload = Json.emptyObject;
         payload["status"] = "READY";
-        payload["checks"] = ["config", "in-memory-store"];
+        Json checks = Json.emptyArray;
+        checks ~= "config";
+        checks ~= "in-memory-store";
+        payload["checks"] = checks;
         return payload;
     }
 
     Json listSites(string tenantId) {
         validateTenant(tenantId);
         Json payload = Json.emptyObject;
-        Json[] items;
+        Json items = Json.emptyArray;
         foreach (site; _store.listSites(tenantId)) items ~= site.toJson();
         payload["tenant_id"] = tenantId;
         payload["sites"] = items;
-        payload["count"] = cast(int)items.length;
+        payload["count"] = cast(long)items.length;
         return payload;
     }
 
@@ -158,22 +161,22 @@ class SMGService {
     }
 
     private string readRequired(Json body, string key) const {
-        if (!(key in body) || body[key].type != Json.Type.string || body[key].str.length == 0) {
+        if (!(key in body) || body[key].type != Json.Type.string || body[key].get!string.length == 0) {
             throw new SMGValidationException(key ~ " is required");
         }
-        return body[key].str;
+        return body[key].get!string;
     }
 
     private string readOptional(Json body, string key, string fallback) const {
         if (!(key in body) || body[key].type == Json.Type.null_) return fallback;
         if (body[key].type != Json.Type.string) throw new SMGValidationException(key ~ " must be a string");
-        return body[key].str;
+        return body[key].get!string;
     }
 
     private bool readOptionalBool(Json body, string key, bool fallback) const {
         if (!(key in body) || body[key].type == Json.Type.null_) return fallback;
         if (body[key].type != Json.Type.bool_) throw new SMGValidationException(key ~ " must be a boolean");
-        return body[key].boolean;
+        return body[key].get!bool;
     }
 
     private string[] readStringArray(Json body, string key) const {
@@ -182,7 +185,7 @@ class SMGService {
         if (body[key].type != Json.Type.array) throw new SMGValidationException(key ~ " must be an array");
         foreach (item; body[key]) {
             if (item.type != Json.Type.string) throw new SMGValidationException(key ~ " must contain strings");
-            values ~= item.str;
+            values ~= item.get!string;
         }
         return values;
     }
