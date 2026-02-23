@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uim-sap-con
+  labels:
+    app: uim-sap-con
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: uim-sap-con
+  template:
+    metadata:
+      labels:
+        app: uim-sap-con
+    spec:
+      containers:
+      - name: uim-sap-con
+        image: ghcr.io/uimsolutions/uim-sap-con:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 8085
+        envFrom:
+        - configMapRef:
+            name: uim-sap-con-config
+        env:
+        - name: CON_AUTH_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: uim-sap-con-secret
+              key: auth-token
+              optional: true
+        readinessProbe:
+          httpGet:
+            path: /api/con/ready
+            port: http
+          initialDelaySeconds: 3
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /api/con/health
+            port: http
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi

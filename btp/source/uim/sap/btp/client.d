@@ -1,8 +1,8 @@
 module uim.sap.btp.client;
 
-import std.json : Json, parseJSON;
+import std.json : JSONValue, parseJSON;
 import std.string : format;
-import vibe.http.client : requestHTTP, HTTPClientResponse;
+import vibe.http.client : requestHTTP, HTTPClientRequest, HTTPClientResponse;
 import vibe.http.common : HTTPMethod;
 import vibe.stream.operations : readAllUTF8;
 
@@ -20,31 +20,31 @@ class SAPBTPClient {
     return cfg;
   }
 
-  Json get(string path, string[string] query = null, string service = "") {
+  JSONValue get(string path, string[string] query = null, string service = "") {
     return request(HTTPMethod.GET, path, query, "", service);
   }
 
-  Json post(string path, string[string] query, string body, string service = "") {
+  JSONValue post(string path, string[string] query, string body, string service = "") {
     return request(HTTPMethod.POST, path, query, body, service);
   }
 
-  Json getApplications() {
+  JSONValue getApplications() {
     return get("/v2/apps", null, "cf");
   }
 
-  Json getSpaces() {
+  JSONValue getSpaces() {
     return get("/v2/spaces", null, "cf");
   }
 
-  Json getOrganizations() {
+  JSONValue getOrganizations() {
     return get("/v2/organizations", null, "cf");
   }
 
-  Json getBoundServices() {
+  JSONValue getBoundServices() {
     return get("/v2/service_bindings", null, "cf");
   }
 
-  private Json request(
+  private JSONValue request(
     HTTPMethod method,
     string path,
     string[string] query,
@@ -56,7 +56,7 @@ class SAPBTPClient {
     auto queryString = buildQuery(query);
     auto url = baseUrl ~ servicePath ~ queryString;
 
-    HTTPClientResponse response = requestHTTP(url, (scope req) {
+    HTTPClientResponse response = requestHTTP(url, (scope HTTPClientRequest req) {
       req.method = method;
       
       // Set authentication
@@ -70,20 +70,20 @@ class SAPBTPClient {
       req.headers["Accept"] = "application/json";
 
       if (body.length > 0) {
-        req.writeBody(body);
+        req.writeBody(cast(const(ubyte)[])body, "application/json");
       }
     });
 
     auto content = response.bodyReader.readAllUTF8();
     if (content.length == 0) {
-      return Json(null);
+      return JSONValue(null);
     }
 
     // Try to parse as JSON, fall back to null if not JSON
     try {
       return parseJSON(content);
-    } catch {
-      return Json(null);
+    } catch (Throwable) {
+      return JSONValue(null);
     }
   }
 }

@@ -2,7 +2,6 @@ module uim.sap.mgt.config;
 
 import std.string : startsWith;
 
-import uim.sap.btp.config : SAPBTPConfig;
 import uim.sap.mgt.exceptions;
 
 struct MGTConfig {
@@ -56,17 +55,4 @@ struct MGTConfig {
         }
     }
 
-    SAPBTPConfig toSAPBTPConfig() const {
-        SAPBTPConfig btp;
-        btp.tenant = tenant;
-        btp.subdomain = subdomain;
-        btp.region = region;
-        btp.username = username;
-        btp.password = password;
-        btp.clientId = clientId;
-        btp.clientSecret = clientSecret;
-        btp.accessToken = accessToken;
-        btp.useOAuth2 = useOAuth2;
-        return btp;
-    }
 }

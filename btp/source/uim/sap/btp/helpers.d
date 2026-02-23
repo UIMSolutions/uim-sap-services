@@ -53,7 +53,7 @@ string buildQuery(string[string] query) {
 string encodeBasicAuth(string username, string password) {
   auto credentials = username ~ ":" ~ password;
   auto encoded = Base64.encode(cast(ubyte[]) credentials);
-  return "Basic " ~ encoded;
+  return "Basic " ~ to!string(encoded);
 }
 
 string getBearerToken(string token) {

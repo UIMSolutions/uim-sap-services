@@ -1,6 +1,6 @@
 module uim.sap.mgt.service;
 
-import std.json : StdJson = Json;
+import std.json : StdJson = JSONValue;
 
 import vibe.data.json : Json, parseJsonString;
 
