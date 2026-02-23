@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: uim-sap-datasphere
+  labels:
+    app: uim-sap-datasphere
+spec:
+  selector:
+    app: uim-sap-datasphere
+  ports:
+  - name: http
+    protocol: TCP
+    port: 80
+    targetPort: 8098
+  type: ClusterIP

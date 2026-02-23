@@ -5,25 +5,7 @@ import std.uuid : randomUUID;
 
 import vibe.data.json : Json;
 
-struct MONMetricSample {
-    string targetType;
-    string targetId;
-    string metricKind;
-    double value;
-    string unit;
-    SysTime collectedAt;
 
-    Json toJson() const {
-        Json payload = Json.emptyObject;
-        payload["target_type"] = targetType;
-        payload["target_id"] = targetId;
-        payload["metric_kind"] = metricKind;
-        payload["value"] = value;
-        payload["unit"] = unit;
-        payload["collected_at"] = collectedAt.toISOExtString();
-        return payload;
-    }
-}
 
 struct MONAvailabilityCheck {
     string checkId;

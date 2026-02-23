@@ -1,34 +1,23 @@
-module uim.sap.dpi.models;
+module uim.sap.dpi.models.personaldatarecord;
 
-import std.datetime : Clock, SysTime;
-import std.uuid : randomUUID;
+import uim.sap.dpi;
+@safe:
 
-import vibe.data.json : Json;
-
-string createId() {
-    return randomUUID().toString();
-}
-
-struct DPIRetentionRule {
-    string tenantId;
-    string ruleId;
-    string dataCategory;
-    int retentionDays;
-    bool active;
-    SysTime updatedAt;
-
-    Json toJson() const {
-        Json payload = Json.emptyObject;
-        payload["tenant_id"] = tenantId;
-        payload["rule_id"] = ruleId;
-        payload["data_category"] = dataCategory;
-        payload["retention_days"] = retentionDays;
-        payload["active"] = active;
-        payload["updated_at"] = updatedAt.toISOExtString();
-        return payload;
-    }
-}
-
+/**
+    * Represents a personal data record associated with a specific subject.
+    * Each record contains information about the data category, source, and the actual data payload.
+    *
+    * Fields:
+    * - tenantId: The ID of the tenant this record belongs to.
+    * - recordId: A unique identifier for the personal data record.
+    * - subjectId: The ID of the subject (individual) this data is about.
+    * - category: The category of the personal data (e.g., "customer_data", "employee_data").
+    * - source: The source system or application where this data originated from.
+    * - payload: The actual personal data stored as a JSON object.
+    * - createdAt: The timestamp when this record was created.
+    * - updatedAt: The timestamp when this record was last updated.
+    * - deleted: A boolean indicating whether this record has been marked as deleted.  
+    */
 struct DPIPersonalDataRecord {
     string tenantId;
     string recordId;
@@ -51,24 +40,6 @@ struct DPIPersonalDataRecord {
         result["created_at"] = createdAt.toISOExtString();
         result["updated_at"] = updatedAt.toISOExtString();
         result["deleted"] = deleted;
-        return result;
-    }
-}
-
-struct DPIExport {
-    string tenantId;
-    string exportId;
-    string subjectId;
-    Json records;
-    SysTime createdAt;
-
-    Json toJson() const {
-        Json result = Json.emptyObject;
-        result["tenant_id"] = tenantId;
-        result["export_id"] = exportId;
-        result["subject_id"] = subjectId;
-        result["records"] = records;
-        result["created_at"] = createdAt.toISOExtString();
         return result;
     }
 }
