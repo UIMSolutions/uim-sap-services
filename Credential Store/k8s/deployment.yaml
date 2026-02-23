@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uim-sap-cre
+  labels:
+    app: uim-sap-cre
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: uim-sap-cre
+  template:
+    metadata:
+      labels:
+        app: uim-sap-cre
+    spec:
+      containers:
+      - name: uim-sap-cre
+        image: ghcr.io/uimsolutions/uim-sap-cre:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 8086
+        envFrom:
+        - configMapRef:
+            name: uim-sap-cre-config
+        env:
+        - name: CRE_AUTH_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: uim-sap-cre-secret
+              key: auth-token
+              optional: true
+        - name: CRE_MASTER_KEY
+          valueFrom:
+            secretKeyRef:
+              name: uim-sap-cre-secret
+              key: master-key
+              optional: true
+        readinessProbe:
+          httpGet:
+            path: /api/cre/ready
+            port: http
+          initialDelaySeconds: 3
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /api/cre/health
+            port: http
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
