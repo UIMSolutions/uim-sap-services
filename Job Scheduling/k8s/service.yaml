@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: uim-sap-job-scheduling
+  labels:
+    app: uim-sap-job-scheduling
+spec:
+  selector:
+    app: uim-sap-job-scheduling
+  ports:
+  - name: http
+    protocol: TCP
+    port: 80
+    targetPort: 8101
+  type: ClusterIP

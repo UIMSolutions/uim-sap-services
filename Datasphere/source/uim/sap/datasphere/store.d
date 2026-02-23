@@ -14,7 +14,7 @@ class DatasphereStore {
     private DATIntegrationConnection[string] _connections;
     private DATGovernanceAsset[string] _catalogAssets;
     private DATGlossaryTerm[string] _glossaryTerms;
-    private KPI[string] _kpis;
+    private DATKpi[string] _kpis;
     private RowPolicy[string] _rowPolicies;
     private DATAuditEvent[][string] _auditEvents;
     private TenantAdminState _tenantAdminState;
@@ -161,15 +161,15 @@ class DatasphereStore {
         return values;
     }
 
-    KPI upsertKPI(KPI item) {
+    DATKpi upsertKPI(DATKpi item) {
         synchronized (_lock) {
             _kpis[scopedKey(item.tenantId, "kpi", item.kpiId)] = item;
             return item;
         }
     }
 
-    KPI[] listKPIs(string tenantId) {
-        KPI[] values;
+    DATKpi[] listKPIs(string tenantId) {
+        DATKpi[] values;
         synchronized (_lock) {
             foreach (key, value; _kpis) if (belongsTo(key, tenantId)) values ~= value;
         }

@@ -506,7 +506,7 @@ class DatasphereService {
     Json createKPI(string tenantId, Json request) {
         validateTenant(tenantId);
 
-        KPI item;
+        DATKpi item;
         item.tenantId = tenantId;
         item.kpiId = optionalString(request, "kpi_id", _store.nextId("kpi"));
         item.name = requiredString(request, "name");
