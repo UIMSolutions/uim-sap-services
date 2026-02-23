@@ -206,7 +206,7 @@ class DatasphereService {
             throw new DatasphereValidationException("mode must be federate, replicate, or transform_load");
         }
 
-        IntegrationConnection item;
+        DATIntegrationConnection item;
         item.tenantId = tenantId;
         item.connectionId = optionalString(request, "connection_id", _store.nextId("conn"));
         item.name = name;
@@ -446,7 +446,7 @@ class DatasphereService {
     Json publishCatalogAsset(string tenantId, Json request) {
         validateTenant(tenantId);
 
-        GovernanceAsset item;
+        DATGovernanceAsset item;
         item.tenantId = tenantId;
         item.assetId = optionalString(request, "asset_id", _store.nextId("asset"));
         item.title = requiredString(request, "title");
@@ -477,7 +477,7 @@ class DatasphereService {
     Json createGlossaryTerm(string tenantId, Json request) {
         validateTenant(tenantId);
 
-        GlossaryTerm item;
+        DATGlossaryTerm item;
         item.tenantId = tenantId;
         item.termId = optionalString(request, "term_id", _store.nextId("term"));
         item.term = requiredString(request, "term");

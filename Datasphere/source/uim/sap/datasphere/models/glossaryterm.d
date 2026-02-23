@@ -5,7 +5,7 @@ import uim.sap.datasphere;
 @safe:
 
 /**
-  * GlossaryTerm represents a term in the data glossary, including its definition and metadata.
+  * DATGlossaryTerm represents a term in the data glossary, including its definition and metadata.
   * It is used to facilitate data governance and understanding across the organization.
   *
   * Fields:
@@ -15,7 +15,7 @@ import uim.sap.datasphere;
   * - definition: A detailed definition of the glossary term.
   * - updatedAt: The timestamp of the last update to this glossary term.
   */
-struct GlossaryTerm {
+struct DATGlossaryTerm {
   string tenantId;
   string termId;
   string term;

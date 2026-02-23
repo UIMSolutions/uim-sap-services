@@ -11,9 +11,9 @@ class DatasphereStore {
     private DATSpace[string] _spaces;
     private DATDataModel[string] _dataModels;
     private DATBusinessModel[string] _businessModels;
-    private IntegrationConnection[string] _connections;
-    private GovernanceAsset[string] _catalogAssets;
-    private GlossaryTerm[string] _glossaryTerms;
+    private DATIntegrationConnection[string] _connections;
+    private DATGovernanceAsset[string] _catalogAssets;
+    private DATGlossaryTerm[string] _glossaryTerms;
     private KPI[string] _kpis;
     private RowPolicy[string] _rowPolicies;
     private DATAuditEvent[][string] _auditEvents;
@@ -116,45 +116,45 @@ class DatasphereStore {
         return false;
     }
 
-    IntegrationConnection upsertConnection(IntegrationConnection item) {
+    DATIntegrationConnection upsertConnection(DATIntegrationConnection item) {
         synchronized (_lock) {
             _connections[scopedKey(item.tenantId, "conn", item.connectionId)] = item;
             return item;
         }
     }
 
-    IntegrationConnection[] listConnections(string tenantId) {
-        IntegrationConnection[] values;
+    DATIntegrationConnection[] listConnections(string tenantId) {
+        DATIntegrationConnection[] values;
         synchronized (_lock) {
             foreach (key, value; _connections) if (belongsTo(key, tenantId)) values ~= value;
         }
         return values;
     }
 
-    GovernanceAsset upsertAsset(GovernanceAsset item) {
+    DATGovernanceAsset upsertAsset(DATGovernanceAsset item) {
         synchronized (_lock) {
             _catalogAssets[scopedKey(item.tenantId, "asset", item.assetId)] = item;
             return item;
         }
     }
 
-    GovernanceAsset[] listAssets(string tenantId) {
-        GovernanceAsset[] values;
+    DATGovernanceAsset[] listAssets(string tenantId) {
+        DATGovernanceAsset[] values;
         synchronized (_lock) {
             foreach (key, value; _catalogAssets) if (belongsTo(key, tenantId)) values ~= value;
         }
         return values;
     }
 
-    GlossaryTerm upsertTerm(GlossaryTerm item) {
+    DATGlossaryTerm upsertTerm(DATGlossaryTerm item) {
         synchronized (_lock) {
             _glossaryTerms[scopedKey(item.tenantId, "term", item.termId)] = item;
             return item;
         }
     }
 
-    GlossaryTerm[] listTerms(string tenantId) {
-        GlossaryTerm[] values;
+    DATGlossaryTerm[] listTerms(string tenantId) {
+        DATGlossaryTerm[] values;
         synchronized (_lock) {
             foreach (key, value; _glossaryTerms) if (belongsTo(key, tenantId)) values ~= value;
         }

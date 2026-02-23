@@ -20,7 +20,7 @@ import uim.sap.datasphere;
   * 
   * Note: This struct is a simplified representation and may need to be extended with additional fields or methods depending on the specific requirements of the governance assets being modeled.
  */
-struct GovernanceAsset {
+struct DATGovernanceAsset {
   string tenantId;
   string assetId;
   string title;
