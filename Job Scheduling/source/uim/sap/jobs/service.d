@@ -2,6 +2,7 @@ module uim.sap.jobs.service;
 
 import core.thread : Thread;
 import std.array : split;
+import std.conv : to;
 import std.datetime : Clock, SysTime, days, dur, hours, minutes, seconds;
 import std.format : format;
 import std.string : startsWith, toLower;
@@ -86,8 +87,17 @@ class JobSchedulingService {
   <h3>Create Schedule</h3>
   <div class=\"row\">
     <input id=\"scheduleJobId\" placeholder=\"Job ID\" />
-    <select id=\"scheduleFormat\"><option>repeat_interval</option><option>human</option><option>repeat_at</option><option>cron</option></select>
-    <input id=\"scheduleExpr\" placeholder=\"Expression / seconds / ISO time / cron\" style=\"width:360px\" />
+        <select id=\"scheduleFormat\">
+            <option>repeat_interval</option>
+            <option>human</option>
+            <option>repeat_at</option>
+            <option>cron</option>
+        </select>
+        <input
+            id=\"scheduleExpr\"
+            placeholder=\"Expression / seconds / ISO time / cron\"
+            style=\"width:360px\"
+        />
     <button onclick=\"createSchedule()\">Create</button>
   </div>
 
@@ -105,7 +115,8 @@ class JobSchedulingService {
         fetch(base() + '/runs').then(r => r.json()),
         fetch(base() + '/alerts').then(r => r.json())
       ]);
-      document.getElementById('out').textContent = JSON.stringify({jobs, schedules, runs, alerts}, null, 2);
+            document.getElementById('out').textContent =
+                JSON.stringify({jobs, schedules, runs, alerts}, null, 2);
     }
 
     async function createJob() {
@@ -115,7 +126,11 @@ class JobSchedulingService {
         execution_mode: document.getElementById('jobMode').value,
         runtime: 'cloud-foundry'
       };
-      await fetch(base() + '/jobs', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload)});
+            await fetch(base() + '/jobs', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(payload)
+            });
       refreshAll();
     }
 
@@ -128,7 +143,11 @@ class JobSchedulingService {
       if (format === 'repeat_at') payload.repeat_at = expr;
       if (format === 'cron') payload.cron = expr || '*/5 * * * *';
 
-      await fetch(base() + '/schedules', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload)});
+            await fetch(base() + '/schedules', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(payload)
+            });
       refreshAll();
     }
 
@@ -597,7 +616,8 @@ HTML";
     private RunLog* runById(string tenantId, string runId) {
         foreach (item; _store.listRuns(tenantId)) {
             if (item.runId == runId) {
-                auto copy = new RunLog(item);
+                auto copy = new RunLog;
+                *copy = item;
                 return copy;
             }
         }
@@ -794,7 +814,7 @@ HTML";
 
     private HTTPMethod toHttpMethod(string methodName) {
         auto normalized = toUpper(methodName);
-        final switch (normalized) {
+        switch (normalized) {
             case "GET": return HTTPMethod.GET;
             case "POST": return HTTPMethod.POST;
             case "PUT": return HTTPMethod.PUT;

@@ -1,4 +1,4 @@
-name "uim-sap-dqm"
+name "data-quality-management"
 description "SAP Data Quality Management style service for SAP BTP using D, uim-framework and vibe.d"
 homepage "https://github.com/UIMSolutions/uim-sap"
 authors "Ozan Nurettin Süel" "UI Manufaktur"

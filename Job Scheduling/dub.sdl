@@ -1,4 +1,4 @@
-name "uim-sap-job-scheduling"
+name "job-scheduling"
 description "SAP Job Scheduling style service for SAP BTP using D, uim-framework and vibe.d"
 homepage "https://github.com/UIMSolutions/uim-sap"
 authors "Ozan Nurettin Süel" "UI Manufaktur"

@@ -1,4 +1,4 @@
-name "uim-sap-art"
+name "abap-runtime"
 description "SAP ABAP Runtime (ART) for D language using uim-framework and vibe.d"
 homepage "https://github.com/UIMSolutions/uim-sap"
 authors "Ozan Nurettin Süel" "UI Manufaktur"

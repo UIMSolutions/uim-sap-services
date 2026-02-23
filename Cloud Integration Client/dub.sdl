@@ -1,4 +1,4 @@
-name "cpi"
+name "cloud-integration-client"
 description "SAP Cloud Integration (CPI) client library for D language using uim-framework"
 homepage "https://www.sueel.de/uim/sap/cpi"
 authors "Ozan Nurettin Süel"

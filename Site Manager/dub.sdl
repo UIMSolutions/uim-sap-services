@@ -1,4 +1,4 @@
-name "uim-sap-smg"
+name "site-manager"
 description "SAP BTP Site Manager style design-time service using D, uim-framework and vibe.d"
 homepage "https://github.com/UIMSolutions/uim-sap"
 authors "Ozan Nurettin Süel" "UI Manufaktur"
@@ -12,7 +12,6 @@ sourcePaths "source"
 importPaths "source"
 
 dependency "uim-framework" version="~>26.2.3"
-
 
 buildRequirements "allowWarnings" "silenceDeprecations"
 buildOptions "ignoreDeprecations" "debugInfo"

@@ -1,4 +1,4 @@
-name "uim-sap-cis"
+name "cloud-identity"
 description "SAP Cloud Identity Services style service for SAP BTP using D, uim-framework and vibe.d"
 homepage "https://github.com/UIMSolutions/uim-sap"
 authors "Ozan Nurettin Süel" "UI Manufaktur"

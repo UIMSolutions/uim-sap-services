@@ -1,4 +1,4 @@
-name "uim-sap-buh"
+name "business-hub"
 description "SAP Business Hub-like API catalog service for Kubernetes using D, uim-framework and vibe.d"
 homepage "https://github.com/UIMSolutions/uim-sap"
 authors "Ozan Nurettin Süel" "UI Manufaktur"

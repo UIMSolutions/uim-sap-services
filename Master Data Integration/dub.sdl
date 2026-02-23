@@ -1,4 +1,4 @@
-name "uim-sap-mdi"
+name "master-data-integration"
 description "SAP Master Data Integration style service for SAP BTP using D, uim-framework and vibe.d"
 homepage "https://github.com/UIMSolutions/uim-sap"
 authors "Ozan Nurettin Süel" "UI Manufaktur"

@@ -1,4 +1,4 @@
-name "uim-sap-cmg"
+name "content-manager"
 description "SAP BTP Content Manager style service using D, uim-framework and vibe.d"
 homepage "https://github.com/UIMSolutions/uim-sap"
 authors "Ozan Nurettin Süel" "UI Manufaktur"

@@ -1,4 +1,4 @@
-name "uim-sap-dpi"
+name "data-privacy-integration"
 description "Data Privacy Integration style service for SAP BTP using D, uim-framework and vibe.d"
 homepage "https://github.com/UIMSolutions/uim-sap"
 authors "Ozan Nurettin Süel" "UI Manufaktur"

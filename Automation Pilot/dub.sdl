@@ -1,4 +1,4 @@
-name "uim-sap-atp"
+name "automation-pilot"
 description "SAP BTP Automation Pilot style service using D, uim-framework and vibe.d"
 homepage "https://github.com/UIMSolutions/uim-sap"
 authors "Ozan Nurettin Süel" "UI Manufaktur"
