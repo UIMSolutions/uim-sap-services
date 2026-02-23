@@ -22,10 +22,14 @@ struct DatasphereConfig {
     void validate() const {
         if (host.length == 0) throw new DatasphereConfigurationException("Host cannot be empty");
         if (port == 0) throw new DatasphereConfigurationException("Port must be greater than zero");
-        if (basePath.length == 0 || !basePath.startsWith("/")) throw new DatasphereConfigurationException("Base path must start with '/'");
+        if (basePath.length == 0 || !basePath.startsWith("/")) {
+            throw new DatasphereConfigurationException("Base path must start with '/'");
+        }
         if (serviceName.length == 0) throw new DatasphereConfigurationException("Service name cannot be empty");
         if (defaultSpaceDiskGb <= 0) throw new DatasphereConfigurationException("Default space disk must be > 0");
         if (defaultSpaceMemoryGb <= 0) throw new DatasphereConfigurationException("Default space memory must be > 0");
-        if (requireAuthToken && authToken.length == 0) throw new DatasphereConfigurationException("Auth token required when token auth is enabled");
+        if (requireAuthToken && authToken.length == 0) {
+            throw new DatasphereConfigurationException("Auth token required when token auth is enabled");
+        }
     }
 }

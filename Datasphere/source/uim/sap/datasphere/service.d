@@ -24,19 +24,20 @@ class DatasphereService {
 
     Json health() {
         Json payload = Json.emptyObject;
+        Json capabilities = Json.emptyArray;
+        capabilities ~= "data_modeling";
+        capabilities ~= "business_modeling";
+        capabilities ~= "data_integration";
+        capabilities ~= "space_management";
+        capabilities ~= "administration";
+        capabilities ~= "data_protection_and_privacy";
+        capabilities ~= "data_governance";
+        capabilities ~= "consumption";
+
         payload["ok"] = true;
         payload["serviceName"] = _config.serviceName;
         payload["serviceVersion"] = _config.serviceVersion;
-        payload["capabilities"] = [
-            "data_modeling",
-            "business_modeling",
-            "data_integration",
-            "space_management",
-            "administration",
-            "data_protection_and_privacy",
-            "data_governance",
-            "consumption"
-        ];
+        payload["capabilities"] = capabilities;
         return payload;
     }
 
@@ -346,13 +347,14 @@ class DatasphereService {
 
     Json getTenantAdminState() {
         Json payload = Json.emptyObject;
+        Json monitoring = Json.emptyArray;
+        monitoring ~= "spaces";
+        monitoring ~= "connections";
+        monitoring ~= "audit";
+        monitoring ~= "data_flows";
+
         payload["tenant"] = _store.getTenantState().toJson();
-        payload["monitoring"] = [
-            "spaces",
-            "connections",
-            "audit",
-            "data_flows"
-        ];
+        payload["monitoring"] = monitoring;
         return payload;
     }
 
@@ -571,7 +573,12 @@ class DatasphereService {
         row["Value"] = 42;
 
         Json payload = Json.emptyObject;
-        payload["@odata.context"] = _config.basePath ~ "/v1/tenants/" ~ tenantId ~ "/consumption/odata/$metadata#" ~ entitySet;
+        payload["@odata.context"] =
+            _config.basePath ~
+            "/v1/tenants/" ~
+            tenantId ~
+            "/consumption/odata/$metadata#" ~
+            entitySet;
         payload["value"] = [row];
         return payload;
     }

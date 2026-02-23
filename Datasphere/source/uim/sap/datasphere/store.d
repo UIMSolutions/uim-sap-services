@@ -1,6 +1,9 @@
 module uim.sap.datasphere.store;
 
 import core.sync.mutex : Mutex;
+import std.conv : to;
+
+import vibe.data.json : Json;
 
 import uim.sap.datasphere.models;
 

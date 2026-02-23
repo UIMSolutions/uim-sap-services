@@ -76,17 +76,32 @@ class DatasphereServer {
                     }
                 }
 
-                if (segments.length == 5 && segments[3] == "modeling" && segments[4] == "external-datasets" && req.method == HTTPMethod.POST) {
+                if (
+                    segments.length == 5 &&
+                    segments[3] == "modeling" &&
+                    segments[4] == "external-datasets" &&
+                    req.method == HTTPMethod.POST
+                ) {
                     res.writeJsonBody(_service.createExternalDataset(tenantId, req.json), 200);
                     return;
                 }
 
-                if (segments.length == 5 && segments[3] == "modeling" && segments[4] == "data-flows" && req.method == HTTPMethod.POST) {
+                if (
+                    segments.length == 5 &&
+                    segments[3] == "modeling" &&
+                    segments[4] == "data-flows" &&
+                    req.method == HTTPMethod.POST
+                ) {
                     res.writeJsonBody(_service.runDataFlow(tenantId, req.json), 200);
                     return;
                 }
 
-                if (segments.length == 5 && segments[3] == "modeling" && segments[4] == "replications" && req.method == HTTPMethod.POST) {
+                if (
+                    segments.length == 5 &&
+                    segments[3] == "modeling" &&
+                    segments[4] == "replications" &&
+                    req.method == HTTPMethod.POST
+                ) {
                     res.writeJsonBody(_service.replicateModel(tenantId, req.json), 200);
                     return;
                 }
@@ -102,7 +117,13 @@ class DatasphereServer {
                     }
                 }
 
-                if (segments.length == 7 && segments[3] == "business-modeling" && segments[4] == "models" && segments[6] == "preview" && req.method == HTTPMethod.POST) {
+                if (
+                    segments.length == 7 &&
+                    segments[3] == "business-modeling" &&
+                    segments[4] == "models" &&
+                    segments[6] == "preview" &&
+                    req.method == HTTPMethod.POST
+                ) {
                     res.writeJsonBody(_service.previewBusinessModel(tenantId, segments[5]), 200);
                     return;
                 }
@@ -118,7 +139,12 @@ class DatasphereServer {
                     }
                 }
 
-                if (segments.length == 5 && segments[3] == "integration" && segments[4] == "migrations" && req.method == HTTPMethod.POST) {
+                if (
+                    segments.length == 5 &&
+                    segments[3] == "integration" &&
+                    segments[4] == "migrations" &&
+                    req.method == HTTPMethod.POST
+                ) {
                     res.writeJsonBody(_service.migrateTrustedModels(tenantId, req.json), 200);
                     return;
                 }
@@ -139,17 +165,32 @@ class DatasphereServer {
                     return;
                 }
 
-                if (segments.length == 6 && segments[3] == "spaces" && segments[5] == "users" && req.method == HTTPMethod.POST) {
+                if (
+                    segments.length == 6 &&
+                    segments[3] == "spaces" &&
+                    segments[5] == "users" &&
+                    req.method == HTTPMethod.POST
+                ) {
                     res.writeJsonBody(_service.addSpaceUser(tenantId, segments[4], req.json), 200);
                     return;
                 }
 
-                if (segments.length == 7 && segments[3] == "security" && segments[4] == "functional-access" && req.method == HTTPMethod.PUT) {
+                if (
+                    segments.length == 7 &&
+                    segments[3] == "security" &&
+                    segments[4] == "functional-access" &&
+                    req.method == HTTPMethod.PUT
+                ) {
                     res.writeJsonBody(_service.setFunctionalAccess(tenantId, segments[5], req.json), 200);
                     return;
                 }
 
-                if (segments.length == 7 && segments[3] == "security" && segments[4] == "space-access" && req.method == HTTPMethod.PUT) {
+                if (
+                    segments.length == 7 &&
+                    segments[3] == "security" &&
+                    segments[4] == "space-access" &&
+                    req.method == HTTPMethod.PUT
+                ) {
                     res.writeJsonBody(_service.setSpaceAccess(tenantId, segments[5], req.json), 200);
                     return;
                 }
@@ -161,7 +202,12 @@ class DatasphereServer {
                     }
                 }
 
-                if (segments.length == 6 && segments[3] == "security" && segments[4] == "row-policies" && req.method == HTTPMethod.GET) {
+                if (
+                    segments.length == 6 &&
+                    segments[3] == "security" &&
+                    segments[4] == "row-policies" &&
+                    req.method == HTTPMethod.GET
+                ) {
                     res.writeJsonBody(_service.listRowPolicies(tenantId), 200);
                     return;
                 }
@@ -177,7 +223,12 @@ class DatasphereServer {
                     }
                 }
 
-                if (segments.length == 6 && segments[3] == "governance" && segments[4] == "catalog" && segments[5] == "assets") {
+                if (
+                    segments.length == 6 &&
+                    segments[3] == "governance" &&
+                    segments[4] == "catalog" &&
+                    segments[5] == "assets"
+                ) {
                     if (req.method == HTTPMethod.POST) {
                         res.writeJsonBody(_service.publishCatalogAsset(tenantId, req.json), 200);
                         return;
@@ -188,7 +239,12 @@ class DatasphereServer {
                     }
                 }
 
-                if (segments.length == 6 && segments[3] == "governance" && segments[4] == "glossary" && segments[5] == "terms") {
+                if (
+                    segments.length == 6 &&
+                    segments[3] == "governance" &&
+                    segments[4] == "glossary" &&
+                    segments[5] == "terms"
+                ) {
                     if (req.method == HTTPMethod.POST) {
                         res.writeJsonBody(_service.createGlossaryTerm(tenantId, req.json), 200);
                         return;
@@ -199,7 +255,12 @@ class DatasphereServer {
                     }
                 }
 
-                if (segments.length == 6 && segments[3] == "governance" && segments[4] == "kpis" && segments[5] == "definitions") {
+                if (
+                    segments.length == 6 &&
+                    segments[3] == "governance" &&
+                    segments[4] == "kpis" &&
+                    segments[5] == "definitions"
+                ) {
                     if (req.method == HTTPMethod.POST) {
                         res.writeJsonBody(_service.createKPI(tenantId, req.json), 200);
                         return;
@@ -210,12 +271,22 @@ class DatasphereServer {
                     }
                 }
 
-                if (segments.length == 5 && segments[3] == "consumption" && segments[4] == "connectors" && req.method == HTTPMethod.GET) {
+                if (
+                    segments.length == 5 &&
+                    segments[3] == "consumption" &&
+                    segments[4] == "connectors" &&
+                    req.method == HTTPMethod.GET
+                ) {
                     res.writeJsonBody(_service.listConsumptionConnectors(tenantId), 200);
                     return;
                 }
 
-                if (segments.length == 6 && segments[3] == "consumption" && segments[4] == "odata" && req.method == HTTPMethod.GET) {
+                if (
+                    segments.length == 6 &&
+                    segments[3] == "consumption" &&
+                    segments[4] == "odata" &&
+                    req.method == HTTPMethod.GET
+                ) {
                     res.writeJsonBody(_service.odataEntity(tenantId, segments[5]), 200);
                     return;
                 }
@@ -237,7 +308,9 @@ class DatasphereServer {
 
     private void validateAuth(HTTPServerRequest req) {
         if (!_service.config.requireAuthToken) return;
-        if (!("Authorization" in req.headers)) throw new DatasphereAuthorizationException("Missing Authorization header");
+        if (!("Authorization" in req.headers)) {
+            throw new DatasphereAuthorizationException("Missing Authorization header");
+        }
         auto expected = "Bearer " ~ _service.config.authToken;
         if (req.headers["Authorization"] != expected) throw new DatasphereAuthorizationException("Invalid token");
     }
