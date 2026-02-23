@@ -8,9 +8,9 @@ import vibe.data.json : Json;
 import uim.sap.datasphere.models;
 
 class DatasphereStore {
-    private Space[string] _spaces;
-    private DataModel[string] _dataModels;
-    private BusinessModel[string] _businessModels;
+    private DATSpace[string] _spaces;
+    private DATDataModel[string] _dataModels;
+    private DATBusinessModel[string] _businessModels;
     private IntegrationConnection[string] _connections;
     private GovernanceAsset[string] _catalogAssets;
     private GlossaryTerm[string] _glossaryTerms;
@@ -38,22 +38,22 @@ class DatasphereStore {
         }
     }
 
-    Space upsertSpace(Space item) {
+    DATSpace upsertSpace(DATSpace item) {
         synchronized (_lock) {
             _spaces[scopedKey(item.tenantId, "space", item.spaceId)] = item;
             return item;
         }
     }
 
-    Space[] listSpaces(string tenantId) {
-        Space[] values;
+    DATSpace[] listSpaces(string tenantId) {
+        DATSpace[] values;
         synchronized (_lock) {
             foreach (key, value; _spaces) if (belongsTo(key, tenantId)) values ~= value;
         }
         return values;
     }
 
-    bool getSpace(string tenantId, string spaceId, out Space result) {
+    bool getSpace(string tenantId, string spaceId, out DATSpace result) {
         synchronized (_lock) {
             auto key = scopedKey(tenantId, "space", spaceId);
             if (auto existing = key in _spaces) {
@@ -64,22 +64,22 @@ class DatasphereStore {
         return false;
     }
 
-    DataModel upsertDataModel(DataModel item) {
+    DATDataModel upsertDataModel(DATDataModel item) {
         synchronized (_lock) {
             _dataModels[scopedKey(item.tenantId, "dmodel", item.modelId)] = item;
             return item;
         }
     }
 
-    DataModel[] listDataModels(string tenantId) {
-        DataModel[] values;
+    DATDataModel[] listDataModels(string tenantId) {
+        DATDataModel[] values;
         synchronized (_lock) {
             foreach (key, value; _dataModels) if (belongsTo(key, tenantId)) values ~= value;
         }
         return values;
     }
 
-    bool getDataModel(string tenantId, string modelId, out DataModel result) {
+    bool getDataModel(string tenantId, string modelId, out DATDataModel result) {
         synchronized (_lock) {
             auto key = scopedKey(tenantId, "dmodel", modelId);
             if (auto existing = key in _dataModels) {
@@ -90,22 +90,22 @@ class DatasphereStore {
         return false;
     }
 
-    BusinessModel upsertBusinessModel(BusinessModel item) {
+    DATBusinessModel upsertBusinessModel(DATBusinessModel item) {
         synchronized (_lock) {
             _businessModels[scopedKey(item.tenantId, "bmodel", item.modelId)] = item;
             return item;
         }
     }
 
-    BusinessModel[] listBusinessModels(string tenantId) {
-        BusinessModel[] values;
+    DATBusinessModel[] listBusinessModels(string tenantId) {
+        DATBusinessModel[] values;
         synchronized (_lock) {
             foreach (key, value; _businessModels) if (belongsTo(key, tenantId)) values ~= value;
         }
         return values;
     }
 
-    bool getBusinessModel(string tenantId, string modelId, out BusinessModel result) {
+    bool getBusinessModel(string tenantId, string modelId, out DATBusinessModel result) {
         synchronized (_lock) {
             auto key = scopedKey(tenantId, "bmodel", modelId);
             if (auto existing = key in _businessModels) {

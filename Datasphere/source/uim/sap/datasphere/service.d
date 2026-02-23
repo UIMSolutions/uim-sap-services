@@ -52,7 +52,7 @@ class DatasphereService {
         validateTenant(tenantId);
         auto modelName = requiredString(request, "name");
 
-        DataModel item;
+        DATDataModel item;
         item.tenantId = tenantId;
         item.modelId = optionalString(request, "model_id", _store.nextId("dmodel"));
         item.name = modelName;
@@ -117,7 +117,7 @@ class DatasphereService {
         validateTenant(tenantId);
         auto modelId = requiredString(request, "model_id");
 
-        DataModel model;
+        DATDataModel model;
         if (!_store.getDataModel(tenantId, modelId, model)) {
             throw new DatasphereNotFoundException("Data model", modelId);
         }
@@ -137,7 +137,7 @@ class DatasphereService {
         validateTenant(tenantId);
         auto modelName = requiredString(request, "name");
 
-        BusinessModel item;
+        DATBusinessModel item;
         item.tenantId = tenantId;
         item.modelId = optionalString(request, "model_id", _store.nextId("bmodel"));
         item.name = modelName;
@@ -169,7 +169,7 @@ class DatasphereService {
     Json previewBusinessModel(string tenantId, string modelId) {
         validateTenant(tenantId);
 
-        BusinessModel model;
+        DATBusinessModel model;
         if (!_store.getBusinessModel(tenantId, modelId, model)) {
             throw new DatasphereNotFoundException("Business model", modelId);
         }
@@ -251,7 +251,7 @@ class DatasphereService {
     Json createSpace(string tenantId, Json request) {
         validateTenant(tenantId);
 
-        Space item;
+        DATSpace item;
         item.tenantId = tenantId;
         item.spaceId = optionalString(request, "space_id", _store.nextId("space"));
         item.name = requiredString(request, "name");
@@ -285,7 +285,7 @@ class DatasphereService {
         validateTenant(tenantId);
         validateId(spaceId, "Space ID");
 
-        Space item;
+        DATSpace item;
         if (!_store.getSpace(tenantId, spaceId, item)) {
             throw new DatasphereNotFoundException("Space", spaceId);
         }
@@ -312,7 +312,7 @@ class DatasphereService {
 
         auto user = requiredString(request, "user");
 
-        Space item;
+        DATSpace item;
         if (!_store.getSpace(tenantId, spaceId, item)) {
             throw new DatasphereNotFoundException("Space", spaceId);
         }
