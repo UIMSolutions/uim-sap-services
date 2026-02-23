@@ -15,7 +15,7 @@
         "source"
     ],
     "dependencies": {
-        "uim-framework": "~>26.2.2",
+        "uim-framework": "~>26.2.3",
         "vibe-d": "~>0.10.0"
     }
 }

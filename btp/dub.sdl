@@ -10,7 +10,7 @@ targetName "uim-sap-btp"
 
 // Dependencies
 
-dependency "uim-framework" version="~>26.2.2"
+dependency "uim-framework" version="~>26.2.3"
 
 // Source files
 sourcePaths "source"

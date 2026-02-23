@@ -1,6 +1,7 @@
 module uim.sap.mon.models.metricsample;
 
 import uim.sap.mon;
+
 @safe:
 
 /**
@@ -16,21 +17,32 @@ import uim.sap.mon;
   * - collectedAt: The timestamp when this metric sample was collected.
   */
 struct MONMetricSample {
-    string targetType;
-    string targetId;
-    string metricKind;
-    double value;
-    string unit;
-    SysTime collectedAt;
+  string targetType;
+  string targetId;
+  string metricKind;
+  double value;
+  string unit;
+  SysTime collectedAt;
 
-    Json toJson() const {
-        Json payload = Json.emptyObject;
-        payload["target_type"] = targetType;
-        payload["target_id"] = targetId;
-        payload["metric_kind"] = metricKind;
-        payload["value"] = value;
-        payload["unit"] = unit;
-        payload["collected_at"] = collectedAt.toISOExtString();
-        return payload;
-    }
+  Json toJson() const {
+    Json payload = Json.emptyObject;
+    payload["target_type"] = targetType;
+    payload["target_id"] = targetId;
+    payload["metric_kind"] = metricKind;
+    payload["value"] = value;
+    payload["unit"] = unit;
+    payload["collected_at"] = collectedAt.toISOExtString();
+    return payload;
+  }
+}
+
+MONMetricSample metricSample(string targetType, string targetId, string metricKind, double value, string unit) {
+  MONMetricSample sample;
+  sample.targetType = targetType;
+  sample.targetId = targetId;
+  sample.metricKind = metricKind;
+  sample.value = value;
+  sample.unit = unit;
+  sample.collectedAt = Clock.currTime();
+  return sample;
 }

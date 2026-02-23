@@ -10,7 +10,7 @@ targetPath "build"
 sourcePaths "source"
 importPaths "source"
 
-dependency "uim-framework:errors" version="~>26.2.2"
+dependency "uim-framework:errors" version="~>26.2.3"
 
 // Configurations
 configuration "default" {

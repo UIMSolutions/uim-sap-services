@@ -115,7 +115,7 @@ class MONService {
 
         string[] recipients;
         foreach (entry; request["recipients"]) {
-            if (entry.type == Json.Type.string) {
+            if (entry.isString) {
                 recipients ~= entry.get!string;
             }
         }
@@ -317,7 +317,7 @@ class MONService {
     }
 
     private string getString(Json request, string key, string fallback = "") {
-        if (key in request && request[key].type == Json.Type.string) {
+        if (key in request && request[key].isString) {
             return request[key].get!string;
         }
         return fallback;
@@ -331,14 +331,14 @@ class MONService {
     }
 
     private bool getBool(Json request, string key, bool fallback = false) {
-        if (key in request && request[key].type == Json.Type.bool_) {
+        if (key in request && request[key].isBoolean) {
             return request[key].get!bool;
         }
         return fallback;
     }
 
     private double getDouble(Json request, string key, double fallback = 0) {
-        if (key in request && request[key].type == Json.Type.float_) {
+        if (key in request && request[key].isDouble) {
             return request[key].get!double;
         }
         if (key in request && request[key].type == Json.Type.int_) {

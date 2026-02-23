@@ -1,5 +1,5 @@
 name "monitoring"
-description "SAP Monitoring Service-like API for Kubernetes using D, uim-framework and vibe.d"
+description "Monitoring Service"
 homepage "https://github.com/UIMSolutions/uim-sap"
 authors "Ozan Nurettin Süel" "UI Manufaktur"
 copyright "Copyright © 2018-2026, Ozan Nurettin Süel"
@@ -10,7 +10,7 @@ targetName "uim-sap-mon-service"
 
 mainSourceFile "source/app.d"
 
-dependency "uim-framework:oop" version="~>26.2.2"
+dependency "uim-framework:oop" version="~>26.2.3"
 dependency "vibe-d" version="~>0.10.3"
 
 buildRequirements "allowWarnings" "silenceDeprecations"
