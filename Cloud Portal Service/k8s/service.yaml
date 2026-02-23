@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: uim-sap-cps
+  labels:
+    app: uim-sap-cps
+spec:
+  selector:
+    app: uim-sap-cps
+  ports:
+  - name: http
+    protocol: TCP
+    port: 80
+    targetPort: 8089
+  type: ClusterIP
