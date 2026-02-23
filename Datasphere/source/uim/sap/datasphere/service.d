@@ -415,7 +415,7 @@ class DatasphereService {
     Json addAuditEvent(string tenantId, Json request) {
         validateTenant(tenantId);
 
-        AuditEvent item;
+        DATAuditEvent item;
         item.tenantId = tenantId;
         item.eventId = optionalString(request, "event_id", _store.nextId("audit"));
         item.operation = requiredString(request, "operation");

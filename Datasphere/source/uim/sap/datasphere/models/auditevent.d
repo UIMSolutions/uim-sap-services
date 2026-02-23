@@ -1,21 +1,41 @@
-struct AuditEvent {
-    string tenantId;
-    string eventId;
-    string operation;
-    string layer;
-    string actor;
-    string details;
-    SysTime createdAt;
+module uim.sap.datasphere.models.auditevent;
 
-    Json toJson() const {
-        Json payload = Json.emptyObject;
-        payload["tenant_id"] = tenantId;
-        payload["event_id"] = eventId;
-        payload["operation"] = operation;
-        payload["layer"] = layer;
-        payload["actor"] = actor;
-        payload["details"] = details;
-        payload["created_at"] = createdAt.toISOExtString();
-        return payload;
-    }
+import uim.sap.datasphere;
+
+@safe:
+
+/** 
+ * Represents an audit event in the system, capturing key information about operations performed by users or system processes.
+ * This struct is designed to be immutable and thread-safe, ensuring that audit records are consistent and reliable for tracking and analysis purposes. 
+  * The `toJson` method allows for easy serialization of audit events into a JSON format, facilitating storage and integration with logging systems or external monitoring tools.
+  * 
+  * Fields:
+  * - tenantId: The ID of the tenant associated with this audit event.
+  * - eventId: A unique identifier for the audit event.
+  * - operation: A string describing the operation performed (e.g., "CREATE", "UPDATE", "DELETE").
+  * - layer: The layer of the application where the event occurred (e.g., "UI", "Service", "Data").
+  * - actor: The user or system process that performed the operation.
+  * - details: Additional details about the event, such as parameters or context information.
+  * - createdAt: The timestamp when the audit event was created.
+ */
+struct DATAuditEvent {
+  string tenantId;
+  string eventId;
+  string operation;
+  string layer;
+  string actor;
+  string details;
+  SysTime createdAt;
+
+  Json toJson() const {
+    Json payload = Json.emptyObject;
+    payload["tenant_id"] = tenantId;
+    payload["event_id"] = eventId;
+    payload["operation"] = operation;
+    payload["layer"] = layer;
+    payload["actor"] = actor;
+    payload["details"] = details;
+    payload["created_at"] = createdAt.toISOExtString();
+    return payload;
+  }
 }

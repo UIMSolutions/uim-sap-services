@@ -16,7 +16,7 @@ class DatasphereStore {
     private GlossaryTerm[string] _glossaryTerms;
     private KPI[string] _kpis;
     private RowPolicy[string] _rowPolicies;
-    private AuditEvent[][string] _auditEvents;
+    private DATAuditEvent[][string] _auditEvents;
     private TenantAdminState _tenantAdminState;
 
     private Mutex _lock;
@@ -191,14 +191,14 @@ class DatasphereStore {
         return values;
     }
 
-    AuditEvent addAuditEvent(AuditEvent item) {
+    DATAuditEvent addAuditEvent(DATAuditEvent item) {
         synchronized (_lock) {
             _auditEvents[item.tenantId] ~= item;
             return item;
         }
     }
 
-    AuditEvent[] listAuditEvents(string tenantId) {
+    DATAuditEvent[] listAuditEvents(string tenantId) {
         synchronized (_lock) {
             if (auto events = tenantId in _auditEvents) {
                 return (*events).dup;
