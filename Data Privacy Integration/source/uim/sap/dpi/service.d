@@ -1,8 +1,9 @@
 module uim.sap.dpi.service;
 
 import std.datetime : Clock;
-import std.regex : regex, replaceAll;
-import std.string : canFind, toLower;
+import std.algorithm.searching : canFind;
+import std.regex : regex, replaceAll, matchAll;
+import std.string : toLower, replace;
 
 import vibe.data.json : Json;
 
@@ -272,7 +273,7 @@ class DPIService {
         auto emailRx = regex(`[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}`);
         string result = text;
 
-        foreach (capture; result.matchAll(emailRx)) {
+        foreach (capture; matchAll(result, emailRx)) {
             auto original = capture.hit;
             auto pseudo = _store.pseudonymFor(tenantId, original);
             result = result.replace(original, pseudo);

@@ -2,6 +2,7 @@ module uim.sap.dpi.store;
 
 import core.sync.mutex : Mutex;
 import std.algorithm.searching : canFind;
+import std.conv : to;
 import std.string : toLower;
 
 import uim.sap.dpi.models;
@@ -101,7 +102,7 @@ class DPIStore {
             if (auto existing = key in _pseudonymMap) {
                 return *existing;
             }
-            auto pseudonym = "PSEUDO-" ~ cast(string)_pseudonymMap.length;
+            auto pseudonym = "PSEUDO-" ~ tenantId ~ "-" ~ to!string(_pseudonymMap.length);
             _pseudonymMap[key] = pseudonym;
             return pseudonym;
         }
