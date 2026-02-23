@@ -74,6 +74,8 @@ class JobSchedulingService {
   <div class=\"row\">
     <input id=\"tenant\" value=\"acme\" placeholder=\"tenant\" />
     <button onclick=\"refreshAll()\">Refresh</button>
+        <button onclick=\"testAlertConnector()\">Test Alert Connector</button>
+        <button onclick=\"testCloudAlmConnector()\">Test Cloud ALM Connector</button>
   </div>
 
   <h3>Create Job</h3>
@@ -107,6 +109,7 @@ class JobSchedulingService {
   <script>
     function tenant() { return document.getElementById('tenant').value || 'acme'; }
     function base() { return '/api/job-scheduling/v1/tenants/' + tenant(); }
+        function adminBase() { return '/api/job-scheduling/v1/admin'; }
 
     async function refreshAll() {
       const [jobs, schedules, runs, alerts] = await Promise.all([
@@ -151,6 +154,48 @@ class JobSchedulingService {
       refreshAll();
     }
 
+        async function testAlertConnector() {
+            const payload = {
+                tenant_id: tenant(),
+                job_id: document.getElementById('scheduleJobId').value || 'job-test',
+                run_id: 'run-test'
+            };
+
+            const response = await fetch(adminBase() + '/alerts/test', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(payload)
+            });
+
+            const result = await response.json();
+            document.getElementById('out').textContent = JSON.stringify({
+                connector: 'alert',
+                result
+            }, null, 2);
+        }
+
+        async function testCloudAlmConnector() {
+            const payload = {
+                tenant_id: tenant(),
+                job_id: document.getElementById('scheduleJobId').value || 'job-test',
+                run_id: 'run-test',
+                status: 'succeeded',
+                runtime: 'cloud-foundry'
+            };
+
+            const response = await fetch(adminBase() + '/cloud-alm/test', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(payload)
+            });
+
+            const result = await response.json();
+            document.getElementById('out').textContent = JSON.stringify({
+                connector: 'cloud_alm',
+                result
+            }, null, 2);
+        }
+
     refreshAll();
   </script>
 </body>
@@ -166,6 +211,64 @@ HTML";
         Json data = Json.emptyObject;
         data["resources"] = runtimes;
         data["total_results"] = cast(long)runtimes.length;
+        return data;
+    }
+
+    Json testAlertConnector(Json request) {
+        Json data = Json.emptyObject;
+
+        if (_config.alertEndpoint.length == 0) {
+            data["success"] = false;
+            data["connected"] = false;
+            data["message"] = "JOBS_ALERT_ENDPOINT is not configured";
+            return data;
+        }
+
+        Json payload = Json.emptyObject;
+        payload["tenant_id"] = optionalString(request, "tenant_id", "connector-test");
+        payload["alert_id"] = _store.nextId("alert-test");
+        payload["event_type"] = "CONNECTOR_TEST";
+        payload["job_id"] = optionalString(request, "job_id", "job-test");
+        payload["run_id"] = optionalString(request, "run_id", "run-test");
+        payload["status"] = "succeeded";
+        payload["severity"] = "info";
+        payload["message"] = optionalString(request, "message", "Alert connector test");
+        payload["created_at"] = Clock.currTime().toISOExtString();
+
+        sendAlertNotification(payload, true);
+
+        data["success"] = true;
+        data["connected"] = true;
+        data["endpoint"] = _config.alertEndpoint;
+        data["payload"] = payload;
+        return data;
+    }
+
+    Json testCloudAlmConnector(Json request) {
+        Json data = Json.emptyObject;
+
+        if (_config.cloudAlmEndpoint.length == 0) {
+            data["success"] = false;
+            data["connected"] = false;
+            data["message"] = "JOBS_CLOUD_ALM_ENDPOINT is not configured";
+            return data;
+        }
+
+        Json payload = Json.emptyObject;
+        payload["tenant_id"] = optionalString(request, "tenant_id", "connector-test");
+        payload["run_id"] = optionalString(request, "run_id", "run-test");
+        payload["job_id"] = optionalString(request, "job_id", "job-test");
+        payload["status"] = optionalString(request, "status", "succeeded");
+        payload["runtime"] = optionalString(request, "runtime", "cloud-foundry");
+        payload["started_at"] = Clock.currTime().toISOExtString();
+        payload["finished_at"] = Clock.currTime().toISOExtString();
+
+        sendCloudAlmTelemetry(payload, true);
+
+        data["success"] = true;
+        data["connected"] = true;
+        data["endpoint"] = _config.cloudAlmEndpoint;
+        data["payload"] = payload;
         return data;
     }
 
@@ -671,27 +774,10 @@ HTML";
         alert.createdAt = Clock.currTime();
         _store.upsertAlert(alert);
 
-        if (_config.alertEndpoint.length == 0) return;
-
-        requestHTTP(_config.alertEndpoint,
-            (scope req) {
-                req.method = HTTPMethod.POST;
-                req.headers["Accept"] = "application/json";
-                req.headers["Content-Type"] = "application/json";
-                if (_config.alertApiKey.length > 0) {
-                    req.headers["X-API-Key"] = _config.alertApiKey;
-                }
-                req.writeJsonBody(alert.toJson());
-            },
-            (scope res) {
-                auto _ = res.statusCode;
-            }
-        );
+        sendAlertNotification(alert.toJson(), false);
     }
 
     private void pushCloudAlm(RunLog run) {
-        if (_config.cloudAlmEndpoint.length == 0) return;
-
         Json payload = Json.emptyObject;
         payload["tenant_id"] = run.tenantId;
         payload["run_id"] = run.runId;
@@ -701,20 +787,77 @@ HTML";
         payload["started_at"] = run.startedAt.toISOExtString();
         payload["finished_at"] = run.finishedAt.toISOExtString();
 
-        requestHTTP(_config.cloudAlmEndpoint,
-            (scope req) {
-                req.method = HTTPMethod.POST;
-                req.headers["Accept"] = "application/json";
-                req.headers["Content-Type"] = "application/json";
-                if (_config.cloudAlmApiKey.length > 0) {
-                    req.headers["X-API-Key"] = _config.cloudAlmApiKey;
-                }
-                req.writeJsonBody(payload);
-            },
-            (scope res) {
-                auto _ = res.statusCode;
+        sendCloudAlmTelemetry(payload, false);
+    }
+
+    private void sendAlertNotification(Json payload, bool strict) {
+        if (_config.alertEndpoint.length == 0) {
+            if (strict) {
+                throw new JobSchedulingValidationException("JOBS_ALERT_ENDPOINT is not configured");
             }
-        );
+            return;
+        }
+
+        try {
+            requestHTTP(_config.alertEndpoint,
+                (scope req) {
+                    req.method = HTTPMethod.POST;
+                    req.headers["Accept"] = "application/json";
+                    req.headers["Content-Type"] = "application/json";
+                    if (_config.alertApiKey.length > 0) {
+                        req.headers["X-API-Key"] = _config.alertApiKey;
+                    }
+                    req.writeJsonBody(payload);
+                },
+                (scope res) {
+                    if (strict && (res.statusCode < 200 || res.statusCode >= 300)) {
+                        throw new JobSchedulingException(
+                            format("Alert endpoint returned status %d", res.statusCode)
+                        );
+                    }
+                }
+            );
+        } catch (Exception e) {
+            if (strict) {
+                throw new JobSchedulingException("Alert connector test failed: " ~ e.msg);
+            }
+        }
+    }
+
+    private void sendCloudAlmTelemetry(Json payload, bool strict) {
+        if (_config.cloudAlmEndpoint.length == 0) {
+            if (strict) {
+                throw new JobSchedulingValidationException(
+                    "JOBS_CLOUD_ALM_ENDPOINT is not configured"
+                );
+            }
+            return;
+        }
+
+        try {
+            requestHTTP(_config.cloudAlmEndpoint,
+                (scope req) {
+                    req.method = HTTPMethod.POST;
+                    req.headers["Accept"] = "application/json";
+                    req.headers["Content-Type"] = "application/json";
+                    if (_config.cloudAlmApiKey.length > 0) {
+                        req.headers["X-API-Key"] = _config.cloudAlmApiKey;
+                    }
+                    req.writeJsonBody(payload);
+                },
+                (scope res) {
+                    if (strict && (res.statusCode < 200 || res.statusCode >= 300)) {
+                        throw new JobSchedulingException(
+                            format("Cloud ALM endpoint returned status %d", res.statusCode)
+                        );
+                    }
+                }
+            );
+        } catch (Exception e) {
+            if (strict) {
+                throw new JobSchedulingException("Cloud ALM connector test failed: " ~ e.msg);
+            }
+        }
     }
 
     private SysTime nextRunFor(Schedule schedule, SysTime now) {

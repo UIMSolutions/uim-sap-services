@@ -56,6 +56,8 @@ Base path: `/api/job-scheduling`
 - GET `/ready`
 - GET `/dashboard`
 - GET `/v1/runtimes`
+- POST `/v1/admin/alerts/test`
+- POST `/v1/admin/cloud-alm/test`
 - POST|GET `/v1/tenants/{tenant_id}/jobs`
 - GET|PUT|DELETE `/v1/tenants/{tenant_id}/jobs/{job_id}`
 - POST `/v1/tenants/{tenant_id}/jobs/{job_id}/run`
@@ -116,6 +118,32 @@ curl -X POST "http://localhost:8101/api/job-scheduling/v1/tenants/acme/tasks/cf/
   -d '{
     "task_name": "data-archival",
     "duration_seconds": 45
+  }'
+```
+
+Test Alert Notification connector:
+
+```bash
+curl -X POST "http://localhost:8101/api/job-scheduling/v1/admin/alerts/test" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "tenant_id": "acme",
+    "job_id": "job-1",
+    "run_id": "run-1"
+  }'
+```
+
+Test Cloud ALM connector:
+
+```bash
+curl -X POST "http://localhost:8101/api/job-scheduling/v1/admin/cloud-alm/test" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "tenant_id": "acme",
+    "job_id": "job-1",
+    "run_id": "run-1",
+    "status": "succeeded",
+    "runtime": "cloud-foundry"
   }'
 ```
 

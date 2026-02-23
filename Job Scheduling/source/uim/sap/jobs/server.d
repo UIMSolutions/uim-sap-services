@@ -68,6 +68,26 @@ class JobSchedulingServer {
                 }
             }
 
+            if (segments.length == 4 && segments[0] == "v1" && segments[1] == "admin") {
+                if (
+                    segments[2] == "alerts" &&
+                    segments[3] == "test" &&
+                    req.method == HTTPMethod.POST
+                ) {
+                    res.writeJsonBody(_service.testAlertConnector(req.json), 200);
+                    return;
+                }
+
+                if (
+                    segments[2] == "cloud-alm" &&
+                    segments[3] == "test" &&
+                    req.method == HTTPMethod.POST
+                ) {
+                    res.writeJsonBody(_service.testCloudAlmConnector(req.json), 200);
+                    return;
+                }
+            }
+
             if (segments.length >= 3 && segments[0] == "v1" && segments[1] == "tenants") {
                 auto tenantId = segments[2];
 
