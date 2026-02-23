@@ -206,3 +206,24 @@ sequenceDiagram
     Svc-->>API: resolved entry points + SSO flags
     API-->>User: 200 OK
 ```
+
+  ### Sequence Diagram (Provider Content Consumption)
+
+  ```mermaid
+  sequenceDiagram
+    actor Admin as Content Admin
+    participant API as CPSServer
+    participant Svc as CPSService
+    participant Store as CPSStore
+
+    Admin->>API: POST /v1/tenants/{tenant}/providers/{providerId}/consume
+    API->>API: validateAuth()
+    API->>Svc: consumeProvider(tenantId, providerId)
+    Svc->>Store: getProvider(tenantId, providerId)
+    Store-->>Svc: provider config
+    Svc->>Svc: fetch/transform provider content
+    Svc->>Store: upsertContent(apps/roles/groups/catalogs)
+    Store-->>Svc: persisted tenant content
+    Svc-->>API: { message, consumed_items }
+    API-->>Admin: 200 OK
+  ```

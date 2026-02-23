@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uim-sap-cmg
+  labels:
+    app: uim-sap-cmg
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: uim-sap-cmg
+  template:
+    metadata:
+      labels:
+        app: uim-sap-cmg
+    spec:
+      containers:
+      - name: uim-sap-cmg
+        image: uim-sap-cmg:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8095
+        envFrom:
+        - configMapRef:
+            name: uim-sap-cmg-config
+        env:
+        - name: CMG_AUTH_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: uim-sap-cmg-secret
+              key: authToken
+              optional: true
+        readinessProbe:
+          httpGet:
+            path: /api/cmg/ready
+            port: 8095
+          initialDelaySeconds: 3
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /api/cmg/health
+            port: 8095
+          initialDelaySeconds: 8
+          periodSeconds: 10
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"

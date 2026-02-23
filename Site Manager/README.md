@@ -227,3 +227,38 @@ sequenceDiagram
     Svc-->>API: { message, settings }
     API-->>Admin: 200 OK
 ```
+
+  ### Sequence Diagram (Content Transport and Publish)
+
+  ```mermaid
+  sequenceDiagram
+    actor Designer as Site Designer
+    participant API as SMGServer
+    participant Svc as SMGService
+    participant Store as SMGStore
+
+    Designer->>API: PUT /v1/tenants/{tenantId}/sites/{siteId}
+    API->>API: validateAuth()
+    API->>Svc: upsertSite(tenantId, payload)
+    Svc->>Store: getSite(tenantId, siteId)
+    Store-->>Svc: draft site
+    Svc->>Svc: validate pages/catalogs/roles
+    Svc->>Store: upsertSite(site lifecycle=draft)
+    Store-->>Svc: updated draft
+    Svc-->>API: site saved
+    API-->>Designer: 200 OK
+
+    Designer->>API: PUT /v1/tenants/{tenantId}/subaccount/settings
+    API->>Svc: upsertSubaccountSettings(tenantId, transportEnabled=true)
+    Svc->>Store: upsertSubaccountSettings(settings)
+    Store-->>Svc: transport enabled
+    Svc-->>API: settings saved
+    API-->>Designer: 200 OK
+
+    Designer->>API: PUT /v1/tenants/{tenantId}/sites/{siteId}
+    API->>Svc: upsertSite(tenantId, lifecycle=published)
+    Svc->>Store: upsertSite(site lifecycle=published)
+    Store-->>Svc: published site
+    Svc-->>API: publish acknowledged
+    API-->>Designer: 200 OK
+  ```
