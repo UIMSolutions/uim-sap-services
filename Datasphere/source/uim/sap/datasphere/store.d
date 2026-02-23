@@ -15,9 +15,9 @@ class DatasphereStore {
     private DATGovernanceAsset[string] _catalogAssets;
     private DATGlossaryTerm[string] _glossaryTerms;
     private DATKpi[string] _kpis;
-    private RowPolicy[string] _rowPolicies;
+    private DATRowPolicy[string] _rowPolicies;
     private DATAuditEvent[][string] _auditEvents;
-    private TenantAdminState _tenantAdminState;
+    private DATTenantAdminState _tenantAdminState;
 
     private Mutex _lock;
     private long _idCounter;
@@ -176,15 +176,15 @@ class DatasphereStore {
         return values;
     }
 
-    RowPolicy upsertRowPolicy(RowPolicy item) {
+    DATRowPolicy upsertRowPolicy(DATRowPolicy item) {
         synchronized (_lock) {
             _rowPolicies[scopedKey(item.tenantId, "policy", item.policyId)] = item;
             return item;
         }
     }
 
-    RowPolicy[] listRowPolicies(string tenantId) {
-        RowPolicy[] values;
+    DATRowPolicy[] listRowPolicies(string tenantId) {
+        DATRowPolicy[] values;
         synchronized (_lock) {
             foreach (key, value; _rowPolicies) if (belongsTo(key, tenantId)) values ~= value;
         }
@@ -207,14 +207,14 @@ class DatasphereStore {
         return [];
     }
 
-    TenantAdminState upsertTenantState(TenantAdminState state) {
+    DATTenantAdminState upsertTenantState(DATTenantAdminState state) {
         synchronized (_lock) {
             _tenantAdminState = state;
             return _tenantAdminState;
         }
     }
 
-    TenantAdminState getTenantState() {
+    DATTenantAdminState getTenantState() {
         synchronized (_lock) {
             return _tenantAdminState;
         }

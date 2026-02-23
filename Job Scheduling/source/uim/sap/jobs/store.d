@@ -1,6 +1,7 @@
 module uim.sap.jobs.store;
 
 import core.sync.mutex : Mutex;
+import std.conv : to;
 import std.datetime : SysTime;
 
 import uim.sap.jobs.models;
@@ -165,8 +166,8 @@ class JobSchedulingStore {
         return values;
     }
 
-    private string scopedKey(string tenantId, string scope, string id) {
-        return tenantId ~ ":" ~ scope ~ ":" ~ id;
+    private string scopedKey(string tenantId, string scopePart, string id) {
+        return tenantId ~ ":" ~ scopePart ~ ":" ~ id;
     }
 
     private bool belongsTo(string key, string tenantId) {

@@ -10,7 +10,7 @@ targetPath "build"
 sourcePaths "source"
 importPaths "source"
 
-dependency "vibe-d" version="~>0.10.0"
+
 dependency "uim-core" version="~>26.1.2"
 
 versions "VibeCustomMain"

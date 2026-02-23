@@ -11,7 +11,7 @@ targetName "uim-sap-identity"
 
 // External dependencies
 dependency "uim-framework" version="~>26.1.2"
-dependency "vibe-d" version="~>0.10.0"
+
 
 sourceFiles "./source/uim/sap/identity/package.d"
 

@@ -328,7 +328,7 @@ class DatasphereService {
     }
 
     Json upsertTenantAdminState(Json request) {
-        TenantAdminState state = _store.getTenantState();
+        DATTenantAdminState state = _store.getTenantState();
         state.tenantName = optionalString(request, "tenant_name", state.tenantName);
         state.connectivityPrepared = optionalBool(request, "connectivity_prepared", state.connectivityPrepared);
         state.maintenanceMode = optionalBool(request, "maintenance_mode", state.maintenanceMode);
@@ -362,7 +362,7 @@ class DatasphereService {
         validateTenant(tenantId);
         validateId(policyId, "Policy ID");
 
-        RowPolicy item;
+        DATRowPolicy item;
         item.tenantId = tenantId;
         item.policyId = policyId;
         item.dataset = requiredString(request, "dataset");

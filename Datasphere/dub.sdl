@@ -1,4 +1,4 @@
-name "uim-sap-datasphere"
+name "datasphere"
 description "Datasphere-like business data fabric service for SAP BTP using D, uim-framework and vibe.d"
 homepage "https://github.com/UIMSolutions/uim-sap"
 authors "Ozan Nurettin Süel" "UI Manufaktur"
@@ -12,7 +12,6 @@ sourcePaths "source"
 importPaths "source"
 
 dependency "uim-framework" version="~>26.2.3"
-dependency "vibe-d" version="~>0.10.0"
 
 buildRequirements "allowWarnings" "silenceDeprecations"
 buildOptions "ignoreDeprecations" "debugInfo"

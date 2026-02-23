@@ -14,7 +14,7 @@ importPaths "source"
 importPaths "../btp/source"
 
 dependency "uim-framework" version="~>26.2.3"
-dependency "vibe-d" version="~>0.10.0"
+
 
 buildRequirements "allowWarnings" "silenceDeprecations"
 buildOptions "ignoreDeprecations" "debugInfo"
