@@ -1,6 +1,7 @@
 module uim.sap.cps.store;
 
 import core.sync.mutex : Mutex;
+import std.algorithm.searching : canFind;
 
 import uim.sap.cps.models;
 
@@ -127,6 +128,6 @@ class CPSStore {
     }
 
     private bool keyContainsType(string key, string itemType) {
-        return key.length > 0 && itemType.length > 0 && (":" ~ itemType ~ ":") in key;
+        return key.length > 0 && itemType.length > 0 && key.canFind(":" ~ itemType ~ ":");
     }
 }
