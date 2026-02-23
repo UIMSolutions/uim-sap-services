@@ -25,7 +25,7 @@ struct SDISite {
     string siteId;
     string name;
     string description;
-    string alias;
+    string siteAlias;
     string runtimeUrl;
     bool isDefault;
     string[] roles;
@@ -40,7 +40,7 @@ struct SDISite {
         payload["site_id"] = siteId;
         payload["name"] = name;
         payload["description"] = description;
-        payload["alias"] = alias;
+        payload["alias"] = siteAlias;
         payload["runtime_url"] = runtimeUrl;
         payload["is_default"] = isDefault;
 
@@ -58,7 +58,7 @@ struct SDISite {
         Json payload = Json.emptyObject;
         payload["site_id"] = siteId;
         payload["title"] = name;
-        payload["alias"] = alias;
+        payload["alias"] = siteAlias;
         payload["runtime_url"] = runtimeUrl;
         payload["is_default"] = isDefault;
         payload["role_count"] = cast(long)roles.length;

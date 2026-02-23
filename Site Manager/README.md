@@ -111,154 +111,160 @@ kubectl create secret generic uim-sap-smg-secret \
 
 ## UML Description
 
+Note: Render the following diagrams with a PlantUML-compatible Markdown viewer/extension.
+
 ### Class Diagram
 
-```mermaid
-classDiagram
-    class SMGConfig {
-      +string host
-      +ushort port
-      +string basePath
-      +string serviceName
-      +string serviceVersion
-      +bool requireAuthToken
-      +string authToken
-      +validate() void
-    }
+```plantuml
+@startuml
+class SMGConfig {
+  +host : string
+  +port : ushort
+  +basePath : string
+  +serviceName : string
+  +serviceVersion : string
+  +requireAuthToken : bool
+  +authToken : string
+  +validate() : void
+}
 
-    class SMGSite {
-      +string tenantId
-      +string siteId
-      +string siteName
-      +string description
-      +string lifecycle
-      +string[] assignedRoles
-      +string[] pages
-      +string[] catalogs
-      +toJson() Json
-    }
+class SMGSite {
+  +tenantId : string
+  +siteId : string
+  +siteName : string
+  +description : string
+  +lifecycle : string
+  +assignedRoles : string[]
+  +pages : string[]
+  +catalogs : string[]
+  +toJson() : Json
+}
 
-    class SMGSubaccountSettings {
-      +string tenantId
-      +string defaultSiteId
-      +string launchpadMode
-      +string themeId
-      +bool enableContentApproval
-      +bool enableTransport
-      +bool enforceRoleBasedAccess
-      +string lastChangedBy
-      +toJson() Json
-    }
+class SMGSubaccountSettings {
+  +tenantId : string
+  +defaultSiteId : string
+  +launchpadMode : string
+  +themeId : string
+  +enableContentApproval : bool
+  +enableTransport : bool
+  +enforceRoleBasedAccess : bool
+  +lastChangedBy : string
+  +toJson() : Json
+}
 
-    class SMGStore {
-      +upsertSite(site) SMGSite
-      +listSites(tenantId) SMGSite[]
-      +getSite(tenantId, siteId) Nullable!SMGSite
-      +deleteSite(tenantId, siteId) bool
-      +upsertSubaccountSettings(settings) SMGSubaccountSettings
-      +getSubaccountSettings(tenantId) Nullable!SMGSubaccountSettings
-    }
+class SMGStore {
+  +upsertSite(site : SMGSite) : SMGSite
+  +listSites(tenantId : string) : SMGSite[]
+  +getSite(tenantId : string, siteId : string) : Nullable!SMGSite
+  +deleteSite(tenantId : string, siteId : string) : bool
+  +upsertSubaccountSettings(settings : SMGSubaccountSettings) : SMGSubaccountSettings
+  +getSubaccountSettings(tenantId : string) : Nullable!SMGSubaccountSettings
+}
 
-    class SMGService {
-      +health() Json
-      +ready() Json
-      +listSites(tenantId) Json
-      +upsertSite(tenantId, body) Json
-      +getSite(tenantId, siteId) Json
-      +deleteSite(tenantId, siteId) Json
-      +getSubaccountSettings(tenantId) Json
-      +upsertSubaccountSettings(tenantId, body) Json
-    }
+class SMGService {
+  +health() : Json
+  +ready() : Json
+  +listSites(tenantId : string) : Json
+  +upsertSite(tenantId : string, body : Json) : Json
+  +getSite(tenantId : string, siteId : string) : Json
+  +deleteSite(tenantId : string, siteId : string) : Json
+  +getSubaccountSettings(tenantId : string) : Json
+  +upsertSubaccountSettings(tenantId : string, body : Json) : Json
+}
 
-    class SMGServer {
-      +run() void
-      -handleRequest(req, res) void
-      -validateAuth(req) void
-      -respondError(res, message, statusCode) void
-    }
+class SMGServer {
+  +run() : void
+  -handleRequest(req : HTTPServerRequest, res : HTTPServerResponse) : void
+  -validateAuth(req : HTTPServerRequest) : void
+  -respondError(res : HTTPServerResponse, message : string, statusCode : int) : void
+}
 
-    SMGService --> SMGConfig : uses
-    SMGService --> SMGStore : orchestrates
-    SMGStore --> SMGSite : persists
-    SMGStore --> SMGSubaccountSettings : persists
-    SMGServer --> SMGService : routes to
+SMGService --> SMGConfig : uses
+SMGService --> SMGStore : orchestrates
+SMGStore --> SMGSite : persists
+SMGStore --> SMGSubaccountSettings : persists
+SMGServer --> SMGService : routes to
+@enduml
 ```
 
 ### Sequence Diagram (Site Save)
 
-```mermaid
-sequenceDiagram
-    actor Admin as Site Designer
-    participant API as SMGServer
-    participant Svc as SMGService
-    participant Store as SMGStore
+```plantuml
+@startuml
+actor "Site Designer" as Admin
+participant SMGServer as API
+participant SMGService as Svc
+participant SMGStore as Store
 
-    Admin->>API: POST /v1/tenants/{tenantId}/sites
-    API->>API: validateAuth()
-    API->>Svc: upsertSite(tenantId, payload)
-    Svc->>Svc: validateTenant + validate fields
-    Svc->>Store: getSite(tenantId, siteId)
-    Store-->>Svc: existing/new
-    Svc->>Store: upsertSite(site)
-    Store-->>Svc: saved site
-    Svc-->>API: { message, site }
-    API-->>Admin: 200 OK
+Admin -> API : POST /v1/tenants/{tenantId}/sites
+API -> API : validateAuth()
+API -> Svc : upsertSite(tenantId, payload)
+Svc -> Svc : validateTenant + validate fields
+Svc -> Store : getSite(tenantId, siteId)
+Store --> Svc : existing/new
+Svc -> Store : upsertSite(site)
+Store --> Svc : saved site
+Svc --> API : { message, site }
+API --> Admin : 200 OK
+@enduml
 ```
 
 ### Sequence Diagram (Subaccount Settings Update)
 
-```mermaid
-sequenceDiagram
-    actor Admin as Subaccount Admin
-    participant API as SMGServer
-    participant Svc as SMGService
-    participant Store as SMGStore
+```plantuml
+@startuml
+actor "Subaccount Admin" as Admin
+participant SMGServer as API
+participant SMGService as Svc
+participant SMGStore as Store
 
-    Admin->>API: PUT /v1/tenants/{tenantId}/subaccount/settings
-    API->>API: validateAuth()
-    API->>Svc: upsertSubaccountSettings(tenantId, payload)
-    Svc->>Store: getSubaccountSettings(tenantId)
-    Store-->>Svc: existing/default
-    Svc->>Store: getSite(tenantId, defaultSiteId)
-    Store-->>Svc: site exists / null
-    Svc->>Svc: validate launchpad_mode & references
-    Svc->>Store: upsertSubaccountSettings(settings)
-    Store-->>Svc: saved settings
-    Svc-->>API: { message, settings }
-    API-->>Admin: 200 OK
+Admin -> API : PUT /v1/tenants/{tenantId}/subaccount/settings
+API -> API : validateAuth()
+API -> Svc : upsertSubaccountSettings(tenantId, payload)
+Svc -> Store : getSubaccountSettings(tenantId)
+Store --> Svc : existing/default
+Svc -> Store : getSite(tenantId, defaultSiteId)
+Store --> Svc : site exists / null
+Svc -> Svc : validate launchpad_mode & references
+Svc -> Store : upsertSubaccountSettings(settings)
+Store --> Svc : saved settings
+Svc --> API : { message, settings }
+API --> Admin : 200 OK
+@enduml
 ```
 
-  ### Sequence Diagram (Content Transport and Publish)
+### Sequence Diagram (Content Transport and Publish)
 
-  ```mermaid
-  sequenceDiagram
-    actor Designer as Site Designer
-    participant API as SMGServer
-    participant Svc as SMGService
-    participant Store as SMGStore
+```plantuml
+@startuml
+actor "Site Designer" as Designer
+participant SMGServer as API
+participant SMGService as Svc
+participant SMGStore as Store
 
-    Designer->>API: PUT /v1/tenants/{tenantId}/sites/{siteId}
-    API->>API: validateAuth()
-    API->>Svc: upsertSite(tenantId, payload)
-    Svc->>Store: getSite(tenantId, siteId)
-    Store-->>Svc: draft site
-    Svc->>Svc: validate pages/catalogs/roles
-    Svc->>Store: upsertSite(site lifecycle=draft)
-    Store-->>Svc: updated draft
-    Svc-->>API: site saved
-    API-->>Designer: 200 OK
+Designer -> API : PUT /v1/tenants/{tenantId}/sites/{siteId}
+API -> API : validateAuth()
+API -> Svc : upsertSite(tenantId, payload)
+Svc -> Store : getSite(tenantId, siteId)
+Store --> Svc : draft site
+Svc -> Svc : validate pages/catalogs/roles
+Svc -> Store : upsertSite(site lifecycle=draft)
+Store --> Svc : updated draft
+Svc --> API : site saved
+API --> Designer : 200 OK
 
-    Designer->>API: PUT /v1/tenants/{tenantId}/subaccount/settings
-    API->>Svc: upsertSubaccountSettings(tenantId, transportEnabled=true)
-    Svc->>Store: upsertSubaccountSettings(settings)
-    Store-->>Svc: transport enabled
-    Svc-->>API: settings saved
-    API-->>Designer: 200 OK
+Designer -> API : PUT /v1/tenants/{tenantId}/subaccount/settings
+API -> Svc : upsertSubaccountSettings(tenantId, transportEnabled=true)
+Svc -> Store : upsertSubaccountSettings(settings)
+Store --> Svc : transport enabled
+Svc --> API : settings saved
+API --> Designer : 200 OK
 
-    Designer->>API: PUT /v1/tenants/{tenantId}/sites/{siteId}
-    API->>Svc: upsertSite(tenantId, lifecycle=published)
-    Svc->>Store: upsertSite(site lifecycle=published)
-    Store-->>Svc: published site
-    Svc-->>API: publish acknowledged
-    API-->>Designer: 200 OK
-  ```
+Designer -> API : PUT /v1/tenants/{tenantId}/sites/{siteId}
+API -> Svc : upsertSite(tenantId, lifecycle=published)
+Svc -> Store : upsertSite(site lifecycle=published)
+Store --> Svc : published site
+Svc --> API : publish acknowledged
+API --> Designer : 200 OK
+@enduml
+```

@@ -8,7 +8,7 @@ spec:
   selector:
     app: uim-sap-sdi
   ports:
-    - name: http
-      port: 8096
-      targetPort: 8096
+  - name: http
+    port: 8096
+    targetPort: 8096
   type: ClusterIP

@@ -96,6 +96,8 @@ kubectl apply -f k8s/service.yaml
 
 ## UML Description
 
+Note: Render the following diagrams with a PlantUML-compatible Markdown viewer/extension.
+
 ### Class Diagram
 
 ```mermaid

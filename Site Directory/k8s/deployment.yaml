@@ -15,37 +15,37 @@ spec:
         app: uim-sap-sdi
     spec:
       containers:
-        - name: uim-sap-sdi
-          image: uim-sap-sdi:latest
-          imagePullPolicy: IfNotPresent
-          ports:
-            - containerPort: 8096
-          envFrom:
-            - configMapRef:
-                name: uim-sap-sdi-config
-          env:
-            - name: SDI_AUTH_TOKEN
-              valueFrom:
-                secretKeyRef:
-                  name: uim-sap-sdi-secret
-                  key: authToken
-                  optional: true
-          readinessProbe:
-            httpGet:
-              path: /api/sitedirectory/ready
-              port: 8096
-            initialDelaySeconds: 3
-            periodSeconds: 5
-          livenessProbe:
-            httpGet:
-              path: /api/sitedirectory/health
-              port: 8096
-            initialDelaySeconds: 8
-            periodSeconds: 10
-          resources:
-            requests:
-              cpu: "100m"
-              memory: "128Mi"
-            limits:
-              cpu: "500m"
-              memory: "512Mi"
+      - name: uim-sap-sdi
+        image: uim-sap-sdi:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8096
+        envFrom:
+        - configMapRef:
+            name: uim-sap-sdi-config
+        env:
+        - name: SDI_AUTH_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: uim-sap-sdi-secret
+              key: authToken
+              optional: true
+        readinessProbe:
+          httpGet:
+            path: /api/sitedirectory/ready
+            port: 8096
+          initialDelaySeconds: 3
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /api/sitedirectory/health
+            port: 8096
+          initialDelaySeconds: 8
+          periodSeconds: 10
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"

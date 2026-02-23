@@ -115,6 +115,8 @@ kubectl create secret generic uim-sap-cmg-secret \
 
 ## UML Description
 
+Note: Render the following diagrams with a PlantUML-compatible Markdown viewer/extension.
+
 ### Class Diagram
 
 ```mermaid

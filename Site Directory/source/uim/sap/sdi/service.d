@@ -60,8 +60,8 @@ class SDIService {
         site.siteId = readRequired(body, "site_id");
         site.name = readRequired(body, "name");
         site.description = readOptional(body, "description", "");
-        site.alias = normalizeAlias(readOptional(body, "alias", site.siteId));
-        site.runtimeUrl = defaultRuntimeUrl(tenantId, site.alias);
+        site.siteAlias = normalizeSiteAlias(readOptional(body, "alias", site.siteId));
+        site.runtimeUrl = defaultRuntimeUrl(tenantId, site.siteAlias);
         site.isDefault = readOptionalBool(body, "is_default", false);
         site.roles = readStringArray(body, "roles");
         site.settings = settingsFromJson(body);
@@ -132,8 +132,8 @@ class SDIService {
         validateTenant(tenantId);
         auto site = requireSite(tenantId, siteId);
 
-        site.alias = normalizeAlias(readRequired(body, "alias"));
-        site.runtimeUrl = defaultRuntimeUrl(tenantId, site.alias);
+        site.siteAlias = normalizeSiteAlias(readRequired(body, "alias"));
+        site.runtimeUrl = defaultRuntimeUrl(tenantId, site.siteAlias);
         site.updatedAt = Clock.currTime();
 
         auto saved = _store.upsertSite(site);
@@ -267,14 +267,14 @@ class SDIService {
         return settings;
     }
 
-    private string normalizeAlias(string alias) const {
-        if (alias.length == 0) throw new SDIValidationException("alias is required");
-        auto normalized = replace(alias, " ", "-");
+    private string normalizeSiteAlias(string siteAlias) const {
+        if (siteAlias.length == 0) throw new SDIValidationException("alias is required");
+        auto normalized = replace(siteAlias, " ", "-");
         return normalized;
     }
 
-    private string defaultRuntimeUrl(string tenantId, string alias) const {
-        return "https://runtime.local/" ~ tenantId ~ "/" ~ alias;
+    private string defaultRuntimeUrl(string tenantId, string siteAlias) const {
+        return "https://runtime.local/" ~ tenantId ~ "/" ~ siteAlias;
     }
 
     private Json toJsonArray(string[] values) const {
