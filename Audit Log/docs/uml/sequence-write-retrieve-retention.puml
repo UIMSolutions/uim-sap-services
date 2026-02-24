@@ -1,0 +1,30 @@
+@startuml sequence_write_retrieve_retention
+!theme plain
+
+title Audit Log Sequence - Write, Retrieve, and Retention
+
+actor Producer
+actor Auditor
+participant "AuditLogServer" as Server
+participant "AuditLogService" as Service
+participant "AuditLogStore" as Store
+
+Producer -> Server : POST /events (OAuth token)
+Server -> Service : writeEvent(tenant, payload)
+Service -> Store : purgeExpired(tenant, retention)
+Service -> Store : appendEvent(event)
+Server --> Producer : 200 write_result
+
+Auditor -> Server : POST /events/retrieve
+Server -> Service : retrieveEvents(tenant, filters)
+Service -> Store : listEvents(tenant)
+Service --> Server : preview + optional CSV download
+Server --> Auditor : 200 retrieval response
+
+Auditor -> Server : PUT /retention
+Server -> Service : updateRetentionPolicy(tenant, plan, days)
+Service -> Store : upsertPolicy(policy)
+Service -> Store : purgeExpired(tenant, retention)
+Server --> Auditor : 200 retention_policy
+
+@enduml
