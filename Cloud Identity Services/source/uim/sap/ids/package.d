@@ -12,6 +12,8 @@ module uim.sap.ids;
 
 // Public imports
 public {
+    import uim.sap.service;
+
     import uim.sap.ids.classes;
     import uim.sap.ids.errors;
     import uim.sap.ids.enumerations;

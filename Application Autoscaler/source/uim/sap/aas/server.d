@@ -88,14 +88,18 @@ class AASServer {
                 }
             }
 
-            if (subPath.startsWith("/apps/") && subPath.endsWith("/metrics/evaluate") && req.method == HTTPMethod.POST) {
+            if (subPath.startsWith("/apps/")
+                && subPath.endsWith("/metrics/evaluate")
+                && req.method == HTTPMethod.POST) {
                 validateAuth(req);
                 auto appId = secondSegment(subPath);
                 res.writeJsonBody(_service.evaluate(appId, req.json, false), 200);
                 return;
             }
 
-            if (subPath.startsWith("/apps/") && subPath.endsWith("/metrics/evaluate/apply") && req.method == HTTPMethod.POST) {
+            if (subPath.startsWith("/apps/")
+                && subPath.endsWith("/metrics/evaluate/apply")
+                && req.method == HTTPMethod.POST) {
                 validateAuth(req);
                 auto appId = secondSegment(subPath);
                 res.writeJsonBody(_service.evaluate(appId, req.json, true), 200);

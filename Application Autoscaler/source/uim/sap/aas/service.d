@@ -151,7 +151,9 @@ class AASService {
                 if (outReasons.length > 0) {
                     outReasons ~= "; ";
                 }
-                outReasons ~= metricTypeToString(policy.metricType) ~ "=" ~ metric.to!string ~ " >= " ~ policy.scaleOutThreshold.to!string;
+                outReasons ~= metricTypeToString(policy.metricType)
+                    ~ "=" ~ metric.to!string
+                    ~ " >= " ~ policy.scaleOutThreshold.to!string;
             } else if (metric <= policy.scaleInThreshold) {
                 anyIn = true;
                 uint candidate = app.currentInstances > policy.scaleInStep
@@ -162,7 +164,9 @@ class AASService {
                 if (inReasons.length > 0) {
                     inReasons ~= "; ";
                 }
-                inReasons ~= metricTypeToString(policy.metricType) ~ "=" ~ metric.to!string ~ " <= " ~ policy.scaleInThreshold.to!string;
+                inReasons ~= metricTypeToString(policy.metricType)
+                    ~ "=" ~ metric.to!string
+                    ~ " <= " ~ policy.scaleInThreshold.to!string;
             }
         }
 
