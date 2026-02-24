@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uim-sap-clf
+  labels:
+    app: uim-sap-clf
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: uim-sap-clf
+  template:
+    metadata:
+      labels:
+        app: uim-sap-clf
+    spec:
+      containers:
+      - name: uim-sap-clf
+        image: ghcr.io/uimsolutions/uim-sap-clf:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 8082
+        envFrom:
+        - configMapRef:
+            name: uim-sap-clf-config
+        env:
+        - name: CLF_AUTH_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: uim-sap-clf-secret
+              key: auth-token
+              optional: true
+        readinessProbe:
+          httpGet:
+            path: /api/cf/ready
+            port: http
+          initialDelaySeconds: 3
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /api/cf/health
+            port: http
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
