@@ -1,4 +1,4 @@
-# UIM SAP Application Autoscaler-like Service (AAS)
+# UIM  Application Autoscaler-like Service (AAS)
 
 Cloud Foundry-oriented application autoscaling service built with Dlang, `vibe.d`, and `uim-framework`, deployable with Podman and Kubernetes.
 

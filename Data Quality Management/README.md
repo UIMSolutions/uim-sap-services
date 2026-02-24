@@ -1,4 +1,4 @@
-# UIM SAP Data Quality Management Service (DQM)
+# UIM  Data Quality Management Service (DQM)
 
 Kubernetes-compatible SAP Data Quality Management style service built with D, `vibe.d`, and `uim-framework`.
 

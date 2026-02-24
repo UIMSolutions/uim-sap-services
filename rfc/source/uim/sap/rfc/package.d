@@ -1,5 +1,5 @@
 /**
- * UIM SAP RFC Adapter Library
+ * UIM  RFC Adapter Library
  *
  * SAP RFC adapter over HTTP/JSON for D applications.
  *

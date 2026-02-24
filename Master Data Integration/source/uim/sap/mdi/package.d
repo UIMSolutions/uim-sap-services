@@ -1,5 +1,5 @@
 /**
- * UIM SAP Master Data Integration Service (MDI)
+ * UIM  Master Data Integration Service (MDI)
  */
 module uim.sap.mdi;
 

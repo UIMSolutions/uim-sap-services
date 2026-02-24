@@ -1,4 +1,4 @@
-# UIM SAP Credential Store-like Service (CRE)
+# UIM  Credential Store-like Service (CRE)
 
 Kubernetes-compatible service that emulates key parts of SAP Credential Store style APIs using D, `vibe.d`, and `uim-framework`.
 

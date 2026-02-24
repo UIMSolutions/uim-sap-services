@@ -1,5 +1,5 @@
 /**
- * Example usage of UIM SAP HANA Cloud Library
+ * Example usage of UIM  HANA Cloud Library
  * 
  * Copyright: Copyright © 2018-2026, Ozan Nurettin Süel
  * License: Apache-2.0
@@ -10,7 +10,7 @@ import std.stdio : writeln, writefln;
 import vibe.data.json;
 
 void main() {
-    writeln("=== UIM SAP HANA Cloud Library Examples ===\n");
+    writeln("=== UIM  HANA Cloud Library Examples ===\n");
     
     // Example 1: Basic Connection
     basicConnectionExample();

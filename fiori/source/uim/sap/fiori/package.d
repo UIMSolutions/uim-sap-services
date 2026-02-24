@@ -1,5 +1,5 @@
 /**
- * UIM SAP Fiori Library
+ * UIM  Fiori Library
  * 
  * Comprehensive D language client for SAP Fiori applications and services,
  * including OData support, Launchpad APIs, and UI5 integration.

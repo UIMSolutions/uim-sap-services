@@ -1,4 +1,4 @@
-# UIM SAP Business Hub-like Service (BUH)
+# UIM  Business Hub-like Service (BUH)
 
 Kubernetes-compatible SAP Business Hub style service built with D, `vibe.d`, and `uim-framework`.
 

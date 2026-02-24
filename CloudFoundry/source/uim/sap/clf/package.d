@@ -1,5 +1,5 @@
 /**
- * UIM SAP CloudFoundry-like Service (CLF)
+ * UIM  CloudFoundry-like Service (CLF)
  */
 module uim.sap.clf;
 

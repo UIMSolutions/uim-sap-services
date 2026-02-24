@@ -1,5 +1,5 @@
 /**
- * UIM SAP Data Quality Management Service (DQM)
+ * UIM  Data Quality Management Service (DQM)
  */
 module uim.sap.dqm;
 

@@ -1,4 +1,4 @@
-# UIM SAP HANA Cloud Library
+# UIM  HANA Cloud Library
 
 A comprehensive D language library for working with SAP HANA Cloud, built on top of uim-framework and vibe.d.
 

@@ -1,4 +1,4 @@
-# UIM SAP Cloud Portal Service (CPS)
+# UIM  Cloud Portal Service (CPS)
 
 Kubernetes-compatible SAP Cloud Portal Service style runtime built with D, `vibe.d`, and `uim-framework`.
 

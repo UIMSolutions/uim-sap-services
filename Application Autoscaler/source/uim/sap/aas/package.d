@@ -1,5 +1,5 @@
 /**
- * UIM SAP Application Autoscaler-like Service (AAS)
+ * UIM  Application Autoscaler-like Service (AAS)
  */
 module uim.sap.aas;
 

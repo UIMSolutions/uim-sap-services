@@ -1,5 +1,5 @@
 /**
- * UIM SAP HANA Database Client
+ * UIM  HANA Database Client
  */
 module uim.sap.hanadb;
 

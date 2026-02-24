@@ -1,4 +1,4 @@
-# UIM SAP Monitoring Service
+# UIM  Monitoring Service
 
 Kubernetes-compatible monitoring service inspired by SAP BTP monitoring capabilities, implemented in D using `vibe.d` and `uim-framework`.
 

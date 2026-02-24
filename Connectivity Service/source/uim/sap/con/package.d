@@ -1,5 +1,5 @@
 /**
- * UIM SAP Connectivity Service (CON)
+ * UIM  Connectivity Service (CON)
  */
 module uim.sap.con;
 

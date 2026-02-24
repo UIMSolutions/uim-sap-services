@@ -1,5 +1,5 @@
 /**
- * UIM SAP Credential Store-like Service (CRE)
+ * UIM  Credential Store-like Service (CRE)
  */
 module uim.sap.cre;
 

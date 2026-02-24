@@ -12,6 +12,7 @@ sourcePaths "source"
 importPaths "source"
 
 dependency "uim-framework" version="~>26.2.3"
+dependency "vibe-d" version="~>0.10.3"
 
 buildRequirements "allowWarnings" "silenceDeprecations"
 buildOptions "ignoreDeprecations" "debugInfo"

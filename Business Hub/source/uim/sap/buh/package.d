@@ -1,5 +1,5 @@
 /**
- * UIM SAP Business Hub-like Service (BUH)
+ * UIM  Business Hub-like Service (BUH)
  */
 module uim.sap.buh;
 
