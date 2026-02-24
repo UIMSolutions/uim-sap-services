@@ -1,0 +1,32 @@
+@startuml sequence_dev_test_operate
+!theme plain
+
+title Agentry Sequence - Develop, Test, and Operate Mobile App
+
+actor Developer
+participant "AgentryServer" as Server
+participant "AgentryService" as Service
+participant "AgentryStore" as Store
+
+Developer -> Server : POST /mobile-apps
+Server -> Service : upsertMobileApp(tenant, request)
+Service -> Store : upsertApp(app)
+Service --> Server : app response
+Server --> Developer : 200 OK
+
+Developer -> Server : POST /mobile-apps/{appId}/versions
+Server -> Service : createVersion(tenant, appId, request)
+Service -> Store : addVersion(version)
+Server --> Developer : 200 OK
+
+Developer -> Server : POST /mobile-apps/{appId}/test-runs
+Server -> Service : triggerTestRun(tenant, appId, request)
+Service -> Store : addTestRun(testRun)
+Server --> Developer : 200 OK
+
+Developer -> Server : POST /operations-instances/{instanceId}/deploy
+Server -> Service : deployVersion(tenant, instanceId, request)
+Service -> Store : upsertInstance(instance)
+Server --> Developer : 200 OK
+
+@enduml

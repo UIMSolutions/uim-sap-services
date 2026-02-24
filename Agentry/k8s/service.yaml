@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: uim-sap-agentry
+  labels:
+    app: uim-sap-agentry
+spec:
+  selector:
+    app: uim-sap-agentry
+  ports:
+  - name: http
+    protocol: TCP
+    port: 80
+    targetPort: 8089
+  type: ClusterIP
