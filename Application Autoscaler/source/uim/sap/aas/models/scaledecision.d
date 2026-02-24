@@ -1,5 +1,8 @@
 module uim.sap.aas.models.scaledecision;
 
+import uim.sap.aas;
+@safe:
+
 struct AASScaleDecision {
     string appId;
     uint currentInstances;

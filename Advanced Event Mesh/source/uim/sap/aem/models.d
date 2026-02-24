@@ -73,15 +73,15 @@ struct AEMTopicEvent {
     SysTime publishedAt;
 
     Json toJson() const {
-        Json payloadJson = Json.emptyObject;
-        payloadJson["tenant_id"] = tenantId;
-        payloadJson["mesh_id"] = meshId;
-        payloadJson["event_id"] = eventId;
-        payloadJson["topic"] = topic;
-        payloadJson["publisher"] = publisher;
-        payloadJson["payload"] = payload;
-        payloadJson["published_at"] = publishedAt.toISOExtString();
-        return payloadJson;
+        Json resultJson = Json.emptyObject;
+        resultJson["tenant_id"] = tenantId;
+        resultJson["mesh_id"] = meshId;
+        resultJson["event_id"] = eventId;
+        resultJson["topic"] = topic;
+        resultJson["publisher"] = publisher;
+        resultJson["payload"] = payload;
+        resultJson["published_at"] = publishedAt.toISOExtString();
+        return resultJson;
     }
 }
 
@@ -95,15 +95,15 @@ struct AEMEDAComponent {
     SysTime updatedAt;
 
     Json toJson() const {
-        Json payloadJson = Json.emptyObject;
-        payloadJson["tenant_id"] = tenantId;
-        payloadJson["component_id"] = componentId;
-        payloadJson["name"] = name;
-        payloadJson["component_type"] = componentType;
-        payloadJson["owner"] = owner;
-        payloadJson["lifecycle"] = lifecycle;
-        payloadJson["updated_at"] = updatedAt.toISOExtString();
-        return payloadJson;
+        Json resultJson = Json.emptyObject;
+        resultJson["tenant_id"] = tenantId;
+        resultJson["component_id"] = componentId;
+        resultJson["name"] = name;
+        resultJson["component_type"] = componentType;
+        resultJson["owner"] = owner;
+        resultJson["lifecycle"] = lifecycle;
+        resultJson["updated_at"] = updatedAt.toISOExtString();
+        return resultJson;
     }
 }
 
@@ -116,14 +116,14 @@ struct AEMSubscription {
     SysTime updatedAt;
 
     Json toJson() const {
-        Json payloadJson = Json.emptyObject;
-        payloadJson["tenant_id"] = tenantId;
-        payloadJson["subscription_id"] = subscriptionId;
-        payloadJson["component_id"] = componentId;
-        payloadJson["mesh_id"] = meshId;
-        payloadJson["topic"] = topic;
-        payloadJson["updated_at"] = updatedAt.toISOExtString();
-        return payloadJson;
+        Json resultJson = Json.emptyObject;
+        resultJson["tenant_id"] = tenantId;
+        resultJson["subscription_id"] = subscriptionId;
+        resultJson["component_id"] = componentId;
+        resultJson["mesh_id"] = meshId;
+        resultJson["topic"] = topic;
+        resultJson["updated_at"] = updatedAt.toISOExtString();
+        return resultJson;
     }
 }
 
@@ -138,16 +138,16 @@ struct AEMNotificationRule {
     SysTime updatedAt;
 
     Json toJson() const {
-        Json payloadJson = Json.emptyObject;
-        payloadJson["tenant_id"] = tenantId;
-        payloadJson["rule_id"] = ruleId;
-        payloadJson["metric"] = metric;
-        payloadJson["threshold"] = threshold;
-        payloadJson["severity"] = severity;
-        payloadJson["enabled"] = enabled;
-        payloadJson["channel"] = channel;
-        payloadJson["updated_at"] = updatedAt.toISOExtString();
-        return payloadJson;
+        Json resultJson = Json.emptyObject;
+        resultJson["tenant_id"] = tenantId;
+        resultJson["rule_id"] = ruleId;
+        resultJson["metric"] = metric;
+        resultJson["threshold"] = threshold;
+        resultJson["severity"] = severity;
+        resultJson["enabled"] = enabled;
+        resultJson["channel"] = channel;
+        resultJson["updated_at"] = updatedAt.toISOExtString();
+        return resultJson;
     }
 }
 
@@ -163,17 +163,17 @@ struct AEMMonitoringAlert {
     SysTime createdAt;
 
     Json toJson() const {
-        Json payloadJson = Json.emptyObject;
-        payloadJson["tenant_id"] = tenantId;
-        payloadJson["alert_id"] = alertId;
-        payloadJson["metric"] = metric;
-        payloadJson["current_value"] = currentValue;
-        payloadJson["threshold"] = threshold;
-        payloadJson["severity"] = severity;
-        payloadJson["message"] = message;
-        payloadJson["acknowledged"] = acknowledged;
-        payloadJson["created_at"] = createdAt.toISOExtString();
-        return payloadJson;
+        Json resultJson = Json.emptyObject;
+        resultJson["tenant_id"] = tenantId;
+        resultJson["alert_id"] = alertId;
+        resultJson["metric"] = metric;
+        resultJson["current_value"] = currentValue;
+        resultJson["threshold"] = threshold;
+        resultJson["severity"] = severity;
+        resultJson["message"] = message;
+        resultJson["acknowledged"] = acknowledged;
+        resultJson["created_at"] = createdAt.toISOExtString();
+        return resultJson;
     }
 }
 

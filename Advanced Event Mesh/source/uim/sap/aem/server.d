@@ -70,7 +70,10 @@ class AEMServer {
                     }
                 }
 
-                if (segments.length == 6 && segments[3] == "broker-services" && segments[5] == "event-meshes" && req.method == HTTPMethod.POST) {
+                if (segments.length == 6
+                    && segments[3] == "broker-services"
+                    && segments[5] == "event-meshes"
+                    && req.method == HTTPMethod.POST) {
                     res.writeJsonBody(_service.createEventMesh(tenantId, segments[4], req.json), 200);
                     return;
                 }
@@ -80,17 +83,27 @@ class AEMServer {
                     return;
                 }
 
-                if (segments.length == 6 && segments[3] == "event-meshes" && segments[5] == "topics" && req.method == HTTPMethod.POST) {
+                if (segments.length == 6
+                    && segments[3] == "event-meshes"
+                    && segments[5] == "topics"
+                    && req.method == HTTPMethod.POST) {
                     res.writeJsonBody(_service.registerTopic(tenantId, segments[4], req.json), 200);
                     return;
                 }
 
-                if (segments.length == 6 && segments[3] == "event-meshes" && segments[5] == "publish" && req.method == HTTPMethod.POST) {
+                if (segments.length == 6
+                    && segments[3] == "event-meshes"
+                    && segments[5] == "publish"
+                    && req.method == HTTPMethod.POST) {
                     res.writeJsonBody(_service.publishEvent(tenantId, segments[4], req.json), 200);
                     return;
                 }
 
-                if (segments.length == 8 && segments[3] == "event-meshes" && segments[5] == "topics" && segments[7] == "events" && req.method == HTTPMethod.GET) {
+                if (segments.length == 8
+                    && segments[3] == "event-meshes"
+                    && segments[5] == "topics"
+                    && segments[7] == "events"
+                    && req.method == HTTPMethod.GET) {
                     auto meshId = segments[4];
                     auto topic = segments[6];
                     res.writeJsonBody(_service.listTopicEvents(tenantId, meshId, topic), 200);
@@ -108,32 +121,50 @@ class AEMServer {
                     }
                 }
 
-                if (segments.length == 6 && segments[3] == "components" && segments[5] == "subscriptions" && req.method == HTTPMethod.POST) {
+                if (segments.length == 6
+                    && segments[3] == "components"
+                    && segments[5] == "subscriptions"
+                    && req.method == HTTPMethod.POST) {
                     res.writeJsonBody(_service.addSubscription(tenantId, segments[4], req.json), 200);
                     return;
                 }
 
-                if (segments.length == 5 && segments[3] == "eda" && segments[4] == "model" && req.method == HTTPMethod.GET) {
+                if (segments.length == 5
+                    && segments[3] == "eda"
+                    && segments[4] == "model"
+                    && req.method == HTTPMethod.GET) {
                     res.writeJsonBody(_service.modelEDA(tenantId), 200);
                     return;
                 }
 
-                if (segments.length == 5 && segments[3] == "monitoring" && segments[4] == "dashboard" && req.method == HTTPMethod.GET) {
+                if (segments.length == 5
+                    && segments[3] == "monitoring"
+                    && segments[4] == "dashboard"
+                    && req.method == HTTPMethod.GET) {
                     res.writeJsonBody(_service.monitoringDashboard(tenantId), 200);
                     return;
                 }
 
-                if (segments.length == 5 && segments[3] == "monitoring" && segments[4] == "alerts" && req.method == HTTPMethod.GET) {
+                if (segments.length == 5
+                    && segments[3] == "monitoring"
+                    && segments[4] == "alerts"
+                    && req.method == HTTPMethod.GET) {
                     res.writeJsonBody(_service.listAlerts(tenantId), 200);
                     return;
                 }
 
-                if (segments.length == 5 && segments[3] == "monitoring" && segments[4] == "notifications" && req.method == HTTPMethod.GET) {
+                if (segments.length == 5
+                    && segments[3] == "monitoring"
+                    && segments[4] == "notifications"
+                    && req.method == HTTPMethod.GET) {
                     res.writeJsonBody(_service.listNotificationRules(tenantId), 200);
                     return;
                 }
 
-                if (segments.length == 6 && segments[3] == "monitoring" && segments[4] == "notifications" && req.method == HTTPMethod.PUT) {
+                if (segments.length == 6
+                    && segments[3] == "monitoring"
+                    && segments[4] == "notifications"
+                    && req.method == HTTPMethod.PUT) {
                     auto ruleId = segments[5];
                     res.writeJsonBody(_service.upsertNotificationRule(tenantId, ruleId, req.json), 200);
                     return;

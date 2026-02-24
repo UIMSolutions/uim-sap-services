@@ -1,5 +1,8 @@
 module uim.sap.aas.models.scalingpolicy;
 
+import uim.sap.aas;
+@safe:
+
 struct AASScalingPolicy {
     string id;
     string appId;

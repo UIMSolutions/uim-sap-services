@@ -28,18 +28,18 @@ class AEMService {
     }
 
     Json health() {
-        Json payload = Json.emptyObject;
-        payload["ok"] = true;
-        payload["serviceName"] = _config.serviceName;
-        payload["serviceVersion"] = _config.serviceVersion;
-        return payload;
+        Json result = Json.emptyObject;
+        result["ok"] = true;
+        result["serviceName"] = _config.serviceName;
+        result["serviceVersion"] = _config.serviceVersion;
+        return result;
     }
 
     Json ready() {
-        Json payload = Json.emptyObject;
-        payload["ready"] = true;
-        payload["timestamp"] = Clock.currTime().toISOExtString();
-        return payload;
+        Json result = Json.emptyObject;
+        result["ready"] = true;
+        result["timestamp"] = Clock.currTime().toISOExtString();
+        return result;
     }
 
     Json createBrokerService(string tenantId, Json request) {
@@ -53,10 +53,10 @@ class AEMService {
         broker.updatedAt = Clock.currTime();
         auto saved = _store.upsertBroker(broker);
 
-        Json payload = Json.emptyObject;
-        payload["success"] = true;
-        payload["broker_service"] = saved.toJson();
-        return payload;
+        Json result = Json.emptyObject;
+        result["success"] = true;
+        result["broker_service"] = saved.toJson();
+        return result;
     }
 
     Json listBrokerServices(string tenantId) {
@@ -67,11 +67,11 @@ class AEMService {
             resources ~= broker.toJson();
         }
 
-        Json payload = Json.emptyObject;
-        payload["tenant_id"] = tenantId;
-        payload["resources"] = resources;
-        payload["total_results"] = cast(long)resources.length;
-        return payload;
+        Json result = Json.emptyObject;
+        result["tenant_id"] = tenantId;
+        result["resources"] = resources;
+        result["total_results"] = cast(long)resources.length;
+        return result;
     }
 
     Json createEventMesh(string tenantId, string brokerServiceId, Json request) {
@@ -91,10 +91,10 @@ class AEMService {
         mesh.updatedAt = Clock.currTime();
         auto saved = _store.upsertMesh(mesh);
 
-        Json payload = Json.emptyObject;
-        payload["success"] = true;
-        payload["event_mesh"] = saved.toJson();
-        return payload;
+        Json result = Json.emptyObject;
+        result["success"] = true;
+        result["event_mesh"] = saved.toJson();
+        return result;
     }
 
     Json listEventMeshes(string tenantId) {
@@ -105,11 +105,11 @@ class AEMService {
             resources ~= mesh.toJson();
         }
 
-        Json payload = Json.emptyObject;
-        payload["tenant_id"] = tenantId;
-        payload["resources"] = resources;
-        payload["total_results"] = cast(long)resources.length;
-        return payload;
+        Json result = Json.emptyObject;
+        result["tenant_id"] = tenantId;
+        result["resources"] = resources;
+        result["total_results"] = cast(long)resources.length;
+        return result;
     }
 
     Json registerTopic(string tenantId, string meshId, Json request) {
@@ -133,10 +133,10 @@ class AEMService {
         mesh.updatedAt = Clock.currTime();
         auto saved = _store.upsertMesh(mesh);
 
-        Json payload = Json.emptyObject;
-        payload["success"] = true;
-        payload["event_mesh"] = saved.toJson();
-        return payload;
+        Json result = Json.emptyObject;
+        result["success"] = true;
+        result["event_mesh"] = saved.toJson();
+        return result;
     }
 
     Json publishEvent(string tenantId, string meshId, Json request) {
@@ -167,11 +167,11 @@ class AEMService {
 
         checkAndCreateAlerts(tenantId, meshId, eventItem.topic);
 
-        Json payload = Json.emptyObject;
-        payload["success"] = true;
-        payload["event"] = savedEvent.toJson();
-        payload["message"] = "Event published to mesh topic";
-        return payload;
+        Json result = Json.emptyObject;
+        result["success"] = true;
+        result["event"] = savedEvent.toJson();
+        result["message"] = "Event published to mesh topic";
+        return result;
     }
 
     Json listTopicEvents(string tenantId, string meshId, string topic) {
@@ -184,13 +184,13 @@ class AEMService {
             resources ~= eventItem.toJson();
         }
 
-        Json payload = Json.emptyObject;
-        payload["tenant_id"] = tenantId;
-        payload["mesh_id"] = meshId;
-        payload["topic"] = topic;
-        payload["resources"] = resources;
-        payload["total_results"] = cast(long)resources.length;
-        return payload;
+        Json result = Json.emptyObject;
+        result["tenant_id"] = tenantId;
+        result["mesh_id"] = meshId;
+        result["topic"] = topic;
+        result["resources"] = resources;
+        result["total_results"] = cast(long)resources.length;
+        return result;
     }
 
     Json upsertComponent(string tenantId, Json request) {
@@ -207,10 +207,10 @@ class AEMService {
         component.updatedAt = Clock.currTime();
         auto saved = _store.upsertComponent(component);
 
-        Json payload = Json.emptyObject;
-        payload["success"] = true;
-        payload["component"] = saved.toJson();
-        return payload;
+        Json result = Json.emptyObject;
+        result["success"] = true;
+        result["component"] = saved.toJson();
+        return result;
     }
 
     Json listComponents(string tenantId) {
@@ -221,11 +221,11 @@ class AEMService {
             resources ~= component.toJson();
         }
 
-        Json payload = Json.emptyObject;
-        payload["tenant_id"] = tenantId;
-        payload["resources"] = resources;
-        payload["total_results"] = cast(long)resources.length;
-        return payload;
+        Json result = Json.emptyObject;
+        result["tenant_id"] = tenantId;
+        result["resources"] = resources;
+        result["total_results"] = cast(long)resources.length;
+        return result;
     }
 
     Json addSubscription(string tenantId, string componentId, Json request) {
@@ -256,10 +256,10 @@ class AEMService {
         subscription.updatedAt = Clock.currTime();
         auto saved = _store.addSubscription(subscription);
 
-        Json payload = Json.emptyObject;
-        payload["success"] = true;
-        payload["subscription"] = saved.toJson();
-        return payload;
+        Json result = Json.emptyObject;
+        result["success"] = true;
+        result["subscription"] = saved.toJson();
+        return result;
     }
 
     Json modelEDA(string tenantId) {
@@ -306,11 +306,11 @@ class AEMService {
             edges ~= edge;
         }
 
-        Json payload = Json.emptyObject;
-        payload["tenant_id"] = tenantId;
-        payload["nodes"] = nodes;
-        payload["edges"] = edges;
-        return payload;
+        Json result = Json.emptyObject;
+        result["tenant_id"] = tenantId;
+        result["nodes"] = nodes;
+        result["edges"] = edges;
+        return result;
     }
 
     Json upsertNotificationRule(string tenantId, string ruleId, Json request) {
@@ -328,10 +328,10 @@ class AEMService {
         rule.updatedAt = Clock.currTime();
         auto saved = _store.upsertNotificationRule(rule);
 
-        Json payload = Json.emptyObject;
-        payload["success"] = true;
-        payload["notification_rule"] = saved.toJson();
-        return payload;
+        Json result = Json.emptyObject;
+        result["success"] = true;
+        result["notification_rule"] = saved.toJson();
+        return result;
     }
 
     Json listNotificationRules(string tenantId) {
@@ -342,11 +342,11 @@ class AEMService {
             resources ~= rule.toJson();
         }
 
-        Json payload = Json.emptyObject;
-        payload["tenant_id"] = tenantId;
-        payload["resources"] = resources;
-        payload["total_results"] = cast(long)resources.length;
-        return payload;
+        Json result = Json.emptyObject;
+        result["tenant_id"] = tenantId;
+        result["resources"] = resources;
+        result["total_results"] = cast(long)resources.length;
+        return result;
     }
 
     Json monitoringDashboard(string tenantId) {
@@ -383,15 +383,15 @@ class AEMService {
             brokerCards ~= card;
         }
 
-        Json payload = Json.emptyObject;
-        payload["tenant_id"] = tenantId;
-        payload["broker_services"] = cast(long)brokers.length;
-        payload["event_meshes"] = cast(long)meshes.length;
-        payload["topics"] = totalTopics;
-        payload["events_published"] = totalEventsPublished;
-        payload["active_alerts"] = cast(long)alerts.length;
-        payload["brokers"] = brokerCards;
-        return payload;
+        Json result = Json.emptyObject;
+        result["tenant_id"] = tenantId;
+        result["broker_services"] = cast(long)brokers.length;
+        result["event_meshes"] = cast(long)meshes.length;
+        result["topics"] = totalTopics;
+        result["events_published"] = totalEventsPublished;
+        result["active_alerts"] = cast(long)alerts.length;
+        result["brokers"] = brokerCards;
+        return result;
     }
 
     Json listAlerts(string tenantId) {
@@ -402,11 +402,11 @@ class AEMService {
             resources ~= alert.toJson();
         }
 
-        Json payload = Json.emptyObject;
-        payload["tenant_id"] = tenantId;
-        payload["resources"] = resources;
-        payload["total_results"] = cast(long)resources.length;
-        return payload;
+        Json result = Json.emptyObject;
+        result["tenant_id"] = tenantId;
+        result["resources"] = resources;
+        result["total_results"] = cast(long)resources.length;
+        return result;
     }
 
     private void checkAndCreateAlerts(string tenantId, string meshId, string topic) {

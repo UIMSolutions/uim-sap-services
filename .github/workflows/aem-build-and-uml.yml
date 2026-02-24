@@ -1,0 +1,55 @@
+name: aem-build-and-uml
+
+on:
+  push:
+    paths:
+      - 'Advanced Event Mesh/**'
+      - '.github/workflows/aem-build-and-uml.yml'
+  pull_request:
+    paths:
+      - 'Advanced Event Mesh/**'
+      - '.github/workflows/aem-build-and-uml.yml'
+
+jobs:
+  build-test-and-render:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: Advanced Event Mesh
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup D compiler
+        uses: dlang-community/setup-dlang@v2
+        with:
+          compiler: dmd-latest
+
+      - name: Build
+        run: dub build --build=debug
+
+      - name: Run tests
+        run: dub test
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Install PlantUML and Make
+        run: sudo apt-get update && sudo apt-get install -y plantuml make
+
+      - name: Validate and render UML (SVG)
+        run: |
+          make uml-check
+          make uml-svg
+
+      - name: Upload UML SVG artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: aem-uml-svg
+          path: Advanced Event Mesh/docs/uml/*.svg
+          if-no-files-found: error
