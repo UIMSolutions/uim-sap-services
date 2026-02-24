@@ -1,0 +1,29 @@
+{
+  "server": {
+    "port": 8080,
+    "host": "localhost"
+  },
+  "tls": {
+    "enabled": true,
+    "certificatePath": "/path/to/certificate.crt",
+    "keyPath": "/path/to/private.key",
+    "protocols": ["TLSv1.2", "TLSv1.3"],
+    "cipherSuites": [
+      "ECDHE-RSA-AES256-GCM-SHA384",
+      "ECDHE-RSA-AES128-GCM-SHA256"
+    ]
+  },
+  "multitenancy": {
+    "enabled": true,
+    "defaultTenant": "default",
+    "tenantConfigPath": "/path/to/tenant/config"
+  },
+  "logging": {
+    "level": "info",
+    "logFile": "/path/to/logfile.log"
+  },
+  "kpi": {
+    "refreshInterval": 300,
+    "maxRecords": 100
+  }
+}
