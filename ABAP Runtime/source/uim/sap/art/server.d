@@ -13,14 +13,14 @@ import uim.sap.art.exceptions;
 import uim.sap.art.models;
 import uim.sap.art.runtime;
 
-class SAPABAPRuntimeServer {
-    private SAPABAPRuntime _runtime;
+class ARTRuntimeServer {
+    private ARTRuntime _runtime;
 
-    this(SAPABAPRuntime runtime) {
+    this(ARTRuntime runtime) {
         _runtime = runtime;
     }
 
-    SAPABAPRuntime runtime() {
+    ARTRuntime runtime() {
         return _runtime;
     }
 
@@ -67,17 +67,17 @@ class SAPABAPRuntimeServer {
             try {
                 validateAuth(req);
                 auto input = req.json;
-                auto programRequest = SAPABAPProgramRequest.fromJson(input);
+                auto programRequest = ARTProgramRequest.fromJson(input);
                 auto output = _runtime.execute(programRequest);
                 res.statusCode = output.statusCode;
                 res.writeJsonBody(output.toJson());
-            } catch (SAPABAPRuntimeAuthenticationException e) {
+            } catch (ARTRuntimeAuthenticationException e) {
                 respondError(res, e.msg, 401);
-            } catch (SAPABAPRuntimeProgramNotFoundException e) {
+            } catch (ARTRuntimeProgramNotFoundException e) {
                 respondError(res, e.msg, 404);
-            } catch (SAPABAPRuntimeExecutionException e) {
+            } catch (ARTRuntimeExecutionException e) {
                 respondError(res, e.msg, 422);
-            } catch (SAPABAPRuntimeException e) {
+            } catch (ARTRuntimeException e) {
                 respondError(res, e.msg, 500);
             } catch (Exception e) {
                 respondError(res, e.msg, 500);
@@ -94,13 +94,13 @@ class SAPABAPRuntimeServer {
         }
 
         if (!("Authorization" in req.headers)) {
-            throw new SAPABAPRuntimeAuthenticationException("Missing Authorization header");
+            throw new ARTRuntimeAuthenticationException("Missing Authorization header");
         }
 
         auto auth = req.headers["Authorization"];
         auto expected = "Bearer " ~ _runtime.config.authToken;
         if (auth != expected) {
-            throw new SAPABAPRuntimeAuthenticationException("Invalid token");
+            throw new ARTRuntimeAuthenticationException("Invalid token");
         }
     }
 

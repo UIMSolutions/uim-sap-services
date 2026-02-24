@@ -7,7 +7,7 @@ import std.datetime : SysTime;
 
 import vibe.data.json : Json;
 
-struct SAPABAPProgramRequest {
+struct ARTProgramRequest {
     string program;
     string user;
     string client;
@@ -15,8 +15,8 @@ struct SAPABAPProgramRequest {
     Json parameters = Json.emptyObject;
     string correlationId;
 
-    static SAPABAPProgramRequest fromJson(Json payload) {
-        SAPABAPProgramRequest request;
+    static ARTProgramRequest fromJson(Json payload) {
+        ARTProgramRequest request;
 
         if ("program" in payload && payload["program"].type == Json.Type.string) {
             request.program = payload["program"].get!string;
@@ -57,7 +57,7 @@ struct SAPABAPProgramRequest {
     }
 }
 
-struct SAPABAPProgramResult {
+struct ARTProgramResult {
     bool success;
     string message;
     int statusCode = 200;
@@ -79,7 +79,7 @@ struct SAPABAPProgramResult {
     }
 }
 
-struct SAPABAPRuntimeHealth {
+struct ARTRuntimeHealth {
     bool ok;
     string runtimeName;
     string runtimeVersion;

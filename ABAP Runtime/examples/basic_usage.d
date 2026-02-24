@@ -7,14 +7,14 @@ import vibe.data.json : Json;
 import uim.sap.art;
 
 void main() {
-    SAPABAPRuntimeConfig config;
+    ARTRuntimeConfig config;
     config.host = "127.0.0.1";
     config.port = 8080;
     config.basePath = "/sap/abap/runtime";
     config.runtimeName = "uim-art";
     config.runtimeVersion = UIM_SAP_ART_VERSION;
 
-    auto runtime = new SAPABAPRuntime(config);
+    auto runtime = new ARTRuntime(config);
 
     runtime.registerProgram("Z_HELLO_WORLD", (request) {
         Json payload = Json.emptyObject;
@@ -30,7 +30,7 @@ void main() {
         return successResult("Echo completed", payload);
     });
 
-    auto server = new SAPABAPRuntimeServer(runtime);
+    auto server = new ARTRuntimeServer(runtime);
     writeln("Starting SAP ABAP Runtime on ", config.host, ":", config.port);
     server.run();
 }

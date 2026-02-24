@@ -12,18 +12,18 @@ import uim.sap.art.config;
 import uim.sap.art.exceptions;
 import uim.sap.art.models;
 
-alias SAPABAPProgramHandler = SAPABAPProgramResult delegate(SAPABAPProgramRequest request);
+alias ARTProgramHandler = ARTProgramResult delegate(ARTProgramRequest request);
 
-class SAPABAPRuntime {
-    private SAPABAPRuntimeConfig _config;
-    private SAPABAPProgramHandler[string] _programs;
+class ARTRuntime {
+    private ARTRuntimeConfig _config;
+    private ARTProgramHandler[string] _programs;
 
-    this(SAPABAPRuntimeConfig config) {
+    this(ARTRuntimeConfig config) {
         config.validate();
         _config = config;
     }
 
-    @property const(SAPABAPRuntimeConfig) config() const {
+    @property const(ARTRuntimeConfig) config() const {
         return _config;
     }
 
@@ -39,13 +39,13 @@ class SAPABAPRuntime {
         return names;
     }
 
-    void registerProgram(string programName, SAPABAPProgramHandler handler) {
+    void registerProgram(string programName, ARTProgramHandler handler) {
         if (programName.length == 0) {
-            throw new SAPABAPRuntimeConfigurationException("Program name cannot be empty");
+            throw new ARTRuntimeConfigurationException("Program name cannot be empty");
         }
 
         if (handler is null) {
-            throw new SAPABAPRuntimeConfigurationException("Program handler cannot be null");
+            throw new ARTRuntimeConfigurationException("Program handler cannot be null");
         }
 
         _programs[normalizeProgramName(programName)] = handler;
@@ -55,14 +55,14 @@ class SAPABAPRuntime {
         _programs.remove(normalizeProgramName(programName));
     }
 
-    SAPABAPProgramResult execute(SAPABAPProgramRequest request) {
+    ARTProgramResult execute(ARTProgramRequest request) {
         if (request.program.length == 0) {
-            throw new SAPABAPRuntimeExecutionException("Program name is required");
+            throw new ARTRuntimeExecutionException("Program name is required");
         }
 
         auto normalizedName = normalizeProgramName(request.program);
         if (normalizedName !in _programs) {
-            throw new SAPABAPRuntimeProgramNotFoundException(request.program);
+            throw new ARTRuntimeProgramNotFoundException(request.program);
         }
 
         auto handler = _programs[normalizedName];
@@ -79,15 +79,15 @@ class SAPABAPRuntime {
                 result.correlationId = request.correlationId;
             }
             return result;
-        } catch (SAPABAPRuntimeException e) {
+        } catch (ARTRuntimeException e) {
             throw e;
         } catch (Exception e) {
-            throw new SAPABAPRuntimeExecutionException(e.msg, __FILE__, __LINE__, e);
+            throw new ARTRuntimeExecutionException(e.msg, __FILE__, __LINE__, e);
         }
     }
 
-    SAPABAPRuntimeHealth health() const {
-        SAPABAPRuntimeHealth status;
+    ARTRuntimeHealth health() const {
+        ARTRuntimeHealth status;
         status.ok = true;
         status.runtimeName = _config.runtimeName;
         status.runtimeVersion = _config.runtimeVersion;
@@ -100,8 +100,8 @@ class SAPABAPRuntime {
     }
 }
 
-SAPABAPProgramResult successResult(string message, Json data = Json.emptyObject, int statusCode = 200) {
-    SAPABAPProgramResult result;
+ARTProgramResult successResult(string message, Json data = Json.emptyObject, int statusCode = 200) {
+    ARTProgramResult result;
     result.success = true;
     result.message = message;
     result.statusCode = statusCode;
@@ -110,8 +110,8 @@ SAPABAPProgramResult successResult(string message, Json data = Json.emptyObject,
     return result;
 }
 
-SAPABAPProgramResult errorResult(string message, int statusCode = 500, Json data = Json.emptyObject) {
-    SAPABAPProgramResult result;
+ARTProgramResult errorResult(string message, int statusCode = 500, Json data = Json.emptyObject) {
+    ARTProgramResult result;
     result.success = false;
     result.message = message;
     result.statusCode = statusCode;

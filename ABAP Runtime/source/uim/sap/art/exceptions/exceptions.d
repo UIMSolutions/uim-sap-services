@@ -1,33 +1,33 @@
 /**
  * Exceptions for SAP ABAP Runtime (ART)
  */
-module uim.sap.art.exceptions;
+module uim.sap.art.exceptions.exceptions;
 
-class SAPABAPRuntimeException : Exception {
+class ARTRuntimeException : Exception {
     this(string msg, string file = __FILE__, size_t line = __LINE__, Throwable next = null) {
         super(msg, file, line, next);
     }
 }
 
-class SAPABAPRuntimeConfigurationException : SAPABAPRuntimeException {
+class ARTRuntimeConfigurationException : ARTRuntimeException {
     this(string msg, string file = __FILE__, size_t line = __LINE__, Throwable next = null) {
         super(msg, file, line, next);
     }
 }
 
-class SAPABAPRuntimeProgramNotFoundException : SAPABAPRuntimeException {
+class ARTRuntimeProgramNotFoundException : ARTRuntimeException {
     this(string programName, string file = __FILE__, size_t line = __LINE__, Throwable next = null) {
         super("ABAP program not found: " ~ programName, file, line, next);
     }
 }
 
-class SAPABAPRuntimeExecutionException : SAPABAPRuntimeException {
+class ARTRuntimeExecutionException : ARTRuntimeException {
     this(string msg, string file = __FILE__, size_t line = __LINE__, Throwable next = null) {
         super(msg, file, line, next);
     }
 }
 
-class SAPABAPRuntimeAuthenticationException : SAPABAPRuntimeException {
+class ARTRuntimeAuthenticationException : ARTRuntimeException {
     this(string msg = "Unauthorized", string file = __FILE__, size_t line = __LINE__, Throwable next = null) {
         super(msg, file, line, next);
     }
