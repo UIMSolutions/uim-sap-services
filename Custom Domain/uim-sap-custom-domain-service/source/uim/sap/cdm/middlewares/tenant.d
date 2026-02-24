@@ -1,8 +1,17 @@
-module middleware;
+module middlewares.tenant;
 
 import vibe.vibe;
 import models.tenant;
 
+/**
+    * This middleware handles tenant identification for incoming requests.
+    * It checks for a tenant ID in the request headers and attaches the corresponding tenant information to the request context.
+    *
+    * To use this middleware, add it to your server configuration before your route handlers.
+    * Example:
+    *     auto server = new HTTPServer();
+    *     server.addMiddleware(new TenantMiddleware(tenantRepository));
+    */
 class TenantMiddleware {
     private TenantRepository tenantRepository;
 

@@ -1,7 +1,16 @@
-module middleware.security_headers_middleware;
+module middlewares.security_headers;
 
 import vibe.vibe;
 
+
+/**
+  * This middleware adds security headers to the response.
+  *
+  * To use this middleware, add it to your server configuration before your route handlers.
+  * Example:
+  *     auto server = new HTTPServer();
+  *     server.addMiddleware(new SecurityHeadersMiddleware());
+  */
 class SecurityHeadersMiddleware
 {
     // This middleware adds security headers to the response

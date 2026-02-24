@@ -1,7 +1,16 @@
-module middleware.tls_middleware;
+module middlewares.tls;
 
 import vibe.vibe;
 
+/**
+  * This middleware ensures that all incoming requests are served over HTTPS
+  * and manages TLS-related configurations.
+  *
+  * To use this middleware, add it to your server configuration before your route handlers.
+  * Example:
+  *     auto server = new HTTPServer();
+  *     server.addMiddleware(new TlsMiddleware());
+  */
 class TlsMiddleware {
     // This middleware ensures that all incoming requests are served over HTTPS
     // and manages TLS-related configurations.
