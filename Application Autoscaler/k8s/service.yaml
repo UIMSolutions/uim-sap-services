@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: uim-sap-aas
+  labels:
+    app: uim-sap-aas
+spec:
+  selector:
+    app: uim-sap-aas
+  ports:
+  - name: http
+    protocol: TCP
+    port: 80
+    targetPort: 8086
+  type: ClusterIP

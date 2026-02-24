@@ -124,7 +124,7 @@ struct AASScaleDecision {
 }
 
 AASMetricType metricTypeFromString(string value) {
-    final switch (value) {
+    switch (value) {
         case "cpu": return AASMetricType.cpu;
         case "memory": return AASMetricType.memory;
         case "response_time": return AASMetricType.responseTime;
@@ -149,26 +149,30 @@ AASApp appFromJson(Json payload) {
     app.id = randomUUID().toString();
     app.createdAt = Clock.currTime();
 
-    if ("name" in payload && payload["name"].type == Json.Type.string) {
-        app.name = payload["name"].get!string;
+    string textValue;
+    long integerValue;
+    double numberValue;
+
+    if (tryGetString(payload, "name", textValue)) {
+        app.name = textValue;
     }
-    if ("organization" in payload && payload["organization"].type == Json.Type.string) {
-        app.organization = payload["organization"].get!string;
+    if (tryGetString(payload, "organization", textValue)) {
+        app.organization = textValue;
     }
-    if ("space" in payload && payload["space"].type == Json.Type.string) {
-        app.space = payload["space"].get!string;
+    if (tryGetString(payload, "space", textValue)) {
+        app.space = textValue;
     }
-    if ("current_instances" in payload && payload["current_instances"].type.isIntegral) {
-        app.currentInstances = cast(uint)payload["current_instances"].get!long;
+    if (tryGetLong(payload, "current_instances", integerValue)) {
+        app.currentInstances = cast(uint)integerValue;
     }
-    if ("min_instances" in payload && payload["min_instances"].type.isIntegral) {
-        app.minInstances = cast(uint)payload["min_instances"].get!long;
+    if (tryGetLong(payload, "min_instances", integerValue)) {
+        app.minInstances = cast(uint)integerValue;
     }
-    if ("max_instances" in payload && payload["max_instances"].type.isIntegral) {
-        app.maxInstances = cast(uint)payload["max_instances"].get!long;
+    if (tryGetLong(payload, "max_instances", integerValue)) {
+        app.maxInstances = cast(uint)integerValue;
     }
-    if ("instance_hourly_cost" in payload && payload["instance_hourly_cost"].type.isNumeric) {
-        app.instanceHourlyCost = payload["instance_hourly_cost"].get!double;
+    if (tryGetDouble(payload, "instance_hourly_cost", numberValue)) {
+        app.instanceHourlyCost = numberValue;
     }
 
     if (app.minInstances == 0) {
@@ -195,32 +199,36 @@ AASScalingPolicy policyFromJson(Json payload, string appId) {
     policy.appId = appId;
     policy.createdAt = Clock.currTime();
 
-    if ("metric_type" in payload && payload["metric_type"].type == Json.Type.string) {
-        policy.metricType = metricTypeFromString(payload["metric_type"].get!string);
+    string textValue;
+    long integerValue;
+    double numberValue;
+
+    if (tryGetString(payload, "metric_type", textValue)) {
+        policy.metricType = metricTypeFromString(textValue);
     }
-    if ("custom_metric_name" in payload && payload["custom_metric_name"].type == Json.Type.string) {
-        policy.customMetricName = payload["custom_metric_name"].get!string;
+    if (tryGetString(payload, "custom_metric_name", textValue)) {
+        policy.customMetricName = textValue;
     }
-    if ("scale_out_threshold" in payload && payload["scale_out_threshold"].type.isNumeric) {
-        policy.scaleOutThreshold = payload["scale_out_threshold"].get!double;
+    if (tryGetDouble(payload, "scale_out_threshold", numberValue)) {
+        policy.scaleOutThreshold = numberValue;
     }
-    if ("scale_in_threshold" in payload && payload["scale_in_threshold"].type.isNumeric) {
-        policy.scaleInThreshold = payload["scale_in_threshold"].get!double;
+    if (tryGetDouble(payload, "scale_in_threshold", numberValue)) {
+        policy.scaleInThreshold = numberValue;
     }
-    if ("scale_out_step" in payload && payload["scale_out_step"].type.isIntegral) {
-        policy.scaleOutStep = cast(uint)payload["scale_out_step"].get!long;
+    if (tryGetLong(payload, "scale_out_step", integerValue)) {
+        policy.scaleOutStep = cast(uint)integerValue;
     }
-    if ("scale_in_step" in payload && payload["scale_in_step"].type.isIntegral) {
-        policy.scaleInStep = cast(uint)payload["scale_in_step"].get!long;
+    if (tryGetLong(payload, "scale_in_step", integerValue)) {
+        policy.scaleInStep = cast(uint)integerValue;
     }
-    if ("min_instances" in payload && payload["min_instances"].type.isIntegral) {
-        policy.minInstances = cast(uint)payload["min_instances"].get!long;
+    if (tryGetLong(payload, "min_instances", integerValue)) {
+        policy.minInstances = cast(uint)integerValue;
     }
-    if ("max_instances" in payload && payload["max_instances"].type.isIntegral) {
-        policy.maxInstances = cast(uint)payload["max_instances"].get!long;
+    if (tryGetLong(payload, "max_instances", integerValue)) {
+        policy.maxInstances = cast(uint)integerValue;
     }
-    if ("cooldown_seconds" in payload && payload["cooldown_seconds"].type.isIntegral) {
-        policy.cooldownSeconds = cast(uint)payload["cooldown_seconds"].get!long;
+    if (tryGetLong(payload, "cooldown_seconds", integerValue)) {
+        policy.cooldownSeconds = cast(uint)integerValue;
     }
 
     if (policy.scaleOutStep == 0) {
@@ -236,26 +244,64 @@ AASScalingPolicy policyFromJson(Json payload, string appId) {
 AASMetricSnapshot metricsFromJson(Json payload) {
     AASMetricSnapshot snapshot;
 
-    if ("cpu_percent" in payload && payload["cpu_percent"].type.isNumeric) {
-        snapshot.cpuPercent = payload["cpu_percent"].get!double;
+    double numberValue;
+    if (tryGetDouble(payload, "cpu_percent", numberValue)) {
+        snapshot.cpuPercent = numberValue;
     }
-    if ("memory_percent" in payload && payload["memory_percent"].type.isNumeric) {
-        snapshot.memoryPercent = payload["memory_percent"].get!double;
+    if (tryGetDouble(payload, "memory_percent", numberValue)) {
+        snapshot.memoryPercent = numberValue;
     }
-    if ("response_time_ms" in payload && payload["response_time_ms"].type.isNumeric) {
-        snapshot.responseTimeMs = payload["response_time_ms"].get!double;
+    if (tryGetDouble(payload, "response_time_ms", numberValue)) {
+        snapshot.responseTimeMs = numberValue;
     }
-    if ("throughput_rps" in payload && payload["throughput_rps"].type.isNumeric) {
-        snapshot.throughputRps = payload["throughput_rps"].get!double;
+    if (tryGetDouble(payload, "throughput_rps", numberValue)) {
+        snapshot.throughputRps = numberValue;
     }
 
     if ("custom" in payload && payload["custom"].type == Json.Type.object) {
         foreach (key, value; payload["custom"].byKeyValue) {
-            if (value.type.isNumeric) {
+            try {
                 snapshot.custom[key] = value.get!double;
+            } catch (Exception) {
             }
         }
     }
 
     return snapshot;
+}
+
+private bool tryGetString(Json payload, string key, out string value) {
+    if (!(key in payload)) {
+        return false;
+    }
+    try {
+        value = payload[key].get!string;
+        return true;
+    } catch (Exception) {
+        return false;
+    }
+}
+
+private bool tryGetLong(Json payload, string key, out long value) {
+    if (!(key in payload)) {
+        return false;
+    }
+    try {
+        value = payload[key].get!long;
+        return true;
+    } catch (Exception) {
+        return false;
+    }
+}
+
+private bool tryGetDouble(Json payload, string key, out double value) {
+    if (!(key in payload)) {
+        return false;
+    }
+    try {
+        value = payload[key].get!double;
+        return true;
+    } catch (Exception) {
+        return false;
+    }
 }

@@ -4,7 +4,7 @@
 module uim.sap.aas.server;
 
 import std.array : split;
-import std.string : startsWith;
+import std.string : endsWith, startsWith;
 
 import vibe.data.json : Json;
 import vibe.http.common : HTTPMethod;

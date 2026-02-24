@@ -4,7 +4,9 @@
 module uim.sap.aas.service;
 
 import std.algorithm.comparison : max, min;
+import std.conv : to;
 import std.datetime : Clock;
+import std.math : isNaN;
 
 import vibe.data.json : Json;
 
@@ -135,7 +137,7 @@ class AASService {
 
         foreach (policy; policies) {
             auto metric = resolveMetric(policy, snapshot);
-            if (metric.isNaN) {
+            if (isNaN(metric)) {
                 continue;
             }
 
@@ -209,8 +211,11 @@ class AASService {
         }
 
         uint desired = app.currentInstances;
-        if ("desired_instances" in request && request["desired_instances"].type.isIntegral) {
-            desired = cast(uint)request["desired_instances"].get!long;
+        if ("desired_instances" in request) {
+            try {
+                desired = cast(uint)request["desired_instances"].get!long;
+            } catch (Exception) {
+            }
         }
 
         desired = min(max(desired, app.minInstances), app.maxInstances);
