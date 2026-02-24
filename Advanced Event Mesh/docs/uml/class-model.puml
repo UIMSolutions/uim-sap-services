@@ -1,0 +1,32 @@
+@startuml class_model
+!theme plain
+
+title UIM Advanced Event Mesh (AEM) - Class Model
+
+package "uim.sap.aem" {
+  class AEMConfig
+  class AEMServer
+  class AEMService
+  class AEMStore
+
+  class AEMBrokerService
+  class AEMEventMesh
+  class AEMTopicEvent
+  class AEMEDAComponent
+  class AEMSubscription
+  class AEMNotificationRule
+  class AEMMonitoringAlert
+}
+
+AEMServer --> AEMService
+AEMService --> AEMConfig
+AEMService --> AEMStore
+AEMStore o-- AEMBrokerService
+AEMStore o-- AEMEventMesh
+AEMStore o-- AEMTopicEvent
+AEMStore o-- AEMEDAComponent
+AEMStore o-- AEMSubscription
+AEMStore o-- AEMNotificationRule
+AEMStore o-- AEMMonitoringAlert
+
+@enduml
