@@ -6,6 +6,15 @@ import controllers.identity_controller;
 import controllers.dashboard_controller;
 import controllers.tenant_controller;
 
+/**
+    * This module defines the API routes for the Custom Domain Service.
+    * It includes routes for managing custom domains, identity protection, dashboard KPIs, and tenant management.
+    *
+    * To set up the API routes, call the setupApiRoutes function during your server initialization.
+    * Example:
+    *     auto server = new HTTPServer();
+    *     setupApiRoutes();
+    */
 void setupApiRoutes() {
     // Custom Domain Routes
     route("/api/custom-domains", "GET", &CustomDomainController.getAll);

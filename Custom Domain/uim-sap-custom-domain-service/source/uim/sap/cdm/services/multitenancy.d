@@ -1,4 +1,4 @@
-module services.multitenancy_service;
+module uim.sap.cdm.services.multitenancy;
 
 import models.tenant;
 import repositories.tenant_repository;

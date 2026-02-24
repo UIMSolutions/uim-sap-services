@@ -1,4 +1,4 @@
-module services.certificate_service;
+module uim.sap.cdm.services.certificate;
 
 import vibe.vibe;
 import models.certificate;

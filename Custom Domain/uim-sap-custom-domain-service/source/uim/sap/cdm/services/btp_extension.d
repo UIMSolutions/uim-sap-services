@@ -1,4 +1,4 @@
-module services.btp_extension_service;
+module uim.sap.cdm.services.btp_extension;
 
 import vibe.vibe;
 import models.custom_domain;

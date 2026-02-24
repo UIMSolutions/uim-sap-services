@@ -1,4 +1,4 @@
-module services.security_hardening_service;
+module uim.sap.cdm.services.security_hardening;
 
 import vibe.vibe;
 import std.json;

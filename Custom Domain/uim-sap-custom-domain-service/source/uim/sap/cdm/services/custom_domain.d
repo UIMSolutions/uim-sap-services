@@ -1,4 +1,4 @@
-module services.custom_domain_service;
+module uim.sap.cdm.services.custom_domain;
 
 import models.custom_domain;
 import repositories.custom_domain_repository;

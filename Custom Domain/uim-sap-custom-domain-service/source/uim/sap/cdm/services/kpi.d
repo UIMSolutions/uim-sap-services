@@ -1,4 +1,4 @@
-module services.kpi_service;
+module uim.sap.cdm.services.kpi;
 
 import models.kpi;
 import repositories.kpi_repository;
