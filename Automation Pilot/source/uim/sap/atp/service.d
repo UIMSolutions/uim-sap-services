@@ -11,6 +11,25 @@ import uim.sap.atp.exceptions;
 import uim.sap.atp.models;
 import uim.sap.atp.store;
 
+/** 
+ * ATPService provides core functionalities for managing catalogs, commands, executions, and related features in the Automation Pilot service.
+ * It handles business logic, input validation, and interactions with the underlying data store.
+ *
+    * The service includes methods for: 
+    - Health and readiness checks
+    - Catalog management (list, upsert)
+    - Command management (list, upsert)
+    - Execution of predefined commands
+    - Execution management (list)
+    - Backup and restore of content
+    - Secret input management (list, upsert)
+    - Schedule management (list, upsert)
+    - Event trigger management (list, upsert)
+    - Firing events to trigger commands
+    - AI content generation based on prompts
+    - Simulated execution of operations in private environments
+* Note: The service uses a simple in-memory store (ATPStore) for demonstration purposes. In a production scenario, this would likely be replaced with a persistent database.
+ */
 class ATPService {
     private ATPConfig _config;
     private ATPStore _store;

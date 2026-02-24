@@ -23,8 +23,11 @@ Cloud Foundry-oriented application autoscaling service built with Dlang, `vibe.d
 Separate UML documents are available in [docs/uml](docs/uml):
 
 - [Component architecture](docs/uml/component-architecture.puml)
+- [Executive component view](docs/uml/component-executive-view.puml)
+- [Deployment component view](docs/uml/component-deployment-view.puml)
 - [Class model](docs/uml/class-model.puml)
 - [Evaluate/apply sequence](docs/uml/sequence-evaluate-apply.puml)
+- [Podman/Kubernetes runtime sequence](docs/uml/sequence-podman-k8s-runtime.puml)
 
 Example rendering command:
 

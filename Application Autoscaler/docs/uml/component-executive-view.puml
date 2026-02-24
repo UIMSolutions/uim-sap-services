@@ -1,0 +1,28 @@
+@startuml
+!theme plain
+
+title UIM SAP Application Autoscaler (AAS) - Executive View
+
+actor "Platform Team" as Team
+
+cloud "Cloud Foundry Apps" as CFApps
+cloud "Container Registry" as Registry
+
+node "Kubernetes" {
+  component "AAS Service\n(Dlang + vibe.d + UIM)" as AAS
+  component "Kubernetes Service + HPA" as K8s
+}
+
+Team --> AAS : Define scaling policies
+CFApps --> AAS : Send runtime/custom metrics
+AAS --> CFApps : Scale in/out decisions
+Registry --> AAS : Container image delivery
+K8s --> AAS : Runtime orchestration
+
+note bottom of AAS
+Outcome:
+Automatic, policy-based scaling
+for performance and cost efficiency.
+end note
+
+@enduml

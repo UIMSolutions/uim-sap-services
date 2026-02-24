@@ -10,6 +10,35 @@ import vibe.http.server : HTTPServerRequest, HTTPServerResponse, HTTPServerSetti
 import uim.sap.atp.exceptions;
 import uim.sap.atp.service;
 
+/**
+ * ATPServer handles HTTP requests for the Automation Pilot service.
+ * It routes requests to the appropriate service methods based on the URL path and HTTP method.
+ * It also handles authentication and error responses.
+
+    The server expects requests to be in the format:
+    /{basePath}/v1/tenants/{tenantId}/...
+    For example:
+    - GET /{basePath}/v1/tenants/{tenantId}/catalogs
+    - POST /{basePath}/v1/tenants/{tenantId}/catalogs
+    - GET /{basePath}/v1/tenants/{tenantId}/catalogs/{catalogId}/commands
+    - POST /{basePath}/v1/tenants/{tenantId}/catalogs/{catalogId}/commands
+    - GET /{basePath}/v1/tenants/{tenantId}/executions
+    - POST /{basePath}/v1/tenants/{tenantId}/executions
+    - GET /{basePath}/v1/tenants/{tenantId}/backups
+    - POST /{basePath}/v1/tenants/{tenantId}/backups
+    - POST /{basePath}/v1/tenants/{tenantId}/backups/restore
+    - GET /{basePath}/v1/tenants/{tenantId}/vault/inputs
+    - POST /{basePath}/v1/tenants/{tenantId}/vault/inputs
+    - GET /{basePath}/v1/tenants/{tenantId}/schedules
+    - POST /{basePath}/v1/tenants/{tenantId}/schedules
+    - GET /{basePath}/v1/tenants/{tenantId}/event-triggers
+    - POST /{basePath}/v1/tenants/{tenantId}/event-triggers
+    - POST /{basePath}/v1/tenants/{tenantId}/events/fire
+    - POST /{basePath}/v1/tenants/{tenantId}/ai/generate
+    - POST /{basePath}/v1/tenants/{tenantId}/private-env/operate    
+
+* Note: The server uses a simple token-based authentication mechanism. If `requireAuthToken` is enabled in the configuration, it expects an `Authorization` header with the value `Bearer {authToken}`. 
+ */
 class ATPServer {
     private ATPService _service;
 

@@ -4,7 +4,7 @@
 module uim.sap.mon;
 
 public {
-    import uim.oop;
+    import uim.sap.service;
     
     import uim.sap.mon.config;
     import uim.sap.mon.exceptions;
