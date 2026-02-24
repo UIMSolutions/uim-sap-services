@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uim-sap-smg
+  labels:
+    app: uim-sap-smg
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: uim-sap-smg
+  template:
+    metadata:
+      labels:
+        app: uim-sap-smg
+    spec:
+      containers:
+      - name: uim-sap-smg
+        image: uim-sap-smg:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8094
+        envFrom:
+        - configMapRef:
+            name: uim-sap-smg-config
+        env:
+        - name: SMG_AUTH_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: uim-sap-smg-secret
+              key: authToken
+              optional: true
+        readinessProbe:
+          httpGet:
+            path: /api/sitemanager/ready
+            port: 8094
+          initialDelaySeconds: 3
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /api/sitemanager/health
+            port: 8094
+          initialDelaySeconds: 8
+          periodSeconds: 10
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
