@@ -1,0 +1,10 @@
+build/
+.git/
+.github/
+*.o
+*.obj
+*.a
+*.so
+*.dylib
+*.dll
+*.exe

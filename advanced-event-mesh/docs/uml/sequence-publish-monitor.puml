@@ -1,0 +1,24 @@
+@startuml sequence_publish_monitor
+!theme plain
+
+title AEM Sequence - Publish Event and Monitoring Alert
+
+actor Producer
+participant "AEMServer" as Server
+participant "AEMService" as Service
+participant "AEMStore" as Store
+
+Producer -> Server : POST /event-meshes/{meshId}/publish
+Server -> Service : publishEvent(tenant, meshId, payload)
+Service -> Store : getMesh(tenant, meshId)
+Store --> Service : AEMEventMesh
+Service -> Store : appendEvent(event)
+Service -> Store : topicDepth(tenant, meshId, topic)
+Service -> Store : listNotificationRules(tenant)
+alt queue_depth >= threshold
+  Service -> Store : appendAlert(alert)
+end
+Service --> Server : event response
+Server --> Producer : 200 OK
+
+@enduml
