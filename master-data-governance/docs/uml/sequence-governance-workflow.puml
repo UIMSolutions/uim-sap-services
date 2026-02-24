@@ -1,0 +1,29 @@
+@startuml sequence_governance_workflow
+!theme plain
+
+title MDG Sequence - Governance Workflow for Business Partner
+
+actor Client
+participant "MDGServer" as Server
+participant "MDGService" as Service
+participant "MDGStore" as Store
+
+Client -> Server : POST /v1/tenants/{tenant}/business-partners
+Server -> Service : upsertBusinessPartner(tenantId, request)
+Service -> Service : validateBusinessPartner(bp)
+Service -> Store : upsertBusinessPartner(bp)
+Store --> Service : saved MDGBusinessPartner
+Service --> Server : success payload
+Server --> Client : 200 OK
+
+Client -> Server : PATCH /v1/tenants/{tenant}/business-partners/{bpId}
+Server -> Service : updateWorkflowState(tenantId, bpId, request)
+Service -> Store : getBusinessPartner(tenantId, bpId)
+Store --> Service : MDGBusinessPartner
+Service -> Service : normalize + validate state
+Service -> Store : upsertBusinessPartner(updated bp)
+Store --> Service : saved MDGBusinessPartner
+Service --> Server : success payload
+Server --> Client : 200 OK
+
+@enduml

@@ -1,0 +1,89 @@
+@startuml class_model
+!theme plain
+
+title UIM Master Data Governance (MDG) - Class Model
+
+package "uim.sap.mdg" {
+  class MDGConfig {
+    +host : string
+    +port : ushort
+    +basePath : string
+    +serviceName : string
+    +serviceVersion : string
+    +defaultApprover : string
+    +requireAuthToken : bool
+    +authToken : string
+    +customHeaders : string[string]
+    +validate() : void
+  }
+
+  class MDGServer {
+    -_service : MDGService
+    +run() : void
+    -handleRequest(req, res) : void
+  }
+
+  class MDGService {
+    -_config : MDGConfig
+    -_store : MDGStore
+    +health() : Json
+    +ready() : Json
+    +upsertBusinessPartner(tenantId, request) : Json
+    +upsertBusinessPartnersBatch(tenantId, request) : Json
+    +updateWorkflowState(tenantId, bpId, request) : Json
+    +detectDuplicates(tenantId) : Json
+    +mergeDuplicates(tenantId, request) : Json
+    +upsertRule(tenantId, ruleId, request) : Json
+    +evaluateDataQuality(tenantId) : Json
+  }
+
+  class MDGStore {
+    +upsertBusinessPartner(bp) : MDGBusinessPartner
+    +deleteBusinessPartner(tenantId, bpId) : bool
+    +getBusinessPartner(tenantId, bpId) : MDGBusinessPartner
+    +listBusinessPartners(tenantId) : MDGBusinessPartner[]
+    +upsertRule(rule) : MDGQualityRule
+    +listRules(tenantId) : MDGQualityRule[]
+  }
+
+  class MDGBusinessPartner {
+    +tenantId : string
+    +bpId : string
+    +name : string
+    +country : string
+    +email : string
+    +phone : string
+    +workflowState : string
+    +approver : string
+    +sourceSystem : string
+    +toJson() : Json
+  }
+
+  class MDGQualityRule {
+    +tenantId : string
+    +ruleId : string
+    +name : string
+    +field : string
+    +ruleType : string
+    +enabled : bool
+    +options : Json
+    +toJson() : Json
+  }
+
+  class MDGConsolidationCandidate {
+    +tenantId : string
+    +primaryBpId : string
+    +duplicateBpId : string
+    +score : long
+    +toJson() : Json
+  }
+}
+
+MDGServer --> MDGService
+MDGService --> MDGConfig
+MDGService --> MDGStore
+MDGStore "1" o-- "*" MDGBusinessPartner
+MDGStore "1" o-- "*" MDGQualityRule
+MDGService ..> MDGConsolidationCandidate
+
+@enduml
