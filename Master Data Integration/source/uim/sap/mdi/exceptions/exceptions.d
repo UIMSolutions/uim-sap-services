@@ -1,4 +1,4 @@
-module uim.sap.mdi.exceptions;
+module uim.sap.mdi.exceptions.exceptions;
 
 class MDIException : Exception {
     this(string msg) { super(msg); }

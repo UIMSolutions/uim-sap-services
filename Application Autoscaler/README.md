@@ -35,6 +35,14 @@ Example rendering command:
 plantuml docs/uml/*.puml
 ```
 
+Or with Makefile helper:
+
+```bash
+make uml      # render PNG
+make uml-svg  # render SVG
+make uml-clean
+```
+
 ## Build and run locally
 
 ```bash
