@@ -1,4 +1,4 @@
-# UIM  Application Autoscaler-like Service (AAS)
+# UIM Application Autoscaler-like Service (AAS)
 
 Cloud Foundry-oriented application autoscaling service built with Dlang, `vibe.d`, and `uim-framework`, deployable with Podman and Kubernetes.
 
@@ -17,6 +17,20 @@ Cloud Foundry-oriented application autoscaling service built with Dlang, `vibe.d
 - Policy evaluation engine that computes `scale_out`, `scale_in`, or `hold`.
 - Cloud Foundry scale action endpoint (adapter placeholder, ready for CF CLI/CC API binding).
 - Kubernetes manifests for service deployment and horizontal scaling.
+
+## UML (PlantUML)
+
+Separate UML documents are available in [docs/uml](docs/uml):
+
+- [Component architecture](docs/uml/component-architecture.puml)
+- [Class model](docs/uml/class-model.puml)
+- [Evaluate/apply sequence](docs/uml/sequence-evaluate-apply.puml)
+
+Example rendering command:
+
+```bash
+plantuml docs/uml/*.puml
+```
 
 ## Build and run locally
 

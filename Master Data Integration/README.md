@@ -1,4 +1,4 @@
-# UIM  Master Data Integration Service (MDI)
+# UIM Master Data Integration Service (MDI)
 
 Kubernetes-compatible SAP Master Data Integration style service built with D, vibe.d, and uim-framework.
 

@@ -1,5 +1,5 @@
 /**
- * UIM  IDOC Library
+ * UIM IDOC Library
  *
  * Copyright: Copyright © 2018-2026, Ozan Nurettin Süel
  * License: Apache-2.0

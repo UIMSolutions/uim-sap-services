@@ -1,5 +1,5 @@
 /**
- * UIM  Cloud Portal Service (CPS)
+ * UIM Cloud Portal Service (CPS)
  */
 module uim.sap.cps;
 

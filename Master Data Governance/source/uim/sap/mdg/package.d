@@ -1,5 +1,5 @@
 /**
- * UIM  Master Data Governance Service (MDG)
+ * UIM Master Data Governance Service (MDG)
  */
 module uim.sap.mdg;
 

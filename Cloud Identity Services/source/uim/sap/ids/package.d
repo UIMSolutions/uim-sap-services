@@ -1,5 +1,5 @@
 /**
- * UIM  Cloud Identity Services Library
+ * UIM Cloud Identity Services Library
  * 
  * This module provides a comprehensive D language client for SAP Cloud Identity Services (IAS/IPS),
  * built on top of uim-framework and vibe.d.

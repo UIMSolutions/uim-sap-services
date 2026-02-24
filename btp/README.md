@@ -1,4 +1,4 @@
-# UIM  BTP Library
+# UIM BTP Library
 
 A D language library for working with SAP Business Technology Platform (BTP) using the uim-framework and vibe.d.
 

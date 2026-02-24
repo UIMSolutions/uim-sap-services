@@ -1,4 +1,4 @@
-# UIM  ABAP Runtime (ART)
+# UIM ABAP Runtime (ART)
 
 SAP ABAP Runtime implementation in D language using `uim-framework` and `vibe.d`.
 

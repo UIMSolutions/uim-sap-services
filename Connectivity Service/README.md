@@ -1,4 +1,4 @@
-# UIM  Connectivity Service (CON)
+# UIM Connectivity Service (CON)
 
 Kubernetes-compatible SAP Connectivity Service style bridge built with D, `vibe.d`, and `uim-framework`.
 

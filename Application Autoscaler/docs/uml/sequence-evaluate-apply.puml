@@ -1,0 +1,34 @@
+@startuml
+!theme plain
+
+title AAS Sequence - Evaluate and Apply Scaling Decision
+
+actor Client
+participant "AASServer" as Server
+participant "AASService" as Service
+participant "AASStore" as Store
+participant "CF Scale Adapter\n(triggerCFScale)" as CFAdapter
+
+Client -> Server : POST /apps/{appId}/metrics/evaluate/apply\nmetrics payload
+Server -> Service : evaluate(appId, request, true)
+Service -> Store : getApp(appId)
+Store --> Service : AASApp
+Service -> Store : listPolicies(appId)
+Store --> Service : AASScalingPolicy[]
+Service -> Service : resolve metrics\ncompute desired instances\nestimate costs
+alt desired != current
+  Service -> Store : updateAppInstances(appId, desired)
+  Store --> Service : updated AASApp
+end
+Service --> Server : decision JSON
+Server --> Client : 200 OK + decision
+
+== Optional manual CF call ==
+Client -> Server : POST /cf/apps/{appId}/scale
+Server -> Service : triggerCFScale(appId, request)
+Service -> Store : updateAppInstances(appId, desired)
+Service -> CFAdapter : adapter placeholder call
+Service --> Server : accepted response
+Server --> Client : 202 Accepted
+
+@enduml

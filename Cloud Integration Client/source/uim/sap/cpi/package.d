@@ -1,5 +1,5 @@
 /**
- * UIM  Cloud Integration (CPI) Library
+ * UIM Cloud Integration (CPI) Library
  */
 module uim.sap.cpi;
 

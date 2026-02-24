@@ -1,5 +1,5 @@
 /**
- * UIM  S/4HANA Library
+ * UIM S/4HANA Library
  */
 module uim.sap.s4hana;
 

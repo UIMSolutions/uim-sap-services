@@ -1,5 +1,5 @@
 /**
- * UIM  Cloud Identity Services (CIS)
+ * UIM Cloud Identity Services (CIS)
  */
 module uim.sap.cis;
 

@@ -1,5 +1,5 @@
 /**
- * UIM  Monitoring Service-like API (MON)
+ * UIM Monitoring Service-like API (MON)
  */
 module uim.sap.mon;
 

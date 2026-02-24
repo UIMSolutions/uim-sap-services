@@ -1,4 +1,4 @@
-# UIM  Cloud Management Service for SAP BTP (MGT)
+# UIM Cloud Management Service for SAP BTP (MGT)
 
 Kubernetes-compatible SAP BTP cloud management service built with D, `vibe.d`, and `uim-framework`.
 

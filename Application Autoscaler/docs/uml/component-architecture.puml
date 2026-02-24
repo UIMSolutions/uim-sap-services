@@ -1,0 +1,45 @@
+@startuml
+!theme plain
+
+title UIM SAP Application Autoscaler (AAS) - Component Architecture
+
+actor "Platform Operator" as Operator
+actor "Metrics Producer\n(CF/K8s App + Custom Exporter)" as Metrics
+
+node "Kubernetes Cluster" {
+  component "uim-sap-aas-service\n(vibe.d HTTP API)" as API
+  database "In-Memory Store\n(AASStore)" as Store
+  component "Policy Engine\n(AASService.evaluate)" as Engine
+  component "CF Scale Adapter\n(triggerCFScale endpoint)" as CFAdapter
+  component "K8s Deployment + Service + HPA" as K8sInfra
+}
+
+cloud "Cloud Foundry API" as CF
+
+Operator --> API : Manage apps/policies
+Metrics --> API : Push metric snapshots
+API --> Engine : Evaluate policies
+Engine --> Store : Read apps/policies
+Engine --> Store : Write desired instances
+API --> CFAdapter : Manual CF scale request
+CFAdapter --> CF : Scale operation (adapter placeholder)
+K8sInfra ..> API : Hosts service runtime
+
+note right of Engine
+Supports standard metrics:
+- cpu
+- memory
+- response_time
+- throughput
+and custom metrics.
+Computes scale_out / scale_in / hold.
+end note
+
+note bottom of Store
+Data scope:
+- AASApp
+- AASScalingPolicy[]
+- current_instances
+end note
+
+@enduml
