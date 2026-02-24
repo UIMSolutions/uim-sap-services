@@ -49,7 +49,7 @@ private ushort readPort(string value, ushort fallback) {
 }
 
 private bool readBool(string value, bool fallback) {
-    auto normalized = value;
+    auto normalized = value.dup;
     foreach (index, c; normalized) {
         if (c >= 'A' && c <= 'Z') {
             normalized[index] = cast(char)(c + 32);

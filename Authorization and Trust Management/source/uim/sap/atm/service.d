@@ -321,9 +321,9 @@ class ATMService {
         }
 
         auto scopes = readScopeClaims(claims);
-        foreach (scope; scopes) {
-            if (!effectivePermissions.canFind(scope)) {
-                effectivePermissions ~= scope;
+        foreach (scopeName; scopes) {
+            if (!effectivePermissions.canFind(scopeName)) {
+                effectivePermissions ~= scopeName;
             }
         }
 
@@ -498,8 +498,8 @@ class ATMService {
 
         if ("scope" in claims && claims["scope"].type == Json.Type.string) {
             auto scopeString = claims["scope"].get!string;
-            foreach (scope; scopeString.split(" ")) {
-                auto trimmed = scope.strip();
+            foreach (scopeName; scopeString.split(" ")) {
+                auto trimmed = scopeName.strip();
                 if (trimmed.length > 0 && !scopes.canFind(trimmed)) {
                     scopes ~= trimmed;
                 }
@@ -507,9 +507,9 @@ class ATMService {
         }
 
         if ("scp" in claims && claims["scp"].type == Json.Type.array) {
-            foreach (scope; stringArrayFromJson(claims["scp"])) {
-                if (!scopes.canFind(scope)) {
-                    scopes ~= scope;
+            foreach (scopeName; stringArrayFromJson(claims["scp"])) {
+                if (!scopes.canFind(scopeName)) {
+                    scopes ~= scopeName;
                 }
             }
         }

@@ -8,6 +8,7 @@ import vibe.http.common : HTTPMethod;
 import vibe.http.server : HTTPServerRequest, HTTPServerResponse, HTTPServerSettings, listenHTTP;
 
 import uim.sap.atm.exceptions;
+import uim.sap.atm.models;
 import uim.sap.atm.service;
 
 class ATMServer {

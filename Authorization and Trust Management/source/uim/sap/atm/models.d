@@ -253,7 +253,7 @@ string[] stringArrayFromJson(Json values) {
     return result;
 }
 
-Json asJsonArray(string[] items) {
+Json asJsonArray(const(string)[] items) {
     Json result = Json.emptyArray;
     foreach (item; items) {
         result ~= item;
