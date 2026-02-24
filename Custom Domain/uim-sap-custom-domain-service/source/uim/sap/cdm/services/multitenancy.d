@@ -4,6 +4,15 @@ import models.tenant;
 import repositories.tenant_repository;
 import vibe.vibe;
 
+/**
+    * The MultitenancyService class provides methods to manage tenants in a multitenant environment.
+    * It allows for creating, retrieving, updating, and deleting tenant information.
+    *
+    * To use this service, create an instance of MultitenancyService and call the desired methods.
+    * Example:
+    *     auto multitenancyService = new MultitenancyService();
+    *     auto tenant = multitenancyService.createTenant("Tenant Name", "tenant.domain.com");
+    */
 class MultitenancyService {
     private TenantRepository tenantRepo;
 

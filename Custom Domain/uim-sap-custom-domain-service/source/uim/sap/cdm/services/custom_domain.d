@@ -4,6 +4,16 @@ import models.custom_domain;
 import repositories.custom_domain_repository;
 import vibe.vibe;
 
+/** 
+    * The CustomDomainService class provides methods to manage custom domains in the SAP environment.
+    * It allows for creating, retrieving, updating, and deleting custom domain information.
+    *
+    * To use this service, create an instance of CustomDomainService and call the desired methods.
+    * Example:
+    *     auto customDomainService = new CustomDomainService();
+    *     auto domain = new CustomDomain("example.com", "tenantId");
+    *     customDomainService.createCustomDomain(domain);
+    */
 class CustomDomainService {
     private CustomDomainRepository customDomainRepo;
 

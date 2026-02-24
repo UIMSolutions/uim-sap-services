@@ -4,6 +4,17 @@ import vibe.vibe;
 import models.certificate;
 import repositories.certificate_repository;
 
+/** 
+    * The CertificateService class provides methods to manage TLS/SSL certificates for custom domains.
+    * It allows for uploading, retrieving, and deleting certificates.
+    *
+    * To use this service, create an instance of CertificateService and call the desired methods.
+    * Example:
+    *     auto certificateRepo = new CertificateRepository();
+    *     auto certificateService = new CertificateService(certificateRepo);
+    *     auto cert = new Certificate("certId", "certData");
+    *     certificateService.uploadCertificate(cert);
+    */
 class CertificateService {
     private CertificateRepository certificateRepo;
 
