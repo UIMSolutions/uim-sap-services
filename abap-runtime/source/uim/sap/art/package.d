@@ -12,6 +12,7 @@ public {
 
     import uim.sap.art.config;
     import uim.sap.art.exceptions;
+    import uim.sap.art.helpers;
     import uim.sap.art.models;
     import uim.sap.art.runtime;
     import uim.sap.art.server;

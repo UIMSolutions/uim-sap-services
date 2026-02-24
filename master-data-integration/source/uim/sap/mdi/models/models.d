@@ -1,10 +1,7 @@
-module uim.sap.mdi.models;
+module uim.sap.mdi.models.models;
 
-import std.datetime : Clock, SysTime;
-import std.string : toLower;
-import std.uuid : randomUUID;
-
-import vibe.data.json : Json;
+import uim.sap.mdi;
+@safe:
 
 string createId() {
     return randomUUID().toString();

@@ -16,6 +16,9 @@ dependency "uim-framework" version="~>26.2.3"
 // Internal Dependencies
 dependency ":service" version="*"
 
+dependency ":abap-runtime" version="*"
+dependency ":advanced-event-mesh" version="*"
+dependency ":agentry" version="*"
 dependency ":master-data-integration" version="*"
 dependency ":master-data-governance" version="*"
 dependency ":monitoring" version="*"
@@ -28,6 +31,9 @@ sourceFiles "./source/uim/sap/all.d"
 // Subpackages
 subPackage "service"
 
+subPackage "abap-runtime"
+subPackage "advanced-event-mesh"
+subPackage "agentry"
 subPackage "master-data-integration"
 subPackage "master-data-governance"
 subPackage "monitoring"

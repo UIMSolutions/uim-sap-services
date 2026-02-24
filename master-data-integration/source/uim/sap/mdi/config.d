@@ -1,8 +1,6 @@
 module uim.sap.mdi.config;
 
-import std.string : startsWith;
-
-import uim.sap.mdi.exceptions;
+import uim.sap.mdi;
 
 struct MDIConfig {
     string host = "0.0.0.0";

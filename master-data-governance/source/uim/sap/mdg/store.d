@@ -2,7 +2,8 @@ module uim.sap.mdg.store;
 
 import core.sync.mutex : Mutex;
 
-import uim.sap.mdg.models;
+import uim.sap.mdg;
+@safe:
 
 class MDGStore {
     private MDGBusinessPartner[string] _businessPartners;
