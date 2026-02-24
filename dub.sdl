@@ -14,42 +14,13 @@ targetName "uim-sap"
 dependency "uim-framework" version="~>26.2.3"
 
 // Internal Dependencies
-dependency ":compilers" version="*"
-dependency ":core" version="*"
-dependency ":css" version="*"
-dependency ":errors" version="*"
-dependency ":events" version="*"
-dependency ":filesystems" version="*"
-dependency ":html" version="*"
-dependency ":i18n" version="*"
-dependency ":jsons" version="*"
-dependency ":logging" version="*"
-dependency ":numerical" version="*"
-dependency ":oop" version="*"
-dependency ":services" version="*"
-
-// Neural networks
-dependency ":neural" version="*"
+dependency ":service" version="*"
 
 // Source files
-sourceFiles "./source/uim/sap.d"
+sourceFiles "./source/uim/sap/all.d"
 
 // Subpackages
-subPackage "compilers"
-subPackage "core"
-subPackage "css"
-subPackage "errors"
-subPackage "events"
-subPackage "html"
-subPackage "i18n"
-subPackage "jsons"
-subPackage "logging"
-subPackage "numerical"
-subPackage "neural"
-subPackage "oop"
-subPackage "security"
-subPackage "services"
-subPackage "filesystems"
+subPackage "service"
 
 buildRequirements "allowWarnings" "silenceDeprecations"
 buildOptions "ignoreDeprecations" "debugInfo"
