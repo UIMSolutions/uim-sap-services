@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uim-sap-mdi
+  labels:
+    app: uim-sap-mdi
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: uim-sap-mdi
+  template:
+    metadata:
+      labels:
+        app: uim-sap-mdi
+    spec:
+      containers:
+      - name: uim-sap-mdi
+        image: ghcr.io/uimsolutions/uim-sap-mdi:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 8092
+        envFrom:
+        - configMapRef:
+            name: uim-sap-mdi-config
+        env:
+        - name: MDI_AUTH_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: uim-sap-mdi-secret
+              key: auth-token
+              optional: true
+        readinessProbe:
+          httpGet:
+            path: /api/mdi/ready
+            port: http
+          initialDelaySeconds: 3
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /api/mdi/health
+            port: http
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
