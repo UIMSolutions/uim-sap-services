@@ -1,7 +1,7 @@
 /**
  * Models for SAP ABAP Runtime (ART)
  */
-module uim.sap.art.models;
+module uim.sap.art.models.models;
 
 import std.datetime : SysTime;
 
