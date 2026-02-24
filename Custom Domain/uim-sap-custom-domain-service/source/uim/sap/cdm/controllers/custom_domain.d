@@ -1,4 +1,4 @@
-module controllers.custom_domain_controller;
+module uim.sap.cdm.controllers.custom_domain;
 
 import vibe.vibe;
 import services.custom_domain_service;

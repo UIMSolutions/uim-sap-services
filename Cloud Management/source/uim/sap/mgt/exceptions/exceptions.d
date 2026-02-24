@@ -1,4 +1,4 @@
-module uim.sap.mgt.exceptions;
+module uim.sap.mgt.exceptions.exceptions;
 
 class MGTException : Exception {
     this(string msg) {
