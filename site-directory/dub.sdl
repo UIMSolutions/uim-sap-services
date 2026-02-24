@@ -1,0 +1,18 @@
+name "site-directory"
+description "SAP BTP Site Directory style service using D, uim-framework and vibe.d"
+homepage "https://github.com/UIMSolutions/uim/sap/site-directory"
+authors "Ozan Nurettin Süel" "UI Manufaktur"
+copyright "Copyright © 2018-2026, Ozan Nurettin Süel"
+license "Apache-2.0"
+
+targetType "executable"
+targetName "uim-sap-site-directory-service"
+targetPath "build"
+sourcePaths "source"
+importPaths "source"
+
+dependency "uim-sap:service" path=".."
+
+
+buildRequirements "allowWarnings" "silenceDeprecations"
+buildOptions "ignoreDeprecations" "debugInfo"

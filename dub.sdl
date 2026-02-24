@@ -16,11 +16,23 @@ dependency "uim-framework" version="~>26.2.3"
 // Internal Dependencies
 dependency ":service" version="*"
 
+dependency ":master-data-integration" version="*"
+dependency ":master-data-governance" version="*"
+dependency ":monitoring" version="*"
+dependency ":site-directory" version="*"
+dependency ":site-manager" version="*"
+
 // Source files
 sourceFiles "./source/uim/sap/all.d"
 
 // Subpackages
 subPackage "service"
+
+subPackage "master-data-integration"
+subPackage "master-data-governance"
+subPackage "monitoring"
+subPackage "site-directory"
+subPackage "site-manager"
 
 buildRequirements "allowWarnings" "silenceDeprecations"
 buildOptions "ignoreDeprecations" "debugInfo"
