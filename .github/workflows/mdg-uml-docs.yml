@@ -1,0 +1,43 @@
+name: mdg-uml-docs
+
+on:
+  push:
+    paths:
+      - 'Master Data Governance/docs/uml/**'
+      - 'Master Data Governance/Makefile'
+  pull_request:
+    paths:
+      - 'Master Data Governance/docs/uml/**'
+      - 'Master Data Governance/Makefile'
+
+jobs:
+  render-uml:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Install PlantUML and Make
+        run: sudo apt-get update && sudo apt-get install -y plantuml make
+
+      - name: Validate and render UML (SVG)
+        working-directory: Master Data Governance
+        run: |
+          make uml-check
+          make uml-svg
+
+      - name: Upload UML SVG artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: mdg-uml-svg
+          path: Master Data Governance/docs/uml/*.svg
+          if-no-files-found: error

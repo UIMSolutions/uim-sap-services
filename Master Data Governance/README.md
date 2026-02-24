@@ -81,3 +81,63 @@ kubectl apply -f k8s/configmap.yaml
 kubectl apply -f k8s/deployment.yaml
 kubectl apply -f k8s/service.yaml
 ```
+
+## UML Documentation (PlantUML)
+
+Separate UML descriptions are available in `docs/uml`:
+
+- `docs/uml/component-architecture.puml` - high-level service components and interactions
+- `docs/uml/class-model.puml` - core classes, models, and dependencies
+- `docs/uml/sequence-governance-workflow.puml` - create/update business partner workflow
+- `docs/uml/sequence-consolidation-quality.puml` - duplicate detection/merge and quality evaluation
+
+Render diagrams from this folder:
+
+```bash
+make uml-check # fail if no .puml files exist
+make uml      # render PNG files
+make uml-svg  # render SVG files
+make uml-clean
+```
+
+Requirements: `plantuml` (and Java runtime available in PATH).
+
+### CI example (GitHub Actions)
+
+```yaml
+name: uml-docs
+
+on:
+  push:
+    paths:
+      - 'Master Data Governance/docs/uml/**'
+      - 'Master Data Governance/Makefile'
+
+jobs:
+  render-uml:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - run: sudo apt-get update && sudo apt-get install -y plantuml make
+      - run: cd "Master Data Governance" && make uml-check && make uml-svg
+```
+
+### CI example (GitLab)
+
+```yaml
+uml_docs:
+  image: eclipse-temurin:21-jdk
+  script:
+    - apt-get update && apt-get install -y plantuml make
+    - cd "Master Data Governance"
+    - make uml-check
+    - make uml-svg
+  rules:
+    - changes:
+        - Master Data Governance/docs/uml/**/*
+        - Master Data Governance/Makefile
+```
