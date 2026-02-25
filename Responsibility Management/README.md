@@ -19,6 +19,23 @@ dub build
 ./build/uim-sap-responsibility-management-service
 ```
 
+## Smoke Test
+
+Run automated checks for team/rule maintenance, agent determination, logs, and export:
+
+```bash
+cd "Responsibility Management"
+bash scripts/smoke-test.sh
+```
+
+Optional variables:
+
+- `BASE_URL` (default `http://localhost:8095/api/rms`)
+- `TENANT_ID` (default `t1`)
+- `SPACE_ID` (default `workflow`)
+- `AUTH_TOKEN` (optional)
+- `TEAM_NAME` (default `Smoke Invoice Team`)
+
 ## Podman
 
 ```bash
