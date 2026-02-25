@@ -1,0 +1,29 @@
+@startuml component_architecture
+!theme plain
+
+title UIM Audit Log Service - Component Architecture
+
+actor "SAP BTP App/Service" as Producer
+actor "Compliance Auditor" as Auditor
+
+node "Audit Log Service Runtime" {
+  component "AuditLogServer\n(vibe.d REST API)" as Api
+  component "AuditLogService\n(Write/Retrieve/Viewer/Retention)" as Domain
+  database "AuditLogStore\n(In-Memory Audit Events)" as Store
+}
+
+Producer --> Api : Write API (OAuth2 token)
+Auditor --> Api : Retrieval API + Viewer
+Api --> Domain : route + validate
+Domain --> Store : persist/read/purge
+
+note right of Domain
+Features:
+- recommended event types
+- retrieval + download preview
+- viewer for subaccount logs
+- default 90-day retention
+- premium retention and cost estimate
+end note
+
+@enduml

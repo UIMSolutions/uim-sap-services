@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: uim-sap-audit-log-config
+  labels:
+    app: uim-sap-audit-log
+data:
+  AUDITLOG_HOST: "0.0.0.0"
+  AUDITLOG_PORT: "8090"
+  AUDITLOG_BASE_PATH: "/api/auditlog"
+  AUDITLOG_SERVICE_NAME: "uim-sap-audit-log"
+  AUDITLOG_SERVICE_VERSION: "1.0.0"
+  AUDITLOG_DEFAULT_RETENTION_DAYS: "90"
+  AUDITLOG_DEFAULT_PLAN: "default"
+  AUDITLOG_PREMIUM_COST_PER_1000: "0.75"
