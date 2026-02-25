@@ -3,8 +3,10 @@ module uim.sap.html5repo.store;
 import std.algorithm.searching : canFind;
 import std.array : join;
 import std.base64 : Base64;
+import std.conv : to;
 import std.datetime : Clock;
-import std.file : SpanMode, dirEntries, exists, isDir, mkdirRecurse, readText, remove, rename, write;
+import std.file : SpanMode, dirEntries, exists, isDir, mkdirRecurse, read,
+    readText, remove, rename, rmdirRecurse, write;
 import std.path : baseName, buildPath, dirName, extension;
 import std.string : split, strip, toLower;
 
@@ -21,17 +23,25 @@ class HTML5RepositoryStore {
         mkdirRecurse(_root);
     }
 
-    void uploadVersion(TenantContext tenant, string appId, string version, Visibility visibility, UploadedAsset[] files, long maxUploadBytes, bool activateNow) {
+    void uploadVersion(
+        TenantContext tenant,
+        string appId,
+        string versionId,
+        Visibility visibility,
+        UploadedAsset[] files,
+        long maxUploadBytes,
+        bool activateNow
+    ) {
         validateIdentity(tenant.tenantId, "tenant_id");
         validateIdentity(tenant.spaceId, "space_id");
         validateIdentity(appId, "app_id");
-        validateIdentity(version, "version");
+        validateIdentity(versionId, "version");
 
         if (files.length == 0) {
             throw new HTML5RepoValidationException("At least one file is required");
         }
 
-        auto versionRoot = versionDirectory(tenant.tenantId, tenant.spaceId, appId, version);
+        auto versionRoot = versionDirectory(tenant.tenantId, tenant.spaceId, appId, versionId);
         auto contentRoot = buildPath(versionRoot, "content");
         mkdirRecurse(contentRoot);
 
@@ -63,15 +73,15 @@ class HTML5RepositoryStore {
         }
 
         auto now = Clock.currTime().toISOExtString();
-        auto previous = tryGetVersionInfo(tenant.tenantId, tenant.spaceId, appId, version);
+        auto previous = tryGetVersionInfo(tenant.tenantId, tenant.spaceId, appId, versionId);
 
         AppVersionInfo info;
         info.tenantId = tenant.tenantId;
         info.spaceId = tenant.spaceId;
         info.appId = appId;
-        info.version = version;
+        info.versionId = versionId;
         info.visibility = visibility;
-        info.createdAt = previous.version.length > 0 ? previous.createdAt : now;
+        info.createdAt = previous.versionId.length > 0 ? previous.createdAt : now;
         info.updatedAt = now;
         info.sizeBytes = totalBytes;
         info.fileCount = fileCount;
@@ -80,20 +90,20 @@ class HTML5RepositoryStore {
         writeVersionMetadata(info);
 
         if (activateNow) {
-            setActiveVersion(tenant.tenantId, tenant.spaceId, appId, version);
+            setActiveVersion(tenant.tenantId, tenant.spaceId, appId, versionId);
         }
     }
 
-    void setActiveVersion(string tenantId, string spaceId, string appId, string version) {
-        auto requested = tryGetVersionInfo(tenantId, spaceId, appId, version);
-        if (requested.version.length == 0) {
-            throw new HTML5RepoNotFoundException("Version", appId ~ ":" ~ version);
+    void setActiveVersion(string tenantId, string spaceId, string appId, string versionId) {
+        auto requested = tryGetVersionInfo(tenantId, spaceId, appId, versionId);
+        if (requested.versionId.length == 0) {
+            throw new HTML5RepoNotFoundException("Version", appId ~ ":" ~ versionId);
         }
 
         auto versions = listVersions(tenantId, spaceId, appId);
         foreach (item; versions) {
             auto current = item;
-            current.active = current.version == version;
+            current.active = current.versionId == versionId;
             current.updatedAt = Clock.currTime().toISOExtString();
             writeVersionMetadata(current);
         }
@@ -103,7 +113,7 @@ class HTML5RepositoryStore {
 
         auto activeFile = buildPath(appRoot, "active-version.txt");
         auto tempFile = buildPath(appRoot, "active-version.tmp");
-        write(tempFile, version);
+        write(tempFile, versionId);
 
         if (exists(activeFile)) {
             remove(activeFile);
@@ -131,7 +141,7 @@ class HTML5RepositoryStore {
             try {
                 auto payload = parseJsonString(readText(metadataFile));
                 auto info = AppVersionInfo.fromJson(payload);
-                info.active = activeVersion(tenantId, spaceId, appId) == info.version;
+                info.active = activeVersion(tenantId, spaceId, appId) == info.versionId;
                 results ~= info;
             } catch (Exception) {
             }
@@ -171,7 +181,7 @@ class HTML5RepositoryStore {
 
                 auto active = activeVersion(tenantId, currentSpace, appId);
                 if (active.length == 0) {
-                    active = versions[0].version;
+                    active = versions[0].versionId;
                 }
 
                 auto activeInfo = tryGetVersionInfo(tenantId, currentSpace, appId, active);
@@ -195,8 +205,8 @@ class HTML5RepositoryStore {
         return result;
     }
 
-    AppVersionInfo tryGetVersionInfo(string tenantId, string spaceId, string appId, string version) {
-        auto metadataFile = buildPath(versionDirectory(tenantId, spaceId, appId, version), "metadata.json");
+    AppVersionInfo tryGetVersionInfo(string tenantId, string spaceId, string appId, string versionId) {
+        auto metadataFile = buildPath(versionDirectory(tenantId, spaceId, appId, versionId), "metadata.json");
         if (!exists(metadataFile)) {
             return AppVersionInfo.init;
         }
@@ -204,7 +214,7 @@ class HTML5RepositoryStore {
         try {
             auto payload = parseJsonString(readText(metadataFile));
             auto info = AppVersionInfo.fromJson(payload);
-            info.active = activeVersion(tenantId, spaceId, appId) == info.version;
+            info.active = activeVersion(tenantId, spaceId, appId) == info.versionId;
             return info;
         } catch (Exception) {
             return AppVersionInfo.init;
@@ -219,11 +229,11 @@ class HTML5RepositoryStore {
         return strip(readText(activeFile));
     }
 
-    string[] listFiles(string tenantId, string spaceId, string appId, string version) {
+    string[] listFiles(string tenantId, string spaceId, string appId, string versionId) {
         string[] files;
-        auto contentRoot = buildPath(versionDirectory(tenantId, spaceId, appId, version), "content");
+        auto contentRoot = buildPath(versionDirectory(tenantId, spaceId, appId, versionId), "content");
         if (!exists(contentRoot)) {
-            throw new HTML5RepoNotFoundException("Version", appId ~ ":" ~ version);
+            throw new HTML5RepoNotFoundException("Version", appId ~ ":" ~ versionId);
         }
 
         foreach (entry; dirEntries(contentRoot, SpanMode.depth)) {
@@ -242,10 +252,19 @@ class HTML5RepositoryStore {
         return files;
     }
 
-    RuntimeAsset loadAsset(string tenantId, string spaceId, string appId, string version, string assetPath, string consumerTenantId, string consumerSpaceId, bool allowPublicCrossSpace) {
-        auto info = tryGetVersionInfo(tenantId, spaceId, appId, version);
-        if (info.version.length == 0) {
-            throw new HTML5RepoNotFoundException("Version", appId ~ ":" ~ version);
+    RuntimeAsset loadAsset(
+        string tenantId,
+        string spaceId,
+        string appId,
+        string versionId,
+        string assetPath,
+        string consumerTenantId,
+        string consumerSpaceId,
+        bool allowPublicCrossSpace
+    ) {
+        auto info = tryGetVersionInfo(tenantId, spaceId, appId, versionId);
+        if (info.versionId.length == 0) {
+            throw new HTML5RepoNotFoundException("Version", appId ~ ":" ~ versionId);
         }
 
         if (consumerTenantId.length > 0 && consumerTenantId != tenantId) {
@@ -264,7 +283,7 @@ class HTML5RepositoryStore {
         }
 
         auto cleanPath = normalizeAssetPath(assetPath);
-        auto assetFile = buildPath(versionDirectory(tenantId, spaceId, appId, version), "content", cleanPath);
+        auto assetFile = buildPath(versionDirectory(tenantId, spaceId, appId, versionId), "content", cleanPath);
         if (!exists(assetFile)) {
             throw new HTML5RepoNotFoundException("Asset", cleanPath);
         }
@@ -273,7 +292,7 @@ class HTML5RepositoryStore {
         asset.tenantId = tenantId;
         asset.spaceId = spaceId;
         asset.appId = appId;
-        asset.version = version;
+        asset.versionId = versionId;
         asset.path = cleanPath;
         asset.isPublic = !privateAsset;
         asset.content = cast(ubyte[])read(assetFile);
@@ -282,15 +301,15 @@ class HTML5RepositoryStore {
         return asset;
     }
 
-    void deleteVersion(string tenantId, string spaceId, string appId, string version) {
-        auto root = versionDirectory(tenantId, spaceId, appId, version);
+    void deleteVersion(string tenantId, string spaceId, string appId, string versionId) {
+        auto root = versionDirectory(tenantId, spaceId, appId, versionId);
         if (!exists(root)) {
-            throw new HTML5RepoNotFoundException("Version", appId ~ ":" ~ version);
+            throw new HTML5RepoNotFoundException("Version", appId ~ ":" ~ versionId);
         }
-        remove(root);
+        rmdirRecurse(root);
 
         auto active = activeVersion(tenantId, spaceId, appId);
-        if (active == version) {
+        if (active == versionId) {
             auto activeFile = buildPath(appDirectory(tenantId, spaceId, appId), "active-version.txt");
             if (exists(activeFile)) {
                 remove(activeFile);
@@ -299,14 +318,14 @@ class HTML5RepositoryStore {
     }
 
     private void writeVersionMetadata(AppVersionInfo info) {
-        auto root = versionDirectory(info.tenantId, info.spaceId, info.appId, info.version);
+        auto root = versionDirectory(info.tenantId, info.spaceId, info.appId, info.versionId);
         mkdirRecurse(root);
         auto file = buildPath(root, "metadata.json");
         write(file, info.toJson().toString());
     }
 
     private string toEtag(AppVersionInfo info, string path) {
-        return info.appId ~ "-" ~ info.version ~ "-" ~ cast(string)info.sizeBytes ~ "-" ~ path;
+        return info.appId ~ "-" ~ info.versionId ~ "-" ~ to!string(info.sizeBytes) ~ "-" ~ path;
     }
 
     private string normalizeAssetPath(string pathValue) {
@@ -333,7 +352,7 @@ class HTML5RepositoryStore {
 
     private string mimeTypeFor(string assetPath) {
         auto ext = toLower(extension(assetPath));
-        final switch (ext) {
+        switch (ext) {
             case ".html": return "text/html; charset=utf-8";
             case ".css": return "text/css; charset=utf-8";
             case ".js": return "application/javascript; charset=utf-8";
@@ -353,8 +372,8 @@ class HTML5RepositoryStore {
         return buildPath(spaceDirectory(tenantId, spaceId), "apps", safeIdentity(appId));
     }
 
-    private string versionDirectory(string tenantId, string spaceId, string appId, string version) {
-        return buildPath(appDirectory(tenantId, spaceId, appId), "versions", safeIdentity(version));
+    private string versionDirectory(string tenantId, string spaceId, string appId, string versionId) {
+        return buildPath(appDirectory(tenantId, spaceId, appId), "versions", safeIdentity(versionId));
     }
 
     private string tenantDirectory(string tenantId) {
@@ -366,15 +385,22 @@ class HTML5RepositoryStore {
     }
 
     private string safeIdentity(string raw) {
-        char[] out;
+        char[] sanitized;
         foreach (ch; raw) {
-            if ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9') || ch == '-' || ch == '_' || ch == '.') {
-                out ~= ch;
+            if (
+                (ch >= 'a' && ch <= 'z') ||
+                (ch >= 'A' && ch <= 'Z') ||
+                (ch >= '0' && ch <= '9') ||
+                ch == '-' ||
+                ch == '_' ||
+                ch == '.'
+            ) {
+                sanitized ~= ch;
             } else {
-                out ~= '_';
+                sanitized ~= '_';
             }
         }
-        return out.idup;
+        return sanitized.idup;
     }
 
     private void validateIdentity(string value, string fieldName) {

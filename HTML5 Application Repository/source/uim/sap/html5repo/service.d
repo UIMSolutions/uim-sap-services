@@ -1,7 +1,5 @@
 module uim.sap.html5repo.service;
 
-import std.base64 : Base64;
-
 import vibe.data.json : Json;
 
 import uim.sap.html5repo.cache;
@@ -41,7 +39,7 @@ class HTML5RepoService {
         return payload;
     }
 
-    Json uploadVersion(TenantContext tenant, string appId, string version, Json request) {
+    Json uploadVersion(TenantContext tenant, string appId, string versionId, Json request) {
         auto visibility = visibilityFromString(getString(request, "visibility", "private"));
         auto activate = getBool(request, "activate", true);
 
@@ -62,10 +60,10 @@ class HTML5RepoService {
             files ~= file;
         }
 
-        _store.uploadVersion(tenant, appId, version, visibility, files, _config.maxUploadBytes, activate);
+        _store.uploadVersion(tenant, appId, versionId, visibility, files, _config.maxUploadBytes, activate);
         invalidateAppCache(tenant.tenantId, tenant.spaceId, appId);
 
-        auto info = _store.tryGetVersionInfo(tenant.tenantId, tenant.spaceId, appId, version);
+        auto info = _store.tryGetVersionInfo(tenant.tenantId, tenant.spaceId, appId, versionId);
         Json payload = Json.emptyObject;
         payload["uploaded"] = true;
         payload["version"] = info.toJson();
@@ -73,14 +71,14 @@ class HTML5RepoService {
         return payload;
     }
 
-    Json activateVersion(TenantContext tenant, string appId, string version) {
-        _store.setActiveVersion(tenant.tenantId, tenant.spaceId, appId, version);
+    Json activateVersion(TenantContext tenant, string appId, string versionId) {
+        _store.setActiveVersion(tenant.tenantId, tenant.spaceId, appId, versionId);
         invalidateAppCache(tenant.tenantId, tenant.spaceId, appId);
 
         Json payload = Json.emptyObject;
         payload["activated"] = true;
         payload["app_id"] = appId;
-        payload["version"] = version;
+        payload["version"] = versionId;
         return payload;
     }
 
@@ -100,8 +98,8 @@ class HTML5RepoService {
         return payload;
     }
 
-    Json listFiles(TenantContext tenant, string appId, string version) {
-        auto files = _store.listFiles(tenant.tenantId, tenant.spaceId, appId, version);
+    Json listFiles(TenantContext tenant, string appId, string versionId) {
+        auto files = _store.listFiles(tenant.tenantId, tenant.spaceId, appId, versionId);
         Json list = Json.emptyArray;
         foreach (path; files) {
             list ~= path;
@@ -111,7 +109,7 @@ class HTML5RepoService {
         payload["tenant_id"] = tenant.tenantId;
         payload["space_id"] = tenant.spaceId;
         payload["app_id"] = appId;
-        payload["version"] = version;
+        payload["version"] = versionId;
         payload["files"] = list;
         payload["total_files"] = cast(long)files.length;
         return payload;
@@ -133,49 +131,82 @@ class HTML5RepoService {
         return payload;
     }
 
-    Json deleteVersion(TenantContext tenant, string appId, string version) {
-        _store.deleteVersion(tenant.tenantId, tenant.spaceId, appId, version);
+    Json deleteVersion(TenantContext tenant, string appId, string versionId) {
+        _store.deleteVersion(tenant.tenantId, tenant.spaceId, appId, versionId);
         invalidateAppCache(tenant.tenantId, tenant.spaceId, appId);
 
         Json payload = Json.emptyObject;
         payload["deleted"] = true;
         payload["app_id"] = appId;
-        payload["version"] = version;
+        payload["version"] = versionId;
         return payload;
     }
 
-    RuntimeAsset runtimeAssetByActiveVersion(string tenantId, string spaceId, string appId, string assetPath, string consumerTenantId, string consumerSpaceId) {
+    RuntimeAsset runtimeAssetByActiveVersion(
+        string tenantId,
+        string spaceId,
+        string appId,
+        string assetPath,
+        string consumerTenantId,
+        string consumerSpaceId
+    ) {
         auto activeVersion = _store.activeVersion(tenantId, spaceId, appId);
         if (activeVersion.length == 0) {
             throw new HTML5RepoNotFoundException("Active version", appId);
         }
-        return runtimeAssetByVersion(tenantId, spaceId, appId, activeVersion, assetPath, consumerTenantId, consumerSpaceId);
+        return runtimeAssetByVersion(
+            tenantId,
+            spaceId,
+            appId,
+            activeVersion,
+            assetPath,
+            consumerTenantId,
+            consumerSpaceId
+        );
     }
 
-    RuntimeAsset runtimeAssetByVersion(string tenantId, string spaceId, string appId, string version, string assetPath, string consumerTenantId, string consumerSpaceId) {
-        auto key = tenantId ~ "|" ~ spaceId ~ "|" ~ appId ~ "|" ~ version ~ "|" ~ assetPath ~ "|" ~ consumerTenantId ~ "|" ~ consumerSpaceId;
+    RuntimeAsset runtimeAssetByVersion(
+        string tenantId,
+        string spaceId,
+        string appId,
+        string versionId,
+        string assetPath,
+        string consumerTenantId,
+        string consumerSpaceId
+    ) {
+        auto key = tenantId ~ "|" ~ spaceId ~ "|" ~ appId ~ "|" ~ versionId ~ "|" ~
+            assetPath ~ "|" ~ consumerTenantId ~ "|" ~ consumerSpaceId;
         RuntimeAsset cached;
         if (_cache.tryGet(key, cached)) {
             return cached;
         }
 
-        auto loaded = _store.loadAsset(tenantId, spaceId, appId, version, assetPath, consumerTenantId, consumerSpaceId, _config.allowPublicCrossSpace);
+        auto loaded = _store.loadAsset(
+            tenantId,
+            spaceId,
+            appId,
+            versionId,
+            assetPath,
+            consumerTenantId,
+            consumerSpaceId,
+            _config.allowPublicCrossSpace
+        );
         _cache.put(key, loaded);
         return loaded;
     }
 
     Json activeVersion(TenantContext tenant, string appId) {
-        auto version = _store.activeVersion(tenant.tenantId, tenant.spaceId, appId);
-        if (version.length == 0) {
+        auto activeVersionId = _store.activeVersion(tenant.tenantId, tenant.spaceId, appId);
+        if (activeVersionId.length == 0) {
             throw new HTML5RepoNotFoundException("Active version", appId);
         }
 
-        auto info = _store.tryGetVersionInfo(tenant.tenantId, tenant.spaceId, appId, version);
+        auto info = _store.tryGetVersionInfo(tenant.tenantId, tenant.spaceId, appId, activeVersionId);
         Json payload = Json.emptyObject;
         payload["tenant_id"] = tenant.tenantId;
         payload["space_id"] = tenant.spaceId;
         payload["app_id"] = appId;
-        payload["active_version"] = version;
+        payload["active_version"] = activeVersionId;
         payload["visibility"] = visibilityToString(info.visibility);
         return payload;
     }

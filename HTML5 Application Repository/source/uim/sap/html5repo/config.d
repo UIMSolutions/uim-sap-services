@@ -28,7 +28,9 @@ struct HTML5RepoConfig {
     void validate() const {
         if (host.length == 0) throw new HTML5RepoConfigurationException("Host cannot be empty");
         if (port == 0) throw new HTML5RepoConfigurationException("Port must be greater than zero");
-        if (basePath.length == 0 || !basePath.startsWith("/")) throw new HTML5RepoConfigurationException("Base path must start with '/'");
+        if (basePath.length == 0 || !basePath.startsWith("/")) {
+            throw new HTML5RepoConfigurationException("Base path must start with '/'");
+        }
         if (serviceName.length == 0) throw new HTML5RepoConfigurationException("Service name cannot be empty");
         if (dataDirectory.length == 0) throw new HTML5RepoConfigurationException("Data directory cannot be empty");
         if (defaultTenant.length == 0) throw new HTML5RepoConfigurationException("Default tenant cannot be empty");
@@ -36,7 +38,9 @@ struct HTML5RepoConfig {
         if (cacheTtlSeconds < 0) throw new HTML5RepoConfigurationException("Cache TTL must be >= 0");
         if (maxUploadBytes < 1) throw new HTML5RepoConfigurationException("maxUploadBytes must be positive");
         if (requireManagementAuth && managementAuthToken.length == 0) {
-            throw new HTML5RepoConfigurationException("Management auth token is required when management auth is enabled");
+            throw new HTML5RepoConfigurationException(
+                "Management auth token is required when management auth is enabled"
+            );
         }
     }
 }

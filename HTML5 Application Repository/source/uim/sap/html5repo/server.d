@@ -1,6 +1,7 @@
 module uim.sap.html5repo.server;
 
 import std.array : split;
+import std.conv : to;
 import std.string : startsWith;
 
 import vibe.data.json : Json;
@@ -87,32 +88,52 @@ class HTML5RepoServer {
             return;
         }
 
-        if (segments.length == 4 && segments[0] == "v1" && segments[1] == "apps" && segments[3] == "versions" && req.method == HTTPMethod.GET) {
+        if (
+            segments.length == 4 && segments[0] == "v1" && segments[1] == "apps" &&
+            segments[3] == "versions" && req.method == HTTPMethod.GET
+        ) {
             res.writeJsonBody(_service.listVersions(tenant, segments[2]), 200);
             return;
         }
 
-        if (segments.length == 4 && segments[0] == "v1" && segments[1] == "apps" && segments[3] == "active" && req.method == HTTPMethod.GET) {
+        if (
+            segments.length == 4 && segments[0] == "v1" && segments[1] == "apps" &&
+            segments[3] == "active" && req.method == HTTPMethod.GET
+        ) {
             res.writeJsonBody(_service.activeVersion(tenant, segments[2]), 200);
             return;
         }
 
-        if (segments.length == 6 && segments[0] == "v1" && segments[1] == "apps" && segments[3] == "versions" && segments[5] == "files" && req.method == HTTPMethod.GET) {
+        if (
+            segments.length == 6 && segments[0] == "v1" && segments[1] == "apps" &&
+            segments[3] == "versions" && segments[5] == "files" &&
+            req.method == HTTPMethod.GET
+        ) {
             res.writeJsonBody(_service.listFiles(tenant, segments[2], segments[4]), 200);
             return;
         }
 
-        if (segments.length == 5 && segments[0] == "v1" && segments[1] == "apps" && segments[3] == "versions" && req.method == HTTPMethod.POST) {
+        if (
+            segments.length == 5 && segments[0] == "v1" && segments[1] == "apps" &&
+            segments[3] == "versions" && req.method == HTTPMethod.POST
+        ) {
             res.writeJsonBody(_service.uploadVersion(tenant, segments[2], segments[4], req.json), 201);
             return;
         }
 
-        if (segments.length == 6 && segments[0] == "v1" && segments[1] == "apps" && segments[3] == "versions" && segments[5] == "activate" && req.method == HTTPMethod.POST) {
+        if (
+            segments.length == 6 && segments[0] == "v1" && segments[1] == "apps" &&
+            segments[3] == "versions" && segments[5] == "activate" &&
+            req.method == HTTPMethod.POST
+        ) {
             res.writeJsonBody(_service.activateVersion(tenant, segments[2], segments[4]), 200);
             return;
         }
 
-        if (segments.length == 5 && segments[0] == "v1" && segments[1] == "apps" && segments[3] == "versions" && req.method == HTTPMethod.DELETE_) {
+        if (
+            segments.length == 5 && segments[0] == "v1" && segments[1] == "apps" &&
+            segments[3] == "versions" && req.method == HTTPMethod.DELETE
+        ) {
             res.writeJsonBody(_service.deleteVersion(tenant, segments[2], segments[4]), 200);
             return;
         }
@@ -142,19 +163,35 @@ class HTML5RepoServer {
         RuntimeAsset asset;
         if (segments[4] == "active") {
             auto assetPath = joinFrom(segments, 5);
-            asset = _service.runtimeAssetByActiveVersion(tenantId, spaceId, appId, assetPath, consumerTenant, consumerSpace);
+            asset = _service.runtimeAssetByActiveVersion(
+                tenantId,
+                spaceId,
+                appId,
+                assetPath,
+                consumerTenant,
+                consumerSpace
+            );
         } else if (segments[4] == "versions") {
-            auto version = segments[5];
+            auto versionId = segments[5];
             auto assetPath = joinFrom(segments, 6);
-            asset = _service.runtimeAssetByVersion(tenantId, spaceId, appId, version, assetPath, consumerTenant, consumerSpace);
+            asset = _service.runtimeAssetByVersion(
+                tenantId,
+                spaceId,
+                appId,
+                versionId,
+                assetPath,
+                consumerTenant,
+                consumerSpace
+            );
         } else {
             respondError(res, "Not found", 404);
             return;
         }
 
         res.headers["ETag"] = asset.etag;
-        res.headers["Cache-Control"] = "public, max-age=" ~ cast(string)_service.config.cacheTtlSeconds;
-        res.writeBody(asset.content, asset.contentType, 200);
+        res.headers["Cache-Control"] = "public, max-age=" ~ to!string(_service.config.cacheTtlSeconds);
+        res.statusCode = 200;
+        res.writeBody(cast(const(ubyte)[])asset.content, asset.contentType);
     }
 
     private TenantContext tenantFromHeaders(HTTPServerRequest req) {
@@ -200,14 +237,14 @@ class HTML5RepoServer {
             throw new HTML5RepoValidationException("Asset path is required");
         }
 
-        string out;
+        string resultPath;
         foreach (index; startIndex .. segments.length) {
-            if (out.length > 0) {
-                out ~= "/";
+            if (resultPath.length > 0) {
+                resultPath ~= "/";
             }
-            out ~= segments[index];
+            resultPath ~= segments[index];
         }
-        return out;
+        return resultPath;
     }
 
     private void respondError(HTTPServerResponse res, string message, int statusCode) {

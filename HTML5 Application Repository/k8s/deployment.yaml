@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uim-sap-html5-repo
+  labels:
+    app: uim-sap-html5-repo
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: uim-sap-html5-repo
+  template:
+    metadata:
+      labels:
+        app: uim-sap-html5-repo
+    spec:
+      containers:
+      - name: uim-sap-html5-repo
+        image: ghcr.io/uimsolutions/uim-sap-html5-app-repo:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 8094
+        envFrom:
+        - configMapRef:
+            name: uim-sap-html5-repo-config
+        env:
+        - name: HTML5_REPO_AUTH_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: uim-sap-html5-repo-secret
+              key: management-token
+              optional: true
+        volumeMounts:
+        - name: repo-storage
+          mountPath: /var/lib/uim-html5-repo
+        readinessProbe:
+          httpGet:
+            path: /api/html5-repo/ready
+            port: http
+          initialDelaySeconds: 3
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /api/html5-repo/health
+            port: http
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 750m
+            memory: 1Gi
+      volumes:
+      - name: repo-storage
+        persistentVolumeClaim:
+          claimName: uim-sap-html5-repo-pvc
