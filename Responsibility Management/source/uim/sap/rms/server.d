@@ -1,6 +1,7 @@
 module uim.sap.rms.server;
 
 import std.array : split;
+import std.conv : to;
 import std.string : startsWith;
 
 import vibe.data.json : Json;
@@ -70,20 +71,32 @@ class RMSServer {
         auto segments = normalizedSegments(subPath);
         auto tenant = tenantFromHeaders(req);
 
-        if (segments.length == 2 && segments[0] == "v1" && segments[1] == "team-categories" && req.method == HTTPMethod.GET) {
+        if (
+            segments.length == 2 && segments[0] == "v1" &&
+            segments[1] == "team-categories" && req.method == HTTPMethod.GET
+        ) {
             res.writeJsonBody(_service.sapDeliveredCategories(), 200);
             return;
         }
 
-        if (segments.length == 2 && segments[0] == "v1" && segments[1] == "team-types" && req.method == HTTPMethod.GET) {
+        if (
+            segments.length == 2 && segments[0] == "v1" &&
+            segments[1] == "team-types" && req.method == HTTPMethod.GET
+        ) {
             res.writeJsonBody(_service.listTeamTypes(tenant), 200);
             return;
         }
-        if (segments.length == 3 && segments[0] == "v1" && segments[1] == "team-types" && req.method == HTTPMethod.PUT) {
+        if (
+            segments.length == 3 && segments[0] == "v1" &&
+            segments[1] == "team-types" && req.method == HTTPMethod.PUT
+        ) {
             res.writeJsonBody(_service.upsertTeamType(tenant, segments[2], req.json), 200);
             return;
         }
-        if (segments.length == 3 && segments[0] == "v1" && segments[1] == "team-types" && req.method == HTTPMethod.DELETE) {
+        if (
+            segments.length == 3 && segments[0] == "v1" &&
+            segments[1] == "team-types" && req.method == HTTPMethod.DELETE
+        ) {
             res.writeJsonBody(_service.deleteTeamType(tenant, segments[2]), 200);
             return;
         }
@@ -96,7 +109,10 @@ class RMSServer {
             res.writeJsonBody(_service.upsertFunction(tenant, segments[2], req.json), 200);
             return;
         }
-        if (segments.length == 3 && segments[0] == "v1" && segments[1] == "functions" && req.method == HTTPMethod.DELETE) {
+        if (
+            segments.length == 3 && segments[0] == "v1" &&
+            segments[1] == "functions" && req.method == HTTPMethod.DELETE
+        ) {
             res.writeJsonBody(_service.deleteFunction(tenant, segments[2]), 200);
             return;
         }
@@ -121,7 +137,11 @@ class RMSServer {
             res.writeJsonBody(_service.deleteTeam(tenant, segments[2]), 200);
             return;
         }
-        if (segments.length == 4 && segments[0] == "v1" && segments[1] == "teams" && segments[3] == "copy" && req.method == HTTPMethod.POST) {
+        if (
+            segments.length == 4 && segments[0] == "v1" &&
+            segments[1] == "teams" && segments[3] == "copy" &&
+            req.method == HTTPMethod.POST
+        ) {
             res.writeJsonBody(_service.copyTeam(tenant, segments[2], req.json), 201);
             return;
         }
@@ -147,13 +167,25 @@ class RMSServer {
             return;
         }
 
-        if (segments.length == 2 && segments[0] == "v1" && segments[1] == "determine" && req.method == HTTPMethod.POST) {
+        if (
+            segments.length == 2 && segments[0] == "v1" &&
+            segments[1] == "determine" && req.method == HTTPMethod.POST
+        ) {
             res.writeJsonBody(_service.determine(tenant, req.json), 200);
             return;
         }
 
         if (segments.length == 2 && segments[0] == "v1" && segments[1] == "logs" && req.method == HTTPMethod.GET) {
-            res.writeJsonBody(_service.listLogs(tenant, req.query), 200);
+            size_t limit = 100;
+            auto rawLimit = req.query.get("limit", "100");
+            try {
+                auto parsed = to!long(rawLimit);
+                if (parsed > 0) {
+                    limit = cast(size_t)parsed;
+                }
+            } catch (Exception) {
+            }
+            res.writeJsonBody(_service.listLogs(tenant, limit), 200);
             return;
         }
 

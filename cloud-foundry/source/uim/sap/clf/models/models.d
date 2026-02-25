@@ -9,93 +9,13 @@ mixin(ShowModule!());
 
 @safe:
 
-struct CLFOrg {
-    string guid;
-    string name;
-    SysTime createdAt;
 
-    Json toJson() const {
-        Json payload = Json.emptyObject;
-        payload["guid"] = guid;
-        payload["name"] = name;
-        payload["created_at"] = createdAt.toISOExtString();
-        return payload;
-    }
-}
 
-struct CLFSpace {
-    string guid;
-    string name;
-    string organizationGuid;
-    SysTime createdAt;
 
-    Json toJson() const {
-        Json payload = Json.emptyObject;
-        payload["guid"] = guid;
-        payload["name"] = name;
-        payload["organization_guid"] = organizationGuid;
-        payload["created_at"] = createdAt.toISOExtString();
-        return payload;
-    }
-}
 
-struct CLFApp {
-    string guid;
-    string name;
-    string spaceGuid;
-    string state = "STOPPED";
-    uint instances = 1;
-    uint memoryMb = 256;
-    SysTime createdAt;
 
-    Json toJson() const {
-        Json payload = Json.emptyObject;
-        payload["guid"] = guid;
-        payload["name"] = name;
-        payload["space_guid"] = spaceGuid;
-        payload["state"] = state;
-        payload["instances"] = cast(long)instances;
-        payload["memory_mb"] = cast(long)memoryMb;
-        payload["created_at"] = createdAt.toISOExtString();
-        return payload;
-    }
-}
 
-struct CLFServiceOffering {
-    string guid;
-    string label;
-    string provider;
-    string description;
 
-    Json toJson() const {
-        Json payload = Json.emptyObject;
-        payload["guid"] = guid;
-        payload["label"] = label;
-        payload["provider"] = provider;
-        payload["description"] = description;
-        return payload;
-    }
-}
-
-struct CLFServiceInstance {
-    string guid;
-    string name;
-    string serviceGuid;
-    string spaceGuid;
-    string status = "create succeeded";
-    SysTime createdAt;
-
-    Json toJson() const {
-        Json payload = Json.emptyObject;
-        payload["guid"] = guid;
-        payload["name"] = name;
-        payload["service_guid"] = serviceGuid;
-        payload["space_guid"] = spaceGuid;
-        payload["status"] = status;
-        payload["created_at"] = createdAt.toISOExtString();
-        return payload;
-    }
-}
 
 CLFOrg orgFromJson(Json payload) {
     CLFOrg org;

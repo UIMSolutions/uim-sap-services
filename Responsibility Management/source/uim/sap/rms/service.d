@@ -185,13 +185,7 @@ class RMSService {
         return _store.determineAgents(tenant, request);
     }
 
-    Json listLogs(TenantContext tenant, Json request) {
-        size_t limit = 100;
-        if ("limit" in request && request["limit"].type == Json.Type.int_) {
-            auto parsed = request["limit"].get!long;
-            if (parsed > 0) limit = cast(size_t)parsed;
-        }
-
+    Json listLogs(TenantContext tenant, size_t limit = 100) {
         Json list = Json.emptyArray;
         foreach (item; _store.listLogs(tenant, limit)) list ~= item.toJson();
 

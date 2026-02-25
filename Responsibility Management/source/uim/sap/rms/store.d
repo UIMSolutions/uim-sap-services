@@ -459,21 +459,21 @@ class RMSStore {
         }
 
         if (rule.mode == RuleMode.externalApi && rule.externalApiRef.length > 0) {
-            auto ref = rule.externalApiRef;
-            if (ref.startsWith("TEAM:")) {
-                auto teamId = ref[5 .. $].strip();
+            auto externalRef = rule.externalApiRef;
+            if (externalRef.startsWith("TEAM:")) {
+                auto teamId = externalRef[5 .. $].strip();
                 if (teamId in state.teams) {
                     teams ~= state.teams[teamId];
                 }
-            } else if (ref.startsWith("TEAM_BY_CATEGORY:")) {
-                auto category = ref[17 .. $].strip();
+            } else if (externalRef.startsWith("TEAM_BY_CATEGORY:")) {
+                auto category = externalRef[17 .. $].strip();
                 foreach (team; state.teams.byValue) {
                     if (toLower(team.categoryCode) == toLower(category)) {
                         teams ~= team;
                     }
                 }
-            } else if (ref.startsWith("FUNCTION:")) {
-                auto fn = ref[9 .. $].strip();
+            } else if (externalRef.startsWith("FUNCTION:")) {
+                auto fn = externalRef[9 .. $].strip();
                 foreach (team; state.teams.byValue) {
                     foreach (member; team.members) {
                         if (hasFunction(member.functions, fn)) {
@@ -490,14 +490,14 @@ class RMSStore {
 
     private Team[] dedupeTeams(Team[] list) {
         bool[string] seen;
-        Team[] out;
+        Team[] deduped;
         foreach (team; list) {
             if (!(team.id in seen)) {
                 seen[team.id] = true;
-                out ~= team;
+                deduped ~= team;
             }
         }
-        return out;
+        return deduped;
     }
 
     private bool memberMatchesRule(TeamMember member, ResponsibilityRule rule) {
@@ -748,15 +748,22 @@ class RMSStore {
     }
 
     private string safe(string value) {
-        string out;
+        string safeValue;
         foreach (ch; value) {
-            if ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9') || ch == '-' || ch == '_' || ch == '.') {
-                out ~= ch;
+            if (
+                (ch >= 'a' && ch <= 'z') ||
+                (ch >= 'A' && ch <= 'Z') ||
+                (ch >= '0' && ch <= '9') ||
+                ch == '-' ||
+                ch == '_' ||
+                ch == '.'
+            ) {
+                safeValue ~= ch;
             } else {
-                out ~= '_';
+                safeValue ~= '_';
             }
         }
-        return out;
+        return safeValue;
     }
 
     private void validateKey(string value, string label) {
@@ -802,15 +809,15 @@ class RMSStore {
     }
 
     private string[] getStringArray(Json payload, string key) {
-        string[] out;
+        string[] values;
         if (!(key in payload) || payload[key].type != Json.Type.array) {
-            return out;
+            return values;
         }
         foreach (item; payload[key]) {
             if (item.type == Json.Type.string) {
-                out ~= item.get!string;
+                values ~= item.get!string;
             }
         }
-        return out;
+        return values;
     }
 }
