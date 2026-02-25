@@ -15,7 +15,7 @@ struct ODataConfig {
     string serviceUrl;
     string username;
     string password;
-    ODataVersion version = ODataVersion.V4;
+    ODataVersion version_ = ODataVersion.V4;
     FioriAuthType authType = FioriAuthType.Basic;
     string oauthToken;
     string apiKey;
