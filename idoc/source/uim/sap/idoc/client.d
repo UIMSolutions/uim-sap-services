@@ -7,28 +7,18 @@
  */
 module uim.sap.idoc.client;
 
-import std.base64 : Base64;
-import std.datetime : Clock;
-import std.string : format;
+import uim.sap.idoc;
+@safe:
 
-import vibe.data.json : Json;
-import vibe.http.client : requestHTTP, HTTPClientRequest;
-import vibe.http.common : HTTPMethod;
-import vibe.textfilter.urlencode : urlEncode;
+class IDocClient {
+    private IDocConfig _config;
 
-import uim.sap.idoc.config;
-import uim.sap.idoc.exceptions;
-import uim.sap.idoc.models;
-
-class SAPIDocClient {
-    private SAPIDocConfig _config;
-
-    this(SAPIDocConfig config) {
+    this(IDocConfig config) {
         config.validate();
         _config = config;
     }
 
-    @property const(SAPIDocConfig) config() const {
+    @property const(IDocConfig) config() const {
         return _config;
     }
 
@@ -41,13 +31,13 @@ class SAPIDocClient {
         }
     }
 
-    SAPIDocResponse submit(SAPIDocSubmitRequest request) {
+    IDocResponse submit(IDocSubmitRequest request) {
         if (request.control.idocType.length == 0) {
-            throw new SAPIDocRequestException("IDOC type cannot be empty");
+            throw new IDocRequestException("IDOC type cannot be empty");
         }
 
         if (request.control.messageType.length == 0) {
-            throw new SAPIDocRequestException("Message type cannot be empty");
+            throw new IDocRequestException("Message type cannot be empty");
         }
 
         auto response = requestJSON(
@@ -67,7 +57,7 @@ class SAPIDocClient {
         return response;
     }
 
-    SAPIDocResponse submit(
+    IDocResponse submit(
         string idocType,
         string messageType,
         Json segments,
@@ -75,7 +65,7 @@ class SAPIDocClient {
         string receiverPort = "",
         bool testRun = false
     ) {
-        SAPIDocSubmitRequest request;
+        IDocSubmitRequest request;
         request.control.idocType = idocType;
         request.control.messageType = messageType;
         request.control.senderPort = senderPort;
@@ -86,9 +76,9 @@ class SAPIDocClient {
         return submit(request);
     }
 
-    SAPIDocResponse getStatus(string documentNumber) {
+    IDocResponse getStatus(string documentNumber) {
         if (documentNumber.length == 0) {
-            throw new SAPIDocRequestException("Document number cannot be empty");
+            throw new IDocRequestException("Document number cannot be empty");
         }
 
         auto url = _config.serviceUrl() ~ "/status/" ~ urlEncode(documentNumber);
@@ -102,12 +92,12 @@ class SAPIDocClient {
         return response;
     }
 
-    private SAPIDocResponse requestJSON(HTTPMethod method, string url, Json body = Json.emptyObject) {
+    private IDocResponse requestJSON(HTTPMethod method, string url, Json body = Json.emptyObject) {
         uint attempts = 0;
 
         while (attempts <= _config.maxRetries) {
             try {
-                SAPIDocResponse response;
+                IDocResponse response;
                 response.timestamp = Clock.currTime();
 
                 requestHTTP(url,
@@ -151,35 +141,35 @@ class SAPIDocClient {
                 );
 
                 if (!response.success) {
-                    throw new SAPIDocRequestException(response.errorMessage, response.statusCode);
+                    throw new IDocRequestException(response.errorMessage, response.statusCode);
                 }
 
                 return response;
-            } catch (SAPIDocRequestException e) {
+            } catch (IDocRequestException e) {
                 throw e;
             } catch (Exception e) {
                 attempts++;
                 if (attempts > _config.maxRetries) {
-                    throw new SAPIDocConnectionException(
+                    throw new IDocConnectionException(
                         format("SAP IDOC request failed after %d retries: %s", attempts, e.msg)
                     );
                 }
             }
         }
 
-        throw new SAPIDocConnectionException("SAP IDOC request failed with unknown error");
+        throw new IDocConnectionException("SAP IDOC request failed with unknown error");
     }
 
     private void applyAuth(HTTPClientRequest req) {
         final switch (_config.authType) {
-            case SAPIDocAuthType.None:
+            case IDocAuthType.None:
                 break;
-            case SAPIDocAuthType.Basic:
+            case IDocAuthType.Basic:
                 auto creds = _config.username ~ ":" ~ _config.password;
                 auto token = Base64.encode(cast(const(ubyte)[])creds).idup;
                 req.headers["Authorization"] = "Basic " ~ token;
                 break;
-            case SAPIDocAuthType.Bearer:
+            case IDocAuthType.Bearer:
                 req.headers["Authorization"] = "Bearer " ~ _config.bearerToken;
                 break;
         }

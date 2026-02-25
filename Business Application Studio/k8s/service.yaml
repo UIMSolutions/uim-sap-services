@@ -6,7 +6,7 @@ spec:
   selector:
     app: uim-sap-bas
   ports:
-    - protocol: TCP
-      port: 8088
-      targetPort: 8088
+  - protocol: TCP
+    port: 8088
+    targetPort: 8088
   type: ClusterIP

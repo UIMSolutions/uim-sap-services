@@ -1,10 +1,10 @@
-FROM dlanguage/dmd:latest AS build
+FROM docker.io/dlanguage/dmd:latest AS build
 
 WORKDIR /workspace
 COPY . .
 RUN dub build --build=release
 
-FROM ubuntu:24.04
+FROM docker.io/library/ubuntu:24.04
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends libssl3 ca-certificates \

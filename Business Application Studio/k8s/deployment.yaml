@@ -13,18 +13,18 @@ spec:
         app: uim-sap-bas
     spec:
       containers:
-        - name: uim-sap-bas
-          image: uim-sap-bas:latest
-          imagePullPolicy: IfNotPresent
-          ports:
-            - containerPort: 8088
-          envFrom:
-            - configMapRef:
-                name: uim-sap-bas-config
-          env:
-            - name: BAS_AUTH_TOKEN
-              valueFrom:
-                secretKeyRef:
-                  name: uim-sap-bas-secret
-                  key: authToken
-                  optional: true
+      - name: uim-sap-bas
+        image: uim-sap-bas:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8088
+        envFrom:
+        - configMapRef:
+            name: uim-sap-bas-config
+        env:
+        - name: BAS_AUTH_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: uim-sap-bas-secret
+              key: authToken
+              optional: true

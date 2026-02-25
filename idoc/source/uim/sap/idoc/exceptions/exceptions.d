@@ -5,30 +5,30 @@
  * License: Apache-2.0
  * Authors: Ozan Nurettin Süel
  */
-module uim.sap.idoc.exceptions;
+module uim.sap.idoc.exceptions.exceptions;
 
-class SAPIDocException : Exception {
+class IDocException : Exception {
     this(string msg, string file = __FILE__, size_t line = __LINE__, Throwable next = null)
     pure nothrow @safe @nogc {
         super(msg, file, line, next);
     }
 }
 
-class SAPIDocConfigurationException : SAPIDocException {
+class IDocConfigurationException : IDocException {
     this(string msg, string file = __FILE__, size_t line = __LINE__, Throwable next = null)
     pure nothrow @safe @nogc {
         super(msg, file, line, next);
     }
 }
 
-class SAPIDocConnectionException : SAPIDocException {
+class IDocConnectionException : IDocException {
     this(string msg, string file = __FILE__, size_t line = __LINE__, Throwable next = null)
     pure nothrow @safe @nogc {
         super(msg, file, line, next);
     }
 }
 
-class SAPIDocRequestException : SAPIDocException {
+class IDocRequestException : IDocException {
     int statusCode;
 
     this(

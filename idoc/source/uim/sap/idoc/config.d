@@ -8,17 +8,16 @@
 module uim.sap.idoc.config;
 
 import core.time : Duration, seconds;
-import std.string : format, startsWith;
+import uim.sap.idoc;
+@safe:
 
-import uim.sap.idoc.exceptions;
-
-enum SAPIDocAuthType {
+enum IDocAuthType {
     None,
     Basic,
     Bearer
 }
 
-struct SAPIDocConfig {
+struct IDocConfig {
     string baseUrl;
     string endpointPath = "/sap/idoc";
 
@@ -26,7 +25,7 @@ struct SAPIDocConfig {
     bool useSSL = true;
     bool verifySSL = true;
 
-    SAPIDocAuthType authType = SAPIDocAuthType.None;
+    IDocAuthType authType = IDocAuthType.None;
     string username;
     string password;
     string bearerToken;
@@ -41,19 +40,19 @@ struct SAPIDocConfig {
 
     void validate() const {
         if (baseUrl.length == 0) {
-            throw new SAPIDocConfigurationException("Base URL cannot be empty");
+            throw new IDocConfigurationException("Base URL cannot be empty");
         }
 
-        if (authType == SAPIDocAuthType.Basic) {
+        if (authType == IDocAuthType.Basic) {
             if (username.length == 0 || password.length == 0) {
-                throw new SAPIDocConfigurationException(
+                throw new IDocConfigurationException(
                     "Username and password are required for Basic authentication"
                 );
             }
         }
 
-        if (authType == SAPIDocAuthType.Bearer && bearerToken.length == 0) {
-            throw new SAPIDocConfigurationException(
+        if (authType == IDocAuthType.Bearer && bearerToken.length == 0) {
+            throw new IDocConfigurationException(
                 "Bearer token is required for Bearer authentication"
             );
         }
@@ -80,31 +79,31 @@ struct SAPIDocConfig {
         return (stripTrailingSlash(fullBaseUrl()) ~ path).idup;
     }
 
-    static SAPIDocConfig createBasic(
+    static IDocConfig createBasic(
         string baseUrl,
         string username,
         string password,
         string sapClient = ""
     ) {
-        SAPIDocConfig cfg;
+        IDocConfig cfg;
         cfg.baseUrl = baseUrl;
         cfg.username = username;
         cfg.password = password;
         cfg.sapClient = sapClient;
-        cfg.authType = SAPIDocAuthType.Basic;
+        cfg.authType = IDocAuthType.Basic;
         return cfg;
     }
 
-    static SAPIDocConfig createBearer(
+    static IDocConfig createBearer(
         string baseUrl,
         string bearerToken,
         string sapClient = ""
     ) {
-        SAPIDocConfig cfg;
+        IDocConfig cfg;
         cfg.baseUrl = baseUrl;
         cfg.bearerToken = bearerToken;
         cfg.sapClient = sapClient;
-        cfg.authType = SAPIDocAuthType.Bearer;
+        cfg.authType = IDocAuthType.Bearer;
         return cfg;
     }
 
