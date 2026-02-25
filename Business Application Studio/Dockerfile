@@ -1,9 +1,3 @@
-FROM docker.io/dlanguage/dmd:latest AS build
-
-WORKDIR /workspace
-COPY . .
-RUN dub build --build=release
-
 FROM docker.io/library/ubuntu:24.04
 
 RUN apt-get update \
@@ -12,7 +6,7 @@ RUN apt-get update \
 
 WORKDIR /app
 
-COPY --from=build /workspace/build/uim-sap-bas-service /app/uim-sap-bas-service
+COPY build/uim-sap-bas-service /app/uim-sap-bas-service
 
 ENV BAS_HOST=0.0.0.0 \
     BAS_PORT=8088 \
