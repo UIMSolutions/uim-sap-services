@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uim-sap-cis
+  labels:
+    app: uim-sap-cis
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: uim-sap-cis
+  template:
+    metadata:
+      labels:
+        app: uim-sap-cis
+    spec:
+      containers:
+      - name: uim-sap-cis
+        image: ghcr.io/uimsolutions/uim-sap-cis:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 8088
+        envFrom:
+        - configMapRef:
+            name: uim-sap-cis-config
+        env:
+        - name: CIS_AUTH_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: uim-sap-cis-secret
+              key: auth-token
+              optional: true
+        readinessProbe:
+          httpGet:
+            path: /api/cis/ready
+            port: http
+          initialDelaySeconds: 3
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /api/cis/health
+            port: http
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
