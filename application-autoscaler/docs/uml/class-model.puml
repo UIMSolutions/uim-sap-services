@@ -1,0 +1,105 @@
+@startuml
+!theme plain
+
+title UIM SAP Application Autoscaler (AAS) - Class Model
+
+package "uim.sap.aas" {
+  class AASConfig {
+    +host : string
+    +port : ushort
+    +basePath : string
+    +serviceName : string
+    +serviceVersion : string
+    +cfApi : string
+    +cfOrganization : string
+    +cfSpace : string
+    +requireAuthToken : bool
+    +authToken : string
+    +validate() : void
+  }
+
+  class AASApp {
+    +id : string
+    +name : string
+    +organization : string
+    +space : string
+    +currentInstances : uint
+    +minInstances : uint
+    +maxInstances : uint
+    +instanceHourlyCost : double
+    +toJson() : Json
+  }
+
+  class AASScalingPolicy {
+    +id : string
+    +appId : string
+    +metricType : AASMetricType
+    +customMetricName : string
+    +scaleOutThreshold : double
+    +scaleInThreshold : double
+    +scaleOutStep : uint
+    +scaleInStep : uint
+    +minInstances : uint
+    +maxInstances : uint
+    +cooldownSeconds : uint
+    +toJson() : Json
+  }
+
+  class AASMetricSnapshot {
+    +cpuPercent : double
+    +memoryPercent : double
+    +responseTimeMs : double
+    +throughputRps : double
+    +custom : double[string]
+    +toJson() : Json
+  }
+
+  class AASScaleDecision {
+    +appId : string
+    +currentInstances : uint
+    +desiredInstances : uint
+    +direction : string
+    +reason : string
+    +currentHourlyCost : double
+    +desiredHourlyCost : double
+    +toJson() : Json
+  }
+
+  class AASStore {
+    +createApp(app) : AASApp
+    +updateAppInstances(appId, desiredInstances) : AASApp
+    +listApps() : AASApp[]
+    +getApp(appId) : AASApp
+    +createPolicy(policy) : AASScalingPolicy
+    +listPolicies(appId) : AASScalingPolicy[]
+  }
+
+  class AASService {
+    -_config : AASConfig
+    -_store : AASStore
+    +registerApp(request) : Json
+    +listApps() : Json
+    +getApp(appId) : Json
+    +createPolicy(appId, request) : Json
+    +listPolicies(appId) : Json
+    +evaluate(appId, request, applyDecision) : Json
+    +triggerCFScale(appId, request) : Json
+  }
+
+  class AASServer {
+    -_service : AASService
+    +run() : void
+    -handleRequest(req, res) : void
+  }
+}
+
+AASService --> AASConfig
+AASService --> AASStore
+AASServer --> AASService
+AASStore "1" o-- "*" AASApp
+AASStore "1" o-- "*" AASScalingPolicy
+AASService ..> AASMetricSnapshot
+AASService ..> AASScaleDecision
+AASScalingPolicy ..> AASMetricType
+
+@enduml

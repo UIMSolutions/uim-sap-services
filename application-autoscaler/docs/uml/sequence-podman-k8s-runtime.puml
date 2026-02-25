@@ -1,0 +1,44 @@
+@startuml
+!theme plain
+
+title AAS Sequence - Podman Build and Kubernetes Runtime Flow
+
+actor "Developer / Platform Engineer" as Dev
+participant "Podman CLI" as Podman
+participant "Container Registry" as Registry
+participant "kubectl" as Kubectl
+participant "Kubernetes API Server" as K8sAPI
+participant "Deployment\nuim-sap-aas" as Deployment
+participant "Pod\nuim-sap-aas-service" as Pod
+participant "Service\nuim-sap-aas" as Service
+participant "HPA\nuim-sap-aas" as HPA
+participant "Metrics Server" as Metrics
+
+Dev -> Podman : podman build -t uim-sap-aas:tag .
+Podman --> Dev : Image built
+Dev -> Podman : podman push <registry>/uim-sap-aas:tag
+Podman -> Registry : Push image
+Registry --> Podman : Image available
+
+Dev -> Kubectl : kubectl apply -f k8s/*.yaml
+Kubectl -> K8sAPI : Create/Update ConfigMap, Secret, Deployment, Service, HPA
+K8sAPI -> Deployment : Reconcile desired state
+Deployment -> Pod : Pull image and start container
+Pod -> Pod : Expose :8086
+K8sAPI -> Service : Bind selector app=uim-sap-aas
+Service -> Pod : Route traffic to targetPort 8086
+
+HPA -> Metrics : Read CPU/Memory utilization
+Metrics --> HPA : Current metrics
+HPA -> Deployment : Adjust replica count (2..8)
+Deployment -> Pod : Scale out/in pods
+
+note right of Pod
+Endpoints served by container:
+- /api/autoscaler/health
+- /api/autoscaler/ready
+- /api/autoscaler/apps
+- /api/autoscaler/apps/{id}/metrics/evaluate/apply
+end note
+
+@enduml
