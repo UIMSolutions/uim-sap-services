@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uim-sap-dqm
+  labels:
+    app: uim-sap-dqm
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: uim-sap-dqm
+  template:
+    metadata:
+      labels:
+        app: uim-sap-dqm
+    spec:
+      containers:
+      - name: uim-sap-dqm
+        image: ghcr.io/uimsolutions/uim-sap-dqm:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 8091
+        envFrom:
+        - configMapRef:
+            name: uim-sap-dqm-config
+        env:
+        - name: DQM_AUTH_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: uim-sap-dqm-secret
+              key: auth-token
+              optional: true
+        readinessProbe:
+          httpGet:
+            path: /api/dqm/ready
+            port: http
+          initialDelaySeconds: 3
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /api/dqm/health
+            port: http
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
