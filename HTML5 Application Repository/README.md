@@ -19,6 +19,23 @@ dub build
 ./build/uim-sap-html5-app-repo-service
 ```
 
+## Smoke Test
+
+Run the automated flow (health, upload v1, upload v2 without activation, activate v2, runtime validation):
+
+```bash
+cd "HTML5 Application Repository"
+bash scripts/smoke-test.sh
+```
+
+Optional variables:
+
+- `BASE_URL` (default `http://localhost:8094/api/html5-repo`)
+- `TENANT_ID` (default `t1`)
+- `SPACE_ID` (default `space-a`)
+- `APP_ID` (default `smoke-dashboard`)
+- `AUTH_TOKEN` (optional)
+
 ### Environment variables
 
 - `HTML5_REPO_HOST` (default `0.0.0.0`)
