@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uim-sap-atm
+  labels:
+    app: uim-sap-atm
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: uim-sap-atm
+  template:
+    metadata:
+      labels:
+        app: uim-sap-atm
+    spec:
+      containers:
+      - name: uim-sap-atm
+        image: ghcr.io/uimsolutions/uim-sap-atm:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 8088
+        envFrom:
+        - configMapRef:
+            name: uim-sap-atm-config
+        env:
+        - name: ATM_BOOTSTRAP_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: uim-sap-atm-secret
+              key: bootstrap-token
+              optional: true
+        readinessProbe:
+          httpGet:
+            path: /api/atm/ready
+            port: http
+          initialDelaySeconds: 3
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /api/atm/health
+            port: http
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        resources:
+          requests:
+            cpu: 150m
+            memory: 192Mi
+          limits:
+            cpu: 1000m
+            memory: 1Gi
