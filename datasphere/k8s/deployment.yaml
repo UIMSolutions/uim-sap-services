@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uim-sap-datasphere
+  labels:
+    app: uim-sap-datasphere
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: uim-sap-datasphere
+  template:
+    metadata:
+      labels:
+        app: uim-sap-datasphere
+    spec:
+      containers:
+      - name: uim-sap-datasphere
+        image: ghcr.io/uimsolutions/uim-sap-datasphere:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 8098
+        envFrom:
+        - configMapRef:
+            name: uim-sap-datasphere-config
+        env:
+        - name: DATASPHERE_AUTH_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: uim-sap-datasphere-secret
+              key: auth-token
+              optional: true
+        readinessProbe:
+          httpGet:
+            path: /api/datasphere/ready
+            port: http
+          initialDelaySeconds: 3
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /api/datasphere/health
+            port: http
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        resources:
+          requests:
+            cpu: 100m
+            memory: 192Mi
+          limits:
+            cpu: 800m
+            memory: 1024Mi
