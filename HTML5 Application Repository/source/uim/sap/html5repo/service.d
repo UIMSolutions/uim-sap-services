@@ -1,0 +1,201 @@
+module uim.sap.html5repo.service;
+
+import std.base64 : Base64;
+
+import vibe.data.json : Json;
+
+import uim.sap.html5repo.cache;
+import uim.sap.html5repo.config;
+import uim.sap.html5repo.exceptions;
+import uim.sap.html5repo.models;
+import uim.sap.html5repo.store;
+
+class HTML5RepoService {
+    private HTML5RepoConfig _config;
+    private HTML5RepositoryStore _store;
+    private RuntimeAssetCache _cache;
+
+    this(HTML5RepoConfig config) {
+        config.validate();
+        _config = config;
+        _store = new HTML5RepositoryStore(_config.dataDirectory);
+        _cache = new RuntimeAssetCache(_config.cacheTtlSeconds);
+    }
+
+    @property const(HTML5RepoConfig) config() const {
+        return _config;
+    }
+
+    Json health() {
+        Json payload = Json.emptyObject;
+        payload["ok"] = true;
+        payload["service_name"] = _config.serviceName;
+        payload["service_version"] = _config.serviceVersion;
+        payload["cache_entries"] = cast(long)_cache.size();
+        return payload;
+    }
+
+    Json ready() {
+        Json payload = Json.emptyObject;
+        payload["ready"] = true;
+        return payload;
+    }
+
+    Json uploadVersion(TenantContext tenant, string appId, string version, Json request) {
+        auto visibility = visibilityFromString(getString(request, "visibility", "private"));
+        auto activate = getBool(request, "activate", true);
+
+        if (!("files" in request) || request["files"].type != Json.Type.array) {
+            throw new HTML5RepoValidationException("files array is required");
+        }
+
+        UploadedAsset[] files;
+        foreach (item; request["files"]) {
+            if (item.type != Json.Type.object) {
+                throw new HTML5RepoValidationException("files entries must be objects");
+            }
+
+            UploadedAsset file;
+            file.path = getString(item, "path", "");
+            file.contentBase64 = getString(item, "content_base64", "");
+            file.contentType = getString(item, "content_type", "");
+            files ~= file;
+        }
+
+        _store.uploadVersion(tenant, appId, version, visibility, files, _config.maxUploadBytes, activate);
+        invalidateAppCache(tenant.tenantId, tenant.spaceId, appId);
+
+        auto info = _store.tryGetVersionInfo(tenant.tenantId, tenant.spaceId, appId, version);
+        Json payload = Json.emptyObject;
+        payload["uploaded"] = true;
+        payload["version"] = info.toJson();
+        payload["zero_downtime"] = "Application router stays untouched, only static content version pointer changes.";
+        return payload;
+    }
+
+    Json activateVersion(TenantContext tenant, string appId, string version) {
+        _store.setActiveVersion(tenant.tenantId, tenant.spaceId, appId, version);
+        invalidateAppCache(tenant.tenantId, tenant.spaceId, appId);
+
+        Json payload = Json.emptyObject;
+        payload["activated"] = true;
+        payload["app_id"] = appId;
+        payload["version"] = version;
+        return payload;
+    }
+
+    Json listVersions(TenantContext tenant, string appId) {
+        auto versions = _store.listVersions(tenant.tenantId, tenant.spaceId, appId);
+        Json list = Json.emptyArray;
+        foreach (item; versions) {
+            list ~= item.toJson();
+        }
+
+        Json payload = Json.emptyObject;
+        payload["tenant_id"] = tenant.tenantId;
+        payload["space_id"] = tenant.spaceId;
+        payload["app_id"] = appId;
+        payload["versions"] = list;
+        payload["active_version"] = _store.activeVersion(tenant.tenantId, tenant.spaceId, appId);
+        return payload;
+    }
+
+    Json listFiles(TenantContext tenant, string appId, string version) {
+        auto files = _store.listFiles(tenant.tenantId, tenant.spaceId, appId, version);
+        Json list = Json.emptyArray;
+        foreach (path; files) {
+            list ~= path;
+        }
+
+        Json payload = Json.emptyObject;
+        payload["tenant_id"] = tenant.tenantId;
+        payload["space_id"] = tenant.spaceId;
+        payload["app_id"] = appId;
+        payload["version"] = version;
+        payload["files"] = list;
+        payload["total_files"] = cast(long)files.length;
+        return payload;
+    }
+
+    Json listApplications(TenantContext tenant) {
+        auto apps = _store.listApplications(tenant.tenantId, tenant.spaceId, _config.allowPublicCrossSpace);
+        Json list = Json.emptyArray;
+        foreach (item; apps) {
+            list ~= item;
+        }
+
+        Json payload = Json.emptyObject;
+        payload["tenant_id"] = tenant.tenantId;
+        payload["space_id"] = tenant.spaceId;
+        payload["applications"] = list;
+        payload["total_results"] = cast(long)apps.length;
+        payload["cross_space_public_enabled"] = _config.allowPublicCrossSpace;
+        return payload;
+    }
+
+    Json deleteVersion(TenantContext tenant, string appId, string version) {
+        _store.deleteVersion(tenant.tenantId, tenant.spaceId, appId, version);
+        invalidateAppCache(tenant.tenantId, tenant.spaceId, appId);
+
+        Json payload = Json.emptyObject;
+        payload["deleted"] = true;
+        payload["app_id"] = appId;
+        payload["version"] = version;
+        return payload;
+    }
+
+    RuntimeAsset runtimeAssetByActiveVersion(string tenantId, string spaceId, string appId, string assetPath, string consumerTenantId, string consumerSpaceId) {
+        auto activeVersion = _store.activeVersion(tenantId, spaceId, appId);
+        if (activeVersion.length == 0) {
+            throw new HTML5RepoNotFoundException("Active version", appId);
+        }
+        return runtimeAssetByVersion(tenantId, spaceId, appId, activeVersion, assetPath, consumerTenantId, consumerSpaceId);
+    }
+
+    RuntimeAsset runtimeAssetByVersion(string tenantId, string spaceId, string appId, string version, string assetPath, string consumerTenantId, string consumerSpaceId) {
+        auto key = tenantId ~ "|" ~ spaceId ~ "|" ~ appId ~ "|" ~ version ~ "|" ~ assetPath ~ "|" ~ consumerTenantId ~ "|" ~ consumerSpaceId;
+        RuntimeAsset cached;
+        if (_cache.tryGet(key, cached)) {
+            return cached;
+        }
+
+        auto loaded = _store.loadAsset(tenantId, spaceId, appId, version, assetPath, consumerTenantId, consumerSpaceId, _config.allowPublicCrossSpace);
+        _cache.put(key, loaded);
+        return loaded;
+    }
+
+    Json activeVersion(TenantContext tenant, string appId) {
+        auto version = _store.activeVersion(tenant.tenantId, tenant.spaceId, appId);
+        if (version.length == 0) {
+            throw new HTML5RepoNotFoundException("Active version", appId);
+        }
+
+        auto info = _store.tryGetVersionInfo(tenant.tenantId, tenant.spaceId, appId, version);
+        Json payload = Json.emptyObject;
+        payload["tenant_id"] = tenant.tenantId;
+        payload["space_id"] = tenant.spaceId;
+        payload["app_id"] = appId;
+        payload["active_version"] = version;
+        payload["visibility"] = visibilityToString(info.visibility);
+        return payload;
+    }
+
+    private string getString(Json payload, string key, string fallback) {
+        if (key in payload && payload[key].type == Json.Type.string) {
+            return payload[key].get!string;
+        }
+        return fallback;
+    }
+
+    private bool getBool(Json payload, string key, bool fallback) {
+        if (key in payload && payload[key].type == Json.Type.bool_) {
+            return payload[key].get!bool;
+        }
+        return fallback;
+    }
+
+    private void invalidateAppCache(string tenantId, string spaceId, string appId) {
+        auto prefix = tenantId ~ "|" ~ spaceId ~ "|" ~ appId ~ "|";
+        _cache.invalidateByPrefix(prefix);
+    }
+}
