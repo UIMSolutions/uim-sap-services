@@ -1,6 +1,0 @@
-.git
-.gitignore
-build/
-docs/
-k8s/
-*.log
