@@ -1,19 +1,8 @@
-module uim.sap.mdi.models.models;
-
-import uim.sap.mdi;
-@safe:
+module uim.sap.mdi.helpers.helper;
 
 string createId() {
     return randomUUID().toString();
 }
-
-
-
-
-
-
-
-
 
 bool isAllowedObjectType(string objectType) {
     auto v = toLower(objectType);
