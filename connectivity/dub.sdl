@@ -1,0 +1,18 @@
+name "connectivity"
+description "SAP Connectivity Service style bridge for hybrid access using D, uim-framework and vibe.d"
+homepage "https://github.com/UIMSolutions/uim-sap"
+authors "Ozan Nurettin Süel" "UI Manufaktur"
+copyright "Copyright © 2018-2026, Ozan Nurettin Süel"
+license "Apache-2.0"
+
+targetType "executable"
+targetName "uim-sap-con-service"
+targetPath "build"
+sourcePaths "source"
+importPaths "source"
+
+dependency "uim-framework" version="~>26.2.3"
+
+
+buildRequirements "allowWarnings" "silenceDeprecations"
+buildOptions "ignoreDeprecations" "debugInfo"
