@@ -1,5 +1,11 @@
 module uim.sap.atp.models.command;
 
+import uim.sap.atp;
+
+mixin(ShowModule!());
+
+@safe:
+
 struct ATPCommand {
   string tenantId;
   string commandId;

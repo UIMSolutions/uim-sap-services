@@ -1,5 +1,11 @@
 module uim.sap.atp.models.catalog;
 
+import uim.sap.atp;
+
+mixin(ShowModule!());
+
+@safe:
+
 struct ATPCatalog {
   string tenantId;
   string catalogId;

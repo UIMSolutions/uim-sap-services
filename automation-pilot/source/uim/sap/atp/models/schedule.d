@@ -1,5 +1,11 @@
 module uim.sap.atp.models.schedule;
 
+import uim.sap.atp;
+
+mixin(ShowModule!());
+
+@safe:
+
 struct ATPSchedule {
     string tenantId;
     string scheduleId;

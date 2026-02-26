@@ -1,5 +1,11 @@
 module uim.sap.atp.models.secretinput;
 
+import uim.sap.atp;
+
+mixin(ShowModule!());
+
+@safe:
+
 struct ATPSecretInput {
   string tenantId;
   string key;

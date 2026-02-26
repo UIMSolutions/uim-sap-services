@@ -1,5 +1,11 @@
 module uim.sap.atp.models.eventtrigger;
 
+import uim.sap.atp;
+
+mixin(ShowModule!());
+
+@safe:
+
 struct ATPEventTrigger {
     string tenantId;
     string triggerId;
