@@ -6,5 +6,9 @@
 module uim.sap.art.exceptions;
 
 public {
-    import uim.sap.art.exceptions.exceptions;
-    }
+  import uim.sap.art.exceptions.authentication;
+  import uim.sap.art.exceptions.configuration;
+  import uim.sap.art.exceptions.execution;
+  import uim.sap.art.exceptions.notfound;
+  import uim.sap.art.exceptions.exception;
+}

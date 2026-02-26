@@ -4,3 +4,8 @@
 * Authors: Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*)
 *****************************************************************************************************************/
 module uim.sap.art.models.program;
+
+public {
+    import uim.sap.art.models.program.request;
+    import uim.sap.art.models.program.result;
+}
