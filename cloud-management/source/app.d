@@ -1,9 +1,6 @@
 module app;
 
-import std.conv : to;
-import std.process : environment;
-import std.stdio : writeln;
-import std.string : toLower;
+
 
 import uim.sap.mgt;
 

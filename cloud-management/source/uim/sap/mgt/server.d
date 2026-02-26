@@ -1,14 +1,10 @@
 module uim.sap.mgt.server;
 
-import std.array : split;
-import std.string : startsWith;
+import uim.sap.mgt;
 
-import vibe.data.json : Json;
-import vibe.http.common : HTTPMethod;
-import vibe.http.server : HTTPServerRequest, HTTPServerResponse, HTTPServerSettings, listenHTTP;
+mixin(ShowModule!());
 
-import uim.sap.mgt.exceptions;
-import uim.sap.mgt.service;
+@safe:
 
 class MGTServer {
     private MGTService _service;

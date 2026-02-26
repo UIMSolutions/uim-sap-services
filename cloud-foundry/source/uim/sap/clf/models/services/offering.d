@@ -1,5 +1,11 @@
 module uim.sap.clf.models.services.offering;
 
+import uim.sap.clf;
+
+mixin(ShowModule!());
+
+@safe:
+
 struct CLFServiceOffering {
     string guid;
     string label;

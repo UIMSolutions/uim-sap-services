@@ -1,6 +1,4 @@
-/**
- * Configuration for CLF service
- */
+
 module uim.sap.clf.config;
 
 import uim.sap.clf;

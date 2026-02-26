@@ -3,15 +3,11 @@
  */
 module uim.sap.clf.server;
 
-import std.array : split;
-import std.string : startsWith;
+import uim.sap.clf;
 
-import vibe.data.json : Json;
-import vibe.http.common : HTTPMethod;
-import vibe.http.server : HTTPServerRequest, HTTPServerResponse, HTTPServerSettings, listenHTTP;
+mixin(ShowModule!());
 
-import uim.sap.clf.exceptions;
-import uim.sap.clf.service;
+@safe:
 
 class CLFServer {
   private CLFService _service;

@@ -1,11 +1,10 @@
 module uim.sap.mgt.exceptions.upstream;
 
+import uim.sap.mgt;
 
+mixin(ShowModule!());
 
-
-
-
-class MGTUpstreamException : MGTException {
+@safe:class MGTUpstreamException : MGTException {
     this(string msg) {
         super(msg);
     }

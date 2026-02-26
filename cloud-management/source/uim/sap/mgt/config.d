@@ -1,8 +1,10 @@
 module uim.sap.mgt.config;
 
-import std.string : startsWith;
+import uim.sap.mgt;
 
-import uim.sap.mgt.exceptions;
+mixin(ShowModule!());
+
+@safe:
 
 struct MGTConfig {
     string host = "0.0.0.0";

@@ -1,3 +1,10 @@
+module uim.sap.clf.models.services.instance;
+
+import uim.sap.clf;
+
+mixin(ShowModule!());
+
+@safe:
 struct CLFServiceInstance {
   string guid;
   string name;

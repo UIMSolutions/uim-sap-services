@@ -3,12 +3,11 @@
  */
 module uim.sap.clf.service;
 
-import vibe.data.json : Json;
+import uim.sap.clf;
 
-import uim.sap.clf.config;
-import uim.sap.clf.exceptions;
-import uim.sap.clf.models;
-import uim.sap.clf.store;
+mixin(ShowModule!());
+
+@safe:
 
 class CLFService {
     private CLFConfig _config;
