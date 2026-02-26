@@ -9,13 +9,15 @@ license "Apache-2.0"
 targetType "library"
 targetName "uim-sap-identity"
 
-// External dependencies
-dependency "uim-framework" version="~>26.1.2"
 
+// Dependency on the core framework
+dependency "uim-sap:service" path=".."
 
-sourceFiles "./source/uim/sap/identity/package.d"
+// Build settings
+buildRequirements "allowWarnings" "silenceDeprecations"
+buildOptions "ignoreDeprecations" "debugInfo"
 
-// Configurations
+// Configurations 
 configuration "default" {
 	targetType "library"
 }
@@ -45,5 +47,3 @@ configuration "verbose" {
 	versions "show_module" "show_test" "show_init" "show_function"
 }
 
-buildRequirements "allowWarnings" "silenceDeprecations"
-buildOptions "ignoreDeprecations" "debugInfo"

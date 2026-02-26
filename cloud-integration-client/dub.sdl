@@ -9,11 +9,15 @@ license "Apache-2.0"
 targetName "uim-cpi"
 targetType "library"
 
-// Dependencies
-dependency "uim-framework:core" version="*"
-dependency "uim-framework:oop" version="*"
 
-// Configurations
+// Dependency on the core framework
+dependency "uim-sap:service" path=".."
+
+// Build settings
+buildRequirements "allowWarnings" "silenceDeprecations"
+buildOptions "ignoreDeprecations" "debugInfo"
+
+// Configurations 
 configuration "default" {
 	targetType "library"
 }
@@ -42,3 +46,4 @@ configuration "verbose" {
 	targetType "library"
 	versions "show_module" "show_test" "show_init" "show_function"
 }
+

@@ -4,9 +4,41 @@ authors "Your Name"
 license "MIT"
 targetType "executable"
 
-dependency "vibe-d" version="~0.9.0"
-dependency "json" version="~2.0.0"
-dependency "vibe-d:tls" version="~0.9.0"
-dependency "vibe-d:auth" version="~0.9.0"
-dependency "vibe-d:logging" version="~0.9.0"
-dependency "vibe-d:database" version="~0.9.0"
+
+// Dependency on the core framework
+dependency "uim-sap:service" path=".."
+
+// Build settings
+buildRequirements "allowWarnings" "silenceDeprecations"
+buildOptions "ignoreDeprecations" "debugInfo"
+
+// Configurations 
+configuration "default" {
+	targetType "library"
+}
+
+configuration "modules" {
+	targetType "library"
+	versions "show_module"
+}
+
+configuration "tests" {
+	targetType "library"
+	versions "show_module" "show_test"
+}
+
+configuration "inits" {
+	targetType "library"
+	versions "show_module" "show_init"
+}
+
+configuration "calls" {
+	targetType "library"
+	versions "show_module" "show_test" "show_function"
+}
+
+configuration "verbose" {
+	targetType "library"
+	versions "show_module" "show_test" "show_init" "show_function"
+}
+
