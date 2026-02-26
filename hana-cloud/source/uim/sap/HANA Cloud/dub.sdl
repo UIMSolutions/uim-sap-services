@@ -9,15 +9,15 @@ license "Apache-2.0"
 targetType "library"
 targetName "uim-sap"
 
-// External dependencies
-dependency "uim-framework" version="~>26.1.2"
 
-sourceFiles "./source/uim/sap/package.d"
+// Dependency on the core framework
+dependency "uim-sap:service" path=".."
 
+// Build settings
 buildRequirements "allowWarnings" "silenceDeprecations"
 buildOptions "ignoreDeprecations" "debugInfo"
 
-// Configurations
+// Configurations 
 configuration "default" {
 	targetType "library"
 }
@@ -46,3 +46,4 @@ configuration "verbose" {
 	targetType "library"
 	versions "show_module" "show_test" "show_init" "show_function"
 }
+

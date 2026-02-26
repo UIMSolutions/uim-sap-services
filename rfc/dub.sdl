@@ -11,9 +11,15 @@ targetPath "build"
 sourcePaths "source"
 importPaths "source"
 
-dependency "uim-framework" version="~>26.2.3"
 
-// Configurations
+// Dependency on the core framework
+dependency "uim-sap:service" path=".."
+
+// Build settings
+buildRequirements "allowWarnings" "silenceDeprecations"
+buildOptions "ignoreDeprecations" "debugInfo"
+
+// Configurations 
 configuration "default" {
 	targetType "library"
 }
@@ -43,5 +49,3 @@ configuration "verbose" {
 	versions "show_module" "show_test" "show_init" "show_function"
 }
 
-buildRequirements "allowWarnings" "silenceDeprecations"
-buildOptions "ignoreDeprecations" "debugInfo"
