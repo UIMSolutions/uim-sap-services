@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uim-sap-rms
+  labels:
+    app: uim-sap-rms
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: uim-sap-rms
+  template:
+    metadata:
+      labels:
+        app: uim-sap-rms
+    spec:
+      containers:
+      - name: uim-sap-rms
+        image: ghcr.io/uimsolutions/uim-sap-rms:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 8095
+        envFrom:
+        - configMapRef:
+            name: uim-sap-rms-config
+        env:
+        - name: RMS_AUTH_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: uim-sap-rms-secret
+              key: management-token
+              optional: true
+        volumeMounts:
+        - name: rms-storage
+          mountPath: /var/lib/uim-rms
+        readinessProbe:
+          httpGet:
+            path: /api/rms/ready
+            port: http
+          initialDelaySeconds: 3
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /api/rms/health
+            port: http
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+      volumes:
+      - name: rms-storage
+        persistentVolumeClaim:
+          claimName: uim-sap-rms-pvc
