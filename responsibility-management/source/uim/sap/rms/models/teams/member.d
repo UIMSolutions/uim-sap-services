@@ -1,3 +1,20 @@
+module uim.sap.rms.models.teams.member;
+
+import uim.sap.rms;
+@safe:
+
+/**
+    * This file defines the TeamMember struct which represents a member of a team in the responsibility management system.
+    * It includes fields for user ID, display name, ownership status, notification preferences, and assigned functions.
+    * The toJson method converts the TeamMember instance into a JSON object for easy serialization.
+    * 
+    * Fields:
+    * - userId: The unique identifier of the user.
+    * - displayName: The display name of the user.
+    * - isOwner: A boolean indicating if the user is the owner of the team.
+    * - notificationsEnabled: A boolean indicating if the user has enabled notifications for the team.
+    * - functions: An array of strings representing the functions assigned to the user within the team.
+    */
 struct TeamMember {
     string userId;
     string displayName;

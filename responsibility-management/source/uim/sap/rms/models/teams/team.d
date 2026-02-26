@@ -1,3 +1,8 @@
+module uim.sap.rms.models.teams.team;
+
+import uim.sap.rms;
+@safe:
+
 struct Team {
     string id;
     string name;
