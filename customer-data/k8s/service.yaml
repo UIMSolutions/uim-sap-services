@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: uim-sap-customer-data
+  labels:
+    app: uim-sap-customer-data
+spec:
+  selector:
+    app: uim-sap-customer-data
+  ports:
+  - name: http
+    port: 8097
+    targetPort: 8097
+  type: ClusterIP

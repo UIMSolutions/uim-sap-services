@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uim-sap-customer-data
+  labels:
+    app: uim-sap-customer-data
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: uim-sap-customer-data
+  template:
+    metadata:
+      labels:
+        app: uim-sap-customer-data
+    spec:
+      containers:
+      - name: uim-sap-customer-data
+        image: uim-sap-customer-data:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8097
+        envFrom:
+        - configMapRef:
+            name: uim-sap-customer-data-config
+        env:
+        - name: CDC_AUTH_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: uim-sap-customer-data-secret
+              key: authToken
+              optional: true
+        volumeMounts:
+        - name: customer-data-cache
+          mountPath: /var/lib/uim-customer-data
+        readinessProbe:
+          httpGet:
+            path: /api/customer-data/ready
+            port: 8097
+          initialDelaySeconds: 3
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /api/customer-data/health
+            port: 8097
+          initialDelaySeconds: 8
+          periodSeconds: 10
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+      volumes:
+      - name: customer-data-cache
+        emptyDir: {}

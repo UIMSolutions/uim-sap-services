@@ -11,8 +11,20 @@ mixin(ShowModule!());
 
 @safe:
 
+/**
+  * Base exception class for all Agentry-related exceptions.
+  *
+  * This class serves as the parent for all specific exceptions in the Agentry module, such as:
+  * - `AgentryNotFoundException`
+  * - `AgentryValidationException`
+  * - `AgentryAuthorizationException`
+  * - `AgentryConfigurationException`
+  * etc.
+  *
+  * By catching `AgentryException`, you can handle all Agentry-related errors in a single catch block, while still allowing for more specific handling of individual exception types if needed.
+  */
 class AgentryException : Exception {
-    this(string message) {
-        super(message);
-    }
+  this(string message) {
+    super(message);
+  }
 }

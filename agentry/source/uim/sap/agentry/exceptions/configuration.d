@@ -11,6 +11,18 @@ mixin(ShowModule!());
 
 @safe:
 
+/** 
+  * Exception thrown when there is a configuration error in the Agentry server setup.
+  * This can include missing required configuration parameters, invalid values, or incompatible settings.
+  *
+  * Example usage:
+  * ```
+  * throw new AgentryConfigurationException("Missing required parameter: serverPort");
+  * ```
+  *
+  * This exception should be used to indicate issues that prevent the Agentry server from starting or functioning correctly due to misconfiguration.  
+  * It can be caught and handled to provide feedback to the user or to log configuration issues for troubleshooting.
+  */  
 class AgentryConfigurationException : AgentryException {
     this(string message) {
         super("Configuration error: " ~ message);

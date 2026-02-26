@@ -6,10 +6,10 @@
 module uim.sap.agentry.exceptions;
 
 public {
-    import uim.sap.agentry.exceptions.exception;
+  import uim.sap.agentry.exceptions.exception;
 
-    import uim.sap.agentry.exceptions.authorization;
-    import uim.sap.agentry.exceptions.configuration;
-    import uim.sap.agentry.exceptions.notfound;
-    import uim.sap.agentry.exceptions.validation;
+  import uim.sap.agentry.exceptions.authorization;
+  import uim.sap.agentry.exceptions.configuration;
+  import uim.sap.agentry.exceptions.notfound;
+  import uim.sap.agentry.exceptions.validation;
 }
