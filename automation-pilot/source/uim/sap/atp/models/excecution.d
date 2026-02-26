@@ -1,0 +1,27 @@
+module uim.sap.atp.models.excecution;
+
+struct ATPExecution {
+    string tenantId;
+    string executionId;
+    string commandId;
+    string triggerType;
+    string status;
+    Json input;
+    Json result;
+    SysTime startedAt;
+    SysTime finishedAt;
+
+    Json toJson() const {
+        Json payload = Json.emptyObject;
+        payload["tenant_id"] = tenantId;
+        payload["execution_id"] = executionId;
+        payload["command_id"] = commandId;
+        payload["trigger_type"] = triggerType;
+        payload["status"] = status;
+        payload["input"] = input;
+        payload["result"] = result;
+        payload["started_at"] = startedAt.toISOExtString();
+        payload["finished_at"] = finishedAt.toISOExtString();
+        return payload;
+    }
+}
