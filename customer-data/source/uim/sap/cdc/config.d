@@ -20,8 +20,6 @@ struct CDCConfig {
   bool requireAuthToken = false;
   string authToken;
 
-  string[string] customHeaders;
-
   @property string cacheFilePath() const {
     return buildPath(dataDirectory, cacheFileName);
   }

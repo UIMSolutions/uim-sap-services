@@ -352,7 +352,7 @@ class CDCStore {
 
   private long readLong(Json item, string key, long fallback) {
     if (!(key in item) || item[key].type == Json.Type.null_) return fallback;
-    if (item[key].type != Json.Type.integer) {
+    if (item[key].type != Json.Type.int_) {
       throw new CDCStoreException(key ~ " must be integer in cache item");
     }
     return item[key].get!long;

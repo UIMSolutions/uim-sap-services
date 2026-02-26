@@ -1,3 +1,4 @@
+// Metadata
 name "advanced-event-mesh"
 description "SAP advanced event mesh-like service for event streaming, event management, and monitoring using D, vibe.d and uim-framework"
 homepage "https://github.com/UIMSolutions/uim-sap"
@@ -11,12 +12,14 @@ targetPath "build"
 sourcePaths "source"
 importPaths "source"
 
-dependency "uim-framework" version="~>26.2.3"
-dependency "vibe-d" version="~>0.10.3"
+// Dependency on the core framework
+dependency "uim-sap-service" path=".."
 
+// Build settings
 buildRequirements "allowWarnings" "silenceDeprecations"
 buildOptions "ignoreDeprecations" "debugInfo"
 
+// Configurations for different build targets
 configuration "default" {
 	targetType "library"
 }

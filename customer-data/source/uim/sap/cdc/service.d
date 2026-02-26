@@ -72,7 +72,11 @@ class CDCService {
       "email_verified",
       existing.isNull ? false : existing.get.emailVerified
     );
-    profile.preferences = readObject(body, "preferences", existing.isNull ? Json.emptyObject : existing.get.preferences);
+    profile.preferences = readObject(
+      body,
+      "preferences",
+      existing.isNull ? Json.emptyObject : existing.get.preferences
+    );
     profile.customAttributes = readObject(
       body,
       "custom_attributes",
@@ -324,7 +328,15 @@ class CDCService {
       }
 
       _store.upsertProfile(profile);
-      return deniedAuthPayload(tenantId, userId, ipAddress, "deny_invalid_credentials", riskLevel, riskScore, providerSignals);
+      return deniedAuthPayload(
+        tenantId,
+        userId,
+        ipAddress,
+        "deny_invalid_credentials",
+        riskLevel,
+        riskScore,
+        providerSignals
+      );
     }
 
     if (riskLevel == "high") {
@@ -467,7 +479,7 @@ class CDCService {
       if (toLower(providerSignals["arkose_result"].get!string) == "suspicious") score += 35;
     }
 
-    if ("transunion_score" in providerSignals && providerSignals["transunion_score"].type == Json.Type.integer) {
+    if ("transunion_score" in providerSignals && providerSignals["transunion_score"].type == Json.Type.int_) {
       if (providerSignals["transunion_score"].get!long > 700) score += 20;
     }
 
