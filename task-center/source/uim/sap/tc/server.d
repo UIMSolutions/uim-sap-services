@@ -5,6 +5,7 @@ import std.conv : to;
 import std.string : startsWith;
 
 import vibe.data.json : Json;
+import vibe.core.core : runEventLoop;
 import vibe.http.common : HTTPMethod;
 import vibe.http.server : HTTPServerRequest, HTTPServerResponse, HTTPServerSettings, listenHTTP;
 
@@ -22,7 +23,9 @@ class TCServer {
         HTTPServerSettings settings;
         settings.port = _service.config.port;
         settings.bindAddresses = [_service.config.host];
-        listenHTTP(settings, &handleRequest);
+        auto listener = listenHTTP(settings, &handleRequest);
+        scope (exit) listener.stopListening();
+        runEventLoop();
     }
 
     private void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {
