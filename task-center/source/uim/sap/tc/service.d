@@ -21,7 +21,7 @@ class TCService {
         _store = new TCStore(config.cacheFilePath);
     }
 
-    @property const(TCConfig) config() const {
+    @property inout(TCConfig) config() inout {
         return _config;
     }
 

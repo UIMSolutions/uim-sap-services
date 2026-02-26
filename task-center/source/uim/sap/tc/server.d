@@ -5,7 +5,6 @@ import std.conv : to;
 import std.string : startsWith;
 
 import vibe.data.json : Json;
-import vibe.core.core : runEventLoop;
 import vibe.http.common : HTTPMethod;
 import vibe.http.server : HTTPServerRequest, HTTPServerResponse, HTTPServerSettings, listenHTTP;
 
@@ -14,24 +13,38 @@ import uim.sap.tc.service;
 
 class TCServer {
     private TCService _service;
+    private string _host;
+    private ushort _port;
+    private string _basePath;
+    private bool _requireAuthToken;
+    private string _authToken;
+    private string[string] _customHeaders;
 
     this(TCService service) {
         _service = service;
+
+        auto cfg = service.config;
+        _host = cfg.host;
+        _port = cfg.port;
+        _basePath = cfg.basePath;
+        _requireAuthToken = cfg.requireAuthToken;
+        _authToken = cfg.authToken;
+        _customHeaders = cfg.customHeaders;
     }
 
     void run() {
         HTTPServerSettings settings;
-        settings.port = _service.config.port;
-        settings.bindAddresses = [_service.config.host];
-        auto listener = listenHTTP(settings, &handleRequest);
-        scope (exit) listener.stopListening();
-        runEventLoop();
+        settings.port = _port;
+        settings.bindAddresses = [_host];
+        listenHTTP(settings, (req, res) {
+            handleRequest(req, res);
+        });
     }
 
     private void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {
-        foreach (key, value; _service.config.customHeaders) res.headers[key] = value;
+        foreach (key, value; _customHeaders) res.headers[key] = value;
 
-        auto basePath = _service.config.basePath;
+        auto basePath = _basePath;
         auto path = req.path;
         if (!path.startsWith(basePath)) {
             respondError(res, "Not found", 404);
@@ -159,10 +172,10 @@ class TCServer {
     }
 
     private void validateAuth(HTTPServerRequest req) {
-        if (!_service.config.requireAuthToken) return;
+        if (!_requireAuthToken) return;
         if (!("Authorization" in req.headers)) throw new TCAuthorizationException("Missing Authorization header");
 
-        auto expected = "Bearer " ~ _service.config.authToken;
+        auto expected = "Bearer " ~ _authToken;
         if (req.headers["Authorization"] != expected) throw new TCAuthorizationException("Invalid token");
     }
 

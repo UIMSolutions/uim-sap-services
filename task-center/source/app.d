@@ -4,6 +4,8 @@ import std.conv : to;
 import std.process : environment;
 import std.stdio : writeln;
 
+import vibe.core.core : runApplication;
+
 import uim.sap.tc;
 
 void main() {
@@ -32,6 +34,7 @@ void main() {
     writeln("Base path: ", config.basePath);
     writeln("Data directory: ", config.dataDirectory);
     server.run();
+    runApplication();
 }
 
 private string envOr(string key, string fallback) {
