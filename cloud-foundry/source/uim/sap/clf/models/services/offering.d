@@ -1,3 +1,5 @@
+module uim.sap.clf.models.services.offering;
+
 struct CLFServiceOffering {
     string guid;
     string label;
