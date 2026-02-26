@@ -1,4 +1,4 @@
-module uim.sap.rms.server;
+module uim.sap.rfc.server;
 
 import std.array : split;
 import std.conv : to;
