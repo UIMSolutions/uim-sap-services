@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uim-sap-task-center
+  labels:
+    app: uim-sap-task-center
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: uim-sap-task-center
+  template:
+    metadata:
+      labels:
+        app: uim-sap-task-center
+    spec:
+      containers:
+      - name: uim-sap-task-center
+        image: uim-sap-task-center:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8096
+        envFrom:
+        - configMapRef:
+            name: uim-sap-task-center-config
+        env:
+        - name: TC_AUTH_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: uim-sap-task-center-secret
+              key: authToken
+              optional: true
+        volumeMounts:
+        - name: task-cache
+          mountPath: /var/lib/uim-task-center
+        readinessProbe:
+          httpGet:
+            path: /api/task-center/ready
+            port: 8096
+          initialDelaySeconds: 3
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /api/task-center/health
+            port: 8096
+          initialDelaySeconds: 8
+          periodSeconds: 10
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+      volumes:
+      - name: task-cache
+        emptyDir: {}

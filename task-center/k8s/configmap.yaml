@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: uim-sap-task-center-config
+data:
+  TC_HOST: "0.0.0.0"
+  TC_PORT: "8096"
+  TC_BASE_PATH: "/api/task-center"
+  TC_SERVICE_NAME: "uim-sap-task-center"
+  TC_SERVICE_VERSION: "1.0.0"
+  TC_DATA_DIR: "/var/lib/uim-task-center"
+  TC_CACHE_FILE: "task-cache.json"
