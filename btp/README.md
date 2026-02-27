@@ -29,7 +29,7 @@ void main() {
   cfg.username = "user@example.com";
   cfg.password = "password";
   
-  auto client = new SAPBTPClient(cfg);
+  auto client = new BTPClient(cfg);
   auto apps = client.getApplications();
   writeln(apps);
 }

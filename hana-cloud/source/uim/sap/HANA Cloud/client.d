@@ -23,7 +23,7 @@ import core.time : Duration;
 /**
  * Main HANA Cloud Client
  */
-class SAPHanaClient {
+class HanaClient {
     private ConnectionConfig config;
     private AuthManager authManager;
     private bool connected;
@@ -42,10 +42,10 @@ class SAPHanaClient {
     /**
      * Create a client with basic configuration
      */
-    static SAPHanaClient create(string host, string database, string username, string password) {
+    static HanaClient create(string host, string database, string username, string password) {
         auto credential = Credential.basic(username, password);
         auto config = ConnectionConfig.create(host, database, credential);
-        return new SAPHanaClient(config);
+        return new HanaClient(config);
     }
     
     /**

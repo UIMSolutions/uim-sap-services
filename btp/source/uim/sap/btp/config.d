@@ -1,6 +1,6 @@
 module uim.sap.btp.config;
 
-struct SAPBTPConfig {
+struct BTPConfig {
   string tenant;
   string subdomain;
   string region;
@@ -13,19 +13,19 @@ struct SAPBTPConfig {
   bool useOAuth2 = false;
 }
 
-SAPBTPConfig defaultConfig(
+BTPConfig defaultConfig(
   string tenant,
   string subdomain,
   string region = "api.sap.hana.ondemand.com"
 ) {
-  SAPBTPConfig cfg;
+  BTPConfig cfg;
   cfg.tenant = tenant;
   cfg.subdomain = subdomain;
   cfg.region = region;
   return cfg;
 }
 
-SAPBTPConfig oAuth2Config(
+BTPConfig oAuth2Config(
   string tenant,
   string subdomain,
   string clientId,
@@ -39,7 +39,7 @@ SAPBTPConfig oAuth2Config(
   return cfg;
 }
 
-string getBaseUrl(ref SAPBTPConfig cfg) {
+string getBaseUrl(ref BTPConfig cfg) {
   if (cfg.subdomain.length > 0) {
     return "https://" ~ cfg.subdomain ~ "." ~ cfg.region;
   }

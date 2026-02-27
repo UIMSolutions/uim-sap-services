@@ -30,7 +30,7 @@ void basicConnectionExample() {
     
     try {
         // Create client with basic authentication
-        auto client = SAPHanaClient.create(
+        auto client = HanaClient.create(
             "myinstance.hanacloud.ondemand.com",
             "MYDB",
             "username",
@@ -71,7 +71,7 @@ void queryBuilderExample() {
     writeln("--- Example 2: Query Builder ---");
     
     try {
-        auto client = SAPHanaClient.create("host", "db", "user", "pass");
+        auto client = HanaClient.create("host", "db", "user", "pass");
         client.connect();
         
         // Build a SELECT query
@@ -148,7 +148,7 @@ void transactionExample() {
     writeln("--- Example 3: Transaction Management ---");
     
     try {
-        auto client = SAPHanaClient.create("host", "db", "user", "pass");
+        auto client = HanaClient.create("host", "db", "user", "pass");
         client.connect();
         
         writeln("Starting transaction...");
@@ -200,7 +200,7 @@ void metadataExample() {
     writeln("--- Example 4: Metadata Operations ---");
     
     try {
-        auto client = SAPHanaClient.create("host", "db", "user", "pass");
+        auto client = HanaClient.create("host", "db", "user", "pass");
         client.connect();
         
         // List all schemas
@@ -266,7 +266,7 @@ void authenticationExample() {
     {
         auto credential = Credential.basic("username", "password");
         auto config = ConnectionConfig.create("host", "db", credential);
-        auto client = new SAPHanaClient(config);
+        auto client = new HanaClient(config);
         writeln("✓ Basic Auth configured");
     }
     
@@ -274,7 +274,7 @@ void authenticationExample() {
     {
         auto credential = Credential.oauth("clientId", "clientSecret");
         auto config = ConnectionConfig.create("host", "db", credential);
-        auto client = new SAPHanaClient(config);
+        auto client = new HanaClient(config);
         writeln("✓ OAuth2 configured");
     }
     
@@ -282,7 +282,7 @@ void authenticationExample() {
     {
         auto credential = Credential.jwt("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...");
         auto config = ConnectionConfig.create("host", "db", credential);
-        auto client = new SAPHanaClient(config);
+        auto client = new HanaClient(config);
         writeln("✓ JWT configured");
     }
     
@@ -290,7 +290,7 @@ void authenticationExample() {
     {
         auto credential = Credential.apiKey("your-api-key-here");
         auto config = ConnectionConfig.create("host", "db", credential);
-        auto client = new SAPHanaClient(config);
+        auto client = new HanaClient(config);
         writeln("✓ API Key configured");
     }
     
@@ -301,7 +301,7 @@ void preparedStatementsExample() {
     writeln("--- Example 6: Prepared Statements ---");
     
     try {
-        auto client = SAPHanaClient.create("host", "db", "user", "pass");
+        auto client = HanaClient.create("host", "db", "user", "pass");
         client.connect();
         
         // Prepare a query with parameters
@@ -336,7 +336,7 @@ void batchExecutionExample() {
     writeln("--- Example 7: Batch Execution ---");
     
     try {
-        auto client = SAPHanaClient.create("host", "db", "user", "pass");
+        auto client = HanaClient.create("host", "db", "user", "pass");
         client.connect();
         
         string[] queries = [

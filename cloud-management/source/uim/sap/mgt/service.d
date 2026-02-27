@@ -28,12 +28,12 @@ mixin(ShowModule!());
   */ 
 class MGTService {
   private MGTConfig _config;
-  private SAPBTPClient _client;
+  private BTPClient _client;
 
   this(MGTConfig config) {
     config.validate();
     _config = config;
-    _client = new SAPBTPClient(config.toSAPBTPConfig());
+    _client = new BTPClient(config.toBTPConfig());
   }
 
   @property const(MGTConfig) config() const {

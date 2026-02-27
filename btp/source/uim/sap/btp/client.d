@@ -9,14 +9,14 @@ import vibe.stream.operations : readAllUTF8;
 import uim.sap.btp.config;
 import uim.sap.btp.helpers;
 
-class SAPBTPClient {
-  private SAPBTPConfig cfg;
+class BTPClient {
+  private BTPConfig cfg;
 
-  this(SAPBTPConfig cfg) {
+  this(BTPConfig cfg) {
     this.cfg = cfg;
   }
 
-  @property SAPBTPConfig config() {
+  @property BTPConfig config() {
     return cfg;
   }
 

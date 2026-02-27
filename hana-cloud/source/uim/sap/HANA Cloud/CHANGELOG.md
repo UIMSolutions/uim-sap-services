@@ -23,7 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Full integration with uim-framework and vibe.d
 
 ### Features
-- `SAPHanaClient`: Main client for database operations
+- `HanaClient`: Main client for database operations
 - `AuthManager`: Authentication and authorization handling
 - `QueryBuilder`: Fluent SQL query construction
 - `ConnectionConfig`: Connection configuration management

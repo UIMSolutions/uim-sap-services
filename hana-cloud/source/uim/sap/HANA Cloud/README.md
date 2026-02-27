@@ -40,7 +40,7 @@ import uim.sap;
 
 void main() {
     // Create a client with basic authentication
-    auto client = SAPHanaClient.create(
+    auto client = HanaClient.create(
         "myinstance.hanacloud.ondemand.com",
         "mydb",
         "username",
@@ -64,7 +64,7 @@ void main() {
 import uim.sap;
 
 void main() {
-    auto client = SAPHanaClient.create("host", "db", "user", "pass");
+    auto client = HanaClient.create("host", "db", "user", "pass");
     client.connect();
     
     // Build a SELECT query
@@ -93,7 +93,7 @@ void main() {
 import uim.sap;
 
 void main() {
-    auto client = SAPHanaClient.create("host", "db", "user", "pass");
+    auto client = HanaClient.create("host", "db", "user", "pass");
     client.connect();
     
     // Execute within a transaction
@@ -112,7 +112,7 @@ void main() {
 ```d
 auto credential = Credential.basic("username", "password");
 auto config = ConnectionConfig.create("host", "db", credential);
-auto client = new SAPHanaClient(config);
+auto client = new HanaClient(config);
 ```
 
 ### OAuth2
@@ -120,7 +120,7 @@ auto client = new SAPHanaClient(config);
 ```d
 auto credential = Credential.oauth("clientId", "clientSecret");
 auto config = ConnectionConfig.create("host", "db", credential);
-auto client = new SAPHanaClient(config);
+auto client = new HanaClient(config);
 ```
 
 ### JWT Token
@@ -128,7 +128,7 @@ auto client = new SAPHanaClient(config);
 ```d
 auto credential = Credential.jwt("your-jwt-token");
 auto config = ConnectionConfig.create("host", "db", credential);
-auto client = new SAPHanaClient(config);
+auto client = new HanaClient(config);
 ```
 
 ### API Key
@@ -136,7 +136,7 @@ auto client = new SAPHanaClient(config);
 ```d
 auto credential = Credential.apiKey("your-api-key");
 auto config = ConnectionConfig.create("host", "db", credential);
-auto client = new SAPHanaClient(config);
+auto client = new HanaClient(config);
 ```
 
 ## Advanced Usage
@@ -159,14 +159,14 @@ void main() {
     config.credential = Credential.basic("user", "pass");
     config.customHeaders["X-Custom-Header"] = "value";
     
-    auto client = new SAPHanaClient(config);
+    auto client = new HanaClient(config);
 }
 ```
 
 ### Table Metadata
 
 ```d
-auto client = SAPHanaClient.create("host", "db", "user", "pass");
+auto client = HanaClient.create("host", "db", "user", "pass");
 client.connect();
 
 // Get table metadata
@@ -192,7 +192,7 @@ auto schemas = client.listSchemas();
 ```d
 import vibe.data.json;
 
-auto client = SAPHanaClient.create("host", "db", "user", "pass");
+auto client = HanaClient.create("host", "db", "user", "pass");
 client.connect();
 
 string sql = "SELECT * FROM users WHERE age > ? AND city = ?";
@@ -204,7 +204,7 @@ auto result = client.executePrepared(sql, params);
 ### Batch Execution
 
 ```d
-auto client = SAPHanaClient.create("host", "db", "user", "pass");
+auto client = HanaClient.create("host", "db", "user", "pass");
 client.connect();
 
 string[] queries = [
@@ -263,7 +263,7 @@ The library provides a comprehensive exception hierarchy:
 import uim.sap;
 
 try {
-    auto client = SAPHanaClient.create("host", "db", "user", "pass");
+    auto client = HanaClient.create("host", "db", "user", "pass");
     client.connect();
     auto result = client.executeQuery("SELECT * FROM nonexistent_table");
 } catch (SAPAuthenticationException e) {
