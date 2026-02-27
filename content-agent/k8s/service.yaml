@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: uim-sap-content-agent
+  labels:
+    app: uim-sap-content-agent
+spec:
+  selector:
+    app: uim-sap-content-agent
+  ports:
+  - name: http
+    port: 8096
+    targetPort: 8096
+  type: ClusterIP
