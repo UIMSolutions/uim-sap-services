@@ -11,4 +11,4 @@ public import uim.sap.html5repo.cache;
 public import uim.sap.html5repo.service;
 public import uim.sap.html5repo.server;
 
-enum UIM_SAP_HTML5_REPO_VERSION = "1.0.0";
+enum UIM_HTML5_REPO_VERSION = "1.0.0";

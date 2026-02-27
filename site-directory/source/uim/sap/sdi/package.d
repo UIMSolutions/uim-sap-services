@@ -9,4 +9,4 @@ public {
     import uim.sap.sdi.server;
 }
 
-enum UIM_SAP_SDI_VERSION = "1.0.0";
+enum UIM_SDI_VERSION = "1.0.0";

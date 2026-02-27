@@ -14,4 +14,4 @@ public {
     import uim.sap.isa.server;
 }
 
-enum UIM_SAP_ISA_VERSION = "1.0.0";
+enum UIM_ISA_VERSION = "1.0.0";

@@ -12,4 +12,4 @@ public {
     import uim.sap.hanadb.exceptions;
 }
 
-enum UIM_SAP_HANADB_VERSION = "1.0.0";
+enum UIM_HANADB_VERSION = "1.0.0";

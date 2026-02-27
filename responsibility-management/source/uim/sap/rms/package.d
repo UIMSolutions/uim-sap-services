@@ -7,4 +7,4 @@ public import uim.sap.rms.store;
 public import uim.sap.rms.service;
 public import uim.sap.rms.server;
 
-enum UIM_SAP_RMS_VERSION = "1.0.0";
+enum UIM_RMS_VERSION = "1.0.0";

@@ -1,111 +1,109 @@
-/**
- * Configuration for SAP Cloud Integration (CPI) client
- */
 module uim.sap.cpi.config;
 
-import core.time : Duration, seconds;
-import std.string : format, startsWith;
+import uim.sap.cpi;
 
-import uim.sap.cpi.exceptions;
+mixin(ShowModule!());
 
-enum SAPCPIAuthType {
-    Basic,
-    OAuth2,
-    ApiKey
+@safe:
+
+enum CPIAuthType {
+  Basic,
+  OAuth2,
+  ApiKey
 }
 
-struct SAPCPIConfig {
-    string baseUrl;
-    ushort port = 443;
-    bool useSSL = true;
-    bool verifySSL = true;
+struct CPIConfig {
+  string baseUrl;
+  ushort port = 443;
+  bool useSSL = true;
+  bool verifySSL = true;
 
-    SAPCPIAuthType authType = SAPCPIAuthType.Basic;
-    string username;
-    string password;
-    string accessToken;
-    string apiKey;
-    string apiKeyHeader = "X-API-Key";
+  CPIAuthType authType = CPIAuthType.Basic;
+  string username;
+  string password;
+  string accessToken;
+  string apiKey;
+  string apiKeyHeader = "X-API-Key";
 
-    string apiBasePath = "/api/v1";
-    Duration timeout = 30.seconds;
-    uint maxRetries = 2;
+  string apiBasePath = "/api/v1";
+  Duration timeout = 30.seconds;
+  uint maxRetries = 2;
 
-    string[string] customHeaders;
+  string[string] customHeaders;
 
-    void validate() const {
-        if (baseUrl.length == 0) {
-            throw new SAPCPIConfigurationException("Base URL cannot be empty");
-        }
-
-        final switch (authType) {
-            case SAPCPIAuthType.Basic:
-                if (username.length == 0 || password.length == 0) {
-                    throw new SAPCPIConfigurationException(
-                        "Username and password are required for Basic authentication"
-                    );
-                }
-                break;
-            case SAPCPIAuthType.OAuth2:
-                if (accessToken.length == 0) {
-                    throw new SAPCPIConfigurationException(
-                        "Access token is required for OAuth2 authentication"
-                    );
-                }
-                break;
-            case SAPCPIAuthType.ApiKey:
-                if (apiKey.length == 0) {
-                    throw new SAPCPIConfigurationException(
-                        "API key is required for API key authentication"
-                    );
-                }
-                break;
-        }
+  void validate() const {
+    if (baseUrl.length == 0) {
+      throw new CPIConfigurationException("Base URL cannot be empty");
     }
 
-    string fullBaseUrl() const {
-        if (baseUrl.startsWith("https://") || baseUrl.startsWith("http://")) {
-            return stripTrailingSlash(baseUrl).idup;
-        }
+    final switch (authType) {
+    case CPIAuthType.Basic:
+      if (username.length == 0 || password.length == 0) {
+        throw new CPIConfigurationException(
+          "Username and password are required for Basic authentication"
+        );
+      }
+      break;
+    case CPIAuthType.OAuth2:
+      if (accessToken.length == 0) {
+        throw new CPIConfigurationException(
+          "Access token is required for OAuth2 authentication"
+        );
+      }
+      break;
+    case CPIAuthType.ApiKey:
+      if (apiKey.length == 0) {
+        throw new CPIConfigurationException(
+          "API key is required for API key authentication"
+        );
+      }
+      break;
+    }
+  }
 
-        auto protocol = useSSL ? "https" : "http";
-        if ((useSSL && port == 443) || (!useSSL && port == 80)) {
-            return format("%s://%s", protocol, stripTrailingSlash(baseUrl));
-        }
-
-        return format("%s://%s:%d", protocol, stripTrailingSlash(baseUrl), port);
+  string fullBaseUrl() const {
+    if (baseUrl.startsWith("https://") || baseUrl.startsWith("http://")) {
+      return stripTrailingSlash(baseUrl).idup;
     }
 
-    string apiBaseUrl() const {
-        auto path = (apiBasePath.length > 0 ? apiBasePath : "/api/v1").idup;
-        if (!path.startsWith("/")) {
-            path = "/" ~ path;
-        }
-        return (fullBaseUrl() ~ path).idup;
+    auto protocol = useSSL ? "https" : "http";
+    if ((useSSL && port == 443) || (!useSSL && port == 80)) {
+      return format("%s://%s", protocol, stripTrailingSlash(baseUrl));
     }
 
-    static SAPCPIConfig createBasic(string baseUrl, string username, string password) {
-        SAPCPIConfig cfg;
-        cfg.baseUrl = baseUrl;
-        cfg.username = username;
-        cfg.password = password;
-        cfg.authType = SAPCPIAuthType.Basic;
-        return cfg;
-    }
+    return format("%s://%s:%d", protocol, stripTrailingSlash(baseUrl), port);
+  }
 
-    static SAPCPIConfig createOAuth2(string baseUrl, string accessToken) {
-        SAPCPIConfig cfg;
-        cfg.baseUrl = baseUrl;
-        cfg.accessToken = accessToken;
-        cfg.authType = SAPCPIAuthType.OAuth2;
-        return cfg;
+  string apiBaseUrl() const {
+    auto path = (apiBasePath.length > 0 ? apiBasePath : "/api/v1").idup;
+    if (!path.startsWith("/")) {
+      path = "/" ~ path;
     }
+    return (fullBaseUrl() ~ path).idup;
+  }
 
-    private static string stripTrailingSlash(string value) {
-        auto result = value;
-        while (result.length > 0 && result[$ - 1] == '/') {
-            result = result[0 .. $ - 1];
-        }
-        return result.idup;
+  static CPIConfig createBasic(string baseUrl, string username, string password) {
+    CPIConfig cfg;
+    cfg.baseUrl = baseUrl;
+    cfg.username = username;
+    cfg.password = password;
+    cfg.authType = CPIAuthType.Basic;
+    return cfg;
+  }
+
+  static CPIConfig createOAuth2(string baseUrl, string accessToken) {
+    CPIConfig cfg;
+    cfg.baseUrl = baseUrl;
+    cfg.accessToken = accessToken;
+    cfg.authType = CPIAuthType.OAuth2;
+    return cfg;
+  }
+
+  private static string stripTrailingSlash(string value) {
+    auto result = value;
+    while (result.length > 0 && result[$ - 1] == '/') {
+      result = result[0 .. $ - 1];
     }
+    return result.idup;
+  }
 }

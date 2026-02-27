@@ -19,4 +19,4 @@ public import uim.sap.models;
 public import uim.sap.utils;
 
 // Version information
-enum UIM_SAP_VERSION = "1.0.0";
+enum UIM_VERSION = "1.0.0";

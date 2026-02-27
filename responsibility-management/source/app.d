@@ -12,7 +12,7 @@ void main() {
     config.port = readPort(envOr("RMS_PORT", "8095"), 8095);
     config.basePath = envOr("RMS_BASE_PATH", "/api/rms");
     config.serviceName = envOr("RMS_SERVICE_NAME", "uim-sap-rms");
-    config.serviceVersion = envOr("RMS_SERVICE_VERSION", UIM_SAP_RMS_VERSION);
+    config.serviceVersion = envOr("RMS_SERVICE_VERSION", UIM_RMS_VERSION);
     config.dataDirectory = envOr("RMS_DATA_DIR", "/tmp/uim-rms-data");
     config.defaultTenant = envOr("RMS_DEFAULT_TENANT", "provider");
     config.defaultSpace = envOr("RMS_DEFAULT_SPACE", "dev");

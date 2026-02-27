@@ -8,4 +8,4 @@ public import uim.sap.s4hana.config;
 public import uim.sap.s4hana.models;
 public import uim.sap.s4hana.exceptions;
 
-enum UIM_SAP_S4HANA_VERSION = "1.0.0";
+enum UIM_S4HANA_VERSION = "1.0.0";

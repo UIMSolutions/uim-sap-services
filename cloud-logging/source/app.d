@@ -12,7 +12,7 @@ void main() {
     config.port = readPort(envOr("CLG_PORT", "8081"), 8081);
     config.basePath = envOr("CLG_BASE_PATH", "/uim/cloud/logging/v1");
     config.serviceName = envOr("CLG_SERVICE_NAME", "uim-sap-clg");
-    config.serviceVersion = envOr("CLG_SERVICE_VERSION", UIM_SAP_CLG_VERSION);
+    config.serviceVersion = envOr("CLG_SERVICE_VERSION", UIM_CLG_VERSION);
     config.maxEntries = readSize(envOr("CLG_MAX_ENTRIES", "10000"), 10000);
     config.defaultQueryLimit = readSize(envOr("CLG_DEFAULT_QUERY_LIMIT", "100"), 100);
 

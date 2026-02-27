@@ -14,4 +14,4 @@ public {
   import uim.sap.aem.server;
 }
 
-enum UIM_SAP_AEM_VERSION = "1.0.0";
+enum UIM_AEM_VERSION = "1.0.0";

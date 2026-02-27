@@ -12,4 +12,4 @@ public import uim.sap.idoc.config;
 public import uim.sap.idoc.models;
 public import uim.sap.idoc.exceptions;
 
-enum UIM_SAP_IDOC_VERSION = "1.0.0";
+enum UIM_IDOC_VERSION = "1.0.0";

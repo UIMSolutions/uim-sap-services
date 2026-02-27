@@ -14,7 +14,7 @@ void main() {
     config.port = readPort(envOr("TC_PORT", "8096"), 8096);
     config.basePath = envOr("TC_BASE_PATH", "/api/task-center");
     config.serviceName = envOr("TC_SERVICE_NAME", "uim-sap-task-center");
-    config.serviceVersion = envOr("TC_SERVICE_VERSION", UIM_SAP_TC_VERSION);
+    config.serviceVersion = envOr("TC_SERVICE_VERSION", UIM_TC_VERSION);
     config.dataDirectory = envOr("TC_DATA_DIR", "/tmp/uim-task-center-data");
     config.cacheFileName = envOr("TC_CACHE_FILE", "task-cache.json");
 

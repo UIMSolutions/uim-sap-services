@@ -10,4 +10,4 @@ public import uim.sap.smg.models;
 public import uim.sap.smg.service;
 public import uim.sap.smg.server;
 
-enum UIM_SAP_SMG_VERSION = "1.0.0";
+enum UIM_SMG_VERSION = "1.0.0";

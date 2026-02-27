@@ -12,7 +12,7 @@ void main() {
     config.port = readPort(envOr("CLF_PORT", "8082"), 8082);
     config.basePath = envOr("CLF_BASE_PATH", "/api/cf");
     config.serviceName = envOr("CLF_SERVICE_NAME", "uim-sap-clf");
-    config.serviceVersion = envOr("CLF_SERVICE_VERSION", UIM_SAP_CLF_VERSION);
+    config.serviceVersion = envOr("CLF_SERVICE_VERSION", UIM_CLF_VERSION);
 
     auto token = envOr("CLF_AUTH_TOKEN", "");
     if (token.length > 0) {

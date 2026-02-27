@@ -6,15 +6,15 @@ mixin(ShowModule!());
 
 @safe:
 
-class SAPCPIClient {
-    private SAPCPIConfig _config;
+class CPIClient {
+    private CPIConfig _config;
 
-    this(SAPCPIConfig config) {
+    this(CPIConfig config) {
         config.validate();
         _config = config;
     }
 
-    @property const(SAPCPIConfig) config() const {
+    @property const(CPIConfig) config() const {
         return _config;
     }
 
@@ -27,11 +27,11 @@ class SAPCPIClient {
         }
     }
 
-    SAPCPIResponse get(string path, string[string] query = null, bool useApiBase = true) {
+    CPIResponse get(string path, string[string] query = null, bool useApiBase = true) {
         return executeRequest(HTTPMethod.GET, path, Json.emptyObject, query, useApiBase);
     }
 
-    SAPCPIResponse post(
+    CPIResponse post(
         string path,
         Json payload,
         string[string] query = null,
@@ -40,14 +40,14 @@ class SAPCPIClient {
         return executeRequest(HTTPMethod.POST, path, payload, query, useApiBase);
     }
 
-    SAPCPIResponse getIntegrationArtifacts(uint top = 20, uint skip = 0) {
+    CPIResponse getIntegrationArtifacts(uint top = 20, uint skip = 0) {
         string[string] query;
         query["$top"] = format("%d", top);
         query["$skip"] = format("%d", skip);
         return get("/IntegrationRuntimeArtifacts", query, true);
     }
 
-    SAPCPIResponse getMessageProcessingLogs(uint top = 20, uint skip = 0, string status = "") {
+    CPIResponse getMessageProcessingLogs(uint top = 20, uint skip = 0, string status = "") {
         string[string] query;
         query["$top"] = format("%d", top);
         query["$skip"] = format("%d", skip);
@@ -57,18 +57,18 @@ class SAPCPIClient {
         return get("/MessageProcessingLogs", query, true);
     }
 
-    SAPCPIResponse triggerIntegrationFlow(
+    CPIResponse triggerIntegrationFlow(
         string endpointPath,
         Json payload = Json.emptyObject,
         string[string] query = null
     ) {
         if (endpointPath.length == 0) {
-            throw new SAPCPIRequestException("Endpoint path cannot be empty");
+            throw new CPIRequestException("Endpoint path cannot be empty");
         }
         return post(endpointPath, payload, query, false);
     }
 
-    private SAPCPIResponse executeRequest(
+    private CPIResponse executeRequest(
         HTTPMethod method,
         string path,
         Json payload,
@@ -80,7 +80,7 @@ class SAPCPIClient {
         uint attempts = 0;
         while (attempts <= _config.maxRetries) {
             try {
-                SAPCPIResponse response;
+                CPIResponse response;
                 response.timestamp = Clock.currTime();
 
                 requestHTTP(url,
@@ -116,23 +116,23 @@ class SAPCPIClient {
                 );
 
                 if (!response.success) {
-                    throw new SAPCPIRequestException(response.errorMessage, response.statusCode);
+                    throw new CPIRequestException(response.errorMessage, response.statusCode);
                 }
 
                 return response;
-            } catch (SAPCPIRequestException e) {
+            } catch (CPIRequestException e) {
                 throw e;
             } catch (Exception e) {
                 attempts++;
                 if (attempts > _config.maxRetries) {
-                    throw new SAPCPIConnectionException(
+                    throw new CPIConnectionException(
                         format("SAP CPI request failed after %d retries: %s", attempts, e.msg)
                     );
                 }
             }
         }
 
-        throw new SAPCPIConnectionException("SAP CPI request failed with unknown error");
+        throw new CPIConnectionException("SAP CPI request failed with unknown error");
     }
 
     private string buildUrl(string path, string[string] query, bool useApiBase) {
@@ -192,15 +192,15 @@ class SAPCPIClient {
 
     private void applyAuth(HTTPClientRequest req) {
         final switch (_config.authType) {
-            case SAPCPIAuthType.Basic:
+            case CPIAuthType.Basic:
                 auto creds = _config.username ~ ":" ~ _config.password;
                 auto token = Base64.encode(cast(const(ubyte)[])creds).idup;
                 req.headers["Authorization"] = "Basic " ~ token;
                 break;
-            case SAPCPIAuthType.OAuth2:
+            case CPIAuthType.OAuth2:
                 req.headers["Authorization"] = "Bearer " ~ _config.accessToken;
                 break;
-            case SAPCPIAuthType.ApiKey:
+            case CPIAuthType.ApiKey:
                 req.headers[_config.apiKeyHeader] = _config.apiKey;
                 break;
         }

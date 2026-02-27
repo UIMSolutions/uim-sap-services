@@ -12,7 +12,7 @@ void main() {
     config.port = readPort(envOr("AEM_PORT", "8088"), 8088);
     config.basePath = envOr("AEM_BASE_PATH", "/api/aem");
     config.serviceName = envOr("AEM_SERVICE_NAME", "uim-sap-aem");
-    config.serviceVersion = envOr("AEM_SERVICE_VERSION", UIM_SAP_AEM_VERSION);
+    config.serviceVersion = envOr("AEM_SERVICE_VERSION", UIM_AEM_VERSION);
     config.defaultMeshRegion = envOr("AEM_DEFAULT_REGION", "eu10");
 
     auto token = envOr("AEM_AUTH_TOKEN", "");

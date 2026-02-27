@@ -12,7 +12,7 @@ void main() {
     config.port = readPort(envOr("MDG_PORT", "8087"), 8087);
     config.basePath = envOr("MDG_BASE_PATH", "/api/mdg");
     config.serviceName = envOr("MDG_SERVICE_NAME", "uim-sap-mdg");
-    config.serviceVersion = envOr("MDG_SERVICE_VERSION", UIM_SAP_MDG_VERSION);
+    config.serviceVersion = envOr("MDG_SERVICE_VERSION", UIM_MDG_VERSION);
     config.defaultApprover = envOr("MDG_DEFAULT_APPROVER", "mdg-approver");
 
     auto token = envOr("MDG_AUTH_TOKEN", "");

@@ -15,7 +15,7 @@ void main() {
   config.port = readPort(envOr("CDC_PORT", "8097"), 8097);
   config.basePath = envOr("CDC_BASE_PATH", "/api/customer-data");
   config.serviceName = envOr("CDC_SERVICE_NAME", "uim-sap-customer-data");
-  config.serviceVersion = envOr("CDC_SERVICE_VERSION", UIM_SAP_CDC_VERSION);
+  config.serviceVersion = envOr("CDC_SERVICE_VERSION", UIM_CDC_VERSION);
   config.dataDirectory = envOr("CDC_DATA_DIR", "/tmp/uim-customer-data");
   config.cacheFileName = envOr("CDC_CACHE_FILE", "customer-data-cache.json");
   config.defaultRegion = envOr("CDC_DEFAULT_REGION", "eu-central");

@@ -16,4 +16,4 @@ public {
     import uim.sap.agentry.server;
 }
 
-enum UIM_SAP_AGENTRY_VERSION = "1.0.0";
+enum UIM_AGENTRY_VERSION = "1.0.0";

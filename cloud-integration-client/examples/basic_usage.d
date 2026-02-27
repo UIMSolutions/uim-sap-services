@@ -8,13 +8,13 @@ import vibe.data.json : Json;
 import std.stdio : writeln;
 
 void main() {
-    auto config = SAPCPIConfig.createBasic(
+    auto config = CPIConfig.createBasic(
         "https://mytenant.it-cpi020.cfapps.eu10.hana.ondemand.com",
         "CPI_USER",
         "CPI_PASSWORD"
     );
 
-    auto client = new SAPCPIClient(config);
+    auto client = new CPIClient(config);
 
     try {
         if (!client.testConnection()) {
@@ -33,7 +33,7 @@ void main() {
 
         auto trigger = client.triggerIntegrationFlow("/http/DEMO_IFLOW", payload);
         writeln("Trigger status: ", trigger.statusCode);
-    } catch (SAPCPIException e) {
+    } catch (CPIException e) {
         writeln("CPI error: ", e.msg);
     }
 }

@@ -10,4 +10,4 @@ public import uim.sap.dqm.store;
 public import uim.sap.dqm.service;
 public import uim.sap.dqm.server;
 
-enum UIM_SAP_DQM_VERSION = "1.0.0";
+enum UIM_DQM_VERSION = "1.0.0";

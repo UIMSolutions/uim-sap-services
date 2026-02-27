@@ -11,4 +11,4 @@ public import uim.sap.cre.store;
 public import uim.sap.cre.service;
 public import uim.sap.cre.server;
 
-enum UIM_SAP_CRE_VERSION = "1.0.0";
+enum UIM_CRE_VERSION = "1.0.0";

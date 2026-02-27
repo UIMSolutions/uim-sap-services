@@ -14,4 +14,4 @@ public {
   import uim.sap.mdi.server;
 }
 
-enum UIM_SAP_MDI_VERSION = "1.0.0";
+enum UIM_MDI_VERSION = "1.0.0";

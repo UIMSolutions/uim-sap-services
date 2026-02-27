@@ -12,7 +12,7 @@ void main() {
     config.port = readPort(envOr("DQM_PORT", "8091"), 8091);
     config.basePath = envOr("DQM_BASE_PATH", "/api/dqm");
     config.serviceName = envOr("DQM_SERVICE_NAME", "uim-sap-dqm");
-    config.serviceVersion = envOr("DQM_SERVICE_VERSION", UIM_SAP_DQM_VERSION);
+    config.serviceVersion = envOr("DQM_SERVICE_VERSION", UIM_DQM_VERSION);
     config.defaultCountry = envOr("DQM_DEFAULT_COUNTRY", "DE");
 
     auto token = envOr("DQM_AUTH_TOKEN", "");

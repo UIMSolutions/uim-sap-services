@@ -14,7 +14,7 @@ void main() {
     config.port = readPort(envOr("CIS_PORT", "8088"), 8088);
     config.basePath = envOr("CIS_BASE_PATH", "/api/cis");
     config.serviceName = envOr("CIS_SERVICE_NAME", "uim-sap-cis");
-    config.serviceVersion = envOr("CIS_SERVICE_VERSION", UIM_SAP_CIS_VERSION);
+    config.serviceVersion = envOr("CIS_SERVICE_VERSION", UIM_CIS_VERSION);
     config.defaultAuthMethod = envOr("CIS_DEFAULT_AUTH_METHOD", "form");
 
     auto token = envOr("CIS_AUTH_TOKEN", "");

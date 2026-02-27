@@ -28,7 +28,7 @@ void main() {
     config.port = readPort(envOr("MON_PORT", "8090"), 8090);
     config.basePath = envOr("MON_BASE_PATH", "/api/mon");
     config.serviceName = envOr("MON_SERVICE_NAME", "uim-sap-mon");
-    config.serviceVersion = envOr("MON_SERVICE_VERSION", UIM_SAP_MON_VERSION);
+    config.serviceVersion = envOr("MON_SERVICE_VERSION", UIM_MON_VERSION);
 
     auto service = new MONService(config);
     auto server = new MONServer(service);

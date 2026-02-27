@@ -12,7 +12,7 @@ void main() {
     config.port = readPort(envOr("CRE_PORT", "8086"), 8086);
     config.basePath = envOr("CRE_BASE_PATH", "/api/cre");
     config.serviceName = envOr("CRE_SERVICE_NAME", "uim-sap-cre");
-    config.serviceVersion = envOr("CRE_SERVICE_VERSION", UIM_SAP_CRE_VERSION);
+    config.serviceVersion = envOr("CRE_SERVICE_VERSION", UIM_CRE_VERSION);
     config.masterKey = envOr("CRE_MASTER_KEY", "uim-sap-cre-dev-master-key");
 
     auto token = envOr("CRE_AUTH_TOKEN", "");

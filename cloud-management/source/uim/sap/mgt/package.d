@@ -9,4 +9,4 @@ public {
   import uim.sap.mgt.server;
 }
 
-enum UIM_SAP_MGT_VERSION = "1.0.0";
+enum UIM_MGT_VERSION = "1.0.0";

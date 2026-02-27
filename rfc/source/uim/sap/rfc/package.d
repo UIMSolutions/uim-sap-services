@@ -14,4 +14,4 @@ public import uim.sap.rfc.config;
 public import uim.sap.rfc.exceptions;
 public import uim.sap.rfc.models;
 
-enum UIM_SAP_RFC_VERSION = "1.0.0";
+enum UIM_RFC_VERSION = "1.0.0";

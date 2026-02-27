@@ -5,4 +5,4 @@ public import uim.sap.cmg.models;
 public import uim.sap.cmg.service;
 public import uim.sap.cmg.server;
 
-enum UIM_SAP_CMG_VERSION = "1.0.0";
+enum UIM_CMG_VERSION = "1.0.0";

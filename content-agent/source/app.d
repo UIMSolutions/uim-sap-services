@@ -12,7 +12,7 @@ void main() {
     config.port = readPort(envOr("CAG_PORT", "8096"), 8096);
     config.basePath = envOr("CAG_BASE_PATH", "/api/content-agent");
     config.serviceName = envOr("CAG_SERVICE_NAME", "uim-sap-content-agent");
-    config.serviceVersion = envOr("CAG_SERVICE_VERSION", UIM_SAP_CAG_VERSION);
+    config.serviceVersion = envOr("CAG_SERVICE_VERSION", UIM_CAG_VERSION);
     config.runtime = envOr("CAG_RUNTIME", "cloud-foundry");
 
     auto token = envOr("CAG_AUTH_TOKEN", "");

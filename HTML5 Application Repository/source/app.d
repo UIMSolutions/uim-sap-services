@@ -13,7 +13,7 @@ void main() {
     config.port = readPort(envOr("HTML5_REPO_PORT", "8094"), 8094);
     config.basePath = envOr("HTML5_REPO_BASE_PATH", "/api/html5-repo");
     config.serviceName = envOr("HTML5_REPO_SERVICE_NAME", "uim-sap-html5-app-repo");
-    config.serviceVersion = envOr("HTML5_REPO_SERVICE_VERSION", UIM_SAP_HTML5_REPO_VERSION);
+    config.serviceVersion = envOr("HTML5_REPO_SERVICE_VERSION", UIM_HTML5_REPO_VERSION);
     config.dataDirectory = envOr("HTML5_REPO_DATA_DIR", "/tmp/uim-html5-repo-data");
     config.defaultTenant = envOr("HTML5_REPO_DEFAULT_TENANT", "provider");
     config.defaultSpace = envOr("HTML5_REPO_DEFAULT_SPACE", "dev");

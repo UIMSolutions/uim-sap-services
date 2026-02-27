@@ -12,4 +12,4 @@ public {
     import uim.sap.clf.server;
 }
 
-enum UIM_SAP_CLF_VERSION = "1.0.0";
+enum UIM_CLF_VERSION = "1.0.0";

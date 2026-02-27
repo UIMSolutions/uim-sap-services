@@ -15,7 +15,7 @@ void main() {
     config.port = readPort(envOr("AGENTRY_PORT", "8089"), 8089);
     config.basePath = envOr("AGENTRY_BASE_PATH", "/api/agentry");
     config.serviceName = envOr("AGENTRY_SERVICE_NAME", "uim-sap-agentry");
-    config.serviceVersion = envOr("AGENTRY_SERVICE_VERSION", UIM_SAP_AGENTRY_VERSION);
+    config.serviceVersion = envOr("AGENTRY_SERVICE_VERSION", UIM_AGENTRY_VERSION);
     config.defaultBackendSystem = envOr("AGENTRY_DEFAULT_BACKEND", "s4-primary");
 
     auto token = envOr("AGENTRY_AUTH_TOKEN", "");

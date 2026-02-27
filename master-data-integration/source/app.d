@@ -12,7 +12,7 @@ void main() {
     config.port = readPort(envOr("MDI_PORT", "8092"), 8092);
     config.basePath = envOr("MDI_BASE_PATH", "/api/mdi");
     config.serviceName = envOr("MDI_SERVICE_NAME", "uim-sap-mdi");
-    config.serviceVersion = envOr("MDI_SERVICE_VERSION", UIM_SAP_MDI_VERSION);
+    config.serviceVersion = envOr("MDI_SERVICE_VERSION", UIM_MDI_VERSION);
     config.defaultObjectType = envOr("MDI_DEFAULT_OBJECT_TYPE", "business_partner");
 
     auto token = envOr("MDI_AUTH_TOKEN", "");

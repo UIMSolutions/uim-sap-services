@@ -12,7 +12,7 @@ void main() {
     config.port = readPort(envOr("DATASPHERE_PORT", "8098"), 8098);
     config.basePath = envOr("DATASPHERE_BASE_PATH", "/api/datasphere");
     config.serviceName = envOr("DATASPHERE_SERVICE_NAME", "uim-sap-datasphere");
-    config.serviceVersion = envOr("DATASPHERE_SERVICE_VERSION", UIM_SAP_DATASPHERE_VERSION);
+    config.serviceVersion = envOr("DATASPHERE_SERVICE_VERSION", UIM_DATASPHERE_VERSION);
     config.defaultSpaceDiskGb = readInt(envOr("DATASPHERE_DEFAULT_SPACE_DISK_GB", "50"), 50);
     config.defaultSpaceMemoryGb = readInt(envOr("DATASPHERE_DEFAULT_SPACE_MEMORY_GB", "16"), 16);
 

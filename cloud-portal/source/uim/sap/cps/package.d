@@ -10,4 +10,4 @@ public import uim.sap.cps.store;
 public import uim.sap.cps.service;
 public import uim.sap.cps.server;
 
-enum UIM_SAP_CPS_VERSION = "1.0.0";
+enum UIM_CPS_VERSION = "1.0.0";

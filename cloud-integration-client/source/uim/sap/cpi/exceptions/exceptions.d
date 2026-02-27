@@ -9,28 +9,28 @@ mixin(ShowModule!());
 
 @safe:
 
-class SAPCPIException : Exception {
+class CPIException : Exception {
     this(string msg, string file = __FILE__, size_t line = __LINE__, Throwable next = null)
     pure nothrow @safe @nogc {
         super(msg, file, line, next);
     }
 }
 
-class SAPCPIConfigurationException : SAPCPIException {
+class CPIConfigurationException : CPIException {
     this(string msg, string file = __FILE__, size_t line = __LINE__, Throwable next = null)
     pure nothrow @safe @nogc {
         super(msg, file, line, next);
     }
 }
 
-class SAPCPIConnectionException : SAPCPIException {
+class CPIConnectionException : CPIException {
     this(string msg, string file = __FILE__, size_t line = __LINE__, Throwable next = null)
     pure nothrow @safe @nogc {
         super(msg, file, line, next);
     }
 }
 
-class SAPCPIRequestException : SAPCPIException {
+class CPIRequestException : CPIException {
     int statusCode;
 
     this(

@@ -10,4 +10,4 @@ public import uim.sap.auditlog.store;
 public import uim.sap.auditlog.service;
 public import uim.sap.auditlog.server;
 
-enum UIM_SAP_AUDIT_LOG_VERSION = "1.0.0";
+enum UIM_AUDIT_LOG_VERSION = "1.0.0";

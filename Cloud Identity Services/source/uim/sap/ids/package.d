@@ -24,4 +24,4 @@ public {
 }
 
 // Version information
-enum UIM_SAP_IDENTITY_VERSION = "1.0.0";
+enum UIM_IDENTITY_VERSION = "1.0.0";

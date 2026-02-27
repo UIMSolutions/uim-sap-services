@@ -13,7 +13,7 @@ void main() {
     config.port = readPort(envOr("JOBS_PORT", "8101"), 8101);
     config.basePath = envOr("JOBS_BASE_PATH", "/api/job-scheduling");
     config.serviceName = envOr("JOBS_SERVICE_NAME", "uim-sap-job-scheduling");
-    config.serviceVersion = envOr("JOBS_SERVICE_VERSION", UIM_SAP_JOB_SCHEDULING_VERSION);
+    config.serviceVersion = envOr("JOBS_SERVICE_VERSION", UIM_JOB_SCHEDULING_VERSION);
     config.schedulerTickMs = readInt(envOr("JOBS_SCHEDULER_TICK_MS", "1000"), 1000);
     config.alertEndpoint = envOr("JOBS_ALERT_ENDPOINT", "");
     config.alertApiKey = envOr("JOBS_ALERT_API_KEY", "");

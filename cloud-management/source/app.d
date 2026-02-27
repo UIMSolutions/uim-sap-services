@@ -10,7 +10,7 @@ void main() {
     config.port = readPort(envOr("MGT_PORT", "8088"), 8088);
     config.basePath = envOr("MGT_BASE_PATH", "/api/mgt");
     config.serviceName = envOr("MGT_SERVICE_NAME", "uim-sap-mgt");
-    config.serviceVersion = envOr("MGT_SERVICE_VERSION", UIM_SAP_MGT_VERSION);
+    config.serviceVersion = envOr("MGT_SERVICE_VERSION", UIM_MGT_VERSION);
 
     auto token = envOr("MGT_AUTH_TOKEN", "");
     if (token.length > 0) {

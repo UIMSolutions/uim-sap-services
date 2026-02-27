@@ -12,7 +12,7 @@ void main() {
     config.port = readPort(envOr("DPI_PORT", "8093"), 8093);
     config.basePath = envOr("DPI_BASE_PATH", "/api/dpi");
     config.serviceName = envOr("DPI_SERVICE_NAME", "uim-sap-dpi");
-    config.serviceVersion = envOr("DPI_SERVICE_VERSION", UIM_SAP_DPI_VERSION);
+    config.serviceVersion = envOr("DPI_SERVICE_VERSION", UIM_DPI_VERSION);
     config.defaultRetentionDays = readInt(envOr("DPI_DEFAULT_RETENTION_DAYS", "365"), 365);
 
     auto token = envOr("DPI_AUTH_TOKEN", "");

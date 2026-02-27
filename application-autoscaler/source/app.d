@@ -12,7 +12,7 @@ void main() {
     config.port = readPort(envOr("AAS_PORT", "8086"), 8086);
     config.basePath = envOr("AAS_BASE_PATH", "/api/autoscaler");
     config.serviceName = envOr("AAS_SERVICE_NAME", "uim-sap-aas");
-    config.serviceVersion = envOr("AAS_SERVICE_VERSION", UIM_SAP_AAS_VERSION);
+    config.serviceVersion = envOr("AAS_SERVICE_VERSION", UIM_AAS_VERSION);
 
     config.cfApi = envOr("AAS_CF_API", "");
     config.cfOrganization = envOr("AAS_CF_ORG", "");

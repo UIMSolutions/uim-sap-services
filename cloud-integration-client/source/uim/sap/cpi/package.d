@@ -12,4 +12,4 @@ public {
     import uim.sap.cpi.exceptions;
     import uim.sap.cpi.helpers;
 }
-enum UIM_SAP_CPI_VERSION = "1.0.0";
+enum UIM_CPI_VERSION = "1.0.0";

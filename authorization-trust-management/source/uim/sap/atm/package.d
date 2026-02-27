@@ -10,4 +10,4 @@ public import uim.sap.atm.store;
 public import uim.sap.atm.service;
 public import uim.sap.atm.server;
 
-enum UIM_SAP_ATM_VERSION = "1.0.0";
+enum UIM_ATM_VERSION = "1.0.0";

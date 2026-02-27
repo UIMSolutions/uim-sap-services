@@ -12,4 +12,4 @@ public import uim.sap.jobs.store;
 public import uim.sap.jobs.service;
 public import uim.sap.jobs.server;
 
-enum UIM_SAP_JOB_SCHEDULING_VERSION = "1.0.0";
+enum UIM_JOB_SCHEDULING_VERSION = "1.0.0";

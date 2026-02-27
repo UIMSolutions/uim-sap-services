@@ -17,7 +17,7 @@ void main() {
     config.port = 8080;
     config.basePath = "/sap/abap/runtime";
     config.runtimeName = "uim-art";
-    config.runtimeVersion = UIM_SAP_ART_VERSION;
+    config.runtimeVersion = UIM_ART_VERSION;
 
     auto runtime = new ARTRuntime(config);
 

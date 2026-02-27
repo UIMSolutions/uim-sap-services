@@ -19,4 +19,4 @@ public import uim.sap.fiori.navigation;
 public import uim.sap.fiori.personalization;
 
 // Version information
-enum UIM_SAP_FIORI_VERSION = "1.0.0";
+enum UIM_FIORI_VERSION = "1.0.0";

@@ -14,4 +14,4 @@ public {
     import uim.sap.aas.server;
 }
 
-enum UIM_SAP_AAS_VERSION = "1.0.0";
+enum UIM_AAS_VERSION = "1.0.0";

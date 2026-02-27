@@ -15,4 +15,4 @@ public {
     import uim.sap.mdg.server;
 }
 
-enum UIM_SAP_MDG_VERSION = "1.0.0";
+enum UIM_MDG_VERSION = "1.0.0";

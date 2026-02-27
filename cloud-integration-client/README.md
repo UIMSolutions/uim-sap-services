@@ -36,13 +36,13 @@ import uim.sap.cpi;
 import vibe.data.json : Json;
 
 void main() {
-    auto config = SAPCPIConfig.createBasic(
+    auto config = CPIConfig.createBasic(
         "https://mytenant.it-cpi020.cfapps.eu10.hana.ondemand.com",
         "CPI_USER",
         "CPI_PASSWORD"
     );
 
-    auto client = new SAPCPIClient(config);
+    auto client = new CPIClient(config);
 
     if (client.testConnection()) {
         auto artifacts = client.getIntegrationArtifacts(10, 0);

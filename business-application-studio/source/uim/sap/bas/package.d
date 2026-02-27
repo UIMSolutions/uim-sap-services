@@ -7,4 +7,4 @@ public {
     import uim.sap.bas.server;
 }
 
-enum UIM_SAP_BAS_VERSION = "1.0.0";
+enum UIM_BAS_VERSION = "1.0.0";

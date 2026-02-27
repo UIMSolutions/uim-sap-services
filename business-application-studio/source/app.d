@@ -12,7 +12,7 @@ void main() {
     config.port = readPort(envOr("BAS_PORT", "8088"), 8088);
     config.basePath = envOr("BAS_BASE_PATH", "/api/business-application-studio");
     config.serviceName = envOr("BAS_SERVICE_NAME", "uim-sap-bas");
-    config.serviceVersion = envOr("BAS_SERVICE_VERSION", UIM_SAP_BAS_VERSION);
+    config.serviceVersion = envOr("BAS_SERVICE_VERSION", UIM_BAS_VERSION);
     config.defaultRegion = envOr("BAS_DEFAULT_REGION", "eu10");
 
     auto token = envOr("BAS_AUTH_TOKEN", "");

@@ -14,4 +14,4 @@ public {
     import uim.sap.buh.server;
 }
 
-enum UIM_SAP_BUH_VERSION = "1.0.0";
+enum UIM_BUH_VERSION = "1.0.0";

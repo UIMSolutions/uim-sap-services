@@ -14,4 +14,4 @@ public {
     import uim.sap.mon.server;
 }
 
-enum UIM_SAP_MON_VERSION = "1.0.0";
+enum UIM_MON_VERSION = "1.0.0";

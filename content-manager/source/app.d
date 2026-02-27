@@ -12,7 +12,7 @@ void main() {
     config.port = readPort(envOr("CMG_PORT", "8095"), 8095);
     config.basePath = envOr("CMG_BASE_PATH", "/api/cmg");
     config.serviceName = envOr("CMG_SERVICE_NAME", "uim-sap-cmg");
-    config.serviceVersion = envOr("CMG_SERVICE_VERSION", UIM_SAP_CMG_VERSION);
+    config.serviceVersion = envOr("CMG_SERVICE_VERSION", UIM_CMG_VERSION);
 
     auto token = envOr("CMG_AUTH_TOKEN", "");
     if (token.length > 0) {

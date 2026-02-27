@@ -14,4 +14,4 @@ public {
     import uim.sap.cis.server;
 }
 
-enum UIM_SAP_CIS_VERSION = "1.0.0";
+enum UIM_CIS_VERSION = "1.0.0";

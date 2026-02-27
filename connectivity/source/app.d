@@ -12,7 +12,7 @@ void main() {
     config.port = readPort(envOr("CON_PORT", "8085"), 8085);
     config.basePath = envOr("CON_BASE_PATH", "/api/con");
     config.serviceName = envOr("CON_SERVICE_NAME", "uim-sap-con");
-    config.serviceVersion = envOr("CON_SERVICE_VERSION", UIM_SAP_CON_VERSION);
+    config.serviceVersion = envOr("CON_SERVICE_VERSION", UIM_CON_VERSION);
     config.connectorLocationId = envOr("CON_CONNECTOR_LOCATION_ID", "default-location");
 
     auto token = envOr("CON_AUTH_TOKEN", "");

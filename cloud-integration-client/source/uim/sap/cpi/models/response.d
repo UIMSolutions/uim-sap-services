@@ -1,18 +1,14 @@
 /**
  * Models for SAP Cloud Integration (CPI) client
  */
-module uim.sap.cpi.models;
+module uim.sap.cpi.models.response;
 
 import vibe.data.json : Json;
 import std.datetime : SysTime;
 
-struct SAPCPIRequest {
-    string path;
-    string[string] query;
-    Json payload = Json.emptyObject;
-}
 
-struct SAPCPIResponse {
+
+struct CPIResponse {
     bool success;
     int statusCode;
     Json data = Json.emptyObject;

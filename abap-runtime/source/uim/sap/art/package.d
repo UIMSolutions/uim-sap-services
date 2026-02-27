@@ -16,4 +16,4 @@ public {
     import uim.sap.art.server;
 }
 
-enum UIM_SAP_ART_VERSION = "1.0.0";
+enum UIM_ART_VERSION = "1.0.0";
