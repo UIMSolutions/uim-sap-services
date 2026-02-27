@@ -1,5 +1,5 @@
 /**
- * Exception handling for SAP HANA Cloud operations
+ * Exception handling for HANA Cloud operations
  * 
  * Copyright: Copyright © 2018-2026, Ozan Nurettin Süel
  * License: Apache-2.0
@@ -10,7 +10,7 @@ module uim.sap.exceptions;
 import std.exception : Exception;
 
 /**
- * Base exception for all SAP HANA related errors
+ * Base exception for all HANA related errors
  */
 class SAPException : Exception {
     this(string msg, string file = __FILE__, size_t line = __LINE__, Throwable nextInChain = null) pure nothrow @nogc @safe {

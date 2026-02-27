@@ -35,7 +35,7 @@ class CLFStore {
       hana.guid = "service-hana";
       hana.label = "hana";
       hana.provider = "SAP";
-      hana.description = "SAP HANA database service";
+      hana.description = "HANA database service";
       _serviceOfferings[hana.guid] = hana;
 
       CLFServiceOffering destination;

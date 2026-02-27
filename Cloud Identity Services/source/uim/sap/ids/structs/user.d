@@ -1,5 +1,5 @@
 /**
- * User models for SAP Cloud Identity Services
+ * User models for Cloud Identity Services
  * 
  * Copyright: Copyright © 2018-2026, Ozan Nurettin Süel
  * License: Apache-2.0
@@ -89,7 +89,7 @@ struct UserMeta {
 }
 
 /**
- * User representation in SAP Cloud Identity Services (SCIM 2.0 compliant)
+ * User representation in Cloud Identity Services (SCIM 2.0 compliant)
  */
 struct User {
     /// Unique identifier

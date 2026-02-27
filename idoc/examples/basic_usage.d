@@ -1,7 +1,7 @@
 module idoc.examples.basic_usage;
 
 /**
- * Basic usage example for SAP IDOC library
+ * Basic usage example for IDOC library
  */
 import uim.sap.idoc;
 import vibe.data.json : Json;

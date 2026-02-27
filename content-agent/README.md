@@ -1,11 +1,11 @@
-# UIM SAP Content Agent Service
+# UIM Content Agent Service
 
-This module provides a SAP Content Agent-like service built with Dlang, vibe.d and `uim-framework` conventions.
+This module provides a Content Agent-like service built with Dlang, vibe.d and `uim-framework` conventions.
 
 It covers the core use-cases:
 
 - assemble content from providers into MTAR-ready exports,
-- export assembled content to configured transport queues (CTS+ or SAP Cloud Transport Management),
+- export assembled content to configured transport queues (CTS+ or Cloud Transport Management),
 - view transport-relevant content details and activity history in the UI,
 - support tenant-aware multitenancy by isolating all resources per tenant.
 

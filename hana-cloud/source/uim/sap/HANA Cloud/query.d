@@ -1,5 +1,5 @@
 /**
- * SQL Query builder for SAP HANA
+ * SQL Query builder for HANA
  * 
  * Copyright: Copyright © 2018-2026, Ozan Nurettin Süel
  * License: Apache-2.0
@@ -28,7 +28,7 @@ enum QueryType {
 }
 
 /**
- * SQL Query Builder for SAP HANA
+ * SQL Query Builder for HANA
  */
 class QueryBuilder {
     private QueryType queryType;

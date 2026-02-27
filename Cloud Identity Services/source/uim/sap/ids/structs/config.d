@@ -1,5 +1,5 @@
 /**
- * Configuration for SAP Cloud Identity Services
+ * Configuration for Cloud Identity Services
  * 
  * Copyright: Copyright © 2018-2026, Ozan Nurettin Süel
  * License: Apache-2.0
@@ -11,7 +11,7 @@ import uim.sap.ids;
 @safe:
 
 /**
- * Configuration for SAP Cloud Identity Services
+ * Configuration for Cloud Identity Services
  */
 struct IdentityConfig {
     /// Service type

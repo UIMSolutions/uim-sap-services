@@ -1,5 +1,5 @@
 /**
- * Exception handling for SAP Cloud Identity Services
+ * Exception handling for Cloud Identity Services
  * 
  * Copyright: Copyright © 2018-2026, Ozan Nurettin Süel
  * License: Apache-2.0

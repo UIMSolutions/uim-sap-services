@@ -249,15 +249,15 @@ class BASService {
     private void seedReferenceContent() {
         BASScenario fiori;
         fiori.scenarioId = "fiori";
-        fiori.name = "SAP Fiori";
-        fiori.description = "Build SAP Fiori applications with guided tooling and templates.";
-        fiori.supportedSolutions = ["SAPUI5", "SAP Fiori elements", "CAP"];
+        fiori.name = "Fiori";
+        fiori.description = "Build Fiori applications with guided tooling and templates.";
+        fiori.supportedSolutions = ["SAPUI5", "Fiori elements", "CAP"];
         _scenarios ~= fiori;
 
         BASScenario s4;
         s4.scenarioId = "s4hana-extension";
-        s4.name = "SAP S/4HANA Extension";
-        s4.description = "Develop side-by-side and key-user extension apps for SAP S/4HANA.";
+        s4.name = "S/4HANA Extension";
+        s4.description = "Develop side-by-side and key-user extension apps for S/4HANA.";
         s4.supportedSolutions = ["RAP", "CAP", "ABAP Environment"];
         _scenarios ~= s4;
 
@@ -265,7 +265,7 @@ class BASService {
         workflow.scenarioId = "workflow";
         workflow.name = "Workflow";
         workflow.description = "Create process automation and approval workflow applications.";
-        workflow.supportedSolutions = ["SAP Build Process Automation", "SAP Workflow Service"];
+        workflow.supportedSolutions = ["Build Process Automation", "Workflow Service"];
         _scenarios ~= workflow;
 
         BASTemplate fioriTemplate;

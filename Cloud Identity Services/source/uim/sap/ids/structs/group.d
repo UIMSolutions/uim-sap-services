@@ -1,5 +1,5 @@
 /**
- * Group models for SAP Cloud Identity Services
+ * Group models for Cloud Identity Services
  * 
  * Copyright: Copyright © 2018-2026, Ozan Nurettin Süel
  * License: Apache-2.0
@@ -32,7 +32,7 @@ struct GroupMeta {
 }
 
 /**
- * Group representation in SAP Cloud Identity Services (SCIM 2.0 compliant)
+ * Group representation in Cloud Identity Services (SCIM 2.0 compliant)
  */
 struct Group {
     /// Unique identifier

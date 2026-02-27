@@ -1,5 +1,5 @@
 name "authorization-and-trust-management"
-description "SAP Authorization and Trust Management-like service for identity provider trust and role-based access with D, vibe.d and uim-framework"
+description "Authorization and Trust Management-like service for identity provider trust and role-based access with D, vibe.d and uim-framework"
 homepage "https://github.com/UIMSolutions/uim-sap"
 authors "Ozan Nurettin Süel" "UI Manufaktur"
 copyright "Copyright © 2018-2026, Ozan Nurettin Süel"

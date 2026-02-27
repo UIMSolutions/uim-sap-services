@@ -6,12 +6,12 @@ Kubernetes-compatible Datasphere-like service built with D, vibe.d, and uim-fram
 
 - Data modeling: graphical/SQL/data-flow metadata APIs, replication jobs, and external dataset enrichment entries (CSV, marketplace, third-party)
 - Business modeling: semantic model APIs with dimensions/measures and built-in preview endpoint
-- Data integration: SAP/non-SAP connection registry and migration job API for trusted BW/SQL DW model onboarding
+- Data integration: SAP/non-connection registry and migration job API for trusted BW/SQL DW model onboarding
 - Space management: secure spaces with storage allocation, priority, membership, and runtime update APIs
 - Administration: tenant-level settings, connectivity preparation, maintenance controls, and monitoring metadata
 - Data protection and privacy: functional/space access setup, row-level security policies, and audit read/change events
 - Data governance: catalog assets, glossary terms, and KPI definitions for self-service reuse
-- Consumption: connector discovery for SAP Analytics Cloud, Microsoft Excel, and public OData-compatible entity endpoint
+- Consumption: connector discovery for Analytics Cloud, Microsoft Excel, and public OData-compatible entity endpoint
 
 ## Build and Run
 

@@ -1,7 +1,7 @@
 module s4hana.examples.basic_usage;
 
 /**
- * Basic usage example for SAP S/4HANA client
+ * Basic usage example for S/4HANA client
  */
 import uim.sap.s4hana;
 import vibe.data.json : Json;

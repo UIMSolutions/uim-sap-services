@@ -1,5 +1,5 @@
 /**
- * Data models for SAP HANA DB client
+ * Data models for HANA DB client
  */
 module uim.sap.hanadb.models.models;
 

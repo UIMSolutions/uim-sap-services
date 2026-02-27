@@ -1,6 +1,6 @@
 # Customer Data Service
 
-This service provides an SAP Customer Data Cloud-style runtime for unified customer identity, consent, authentication, and risk-aware access.
+This service provides an Customer Data Cloud-style runtime for unified customer identity, consent, authentication, and risk-aware access.
 
 ## Features
 

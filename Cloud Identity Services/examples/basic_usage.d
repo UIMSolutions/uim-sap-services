@@ -1,5 +1,5 @@
 /**
- * Example usage of SAP Cloud Identity Services Library
+ * Example usage of Cloud Identity Services Library
  * 
  * Copyright: Copyright © 2018-2026, Ozan Nurettin Süel
  * License: Apache-2.0
@@ -9,7 +9,7 @@ import uim.sap.ids;
 import std.stdio : writeln, writefln;
 
 void main() {
-    writeln("=== SAP Cloud Identity Services Library Examples ===\n");
+    writeln("=== Cloud Identity Services Library Examples ===\n");
     
     // Example 1: Basic Connection
     basicConnectionExample();
@@ -40,7 +40,7 @@ void basicConnectionExample() {
         
         // Test connection
         if (client.testConnection()) {
-            writeln("✓ Successfully connected to SAP Cloud Identity Services");
+            writeln("✓ Successfully connected to Cloud Identity Services");
         } else {
             writeln("✗ Connection failed");
         }

@@ -1,7 +1,7 @@
 module rfc.examples.basic_usage;
 
 /**
- * Basic usage example for SAP RFC adapter
+ * Basic usage example for RFC adapter
  */
 import uim.sap.rfc;
 import vibe.data.json : Json;
@@ -20,7 +20,7 @@ void main() {
     auto client = new SAPRFCClient(cfg);
 
     if (!client.testConnection()) {
-        writeln("Could not connect to SAP RFC adapter endpoint");
+        writeln("Could not connect to RFC adapter endpoint");
         return;
     }
 

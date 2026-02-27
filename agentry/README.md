@@ -1,6 +1,6 @@
 # UIM Agentry-like Service
 
-Agentry mobile applications extend SAP backend functionality to mobile users. This service provides a development and operations runtime to build, test, manage, and consume Agentry-style mobile services using Dlang, `vibe.d`, and `uim-framework`.
+Agentry mobile applications extend backend functionality to mobile users. This service provides a development and operations runtime to build, test, manage, and consume Agentry-style mobile services using Dlang, `vibe.d`, and `uim-framework`.
 
 ## Features and Use-Cases
 

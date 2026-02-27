@@ -1,5 +1,5 @@
 /**
- * Authentication module for SAP Cloud Identity Services
+ * Authentication module for Cloud Identity Services
  * 
  * Copyright: Copyright © 2018-2026, Ozan Nurettin Süel
  * License: Apache-2.0
@@ -17,7 +17,7 @@ import std.string : format;
 import std.base64 : Base64;
 
 /**
- * OAuth2 authentication manager for SAP Cloud Identity Services
+ * OAuth2 authentication manager for Cloud Identity Services
  */
 class IdentityAuthManager {
     private OAuth2Credentials credentials;

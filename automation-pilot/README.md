@@ -1,10 +1,10 @@
 # Automation Pilot Service
 
-This service provides an SAP BTP Automation Pilot-like runtime for automating DevOps and operations scenarios in multi-tenant environments.
+This service provides an BTP Automation Pilot-like runtime for automating DevOps and operations scenarios in multi-tenant environments.
 
 ## Features
 
-- Run predefined commands from SAP BTP DevOps scenario catalogs.
+- Run predefined commands from BTP DevOps scenario catalogs.
 - Create custom catalogs and custom commands (including chained/composed commands).
 - Back up and restore custom content (on-demand and schedule-ready metadata).
 - Store small sensitive values as secure reusable inputs.

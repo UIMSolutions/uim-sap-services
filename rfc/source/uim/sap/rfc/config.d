@@ -1,5 +1,5 @@
 /**
- * Configuration for SAP RFC adapter
+ * Configuration for RFC adapter
  *
  * Copyright: Copyright © 2018-2026, Ozan Nurettin Süel
  * License: Apache-2.0

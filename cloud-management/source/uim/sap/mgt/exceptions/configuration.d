@@ -7,7 +7,7 @@ mixin(ShowModule!());
 @safe:
 
 /**
-  * This file defines the MGTConfigurationException class, which is used to represent exceptions related to configuration issues in the SAP Management module.
+  * This file defines the MGTConfigurationException class, which is used to represent exceptions related to configuration issues in the Management module.
   * It extends the MGTException class, allowing it to be used in a consistent way with other exceptions in the module.
   *
   * Example usage:

@@ -36,6 +36,6 @@ void main() {
     });
 
     auto server = new ARTRuntimeServer(runtime);
-    writeln("Starting SAP ABAP Runtime on ", config.host, ":", config.port);
+    writeln("Starting ABAP Runtime on ", config.host, ":", config.port);
     server.run();
 }

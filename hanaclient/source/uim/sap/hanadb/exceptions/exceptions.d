@@ -1,5 +1,5 @@
 /**
- * Exception types for SAP HANA DB client
+ * Exception types for HANA DB client
  */
 module uim.sap.hanadb.exceptions.exceptions;
 

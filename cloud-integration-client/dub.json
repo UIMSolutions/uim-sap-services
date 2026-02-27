@@ -1,6 +1,6 @@
 {
     "name": "uim-sap-cpi",
-    "description": "SAP Cloud Integration (CPI) client library for D language using uim-framework and vibe.d",
+    "description": "Cloud Integration (CPI) client library for D language using uim-framework and vibe.d",
     "license": "Apache-2.0",
     "authors": [
         "Ozan Nurettin Süel",

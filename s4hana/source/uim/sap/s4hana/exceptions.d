@@ -1,5 +1,5 @@
 /**
- * Exception types for SAP S/4HANA operations
+ * Exception types for S/4HANA operations
  */
 module uim.sap.s4hana.exceptions;
 

@@ -3,7 +3,7 @@
 
 title UIM Audit Log Service - Component Architecture
 
-actor "SAP BTP App/Service" as Producer
+actor "BTP App/Service" as Producer
 actor "Compliance Auditor" as Auditor
 
 node "Audit Log Service Runtime" {

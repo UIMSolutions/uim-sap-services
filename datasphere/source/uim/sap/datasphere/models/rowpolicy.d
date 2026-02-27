@@ -14,10 +14,10 @@ import uim.sap.datasphere;
     * - expression: The expression that defines the row-level security (e.g., SQL WHERE clause)
     * - updatedAt: Timestamp of the last update to this policy
     *
-    * This struct represents a row-level security policy that can be applied to datasets in SAP Datasphere. It includes the necessary information to identify the policy, the dataset it applies to, and the expression that
+    * This struct represents a row-level security policy that can be applied to datasets in Datasphere. It includes the necessary information to identify the policy, the dataset it applies to, and the expression that
     * defines the security rules. The `toJson` method allows for easy serialization of the policy into JSON format for storage or transmission. 
     * 
-    * Note: The actual implementation of how the expression is evaluated and enforced is beyond the scope of this struct and would be handled by the underlying data access layer in SAP Datasphere.
+    * Note: The actual implementation of how the expression is evaluated and enforced is beyond the scope of this struct and would be handled by the underlying data access layer in Datasphere.
     */
 struct DATRowPolicy {
     string tenantId;

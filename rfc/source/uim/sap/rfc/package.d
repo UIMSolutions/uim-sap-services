@@ -1,7 +1,7 @@
 /**
  * UIM RFC Adapter Library
  *
- * SAP RFC adapter over HTTP/JSON for D applications.
+ * RFC adapter over HTTP/JSON for D applications.
  *
  * Copyright: Copyright © 2018-2026, Ozan Nurettin Süel
  * License: Apache-2.0

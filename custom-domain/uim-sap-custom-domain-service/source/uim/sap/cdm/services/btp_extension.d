@@ -6,8 +6,8 @@ import repositories.custom_domain_repository;
 import repositories.tenant_repository;
 
 /****
-    * The BtpExtensionService class provides methods to manage custom domains in SAP BTP extension landscapes.
-    * It allows for creating, retrieving, updating, and deleting custom domain information specific to SAP BTP extensions.
+    * The BtpExtensionService class provides methods to manage custom domains in BTP extension landscapes.
+    * It allows for creating, retrieving, updating, and deleting custom domain information specific to BTP extensions.
     *
     * To use this service, create an instance of BtpExtensionService and call the desired methods.
     * Example:
@@ -24,7 +24,7 @@ class BtpExtensionService {
         tenantRepo = new TenantRepository();
     }
 
-    // Method to manage custom domains in SAP BTP extension landscapes
+    // Method to manage custom domains in BTP extension landscapes
     public void manageCustomDomain(CustomDomain domain) {
         // Logic to manage custom domain
         if (customDomainRepo.exists(domain)) {

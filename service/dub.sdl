@@ -1,6 +1,6 @@
 // Metadata
 name "service"
-description "A collection of services built up over eight years of experience with the D language, including Authorization and Trust Management, Job Scheduling, Malware Scanning, and Datasphere-like business data fabric service for SAP BTP."
+description "A collection of services built up over eight years of experience with the D language, including Authorization and Trust Management, Job Scheduling, Malware Scanning, and Datasphere-like business data fabric service for BTP."
 homepage "https://www.sueel.de/uim/sap/service"
 authors "Ozan Nurettin Süel"
 copyright "Copyright © 2018 - 2026, ONS"

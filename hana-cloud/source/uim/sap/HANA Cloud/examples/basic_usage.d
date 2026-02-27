@@ -39,7 +39,7 @@ void basicConnectionExample() {
         
         // Connect to the database
         client.connect();
-        writeln("✓ Connected to SAP HANA Cloud");
+        writeln("✓ Connected to HANA Cloud");
         
         // Check connection
         if (client.ping()) {
@@ -51,7 +51,7 @@ void basicConnectionExample() {
         writeln("Server version: ", version_);
         
         // Execute a simple query
-        auto result = client.executeQuery("SELECT 'Hello from SAP HANA!' AS greeting FROM DUMMY");
+        auto result = client.executeQuery("SELECT 'Hello from HANA!' AS greeting FROM DUMMY");
         
         if (result.rowCount > 0) {
             auto greeting = result.getCell(0, "greeting");

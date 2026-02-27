@@ -1,5 +1,5 @@
 /**
- * Response models for SAP HANA operations
+ * Response models for HANA operations
  * 
  * Copyright: Copyright © 2018-2026, Ozan Nurettin Süel
  * License: Apache-2.0
@@ -10,7 +10,7 @@ module uim.sap.hcd.models.responses.queryresult;
 import uim.sap.hcd;
 
 /**
- * Query result set from SAP HANA
+ * Query result set from HANA
  */
 struct QueryResult {
     /// Column names in the result set

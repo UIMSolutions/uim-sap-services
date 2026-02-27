@@ -1,5 +1,5 @@
 /**
- * Utility functions for SAP HANA operations
+ * Utility functions for HANA operations
  * 
  * Copyright: Copyright © 2018-2026, Ozan Nurettin Süel
  * License: Apache-2.0
@@ -66,7 +66,7 @@ string buildLike(string column, string pattern, bool caseInsensitive = false) pu
 }
 
 /**
- * Convert D type name to SAP HANA SQL type
+ * Convert D type name to HANA SQL type
  */
 string toSQLType(string dType) pure @safe {
     switch (dType) {
@@ -166,7 +166,7 @@ string buildPagination(uint page, uint pageSize) pure @safe {
 }
 
 /**
- * Build full-text search clause for SAP HANA
+ * Build full-text search clause for HANA
  */
 string buildFullTextSearch(string[] columns, string searchTerm) pure @safe {
     auto columnList = columns.map!(c => escapeIdentifier(c)).join(", ");
@@ -174,14 +174,14 @@ string buildFullTextSearch(string[] columns, string searchTerm) pure @safe {
 }
 
 /**
- * Format timestamp for SAP HANA
+ * Format timestamp for HANA
  */
 string formatTimestamp(string timestamp) pure @safe {
     return format("TO_TIMESTAMP(%s, 'YYYY-MM-DD HH24:MI:SS')", quoteString(timestamp));
 }
 
 /**
- * Format date for SAP HANA
+ * Format date for HANA
  */
 string formatDate(string date) pure @safe {
     return format("TO_DATE(%s, 'YYYY-MM-DD')", quoteString(date));

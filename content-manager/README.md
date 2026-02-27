@@ -1,6 +1,6 @@
 # Content Manager Service
 
-This service provides an SAP BTP Content Manager-like runtime for managing subaccount business content in multi-tenant environments.
+This service provides an BTP Content Manager-like runtime for managing subaccount business content in multi-tenant environments.
 
 ## Features
 
@@ -73,7 +73,7 @@ Register provider payload:
 ```json
 {
   "provider_id": "sap-default",
-  "name": "SAP Default Provider",
+  "name": "Default Provider",
   "provider_type": "sap-content",
   "endpoint": "https://provider.example/api/content",
   "exposed_types": ["apps", "catalogs", "roles"],

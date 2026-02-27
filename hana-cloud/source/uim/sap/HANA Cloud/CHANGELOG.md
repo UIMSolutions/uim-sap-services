@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Initial release of UIM HANA Cloud Library
-- SAP HANA Cloud client with HTTP/REST API support
+- HANA Cloud client with HTTP/REST API support
 - Multiple authentication methods (Basic Auth, OAuth2, JWT, API Key, Certificate)
 - SQL query builder with fluent API
 - Transaction support (ACID)

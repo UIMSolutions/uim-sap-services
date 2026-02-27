@@ -1,6 +1,6 @@
 # UIM Master Data Governance Service (MDG)
 
-Kubernetes-compatible SAP Master Data Governance style service built with D, `vibe.d`, and `uim-framework`.
+Kubernetes-compatible Master Data Governance style service built with D, `vibe.d`, and `uim-framework`.
 
 ## Features
 

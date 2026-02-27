@@ -1,11 +1,11 @@
 # Business Application Studio Service
 
-This module provides an SAP Business Application Studio-like backend service using **D**, **Vibe.D**, and **uim-framework**.
+This module provides an Business Application Studio-like backend service using **D**, **Vibe.D**, and **uim-framework**.
 
 ## Goals
 
-- Easily develop and extend SAP solutions through scenario-based workspaces.
-- Support key intelligent enterprise scenarios: **SAP Fiori**, **SAP S/4HANA extension**, and **Workflow**.
+- Easily develop and extend solutions through scenario-based workspaces.
+- Support key intelligent enterprise scenarios: **Fiori**, **S/4HANA extension**, and **Workflow**.
 - Boost developer productivity via wizard runs, template catalogs, terminal access, local test/debug, and quick deployment endpoints.
 - Offer browser-first, multi-cloud style availability metadata for anywhere access.
 

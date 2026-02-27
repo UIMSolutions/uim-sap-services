@@ -1,6 +1,6 @@
 // Metadata
 name "advanced-event-mesh"
-description "SAP advanced event mesh-like service for event streaming, event management, and monitoring using D, vibe.d and uim-framework"
+description "advanced event mesh-like service for event streaming, event management, and monitoring using D, vibe.d and uim-framework"
 homepage "https://github.com/UIMSolutions/uim-sap"
 authors "Ozan Nurettin Süel" "UI Manufaktur"
 copyright "Copyright © 2018-2026, Ozan Nurettin Süel"

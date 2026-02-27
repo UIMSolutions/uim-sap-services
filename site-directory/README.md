@@ -1,6 +1,6 @@
 # Site Directory Service
 
-This service provides an SAP BTP Site Directory-like API for managing site tiles and design-time site directory actions in a multi-tenant subaccount.
+This service provides an BTP Site Directory-like API for managing site tiles and design-time site directory actions in a multi-tenant subaccount.
 
 ## Features
 

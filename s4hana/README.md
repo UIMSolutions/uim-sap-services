@@ -1,10 +1,10 @@
-# SAP S/4HANA Client for D
+# S/4HANA Client for D
 
-SAP S/4HANA client library for D language, built with uim-framework and vibe.d.
+S/4HANA client library for D language, built with uim-framework and vibe.d.
 
 ## Features
 
-- Typed SAP S/4HANA HTTP/OData client
+- Typed S/4HANA HTTP/OData client
 - Basic, OAuth2, and API key authentication
 - OData helper methods for GET and POST
 - Convenience method for Business Partner API

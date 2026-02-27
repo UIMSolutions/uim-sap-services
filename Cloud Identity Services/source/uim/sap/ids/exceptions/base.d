@@ -4,7 +4,7 @@ import uim.sap.ids;
 @safe:
 
 /**
- * Base exception for all SAP Identity Services errors
+ * Base exception for all Identity Services errors
  */
 class IdentityException : Exception {
     this(string msg, string file = __FILE__, size_t line = __LINE__, Throwable nextInChain = null) pure nothrow @nogc @safe {

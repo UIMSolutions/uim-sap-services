@@ -1,10 +1,10 @@
 # Task Center Service
 
-This service provides an SAP Task Center-style runtime with a unified REST interface for task federation and task processing.
+This service provides an Task Center-style runtime with a unified REST interface for task federation and task processing.
 
 ## Features
 
-- Federate tasks from SAP and non-SAP providers via a single REST contract.
+- Federate tasks from and non-providers via a single REST contract.
 - Cache federated tasks on disk (`TC_DATA_DIR` + `TC_CACHE_FILE`) for resilience and fast access.
 - End-user task processing APIs for:
   - task inbox retrieval

@@ -1,5 +1,5 @@
 /**
- * Authentication manager for SAP HANA Cloud
+ * Authentication manager for HANA Cloud
  * 
  * Copyright: Copyright © 2018-2026, Ozan Nurettin Süel
  * License: Apache-2.0
@@ -39,7 +39,7 @@ struct OAuth2Token {
 }
 
 /**
- * Authentication manager for SAP HANA
+ * Authentication manager for HANA
  */
 class AuthManager {
     private Credential credential;

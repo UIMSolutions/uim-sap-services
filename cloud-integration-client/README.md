@@ -1,10 +1,10 @@
-# SAP Cloud Integration Client for D
+# Cloud Integration Client for D
 
-SAP Cloud Integration (CPI) client library for D language, built with uim-framework and vibe.d.
+Cloud Integration (CPI) client library for D language, built with uim-framework and vibe.d.
 
 ## Features
 
-- Typed HTTP client for SAP CPI APIs
+- Typed HTTP client for CPI APIs
 - Basic, OAuth2, and API key authentication
 - Integration Runtime Artifact listing
 - Message Processing Log listing

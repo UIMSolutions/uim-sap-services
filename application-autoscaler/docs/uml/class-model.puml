@@ -1,7 +1,7 @@
 @startuml
 !theme plain
 
-title UIM SAP Application Autoscaler (AAS) - Class Model
+title UIM Application Autoscaler (AAS) - Class Model
 
 package "uim.sap.aas" {
   class AASConfig {

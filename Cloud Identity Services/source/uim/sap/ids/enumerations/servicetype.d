@@ -4,7 +4,7 @@ import uim.sap.ids;
 @safe:
 
 /**
- * SAP Cloud Identity Services API endpoint types
+ * Cloud Identity Services API endpoint types
  */
 enum IdentityServiceType {
     IAS,  // Identity Authentication Service

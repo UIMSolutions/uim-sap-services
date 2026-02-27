@@ -1,5 +1,5 @@
 name "agentry"
-description "SAP Agentry-like mobile development and operations service using D, vibe.d and uim-framework"
+description "Agentry-like mobile development and operations service using D, vibe.d and uim-framework"
 homepage "https://github.com/UIMSolutions/uim-sap"
 authors "Ozan Nurettin Süel" "UI Manufaktur"
 copyright "Copyright © 2018-2026, Ozan Nurettin Süel"

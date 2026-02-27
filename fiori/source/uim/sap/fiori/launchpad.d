@@ -13,7 +13,7 @@ import uim.sap.fiori.exceptions;
 import std.conv : to;
 
 /**
- * Client for SAP Fiori Launchpad APIs
+ * Client for Fiori Launchpad APIs
  */
 class LaunchpadClient {
     private FioriConfig config;

@@ -1,5 +1,5 @@
 /**
- * Exception types for SAP Cloud Integration (CPI)
+ * Exception types for Cloud Integration (CPI)
  */
 module uim.sap.cpi.exceptions.exceptions;
 

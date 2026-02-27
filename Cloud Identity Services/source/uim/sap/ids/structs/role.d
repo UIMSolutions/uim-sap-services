@@ -1,5 +1,5 @@
 /**
- * Role models for SAP Cloud Identity Services
+ * Role models for Cloud Identity Services
  * 
  * Copyright: Copyright © 2018-2026, Ozan Nurettin Süel
  * License: Apache-2.0

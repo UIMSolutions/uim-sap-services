@@ -1,7 +1,7 @@
 @startuml
 !theme plain
 
-title UIM SAP Application Autoscaler (AAS) - Component Architecture
+title UIM Application Autoscaler (AAS) - Component Architecture
 
 actor "Platform Operator" as Operator
 actor "Metrics Producer\n(CF/K8s App + Custom Exporter)" as Metrics

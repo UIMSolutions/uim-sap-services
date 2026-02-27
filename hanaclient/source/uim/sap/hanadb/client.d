@@ -1,5 +1,5 @@
 /**
- * SAP HANA Database client
+ * HANA Database client
  */
 module uim.sap.hanadb.client;
 
@@ -35,7 +35,7 @@ class HanaDBClient {
     void connect() {
         auto response = query("SELECT 1 AS HEALTH_CHECK FROM DUMMY");
         if (!response.success) {
-            throw new HanaDBConnectionException("Failed to establish SAP HANA DB connection");
+            throw new HanaDBConnectionException("Failed to establish HANA DB connection");
         }
         _connected = true;
     }
@@ -141,13 +141,13 @@ class HanaDBClient {
                 attempts++;
                 if (attempts > _config.maxRetries) {
                     throw new HanaDBConnectionException(
-                        format("SAP HANA request failed after %d retries: %s", attempts, e.msg)
+                        format("HANA request failed after %d retries: %s", attempts, e.msg)
                     );
                 }
             }
         }
 
-        throw new HanaDBConnectionException("SAP HANA request failed with unknown error");
+        throw new HanaDBConnectionException("HANA request failed with unknown error");
     }
 
     private HanaDBResultSet parseResultSet(Json payload) {
@@ -197,7 +197,7 @@ class HanaDBClient {
             }
         }
 
-        return format("SAP HANA request failed with status code %d", statusCode);
+        return format("HANA request failed with status code %d", statusCode);
     }
 
     private void applyAuth(HTTPClientRequest req) {

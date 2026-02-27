@@ -1,6 +1,6 @@
 # UIM Job Scheduling Service
 
-SAP Job Scheduling style service built with D, vibe.d, and uim-framework.
+Job Scheduling style service built with D, vibe.d, and uim-framework.
 
 ## Feature coverage
 
@@ -10,7 +10,7 @@ SAP Job Scheduling style service built with D, vibe.d, and uim-framework.
 - Cloud Foundry task-style asynchronous runs for resource optimization
 - Multitenant API design with tenant-scoped jobs, schedules, runs, alerts, and dashboard data
 - OAuth2 bearer protection for incoming APIs and secure outbound calls to action endpoints
-- Alert event emission hooks for SAP Alert Notification service
+- Alert event emission hooks for Alert Notification service
 - Cloud ALM automation monitoring hooks for execution telemetry forwarding
 - Built-in web dashboard for managing jobs, schedules, and monitoring runs/logs
 

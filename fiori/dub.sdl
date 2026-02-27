@@ -1,5 +1,5 @@
 name "fiori"
-description "SAP Fiori client library for D language - OData services and Fiori Launchpad integration"
+description "Fiori client library for D language - OData services and Fiori Launchpad integration"
 homepage "https://github.com/UIMSolutions/uim-sap"
 license "Apache-2.0"
 authors "Ozan Nurettin Süel"

@@ -1,10 +1,10 @@
 # UIM HANA Cloud Library
 
-A comprehensive D language library for working with SAP HANA Cloud, built on top of uim-framework and vibe.d.
+A comprehensive D language library for working with HANA Cloud, built on top of uim-framework and vibe.d.
 
 ## Features
 
-- **Full SAP HANA Cloud Support**: Connect and interact with SAP HANA Cloud databases
+- **Full HANA Cloud Support**: Connect and interact with HANA Cloud databases
 - **Multiple Authentication Methods**: Basic Auth, OAuth2, JWT, API Key, and Certificate-based authentication
 - **SQL Query Builder**: Fluent API for building complex SQL queries
 - **Transaction Support**: ACID transaction management
@@ -273,7 +273,7 @@ try {
 } catch (SAPQueryException e) {
     writeln("Query error [", e.errorCode, "]: ", e.msg);
 } catch (SAPException e) {
-    writeln("SAP error: ", e.msg);
+    writeln("error: ", e.msg);
 }
 ```
 

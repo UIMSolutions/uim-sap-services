@@ -16,7 +16,7 @@ import uim.sap.fiori.personalization;
 import uim.sap.fiori.exceptions;
 
 /**
- * Main SAP Fiori client
+ * Main Fiori client
  */
 class FioriClient {
     private FioriConfig _config;

@@ -28,7 +28,7 @@ enum ODataVersion {
 }
 
 /**
- * Configuration for SAP Fiori Client
+ * Configuration for Fiori Client
  */
 struct FioriConfig {
     /// Base URL of the Fiori system (e.g., "https://myserver.com")
@@ -40,10 +40,10 @@ struct FioriConfig {
     /// Use SSL
     bool useSSL = true;
     
-    /// SAP client number (e.g., "001")
+    /// client number (e.g., "001")
     string sapClient;
     
-    /// SAP language (e.g., "EN")
+    /// language (e.g., "EN")
     string sapLanguage = "EN";
     
     /// Authentication type

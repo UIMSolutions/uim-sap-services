@@ -1,5 +1,5 @@
 name "audit-log"
-description "SAP Audit Log-like compliance service using D, vibe.d and uim-framework"
+description "Audit Log-like compliance service using D, vibe.d and uim-framework"
 homepage "https://github.com/UIMSolutions/uim-sap"
 authors "Ozan Nurettin Süel" "UI Manufaktur"
 copyright "Copyright © 2018-2026, Ozan Nurettin Süel"

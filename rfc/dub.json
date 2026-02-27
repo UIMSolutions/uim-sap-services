@@ -1,6 +1,6 @@
 {
     "name": "uim-sap-rfc",
-    "description": "SAP RFC adapter library for D language using uim-framework and vibe.d",
+    "description": "RFC adapter library for D language using uim-framework and vibe.d",
     "license": "Apache-2.0",
     "authors": [
         "Ozan Nurettin Süel",

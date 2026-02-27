@@ -1,5 +1,5 @@
 /**
- * Configuration for SAP S/4HANA client
+ * Configuration for S/4HANA client
  */
 module uim.sap.s4hana.config;
 

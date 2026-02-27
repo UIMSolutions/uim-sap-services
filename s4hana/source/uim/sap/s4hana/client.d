@@ -1,5 +1,5 @@
 /**
- * SAP S/4HANA client
+ * S/4HANA client
  */
 module uim.sap.s4hana.client;
 
@@ -155,13 +155,13 @@ class SAPS4HANAClient {
                 attempts++;
                 if (attempts > _config.maxRetries) {
                     throw new SAPS4HANAConnectionException(
-                        format("SAP S/4HANA request failed after %d retries: %s", attempts, e.msg)
+                        format("S/4HANA request failed after %d retries: %s", attempts, e.msg)
                     );
                 }
             }
         }
 
-        throw new SAPS4HANAConnectionException("SAP S/4HANA request failed with unknown error");
+        throw new SAPS4HANAConnectionException("S/4HANA request failed with unknown error");
     }
 
     private string buildQueryString(string[string] query) {
@@ -203,7 +203,7 @@ class SAPS4HANAClient {
             }
         }
 
-        return format("SAP S/4HANA request failed with status code %d", statusCode);
+        return format("S/4HANA request failed with status code %d", statusCode);
     }
 
     private void applyAuth(HTTPClientRequest req) {

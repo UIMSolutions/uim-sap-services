@@ -1,5 +1,5 @@
 /**
- * SAP IDOC client
+ * IDOC client
  *
  * Copyright: Copyright © 2018-2026, Ozan Nurettin Süel
  * License: Apache-2.0
@@ -132,7 +132,7 @@ class IDocClient {
                                 response.errorMessage = response.data["error"].get!string;
                             } else {
                                 response.errorMessage = format(
-                                    "SAP IDOC request failed with status code %d",
+                                    "IDOC request failed with status code %d",
                                     response.statusCode
                                 );
                             }
@@ -151,13 +151,13 @@ class IDocClient {
                 attempts++;
                 if (attempts > _config.maxRetries) {
                     throw new IDocConnectionException(
-                        format("SAP IDOC request failed after %d retries: %s", attempts, e.msg)
+                        format("IDOC request failed after %d retries: %s", attempts, e.msg)
                     );
                 }
             }
         }
 
-        throw new IDocConnectionException("SAP IDOC request failed with unknown error");
+        throw new IDocConnectionException("IDOC request failed with unknown error");
     }
 
     private void applyAuth(HTTPClientRequest req) {

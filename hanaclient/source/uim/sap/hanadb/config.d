@@ -1,5 +1,5 @@
 /**
- * Configuration for SAP HANA DB client
+ * Configuration for HANA DB client
  */
 module uim.sap.hanadb.config;
 

@@ -1,5 +1,5 @@
 name "application-autoscaler"
-description "SAP Application Autoscaler-like service for Cloud Foundry apps on Kubernetes using D, vibe.d and uim-framework"
+description "Application Autoscaler-like service for Cloud Foundry apps on Kubernetes using D, vibe.d and uim-framework"
 homepage "https://github.com/UIMSolutions/uim-sap"
 authors "Ozan Nurettin Süel" "UI Manufaktur"
 copyright "Copyright © 2018-2026, Ozan Nurettin Süel"

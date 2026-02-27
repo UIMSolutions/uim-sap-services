@@ -539,7 +539,7 @@ class DatasphereService {
         Json connectors = Json.emptyArray;
 
         Json sac = Json.emptyObject;
-        sac["name"] = "SAP Analytics Cloud";
+        sac["name"] = "Analytics Cloud";
         sac["type"] = "analytics";
         sac["status"] = "available";
         connectors ~= sac;

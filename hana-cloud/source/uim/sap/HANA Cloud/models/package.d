@@ -1,5 +1,5 @@
 /**
- * Data models for SAP HANA Cloud
+ * Data models for HANA Cloud
  * 
  * Copyright: Copyright © 2018-2026, Ozan Nurettin Süel
  * License: Apache-2.0

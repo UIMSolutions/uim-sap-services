@@ -1,6 +1,6 @@
-# SAP Cloud Identity Services Library for D
+# Cloud Identity Services Library for D
 
-A comprehensive D language library for SAP Cloud Identity Services (IAS/IPS), built on top of uim-framework and vibe.d. This library provides SCIM 2.0 compliant APIs for managing users, groups, and roles in SAP's cloud identity platform.
+A comprehensive D language library for Cloud Identity Services (IAS/IPS), built on top of uim-framework and vibe.d. This library provides SCIM 2.0 compliant APIs for managing users, groups, and roles in SAP's cloud identity platform.
 
 ## Features
 
@@ -358,6 +358,6 @@ For issues and questions:
 
 ## Related Documentation
 
-- [SAP Cloud Identity Services](https://help.sap.com/docs/SAP_CLOUD_IDENTITY)
+- [Cloud Identity Services](https://help.sap.com/docs/SAP_CLOUD_IDENTITY)
 - [SCIM 2.0 Protocol](https://datatracker.ietf.org/doc/html/rfc7644)
 - [SCIM 2.0 Core Schema](https://datatracker.ietf.org/doc/html/rfc7643)

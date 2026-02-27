@@ -1,5 +1,5 @@
 /**
- * Models for SAP Cloud Integration (CPI) client
+ * Models for Cloud Integration (CPI) client
  */
 module uim.sap.cpi.models.response;
 

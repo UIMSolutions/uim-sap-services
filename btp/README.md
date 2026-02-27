@@ -1,10 +1,10 @@
 # UIM BTP Library
 
-A D language library for working with SAP Business Technology Platform (BTP) using the uim-framework and vibe.d.
+A D language library for working with Business Technology Platform (BTP) using the uim-framework and vibe.d.
 
 ## Features
 
-- SAP BTP API HTTP client with vibe.d
+- BTP API HTTP client with vibe.d
 - OAuth2 and Basic authentication support
 - Cloud Foundry API operations
 - ABAP environment and HANA operations
@@ -42,7 +42,7 @@ Supports multiple authentication methods:
 - OAuth2 with client credentials
 - Service instances with bound credentials
 
-## SAP BTP Services
+## BTP Services
 
 - **Cloud Foundry**: Manage apps, services, and buildpacks
 - **ABAP Environment**: ABAP system operations
@@ -53,7 +53,7 @@ Supports multiple authentication methods:
 ## Notes
 
 - Default base URL format: https://{subdomain}.{region}/
-- Supports multiple SAP BTP regions and datacenters
+- Supports multiple BTP regions and datacenters
 - OAuth2 token refresh support
 
 ## License

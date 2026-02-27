@@ -1,7 +1,7 @@
 @startuml
 !theme plain
 
-title UIM SAP Application Autoscaler (AAS) - Deployment Component View
+title UIM Application Autoscaler (AAS) - Deployment Component View
 
 node "Developer Workstation" as DevHost {
   component "Podman" as Podman

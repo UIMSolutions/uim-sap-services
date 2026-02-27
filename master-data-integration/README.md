@@ -1,11 +1,11 @@
 # UIM Master Data Integration Service (MDI)
 
-Kubernetes-compatible SAP Master Data Integration style service built with D, vibe.d, and uim-framework.
+Kubernetes-compatible Master Data Integration style service built with D, vibe.d, and uim-framework.
 
 ## Features
 
 - Master data replication between two or more clients
-- Filter configuration to control replication scope (SAP Business Data Orchestration compatible pattern)
+- Filter configuration to control replication scope (Business Data Orchestration compatible pattern)
 - Extensibility for aligned master data objects using additional fields and entities
 
 ## Build and Run

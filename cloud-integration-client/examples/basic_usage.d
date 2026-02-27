@@ -1,7 +1,7 @@
 module cpi.examples.basic_usage;
 
 /**
- * Basic usage example for SAP CPI client
+ * Basic usage example for CPI client
  */
 import uim.sap.cpi;
 import vibe.data.json : Json;

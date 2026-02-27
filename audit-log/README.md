@@ -1,6 +1,6 @@
 # UIM Audit Log-like Service
 
-Security and compliance-focused audit logging service built with Dlang, `vibe.d`, and `uim-framework`, designed for SAP BTP-style audit use-cases.
+Security and compliance-focused audit logging service built with Dlang, `vibe.d`, and `uim-framework`, designed for BTP-style audit use-cases.
 
 ## Features and Use-Cases
 

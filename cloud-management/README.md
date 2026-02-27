@@ -1,11 +1,11 @@
-# UIM Cloud Management Service for SAP BTP (MGT)
+# UIM Cloud Management Service for BTP (MGT)
 
-Kubernetes-compatible SAP BTP cloud management service built with D, `vibe.d`, and `uim-framework`.
+Kubernetes-compatible BTP cloud management service built with D, `vibe.d`, and `uim-framework`.
 
 ## Features
 
 - Health and readiness endpoints
-- SAP BTP management proxy endpoints for:
+- BTP management proxy endpoints for:
   - environments
   - subaccounts
   - organizations
@@ -15,7 +15,7 @@ Kubernetes-compatible SAP BTP cloud management service built with D, `vibe.d`, a
   - service instances
   - destinations
 - Optional bearer token protection for incoming requests (`MGT_AUTH_TOKEN`)
-- Supports SAP BTP Basic auth and OAuth2-based upstream authentication
+- Supports BTP Basic auth and OAuth2-based upstream authentication
 
 ## Build & Run (Local)
 
@@ -56,7 +56,7 @@ podman run --rm -p 8088:8088 \
   - `MGT_SERVICE_NAME` (default `uim-sap-mgt`)
   - `MGT_SERVICE_VERSION` (default `1.0.0`)
   - `MGT_AUTH_TOKEN` (optional bearer token)
-- SAP BTP:
+- BTP:
   - `MGT_BTP_TENANT` (optional)
   - `MGT_BTP_SUBDOMAIN` (required)
   - `MGT_BTP_REGION` (default `api.sap.hana.ondemand.com`)

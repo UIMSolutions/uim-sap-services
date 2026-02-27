@@ -1,6 +1,6 @@
 # UIM HTML5 Application Repository Service
 
-SAP HTML5 Application Repository style service for SAP BTP scenarios, built with D, `vibe.d`, and `uim-framework`.
+HTML5 Application Repository style service for BTP scenarios, built with D, `vibe.d`, and `uim-framework`.
 
 This service provides central storage and runtime delivery of HTML5 application static content with:
 

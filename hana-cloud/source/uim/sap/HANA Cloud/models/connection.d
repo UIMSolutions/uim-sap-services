@@ -1,5 +1,5 @@
 /**
- * Connection configuration for SAP HANA Cloud
+ * Connection configuration for HANA Cloud
  * 
  * Copyright: Copyright © 2018-2026, Ozan Nurettin Süel
  * License: Apache-2.0
@@ -13,7 +13,7 @@ import std.string : format;
 import core.time : Duration, seconds;
 
 /**
- * Connection configuration for SAP HANA Cloud
+ * Connection configuration for HANA Cloud
  */
 struct ConnectionConfig {
     /// Host address (e.g., "myaccount.hanacloud.ondemand.com")
@@ -82,7 +82,7 @@ struct ConnectionConfig {
     }
     
     /**
-     * Create a default SAP HANA Cloud configuration
+     * Create a default HANA Cloud configuration
      */
     static ConnectionConfig create(string host, string database, Credential credential) pure nothrow @safe {
         ConnectionConfig config;

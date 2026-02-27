@@ -1,15 +1,15 @@
-# SAP IDOC Library for D
+# IDOC Library for D
 
-SAP IDOC client library for D language, built with `uim-framework` and `vibe.d`.
+IDOC client library for D language, built with `uim-framework` and `vibe.d`.
 
-This package provides a typed adapter for IDOC submission and status retrieval against HTTP-based SAP IDOC integration endpoints.
+This package provides a typed adapter for IDOC submission and status retrieval against HTTP-based IDOC integration endpoints.
 
 ## Features
 
 - Submit IDOCs with typed control record and segment payloads
 - Query IDOC processing status by document number
 - Basic and Bearer authentication support
-- SAP headers support (`sap-client`, `sap-language`)
+- headers support (`sap-client`, `sap-language`)
 - Retry logic and typed exception hierarchy
 
 ## Installation

@@ -1,5 +1,5 @@
 /**
- * Response models for SAP HANA operations
+ * Response models for HANA operations
  * 
  * Copyright: Copyright © 2018-2026, Ozan Nurettin Süel
  * License: Apache-2.0

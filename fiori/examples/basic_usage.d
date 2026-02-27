@@ -1,5 +1,5 @@
 /**
- * SAP Fiori client basic usage examples
+ * Fiori client basic usage examples
  * 
  * Copyright: Copyright © 2018-2026, Ozan Nurettin Süel
  * License: Apache-2.0
@@ -25,7 +25,7 @@ void main() {
         auto client = new FioriClient(config);
         
         if (client.testConnection()) {
-            writeln("✓ Connected to SAP Fiori system");
+            writeln("✓ Connected to Fiori system");
         }
     }
     

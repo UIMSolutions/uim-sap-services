@@ -1,8 +1,8 @@
-# SAP RFC Adapter Library for D
+# RFC Adapter Library for D
 
-A lightweight SAP RFC adapter for D applications, built with `uim-framework` and `vibe.d`.
+A lightweight RFC adapter for D applications, built with `uim-framework` and `vibe.d`.
 
-This package targets SAP RFC access through HTTP/JSON adapter endpoints (for example, SAP ICF/API wrappers that expose RFC function modules).
+This package targets RFC access through HTTP/JSON adapter endpoints (for example, ICF/API wrappers that expose RFC function modules).
 
 ## Features
 

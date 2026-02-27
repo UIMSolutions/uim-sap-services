@@ -21,7 +21,7 @@ import std.array : array;
 import core.time : Duration;
 
 /**
- * Main SAP HANA Cloud Client
+ * Main HANA Cloud Client
  */
 class SAPHanaClient {
     private ConnectionConfig config;
@@ -49,7 +49,7 @@ class SAPHanaClient {
     }
     
     /**
-     * Connect to SAP HANA Cloud
+     * Connect to HANA Cloud
      */
     void connect() {
         if (!authManager.validateCredentials()) {
@@ -61,12 +61,12 @@ class SAPHanaClient {
             auto result = executeQuery("SELECT 1 FROM DUMMY");
             connected = true;
         } catch (Exception e) {
-            throw new SAPConnectionException("Failed to connect to SAP HANA: " ~ e.msg);
+            throw new SAPConnectionException("Failed to connect to HANA: " ~ e.msg);
         }
     }
     
     /**
-     * Disconnect from SAP HANA Cloud
+     * Disconnect from HANA Cloud
      */
     void disconnect() {
         connected = false;

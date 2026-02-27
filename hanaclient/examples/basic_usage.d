@@ -1,7 +1,7 @@
 module hanaclint.examples.basic_usage;
 
 /**
- * Basic usage example for SAP HANA DB client
+ * Basic usage example for HANA DB client
  */
 import uim.sap.hanadb;
 import vibe.data.json : Json;

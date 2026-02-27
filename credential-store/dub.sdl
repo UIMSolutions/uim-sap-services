@@ -1,5 +1,5 @@
 name "credential-store"
-description "SAP Credential Store-like service for Kubernetes using D, uim-framework and vibe.d"
+description "Credential Store-like service for Kubernetes using D, uim-framework and vibe.d"
 homepage "https://github.com/UIMSolutions/uim-sap"
 authors "Ozan Nurettin Süel" "UI Manufaktur"
 copyright "Copyright © 2018-2026, Ozan Nurettin Süel"

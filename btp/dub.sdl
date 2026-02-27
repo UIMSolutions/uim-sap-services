@@ -1,5 +1,5 @@
 name "btp"
-description "UIM BTP - SAP Business Technology Platform API Client for D + vibe.d"
+description "UIM BTP - Business Technology Platform API Client for D + vibe.d"
 authors "Ozan Nurettin Suel" "UI Manufaktur"
 license "Apache-2.0"
 

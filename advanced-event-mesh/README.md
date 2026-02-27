@@ -4,7 +4,7 @@ Event streaming, event management, and monitoring platform built with Dlang, `vi
 
 ## Overview
 
-This service provides an SAP Integration Suite advanced event mesh-like capability for event-driven architecture (EDA) on a single platform:
+This service provides an Integration Suite advanced event mesh-like capability for event-driven architecture (EDA) on a single platform:
 
 - **Event Streaming**: deploy broker services, create event meshes, register topics, publish/inspect events.
 - **Event Management**: design/discover/share EDA components and subscriptions, visualize relationships via model endpoint and UML.

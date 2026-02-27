@@ -1,13 +1,13 @@
 # UIM Custom Domain Service
 
 ## Overview
-The UIM Custom Domain Service is a Dlang application built using Vibe.D and the UIM-Framework. It provides a robust service for managing custom domain configurations, ensuring application identity protection, and supporting multitenancy in SAP BTP extension landscapes.
+The UIM Custom Domain Service is a Dlang application built using Vibe.D and the UIM-Framework. It provides a robust service for managing custom domain configurations, ensuring application identity protection, and supporting multitenancy in BTP extension landscapes.
 
 ## Features
 - **Custom Domain Configuration**: Manage and configure custom domains seamlessly.
 - **Application Identity Protection**: Upload and manage TLS/SSL certificates for secure communication.
 - **Security Hardening**: Implement security measures to protect the application from vulnerabilities.
-- **Management of Custom Domains**: Handle custom domains within SAP BTP extension landscapes.
+- **Management of Custom Domains**: Handle custom domains within BTP extension landscapes.
 - **Dashboard for KPIs**: Access key performance indicators and predictive expiration warnings through a dedicated dashboard.
 - **Multitenancy Support**: Manage multiple tenants with tenant-specific configurations and operations.
 

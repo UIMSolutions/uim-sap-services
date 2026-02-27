@@ -1,6 +1,6 @@
 {
     "name": "uim-sap-idoc",
-    "description": "SAP IDOC client library for D language using uim-framework and vibe.d",
+    "description": "IDOC client library for D language using uim-framework and vibe.d",
     "license": "Apache-2.0",
     "authors": [
         "Ozan Nurettin Süel",

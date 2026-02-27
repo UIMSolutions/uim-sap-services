@@ -1,7 +1,7 @@
 @startuml
 !theme plain
 
-title UIM SAP Application Autoscaler (AAS) - Executive View
+title UIM Application Autoscaler (AAS) - Executive View
 
 actor "Platform Team" as Team
 

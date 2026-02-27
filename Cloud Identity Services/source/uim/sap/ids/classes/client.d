@@ -1,5 +1,5 @@
 /**
- * Main client for SAP Cloud Identity Services
+ * Main client for Cloud Identity Services
  * 
  * Copyright: Copyright © 2018-2026, Ozan Nurettin Süel
  * License: Apache-2.0
@@ -21,7 +21,7 @@ import std.string : format;
 import std.conv : to;
 
 /**
- * Main SAP Cloud Identity Services Client
+ * Main Cloud Identity Services Client
  */
 class IdentityClient {
     private IdentityConfig config;

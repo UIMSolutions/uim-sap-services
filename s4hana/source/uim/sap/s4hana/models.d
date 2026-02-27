@@ -1,5 +1,5 @@
 /**
- * Models for SAP S/4HANA client
+ * Models for S/4HANA client
  */
 module uim.sap.s4hana.models;
 

@@ -1,5 +1,5 @@
 name "s4hana"
-description "SAP S/4HANA client library for D language using uim-framework and vibe.d"
+description "S/4HANA client library for D language using uim-framework and vibe.d"
 homepage "https://github.com/UIMSolutions/uim-sap"
 authors "Ozan Nurettin Süel" "UI Manufaktur"
 copyright "Copyright © 2018-2026, Ozan Nurettin Süel"

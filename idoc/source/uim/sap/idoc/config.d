@@ -1,5 +1,5 @@
 /**
- * Configuration for SAP IDOC client
+ * Configuration for IDOC client
  *
  * Copyright: Copyright © 2018-2026, Ozan Nurettin Süel
  * License: Apache-2.0

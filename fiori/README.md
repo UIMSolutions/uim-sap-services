@@ -1,6 +1,6 @@
-# SAP Fiori Client Library for D
+# Fiori Client Library for D
 
-A comprehensive D language library for working with SAP Fiori applications, OData services, and Fiori Launchpad using the uim-framework and vibe.d.
+A comprehensive D language library for working with Fiori applications, OData services, and Fiori Launchpad using the uim-framework and vibe.d.
 
 ## Features
 
@@ -8,7 +8,7 @@ A comprehensive D language library for working with SAP Fiori applications, ODat
 - **CRUD Operations**: Full create, read, update, delete support for OData entities
 - **Query Builder**: Fluent API for $select, $filter, $expand, $orderby, $top, $skip
 - **Batch Requests**: Execute multiple operations in a single request
-- **Function Imports**: Call custom SAP functions
+- **Function Imports**: Call custom functions
 - **Metadata Service**: Parse and query OData service metadata
 - **CSRF Token Handling**: Automatic token management for write operations
 - **OData v2/v3/v4**: Support for multiple OData protocol versions
@@ -249,7 +249,7 @@ FioriConfig config;
 config.baseUrl = "https://myfiori.sapserver.com";
 config.port = 443;
 config.useSSL = true;
-config.sapClient = "100";                    // SAP client number
+config.sapClient = "100";                    // client number
 config.sapLanguage = "EN";                   // Language code
 config.timeout = dur!"seconds"(30);          // Request timeout
 config.maxRetries = 3;                       // Connection retries
@@ -283,14 +283,14 @@ See the `examples/` directory for complete working examples:
 - Navigation intent handling
 - Personalization and variants
 
-## SAP Gateway Compatibility
+## Gateway Compatibility
 
 This library is designed to work with:
-- SAP Gateway Foundation (SAP NetWeaver)
-- SAP S/4HANA (Cloud and On-Premise)
-- SAP Business Technology Platform (BTP)
-- SAP Cloud Platform
-- Any OData-compliant SAP service
+- Gateway Foundation (NetWeaver)
+- S/4HANA (Cloud and On-Premise)
+- Business Technology Platform (BTP)
+- Cloud Platform
+- Any OData-compliant service
 
 ## Requirements
 
@@ -310,8 +310,8 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 - [Repository](https://github.com/UIMSolutions/uim-sap)
 - [OData Documentation](https://www.odata.org/)
-- [SAP Fiori Design Guidelines](https://experience.sap.com/fiori-design/)
-- [SAP Gateway Documentation](https://help.sap.com/docs/SAP_GATEWAY)
+- [Fiori Design Guidelines](https://experience.sap.com/fiori-design/)
+- [Gateway Documentation](https://help.sap.com/docs/SAP_GATEWAY)
 
 ## Author
 

@@ -10,7 +10,7 @@ module uim.sap.models.credential;
 import std.datetime : SysTime, Clock;
 
 /**
- * Authentication types supported by SAP HANA Cloud
+ * Authentication types supported by HANA Cloud
  */
 enum AuthType {
     BasicAuth,      // Username/Password
@@ -21,7 +21,7 @@ enum AuthType {
 }
 
 /**
- * Credentials for SAP HANA authentication
+ * Credentials for HANA authentication
  */
 struct Credential {
     AuthType type;

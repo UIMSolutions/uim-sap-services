@@ -1,11 +1,11 @@
 ````markdown
 # UIM Authorization and Trust Management Service (ATM)
 
-Authorization and trust management service inspired by SAP Authorization and Trust Management, built with Dlang, `vibe.d`, and `uim-framework`, deployable with Podman and Kubernetes.
+Authorization and trust management service inspired by Authorization and Trust Management, built with Dlang, `vibe.d`, and `uim-framework`, deployable with Podman and Kubernetes.
 
 ## What it supports
 
-- **Use corporate or default IdP**: tenant-scoped trust configuration with a preconfigured SAP ID service style default IdP and support for switching to corporate IdPs
+- **Use corporate or default IdP**: tenant-scoped trust configuration with a preconfigured ID service style default IdP and support for switching to corporate IdPs
 - **External authentication handling**: validates bearer JWT claims (`iss`, `aud`, `sub`, `exp`) against trusted IdP configuration
 - **Role-based access**: technical roles with permissions and business-level role collections
 - **User authorization assignments**: map external users to role collections without storing credentials

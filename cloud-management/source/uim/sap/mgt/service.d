@@ -7,16 +7,16 @@ mixin(ShowModule!());
 @safe:
 
 /**
-  * Service layer for SAP Management service
+  * Service layer for Management service
   *
-  * This class is responsible for handling all business logic related to SAP Management.
-  * It interacts with the SAP BTP client to fetch data and perform operations on the SAP BTP environment.
-  * The service layer abstracts away the complexities of the underlying SAP BTP client and provides a simple interface for the server layer to interact with.
+  * This class is responsible for handling all business logic related to Management.
+  * It interacts with the BTP client to fetch data and perform operations on the BTP environment.
+  * The service layer abstracts away the complexities of the underlying BTP client and provides a simple interface for the server layer to interact with.
   * It includes methods for health checks, readiness checks, and various operations related to environments, subaccounts, organizations, spaces, applications, services, service instances, and destinations.
   * 
   * Example usage:
   * MGTConfig config = MGTConfig(
-  *     serviceName: "My SAP Management Service",
+  *     serviceName: "My Management Service",
   *     serviceVersion: "1.0.0",
   *     subdomain: "my-subdomain",
   *     region: "api.sap.hana.ondemand.com",

@@ -1,6 +1,6 @@
 # UIM Cloud Identity Services (CIS)
 
-Kubernetes-compatible SAP Cloud Identity Services style service built with D, `vibe.d`, and `uim-framework`.
+Kubernetes-compatible Cloud Identity Services style service built with D, `vibe.d`, and `uim-framework`.
 
 ## Features
 

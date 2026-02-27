@@ -126,13 +126,13 @@ class CPIClient {
                 attempts++;
                 if (attempts > _config.maxRetries) {
                     throw new CPIConnectionException(
-                        format("SAP CPI request failed after %d retries: %s", attempts, e.msg)
+                        format("CPI request failed after %d retries: %s", attempts, e.msg)
                     );
                 }
             }
         }
 
-        throw new CPIConnectionException("SAP CPI request failed with unknown error");
+        throw new CPIConnectionException("CPI request failed with unknown error");
     }
 
     private string buildUrl(string path, string[string] query, bool useApiBase) {
@@ -187,7 +187,7 @@ class CPIClient {
             }
         }
 
-        return format("SAP CPI request failed with status code %d", statusCode);
+        return format("CPI request failed with status code %d", statusCode);
     }
 
     private void applyAuth(HTTPClientRequest req) {

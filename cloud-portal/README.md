@@ -1,12 +1,12 @@
 # UIM Cloud Portal Service (CPS)
 
-Kubernetes-compatible SAP Cloud Portal Service style runtime built with D, `vibe.d`, and `uim-framework`.
+Kubernetes-compatible Cloud Portal Service style runtime built with D, `vibe.d`, and `uim-framework`.
 
 ## Features
 
-- Intuitive and engaging user experience by creating sites with pages, apps, widgets, and menus using SAP Fiori 3 or custom designs
-- Secure access to apps through role-based navigation and single sign-on for app types such as SAPUI5, SAP GUI for HTML, and Web Dynpro ABAP
-- Central entry point to integrate and access content from SAP and non-SAP content providers uniformly
+- Intuitive and engaging user experience by creating sites with pages, apps, widgets, and menus using Fiori 3 or custom designs
+- Secure access to apps through role-based navigation and single sign-on for app types such as SAPUI5, GUI for HTML, and Web Dynpro ABAP
+- Central entry point to integrate and access content from and non-content providers uniformly
 - Site administration tools for full lifecycle operations: themes, transport, translation, templates, and extensions
 - Content administration tools for `apps`, `roles`, `groups`, and `catalogs`
 - Embedded launchpad module support with runtime capabilities such as personalization, translation, and custom themes

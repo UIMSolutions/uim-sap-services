@@ -411,7 +411,7 @@ class ATMService {
         idp.providerType = "oidc";
         idp.issuer = _config.defaultIdpIssuer;
         idp.audience = _config.defaultIdpAudience;
-        idp.description = "Default SAP ID service style identity provider";
+        idp.description = "Default ID service style identity provider";
         idp.enabled = true;
         idp.isDefault = true;
         idp.trustedAlgorithms = ["RS256", "ES256", "HS256", "none"];

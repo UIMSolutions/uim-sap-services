@@ -7,7 +7,7 @@ mixin(ShowModule!());
 @safe:
 
 /**
-  * This file defines the MGTException class, which serves as the base exception class for all exceptions in the SAP Management module.
+  * This file defines the MGTException class, which serves as the base exception class for all exceptions in the Management module.
   * It extends the built-in Exception class, allowing it to be used in a consistent way with other exceptions in the module.
   *
   * Example usage:

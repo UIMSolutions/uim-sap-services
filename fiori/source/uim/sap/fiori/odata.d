@@ -1,5 +1,5 @@
 /**
- * OData client for SAP Fiori services
+ * OData client for Fiori services
  * 
  * Copyright: Copyright © 2018-2026, Ozan Nurettin Süel
  * License: Apache-2.0
@@ -15,7 +15,7 @@ import std.format : format;
 import std.array : join;
 
 /**
- * OData client for interacting with SAP Gateway services
+ * OData client for interacting with Gateway services
  */
 class ODataClient {
     private FioriConfig config;

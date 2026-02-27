@@ -1,6 +1,6 @@
 # Site Manager Service
 
-This service provides a **SAP BTP Site Manager-like design-time API** for managing tenant sites and subaccount-level launchpad settings.
+This service provides a **BTP Site Manager-like design-time API** for managing tenant sites and subaccount-level launchpad settings.
 
 ## Features
 

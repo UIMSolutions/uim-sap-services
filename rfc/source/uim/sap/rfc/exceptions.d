@@ -1,5 +1,5 @@
 /**
- * Exception handling for SAP RFC adapter
+ * Exception handling for RFC adapter
  *
  * Copyright: Copyright © 2018-2026, Ozan Nurettin Süel
  * License: Apache-2.0

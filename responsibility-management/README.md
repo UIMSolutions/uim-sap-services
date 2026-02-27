@@ -1,6 +1,6 @@
 # UIM Responsibility Management Service
 
-SAP Responsibility Management style service for SAP BTP scenarios, built with D, `vibe.d`, and `uim-framework`.
+Responsibility Management style service for BTP scenarios, built with D, `vibe.d`, and `uim-framework`.
 
 ## Features
 

@@ -1,5 +1,5 @@
 /**
- * Response models for SAP HANA operations
+ * Response models for HANA operations
  * 
  * Copyright: Copyright © 2018-2026, Ozan Nurettin Süel
  * License: Apache-2.0
@@ -11,7 +11,7 @@ import vibe.data.json;
 import std.datetime : SysTime;
 
 /**
- * Query result set from SAP HANA
+ * Query result set from HANA
  */
 struct QueryResult {
     /// Column names in the result set
@@ -69,7 +69,7 @@ struct QueryResult {
 }
 
 /**
- * SAP HANA API response
+ * HANA API response
  */
 struct SAPResponse {
     /// HTTP status code

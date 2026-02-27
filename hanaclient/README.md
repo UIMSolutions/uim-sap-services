@@ -1,10 +1,10 @@
-# SAP HANA Database Client for D
+# HANA Database Client for D
 
-SAP HANA database client library for D language, built with uim-framework and vibe.d.
+HANA database client library for D language, built with uim-framework and vibe.d.
 
 ## Features
 
-- Connect and health-check SAP HANA
+- Connect and health-check HANA
 - Execute SQL queries and commands
 - Execute batched statements
 - Transaction helpers: begin, commit, rollback
