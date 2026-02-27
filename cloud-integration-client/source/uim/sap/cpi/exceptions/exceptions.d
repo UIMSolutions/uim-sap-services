@@ -1,7 +1,13 @@
 /**
  * Exception types for SAP Cloud Integration (CPI)
  */
-module uim.sap.cpi.exceptions;
+module uim.sap.cpi.exceptions.exceptions;
+
+import uim.sap.cpi;
+
+mixin(ShowModule!());
+
+@safe:
 
 class SAPCPIException : Exception {
     this(string msg, string file = __FILE__, size_t line = __LINE__, Throwable next = null)

@@ -1,20 +1,10 @@
-/**
- * SAP Cloud Integration (CPI) client
- */
-module uim.sap.cpi.client;
+module uim.sap.cpi.classes.client;
 
-import std.base64 : Base64;
-import std.datetime : Clock;
-import std.string : format, startsWith;
+import uim.sap.cpi;
 
-import vibe.data.json : Json;
-import vibe.http.client : requestHTTP, HTTPClientRequest;
-import vibe.http.common : HTTPMethod;
-import vibe.textfilter.urlencode : urlEncode;
+mixin(ShowModule!());
 
-import uim.sap.cpi.config;
-import uim.sap.cpi.exceptions;
-import uim.sap.cpi.models;
+@safe:
 
 class SAPCPIClient {
     private SAPCPIConfig _config;
