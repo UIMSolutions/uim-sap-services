@@ -33,13 +33,13 @@ CLFApp appFromJson(Json payload) {
   if ("state" in payload && payload["state"].isString) {
     app.state = payload["state"].get!string;
   }
-  if ("instances" in payload && payload["instances"].type == Json.Type.int_) {
+  if ("instances" in payload && payload["instances"].isInteger) {
     auto parsed = payload["instances"].get!long;
     if (parsed > 0) {
       app.instances = cast(uint)parsed;
     }
   }
-  if ("memory_mb" in payload && payload["memory_mb"].type == Json.Type.int_) {
+  if ("memory_mb" in payload && payload["memory_mb"].isInteger) {
     auto parsed = payload["memory_mb"].get!long;
     if (parsed > 0) {
       app.memoryMb = cast(uint)parsed;

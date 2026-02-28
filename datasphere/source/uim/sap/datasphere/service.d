@@ -609,7 +609,7 @@ class DatasphereService {
     }
 
     private int optionalInt(Json request, string key, int fallback) {
-        if (key in request && request[key].type == Json.Type.int_) {
+        if (key in request && request[key].isInteger) {
             auto value = cast(int)request[key].get!long;
             return value > 0 ? value : fallback;
         }

@@ -474,10 +474,10 @@ class ATMService {
         if (!(key in claims)) {
             return fallback;
         }
-        if (claims[key].type == Json.Type.int_) {
+        if (claims[key].isInteger) {
             return claims[key].get!long;
         }
-        if (claims[key].type == Json.Type.float_) {
+        if (claims[key].isFloat) {
             return cast(long)claims[key].get!double;
         }
         return fallback;

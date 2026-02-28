@@ -86,7 +86,7 @@ CONDestination destinationFromJson(string tenantId, string name, Json request) {
     if ("target_host" in request && request["target_host"].isString) {
         destination.targetHost = request["target_host"].get!string;
     }
-    if ("target_port" in request && request["target_port"].type == Json.Type.int_) {
+    if ("target_port" in request && request["target_port"].isInteger) {
         auto value = request["target_port"].get!long;
         if (value > 0 && value <= ushort.max) {
             destination.targetPort = cast(ushort)value;

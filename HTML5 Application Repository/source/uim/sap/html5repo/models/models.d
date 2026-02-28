@@ -104,7 +104,7 @@ private long getLong(Json payload, string key, long fallback) {
     if (!(key in payload)) {
         return fallback;
     }
-    if (payload[key].type == Json.Type.int_) {
+    if (payload[key].isInteger) {
         return payload[key].get!long;
     }
     return fallback;

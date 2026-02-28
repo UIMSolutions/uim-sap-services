@@ -467,7 +467,7 @@ class CDCService {
 
     if (ipAddress.length == 0) score += 5;
 
-    if ("recaptcha_score" in providerSignals && providerSignals["recaptcha_score"].type == Json.Type.float_) {
+    if ("recaptcha_score" in providerSignals && providerSignals["recaptcha_score"].isFloat) {
       if (providerSignals["recaptcha_score"].get!double < 0.5) score += 40;
     }
 
@@ -479,7 +479,7 @@ class CDCService {
       if (toLower(providerSignals["arkose_result"].get!string) == "suspicious") score += 35;
     }
 
-    if ("transunion_score" in providerSignals && providerSignals["transunion_score"].type == Json.Type.int_) {
+    if ("transunion_score" in providerSignals && providerSignals["transunion_score"].isInteger) {
       if (providerSignals["transunion_score"].get!long > 700) score += 20;
     }
 

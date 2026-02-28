@@ -298,7 +298,7 @@ class MDGService {
                 return value.length > 0;
             case "min_length":
                 long minValue = 1;
-                if ("min" in rule.options && rule.options["min"].type == Json.Type.int_) {
+                if ("min" in rule.options && rule.options["min"].isInteger) {
                     minValue = rule.options["min"].get!long;
                 }
                 return value.length >= minValue;

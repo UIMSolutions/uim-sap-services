@@ -216,10 +216,10 @@ AgentryTestRun testRunFromJson(string tenantId, string appId, Json request) {
   if ("result_status" in request && request["result_status"].isString) {
     testRun.resultStatus = toLower(request["result_status"].get!string);
   }
-  if ("passed_cases" in request && request["passed_cases"].type == Json.Type.int_) {
+  if ("passed_cases" in request && request["passed_cases"].isInteger) {
     testRun.passedCases = request["passed_cases"].get!long;
   }
-  if ("failed_cases" in request && request["failed_cases"].type == Json.Type.int_) {
+  if ("failed_cases" in request && request["failed_cases"].isInteger) {
     testRun.failedCases = request["failed_cases"].get!long;
   }
 

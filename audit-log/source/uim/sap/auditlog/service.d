@@ -101,7 +101,7 @@ class AuditLogService {
         _store.purgeExpired(tenantId, policy.retentionDays);
 
         int withinDays = policy.retentionDays;
-        if ("within_days" in request && request["within_days"].type == Json.Type.int_) {
+        if ("within_days" in request && request["within_days"].isInteger) {
             auto candidate = cast(int)request["within_days"].get!long;
             if (candidate > 0 && candidate < withinDays) {
                 withinDays = candidate;
@@ -109,7 +109,7 @@ class AuditLogService {
         }
 
         int limit = 200;
-        if ("limit" in request && request["limit"].type == Json.Type.int_) {
+        if ("limit" in request && request["limit"].isInteger) {
             auto candidate = cast(int)request["limit"].get!long;
             if (candidate > 0 && candidate <= 5000) {
                 limit = candidate;
@@ -215,7 +215,7 @@ class AuditLogService {
         auto policy = ensurePolicy(tenantId);
 
         int nextDays = policy.retentionDays;
-        if ("retention_days" in request && request["retention_days"].type == Json.Type.int_) {
+        if ("retention_days" in request && request["retention_days"].isInteger) {
             nextDays = cast(int)request["retention_days"].get!long;
         }
         if (nextDays <= 0) {
@@ -239,7 +239,7 @@ class AuditLogService {
         policy.updatedAt = Clock.currTime();
 
         if ("premium_cost_per_1000_events" in request
-            && request["premium_cost_per_1000_events"].type == Json.Type.float_) {
+            && request["premium_cost_per_1000_events"].isFloat) {
             policy.premiumCostPerThousandEvents = request["premium_cost_per_1000_events"].get!double;
         }
 

@@ -324,7 +324,7 @@ class MONService {
     }
 
     private int getInt(Json request, string key, int fallback = 0) {
-        if (key in request && request[key].type == Json.Type.int_) {
+        if (key in request && request[key].isInteger) {
             return cast(int)request[key].get!long;
         }
         return fallback;
@@ -341,7 +341,7 @@ class MONService {
         if (key in request && request[key].isDouble) {
             return request[key].get!double;
         }
-        if (key in request && request[key].type == Json.Type.int_) {
+        if (key in request && request[key].isInteger) {
             return cast(double)request[key].get!long;
         }
         return fallback;

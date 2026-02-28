@@ -112,7 +112,7 @@ class DQMService {
         auto longitude = getNumber(request, "longitude");
 
         size_t limit = 3;
-        if ("limit" in request && request["limit"].type == Json.Type.int_) {
+        if ("limit" in request && request["limit"].isInteger) {
             auto parsed = request["limit"].get!long;
             if (parsed > 0) limit = cast(size_t)parsed;
         }
@@ -147,7 +147,7 @@ class DQMService {
         }
 
         size_t limit = 5;
-        if ("limit" in request && request["limit"].type == Json.Type.int_) {
+        if ("limit" in request && request["limit"].isInteger) {
             auto parsed = request["limit"].get!long;
             if (parsed > 0) limit = cast(size_t)parsed;
         }
@@ -170,10 +170,10 @@ class DQMService {
         if (!(fieldName in request)) {
             throw new DQMValidationException(fieldName ~ " is required");
         }
-        if (request[fieldName].type == Json.Type.float_) {
+        if (request[fieldName].isFloat) {
             return request[fieldName].get!double;
         }
-        if (request[fieldName].type == Json.Type.int_) {
+        if (request[fieldName].isInteger) {
             return cast(double)request[fieldName].get!long;
         }
         throw new DQMValidationException(fieldName ~ " must be numeric");

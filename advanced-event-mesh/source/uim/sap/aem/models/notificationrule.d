@@ -42,9 +42,9 @@ AEMNotificationRule notificationRuleFromJson(string tenantId, string ruleId, Jso
   if ("metric" in request && request["metric"].isString) {
     rule.metric = toLower(request["metric"].get!string);
   }
-  if ("threshold" in request && request["threshold"].type == Json.Type.float_) {
+  if ("threshold" in request && request["threshold"].isFloat) {
     rule.threshold = request["threshold"].get!double;
-  } else if ("threshold" in request && request["threshold"].type == Json.Type.int_) {
+  } else if ("threshold" in request && request["threshold"].isInteger) {
     rule.threshold = cast(double)request["threshold"].get!long;
   }
   if ("severity" in request && request["severity"].isString) {

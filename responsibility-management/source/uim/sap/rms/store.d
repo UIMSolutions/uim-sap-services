@@ -774,8 +774,8 @@ class RMSStore {
 
     private string jsonToString(Json value) {
         if (value.isString) return value.get!string;
-        if (value.type == Json.Type.int_) return to!string(value.get!long);
-        if (value.type == Json.Type.float_) return to!string(value.get!double);
+        if (value.isInteger) return to!string(value.get!long);
+        if (value.isFloat) return to!string(value.get!double);
         if (value.type == Json.Type.bool_) return value.get!bool ? "true" : "false";
         return "";
     }
@@ -795,14 +795,14 @@ class RMSStore {
     }
 
     private int getInt(Json payload, string key, int fallback) {
-        if (key in payload && payload[key].type == Json.Type.int_) {
+        if (key in payload && payload[key].isInteger) {
             return cast(int)payload[key].get!long;
         }
         return fallback;
     }
 
     private long getLong(Json payload, string key, long fallback) {
-        if (key in payload && payload[key].type == Json.Type.int_) {
+        if (key in payload && payload[key].isInteger) {
             return payload[key].get!long;
         }
         return fallback;
