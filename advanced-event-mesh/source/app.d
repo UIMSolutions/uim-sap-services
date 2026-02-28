@@ -36,7 +36,6 @@ void main() {
     writeln("Starting AEM service on ", config.host, ":", config.port);
     writeln("Base path: ", config.basePath);
     server.run();
-    runApplication();
 }
 
 private string envOr(string key, string fallback) {
