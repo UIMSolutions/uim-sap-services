@@ -1,5 +1,11 @@
 module uim.sap.cis.models.delegationrule;
 
+import uim.sap.cis;
+
+mixin(ShowModule!());
+
+@safe:
+
 struct CISDelegationRule {
     string tenantId;
     string ruleId;

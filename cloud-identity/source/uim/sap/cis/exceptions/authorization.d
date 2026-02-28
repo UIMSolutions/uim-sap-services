@@ -1,5 +1,11 @@
 module uim.sap.cis.exceptions.authorization;
 
+import uim.sap.cis;
+
+mixin(ShowModule!());
+
+@safe:
+
 /**
   * CISAuthorizationException is thrown when a user does not have the necessary permissions to perform an action.
   *

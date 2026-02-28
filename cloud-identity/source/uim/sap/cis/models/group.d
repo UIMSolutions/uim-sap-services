@@ -1,5 +1,11 @@
 module uim.sap.cis.models.group;
 
+import uim.sap.cis;
+
+mixin(ShowModule!());
+
+@safe:
+
 struct CISGroup {
     string tenantId;
     string groupId;

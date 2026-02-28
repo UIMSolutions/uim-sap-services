@@ -1,5 +1,11 @@
 module uim.sap.cis.models.authorizationpolicy;
 
+import uim.sap.cis;
+
+mixin(ShowModule!());
+
+@safe:
+
 struct CISAuthorizationPolicy {
     string tenantId;
     string policyId;
