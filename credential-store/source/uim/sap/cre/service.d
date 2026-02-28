@@ -10,6 +10,52 @@ import uim.sap.cre.exceptions;
 import uim.sap.cre.models;
 import uim.sap.cre.store;
 
+/**
+  * Main service class for the Credential Store.
+  * Handles business logic and interactions with the store.
+  *
+  * Responsibilities:
+  * - Validate input and service configuration
+  * - Manage service instances and credentials
+  * - Handle encryption and decryption of credentials
+  * - Provide health and readiness checks
+  * - Ensure proper error handling and response formatting
+  *
+  * The CREServer class will use this service to process incoming HTTP requests.
+  *
+  * Example usage:
+  * CREConfig config = CREConfig(
+  *     host: "localhost",
+  *     port: 8080,
+  *     serviceName: "Credential Store",
+  *     serviceVersion: "1.0.0",
+  *     authToken: "your-auth-token"
+  * );
+  * CREService service = new CREService(config);
+  * service.run();
+  *
+  * Note: The actual running of the service is handled by the CREServer class, which will call the appropriate methods on this service based on incoming HTTP requests.
+  * The service methods will return JSON payloads that the server can use to construct HTTP responses.
+  * 
+  * Fields:
+  * - CREConfig _config: Configuration settings for the service, including host, port, service name, version, authentication token, and custom headers.
+  * - CREStore _store: An instance of the CREStore class that manages the storage and retrieval of service instances, credentials, and service keys.
+  *
+  * Methods: 
+  * - health(): Returns a JSON object indicating the health status of the service.
+  * - ready(): Returns a JSON object indicating the readiness status of the service.
+  * - upsertServiceInstance(instanceId, request): Creates or updates a service instance based on the provided instance ID and request data.
+  * - listServiceInstances(): Returns a list of all service instances in JSON format.
+  * - getServiceInstance(instanceId): Retrieves details of a specific service instance by its ID.
+  * - deleteServiceInstance(instanceId): Deletes a specific service instance by its ID.
+  * - upsertCredential(instanceId, credentialName, request, requestKey): Creates or updates a credential for a specific service instance.
+  * - listCredentials(instanceId): Returns a list of all credentials for a specific service instance.
+  * - getCredential(instanceId, credentialName, requestKey): Retrieves details of a specific credential for a service instance.
+  * - deleteCredential(instanceId, credentialName): Deletes a specific credential for a service instance.
+  * - upsertServiceKey(instanceId, serviceKeyId, request, requestKey): Creates or updates a service key for a specific service instance.
+  * - getServiceKey(instanceId, serviceKeyId, requestKey): Retrieves details of a specific service key for a service instance.
+  * - deleteServiceKey(instanceId, serviceKeyId): Deletes a specific service key for a service instance.
+  */
 class CREService {
     private CREConfig _config;
     private CREStore _store;

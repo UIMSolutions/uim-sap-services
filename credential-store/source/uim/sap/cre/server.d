@@ -173,3 +173,9 @@ class CREServer {
     res.writeJsonBody(payload, statusCode);
   }
 }
+///
+unittest {
+  mixin(ShowTest!("Testing CREServer"));
+
+  // TODO: Add tests for CREServer
+}
