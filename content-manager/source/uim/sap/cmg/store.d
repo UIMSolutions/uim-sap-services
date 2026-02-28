@@ -2,9 +2,11 @@ module uim.sap.cmg.store;
 
 import core.sync.mutex : Mutex;
 
-import std.typecons : Nullable;
+import uim.sap.cmg;
 
-import uim.sap.cmg.models;
+mixin(ShowModule!());
+
+@safe:
 
 class CMGStore {
     private CMGContentItem[string] _items;

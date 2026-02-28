@@ -6,9 +6,8 @@ mixin(ShowModule!());
 
 @safe:
 
-
 class AEMException : Exception {
-    this(string message) {
-        super(message);
-    }
+  this(string message) {
+    super(message);
+  }
 }

@@ -1,14 +1,10 @@
 module uim.sap.cmg.server;
 
-import std.array : split;
-import std.string : startsWith;
+import uim.sap.cmg;
 
-import vibe.data.json : Json;
-import vibe.http.common : HTTPMethod;
-import vibe.http.server : HTTPServerRequest, HTTPServerResponse, HTTPServerSettings, listenHTTP;
+mixin(ShowModule!());
 
-import uim.sap.cmg.exceptions;
-import uim.sap.cmg.service;
+@safe:
 
 class CMGServer {
   private CMGService _service;

@@ -1,10 +1,6 @@
 module uim.sap.cre.exceptions;
 
-class CREException : Exception {
-    this(string msg) {
-        super(msg);
-    }
-}
+
 
 class CREConfigurationException : CREException {
     this(string msg) {

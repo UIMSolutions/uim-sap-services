@@ -7,7 +7,7 @@ mixin(ShowModule!());
 @safe:
 
 class AEMAuthorizationException : AEMException {
-    this(string message) {
-        super("Unauthorized: " ~ message);
-    }
+  this(string message) {
+    super("Unauthorized: " ~ message);
+  }
 }

@@ -6,9 +6,8 @@ mixin(ShowModule!());
 
 @safe:
 
-
 class AEMConfigurationException : AEMException {
-    this(string message) {
-        super("Configuration error: " ~ message);
-    }
+  this(string message) {
+    super("Configuration error: " ~ message);
+  }
 }
