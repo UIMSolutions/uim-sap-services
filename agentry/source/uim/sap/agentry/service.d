@@ -223,7 +223,7 @@ class AgentryService {
 
         instance.deployedVersionId = versionId;
         instance.status = "running";
-        if ("status" in request && request["status"].type == Json.Type.string) {
+        if ("status" in request && request["status"].isString) {
             instance.status = toLower(request["status"].get!string);
         }
         instance.updatedAt = Clock.currTime();
@@ -286,7 +286,7 @@ class AgentryService {
             throw new AgentryNotFoundException("Device", tenantId ~ "/" ~ deviceId);
         }
 
-        if ("app_version_id" in request && request["app_version_id"].type == Json.Type.string) {
+        if ("app_version_id" in request && request["app_version_id"].isString) {
             device.appVersionId = request["app_version_id"].get!string;
         }
         device.lastSyncAt = Clock.currTime();

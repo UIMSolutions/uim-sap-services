@@ -39,12 +39,12 @@ DQMAddress addressFromJson(Json request, string defaultCountry) {
     DQMAddress address;
     address.country = defaultCountry;
 
-    if ("line1" in request && request["line1"].type == Json.Type.string) address.line1 = request["line1"].get!string;
-    if ("line2" in request && request["line2"].type == Json.Type.string) address.line2 = request["line2"].get!string;
-    if ("city" in request && request["city"].type == Json.Type.string) address.city = request["city"].get!string;
-    if ("postal_code" in request && request["postal_code"].type == Json.Type.string) address.postalCode = request["postal_code"].get!string;
-    if ("region" in request && request["region"].type == Json.Type.string) address.region = request["region"].get!string;
-    if ("country" in request && request["country"].type == Json.Type.string) address.country = request["country"].get!string;
+    if ("line1" in request && request["line1"].isString) address.line1 = request["line1"].get!string;
+    if ("line2" in request && request["line2"].isString) address.line2 = request["line2"].get!string;
+    if ("city" in request && request["city"].isString) address.city = request["city"].get!string;
+    if ("postal_code" in request && request["postal_code"].isString) address.postalCode = request["postal_code"].get!string;
+    if ("region" in request && request["region"].isString) address.region = request["region"].get!string;
+    if ("country" in request && request["country"].isString) address.country = request["country"].get!string;
 
     return address;
 }

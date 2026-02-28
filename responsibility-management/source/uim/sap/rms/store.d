@@ -552,7 +552,7 @@ class RMSStore {
 
             if ("functions" in item && item["functions"].type == Json.Type.array) {
                 foreach (fn; item["functions"]) {
-                    if (fn.type == Json.Type.string) {
+                    if (fn.isString) {
                         member.functions ~= fn.get!string;
                     }
                 }
@@ -773,7 +773,7 @@ class RMSStore {
     }
 
     private string jsonToString(Json value) {
-        if (value.type == Json.Type.string) return value.get!string;
+        if (value.isString) return value.get!string;
         if (value.type == Json.Type.int_) return to!string(value.get!long);
         if (value.type == Json.Type.float_) return to!string(value.get!double);
         if (value.type == Json.Type.bool_) return value.get!bool ? "true" : "false";
@@ -781,7 +781,7 @@ class RMSStore {
     }
 
     private string getString(Json payload, string key, string fallback) {
-        if (key in payload && payload[key].type == Json.Type.string) {
+        if (key in payload && payload[key].isString) {
             return payload[key].get!string;
         }
         return fallback;
@@ -814,7 +814,7 @@ class RMSStore {
             return values;
         }
         foreach (item; payload[key]) {
-            if (item.type == Json.Type.string) {
+            if (item.isString) {
                 values ~= item.get!string;
             }
         }

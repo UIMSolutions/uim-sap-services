@@ -46,19 +46,19 @@ AEMBrokerService brokerFromJson(string tenantId, Json request, string defaultReg
     broker.createdAt = Clock.currTime();
     broker.updatedAt = broker.createdAt;
 
-    if ("broker_service_id" in request && request["broker_service_id"].type == Json.Type.string) {
+    if ("broker_service_id" in request && request["broker_service_id"].isString) {
         broker.brokerServiceId = request["broker_service_id"].get!string;
     }
-    if ("name" in request && request["name"].type == Json.Type.string) {
+    if ("name" in request && request["name"].isString) {
         broker.name = request["name"].get!string;
     }
-    if ("plan" in request && request["plan"].type == Json.Type.string) {
+    if ("plan" in request && request["plan"].isString) {
         broker.plan = request["plan"].get!string;
     }
-    if ("region" in request && request["region"].type == Json.Type.string) {
+    if ("region" in request && request["region"].isString) {
         broker.region = request["region"].get!string;
     }
-    if ("status" in request && request["status"].type == Json.Type.string) {
+    if ("status" in request && request["status"].isString) {
         broker.status = toLower(request["status"].get!string);
     }
 

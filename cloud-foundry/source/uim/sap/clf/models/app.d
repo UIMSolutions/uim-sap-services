@@ -24,13 +24,13 @@ CLFApp appFromJson(Json payload) {
   CLFApp app;
   app.guid = randomUUID().toString();
   app.createdAt = Clock.currTime();
-  if ("name" in payload && payload["name"].type == Json.Type.string) {
+  if ("name" in payload && payload["name"].isString) {
     app.name = payload["name"].get!string;
   }
-  if ("space_guid" in payload && payload["space_guid"].type == Json.Type.string) {
+  if ("space_guid" in payload && payload["space_guid"].isString) {
     app.spaceGuid = payload["space_guid"].get!string;
   }
-  if ("state" in payload && payload["state"].type == Json.Type.string) {
+  if ("state" in payload && payload["state"].isString) {
     app.state = payload["state"].get!string;
   }
   if ("instances" in payload && payload["instances"].type == Json.Type.int_) {

@@ -117,7 +117,7 @@ class AuditLogService {
         }
 
         string eventTypeFilter;
-        if ("event_type" in request && request["event_type"].type == Json.Type.string) {
+        if ("event_type" in request && request["event_type"].isString) {
             eventTypeFilter = toLower(request["event_type"].get!string);
         }
 
@@ -223,7 +223,7 @@ class AuditLogService {
         }
 
         auto nextPlan = policy.plan;
-        if ("plan" in request && request["plan"].type == Json.Type.string) {
+        if ("plan" in request && request["plan"].isString) {
             nextPlan = toLower(request["plan"].get!string);
         }
         if (nextPlan != "default" && nextPlan != "premium") {

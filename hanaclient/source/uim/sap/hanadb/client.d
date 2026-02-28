@@ -155,7 +155,7 @@ class HanaDBClient {
 
         if ("columns" in payload && payload["columns"].type == Json.Type.array) {
             foreach (col; payload["columns"]) {
-                if (col.type == Json.Type.string) {
+                if (col.isString) {
                     resultSet.columns ~= col.get!string;
                 }
             }
@@ -186,7 +186,7 @@ class HanaDBClient {
             if (err.type == Json.Type.object) {
                 if ("message" in err) {
                     auto messageNode = err["message"];
-                    if (messageNode.type == Json.Type.string) {
+                    if (messageNode.isString) {
                         return messageNode.get!string;
                     }
 

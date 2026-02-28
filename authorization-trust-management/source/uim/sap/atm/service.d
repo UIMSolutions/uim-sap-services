@@ -445,7 +445,7 @@ class ATMService {
         if (!(key in claims)) {
             return fallback;
         }
-        if (claims[key].type == Json.Type.string) {
+        if (claims[key].isString) {
             return claims[key].get!string;
         }
         return fallback;
@@ -456,13 +456,13 @@ class ATMService {
             return "";
         }
 
-        if (claims[key].type == Json.Type.string) {
+        if (claims[key].isString) {
             return claims[key].get!string;
         }
 
         if (claims[key].type == Json.Type.array) {
             foreach (item; claims[key].get!(Json[])) {
-                if (item.type == Json.Type.string) {
+                if (item.isString) {
                     return item.get!string;
                 }
             }
@@ -496,7 +496,7 @@ class ATMService {
     private string[] readScopeClaims(Json claims) {
         string[] scopes;
 
-        if ("scope" in claims && claims["scope"].type == Json.Type.string) {
+        if ("scope" in claims && claims["scope"].isString) {
             auto scopeString = claims["scope"].get!string;
             foreach (scopeName; scopeString.split(" ")) {
                 auto trimmed = scopeName.strip();

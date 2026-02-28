@@ -1011,7 +1011,7 @@ HTML";
     }
 
     private string optionalString(Json request, string key, string fallback) {
-        if (key in request && request[key].type == Json.Type.string) {
+        if (key in request && request[key].isString) {
             auto value = request[key].get!string;
             return value.length > 0 ? value : fallback;
         }

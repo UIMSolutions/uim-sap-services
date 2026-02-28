@@ -215,7 +215,7 @@ class CMGService {
   private bool readOptionalBool(Json body, string key, bool fallback) const {
     if (!(key in body) || body[key].isNull)
       return fallback;
-    if (!body[key].isBool)
+    if (!body[key].isBoolean)
       throw new CMGValidationException(key ~ " must be a boolean");
     return
     body[key].get!bool;

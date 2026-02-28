@@ -193,7 +193,7 @@ class SAPS4HANAClient {
             if (errorObj.type == Json.Type.object && "message" in errorObj) {
                 auto msg = errorObj["message"];
 
-                if (msg.type == Json.Type.string) {
+                if (msg.isString) {
                     return msg.get!string;
                 }
 

@@ -601,7 +601,7 @@ class DatasphereService {
     }
 
     private string optionalString(Json request, string key, string fallback) {
-        if (key in request && request[key].type == Json.Type.string) {
+        if (key in request && request[key].isString) {
             auto value = request[key].get!string;
             return value.length > 0 ? value : fallback;
         }
@@ -628,7 +628,7 @@ class DatasphereService {
         if (!(key in request) || request[key].type != Json.Type.array) return values;
 
         foreach (item; request[key]) {
-            if (item.type == Json.Type.string) {
+            if (item.isString) {
                 auto value = item.get!string;
                 if (value.length > 0) values ~= value;
             }

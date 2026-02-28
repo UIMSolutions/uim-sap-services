@@ -155,19 +155,19 @@ ATMIdentityProvider idpFromJson(string tenantId, string idpId, Json request) {
     idp.trustedAlgorithms = ["RS256", "ES256", "HS256", "none"];
     idp.updatedAt = Clock.currTime();
 
-    if ("name" in request && request["name"].type == Json.Type.string) {
+    if ("name" in request && request["name"].isString) {
         idp.name = request["name"].get!string;
     }
-    if ("provider_type" in request && request["provider_type"].type == Json.Type.string) {
+    if ("provider_type" in request && request["provider_type"].isString) {
         idp.providerType = request["provider_type"].get!string;
     }
-    if ("issuer" in request && request["issuer"].type == Json.Type.string) {
+    if ("issuer" in request && request["issuer"].isString) {
         idp.issuer = request["issuer"].get!string;
     }
-    if ("audience" in request && request["audience"].type == Json.Type.string) {
+    if ("audience" in request && request["audience"].isString) {
         idp.audience = request["audience"].get!string;
     }
-    if ("description" in request && request["description"].type == Json.Type.string) {
+    if ("description" in request && request["description"].isString) {
         idp.description = request["description"].get!string;
     }
     if ("enabled" in request && request["enabled"].type == Json.Type.bool_) {
@@ -190,10 +190,10 @@ ATMTechnicalRole technicalRoleFromJson(string tenantId, string roleId, Json requ
     role.name = role.roleId;
     role.updatedAt = Clock.currTime();
 
-    if ("name" in request && request["name"].type == Json.Type.string) {
+    if ("name" in request && request["name"].isString) {
         role.name = request["name"].get!string;
     }
-    if ("description" in request && request["description"].type == Json.Type.string) {
+    if ("description" in request && request["description"].isString) {
         role.description = request["description"].get!string;
     }
     if ("permissions" in request && request["permissions"].type == Json.Type.array) {
@@ -210,10 +210,10 @@ ATMRoleCollection roleCollectionFromJson(string tenantId, string collectionId, J
     collection.name = collection.collectionId;
     collection.updatedAt = Clock.currTime();
 
-    if ("name" in request && request["name"].type == Json.Type.string) {
+    if ("name" in request && request["name"].isString) {
         collection.name = request["name"].get!string;
     }
-    if ("description" in request && request["description"].type == Json.Type.string) {
+    if ("description" in request && request["description"].isString) {
         collection.description = request["description"].get!string;
     }
     if ("technical_role_ids" in request && request["technical_role_ids"].type == Json.Type.array) {
@@ -229,7 +229,7 @@ ATMUserAssignment userAssignmentFromJson(string tenantId, string userId, Json re
     assignment.userId = userId;
     assignment.updatedAt = Clock.currTime();
 
-    if ("idp_id" in request && request["idp_id"].type == Json.Type.string) {
+    if ("idp_id" in request && request["idp_id"].isString) {
         assignment.idpId = request["idp_id"].get!string;
     }
     if ("role_collection_ids" in request && request["role_collection_ids"].type == Json.Type.array) {
@@ -246,7 +246,7 @@ string[] stringArrayFromJson(Json values) {
     }
 
     foreach (item; values.get!(Json[])) {
-        if (item.type == Json.Type.string) {
+        if (item.isString) {
             result ~= item.get!string;
         }
     }

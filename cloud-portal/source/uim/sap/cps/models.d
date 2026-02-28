@@ -133,9 +133,9 @@ CPSSite siteFromJson(string tenantId, Json request, string defaultTheme) {
     site.createdAt = Clock.currTime();
     site.updatedAt = site.createdAt;
 
-    if ("site_id" in request && request["site_id"].type == Json.Type.string) site.siteId = request["site_id"].get!string;
-    if ("name" in request && request["name"].type == Json.Type.string) site.name = request["name"].get!string;
-    if ("design" in request && request["design"].type == Json.Type.string) site.design = request["design"].get!string;
+    if ("site_id" in request && request["site_id"].isString) site.siteId = request["site_id"].get!string;
+    if ("name" in request && request["name"].isString) site.name = request["name"].get!string;
+    if ("design" in request && request["design"].isString) site.design = request["design"].get!string;
     if ("pages" in request && request["pages"].type == Json.Type.array) site.pages = request["pages"];
     if ("apps" in request && request["apps"].type == Json.Type.array) site.apps = request["apps"];
     if ("widgets" in request && request["widgets"].type == Json.Type.array) site.widgets = request["widgets"];

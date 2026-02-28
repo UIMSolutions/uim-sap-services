@@ -56,22 +56,22 @@ MDGBusinessPartner businessPartnerFromJson(string tenantId, Json request, string
     bp.relationships = Json.emptyArray;
     bp.attributes = Json.emptyObject;
 
-    if ("bp_id" in request && request["bp_id"].type == Json.Type.string) {
+    if ("bp_id" in request && request["bp_id"].isString) {
         bp.bpId = request["bp_id"].get!string;
     }
-    if ("external_id" in request && request["external_id"].type == Json.Type.string) {
+    if ("external_id" in request && request["external_id"].isString) {
         bp.externalId = request["external_id"].get!string;
     }
-    if ("name" in request && request["name"].type == Json.Type.string) {
+    if ("name" in request && request["name"].isString) {
         bp.name = request["name"].get!string;
     }
-    if ("country" in request && request["country"].type == Json.Type.string) {
+    if ("country" in request && request["country"].isString) {
         bp.country = request["country"].get!string;
     }
-    if ("email" in request && request["email"].type == Json.Type.string) {
+    if ("email" in request && request["email"].isString) {
         bp.email = request["email"].get!string;
     }
-    if ("phone" in request && request["phone"].type == Json.Type.string) {
+    if ("phone" in request && request["phone"].isString) {
         bp.phone = request["phone"].get!string;
     }
     if ("contact_persons" in request && request["contact_persons"].type == Json.Type.array) {
@@ -83,13 +83,13 @@ MDGBusinessPartner businessPartnerFromJson(string tenantId, Json request, string
     if ("attributes" in request && request["attributes"].type == Json.Type.object) {
         bp.attributes = request["attributes"];
     }
-    if ("workflow_state" in request && request["workflow_state"].type == Json.Type.string) {
+    if ("workflow_state" in request && request["workflow_state"].isString) {
         bp.workflowState = normalizeWorkflowState(request["workflow_state"].get!string);
     }
-    if ("approver" in request && request["approver"].type == Json.Type.string) {
+    if ("approver" in request && request["approver"].isString) {
         bp.approver = request["approver"].get!string;
     }
-    if ("source_system" in request && request["source_system"].type == Json.Type.string) {
+    if ("source_system" in request && request["source_system"].isString) {
         bp.sourceSystem = request["source_system"].get!string;
     }
 

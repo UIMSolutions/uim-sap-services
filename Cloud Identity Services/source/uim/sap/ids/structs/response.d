@@ -63,7 +63,7 @@ struct SCIMError {
         }
         
         if ("status" in json) {
-            if (json["status"].type == Json.Type.string) {
+            if (json["status"].isString) {
                 import std.conv : to;
                 error.status = json["status"].get!string.to!int;
             } else {

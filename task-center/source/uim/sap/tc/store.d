@@ -138,7 +138,7 @@ class TCStore {
         provider.active = readBool(item, "active", true);
         provider.createdAt = readTime(item, "created_at");
         provider.updatedAt = readTime(item, "updated_at");
-        if ("last_sync_at" in item && item["last_sync_at"].type == Json.Type.string) {
+        if ("last_sync_at" in item && item["last_sync_at"].isString) {
             provider.hasLastSync = true;
             provider.lastSyncAt = SysTime.fromISOExtString(item["last_sync_at"].get!string);
         }
@@ -165,7 +165,7 @@ class TCStore {
         task.createdAt = readTime(item, "created_at");
         task.updatedAt = readTime(item, "updated_at");
 
-        if ("due_at" in item && item["due_at"].type == Json.Type.string) {
+        if ("due_at" in item && item["due_at"].isString) {
             task.hasDueAt = true;
             task.dueAt = SysTime.fromISOExtString(item["due_at"].get!string);
         }
@@ -214,7 +214,7 @@ class TCStore {
         if (!(key in item) || item[key].type == Json.Type.null_) return values;
         if (item[key].type != Json.Type.array) throw new TCStoreException(key ~ " must be an array in cache item");
         foreach (entry; item[key]) {
-            if (entry.type == Json.Type.string) values ~= entry.get!string;
+            if (entry.isString) values ~= entry.get!string;
         }
         return values;
     }

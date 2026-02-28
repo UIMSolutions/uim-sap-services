@@ -38,13 +38,13 @@ AEMTopicEvent eventFromJson(string tenantId, string meshId, Json request) {
   e.payload = Json.emptyObject;
   e.publishedAt = Clock.currTime();
 
-  if ("event_id" in request && request["event_id"].type == Json.Type.string) {
+  if ("event_id" in request && request["event_id"].isString) {
     e.eventId = request["event_id"].get!string;
   }
-  if ("topic" in request && request["topic"].type == Json.Type.string) {
+  if ("topic" in request && request["topic"].isString) {
     e.topic = request["topic"].get!string;
   }
-  if ("publisher" in request && request["publisher"].type == Json.Type.string) {
+  if ("publisher" in request && request["publisher"].isString) {
     e.publisher = request["publisher"].get!string;
   }
   if ("payload" in request) {

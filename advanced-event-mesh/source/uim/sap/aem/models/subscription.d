@@ -34,13 +34,13 @@ AEMSubscription subscriptionFromJson(string tenantId, string componentId, Json r
   subscription.componentId = componentId;
   subscription.updatedAt = Clock.currTime();
 
-  if ("subscription_id" in request && request["subscription_id"].type == Json.Type.string) {
+  if ("subscription_id" in request && request["subscription_id"].isString) {
     subscription.subscriptionId = request["subscription_id"].get!string;
   }
-  if ("mesh_id" in request && request["mesh_id"].type == Json.Type.string) {
+  if ("mesh_id" in request && request["mesh_id"].isString) {
     subscription.meshId = request["mesh_id"].get!string;
   }
-  if ("topic" in request && request["topic"].type == Json.Type.string) {
+  if ("topic" in request && request["topic"].isString) {
     subscription.topic = request["topic"].get!string;
   }
 

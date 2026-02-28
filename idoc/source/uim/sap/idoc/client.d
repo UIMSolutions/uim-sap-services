@@ -46,11 +46,11 @@ class IDocClient {
             request.toJson()
         );
 
-        if ("documentNumber" in response.data && response.data["documentNumber"].type == Json.Type.string) {
+        if ("documentNumber" in response.data && response.data["documentNumber"].isString) {
             response.documentNumber = response.data["documentNumber"].get!string;
         }
 
-        if ("status" in response.data && response.data["status"].type == Json.Type.string) {
+        if ("status" in response.data && response.data["status"].isString) {
             response.status = response.data["status"].get!string;
         }
 
@@ -85,7 +85,7 @@ class IDocClient {
         auto response = requestJSON(HTTPMethod.GET, url);
 
         response.documentNumber = documentNumber;
-        if ("status" in response.data && response.data["status"].type == Json.Type.string) {
+        if ("status" in response.data && response.data["status"].isString) {
             response.status = response.data["status"].get!string;
         }
 
@@ -128,7 +128,7 @@ class IDocClient {
                         }
 
                         if (!response.success) {
-                            if ("error" in response.data && response.data["error"].type == Json.Type.string) {
+                            if ("error" in response.data && response.data["error"].isString) {
                                 response.errorMessage = response.data["error"].get!string;
                             } else {
                                 response.errorMessage = format(

@@ -34,13 +34,13 @@ MDGQualityRule qualityRuleFromJson(string tenantId, string ruleId, Json request)
     rule.updatedAt = Clock.currTime();
     rule.options = Json.emptyObject;
 
-    if ("name" in request && request["name"].type == Json.Type.string) {
+    if ("name" in request && request["name"].isString) {
         rule.name = request["name"].get!string;
     }
-    if ("field" in request && request["field"].type == Json.Type.string) {
+    if ("field" in request && request["field"].isString) {
         rule.field = request["field"].get!string;
     }
-    if ("rule_type" in request && request["rule_type"].type == Json.Type.string) {
+    if ("rule_type" in request && request["rule_type"].isString) {
         rule.ruleType = toLower(request["rule_type"].get!string);
     }
     if ("enabled" in request && request["enabled"].type == Json.Type.bool_) {

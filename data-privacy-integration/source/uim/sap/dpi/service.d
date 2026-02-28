@@ -68,7 +68,7 @@ class DPIService {
         rule.active = true;
         rule.updatedAt = Clock.currTime();
 
-        if ("data_category" in request && request["data_category"].type == Json.Type.string) rule.dataCategory = request["data_category"].get!string;
+        if ("data_category" in request && request["data_category"].isString) rule.dataCategory = request["data_category"].get!string;
         if ("retention_days" in request && request["retention_days"].type == Json.Type.int_) rule.retentionDays = cast(int)request["retention_days"].get!long;
         if ("active" in request && request["active"].type == Json.Type.bool_) rule.active = request["active"].get!bool;
 
@@ -116,7 +116,7 @@ class DPIService {
         validateTenant(tenantId);
 
         string subjectId;
-        if ("subject_id" in request && request["subject_id"].type == Json.Type.string) {
+        if ("subject_id" in request && request["subject_id"].isString) {
             subjectId = request["subject_id"].get!string;
         }
 
@@ -234,7 +234,7 @@ class DPIService {
         }
 
         string text;
-        if ("content" in request && request["content"].type == Json.Type.string) {
+        if ("content" in request && request["content"].isString) {
             text = request["content"].get!string;
         }
 
@@ -247,7 +247,7 @@ class DPIService {
             output = anonymizeText(text);
         } else {
             string tenantId = "default";
-            if ("tenant_id" in request && request["tenant_id"].type == Json.Type.string) {
+            if ("tenant_id" in request && request["tenant_id"].isString) {
                 tenantId = request["tenant_id"].get!string;
             }
             output = pseudonymizeText(tenantId, text);

@@ -49,9 +49,9 @@ CISGroup groupFromJson(string tenantId, Json request) {
   group.updatedAt = Clock.currTime();
   group.members = Json.emptyArray;
 
-  if ("id" in request && request["id"].type == Json.Type.string)
+  if ("id" in request && request["id"].isString)
     group.groupId = request["id"].get!string;
-  if ("displayName" in request && request["displayName"].type == Json.Type.string)
+  if ("displayName" in request && request["displayName"].isString)
     group.displayName = request["displayName"].get!string;
   if ("members" in request && request["members"].type == Json.Type.array)
     group.members = request["members"];

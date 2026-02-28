@@ -166,7 +166,7 @@ class CONService {
         }
 
         string userIdentity = cloudIdentityHeader;
-        if (userIdentity.length == 0 && "user_identity" in request && request["user_identity"].type == Json.Type.string) {
+        if (userIdentity.length == 0 && "user_identity" in request && request["user_identity"].isString) {
             userIdentity = request["user_identity"].get!string;
         }
 

@@ -475,7 +475,7 @@ class CDCService {
       if (providerSignals["akamai_risk"].get!bool) score += 30;
     }
 
-    if ("arkose_result" in providerSignals && providerSignals["arkose_result"].type == Json.Type.string) {
+    if ("arkose_result" in providerSignals && providerSignals["arkose_result"].isString) {
       if (toLower(providerSignals["arkose_result"].get!string) == "suspicious") score += 35;
     }
 

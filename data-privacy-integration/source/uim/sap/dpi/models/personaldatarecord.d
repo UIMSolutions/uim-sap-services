@@ -53,10 +53,10 @@ DPIPersonalDataRecord recordFromJson(string tenantId, Json request) {
     record.payload = Json.emptyObject;
     record.deleted = false;
 
-    if ("record_id" in request && request["record_id"].type == Json.Type.string) record.recordId = request["record_id"].get!string;
-    if ("subject_id" in request && request["subject_id"].type == Json.Type.string) record.subjectId = request["subject_id"].get!string;
-    if ("category" in request && request["category"].type == Json.Type.string) record.category = request["category"].get!string;
-    if ("source" in request && request["source"].type == Json.Type.string) record.source = request["source"].get!string;
+    if ("record_id" in request && request["record_id"].isString) record.recordId = request["record_id"].get!string;
+    if ("subject_id" in request && request["subject_id"].isString) record.subjectId = request["subject_id"].get!string;
+    if ("category" in request && request["category"].isString) record.category = request["category"].get!string;
+    if ("source" in request && request["source"].isString) record.source = request["source"].get!string;
     if ("payload" in request && request["payload"].type == Json.Type.object) record.payload = request["payload"];
 
     return record;

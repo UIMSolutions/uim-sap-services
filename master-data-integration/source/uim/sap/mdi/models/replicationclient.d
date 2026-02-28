@@ -25,8 +25,8 @@ MDIReplicationClient clientFromJson(string tenantId, Json request) {
     client.updatedAt = Clock.currTime();
     client.systemType = "sap";
 
-    if ("client_id" in request && request["client_id"].type == Json.Type.string) client.clientId = request["client_id"].get!string;
-    if ("name" in request && request["name"].type == Json.Type.string) client.name = request["name"].get!string;
-    if ("system_type" in request && request["system_type"].type == Json.Type.string) client.systemType = request["system_type"].get!string;
+    if ("client_id" in request && request["client_id"].isString) client.clientId = request["client_id"].get!string;
+    if ("name" in request && request["name"].isString) client.name = request["name"].get!string;
+    if ("system_type" in request && request["system_type"].isString) client.systemType = request["system_type"].get!string;
     return client;
 }

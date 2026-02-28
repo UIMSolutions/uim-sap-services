@@ -80,13 +80,13 @@ class CISService {
     Json login(string tenantId, Json request) {
         validateId(tenantId, "Tenant ID");
         auto method = _config.defaultAuthMethod;
-        if ("method" in request && request["method"].type == Json.Type.string) {
+        if ("method" in request && request["method"].isString) {
             method = toLower(request["method"].get!string);
         }
         validateAuthMethod(method);
 
         string userName;
-        if ("userName" in request && request["userName"].type == Json.Type.string) {
+        if ("userName" in request && request["userName"].isString) {
             userName = request["userName"].get!string;
         }
 
@@ -194,11 +194,11 @@ class CISService {
         rule.ruleId = ruleId;
         rule.updatedAt = Clock.currTime();
 
-        if ("target_idp" in request && request["target_idp"].type == Json.Type.string) rule.targetIdp = request["target_idp"].get!string;
+        if ("target_idp" in request && request["target_idp"].isString) rule.targetIdp = request["target_idp"].get!string;
         if ("is_default" in request && request["is_default"].type == Json.Type.bool_) rule.isDefault = request["is_default"].get!bool;
-        if ("email_domain" in request && request["email_domain"].type == Json.Type.string) rule.emailDomain = request["email_domain"].get!string;
-        if ("user_type" in request && request["user_type"].type == Json.Type.string) rule.userType = request["user_type"].get!string;
-        if ("group" in request && request["group"].type == Json.Type.string) rule.group = request["group"].get!string;
+        if ("email_domain" in request && request["email_domain"].isString) rule.emailDomain = request["email_domain"].get!string;
+        if ("user_type" in request && request["user_type"].isString) rule.userType = request["user_type"].get!string;
+        if ("group" in request && request["group"].isString) rule.group = request["group"].get!string;
 
         if (rule.targetIdp.length == 0) throw new CISValidationException("target_idp is required");
 
@@ -232,9 +232,9 @@ class CISService {
         policy.allowedGroups = Json.emptyArray;
         policy.allowedUserTypes = Json.emptyArray;
 
-        if ("name" in request && request["name"].type == Json.Type.string) policy.name = request["name"].get!string;
-        if ("resource_type" in request && request["resource_type"].type == Json.Type.string) policy.resourceType = request["resource_type"].get!string;
-        if ("instance_id" in request && request["instance_id"].type == Json.Type.string) policy.instanceId = request["instance_id"].get!string;
+        if ("name" in request && request["name"].isString) policy.name = request["name"].get!string;
+        if ("resource_type" in request && request["resource_type"].isString) policy.resourceType = request["resource_type"].get!string;
+        if ("instance_id" in request && request["instance_id"].isString) policy.instanceId = request["instance_id"].get!string;
         if ("allowed_groups" in request && request["allowed_groups"].type == Json.Type.array) policy.allowedGroups = request["allowed_groups"];
         if ("allowed_user_types" in request && request["allowed_user_types"].type == Json.Type.array) policy.allowedUserTypes = request["allowed_user_types"];
 
@@ -269,8 +269,8 @@ class CISService {
         auto instanceId = request["instance_id"].get!string;
         string group;
         string userType;
-        if ("group" in request && request["group"].type == Json.Type.string) group = request["group"].get!string;
-        if ("user_type" in request && request["user_type"].type == Json.Type.string) userType = request["user_type"].get!string;
+        if ("group" in request && request["group"].isString) group = request["group"].get!string;
+        if ("user_type" in request && request["user_type"].isString) userType = request["user_type"].get!string;
 
         bool allowed = false;
         foreach (policy; _store.listPolicies(tenantId)) {
@@ -300,8 +300,8 @@ class CISService {
 
         if ("ip_ranges" in request && request["ip_ranges"].type == Json.Type.array) policy.ipRanges = request["ip_ranges"];
         if ("groups" in request && request["groups"].type == Json.Type.array) policy.groups = request["groups"];
-        if ("user_type" in request && request["user_type"].type == Json.Type.string) policy.userType = request["user_type"].get!string;
-        if ("authentication_method" in request && request["authentication_method"].type == Json.Type.string) policy.authenticationMethod = toLower(request["authentication_method"].get!string);
+        if ("user_type" in request && request["user_type"].isString) policy.userType = request["user_type"].get!string;
+        if ("authentication_method" in request && request["authentication_method"].isString) policy.authenticationMethod = toLower(request["authentication_method"].get!string);
         if ("require_two_factor" in request && request["require_two_factor"].type == Json.Type.bool_) policy.requireTwoFactor = request["require_two_factor"].get!bool;
 
         validateAuthMethod(policy.authenticationMethod);
@@ -331,10 +331,10 @@ class CISService {
         string userType;
         string method;
 
-        if ("ip" in request && request["ip"].type == Json.Type.string) ip = request["ip"].get!string;
-        if ("group" in request && request["group"].type == Json.Type.string) group = request["group"].get!string;
-        if ("user_type" in request && request["user_type"].type == Json.Type.string) userType = request["user_type"].get!string;
-        if ("authentication_method" in request && request["authentication_method"].type == Json.Type.string) method = toLower(request["authentication_method"].get!string);
+        if ("ip" in request && request["ip"].isString) ip = request["ip"].get!string;
+        if ("group" in request && request["group"].isString) group = request["group"].get!string;
+        if ("user_type" in request && request["user_type"].isString) userType = request["user_type"].get!string;
+        if ("authentication_method" in request && request["authentication_method"].isString) method = toLower(request["authentication_method"].get!string);
 
         bool force2FA = false;
         foreach (policy; _store.listRiskPolicies(tenantId)) {
@@ -368,10 +368,10 @@ class CISService {
         job.mode = "full";
         job.filters = Json.emptyObject;
 
-        if ("job_id" in request && request["job_id"].type == Json.Type.string) job.jobId = request["job_id"].get!string;
-        if ("source_system" in request && request["source_system"].type == Json.Type.string) job.sourceSystem = request["source_system"].get!string;
-        if ("target_system" in request && request["target_system"].type == Json.Type.string) job.targetSystem = request["target_system"].get!string;
-        if ("mode" in request && request["mode"].type == Json.Type.string) job.mode = normalizeMode(request["mode"].get!string);
+        if ("job_id" in request && request["job_id"].isString) job.jobId = request["job_id"].get!string;
+        if ("source_system" in request && request["source_system"].isString) job.sourceSystem = request["source_system"].get!string;
+        if ("target_system" in request && request["target_system"].isString) job.targetSystem = request["target_system"].get!string;
+        if ("mode" in request && request["mode"].isString) job.mode = normalizeMode(request["mode"].get!string);
         if ("filters" in request && request["filters"].type == Json.Type.object) job.filters = request["filters"];
 
         if (job.sourceSystem.length == 0 || job.targetSystem.length == 0) {
@@ -424,9 +424,9 @@ class CISService {
         sub.subscriptionId = createId();
         sub.updatedAt = Clock.currTime();
 
-        if ("subscription_id" in request && request["subscription_id"].type == Json.Type.string) sub.subscriptionId = request["subscription_id"].get!string;
-        if ("source_system" in request && request["source_system"].type == Json.Type.string) sub.sourceSystem = request["source_system"].get!string;
-        if ("callback_url" in request && request["callback_url"].type == Json.Type.string) sub.callbackUrl = request["callback_url"].get!string;
+        if ("subscription_id" in request && request["subscription_id"].isString) sub.subscriptionId = request["subscription_id"].get!string;
+        if ("source_system" in request && request["source_system"].isString) sub.sourceSystem = request["source_system"].get!string;
+        if ("callback_url" in request && request["callback_url"].isString) sub.callbackUrl = request["callback_url"].get!string;
 
         if (sub.sourceSystem.length == 0 || sub.callbackUrl.length == 0) {
             throw new CISValidationException("source_system and callback_url are required");
@@ -464,7 +464,7 @@ class CISService {
     private bool arrayContains(Json arrayValue, string needle) {
         if (needle.length == 0 || arrayValue.type != Json.Type.array) return false;
         foreach (item; arrayValue.get!(Json[])) {
-            if (item.type == Json.Type.string && item.get!string == needle) return true;
+            if (item.isString && item.get!string == needle) return true;
         }
         return false;
     }

@@ -65,7 +65,7 @@ struct ODataError {
                 if (errorObj["message"].type == Json.Type.object && "value" in errorObj["message"]) {
                     // OData v2
                     error.message = errorObj["message"]["value"].get!string;
-                } else if (errorObj["message"].type == Json.Type.string) {
+                } else if (errorObj["message"].isString) {
                     // OData v4
                     error.message = errorObj["message"].get!string;
                 }

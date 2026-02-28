@@ -70,15 +70,15 @@ AEMEventMesh meshFromJson(string tenantId, string brokerServiceId, Json request)
     mesh.createdAt = Clock.currTime();
     mesh.updatedAt = mesh.createdAt;
 
-    if ("mesh_id" in request && request["mesh_id"].type == Json.Type.string) {
+    if ("mesh_id" in request && request["mesh_id"].isString) {
         mesh.meshId = request["mesh_id"].get!string;
     }
-    if ("name" in request && request["name"].type == Json.Type.string) {
+    if ("name" in request && request["name"].isString) {
         mesh.name = request["name"].get!string;
     }
     if ("topics" in request && request["topics"].type == Json.Type.array) {
         foreach (topicJson; request["topics"].get!(Json[])) {
-            if (topicJson.type == Json.Type.string) {
+            if (topicJson.isString) {
                 mesh.topics ~= topicJson.get!string;
             }
         }

@@ -85,25 +85,25 @@ BUHApi apiFromJson(Json payload) {
     api.id = randomUUID().toString();
     api.createdAt = Clock.currTime();
 
-    if ("name" in payload && payload["name"].type == Json.Type.string) {
+    if ("name" in payload && payload["name"].isString) {
         api.name = payload["name"].get!string;
     }
-    if ("provider" in payload && payload["provider"].type == Json.Type.string) {
+    if ("provider" in payload && payload["provider"].isString) {
         api.provider = payload["provider"].get!string;
     }
-    if ("version" in payload && payload["version"].type == Json.Type.string) {
+    if ("version" in payload && payload["version"].isString) {
         api.apiVersion = payload["version"].get!string;
     }
-    if ("visibility" in payload && payload["visibility"].type == Json.Type.string) {
+    if ("visibility" in payload && payload["visibility"].isString) {
         api.visibility = payload["visibility"].get!string;
     }
-    if ("summary" in payload && payload["summary"].type == Json.Type.string) {
+    if ("summary" in payload && payload["summary"].isString) {
         api.summary = payload["summary"].get!string;
     }
 
     if ("tags" in payload && payload["tags"].type == Json.Type.array) {
         foreach (entry; payload["tags"]) {
-            if (entry.type == Json.Type.string) {
+            if (entry.isString) {
                 api.tags ~= entry.get!string;
             }
         }
@@ -117,15 +117,15 @@ BUHProduct productFromJson(Json payload) {
     product.id = randomUUID().toString();
     product.createdAt = Clock.currTime();
 
-    if ("name" in payload && payload["name"].type == Json.Type.string) {
+    if ("name" in payload && payload["name"].isString) {
         product.name = payload["name"].get!string;
     }
-    if ("description" in payload && payload["description"].type == Json.Type.string) {
+    if ("description" in payload && payload["description"].isString) {
         product.description = payload["description"].get!string;
     }
     if ("api_ids" in payload && payload["api_ids"].type == Json.Type.array) {
         foreach (entry; payload["api_ids"]) {
-            if (entry.type == Json.Type.string) {
+            if (entry.isString) {
                 product.apiIds ~= entry.get!string;
             }
         }
@@ -139,13 +139,13 @@ BUHSubscription subscriptionFromJson(Json payload) {
     subscription.id = randomUUID().toString();
     subscription.createdAt = Clock.currTime();
 
-    if ("api_id" in payload && payload["api_id"].type == Json.Type.string) {
+    if ("api_id" in payload && payload["api_id"].isString) {
         subscription.apiId = payload["api_id"].get!string;
     }
-    if ("application_name" in payload && payload["application_name"].type == Json.Type.string) {
+    if ("application_name" in payload && payload["application_name"].isString) {
         subscription.applicationName = payload["application_name"].get!string;
     }
-    if ("plan" in payload && payload["plan"].type == Json.Type.string) {
+    if ("plan" in payload && payload["plan"].isString) {
         subscription.plan = payload["plan"].get!string;
     }
 

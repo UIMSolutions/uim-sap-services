@@ -1,8 +1,11 @@
 module uim.sap.cre.config;
 
-import std.string : startsWith;
+import uim.sap.cre;
 
-import uim.sap.cre.exceptions;
+mixin(ShowModule!());
+
+@safe:
+
 
 struct CREConfig {
     string host = "0.0.0.0";

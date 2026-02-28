@@ -6,6 +6,33 @@ mixin(ShowModule!());
 
 @safe:
 
+/**
+ * CMGServer is responsible for handling incoming HTTP requests and routing them to the appropriate service methods.
+ * It also handles authentication and error responses.
+ *
+  * Fields:
+  * - CMGService _service: An instance of the CMGService class that contains the business logic for handling requests.
+  * Example usage:
+  * CMGConfig config = CMGConfig(
+  *     host: "0.0.0.0",
+  *     port: 8095,
+  *     basePath: "/api/cmg"
+  * );
+  * CMGService service = new CMGService(config);
+  * CMGServer server = new CMGServer(service);
+  * server.run();
+  *
+  * The server listens for HTTP requests on the configured host and port, and routes requests based on the URL path and HTTP method.
+  * It provides endpoints for health checks, readiness checks, and operations related to tenants, content, and providers.
+  * The server also validates authentication tokens if required by the configuration and returns appropriate error responses for unauthorized access, not found resources, validation errors, and other exceptions.
+ *
+ * Methods:
+ * - void run(): Starts the HTTP server and listens for incoming requests.
+ * - private void handleRequest(HTTPServerRequest req, HTTPServerResponse res): Handles incoming HTTP requests, routes them to the appropriate service methods, and returns responses.
+ * - private void validateAuth(HTTPServerRequest req): Validates the authentication token in the request headers if required by the configuration.
+ * - private string[] normalizedSegments(string subPath): Normalizes the URL path segments for easier routing.
+ * - private void respondError(HTTPServerResponse res, string message, int statusCode): Sends an error response with a JSON body containing the error message and status code.
+ */ 
 class CMGServer {
   private CMGService _service;
 

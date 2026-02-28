@@ -110,7 +110,7 @@ class MDGService {
         }
 
         bp.workflowState = nextState;
-        if ("approver" in request && request["approver"].type == Json.Type.string) {
+        if ("approver" in request && request["approver"].isString) {
             bp.approver = request["approver"].get!string;
         }
         bp.updatedAt = Clock.currTime();

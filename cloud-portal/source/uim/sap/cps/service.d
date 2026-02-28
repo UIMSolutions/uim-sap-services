@@ -94,7 +94,7 @@ class CPSService {
             foreach (app; site.apps.get!(Json[])) {
                 if (app.type != Json.Type.object) continue;
                 string requiredRole;
-                if ("required_role" in app && app["required_role"].type == Json.Type.string) requiredRole = app["required_role"].get!string;
+                if ("required_role" in app && app["required_role"].isString) requiredRole = app["required_role"].get!string;
                 if (requiredRole.length == 0 || containsString(roles, requiredRole)) {
                     Json entry = Json.emptyObject;
                     entry["site_id"] = site.siteId;
@@ -196,8 +196,8 @@ class CPSService {
         item.configuration = Json.emptyObject;
         item.updatedAt = Clock.currTime();
 
-        if ("item_id" in request && request["item_id"].type == Json.Type.string) item.itemId = request["item_id"].get!string;
-        if ("name" in request && request["name"].type == Json.Type.string) item.name = request["name"].get!string;
+        if ("item_id" in request && request["item_id"].isString) item.itemId = request["item_id"].get!string;
+        if ("name" in request && request["name"].isString) item.name = request["name"].get!string;
         if ("configuration" in request && request["configuration"].type == Json.Type.object) item.configuration = request["configuration"];
 
         if (item.name.length == 0) throw new CPSValidationException("name is required");
@@ -233,8 +233,8 @@ class CPSService {
         launchpadModule.customThemes = true;
         launchpadModule.updatedAt = Clock.currTime();
 
-        if ("module_id" in request && request["module_id"].type == Json.Type.string) launchpadModule.moduleId = request["module_id"].get!string;
-        if ("solution_name" in request && request["solution_name"].type == Json.Type.string) launchpadModule.solutionName = request["solution_name"].get!string;
+        if ("module_id" in request && request["module_id"].isString) launchpadModule.moduleId = request["module_id"].get!string;
+        if ("solution_name" in request && request["solution_name"].isString) launchpadModule.solutionName = request["solution_name"].get!string;
         if ("personalization" in request && request["personalization"].type == Json.Type.bool_) launchpadModule.personalization = request["personalization"].get!bool;
         if ("translation" in request && request["translation"].type == Json.Type.bool_) launchpadModule.translation = request["translation"].get!bool;
         if ("custom_themes" in request && request["custom_themes"].type == Json.Type.bool_) launchpadModule.customThemes = request["custom_themes"].get!bool;
@@ -269,8 +269,8 @@ class CPSService {
         provider.catalogs = Json.emptyArray;
         provider.updatedAt = Clock.currTime();
 
-        if ("provider_id" in request && request["provider_id"].type == Json.Type.string) provider.providerId = request["provider_id"].get!string;
-        if ("solution_name" in request && request["solution_name"].type == Json.Type.string) provider.solutionName = request["solution_name"].get!string;
+        if ("provider_id" in request && request["provider_id"].isString) provider.providerId = request["provider_id"].get!string;
+        if ("solution_name" in request && request["solution_name"].isString) provider.solutionName = request["solution_name"].get!string;
         if ("saas_enabled" in request && request["saas_enabled"].type == Json.Type.bool_) provider.saasEnabled = request["saas_enabled"].get!bool;
         if ("catalogs" in request && request["catalogs"].type == Json.Type.array) provider.catalogs = request["catalogs"];
 
@@ -318,7 +318,7 @@ class CPSService {
     private bool containsString(Json values, string needle) {
         if (values.type != Json.Type.array || needle.length == 0) return false;
         foreach (item; values.get!(Json[])) {
-            if (item.type == Json.Type.string && item.get!string == needle) return true;
+            if (item.isString && item.get!string == needle) return true;
         }
         return false;
     }

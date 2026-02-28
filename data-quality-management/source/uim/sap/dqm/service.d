@@ -142,7 +142,7 @@ class DQMService {
 
         auto query = request["query"].get!string;
         auto country = _config.defaultCountry;
-        if ("country" in request && request["country"].type == Json.Type.string) {
+        if ("country" in request && request["country"].isString) {
             country = request["country"].get!string;
         }
 

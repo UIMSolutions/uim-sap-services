@@ -99,7 +99,7 @@ class SAPRFCClient {
                         }
 
                         if (!response.success) {
-                            if ("error" in response.data && response.data["error"].type == Json.Type.string) {
+                            if ("error" in response.data && response.data["error"].isString) {
                                 response.errorMessage = response.data["error"].get!string;
                             } else {
                                 response.errorMessage = format(

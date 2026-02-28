@@ -1,10 +1,10 @@
 module uim.sap.cre.models.servicekey;
 
-import std.datetime : Clock, SysTime;
-import std.string : replace;
-import std.uuid : randomUUID;
+import uim.sap.cre;
 
-import vibe.data.json : Json;
+mixin(ShowModule!());
+
+@safe:
 
 struct CREServiceKey {
   string instanceId;

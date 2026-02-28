@@ -29,13 +29,13 @@ CLFServiceInstance serviceInstanceFromJson(Json payload) {
   CLFServiceInstance instance;
   instance.guid = randomUUID().toString();
   instance.createdAt = Clock.currTime();
-  if ("name" in payload && payload["name"].type == Json.Type.string) {
+  if ("name" in payload && payload["name"].isString) {
     instance.name = payload["name"].get!string;
   }
-  if ("service_guid" in payload && payload["service_guid"].type == Json.Type.string) {
+  if ("service_guid" in payload && payload["service_guid"].isString) {
     instance.serviceGuid = payload["service_guid"].get!string;
   }
-  if ("space_guid" in payload && payload["space_guid"].type == Json.Type.string) {
+  if ("space_guid" in payload && payload["space_guid"].isString) {
     instance.spaceGuid = payload["space_guid"].get!string;
   }
   return instance;

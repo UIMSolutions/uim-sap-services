@@ -69,19 +69,19 @@ AEMEDAComponent componentFromJson(string tenantId, Json request) {
   component.componentId = randomUUID().toString();
   component.updatedAt = Clock.currTime();
 
-  if ("component_id" in request && request["component_id"].type == Json.Type.string) {
+  if ("component_id" in request && request["component_id"].isString) {
     component.componentId = request["component_id"].get!string;
   }
-  if ("name" in request && request["name"].type == Json.Type.string) {
+  if ("name" in request && request["name"].isString) {
     component.name = request["name"].get!string;
   }
-  if ("component_type" in request && request["component_type"].type == Json.Type.string) {
+  if ("component_type" in request && request["component_type"].isString) {
     component.componentType = request["component_type"].get!string;
   }
-  if ("owner" in request && request["owner"].type == Json.Type.string) {
+  if ("owner" in request && request["owner"].isString) {
     component.owner = request["owner"].get!string;
   }
-  if ("lifecycle" in request && request["lifecycle"].type == Json.Type.string) {
+  if ("lifecycle" in request && request["lifecycle"].isString) {
     component.lifecycle = request["lifecycle"].get!string;
   }
 

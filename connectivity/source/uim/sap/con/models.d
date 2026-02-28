@@ -80,10 +80,10 @@ CONDestination destinationFromJson(string tenantId, string name, Json request) {
     destination.updatedAt = destination.createdAt;
     destination.targetPath = "/";
 
-    if ("protocol" in request && request["protocol"].type == Json.Type.string) {
+    if ("protocol" in request && request["protocol"].isString) {
         destination.protocol = normalizeProtocol(request["protocol"].get!string);
     }
-    if ("target_host" in request && request["target_host"].type == Json.Type.string) {
+    if ("target_host" in request && request["target_host"].isString) {
         destination.targetHost = request["target_host"].get!string;
     }
     if ("target_port" in request && request["target_port"].type == Json.Type.int_) {
@@ -92,7 +92,7 @@ CONDestination destinationFromJson(string tenantId, string name, Json request) {
             destination.targetPort = cast(ushort)value;
         }
     }
-    if ("target_path" in request && request["target_path"].type == Json.Type.string) {
+    if ("target_path" in request && request["target_path"].isString) {
         destination.targetPath = request["target_path"].get!string;
     }
     if ("on_premise" in request && request["on_premise"].type == Json.Type.bool_) {

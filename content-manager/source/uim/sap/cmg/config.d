@@ -1,13 +1,10 @@
 module uim.sap.cmg.config;
 
-
 import uim.sap.cmg;
 
 mixin(ShowModule!());
 
 @safe:
-
-
 struct CMGConfig {
     string host = "0.0.0.0";
     ushort port = 8095;

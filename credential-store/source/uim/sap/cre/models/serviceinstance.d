@@ -1,5 +1,11 @@
 module uim.sap.cre.models.serviceinstance;
 
+import uim.sap.cre;
+
+mixin(ShowModule!());
+
+@safe:
+
 struct CREServiceInstance {
   string instanceId;
   string serviceId;
@@ -29,10 +35,10 @@ CREServiceInstance instanceFromJson(string instanceId, Json request) {
   instance.createdAt = Clock.currTime();
   instance.updatedAt = instance.createdAt;
 
-  if ("service_id" in request && request["service_id"].type == Json.Type.string) {
+  if ("service_id" in request && request["service_id"].isString) {
     instance.serviceId = request["service_id"].get!string;
   }
-  if ("plan_id" in request && request["plan_id"].type == Json.Type.string) {
+  if ("plan_id" in request && request["plan_id"].isString) {
     instance.planId = request["plan_id"].get!string;
   }
   if ("parameters" in request && request["parameters"].type == Json.Type.object) {

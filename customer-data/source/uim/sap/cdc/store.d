@@ -264,7 +264,7 @@ class CDCStore {
     value.preferences = readObject(item, "preferences");
     value.customAttributes = readObject(item, "custom_attributes");
     value.failedLoginAttempts = cast(size_t)readLong(item, "failed_login_attempts", 0);
-    if ("locked_until" in item && item["locked_until"].type == Json.Type.string) {
+    if ("locked_until" in item && item["locked_until"].isString) {
       value.hasLockedUntil = true;
       value.lockedUntil = parseTime(item["locked_until"].get!string);
     }
@@ -365,7 +365,7 @@ class CDCStore {
       throw new CDCStoreException(key ~ " must be an array in cache item");
     }
     foreach (entry; item[key]) {
-      if (entry.type == Json.Type.string) values ~= entry.get!string;
+      if (entry.isString) values ~= entry.get!string;
     }
     return values;
   }

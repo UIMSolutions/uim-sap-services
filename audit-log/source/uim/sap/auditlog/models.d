@@ -94,25 +94,25 @@ AuditLogEvent eventFromJson(string tenantId, Json request) {
     eventItem.details = Json.emptyObject;
     eventItem.createdAt = Clock.currTime();
 
-    if ("event_id" in request && request["event_id"].type == Json.Type.string) {
+    if ("event_id" in request && request["event_id"].isString) {
         eventItem.eventId = request["event_id"].get!string;
     }
-    if ("event_type" in request && request["event_type"].type == Json.Type.string) {
+    if ("event_type" in request && request["event_type"].isString) {
         eventItem.eventType = toLower(request["event_type"].get!string);
     }
-    if ("severity" in request && request["severity"].type == Json.Type.string) {
+    if ("severity" in request && request["severity"].isString) {
         eventItem.severity = toLower(request["severity"].get!string);
     }
-    if ("category" in request && request["category"].type == Json.Type.string) {
+    if ("category" in request && request["category"].isString) {
         eventItem.category = toLower(request["category"].get!string);
     }
-    if ("message" in request && request["message"].type == Json.Type.string) {
+    if ("message" in request && request["message"].isString) {
         eventItem.message = request["message"].get!string;
     }
-    if ("source_service" in request && request["source_service"].type == Json.Type.string) {
+    if ("source_service" in request && request["source_service"].isString) {
         eventItem.sourceService = request["source_service"].get!string;
     }
-    if ("actor" in request && request["actor"].type == Json.Type.string) {
+    if ("actor" in request && request["actor"].isString) {
         eventItem.actor = request["actor"].get!string;
     }
     if ("details" in request && request["details"].type == Json.Type.object) {

@@ -103,8 +103,8 @@ class SDIService {
         auto now = Clock.currTime();
 
         existing.importBundle = body;
-        if ("name" in body && body["name"].type == Json.Type.string) existing.name = body["name"].get!string;
-        if ("description" in body && body["description"].type == Json.Type.string) existing.description = body["description"].get!string;
+        if ("name" in body && body["name"].isString) existing.name = body["name"].get!string;
+        if ("description" in body && body["description"].isString) existing.description = body["description"].get!string;
         if ("roles" in body && body["roles"].type == Json.Type.array) existing.roles = readStringArray(body, "roles");
         if ("settings" in body && body["settings"].type == Json.Type.object) existing.settings = settingsFromObject(body["settings"]);
         existing.updatedAt = now;
@@ -260,8 +260,8 @@ class SDIService {
 
     private SDISiteSettings settingsFromObject(Json settingsBody) const {
         SDISiteSettings settings;
-        if ("theme" in settingsBody && settingsBody["theme"].type == Json.Type.string) settings.theme = settingsBody["theme"].get!string;
-        if ("home_page" in settingsBody && settingsBody["home_page"].type == Json.Type.string) settings.homePage = settingsBody["home_page"].get!string;
+        if ("theme" in settingsBody && settingsBody["theme"].isString) settings.theme = settingsBody["theme"].get!string;
+        if ("home_page" in settingsBody && settingsBody["home_page"].isString) settings.homePage = settingsBody["home_page"].get!string;
         if ("allow_personalization" in settingsBody && settingsBody["allow_personalization"].type == Json.Type.bool_) settings.allowPersonalization = settingsBody["allow_personalization"].get!bool;
         if ("enable_notifications" in settingsBody && settingsBody["enable_notifications"].type == Json.Type.bool_) settings.enableNotifications = settingsBody["enable_notifications"].get!bool;
         return settings;

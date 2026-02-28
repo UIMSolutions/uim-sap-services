@@ -87,7 +87,7 @@ string visibilityToString(Visibility visibility) {
 }
 
 private string getString(Json payload, string key, string fallback) {
-    if (key in payload && payload[key].type == Json.Type.string) {
+    if (key in payload && payload[key].isString) {
         return payload[key].get!string;
     }
     return fallback;

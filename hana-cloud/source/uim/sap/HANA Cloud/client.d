@@ -396,7 +396,7 @@ class HanaClient {
                         // Extract error information
                         if (!response.success) {
                             if ("error" in response.data) {
-                                if (response.data["error"].type == Json.Type.string) {
+                                if (response.data["error"].isString) {
                                     response.errorMessage = response.data["error"].get!string;
                                 } else if ("message" in response.data["error"]) {
                                     response.errorMessage = response.data["error"]["message"].get!string;

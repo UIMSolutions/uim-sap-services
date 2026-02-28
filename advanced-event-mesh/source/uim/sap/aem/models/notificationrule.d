@@ -39,7 +39,7 @@ AEMNotificationRule notificationRuleFromJson(string tenantId, string ruleId, Jso
   rule.threshold = 100.0;
   rule.updatedAt = Clock.currTime();
 
-  if ("metric" in request && request["metric"].type == Json.Type.string) {
+  if ("metric" in request && request["metric"].isString) {
     rule.metric = toLower(request["metric"].get!string);
   }
   if ("threshold" in request && request["threshold"].type == Json.Type.float_) {
@@ -47,13 +47,13 @@ AEMNotificationRule notificationRuleFromJson(string tenantId, string ruleId, Jso
   } else if ("threshold" in request && request["threshold"].type == Json.Type.int_) {
     rule.threshold = cast(double)request["threshold"].get!long;
   }
-  if ("severity" in request && request["severity"].type == Json.Type.string) {
+  if ("severity" in request && request["severity"].isString) {
     rule.severity = toLower(request["severity"].get!string);
   }
   if ("enabled" in request && request["enabled"].type == Json.Type.bool_) {
     rule.enabled = request["enabled"].get!bool;
   }
-  if ("channel" in request && request["channel"].type == Json.Type.string) {
+  if ("channel" in request && request["channel"].isString) {
     rule.channel = request["channel"].get!string;
   }
 

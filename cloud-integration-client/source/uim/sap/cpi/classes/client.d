@@ -177,7 +177,7 @@ class CPIClient {
             if (errorObj.type == Json.Type.object) {
                 if ("message" in errorObj) {
                     auto msg = errorObj["message"];
-                    if (msg.type == Json.Type.string) {
+                    if (msg.isString) {
                         return msg.get!string;
                     }
                     if (msg.type == Json.Type.object && "value" in msg) {

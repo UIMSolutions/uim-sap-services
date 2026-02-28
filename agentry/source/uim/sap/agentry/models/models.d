@@ -152,19 +152,19 @@ AgentryMobileApp appFromJson(string tenantId, Json request, string defaultBacken
   app.createdAt = Clock.currTime();
   app.updatedAt = app.createdAt;
 
-  if ("app_id" in request && request["app_id"].type == Json.Type.string) {
+  if ("app_id" in request && request["app_id"].isString) {
     app.appId = request["app_id"].get!string;
   }
-  if ("name" in request && request["name"].type == Json.Type.string) {
+  if ("name" in request && request["name"].isString) {
     app.name = request["name"].get!string;
   }
-  if ("backend_system" in request && request["backend_system"].type == Json.Type.string) {
+  if ("backend_system" in request && request["backend_system"].isString) {
     app.backendSystem = request["backend_system"].get!string;
   }
-  if ("owner_team" in request && request["owner_team"].type == Json.Type.string) {
+  if ("owner_team" in request && request["owner_team"].isString) {
     app.ownerTeam = request["owner_team"].get!string;
   }
-  if ("lifecycle" in request && request["lifecycle"].type == Json.Type.string) {
+  if ("lifecycle" in request && request["lifecycle"].isString) {
     app.lifecycle = toLower(request["lifecycle"].get!string);
   }
 
@@ -179,16 +179,16 @@ AgentryAppVersion versionFromJson(string tenantId, string appId, Json request) {
   appVersion.versionLabel = "1.0.0";
   appVersion.createdAt = Clock.currTime();
 
-  if ("version_id" in request && request["version_id"].type == Json.Type.string) {
+  if ("version_id" in request && request["version_id"].isString) {
     appVersion.versionId = request["version_id"].get!string;
   }
-  if ("version_label" in request && request["version_label"].type == Json.Type.string) {
+  if ("version_label" in request && request["version_label"].isString) {
     appVersion.versionLabel = request["version_label"].get!string;
   }
-  if ("change_log" in request && request["change_log"].type == Json.Type.string) {
+  if ("change_log" in request && request["change_log"].isString) {
     appVersion.changeLog = request["change_log"].get!string;
   }
-  if ("build_status" in request && request["build_status"].type == Json.Type.string) {
+  if ("build_status" in request && request["build_status"].isString) {
     appVersion.buildStatus = toLower(request["build_status"].get!string);
   }
 
@@ -204,16 +204,16 @@ AgentryTestRun testRunFromJson(string tenantId, string appId, Json request) {
   testRun.resultStatus = "passed";
   testRun.executedAt = Clock.currTime();
 
-  if ("test_run_id" in request && request["test_run_id"].type == Json.Type.string) {
+  if ("test_run_id" in request && request["test_run_id"].isString) {
     testRun.testRunId = request["test_run_id"].get!string;
   }
-  if ("version_id" in request && request["version_id"].type == Json.Type.string) {
+  if ("version_id" in request && request["version_id"].isString) {
     testRun.versionId = request["version_id"].get!string;
   }
-  if ("environment" in request && request["environment"].type == Json.Type.string) {
+  if ("environment" in request && request["environment"].isString) {
     testRun.environment = request["environment"].get!string;
   }
-  if ("result_status" in request && request["result_status"].type == Json.Type.string) {
+  if ("result_status" in request && request["result_status"].isString) {
     testRun.resultStatus = toLower(request["result_status"].get!string);
   }
   if ("passed_cases" in request && request["passed_cases"].type == Json.Type.int_) {
@@ -233,19 +233,19 @@ AgentryRuntimeInstance instanceFromJson(string tenantId, Json request) {
   instance.targetEnvironment = "prod";
   instance.updatedAt = Clock.currTime();
 
-  if ("instance_id" in request && request["instance_id"].type == Json.Type.string) {
+  if ("instance_id" in request && request["instance_id"].isString) {
     instance.instanceId = request["instance_id"].get!string;
   }
-  if ("app_id" in request && request["app_id"].type == Json.Type.string) {
+  if ("app_id" in request && request["app_id"].isString) {
     instance.appId = request["app_id"].get!string;
   }
-  if ("target_environment" in request && request["target_environment"].type == Json.Type.string) {
+  if ("target_environment" in request && request["target_environment"].isString) {
     instance.targetEnvironment = request["target_environment"].get!string;
   }
-  if ("deployed_version_id" in request && request["deployed_version_id"].type == Json.Type.string) {
+  if ("deployed_version_id" in request && request["deployed_version_id"].isString) {
     instance.deployedVersionId = request["deployed_version_id"].get!string;
   }
-  if ("status" in request && request["status"].type == Json.Type.string) {
+  if ("status" in request && request["status"].isString) {
     instance.status = toLower(request["status"].get!string);
   }
 
@@ -259,19 +259,19 @@ AgentryDevice deviceFromJson(string tenantId, Json request) {
   device.platform = "ios";
   device.lastSyncAt = Clock.currTime();
 
-  if ("device_id" in request && request["device_id"].type == Json.Type.string) {
+  if ("device_id" in request && request["device_id"].isString) {
     device.deviceId = request["device_id"].get!string;
   }
-  if ("app_id" in request && request["app_id"].type == Json.Type.string) {
+  if ("app_id" in request && request["app_id"].isString) {
     device.appId = request["app_id"].get!string;
   }
-  if ("user_id" in request && request["user_id"].type == Json.Type.string) {
+  if ("user_id" in request && request["user_id"].isString) {
     device.userId = request["user_id"].get!string;
   }
-  if ("platform" in request && request["platform"].type == Json.Type.string) {
+  if ("platform" in request && request["platform"].isString) {
     device.platform = toLower(request["platform"].get!string);
   }
-  if ("app_version_id" in request && request["app_version_id"].type == Json.Type.string) {
+  if ("app_version_id" in request && request["app_version_id"].isString) {
     device.appVersionId = request["app_version_id"].get!string;
   }
 
@@ -286,16 +286,16 @@ AgentryBackendSystem backendFromJson(string tenantId, Json request) {
   backend.authMode = "oauth2";
   backend.updatedAt = Clock.currTime();
 
-  if ("backend_id" in request && request["backend_id"].type == Json.Type.string) {
+  if ("backend_id" in request && request["backend_id"].isString) {
     backend.backendId = request["backend_id"].get!string;
   }
-  if ("system_type" in request && request["system_type"].type == Json.Type.string) {
+  if ("system_type" in request && request["system_type"].isString) {
     backend.systemType = toLower(request["system_type"].get!string);
   }
-  if ("endpoint" in request && request["endpoint"].type == Json.Type.string) {
+  if ("endpoint" in request && request["endpoint"].isString) {
     backend.endpoint = request["endpoint"].get!string;
   }
-  if ("auth_mode" in request && request["auth_mode"].type == Json.Type.string) {
+  if ("auth_mode" in request && request["auth_mode"].isString) {
     backend.authMode = toLower(request["auth_mode"].get!string);
   }
   if ("enabled" in request && request["enabled"].type == Json.Type.bool_) {
