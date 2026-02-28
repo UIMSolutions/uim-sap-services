@@ -1,4 +1,4 @@
-module uim.sap.con.models;
+module uim.sap.con.models.models;
 
 import std.algorithm.searching : canFind;
 import std.datetime : Clock, SysTime;
