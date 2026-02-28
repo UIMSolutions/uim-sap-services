@@ -13,99 +13,10 @@ string createId() {
     return randomUUID().toString();
 }
 
-struct CISUser {
-    string tenantId;
-    string userId;
-    string userName;
-    string email;
-    string userType = "employee";
-    bool active = true;
-    Json groups;
-    Json attributes;
-    SysTime createdAt;
-    SysTime updatedAt;
 
-    Json toJson() const {
-        Json payload = Json.emptyObject;
-        payload["id"] = userId;
-        payload["tenant_id"] = tenantId;
-        payload["userName"] = userName;
-        payload["email"] = email;
-        payload["user_type"] = userType;
-        payload["active"] = active;
-        payload["groups"] = groups;
-        payload["attributes"] = attributes;
-        payload["created_at"] = createdAt.toISOExtString();
-        payload["updated_at"] = updatedAt.toISOExtString();
-        return payload;
-    }
-}
 
-struct CISGroup {
-    string tenantId;
-    string groupId;
-    string displayName;
-    Json members;
-    SysTime updatedAt;
 
-    Json toJson() const {
-        Json payload = Json.emptyObject;
-        payload["id"] = groupId;
-        payload["tenant_id"] = tenantId;
-        payload["displayName"] = displayName;
-        payload["members"] = members;
-        payload["updated_at"] = updatedAt.toISOExtString();
-        return payload;
-    }
-}
 
-struct CISDelegationRule {
-    string tenantId;
-    string ruleId;
-    string targetIdp;
-    bool isDefault = false;
-    string emailDomain;
-    string userType;
-    string group;
-    SysTime updatedAt;
-
-    Json toJson() const {
-        Json payload = Json.emptyObject;
-        payload["rule_id"] = ruleId;
-        payload["tenant_id"] = tenantId;
-        payload["target_idp"] = targetIdp;
-        payload["is_default"] = isDefault;
-        payload["email_domain"] = emailDomain;
-        payload["user_type"] = userType;
-        payload["group"] = group;
-        payload["updated_at"] = updatedAt.toISOExtString();
-        return payload;
-    }
-}
-
-struct CISAuthorizationPolicy {
-    string tenantId;
-    string policyId;
-    string name;
-    string resourceType;
-    string instanceId;
-    Json allowedGroups;
-    Json allowedUserTypes;
-    SysTime updatedAt;
-
-    Json toJson() const {
-        Json payload = Json.emptyObject;
-        payload["policy_id"] = policyId;
-        payload["tenant_id"] = tenantId;
-        payload["name"] = name;
-        payload["resource_type"] = resourceType;
-        payload["instance_id"] = instanceId;
-        payload["allowed_groups"] = allowedGroups;
-        payload["allowed_user_types"] = allowedUserTypes;
-        payload["updated_at"] = updatedAt.toISOExtString();
-        return payload;
-    }
-}
 
 struct CISRiskPolicy {
     string tenantId;
@@ -157,25 +68,7 @@ struct CISProvisioningJob {
     }
 }
 
-struct CISJobLog {
-    string tenantId;
-    string logId;
-    string jobId;
-    string level;
-    string message;
-    SysTime createdAt;
 
-    Json toJson() const {
-        Json payload = Json.emptyObject;
-        payload["log_id"] = logId;
-        payload["tenant_id"] = tenantId;
-        payload["job_id"] = jobId;
-        payload["level"] = level;
-        payload["message"] = message;
-        payload["created_at"] = createdAt.toISOExtString();
-        return payload;
-    }
-}
 
 struct CISNotificationSubscription {
     string tenantId;

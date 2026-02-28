@@ -1,8 +1,10 @@
 module uim.sap.cis.config;
 
-import std.string : startsWith, toLower;
+import uim.sap.cis;
 
-import uim.sap.cis.exceptions;
+mixin(ShowModule!());
+
+@safe:
 
 struct CISConfig {
     string host = "0.0.0.0";
