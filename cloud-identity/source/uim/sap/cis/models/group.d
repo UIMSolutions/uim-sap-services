@@ -23,6 +23,24 @@ struct CISGroup {
     return payload;
   }
 }
+/// 
+unittest {
+  mixin(ShowTest!("Testing CISGroup toJson() method"));
+
+  CISGroup group;
+  group.tenantId = "tenant123";
+  group.groupId = "group123";
+  group.displayName = "Test Group";
+  group.members = Json(["user1", "user2"]);
+  group.updatedAt = Clock.currTime();
+
+  Json json = group.toJson();
+  assert(json["id"] == "group123");
+  assert(json["tenant_id"] == "tenant123");
+  assert(json["displayName"] == "Test Group");
+  assert(json["members"].type == Json.Type.array);
+  assert(json["updated_at"].isString);
+}
 
 CISGroup groupFromJson(string tenantId, Json request) {
   CISGroup group;
@@ -39,4 +57,19 @@ CISGroup groupFromJson(string tenantId, Json request) {
     group.members = request["members"];
 
   return group;
+}
+/// 
+unittest {
+  mixin(ShowTest!("Testing groupFromJson() function"));
+
+  Json request = Json.emptyObject;
+  request["id"] = "group123";
+  request["displayName"] = "Test Group";
+  request["members"] = Json(["user1", "user2"]);
+
+  CISGroup group = groupFromJson("tenant123", request);
+  assert(group.tenantId == "tenant123");
+  assert(group.groupId == "group123");
+  assert(group.displayName == "Test Group");
+  assert(group.members.type == Json.Type.array);
 }

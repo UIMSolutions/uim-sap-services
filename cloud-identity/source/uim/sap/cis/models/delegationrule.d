@@ -39,25 +39,25 @@ mixin(ShowModule!());
   * Delegation rules are a critical component of the authentication flow in the CIS module, enabling flexible and dynamic routing of authentication requests to different identity providers based on user attributes and organizational policies. By defining delegation rules, administrators can ensure that users are authenticated through the appropriate channels, enhancing security and user experience. The combination of criteria such as email domain, user type, and group membership allows for granular control over the delegation process, making it possible to implement complex authentication scenarios that align with the organization's requirements. 
   */
 struct CISDelegationRule {
-    string tenantId;
-    string ruleId;
-    string targetIdp;
-    bool isDefault = false;
-    string emailDomain;
-    string userType;
-    string group;
-    SysTime updatedAt;
+  string tenantId;
+  string ruleId;
+  string targetIdp;
+  bool isDefault = false;
+  string emailDomain;
+  string userType;
+  string group;
+  SysTime updatedAt;
 
-    Json toJson() const {
-        Json payload = Json.emptyObject;
-        payload["rule_id"] = ruleId;
-        payload["tenant_id"] = tenantId;
-        payload["target_idp"] = targetIdp;
-        payload["is_default"] = isDefault;
-        payload["email_domain"] = emailDomain;
-        payload["user_type"] = userType;
-        payload["group"] = group;
-        payload["updated_at"] = updatedAt.toISOExtString();
-        return payload;
-    }
+  Json toJson() const {
+    Json payload = Json.emptyObject;
+    payload["rule_id"] = ruleId;
+    payload["tenant_id"] = tenantId;
+    payload["target_idp"] = targetIdp;
+    payload["is_default"] = isDefault;
+    payload["email_domain"] = emailDomain;
+    payload["user_type"] = userType;
+    payload["group"] = group;
+    payload["updated_at"] = updatedAt.toISOExtString();
+    return payload;
+  }
 }

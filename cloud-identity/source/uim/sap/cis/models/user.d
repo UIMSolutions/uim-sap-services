@@ -68,6 +68,39 @@ struct CISUser {
     return payload;
   }
 }
+///
+unittest {
+  mixin(ShowTest!("Testing CISUser toJson() method"));
+
+  CISUser user;
+  user.tenantId = "tenant123";
+  user.userId = "user456";
+  user.userName = "jdoe";
+  user.email = "jdoe@example.com";
+  user.userType = "employee";
+  user.active = true;
+  user.groups = Json(["group1", "group2"]);
+  user.attributes = Json({"department": "sales", "location": "NY"});
+  user.createdAt = Clock.currTime();
+  user.updatedAt = Clock.currTime();
+  Json userJson = user.toJson();
+
+  assert(userJson["id"] == "user456");
+  assert(userJson["tenant_id"] == "tenant123");
+  assert(userJson["userName"] == "jdoe"); 
+  assert(userJson["email"] == "jdoe@example.com");
+  assert(userJson["user_type"] == "employee");
+  assert(userJson["active"] == true);
+  assert(userJson["groups"].isArray);
+  assert(userJson["groups"].length == 2);
+  assert(userJson["groups"][0] == "group1");
+  assert(userJson["groups"][1] == "group2");
+  assert(userJson["attributes"].isObject);
+  assert(userJson["attributes"]["department"] == "sales");
+  assert(userJson["attributes"]["location"] == "NY");
+  assert(userJson["created_at"].length > 0);
+  assert(userJson["updated_at"].length > 0);
+}
 
 CISUser userFromJson(string tenantId, Json request) {
   CISUser user;

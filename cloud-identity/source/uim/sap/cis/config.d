@@ -76,3 +76,25 @@ struct CISConfig {
     }
   }
 }
+///
+unittest {
+  mixin(ShowTest!("Testing CISConfig validation"));
+
+  CISConfig config;
+  config.host = "0.0.0.0";
+  config.port = 8088;
+  config.basePath = "/api/cis";
+  config.serviceName = "uim-sap-cis";
+  config.defaultAuthMethod = "form";
+  config.requireAuthToken = true;
+  config.authToken = "my-secret-token";
+  config.validate();
+
+  assert(config.host == "0.0.0.0");
+  assert(config.port == 8088);
+  assert(config.basePath == "/api/cis");
+  assert(config.serviceName == "uim-sap-cis");
+  assert(config.defaultAuthMethod == "form");
+  assert(config.requireAuthToken == true);
+  assert(config.authToken == "my-secret-token");
+}

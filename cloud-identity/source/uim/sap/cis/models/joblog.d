@@ -50,3 +50,23 @@ struct CISJobLog {
     return payload;
   }
 }
+///
+unittest {
+  mixin(ShowTest!("Testing CISJobLog toJson() method"));
+
+  CISJobLog logEntry;
+  logEntry.tenantId = "tenant123";
+  logEntry.logId = "log456";
+  logEntry.jobId = "job789";
+  logEntry.level = "INFO";
+  logEntry.message = "Job executed successfully";
+  logEntry.createdAt = Clock.currTime();
+
+  Json logJson = logEntry.toJson();
+  assert(logJson["log_id"] == "log456");
+  assert(logJson["tenant_id"] == "tenant123");
+  assert(logJson["job_id"] == "job789");
+  assert(logJson["level"] == "INFO");
+  assert(logJson["message"] == "Job executed successfully");
+  assert(logJson["created_at"] == logEntry.createdAt.toISOExtString());
+}

@@ -6,6 +6,33 @@ mixin(ShowModule!());
 
 @safe:
 
+/**
+  * The `CISService` class is the core service implementation for the UIM Cloud Identity Services (CIS) module. It provides methods to handle various operations related to identity management, such as user and group management, authentication, authorization, provisioning jobs, and notification subscriptions. The service interacts with a `CISStore` instance to persist and retrieve data related to users, groups, policies, and other entities. Each method in the `CISService` class is designed to validate input parameters, perform the necessary business logic, and return a JSON response that can be consumed by API clients. The service also includes helper methods for validating user input and ensuring that the provided data meets the required criteria before processing. 
+  * Example usage:
+  * ``` 
+  * CISConfig config;
+  * config.host = "https://example.com";
+  * config.port = 8088;
+  * config.basePath = "/api/cis";
+  * config.serviceName = "uim-sap-cis";
+  * config.serviceVersion = "1.0.0";
+  * config.defaultAuthMethod = "form";
+  * config.requireAuthToken = true;
+  * config.authToken = "my-secret-token";
+  * config.validate();
+  * CISService service = new CISService(config);
+  * Json healthResponse = service.health();
+  * Json readyResponse = service.ready();
+  * Json authCapabilities = service.authenticationCapabilities();
+  * Json loginResponse = service.login("tenant123", Json({"userName": "jdoe", "method": "form"}));
+  * Json upsertUserResponse = service.upsertUser("tenant123", Json({"userName": "jdoe", "email": "jdoe@example.com"}));
+  * Json listUsersResponse = service.listUsers("tenant123");
+  * Json upsertGroupResponse = service.upsertGroup("tenant123", Json({"displayName": "Admins"}));
+  * Json listGroupsResponse = service.listGroups("tenant123");
+  * Json inviteUserResponse = service.inviteUser("tenant123", Json({"email": "jdoe@example.com"}));
+  * 
+  * Note: The example usage demonstrates how to initialize the `CISService` with a configuration, and then call various methods to perform operations such as checking health and readiness, retrieving authentication capabilities, logging in a user, managing users and groups, and inviting a user. Each method returns a JSON response that contains the relevant information based on the operation performed. The actual implementation of the methods may include additional logic for error handling, data validation, and interaction with the underlying store to manage the state of users, groups, policies, and other entities within the CIS module.   
+  */
 class CISService {
     private CISConfig _config;
     private CISStore _store;

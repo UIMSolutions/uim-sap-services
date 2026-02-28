@@ -41,25 +41,25 @@ mixin(ShowModule!());
   * The `ipRanges` field allows administrators to specify which IP addresses or ranges are considered risky, while the `groups` field enables targeting specific user groups for the application of the risk policy. The `userType` and `authenticationMethod` fields provide additional granularity in defining the conditions under which the risk policy should be enforced. The `requireTwoFactor` field is a critical component that indicates whether users matching the criteria defined in the policy must use two-factor authentication to access resources, thereby enhancing security. The `updatedAt` field is essential for tracking changes to the policy and ensuring that the most current version is being applied.  
  */
 struct CISRiskPolicy {
-    string tenantId;
-    string policyId;
-    Json ipRanges;
-    Json groups;
-    string userType;
-    string authenticationMethod;
-    bool requireTwoFactor = true;
-    SysTime updatedAt;
+  string tenantId;
+  string policyId;
+  Json ipRanges;
+  Json groups;
+  string userType;
+  string authenticationMethod;
+  bool requireTwoFactor = true;
+  SysTime updatedAt;
 
-    Json toJson() const {
-        Json payload = Json.emptyObject;
-        payload["policy_id"] = policyId;
-        payload["tenant_id"] = tenantId;
-        payload["ip_ranges"] = ipRanges;
-        payload["groups"] = groups;
-        payload["user_type"] = userType;
-        payload["authentication_method"] = authenticationMethod;
-        payload["require_two_factor"] = requireTwoFactor;
-        payload["updated_at"] = updatedAt.toISOExtString();
-        return payload;
-    }
+  Json toJson() const {
+    Json payload = Json.emptyObject;
+    payload["policy_id"] = policyId;
+    payload["tenant_id"] = tenantId;
+    payload["ip_ranges"] = ipRanges;
+    payload["groups"] = groups;
+    payload["user_type"] = userType;
+    payload["authentication_method"] = authenticationMethod;
+    payload["require_two_factor"] = requireTwoFactor;
+    payload["updated_at"] = updatedAt.toISOExtString();
+    return payload;
+  }
 }

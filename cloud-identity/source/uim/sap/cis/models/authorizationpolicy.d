@@ -39,25 +39,25 @@ mixin(ShowModule!());
   * The `name` field provides a human-readable identifier for the policy, which can be useful for administrators when managing multiple policies. The combination of `resourceType` and `instanceId` allows for fine-grained control over which resources the policy applies to, enabling scenarios such as allowing access to a specific application or database instance. The `allowedGroups` and `allowedUserTypes` fields enable targeting specific user segments for access control, enhancing the security and manageability of the authorization policies within the CIS module. 
   */
 struct CISAuthorizationPolicy {
-    string tenantId;
-    string policyId;
-    string name;
-    string resourceType;
-    string instanceId;
-    Json allowedGroups;
-    Json allowedUserTypes;
-    SysTime updatedAt;
+  string tenantId;
+  string policyId;
+  string name;
+  string resourceType;
+  string instanceId;
+  Json allowedGroups;
+  Json allowedUserTypes;
+  SysTime updatedAt;
 
-    Json toJson() const {
-        Json payload = Json.emptyObject;
-        payload["policy_id"] = policyId;
-        payload["tenant_id"] = tenantId;
-        payload["name"] = name;
-        payload["resource_type"] = resourceType;
-        payload["instance_id"] = instanceId;
-        payload["allowed_groups"] = allowedGroups;
-        payload["allowed_user_types"] = allowedUserTypes;
-        payload["updated_at"] = updatedAt.toISOExtString();
-        return payload;
-    }
+  Json toJson() const {
+    Json payload = Json.emptyObject;
+    payload["policy_id"] = policyId;
+    payload["tenant_id"] = tenantId;
+    payload["name"] = name;
+    payload["resource_type"] = resourceType;
+    payload["instance_id"] = instanceId;
+    payload["allowed_groups"] = allowedGroups;
+    payload["allowed_user_types"] = allowedUserTypes;
+    payload["updated_at"] = updatedAt.toISOExtString();
+    return payload;
+  }
 }
