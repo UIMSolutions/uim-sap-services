@@ -1,8 +1,12 @@
 module uim.sap.cmg.config;
 
-import std.string : startsWith;
 
-import uim.sap.cmg.exceptions;
+import uim.sap.cmg;
+
+mixin(ShowModule!());
+
+@safe:
+
 
 struct CMGConfig {
     string host = "0.0.0.0";

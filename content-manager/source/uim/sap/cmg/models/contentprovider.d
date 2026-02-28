@@ -1,6 +1,9 @@
 module uim.sap.cmg.models.contentprovider;
 
 import uim.sap.cmg;
+
+mixin(ShowModule!());
+
 @safe:
 
 struct CMGContentProvider {

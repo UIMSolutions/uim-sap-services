@@ -1,10 +1,6 @@
 module uim.sap.cis.exceptions;
 
-class CISException : Exception {
-    this(string msg) {
-        super(msg);
-    }
-}
+
 
 class CISConfigurationException : CISException {
     this(string msg) {

@@ -1,6 +1,9 @@
 module uim.sap.cmg.models.contentitem;
 
 import uim.sap.cmg;
+
+mixin(ShowModule!());
+
 @safe:
 
 struct CMGContentItem {
