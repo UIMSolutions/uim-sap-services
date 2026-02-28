@@ -31,7 +31,7 @@ unittest {
   group.tenantId = "tenant123";
   group.groupId = "group123";
   group.displayName = "Test Group";
-  group.members = Json(["user1", "user2"]);
+  group.members = ["user1", "user2"].toJson;
   group.updatedAt = Clock.currTime();
 
   Json json = group.toJson();
@@ -65,7 +65,7 @@ unittest {
   Json request = Json.emptyObject;
   request["id"] = "group123";
   request["displayName"] = "Test Group";
-  request["members"] = Json(["user1", "user2"]);
+  request["members"] = ["user1", "user2"].toJson;
 
   CISGroup group = groupFromJson("tenant123", request);
   assert(group.tenantId == "tenant123");

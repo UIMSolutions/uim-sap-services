@@ -79,15 +79,15 @@ unittest {
   user.email = "jdoe@example.com";
   user.userType = "employee";
   user.active = true;
-  user.groups = Json(["group1", "group2"]);
-  user.attributes = Json({"department": "sales", "location": "NY"});
+  user.groups = ["group1", "group2"].toJson;
+  user.attributes = ["department" : "sales", "location" : "NY" ].toJson;
   user.createdAt = Clock.currTime();
   user.updatedAt = Clock.currTime();
   Json userJson = user.toJson();
 
   assert(userJson["id"] == "user456");
   assert(userJson["tenant_id"] == "tenant123");
-  assert(userJson["userName"] == "jdoe"); 
+  assert(userJson["userName"] == "jdoe");
   assert(userJson["email"] == "jdoe@example.com");
   assert(userJson["user_type"] == "employee");
   assert(userJson["active"] == true);
