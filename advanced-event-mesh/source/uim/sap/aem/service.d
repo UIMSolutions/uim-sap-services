@@ -1,17 +1,12 @@
 module uim.sap.aem.service;
 
-import std.algorithm.searching : canFind;
-import std.conv : to;
-import std.datetime : Clock;
-import std.string : toLower;
-import std.uuid : randomUUID;
+import uim.sap.aem;
 
-import vibe.data.json : Json;
+mixin(ShowModule!());
 
-import uim.sap.aem.config;
-import uim.sap.aem.exceptions;
-import uim.sap.aem.models;
-import uim.sap.aem.store;
+@safe:
+
+
 
 class AEMService {
     private AEMConfig _config;

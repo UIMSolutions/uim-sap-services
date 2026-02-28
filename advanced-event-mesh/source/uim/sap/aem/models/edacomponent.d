@@ -1,5 +1,12 @@
 module uim.sap.aem.models.edacomponent;
 
+import uim.sap.aem;
+
+mixin(ShowModule!());
+
+@safe:
+
+
 struct AEMEDAComponent {
   string tenantId;
   string componentId;

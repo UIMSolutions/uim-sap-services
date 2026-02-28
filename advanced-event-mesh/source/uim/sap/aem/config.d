@@ -1,9 +1,10 @@
 module uim.sap.aem.config;
 
-import std.string : startsWith;
+import uim.sap.aem;
 
-import uim.sap.aem.exceptions;
+mixin(ShowModule!());
 
+@safe:
 struct AEMConfig {
     string host = "0.0.0.0";
     ushort port = 8088;

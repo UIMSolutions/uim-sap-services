@@ -1,10 +1,13 @@
-module uim.sap.aem.models;
+module uim.sap.aem.models.monitoringalert;
 
-import std.datetime : Clock, SysTime;
-import std.string : toLower;
-import std.uuid : randomUUID;
 
-import vibe.data.json : Json;
+import uim.sap.aem;
+
+mixin(ShowModule!());
+
+@safe:
+
+
 
 struct AEMMonitoringAlert {
   string tenantId;

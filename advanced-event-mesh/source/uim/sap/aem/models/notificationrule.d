@@ -1,5 +1,12 @@
 module uim.sap.aem.models.notificationrule;
 
+import uim.sap.aem;
+
+mixin(ShowModule!());
+
+@safe:
+
+
 struct AEMNotificationRule {
     string tenantId;
     string ruleId;

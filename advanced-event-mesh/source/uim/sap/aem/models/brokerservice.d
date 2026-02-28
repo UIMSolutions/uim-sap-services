@@ -1,5 +1,12 @@
 module uim.sap.aem.models.brokerservice;
 
+import uim.sap.aem;
+
+mixin(ShowModule!());
+
+@safe:
+
+
 struct AEMBrokerService {
   string tenantId;
   string brokerServiceId;

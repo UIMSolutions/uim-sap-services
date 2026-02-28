@@ -1,5 +1,12 @@
 module uim.sap.aem.models.eventmesh;
 
+import uim.sap.aem;
+
+mixin(ShowModule!());
+
+@safe:
+
+
 struct AEMEventMesh {
     string tenantId;
     string meshId;

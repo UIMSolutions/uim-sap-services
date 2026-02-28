@@ -1,5 +1,12 @@
 module uim.sap.aem.models.subscription;
 
+import uim.sap.aem;
+
+mixin(ShowModule!());
+
+@safe:
+
+
 struct AEMSubscription {
     string tenantId;
     string subscriptionId;

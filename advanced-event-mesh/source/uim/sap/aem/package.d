@@ -8,6 +8,7 @@ public {
   
   import uim.sap.aem.config;
   import uim.sap.aem.exceptions;
+  import uim.sap.aem.helpers;
   import uim.sap.aem.models;
   import uim.sap.aem.store;
   import uim.sap.aem.service;

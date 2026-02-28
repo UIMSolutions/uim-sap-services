@@ -1,14 +1,13 @@
 module uim.sap.aem.server;
 
-import std.array : split;
-import std.string : startsWith;
 
-import vibe.data.json : Json;
-import vibe.http.common : HTTPMethod;
-import vibe.http.server : HTTPServerRequest, HTTPServerResponse, HTTPServerSettings, listenHTTP;
+import uim.sap.aem;
 
-import uim.sap.aem.exceptions;
-import uim.sap.aem.service;
+mixin(ShowModule!());
+
+@safe:
+
+
 
 class AEMServer {
     private AEMService _service;
