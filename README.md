@@ -16,6 +16,52 @@ It contains:
 - `<service-name>/` - independent DUB subpackages with their own `dub.sdl`, source, and runtime assets
 - `uim-sap-test-library/` - test helper package
 
+## Services index
+
+| Folder | Purpose |
+|---|---|
+| [abap-runtime](abap-runtime/README.md) | ABAP runtime implementation in D. |
+| [advanced-event-mesh](advanced-event-mesh/README.md) | Event streaming, event management, and monitoring service. |
+| [agentry](agentry/README.md) | Agentry-like mobile backend runtime service. |
+| [application-autoscaler](application-autoscaler/README.md) | Cloud Foundry-oriented autoscaling service. |
+| [audit-log](audit-log/README.md) | Audit logging service for security/compliance scenarios. |
+| [authorization-trust-management](authorization-trust-management/README.md) | Authorization and trust management service. |
+| [automation-pilot](automation-pilot/README.md) | Automation Pilot-like operations automation runtime. |
+| [btp](btp/README.md) | Core BTP-oriented D library package. |
+| [business-application-studio](business-application-studio/README.md) | Business Application Studio-like backend service. |
+| [business-hub](business-hub/README.md) | Business Hub-style service. |
+| [Cloud Identity Services](Cloud%20Identity%20Services/README.md) | Cloud Identity Services library (IAS/IPS, SCIM-focused). |
+| [cloud-foundry](cloud-foundry/README.md) | Cloud Foundry-style API service. |
+| [cloud-identity](cloud-identity/README.md) | Cloud Identity Services-style runtime service. |
+| [cloud-integration-client](cloud-integration-client/README.md) | Cloud Integration (CPI) client library. |
+| [cloud-logging](cloud-logging/README.md) | Cloud logging service. |
+| [cloud-management](cloud-management/README.md) | BTP cloud management service. |
+| [cloud-portal](cloud-portal/README.md) | Cloud portal service runtime. |
+| [connectivity](connectivity/README.md) | Connectivity bridge/service APIs. |
+| [content-agent](content-agent/README.md) | Content Agent-like service. |
+| [content-manager](content-manager/README.md) | Content Manager-like runtime for business content. |
+| [credential-store](credential-store/README.md) | Credential Store-like API service. |
+| [customer-data](customer-data/README.md) | Customer Data Cloud-style identity/consent service. |
+| [data-privacy-integration](data-privacy-integration/README.md) | Data Privacy Integration-style service. |
+| [data-quality-management](data-quality-management/README.md) | Data Quality Management-style service. |
+| [datasphere](datasphere/README.md) | Datasphere-like service. |
+| [fiori](fiori/README.md) | Fiori client library for D. |
+| [hanaclient](hanaclient/README.md) | HANA database client library for D. |
+| [HTML5 Application Repository](HTML5%20Application%20Repository/README.md) | HTML5 Application Repository-style service. |
+| [idoc](idoc/README.md) | IDOC client library for D. |
+| [intelligent-situation-automation](intelligent-situation-automation/README.md) | Intelligent Situation Automation-like service. |
+| [job-scheduling](job-scheduling/README.md) | Job Scheduling-style service. |
+| [malware-scanning](malware-scanning/README.md) | Malware scanning service. |
+| [master-data-governance](master-data-governance/README.md) | Master Data Governance-style service. |
+| [master-data-integration](master-data-integration/README.md) | Master Data Integration-style service. |
+| [monitoring](monitoring/README.md) | Monitoring service for BTP-like scenarios. |
+| [responsibility-management](responsibility-management/README.md) | Responsibility Management-style service. |
+| [rfc](rfc/README.md) | RFC adapter library for D applications. |
+| [s4hana](s4hana/README.md) | S/4HANA client library for D. |
+| [site-directory](site-directory/README.md) | Site Directory-like API service. |
+| [site-manager](site-manager/README.md) | Site Manager-like design-time API service. |
+| [task-center](task-center/README.md) | Task Center-style task federation service. |
+
 ## Requirements
 
 - D compiler (for example `dmd`)

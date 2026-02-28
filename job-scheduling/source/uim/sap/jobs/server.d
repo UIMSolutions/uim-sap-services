@@ -1,17 +1,11 @@
 module uim.sap.jobs.server;
 
-import std.array : split;
-import std.string : startsWith;
 
-import vibe.data.json : Json;
-import vibe.http.common : HTTPMethod;
-import vibe.http.server : HTTPServerRequest,
-  HTTPServerResponse,
-  HTTPServerSettings,
-  listenHTTP;
+import uim.sap.jobs;
 
-import uim.sap.jobs.exceptions;
-import uim.sap.jobs.service;
+mixin(ShowModule!());
+
+@safe:
 
 class JobSchedulingServer {
   private JobSchedulingService _service;

@@ -5,7 +5,7 @@
  * License: Apache-2.0
  * Authors: Ozan Nurettin Süel
  */
-module uim.sap.rfc.exceptions;
+module uim.sap.rfc.exceptions.exceptions;
 
 class SAPRFCException : Exception {
     this(string msg, string file = __FILE__, size_t line = __LINE__, Throwable next = null)
