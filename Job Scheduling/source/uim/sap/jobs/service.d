@@ -1027,7 +1027,7 @@ HTML";
     }
 
     private bool optionalBool(Json request, string key, bool fallback) {
-        if (key in request && request[key].type == Json.Type.bool_) {
+        if (key in request && request[key].isBoolean) {
             return request[key].get!bool;
         }
         return fallback;

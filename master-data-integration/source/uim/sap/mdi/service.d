@@ -74,7 +74,7 @@ class MDIService {
 
         if ("object_type" in request && request["object_type"].isString) filter.objectType = toLower(request["object_type"].get!string);
         if ("conditions" in request && request["conditions"].type == Json.Type.array) filter.conditions = request["conditions"];
-        if ("active" in request && request["active"].type == Json.Type.bool_) filter.active = request["active"].get!bool;
+        if ("active" in request && request["active"].isBoolean) filter.active = request["active"].get!bool;
 
         if (!isAllowedObjectType(filter.objectType)) throw new MDIValidationException("Unsupported object_type");
 

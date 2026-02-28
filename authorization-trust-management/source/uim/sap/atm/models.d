@@ -170,10 +170,10 @@ ATMIdentityProvider idpFromJson(string tenantId, string idpId, Json request) {
     if ("description" in request && request["description"].isString) {
         idp.description = request["description"].get!string;
     }
-    if ("enabled" in request && request["enabled"].type == Json.Type.bool_) {
+    if ("enabled" in request && request["enabled"].isBoolean) {
         idp.enabled = request["enabled"].get!bool;
     }
-    if ("is_default" in request && request["is_default"].type == Json.Type.bool_) {
+    if ("is_default" in request && request["is_default"].isBoolean) {
         idp.isDefault = request["is_default"].get!bool;
     }
     if ("trusted_algorithms" in request && request["trusted_algorithms"].type == Json.Type.array) {

@@ -95,13 +95,13 @@ CONDestination destinationFromJson(string tenantId, string name, Json request) {
     if ("target_path" in request && request["target_path"].isString) {
         destination.targetPath = request["target_path"].get!string;
     }
-    if ("on_premise" in request && request["on_premise"].type == Json.Type.bool_) {
+    if ("on_premise" in request && request["on_premise"].isBoolean) {
         destination.onPremise = request["on_premise"].get!bool;
     }
-    if ("cloud_database" in request && request["cloud_database"].type == Json.Type.bool_) {
+    if ("cloud_database" in request && request["cloud_database"].isBoolean) {
         destination.cloudDatabase = request["cloud_database"].get!bool;
     }
-    if ("identity_propagation_enabled" in request && request["identity_propagation_enabled"].type == Json.Type.bool_) {
+    if ("identity_propagation_enabled" in request && request["identity_propagation_enabled"].isBoolean) {
         destination.identityPropagationEnabled = request["identity_propagation_enabled"].get!bool;
     }
     if ("metadata" in request && request["metadata"].type == Json.Type.object) {

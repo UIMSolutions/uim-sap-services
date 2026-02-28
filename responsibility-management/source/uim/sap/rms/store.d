@@ -302,7 +302,7 @@ class RMSStore {
         }
 
         bool notifyAgents = true;
-        if ("notify" in request && request["notify"].type == Json.Type.bool_) {
+        if ("notify" in request && request["notify"].isBoolean) {
             notifyAgents = request["notify"].get!bool;
         }
 
@@ -776,7 +776,7 @@ class RMSStore {
         if (value.isString) return value.get!string;
         if (value.isInteger) return to!string(value.get!long);
         if (value.isFloat) return to!string(value.get!double);
-        if (value.type == Json.Type.bool_) return value.get!bool ? "true" : "false";
+        if (value.isBoolean) return value.get!bool ? "true" : "false";
         return "";
     }
 
@@ -788,7 +788,7 @@ class RMSStore {
     }
 
     private bool getBool(Json payload, string key, bool fallback) {
-        if (key in payload && payload[key].type == Json.Type.bool_) {
+        if (key in payload && payload[key].isBoolean) {
             return payload[key].get!bool;
         }
         return fallback;

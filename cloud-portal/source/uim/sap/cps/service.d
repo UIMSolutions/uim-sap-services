@@ -235,9 +235,9 @@ class CPSService {
 
         if ("module_id" in request && request["module_id"].isString) launchpadModule.moduleId = request["module_id"].get!string;
         if ("solution_name" in request && request["solution_name"].isString) launchpadModule.solutionName = request["solution_name"].get!string;
-        if ("personalization" in request && request["personalization"].type == Json.Type.bool_) launchpadModule.personalization = request["personalization"].get!bool;
-        if ("translation" in request && request["translation"].type == Json.Type.bool_) launchpadModule.translation = request["translation"].get!bool;
-        if ("custom_themes" in request && request["custom_themes"].type == Json.Type.bool_) launchpadModule.customThemes = request["custom_themes"].get!bool;
+        if ("personalization" in request && request["personalization"].isBoolean) launchpadModule.personalization = request["personalization"].get!bool;
+        if ("translation" in request && request["translation"].isBoolean) launchpadModule.translation = request["translation"].get!bool;
+        if ("custom_themes" in request && request["custom_themes"].isBoolean) launchpadModule.customThemes = request["custom_themes"].get!bool;
 
         if (launchpadModule.solutionName.length == 0) throw new CPSValidationException("solution_name is required");
 
@@ -271,7 +271,7 @@ class CPSService {
 
         if ("provider_id" in request && request["provider_id"].isString) provider.providerId = request["provider_id"].get!string;
         if ("solution_name" in request && request["solution_name"].isString) provider.solutionName = request["solution_name"].get!string;
-        if ("saas_enabled" in request && request["saas_enabled"].type == Json.Type.bool_) provider.saasEnabled = request["saas_enabled"].get!bool;
+        if ("saas_enabled" in request && request["saas_enabled"].isBoolean) provider.saasEnabled = request["saas_enabled"].get!bool;
         if ("catalogs" in request && request["catalogs"].type == Json.Type.array) provider.catalogs = request["catalogs"];
 
         if (provider.solutionName.length == 0) throw new CPSValidationException("solution_name is required");

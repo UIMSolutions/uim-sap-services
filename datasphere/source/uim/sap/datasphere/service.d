@@ -295,7 +295,7 @@ class DatasphereService {
         item.memoryGb = optionalInt(request, "memory_gb", item.memoryGb);
         item.priority = optionalInt(request, "priority", item.priority);
         if ("users" in request) item.users = stringArray(request, "users");
-        if ("active" in request && request["active"].type == Json.Type.bool_) item.active = request["active"].get!bool;
+        if ("active" in request && request["active"].isBoolean) item.active = request["active"].get!bool;
         item.updatedAt = Clock.currTime();
 
         auto saved = _store.upsertSpace(item);
@@ -617,7 +617,7 @@ class DatasphereService {
     }
 
     private bool optionalBool(Json request, string key, bool fallback) {
-        if (key in request && request[key].type == Json.Type.bool_) {
+        if (key in request && request[key].isBoolean) {
             return request[key].get!bool;
         }
         return fallback;

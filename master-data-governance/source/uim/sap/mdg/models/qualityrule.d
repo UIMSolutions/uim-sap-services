@@ -43,7 +43,7 @@ MDGQualityRule qualityRuleFromJson(string tenantId, string ruleId, Json request)
     if ("rule_type" in request && request["rule_type"].isString) {
         rule.ruleType = toLower(request["rule_type"].get!string);
     }
-    if ("enabled" in request && request["enabled"].type == Json.Type.bool_) {
+    if ("enabled" in request && request["enabled"].isBoolean) {
         rule.enabled = request["enabled"].get!bool;
     }
     if ("options" in request && request["options"].type == Json.Type.object) {

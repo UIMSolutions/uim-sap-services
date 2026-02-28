@@ -298,7 +298,7 @@ AgentryBackendSystem backendFromJson(string tenantId, Json request) {
   if ("auth_mode" in request && request["auth_mode"].isString) {
     backend.authMode = toLower(request["auth_mode"].get!string);
   }
-  if ("enabled" in request && request["enabled"].type == Json.Type.bool_) {
+  if ("enabled" in request && request["enabled"].isBoolean) {
     backend.enabled = request["enabled"].get!bool;
   }
 

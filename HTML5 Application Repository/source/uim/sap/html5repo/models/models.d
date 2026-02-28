@@ -94,7 +94,7 @@ private string getString(Json payload, string key, string fallback) {
 }
 
 private bool getBool(Json payload, string key, bool fallback) {
-    if (key in payload && payload[key].type == Json.Type.bool_) {
+    if (key in payload && payload[key].isBoolean) {
         return payload[key].get!bool;
     }
     return fallback;

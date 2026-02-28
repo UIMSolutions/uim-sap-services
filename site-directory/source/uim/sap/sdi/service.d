@@ -262,8 +262,8 @@ class SDIService {
         SDISiteSettings settings;
         if ("theme" in settingsBody && settingsBody["theme"].isString) settings.theme = settingsBody["theme"].get!string;
         if ("home_page" in settingsBody && settingsBody["home_page"].isString) settings.homePage = settingsBody["home_page"].get!string;
-        if ("allow_personalization" in settingsBody && settingsBody["allow_personalization"].type == Json.Type.bool_) settings.allowPersonalization = settingsBody["allow_personalization"].get!bool;
-        if ("enable_notifications" in settingsBody && settingsBody["enable_notifications"].type == Json.Type.bool_) settings.enableNotifications = settingsBody["enable_notifications"].get!bool;
+        if ("allow_personalization" in settingsBody && settingsBody["allow_personalization"].isBoolean) settings.allowPersonalization = settingsBody["allow_personalization"].get!bool;
+        if ("enable_notifications" in settingsBody && settingsBody["enable_notifications"].isBoolean) settings.enableNotifications = settingsBody["enable_notifications"].get!bool;
         return settings;
     }
 

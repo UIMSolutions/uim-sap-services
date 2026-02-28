@@ -471,7 +471,7 @@ class CDCService {
       if (providerSignals["recaptcha_score"].get!double < 0.5) score += 40;
     }
 
-    if ("akamai_risk" in providerSignals && providerSignals["akamai_risk"].type == Json.Type.bool_) {
+    if ("akamai_risk" in providerSignals && providerSignals["akamai_risk"].isBoolean) {
       if (providerSignals["akamai_risk"].get!bool) score += 30;
     }
 
@@ -483,7 +483,7 @@ class CDCService {
       if (providerSignals["transunion_score"].get!long > 700) score += 20;
     }
 
-    if ("impossible_travel" in providerSignals && providerSignals["impossible_travel"].type == Json.Type.bool_) {
+    if ("impossible_travel" in providerSignals && providerSignals["impossible_travel"].isBoolean) {
       if (providerSignals["impossible_travel"].get!bool) score += 25;
     }
 

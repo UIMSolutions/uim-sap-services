@@ -50,7 +50,7 @@ AEMNotificationRule notificationRuleFromJson(string tenantId, string ruleId, Jso
   if ("severity" in request && request["severity"].isString) {
     rule.severity = toLower(request["severity"].get!string);
   }
-  if ("enabled" in request && request["enabled"].type == Json.Type.bool_) {
+  if ("enabled" in request && request["enabled"].isBoolean) {
     rule.enabled = request["enabled"].get!bool;
   }
   if ("channel" in request && request["channel"].isString) {

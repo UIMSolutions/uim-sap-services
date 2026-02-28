@@ -144,7 +144,7 @@ class AuditLogService {
         }
 
         bool download = false;
-        if ("download" in request && request["download"].type == Json.Type.bool_) {
+        if ("download" in request && request["download"].isBoolean) {
             download = request["download"].get!bool;
         }
 

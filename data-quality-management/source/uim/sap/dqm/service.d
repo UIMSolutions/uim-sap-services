@@ -50,8 +50,8 @@ class DQMService {
         bool keepLine2 = true;
         if ("preferences" in request && request["preferences"].type == Json.Type.object) {
             auto pref = request["preferences"];
-            if ("uppercase_city" in pref && pref["uppercase_city"].type == Json.Type.bool_) uppercaseCity = pref["uppercase_city"].get!bool;
-            if ("keep_line2" in pref && pref["keep_line2"].type == Json.Type.bool_) keepLine2 = pref["keep_line2"].get!bool;
+            if ("uppercase_city" in pref && pref["uppercase_city"].isBoolean) uppercaseCity = pref["uppercase_city"].get!bool;
+            if ("keep_line2" in pref && pref["keep_line2"].isBoolean) keepLine2 = pref["keep_line2"].get!bool;
         }
 
         auto standardized = standardizedAddress(original, uppercaseCity, keepLine2);

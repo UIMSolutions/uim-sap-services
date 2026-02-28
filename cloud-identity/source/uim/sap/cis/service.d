@@ -195,7 +195,7 @@ class CISService {
         rule.updatedAt = Clock.currTime();
 
         if ("target_idp" in request && request["target_idp"].isString) rule.targetIdp = request["target_idp"].get!string;
-        if ("is_default" in request && request["is_default"].type == Json.Type.bool_) rule.isDefault = request["is_default"].get!bool;
+        if ("is_default" in request && request["is_default"].isBoolean) rule.isDefault = request["is_default"].get!bool;
         if ("email_domain" in request && request["email_domain"].isString) rule.emailDomain = request["email_domain"].get!string;
         if ("user_type" in request && request["user_type"].isString) rule.userType = request["user_type"].get!string;
         if ("group" in request && request["group"].isString) rule.group = request["group"].get!string;
@@ -302,7 +302,7 @@ class CISService {
         if ("groups" in request && request["groups"].type == Json.Type.array) policy.groups = request["groups"];
         if ("user_type" in request && request["user_type"].isString) policy.userType = request["user_type"].get!string;
         if ("authentication_method" in request && request["authentication_method"].isString) policy.authenticationMethod = toLower(request["authentication_method"].get!string);
-        if ("require_two_factor" in request && request["require_two_factor"].type == Json.Type.bool_) policy.requireTwoFactor = request["require_two_factor"].get!bool;
+        if ("require_two_factor" in request && request["require_two_factor"].isBoolean) policy.requireTwoFactor = request["require_two_factor"].get!bool;
 
         validateAuthMethod(policy.authenticationMethod);
         auto saved = _store.upsertRiskPolicy(policy);

@@ -161,7 +161,7 @@ class CONService {
         }
 
         bool forwardIdentity = true;
-        if ("forward_identity" in request && request["forward_identity"].type == Json.Type.bool_) {
+        if ("forward_identity" in request && request["forward_identity"].isBoolean) {
             forwardIdentity = request["forward_identity"].get!bool;
         }
 

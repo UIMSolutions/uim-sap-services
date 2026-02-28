@@ -70,7 +70,7 @@ class DPIService {
 
         if ("data_category" in request && request["data_category"].isString) rule.dataCategory = request["data_category"].get!string;
         if ("retention_days" in request && request["retention_days"].isInteger) rule.retentionDays = cast(int)request["retention_days"].get!long;
-        if ("active" in request && request["active"].type == Json.Type.bool_) rule.active = request["active"].get!bool;
+        if ("active" in request && request["active"].isBoolean) rule.active = request["active"].get!bool;
 
         if (rule.dataCategory.length == 0) throw new DPIValidationException("data_category is required");
         if (rule.retentionDays <= 0) throw new DPIValidationException("retention_days must be > 0");
