@@ -6,12 +6,7 @@ import std.uuid : randomUUID;
 
 import vibe.data.json : Json;
 
-struct CREEncryptedPayload {
-    ubyte[] cipherBytes;
-    ubyte[] nonceBytes;
-    string algorithm = "XOR-KEYSTREAM-V1";
-    ulong checksum;
-}
+
 
 struct CREServiceInstance {
     string instanceId;
