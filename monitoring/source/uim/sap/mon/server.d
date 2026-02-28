@@ -18,10 +18,11 @@ class MONServer {
   }
 
   void run() {
-    HTTPServerSettings settings;
+    auto settings = new HTTPServerSettings;
     settings.port = _service.config.port;
     settings.bindAddresses = [_service.config.host];
     listenHTTP(settings, &handleRequest);
+    runApplication();
   }
 
   private void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {

@@ -22,13 +22,7 @@ class CONServer {
     settings.port = _service.config.port;
     settings.bindAddresses = [_service.config.host];
     listenHTTP(settings, &handleRequest);
-  }
-
-  void run() {
-    HTTPServerSettings settings;
-    settings.port = _service.config.port;
-    settings.bindAddresses = [_service.config.host];
-    listenHTTP(settings, &handleRequest);
+    runApplication();
   }
 
   private void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {
