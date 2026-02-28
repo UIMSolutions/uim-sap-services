@@ -32,21 +32,21 @@ mixin(ShowModule!());
   * Note: The `toJson()` method is used to serialize the job log entry into a JSON format that can be returned in API responses or stored in a database. The actual implementation of the `to
  */
 struct CISJobLog {
-    string tenantId;
-    string logId;
-    string jobId;
-    string level;
-    string message;
-    SysTime createdAt;
+  string tenantId;
+  string logId;
+  string jobId;
+  string level;
+  string message;
+  SysTime createdAt;
 
-    Json toJson() const {
-        Json payload = Json.emptyObject;
-        payload["log_id"] = logId;
-        payload["tenant_id"] = tenantId;
-        payload["job_id"] = jobId;
-        payload["level"] = level;
-        payload["message"] = message;
-        payload["created_at"] = createdAt.toISOExtString();
-        return payload;
-    }
+  Json toJson() const {
+    Json payload = Json.emptyObject;
+    payload["log_id"] = logId;
+    payload["tenant_id"] = tenantId;
+    payload["job_id"] = jobId;
+    payload["level"] = level;
+    payload["message"] = message;
+    payload["created_at"] = createdAt.toISOExtString();
+    return payload;
+  }
 }

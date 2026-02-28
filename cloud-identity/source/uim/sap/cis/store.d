@@ -8,7 +8,24 @@ mixin(ShowModule!());
 
 @safe:
 
-
+/** 
+ * In-memory store for the UIM Cloud Identity Services (CIS) module. --- IGNORE ---
+ * This class provides thread-safe methods to manage users, groups, delegation rules, authorization policies, risk policies, provisioning jobs, job logs, and notification subscriptions. --- IGNORE ---
+ * The store uses a simple key-value structure to organize data by tenant and entity type, allowing for efficient retrieval and management of resources. --- IGNORE ---
+ * Each method is synchronized using a mutex to ensure thread safety when accessing or modifying the store's internal data structures. --- IGNORE ---
+ * The `scopedKey` method is used to generate unique keys for storing entities based on tenant ID and entity type, while the `belongsTo` method checks if a given key belongs to a specific tenant. --- IGNORE ---
+ * This implementation is suitable for testing and development purposes but may need to be replaced with a more robust solution (e.g., database) for production use. --- IGNORE ---
+ *
+  * Example usage:
+  * ``` 
+  * CISStore store = new CISStore;
+  * CISUser user = CISUser(tenantId: "tenant123", userId: "user456", userName: "jdoe", email: "jdoe@example.com");
+  * store.upsertUser(user);
+  * CISUser retrievedUser = store.get
+  * ```User("tenant123", "user456");
+  * Note: The example usage demonstrates how to create a new user and store it in the CISStore, as well as how to retrieve the user using the `getUser` method. The `upsertUser` method will add the user to the store or update it if it already exists. The `getUser` method retrieves the user based on the tenant ID and user ID, returning
+  * the user object if found or an initialized user object if not found. The store can be similarly used for managing groups, delegation rules, policies, jobs, logs, and subscriptions using the corresponding methods provided in the CISStore class.
+ */
 class CISStore {
     private CISUser[string] _users;
     private CISGroup[string] _groups;
