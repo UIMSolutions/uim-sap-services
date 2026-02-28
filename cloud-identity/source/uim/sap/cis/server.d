@@ -14,7 +14,7 @@ class CISServer {
     }
 
     void run() {
-        HTTPServerSettings settings;
+        auto settings = new HTTPServerSettings;
         settings.port = _service.config.port;
         settings.bindAddresses = [_service.config.host];
         listenHTTP(settings, &handleRequest);

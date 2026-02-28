@@ -1,0 +1,48 @@
+module uim.sap.aem.models.topicevent;
+
+struct AEMTopicEvent {
+  string tenantId;
+  string meshId;
+  string eventId;
+  string topic;
+  string publisher;
+  Json payload;
+  SysTime publishedAt;
+
+  Json toJson() const {
+    Json resultJson = Json.emptyObject;
+    resultJson["tenant_id"] = tenantId;
+    resultJson["mesh_id"] = meshId;
+    resultJson["event_id"] = eventId;
+    resultJson["topic"] = topic;
+    resultJson["publisher"] = publisher;
+    resultJson["payload"] = payload;
+    resultJson["published_at"] = publishedAt.toISOExtString();
+    return resultJson;
+  }
+}
+
+AEMTopicEvent eventFromJson(string tenantId, string meshId, Json request) {
+  AEMTopicEvent e;
+  e.tenantId = tenantId;
+  e.meshId = meshId;
+  e.eventId = randomUUID().toString();
+  e.publisher = "unknown";
+  e.payload = Json.emptyObject;
+  e.publishedAt = Clock.currTime();
+
+  if ("event_id" in request && request["event_id"].type == Json.Type.string) {
+    e.eventId = request["event_id"].get!string;
+  }
+  if ("topic" in request && request["topic"].type == Json.Type.string) {
+    e.topic = request["topic"].get!string;
+  }
+  if ("publisher" in request && request["publisher"].type == Json.Type.string) {
+    e.publisher = request["publisher"].get!string;
+  }
+  if ("payload" in request) {
+    e.payload = request["payload"];
+  }
+
+  return e;
+}
