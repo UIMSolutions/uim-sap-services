@@ -1,14 +1,10 @@
 module uim.sap.cis.service;
 
-import std.datetime : Clock;
-import std.string : toLower;
+import uim.sap.cis;
 
-import vibe.data.json : Json;
+mixin(ShowModule!());
 
-import uim.sap.cis.config;
-import uim.sap.cis.exceptions;
-import uim.sap.cis.models;
-import uim.sap.cis.store;
+@safe:
 
 class CISService {
     private CISConfig _config;

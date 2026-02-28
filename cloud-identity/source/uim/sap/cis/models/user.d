@@ -1,5 +1,11 @@
 module uim.sap.cis.models.user;
 
+import uim.sap.cis;
+
+mixin(ShowModule!());
+
+@safe:
+
 struct CISUser {
     string tenantId;
     string userId;

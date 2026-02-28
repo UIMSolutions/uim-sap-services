@@ -2,7 +2,12 @@ module uim.sap.cis.store;
 
 import core.sync.mutex : Mutex;
 
-import uim.sap.cis.models;
+import uim.sap.cis;
+
+mixin(ShowModule!());
+
+@safe:
+
 
 class CISStore {
     private CISUser[string] _users;

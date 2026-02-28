@@ -1,13 +1,13 @@
 module uim.sap.cis.models;
 
-import std.datetime : Clock, SysTime;
-import std.string : toLower;
-import std.uuid : randomUUID;
+import uim.sap.cis;
 
-import vibe.data.json : Json;
+mixin(ShowModule!());
 
-enum string[] CIS_AUTH_METHODS = ["form", "spnego", "social", "2fa"];
-enum string[] CIS_SSO_PROTOCOLS = ["openid-connect", "saml2"];
+@safe:
+
+
+
 
 string createId() {
     return randomUUID().toString();

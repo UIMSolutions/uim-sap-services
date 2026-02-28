@@ -1,12 +1,10 @@
-/**
- * UIM Cloud Identity Services (CIS)
- */
 module uim.sap.cis;
 
 public {
     import uim.sap.service;
 
     import uim.sap.cis.config;
+    import uim.sap.cis.enumeration;
     import uim.sap.cis.exceptions;
     import uim.sap.cis.models;
     import uim.sap.cis.store;

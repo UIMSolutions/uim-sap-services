@@ -1,14 +1,10 @@
 module uim.sap.cis.server;
 
-import std.array : split;
-import std.string : startsWith;
+import uim.sap.cis;
 
-import vibe.data.json : Json;
-import vibe.http.common : HTTPMethod;
-import vibe.http.server : HTTPServerRequest, HTTPServerResponse, HTTPServerSettings, listenHTTP;
+mixin(ShowModule!());
 
-import uim.sap.cis.exceptions;
-import uim.sap.cis.service;
+@safe:
 
 class CISServer {
     private CISService _service;
