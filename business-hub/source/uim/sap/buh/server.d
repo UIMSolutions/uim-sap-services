@@ -14,133 +14,133 @@ import uim.sap.buh.exceptions;
 import uim.sap.buh.service;
 
 class BUHServer {
-    private BUHService _service;
+  private BUHService _service;
 
-    this(BUHService service) {
-        _service = service;
+  this(BUHService service) {
+    _service = service;
+  }
+
+  void run() {
+    auto settings = new HTTPServerSettings;
+    settings.port = _service.config.port;
+    settings.bindAddresses = [_service.config.host];
+    listenHTTP(settings, &handleRequest);
+  }
+
+  private void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {
+    foreach (key, value; _service.config.customHeaders) {
+      res.headers[key] = value;
     }
 
-    void run() {
-        HTTPServerSettings settings;
-        settings.port = _service.config.port;
-        settings.bindAddresses = [_service.config.host];
-        listenHTTP(settings, &handleRequest);
+    auto basePath = _service.config.basePath;
+    auto path = req.path;
+
+    if (!path.startsWith(basePath)) {
+      respondError(res, "Not found", 404);
+      return;
     }
 
-    private void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {
-        foreach (key, value; _service.config.customHeaders) {
-            res.headers[key] = value;
-        }
-
-        auto basePath = _service.config.basePath;
-        auto path = req.path;
-
-        if (!path.startsWith(basePath)) {
-            respondError(res, "Not found", 404);
-            return;
-        }
-
-        auto subPath = path[basePath.length .. $];
-        if (subPath.length == 0) {
-            subPath = "/";
-        }
-
-        if (subPath == "/health" && req.method == HTTPMethod.GET) {
-            res.writeJsonBody(_service.health(), 200);
-            return;
-        }
-
-        if (subPath == "/ready" && req.method == HTTPMethod.GET) {
-            res.writeJsonBody(_service.ready(), 200);
-            return;
-        }
-
-        try {
-            if (subPath == "/catalog/apis") {
-                validateAuth(req);
-                if (req.method == HTTPMethod.GET) {
-                    res.writeJsonBody(_service.listApis(), 200);
-                    return;
-                }
-                if (req.method == HTTPMethod.POST) {
-                    res.writeJsonBody(_service.createApi(req.json), 201);
-                    return;
-                }
-            }
-
-            if (subPath.startsWith("/catalog/apis/") && req.method == HTTPMethod.GET) {
-                validateAuth(req);
-                auto id = lastSegment(subPath);
-                res.writeJsonBody(_service.getApi(id), 200);
-                return;
-            }
-
-            if (subPath == "/catalog/products") {
-                validateAuth(req);
-                if (req.method == HTTPMethod.GET) {
-                    res.writeJsonBody(_service.listProducts(), 200);
-                    return;
-                }
-                if (req.method == HTTPMethod.POST) {
-                    res.writeJsonBody(_service.createProduct(req.json), 201);
-                    return;
-                }
-            }
-
-            if (subPath == "/subscriptions") {
-                validateAuth(req);
-                if (req.method == HTTPMethod.GET) {
-                    res.writeJsonBody(_service.listSubscriptions(), 200);
-                    return;
-                }
-                if (req.method == HTTPMethod.POST) {
-                    res.writeJsonBody(_service.createSubscription(req.json), 201);
-                    return;
-                }
-            }
-
-            respondError(res, "Not found", 404);
-        } catch (BUHAuthorizationException e) {
-            respondError(res, e.msg, 401);
-        } catch (BUHNotFoundException e) {
-            respondError(res, e.msg, 404);
-        } catch (BUHValidationException e) {
-            respondError(res, e.msg, 422);
-        } catch (BUHException e) {
-            respondError(res, e.msg, 500);
-        } catch (Exception e) {
-            respondError(res, e.msg, 500);
-        }
+    auto subPath = path[basePath.length .. $];
+    if (subPath.length == 0) {
+      subPath = "/";
     }
 
-    private void validateAuth(HTTPServerRequest req) {
-        if (!_service.config.requireAuthToken) {
-            return;
-        }
-
-        if (!("Authorization" in req.headers)) {
-            throw new BUHAuthorizationException("Missing Authorization header");
-        }
-
-        auto expected = "Bearer " ~ _service.config.authToken;
-        if (req.headers["Authorization"] != expected) {
-            throw new BUHAuthorizationException("Invalid token");
-        }
+    if (subPath == "/health" && req.method == HTTPMethod.GET) {
+      res.writeJsonBody(_service.health(), 200);
+      return;
     }
 
-    private string lastSegment(string path) {
-        auto parts = path.split("/");
-        if (parts.length == 0) {
-            return "";
-        }
-        return parts[$ - 1];
+    if (subPath == "/ready" && req.method == HTTPMethod.GET) {
+      res.writeJsonBody(_service.ready(), 200);
+      return;
     }
 
-    private void respondError(HTTPServerResponse res, string message, int statusCode) {
-        Json payload = Json.emptyObject;
-        payload["success"] = false;
-        payload["message"] = message;
-        payload["statusCode"] = statusCode;
-        res.writeJsonBody(payload, statusCode);
+    try {
+      if (subPath == "/catalog/apis") {
+        validateAuth(req);
+        if (req.method == HTTPMethod.GET) {
+          res.writeJsonBody(_service.listApis(), 200);
+          return;
+        }
+        if (req.method == HTTPMethod.POST) {
+          res.writeJsonBody(_service.createApi(req.json), 201);
+          return;
+        }
+      }
+
+      if (subPath.startsWith("/catalog/apis/") && req.method == HTTPMethod.GET) {
+        validateAuth(req);
+        auto id = lastSegment(subPath);
+        res.writeJsonBody(_service.getApi(id), 200);
+        return;
+      }
+
+      if (subPath == "/catalog/products") {
+        validateAuth(req);
+        if (req.method == HTTPMethod.GET) {
+          res.writeJsonBody(_service.listProducts(), 200);
+          return;
+        }
+        if (req.method == HTTPMethod.POST) {
+          res.writeJsonBody(_service.createProduct(req.json), 201);
+          return;
+        }
+      }
+
+      if (subPath == "/subscriptions") {
+        validateAuth(req);
+        if (req.method == HTTPMethod.GET) {
+          res.writeJsonBody(_service.listSubscriptions(), 200);
+          return;
+        }
+        if (req.method == HTTPMethod.POST) {
+          res.writeJsonBody(_service.createSubscription(req.json), 201);
+          return;
+        }
+      }
+
+      respondError(res, "Not found", 404);
+    } catch (BUHAuthorizationException e) {
+      respondError(res, e.msg, 401);
+    } catch (BUHNotFoundException e) {
+      respondError(res, e.msg, 404);
+    } catch (BUHValidationException e) {
+      respondError(res, e.msg, 422);
+    } catch (BUHException e) {
+      respondError(res, e.msg, 500);
+    } catch (Exception e) {
+      respondError(res, e.msg, 500);
     }
+  }
+
+  private void validateAuth(HTTPServerRequest req) {
+    if (!_service.config.requireAuthToken) {
+      return;
+    }
+
+    if (!("Authorization" in req.headers)) {
+      throw new BUHAuthorizationException("Missing Authorization header");
+    }
+
+    auto expected = "Bearer " ~ _service.config.authToken;
+    if (req.headers["Authorization"] != expected) {
+      throw new BUHAuthorizationException("Invalid token");
+    }
+  }
+
+  private string lastSegment(string path) {
+    auto parts = path.split("/");
+    if (parts.length == 0) {
+      return "";
+    }
+    return parts[$ - 1];
+  }
+
+  private void respondError(HTTPServerResponse res, string message, int statusCode) {
+    Json payload = Json.emptyObject;
+    payload["success"] = false;
+    payload["message"] = message;
+    payload["statusCode"] = statusCode;
+    res.writeJsonBody(payload, statusCode);
+  }
 }

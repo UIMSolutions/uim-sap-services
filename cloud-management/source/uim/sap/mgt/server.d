@@ -30,12 +30,12 @@ class MGTServer {
   }
 
   void run() {
-    HTTPServerSettings settings;
+    auto settings = new HTTPServerSettings;
     settings.port = _service.config.port;
     settings.bindAddresses = [_service.config.host];
     listenHTTP(settings, &handleRequest);
   }
-
+  
   private void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {
     foreach (key, value; _service.config.customHeaders) {
       res.headers[key] = value;

@@ -40,137 +40,193 @@ import uim.sap.atp.service;
 * Note: The server uses a simple token-based authentication mechanism. If `requireAuthToken` is enabled in the configuration, it expects an `Authorization` header with the value `Bearer {authToken}`. 
  */
 class ATPServer {
-    private ATPService _service;
+  private ATPService _service;
 
-    this(ATPService service) { _service = service; }
+  this(ATPService service) {
+    _service = service;
+  }
 
-    void run() {
-        HTTPServerSettings settings;
-        settings.port = _service.config.port;
-        settings.bindAddresses = [_service.config.host];
-        listenHTTP(settings, &handleRequest);
+  void run() {
+    auto settings = new HTTPServerSettings;
+    settings.port = _service.config.port;
+    settings.bindAddresses = [_service.config.host];
+    listenHTTP(settings, &handleRequest);
+  }
+
+  private void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {
+    foreach (key, value; _service.config.customHeaders)
+      res.headers[key] = value;
+
+    auto basePath = _service.config.basePath;
+    auto path = req.path;
+    if (!path.startsWith(basePath)) {
+      respondError(res, "Not found", 404);
+      return;
     }
 
-    private void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {
-        foreach (key, value; _service.config.customHeaders) res.headers[key] = value;
+    auto subPath = path[basePath.length .. $];
+    if (subPath.length == 0)
+      subPath = "/";
 
-        auto basePath = _service.config.basePath;
-        auto path = req.path;
-        if (!path.startsWith(basePath)) {
-            respondError(res, "Not found", 404);
+    if (subPath == "/health" && req.method == HTTPMethod.GET) {
+      res.writeJsonBody(_service.health(), 200);
+      return;
+    }
+    if (subPath == "/ready" && req.method == HTTPMethod.GET) {
+      res.writeJsonBody(_service.ready(), 200);
+      return;
+    }
+
+    try {
+      validateAuth(req);
+
+      auto segments = normalizedSegments(subPath);
+      if (segments.length >= 3 && segments[0] == "v1" && segments[1] == "tenants") {
+        auto tenantId = segments[2];
+
+        if (segments.length == 4 && segments[3] == "catalogs") {
+          if (req.method == HTTPMethod.GET) {
+            res.writeJsonBody(_service.listCatalogs(tenantId), 200);
             return;
-        }
-
-        auto subPath = path[basePath.length .. $];
-        if (subPath.length == 0) subPath = "/";
-
-        if (subPath == "/health" && req.method == HTTPMethod.GET) {
-            res.writeJsonBody(_service.health(), 200);
+          }
+          if (req.method == HTTPMethod.POST) {
+            res.writeJsonBody(_service.upsertCatalog(tenantId, req.json), 200);
             return;
+          }
         }
-        if (subPath == "/ready" && req.method == HTTPMethod.GET) {
-            res.writeJsonBody(_service.ready(), 200);
+
+        if (segments.length == 6 && segments[3] == "catalogs" && segments[5] == "commands") {
+          auto catalogId = segments[4];
+          if (req.method == HTTPMethod.GET) {
+            res.writeJsonBody(_service.listCommands(tenantId, catalogId), 200);
             return;
+          }
+          if (req.method == HTTPMethod.POST) {
+            res.writeJsonBody(_service.upsertCommand(tenantId, catalogId, req.json), 200);
+            return;
+          }
         }
 
-        try {
-            validateAuth(req);
-
-            auto segments = normalizedSegments(subPath);
-            if (segments.length >= 3 && segments[0] == "v1" && segments[1] == "tenants") {
-                auto tenantId = segments[2];
-
-                if (segments.length == 4 && segments[3] == "catalogs") {
-                    if (req.method == HTTPMethod.GET) { res.writeJsonBody(_service.listCatalogs(tenantId), 200); return; }
-                    if (req.method == HTTPMethod.POST) { res.writeJsonBody(_service.upsertCatalog(tenantId, req.json), 200); return; }
-                }
-
-                if (segments.length == 6 && segments[3] == "catalogs" && segments[5] == "commands") {
-                    auto catalogId = segments[4];
-                    if (req.method == HTTPMethod.GET) { res.writeJsonBody(_service.listCommands(tenantId, catalogId), 200); return; }
-                    if (req.method == HTTPMethod.POST) { res.writeJsonBody(_service.upsertCommand(tenantId, catalogId, req.json), 200); return; }
-                }
-
-                if (segments.length == 4 && segments[3] == "executions") {
-                    if (req.method == HTTPMethod.GET) { res.writeJsonBody(_service.listExecutions(tenantId), 200); return; }
-                    if (req.method == HTTPMethod.POST) { res.writeJsonBody(_service.runPredefinedCommand(tenantId, req.json), 200); return; }
-                }
-
-                if (segments.length == 4 && segments[3] == "backups") {
-                    if (req.method == HTTPMethod.GET) { res.writeJsonBody(_service.listBackups(tenantId), 200); return; }
-                    if (req.method == HTTPMethod.POST) { res.writeJsonBody(_service.backupContent(tenantId, req.json), 200); return; }
-                }
-
-                if (segments.length == 5 && segments[3] == "backups" && segments[4] == "restore" && req.method == HTTPMethod.POST) {
-                    res.writeJsonBody(_service.restoreContent(tenantId, req.json), 200);
-                    return;
-                }
-
-                if (segments.length == 5 && segments[3] == "vault" && segments[4] == "inputs") {
-                    if (req.method == HTTPMethod.GET) { res.writeJsonBody(_service.listSecretInputs(tenantId), 200); return; }
-                    if (req.method == HTTPMethod.POST) { res.writeJsonBody(_service.upsertSecretInput(tenantId, req.json), 200); return; }
-                }
-
-                if (segments.length == 4 && segments[3] == "schedules") {
-                    if (req.method == HTTPMethod.GET) { res.writeJsonBody(_service.listSchedules(tenantId), 200); return; }
-                    if (req.method == HTTPMethod.POST) { res.writeJsonBody(_service.upsertSchedule(tenantId, req.json), 200); return; }
-                }
-
-                if (segments.length == 4 && segments[3] == "event-triggers") {
-                    if (req.method == HTTPMethod.GET) { res.writeJsonBody(_service.listEventTriggers(tenantId), 200); return; }
-                    if (req.method == HTTPMethod.POST) { res.writeJsonBody(_service.upsertEventTrigger(tenantId, req.json), 200); return; }
-                }
-
-                if (segments.length == 5 && segments[3] == "events" && segments[4] == "fire" && req.method == HTTPMethod.POST) {
-                    res.writeJsonBody(_service.fireEvent(tenantId, req.json), 200);
-                    return;
-                }
-
-                if (segments.length == 5 && segments[3] == "ai" && segments[4] == "generate" && req.method == HTTPMethod.POST) {
-                    res.writeJsonBody(_service.generateAiContent(tenantId, req.json), 200);
-                    return;
-                }
-
-                if (segments.length == 5 && segments[3] == "private-env" && segments[4] == "operate" && req.method == HTTPMethod.POST) {
-                    res.writeJsonBody(_service.executePrivateOperation(tenantId, req.json), 200);
-                    return;
-                }
-            }
-
-            respondError(res, "Not found", 404);
-        } catch (ATPAuthorizationException e) {
-            respondError(res, e.msg, 401);
-        } catch (ATPNotFoundException e) {
-            respondError(res, e.msg, 404);
-        } catch (ATPValidationException e) {
-            respondError(res, e.msg, 422);
-        } catch (ATPException e) {
-            respondError(res, e.msg, 500);
-        } catch (Exception e) {
-            respondError(res, e.msg, 500);
+        if (segments.length == 4 && segments[3] == "executions") {
+          if (req.method == HTTPMethod.GET) {
+            res.writeJsonBody(_service.listExecutions(tenantId), 200);
+            return;
+          }
+          if (req.method == HTTPMethod.POST) {
+            res.writeJsonBody(_service.runPredefinedCommand(tenantId, req.json), 200);
+            return;
+          }
         }
-    }
 
-    private void validateAuth(HTTPServerRequest req) {
-        if (!_service.config.requireAuthToken) return;
-        if (!("Authorization" in req.headers)) throw new ATPAuthorizationException("Missing Authorization header");
-        auto expected = "Bearer " ~ _service.config.authToken;
-        if (req.headers["Authorization"] != expected) throw new ATPAuthorizationException("Invalid token");
-    }
+        if (segments.length == 4 && segments[3] == "backups") {
+          if (req.method == HTTPMethod.GET) {
+            res.writeJsonBody(_service.listBackups(tenantId), 200);
+            return;
+          }
+          if (req.method == HTTPMethod.POST) {
+            res.writeJsonBody(_service.backupContent(tenantId, req.json), 200);
+            return;
+          }
+        }
 
-    private string[] normalizedSegments(string subPath) {
-        auto clean = subPath;
-        if (clean.length > 0 && clean[0] == '/') clean = clean[1 .. $];
-        if (clean.length > 0 && clean[$ - 1] == '/') clean = clean[0 .. $ - 1];
-        if (clean.length == 0) return [];
-        return clean.split("/");
-    }
+        if (segments.length == 5 && segments[3] == "backups" && segments[4] == "restore" && req.method == HTTPMethod
+          .POST) {
+          res.writeJsonBody(_service.restoreContent(tenantId, req.json), 200);
+          return;
+        }
 
-    private void respondError(HTTPServerResponse res, string message, int statusCode) {
-        Json payload = Json.emptyObject;
-        payload["success"] = false;
-        payload["message"] = message;
-        payload["statusCode"] = statusCode;
-        res.writeJsonBody(payload, statusCode);
+        if (segments.length == 5 && segments[3] == "vault" && segments[4] == "inputs") {
+          if (req.method == HTTPMethod.GET) {
+            res.writeJsonBody(_service.listSecretInputs(tenantId), 200);
+            return;
+          }
+          if (req.method == HTTPMethod.POST) {
+            res.writeJsonBody(_service.upsertSecretInput(tenantId, req.json), 200);
+            return;
+          }
+        }
+
+        if (segments.length == 4 && segments[3] == "schedules") {
+          if (req.method == HTTPMethod.GET) {
+            res.writeJsonBody(_service.listSchedules(tenantId), 200);
+            return;
+          }
+          if (req.method == HTTPMethod.POST) {
+            res.writeJsonBody(_service.upsertSchedule(tenantId, req.json), 200);
+            return;
+          }
+        }
+
+        if (segments.length == 4 && segments[3] == "event-triggers") {
+          if (req.method == HTTPMethod.GET) {
+            res.writeJsonBody(_service.listEventTriggers(tenantId), 200);
+            return;
+          }
+          if (req.method == HTTPMethod.POST) {
+            res.writeJsonBody(_service.upsertEventTrigger(tenantId, req.json), 200);
+            return;
+          }
+        }
+
+        if (segments.length == 5 && segments[3] == "events" && segments[4] == "fire" && req.method == HTTPMethod
+          .POST) {
+          res.writeJsonBody(_service.fireEvent(tenantId, req.json), 200);
+          return;
+        }
+
+        if (segments.length == 5 && segments[3] == "ai" && segments[4] == "generate" && req.method == HTTPMethod
+          .POST) {
+          res.writeJsonBody(_service.generateAiContent(tenantId, req.json), 200);
+          return;
+        }
+
+        if (segments.length == 5 && segments[3] == "private-env" && segments[4] == "operate" && req.method == HTTPMethod
+          .POST) {
+          res.writeJsonBody(_service.executePrivateOperation(tenantId, req.json), 200);
+          return;
+        }
+      }
+
+      respondError(res, "Not found", 404);
+    } catch (ATPAuthorizationException e) {
+      respondError(res, e.msg, 401);
+    } catch (ATPNotFoundException e) {
+      respondError(res, e.msg, 404);
+    } catch (ATPValidationException e) {
+      respondError(res, e.msg, 422);
+    } catch (ATPException e) {
+      respondError(res, e.msg, 500);
+    } catch (Exception e) {
+      respondError(res, e.msg, 500);
     }
+  }
+
+  private void validateAuth(HTTPServerRequest req) {
+    if (!_service.config.requireAuthToken)
+      return;
+    if (!("Authorization" in req.headers))
+      throw new ATPAuthorizationException("Missing Authorization header");
+    auto expected = "Bearer " ~ _service.config.authToken;
+    if (req.headers["Authorization"] != expected)
+      throw new ATPAuthorizationException("Invalid token");
+  }
+
+  private string[] normalizedSegments(string subPath) {
+    auto clean = subPath;
+    if (clean.length > 0 && clean[0] == '/')
+      clean = clean[1 .. $];
+    if (clean.length > 0 && clean[$ - 1] == '/')
+      clean = clean[0 .. $ - 1];
+    if (clean.length == 0)
+      return [];
+    return clean.split("/");
+  }
+
+  private void respondError(HTTPServerResponse res, string message, int statusCode) {
+    Json payload = Json.emptyObject;
+    payload["success"] = false;
+    payload["message"] = message;
+    payload["statusCode"] = statusCode;
+    res.writeJsonBody(payload, statusCode);
+  }
 }

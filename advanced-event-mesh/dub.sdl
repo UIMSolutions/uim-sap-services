@@ -12,7 +12,6 @@ targetPath "build"
 sourcePaths "source"
 importPaths "source"
 
-
 // Dependency on the core framework
 dependency "uim-sap:service" path=".."
 
@@ -22,7 +21,7 @@ buildOptions "ignoreDeprecations" "debugInfo"
 
 // Configurations 
 configuration "default" {
-	targetType "library"
+	targetType "executable"
 }
 
 configuration "modules" {
