@@ -102,7 +102,7 @@ Note: Render the following diagrams with a PlantUML-compatible Markdown viewer/e
 
 ```mermaid
 classDiagram
-    class CPSConfig {
+    class CPSConfig : SAPConfig {
       +string host
       +ushort port
       +string basePath

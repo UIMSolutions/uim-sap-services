@@ -4,7 +4,7 @@ import std.string : startsWith;
 
 import uim.sap.agentry.exceptions;
 
-struct AgentryConfig {
+struct AgentryConfig : SAPConfig {
     string host = "0.0.0.0";
     ushort port = 8089;
     string basePath = "/api/agentry";

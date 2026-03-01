@@ -4,7 +4,7 @@
 title UIM Master Data Governance (MDG) - Class Model
 
 package "uim.sap.mdg" {
-  class MDGConfig {
+  class MDGConfig : SAPConfig {
     +host : string
     +port : ushort
     +basePath : string

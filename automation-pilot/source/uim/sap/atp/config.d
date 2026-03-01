@@ -4,7 +4,7 @@ import std.string : startsWith;
 
 import uim.sap.atp.exceptions;
 
-struct ATPConfig {
+struct ATPConfig : SAPConfig {
     string host = "0.0.0.0";
     ushort port = 8097;
     string basePath = "/api/automation-pilot";

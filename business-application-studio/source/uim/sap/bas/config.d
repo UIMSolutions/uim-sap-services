@@ -4,7 +4,7 @@ import std.string : startsWith;
 
 import uim.sap.bas.exceptions;
 
-struct BASConfig {
+struct BASConfig : SAPConfig {
     string host = "0.0.0.0";
     ushort port = 8088;
     string basePath = "/api/business-application-studio";

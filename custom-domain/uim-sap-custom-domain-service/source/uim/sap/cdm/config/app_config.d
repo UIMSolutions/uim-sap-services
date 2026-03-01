@@ -2,7 +2,7 @@ module config;
 
 import vibe.vibe;
 
-struct AppConfig {
+struct AppConfig : SAPConfig {
     string serverHost;
     int serverPort;
     string environment;

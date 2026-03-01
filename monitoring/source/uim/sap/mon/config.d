@@ -4,7 +4,7 @@ import std.string : startsWith;
 
 import uim.sap.mon.exceptions;
 
-struct MONConfig {
+struct MONConfig : SAPConfig {
     string host = "0.0.0.0";
     ushort port = 8090;
     string basePath = "/api/mon";

@@ -5,7 +5,7 @@ import std.string : startsWith;
 
 import uim.sap.tc.exceptions;
 
-struct TCConfig {
+struct TCConfig : SAPConfig {
     string host = "0.0.0.0";
     ushort port = 8096;
     string basePath = "/api/task-center";

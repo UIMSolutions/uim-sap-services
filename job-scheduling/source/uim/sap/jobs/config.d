@@ -9,7 +9,7 @@ import std.string : startsWith;
 
 import uim.sap.jobs.exceptions;
 
-struct JobSchedulingConfig {
+struct JobSchedulingConfig : SAPConfig {
     string host = "0.0.0.0";
     ushort port = 8101;
     string basePath = "/api/job-scheduling";

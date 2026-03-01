@@ -4,7 +4,7 @@ import std.string : startsWith, toLower;
 
 import uim.sap.auditlog.exceptions;
 
-struct AuditLogConfig {
+struct AuditLogConfig : SAPConfig {
     string host = "0.0.0.0";
     ushort port = 8090;
     string basePath = "/api/auditlog";

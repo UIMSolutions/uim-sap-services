@@ -5,7 +5,7 @@ import uim.sap.aem;
 mixin(ShowModule!());
 
 @safe:
-struct AEMConfig {
+struct AEMConfig : SAPConfig {
     string host = "0.0.0.0";
     ushort port = 8088;
     string basePath = "/api/aem";

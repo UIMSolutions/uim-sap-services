@@ -10,7 +10,7 @@ import std.string : startsWith;
 
 import uim.sap.art.exceptions;
 
-struct ARTRuntimeConfig {
+struct ARTRuntimeConfig : SAPConfig {
     string host = "127.0.0.1";
     ushort port = 8080;
     string basePath = "/sap/abap/runtime";

@@ -4,7 +4,7 @@ import std.json;
 import std.file;
 import std.array;
 
-struct TenantConfig {
+struct TenantConfig : SAPConfig {
     string tenantId;
     string domain;
     string databaseUrl;

@@ -4,7 +4,7 @@ import std.string : startsWith;
 
 import uim.sap.dpi.exceptions;
 
-struct DPIConfig {
+struct DPIConfig : SAPConfig {
     string host = "0.0.0.0";
     ushort port = 8093;
     string basePath = "/api/dpi";

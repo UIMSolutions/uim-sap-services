@@ -4,7 +4,7 @@ import std.string : startsWith;
 
 import uim.sap.datasphere.exceptions;
 
-struct DatasphereConfig {
+struct DatasphereConfig : SAPConfig {
     string host = "0.0.0.0";
     ushort port = 8098;
     string basePath = "/api/datasphere";

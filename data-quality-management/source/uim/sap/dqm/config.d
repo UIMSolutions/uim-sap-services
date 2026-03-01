@@ -4,7 +4,7 @@ import std.string : startsWith;
 
 import uim.sap.dqm.exceptions;
 
-struct DQMConfig {
+struct DQMConfig : SAPConfig {
     string host = "0.0.0.0";
     ushort port = 8091;
     string basePath = "/api/dqm";

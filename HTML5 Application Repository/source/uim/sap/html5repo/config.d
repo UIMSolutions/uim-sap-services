@@ -4,7 +4,7 @@ import std.string : startsWith;
 
 import uim.sap.html5repo.exceptions;
 
-struct HTML5RepoConfig {
+struct HTML5RepoConfig : SAPConfig {
     string host = "0.0.0.0";
     ushort port = 8094;
     string basePath = "/api/html5-repo";

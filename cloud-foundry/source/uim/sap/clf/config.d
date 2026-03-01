@@ -7,7 +7,7 @@ mixin(ShowModule!());
 
 @safe:
 
-struct CLFConfig {
+struct CLFConfig : SAPConfig {
     string host = "0.0.0.0";
     ushort port = 8082;
     string basePath = "/api/cf";

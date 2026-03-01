@@ -11,7 +11,7 @@ import uim.sap.fiori;
 /**
  * OData client configuration
  */
-struct ODataConfig {
+struct ODataConfig : SAPConfig {
     string serviceUrl;
     string username;
     string password;

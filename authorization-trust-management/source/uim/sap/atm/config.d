@@ -4,7 +4,7 @@ import std.string : startsWith;
 
 import uim.sap.atm.exceptions;
 
-struct ATMConfig {
+struct ATMConfig : SAPConfig {
     string host = "0.0.0.0";
     ushort port = 8088;
     string basePath = "/api/atm";

@@ -16,7 +16,7 @@ enum S4HANAAuthType {
     ApiKey
 }
 
-struct S4HANAConfig {
+struct S4HANAConfig : SAPConfig {
     string baseUrl;
     ushort port = 443;
     bool useSSL = true;

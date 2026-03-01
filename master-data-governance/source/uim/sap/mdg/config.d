@@ -4,7 +4,7 @@ import std.string : startsWith;
 
 import uim.sap.mdg.exceptions;
 
-struct MDGConfig {
+struct MDGConfig : SAPConfig {
     string host = "0.0.0.0";
     ushort port = 8087;
     string basePath = "/api/mdg";

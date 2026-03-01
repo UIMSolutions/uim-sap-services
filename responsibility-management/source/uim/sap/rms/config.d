@@ -10,7 +10,7 @@ import std.string : startsWith;
 
 import uim.sap.rms.exceptions;
 
-struct RMSConfig {
+struct RMSConfig : SAPConfig {
     string host = "0.0.0.0";
     ushort port = 8095;
     string basePath = "/api/rms";
