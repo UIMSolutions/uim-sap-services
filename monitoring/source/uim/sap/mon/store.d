@@ -6,7 +6,7 @@ import vibe.data.json : Json;
 
 import uim.sap.mon.models;
 
-class MONStore {
+class MONStore : SAPStore {
     private MONMetricSample[][string] _applicationMetricHistory;
     private MONMetricSample[][string] _databaseMetricHistory;
     private MONAvailabilityCheck[string] _availabilityChecks;

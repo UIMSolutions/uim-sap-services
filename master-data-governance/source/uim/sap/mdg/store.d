@@ -5,7 +5,7 @@ import core.sync.mutex : Mutex;
 import uim.sap.mdg;
 @safe:
 
-class MDGStore {
+class MDGStore : SAPStore {
     private MDGBusinessPartner[string] _businessPartners;
     private MDGQualityRule[string] _rules;
     private Mutex _lock;

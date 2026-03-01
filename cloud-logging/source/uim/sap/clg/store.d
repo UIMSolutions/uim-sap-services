@@ -10,7 +10,7 @@ mixin(ShowModule!());
 
 @safe:
 
-class CLGLogStore {
+class CLGLogStore : SAPStore {
     private CLGLogEntry[] _entries;
     private size_t _maxEntries;
     private Mutex _lock;

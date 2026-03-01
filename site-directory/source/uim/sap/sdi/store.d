@@ -6,7 +6,7 @@ import std.typecons : Nullable;
 
 import uim.sap.sdi.models;
 
-class SDIStore {
+class SDIStore : SAPStore {
     private SDISite[string] _sites;
     private Mutex _lock;
 

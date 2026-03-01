@@ -5,7 +5,7 @@ import std.datetime : Clock, dur;
 
 import uim.sap.auditlog.models;
 
-class AuditLogStore {
+class AuditLogStore : SAPStore {
     private AuditLogEvent[][string] _eventsByTenant;
     private AuditLogRetentionPolicy[string] _policies;
     private Mutex _lock;

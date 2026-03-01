@@ -58,7 +58,7 @@ import uim.sap.cre.models;
   * Note: This implementation is purely in-memory and does not persist data across application restarts. For a production implementation, consider using a database or other persistent storage mechanism. Thread safety is achieved using a mutex to synchronize access to the internal data structures, but this may not be sufficient for high-concurrency scenarios, and a more robust solution may be needed for production use. The store does not implement any access control or authentication mechanisms, so appropriate security measures should be implemented in a real implementation to protect sensitive data and restrict access to authorized users.
   */
   
-class CREStore {
+class CREStore : SAPStore {
     private CREServiceInstance[string] _instances;
     private CRECredential[string] _credentials;
     private CREServiceKey[string] _serviceKeys;

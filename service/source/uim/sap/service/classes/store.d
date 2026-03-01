@@ -7,5 +7,5 @@ mixin(ShowModule!());
 
 @safe:
 
-class SAPStore {
+class SAPStore : SAPStore {
 }

@@ -9,7 +9,7 @@ import core.sync.mutex : Mutex;
 
 import uim.sap.agentry.models;
 
-class AgentryStore {
+class AgentryStore : SAPStore {
     private AgentryMobileApp[string] _apps;
     private AgentryAppVersion[][string] _versionsByApp;
     private AgentryTestRun[][string] _testRunsByApp;

@@ -6,7 +6,7 @@ import std.string : startsWith;
 
 import uim.sap.cag.models;
 
-class CAGStore {
+class CAGStore : SAPStore {
     private CAGContentProvider[string] _providers;
     private CAGContentItem[string] _content;
     private CAGAssembly[string] _assemblies;

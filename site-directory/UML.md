@@ -37,7 +37,7 @@ class SDISite {
   +toTileJson() : Json
 }
 
-class SDIStore {
+class SDIStore : SAPStore {
   +upsertSite(site : SDISite) : SDISite
   +listSites(tenantId : string) : SDISite[]
   +getSite(tenantId : string, siteId : string) : Nullable!SDISite

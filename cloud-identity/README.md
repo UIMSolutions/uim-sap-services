@@ -77,7 +77,7 @@ classDiagram
       +startProvisioningJob()/listJobLogs()
     }
 
-    class CISStore {
+    class CISStore : SAPStore {
       +upsertUser()/listUsers()
       +upsertGroup()/listGroups()
       +upsertDelegationRule()

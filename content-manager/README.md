@@ -154,7 +154,7 @@ classDiagram
       +toJson() Json
     }
 
-    class CMGStore {
+    class CMGStore : SAPStore {
       +upsertItem(item) CMGContentItem
       +listItems(tenantId, contentType) CMGContentItem[]
       +upsertProvider(provider) CMGContentProvider

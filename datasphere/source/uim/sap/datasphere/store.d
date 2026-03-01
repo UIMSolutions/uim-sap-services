@@ -7,7 +7,7 @@ import vibe.data.json : Json;
 
 import uim.sap.datasphere.models;
 
-class DatasphereStore {
+class DatasphereStore : SAPStore {
     private DATSpace[string] _spaces;
     private DATDataModel[string] _dataModels;
     private DATBusinessModel[string] _businessModels;

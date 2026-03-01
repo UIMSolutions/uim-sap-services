@@ -12,7 +12,7 @@ import vibe.data.json : Json, parseJsonString;
 import uim.sap.cdc.exceptions;
 import uim.sap.cdc.models;
 
-class CDCStore {
+class CDCStore : SAPStore {
   private CDCProfile[string] _profiles;
   private CDCConsent[string] _consents;
   private CDCSiteGroup[string] _siteGroups;

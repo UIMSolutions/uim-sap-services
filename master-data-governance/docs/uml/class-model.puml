@@ -37,7 +37,7 @@ package "uim.sap.mdg" {
     +evaluateDataQuality(tenantId) : Json
   }
 
-  class MDGStore {
+  class MDGStore : SAPStore {
     +upsertBusinessPartner(bp) : MDGBusinessPartner
     +deleteBusinessPartner(tenantId, bpId) : bool
     +getBusinessPartner(tenantId, bpId) : MDGBusinessPartner

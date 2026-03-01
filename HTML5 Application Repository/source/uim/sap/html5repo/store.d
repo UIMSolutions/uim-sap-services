@@ -15,7 +15,7 @@ import vibe.data.json : Json, parseJsonString;
 import uim.sap.html5repo.exceptions;
 import uim.sap.html5repo.models;
 
-class HTML5RepositoryStore {
+class HTML5RepositoryStore : SAPStore {
     private string _root;
 
     this(string rootPath) {

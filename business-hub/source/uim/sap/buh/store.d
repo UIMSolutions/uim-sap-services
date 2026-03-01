@@ -7,7 +7,7 @@ import core.sync.mutex : Mutex;
 
 import uim.sap.buh.models;
 
-class BUHStore {
+class BUHStore : SAPStore {
     private BUHApi[string] _apis;
     private BUHProduct[string] _products;
     private BUHSubscription[string] _subscriptions;

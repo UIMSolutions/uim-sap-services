@@ -9,7 +9,7 @@ import core.sync.mutex : Mutex;
 
 import uim.sap.atm.models;
 
-class ATMStore {
+class ATMStore : SAPStore {
     private ATMIdentityProvider[string] _idps;
     private ATMTechnicalRole[string] _technicalRoles;
     private ATMRoleCollection[string] _roleCollections;

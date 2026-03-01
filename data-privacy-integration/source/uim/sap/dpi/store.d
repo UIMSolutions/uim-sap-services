@@ -7,7 +7,7 @@ import std.string : toLower;
 
 import uim.sap.dpi.models;
 
-class DPIStore {
+class DPIStore : SAPStore {
     private DPIRetentionRule[string] _rules;
     private DPIPersonalDataRecord[string] _records;
     private DPIExport[string] _exports;

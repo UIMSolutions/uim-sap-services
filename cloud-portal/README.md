@@ -136,7 +136,7 @@ classDiagram
       +toJson() Json
     }
 
-    class CPSStore {
+    class CPSStore : SAPStore {
       +upsertSite(site) CPSSite
       +listSites(tenantId) CPSSite[]
       +getSite(tenantId, siteId) Nullable!CPSSite

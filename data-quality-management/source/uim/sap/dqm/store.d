@@ -7,7 +7,7 @@ import std.string : toLower;
 
 import uim.sap.dqm.models;
 
-class DQMStore {
+class DQMStore : SAPStore {
     private DQMGeoRecord[] _records;
 
     this() {

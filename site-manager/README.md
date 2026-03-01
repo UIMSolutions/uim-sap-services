@@ -152,7 +152,7 @@ class SMGSubaccountSettings {
   +toJson() : Json
 }
 
-class SMGStore {
+class SMGStore : SAPStore {
   +upsertSite(site : SMGSite) : SMGSite
   +listSites(tenantId : string) : SMGSite[]
   +getSite(tenantId : string, siteId : string) : Nullable!SMGSite

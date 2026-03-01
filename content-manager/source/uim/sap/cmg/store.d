@@ -8,7 +8,7 @@ mixin(ShowModule!());
 
 @safe:
 
-class CMGStore {
+class CMGStore : SAPStore {
     private CMGContentItem[string] _items;
     private CMGContentProvider[string] _providers;
     private Mutex _lock;

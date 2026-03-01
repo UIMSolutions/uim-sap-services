@@ -6,7 +6,7 @@ module uim.sap.clf.store;
 import core.sync.mutex : Mutex;
 
 
-class CLFStore {
+class CLFStore : SAPStore {
   private CLFOrg[string] _orgs;
   private CLFSpace[string] _spaces;
   private CLFApp[string] _apps;

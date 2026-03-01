@@ -5,7 +5,7 @@ import std.typecons : Nullable;
 
 import uim.sap.atp.models;
 
-class ATPStore {
+class ATPStore : SAPStore {
     private ATPCatalog[string] _catalogs;
     private ATPCommand[string] _commands;
     private ATPExecution[string] _executions;

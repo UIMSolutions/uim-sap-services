@@ -4,7 +4,7 @@ import core.sync.mutex : Mutex;
 
 import uim.sap.mdi.models;
 
-class MDIStore {
+class MDIStore : SAPStore {
     private MDIReplicationClient[string] _clients;
     private MDIFilter[string] _filters;
     private MDIExtension[string] _extensions;

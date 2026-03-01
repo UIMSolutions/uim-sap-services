@@ -5,7 +5,7 @@ import std.algorithm.searching : canFind;
 
 import uim.sap.cps.models;
 
-class CPSStore {
+class CPSStore : SAPStore {
     private CPSSite[string] _sites;
     private CPSAdminSettings[string] _admin;
     private CPSContentItem[string] _content;

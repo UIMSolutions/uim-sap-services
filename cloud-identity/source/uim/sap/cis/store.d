@@ -26,7 +26,7 @@ mixin(ShowModule!());
   * Note: The example usage demonstrates how to create a new user and store it in the CISStore, as well as how to retrieve the user using the `getUser` method. The `upsertUser` method will add the user to the store or update it if it already exists. The `getUser` method retrieves the user based on the tenant ID and user ID, returning
   * the user object if found or an initialized user object if not found. The store can be similarly used for managing groups, delegation rules, policies, jobs, logs, and subscriptions using the corresponding methods provided in the CISStore class.
  */
-class CISStore {
+class CISStore : SAPStore {
     private CISUser[string] _users;
     private CISGroup[string] _groups;
     private CISDelegationRule[string] _delegationRules;

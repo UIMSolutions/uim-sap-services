@@ -20,7 +20,7 @@ import uim.sap.aas;
   *
   * For a production implementation, consider using a database or a distributed cache that provides durability, replication, and backup capabilities. Additionally, consider implementing proper locking and concurrency control mechanisms to ensure data integrity and consistency in a multi-threaded environment.
   */
-class AASStore {
+class AASStore : SAPStore {
     private AASApp[string] _apps;
     private AASScalingPolicy[][string] _policiesByApp;
     private Mutex _lock;

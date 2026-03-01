@@ -8,7 +8,7 @@ import vibe.data.json : Json;
 
 import uim.sap.isa.models;
 
-class ISAStore {
+class ISAStore : SAPStore {
     private AutomationConfiguration[string] _configs;
     private SituationInstance[][string] _situationsByTenant;
     private DataContextReport[][string] _reportsByTenant;

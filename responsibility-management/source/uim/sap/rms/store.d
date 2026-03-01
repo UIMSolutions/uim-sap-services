@@ -18,7 +18,7 @@ import vibe.data.json : Json, parseJsonString;
 import uim.sap.rms.exceptions;
 import uim.sap.rms.models;
 
-class RMSStore {
+class RMSStore : SAPStore {
     private struct TenantState {
         TeamTypeDef[string] teamTypes;
         FunctionDef[string] functions;

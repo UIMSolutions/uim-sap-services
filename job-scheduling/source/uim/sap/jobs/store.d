@@ -6,7 +6,7 @@ import std.datetime : SysTime;
 
 import uim.sap.jobs.models;
 
-class JobSchedulingStore {
+class JobSchedulingStore : SAPStore {
     private Job[string] _jobs;
     private Schedule[string] _schedules;
     private RunLog[string] _runs;

@@ -4,7 +4,7 @@ import core.sync.mutex : Mutex;
 
 import uim.sap.con.models;
 
-class CONStore {
+class CONStore : SAPStore {
     private CONDestination[string] _destinations;
     private Mutex _lock;
 

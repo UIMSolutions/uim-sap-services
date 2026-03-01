@@ -5,7 +5,7 @@ import std.typecons : Nullable;
 
 import uim.sap.bas.models;
 
-class BASStore {
+class BASStore : SAPStore {
     private BASWorkspace[string] _workspaces;
     private BASWizardRun[string] _wizardRuns;
     private BASTerminalSession[string] _terminalSessions;

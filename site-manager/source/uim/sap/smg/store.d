@@ -13,7 +13,7 @@ mixin(ShowModule!());
 
 @safe:
 
-class SMGStore {
+class SMGStore : SAPStore {
     private SMGSite[string] _sites;
     private SMGSubaccountSettings[string] _subaccountSettings;
     private Mutex _lock;

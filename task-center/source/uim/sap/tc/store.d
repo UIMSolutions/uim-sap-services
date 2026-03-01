@@ -13,7 +13,7 @@ import vibe.data.json : Json, parseJsonString;
 import uim.sap.tc.exceptions;
 import uim.sap.tc.models;
 
-class TCStore {
+class TCStore : SAPStore {
     private TCProvider[string] _providers;
     private TCTask[string] _tasks;
     private string _cacheFilePath;

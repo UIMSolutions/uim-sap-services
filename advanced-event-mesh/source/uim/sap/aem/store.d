@@ -9,7 +9,7 @@ mixin(ShowModule!());
 @safe:
 
 
-class AEMStore {
+class AEMStore : SAPStore {
     private AEMBrokerService[string] _brokers;
     private AEMEventMesh[string] _meshes;
     private AEMEDAComponent[string] _components;

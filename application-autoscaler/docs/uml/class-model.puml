@@ -65,7 +65,7 @@ package "uim.sap.aas" {
     +toJson() : Json
   }
 
-  class AASStore {
+  class AASStore : SAPStore {
     +createApp(app) : AASApp
     +updateAppInstances(appId, desiredInstances) : AASApp
     +listApps() : AASApp[]
