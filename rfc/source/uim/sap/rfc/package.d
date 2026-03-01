@@ -12,6 +12,7 @@ module uim.sap.rfc;
 public import uim.sap.rfc.client;
 public import uim.sap.rfc.config;
 public import uim.sap.rfc.exceptions;
+public import uim.sap.rfc.helpers;
 public import uim.sap.rfc.models;
 
 enum UIM_RFC_VERSION = "1.0.0";

@@ -5,28 +5,12 @@
  * License: Apache-2.0
  * Authors: Ozan Nurettin Süel
  */
-module uim.sap.rfc.models;
+module uim.sap.rfc.models.response;
 
 import vibe.data.json : Json;
 import std.datetime : SysTime;
 
-struct RFCRequest {
-    string functionName;
-    Json parameters = Json.emptyObject;
-    string destination;
 
-    Json toJson() const {
-        Json payload = Json.emptyObject;
-        payload["function"] = Json(functionName);
-        payload["parameters"] = parameters;
-
-        if (destination.length > 0) {
-            payload["destination"] = Json(destination);
-        }
-
-        return payload;
-    }
-}
 
 struct RFCResponse {
     bool success;

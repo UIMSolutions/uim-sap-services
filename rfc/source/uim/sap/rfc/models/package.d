@@ -4,3 +4,8 @@
 * Authors: Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*)
 *****************************************************************************************************************/
 module uim.sap.rfc.models;
+
+public {
+  import uim.sap.rfc.models.request;
+  import uim.sap.rfc.models.response;
+}
