@@ -56,7 +56,7 @@ import uim.sap.cre.store;
   * - getServiceKey(instanceId, serviceKeyId, requestKey): Retrieves details of a specific service key for a service instance.
   * - deleteServiceKey(instanceId, serviceKeyId): Deletes a specific service key for a service instance.
   */
-class CREService {
+class CREService : SAPService {
     private CREConfig _config;
     private CREStore _store;
 

@@ -8,7 +8,7 @@ import uim.sap.html5repo.exceptions;
 import uim.sap.html5repo.models;
 import uim.sap.html5repo.store;
 
-class HTML5RepoService {
+class HTML5RepoService : SAPService {
     private HTML5RepoConfig _config;
     private HTML5RepositoryStore _store;
     private RuntimeAssetCache _cache;

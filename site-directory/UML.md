@@ -45,7 +45,7 @@ class SDIStore : SAPStore {
   +setDefaultSite(tenantId : string, siteId : string) : void
 }
 
-class SDIService {
+class SDIService : SAPService {
   +listSiteTiles(tenantId : string) : Json
   +createSite(tenantId : string, body : Json) : Json
   +deleteSite(tenantId : string, siteId : string) : Json

@@ -6,7 +6,7 @@ mixin(ShowModule!());
 
 @safe:
 
-class CMGService {
+class CMGService : SAPService {
   private CMGConfig _config;
   private CMGStore _store;
 

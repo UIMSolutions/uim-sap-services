@@ -8,7 +8,7 @@ module uim.sap.aas.service;
 import uim.sap.aas;
 @safe:
 
-class AASService {
+class AASService : SAPService {
     private AASConfig _config;
     private AASStore _store;
 

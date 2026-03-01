@@ -64,7 +64,7 @@ classDiagram
       -validateAuth(req)
     }
 
-    class CISService {
+    class CISService : SAPService {
       -_config : CISConfig
       -_store : CISStore
       +health()

@@ -43,7 +43,7 @@ struct NavigationIntent {
 /**
  * Cross-app navigation service
  */
-class NavigationService {
+class NavigationService : SAPService {
     private FioriConfig config;
     
     /**
@@ -126,7 +126,7 @@ class NavigationService {
 /**
  * Shell service for Fiori shell interactions
  */
-class ShellService {
+class ShellService : SAPService {
     private FioriConfig config;
     
     /**

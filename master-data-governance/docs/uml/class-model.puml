@@ -23,7 +23,7 @@ package "uim.sap.mdg" {
     -handleRequest(req, res) : void
   }
 
-  class MDGService {
+  class MDGService : SAPService {
     -_config : MDGConfig
     -_store : MDGStore
     +health() : Json

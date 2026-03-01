@@ -15,7 +15,7 @@ import uim.sap.agentry.exceptions;
 import uim.sap.agentry.models;
 import uim.sap.agentry.store;
 
-class AgentryService {
+class AgentryService : SAPService {
     private AgentryConfig _config;
     private AgentryStore _store;
 

@@ -13,7 +13,7 @@ import vibe.vibe;
     *     auto multitenancyService = new MultitenancyService();
     *     auto tenant = multitenancyService.createTenant("Tenant Name", "tenant.domain.com");
     */
-class MultitenancyService {
+class MultitenancyService : SAPService {
     private TenantRepository tenantRepo;
 
     this() {

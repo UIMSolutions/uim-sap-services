@@ -10,7 +10,7 @@ import uim.sap.mdi.exceptions;
 import uim.sap.mdi.models;
 import uim.sap.mdi.store;
 
-class MDIService {
+class MDIService : SAPService {
     private MDIConfig _config;
     private MDIStore _store;
 

@@ -9,7 +9,7 @@ mixin(ShowModule!());
 
 @safe:
 
-class CLGService {
+class CLGService : SAPService {
     private CLGConfig _config;
     private CLGLogStore _store;
 

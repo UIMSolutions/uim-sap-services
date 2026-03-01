@@ -11,7 +11,7 @@ import uim.sap.auditlog.exceptions;
 import uim.sap.auditlog.models;
 import uim.sap.auditlog.store;
 
-class AuditLogService {
+class AuditLogService : SAPService {
     private AuditLogConfig _config;
     private AuditLogStore _store;
 

@@ -25,7 +25,7 @@ struct Variant {
 /**
  * Personalization service
  */
-class PersonalizationService {
+class PersonalizationService : SAPService {
     private FioriConfig config;
     private HTTPClient httpClient;
     

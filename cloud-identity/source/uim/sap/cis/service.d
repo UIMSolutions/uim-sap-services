@@ -33,7 +33,7 @@ mixin(ShowModule!());
   * 
   * Note: The example usage demonstrates how to initialize the `CISService` with a configuration, and then call various methods to perform operations such as checking health and readiness, retrieving authentication capabilities, logging in a user, managing users and groups, and inviting a user. Each method returns a JSON response that contains the relevant information based on the operation performed. The actual implementation of the methods may include additional logic for error handling, data validation, and interaction with the underlying store to manage the state of users, groups, policies, and other entities within the CIS module.   
   */
-class CISService {
+class CISService : SAPService {
     private CISConfig _config;
     private CISStore _store;
 

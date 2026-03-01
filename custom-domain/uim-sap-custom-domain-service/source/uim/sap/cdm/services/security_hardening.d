@@ -5,7 +5,7 @@ import std.json;
 import std.file;
 import std.stdio;
 
-class SecurityHardeningService {
+class SecurityHardeningService : SAPService {
     // Method to implement security hardening measures
     void applySecurityHardening() {
         enforceSecureHeaders();

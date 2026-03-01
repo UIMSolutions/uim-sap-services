@@ -74,7 +74,7 @@ package "uim.sap.aas" {
     +listPolicies(appId) : AASScalingPolicy[]
   }
 
-  class AASService {
+  class AASService : SAPService {
     -_config : AASConfig
     -_store : AASStore
     +registerApp(request) : Json

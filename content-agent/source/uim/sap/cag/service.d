@@ -11,7 +11,7 @@ import uim.sap.cag.exceptions;
 import uim.sap.cag.models;
 import uim.sap.cag.store;
 
-class CAGService {
+class CAGService : SAPService {
     private CAGConfig _config;
     private CAGStore _store;
 

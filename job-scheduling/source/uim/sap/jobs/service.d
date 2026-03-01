@@ -16,7 +16,7 @@ import uim.sap.jobs.exceptions;
 import uim.sap.jobs.models;
 import uim.sap.jobs.store;
 
-class JobSchedulingService {
+class JobSchedulingService : SAPService {
     private JobSchedulingConfig _config;
     private JobSchedulingStore _store;
     private Thread _schedulerThread;

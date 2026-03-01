@@ -11,7 +11,7 @@ import uim.sap.mon.exceptions;
 import uim.sap.mon.models;
 import uim.sap.mon.store;
 
-class MONService {
+class MONService : SAPService {
     private MONConfig _config;
     private MONStore _store;
 

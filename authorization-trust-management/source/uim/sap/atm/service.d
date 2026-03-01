@@ -14,7 +14,7 @@ import uim.sap.atm.exceptions;
 import uim.sap.atm.models;
 import uim.sap.atm.store;
 
-class ATMService {
+class ATMService : SAPService {
     private ATMConfig _config;
     private ATMStore _store;
 

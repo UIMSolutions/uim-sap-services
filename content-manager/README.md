@@ -162,7 +162,7 @@ classDiagram
       +getProvider(tenantId, providerId) Nullable!CMGContentProvider
     }
 
-    class CMGService {
+    class CMGService : SAPService {
       +health() Json
       +ready() Json
       +listContent(tenantId, contentType) Json

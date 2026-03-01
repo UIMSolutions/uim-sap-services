@@ -7,5 +7,5 @@ mixin(ShowModule!());
 
 @safe:
 
-class SAPService {
+class SAPService : SAPService {
 }

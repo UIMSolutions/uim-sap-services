@@ -9,7 +9,7 @@ mixin(ShowModule!());
 
 @safe:
 
-class CLFService {
+class CLFService : SAPService {
     private CLFConfig _config;
     private CLFStore _store;
 

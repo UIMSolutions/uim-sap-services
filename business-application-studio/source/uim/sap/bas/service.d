@@ -10,7 +10,7 @@ import uim.sap.bas.exceptions;
 import uim.sap.bas.models;
 import uim.sap.bas.store;
 
-class BASService {
+class BASService : SAPService {
     private BASConfig _config;
     private BASStore _store;
     private BASScenario[] _scenarios;

@@ -10,7 +10,7 @@ import uim.sap.buh.exceptions;
 import uim.sap.buh.models;
 import uim.sap.buh.store;
 
-class BUHService {
+class BUHService : SAPService {
     private BUHConfig _config;
     private BUHStore _store;
 

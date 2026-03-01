@@ -7,7 +7,7 @@ mixin(ShowModule!());
 @safe:
 
 
-struct AEMBrokerService {
+struct AEMBrokerService : SAPService {
   string tenantId;
   string brokerServiceId;
   string name;

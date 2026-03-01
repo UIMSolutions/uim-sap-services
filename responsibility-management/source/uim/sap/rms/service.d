@@ -11,7 +11,7 @@ import uim.sap.rms.config;
 import uim.sap.rms.models;
 import uim.sap.rms.store;
 
-class RMSService {
+class RMSService : SAPService {
     private RMSConfig _config;
     private RMSStore _store;
 

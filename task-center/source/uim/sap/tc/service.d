@@ -11,7 +11,7 @@ import uim.sap.tc.exceptions;
 import uim.sap.tc.models;
 import uim.sap.tc.store;
 
-class TCService {
+class TCService : SAPService {
     private TCConfig _config;
     private TCStore _store;
 

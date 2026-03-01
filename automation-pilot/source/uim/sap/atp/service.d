@@ -30,7 +30,7 @@ import uim.sap.atp.store;
     - Simulated execution of operations in private environments
 * Note: The service uses a simple in-memory store (ATPStore) for demonstration purposes. In a production scenario, this would likely be replaced with a persistent database.
  */
-class ATPService {
+class ATPService : SAPService {
     private ATPConfig _config;
     private ATPStore _store;
 

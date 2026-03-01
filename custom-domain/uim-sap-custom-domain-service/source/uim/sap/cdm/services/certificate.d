@@ -15,7 +15,7 @@ import repositories.certificate_repository;
     *     auto cert = new Certificate("certId", "certData");
     *     certificateService.uploadCertificate(cert);
     */
-class CertificateService {
+class CertificateService : SAPService {
     private CertificateRepository certificateRepo;
 
     this(CertificateRepository repo) {

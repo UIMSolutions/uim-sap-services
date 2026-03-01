@@ -11,7 +11,7 @@ mixin(ShowModule!());
 
 @safe:
 
-class SMGService {
+class SMGService : SAPService {
     private SMGConfig _config;
     private SMGStore _store;
 

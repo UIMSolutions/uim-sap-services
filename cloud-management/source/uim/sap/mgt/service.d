@@ -26,7 +26,7 @@ mixin(ShowModule!());
   * );
   * MGTService service = new MGTService(config);
   */ 
-class MGTService {
+class MGTService : SAPService {
   private MGTConfig _config;
   private BTPClient _client;
 

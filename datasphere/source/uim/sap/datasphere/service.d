@@ -10,7 +10,7 @@ import uim.sap.datasphere.exceptions;
 import uim.sap.datasphere.models;
 import uim.sap.datasphere.store;
 
-class DatasphereService {
+class DatasphereService : SAPService {
     private DatasphereConfig _config;
     private DatasphereStore _store;
 

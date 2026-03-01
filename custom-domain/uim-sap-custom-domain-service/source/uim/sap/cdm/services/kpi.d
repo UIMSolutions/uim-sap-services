@@ -14,7 +14,7 @@ import vibe.vibe;
     *     auto kpiService = new KpiService(kpiRepo);
     *     auto kpis = kpiService.getKpis();
     */
-class KpiService {
+class KpiService : SAPService {
     private KpiRepository kpiRepo;
 
     this(KpiRepository repo) {

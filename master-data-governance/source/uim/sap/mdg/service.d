@@ -7,7 +7,7 @@ import uim.sap.mdg.exceptions;
 import uim.sap.mdg.models;
 import uim.sap.mdg.store;
 
-class MDGService {
+class MDGService : SAPService {
     private MDGConfig _config;
     private MDGStore _store;
 

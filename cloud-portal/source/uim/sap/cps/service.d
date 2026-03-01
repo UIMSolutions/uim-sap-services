@@ -9,7 +9,7 @@ import uim.sap.cps.exceptions;
 import uim.sap.cps.models;
 import uim.sap.cps.store;
 
-class CPSService {
+class CPSService : SAPService {
     private CPSConfig _config;
     private CPSStore _store;
 

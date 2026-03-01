@@ -9,7 +9,7 @@ import uim.sap.con.exceptions;
 import uim.sap.con.models;
 import uim.sap.con.store;
 
-class CONService {
+class CONService : SAPService {
     private CONConfig _config;
     private CONStore _store;
 

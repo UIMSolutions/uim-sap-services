@@ -15,7 +15,7 @@ import repositories.tenant_repository;
     *     auto domain = new CustomDomain("example.com", "tenantId");
     *     btpExtensionService.manageCustomDomain(domain);
     */
-class BtpExtensionService {
+class BtpExtensionService : SAPService {
     private CustomDomainRepository customDomainRepo;
     private TenantRepository tenantRepo;
 

@@ -12,7 +12,7 @@ import uim.sap.dpi.exceptions;
 import uim.sap.dpi.models;
 import uim.sap.dpi.store;
 
-class DPIService {
+class DPIService : SAPService {
     private DPIConfig _config;
     private DPIStore _store;
 

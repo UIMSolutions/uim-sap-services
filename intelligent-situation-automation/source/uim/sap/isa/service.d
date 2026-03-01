@@ -12,7 +12,7 @@ import uim.sap.isa.exceptions;
 import uim.sap.isa.models;
 import uim.sap.isa.store;
 
-class ISAService {
+class ISAService : SAPService {
     private ISAConfig _config;
     private ISAStore _store;
 

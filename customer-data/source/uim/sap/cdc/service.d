@@ -13,7 +13,7 @@ import uim.sap.cdc.exceptions;
 import uim.sap.cdc.models;
 import uim.sap.cdc.store;
 
-class CDCService {
+class CDCService : SAPService {
   private CDCConfig _config;
   private CDCStore _store;
 

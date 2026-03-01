@@ -145,7 +145,7 @@ classDiagram
       +getSiteAdministration(tenantId) Nullable!CPSSiteAdministration
     }
 
-    class CPSService {
+    class CPSService : SAPService {
       +health() Json
       +ready() Json
       +listSites(tenantId) Json

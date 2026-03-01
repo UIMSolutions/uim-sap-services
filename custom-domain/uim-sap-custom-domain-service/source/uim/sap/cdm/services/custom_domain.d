@@ -14,7 +14,7 @@ import vibe.vibe;
     *     auto domain = new CustomDomain("example.com", "tenantId");
     *     customDomainService.createCustomDomain(domain);
     */
-class CustomDomainService {
+class CustomDomainService : SAPService {
     private CustomDomainRepository customDomainRepo;
 
     this() {

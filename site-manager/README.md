@@ -161,7 +161,7 @@ class SMGStore : SAPStore {
   +getSubaccountSettings(tenantId : string) : Nullable!SMGSubaccountSettings
 }
 
-class SMGService {
+class SMGService : SAPService {
   +health() : Json
   +ready() : Json
   +listSites(tenantId : string) : Json

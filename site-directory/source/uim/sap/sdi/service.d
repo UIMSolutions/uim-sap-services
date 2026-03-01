@@ -10,7 +10,7 @@ import uim.sap.sdi.exceptions;
 import uim.sap.sdi.models;
 import uim.sap.sdi.store;
 
-class SDIService {
+class SDIService : SAPService {
     private SDIConfig _config;
     private SDIStore _store;
 

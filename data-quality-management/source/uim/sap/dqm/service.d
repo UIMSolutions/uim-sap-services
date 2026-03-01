@@ -9,7 +9,7 @@ import uim.sap.dqm.exceptions;
 import uim.sap.dqm.models;
 import uim.sap.dqm.store;
 
-class DQMService {
+class DQMService : SAPService {
     private DQMConfig _config;
     private DQMStore _store;
 

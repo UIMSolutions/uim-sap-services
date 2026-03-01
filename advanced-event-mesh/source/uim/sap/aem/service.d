@@ -8,7 +8,7 @@ mixin(ShowModule!());
 
 
 
-class AEMService {
+class AEMService : SAPService {
     private AEMConfig _config;
     private AEMStore _store;
 
