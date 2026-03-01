@@ -6,6 +6,39 @@ mixin(ShowModule!());
 
 @safe:
 
+/**
+ * AEMServer is responsible for handling HTTP requests and routing them to the appropriate service methods.
+ *
+  * It listens on the configured host and port, and supports the following endpoints:
+  * - GET /health: Returns the health status of the service.
+  * - GET /ready: Returns the readiness status of the service.
+  * - POST /v1/tenants/{tenantId}/broker-services: Creates a new broker service for the tenant.
+  * - GET /v1/tenants/{tenantId}/broker-services: Lists all broker services for the tenant.
+  * - POST /v1/tenants/{tenantId}/broker-services/{brokerServiceId}/event-meshes: Creates a new event mesh under the specified broker service.
+  * - GET /v1/tenants/{tenantId}/event-meshes: Lists all event meshes for the tenant.
+  * - POST /v1/tenants/{tenantId}/event-meshes/{meshId}/topics: Registers a new topic under the specified event mesh.
+  * - POST /v1/tenants/{tenantId}/event-meshes/{meshId}/publish: Publishes an event to the specified event mesh.
+  * - GET /v1/tenants/{tenantId}/event-meshes/{meshId}/topics/{topic}/events: Lists events for the specified topic under the event mesh.
+  * - POST /v1/tenants/{tenantId}/components: Upserts a component for the tenant.
+  * - GET /v1/tenants/{tenantId}/components: Lists all components for the tenant.
+  * - POST /v1/tenants/{tenantId}/components/{componentId}/subscriptions: Adds a subscription to the specified component.
+  * - GET /v1/tenants/{tenantId}/eda/model: Returns the EDA model for the tenant.
+  * - GET /v1/tenants/{tenantId}/monitoring/dashboard: Returns monitoring dashboard data for the tenant.
+  * - GET /v1/tenants/{tenantId}/monitoring/alerts: Lists monitoring alerts for the tenant.
+  * - GET /v1/tenants/{tenantId}/monitoring/notifications: Lists notification rules for the tenant.
+  * - PUT /v1/tenants/{tenantId}/monitoring/notifications/{ruleId}: Upserts a notification rule for the tenant.
+ * The server also handles authentication if enabled in the configuration, by validating the Authorization header against the expected token.
+ *
+ * Fields:
+ * - _service: The AEMService instance that contains the business logic for handling requests.
+ * Methods:
+ * - this(AEMService service): Constructor that initializes the server with the given service instance.
+ * - run(): Starts the HTTP server and begins listening for requests.
+ * - handleRequest(HTTPServerRequest req, HTTPServerResponse res): Handles incoming HTTP requests, routes them to the appropriate service methods, and sends responses back to the client.
+ * - validateAuth(HTTPServerRequest req): Validates the Authorization header of the request if token authentication is enabled in the configuration.
+ * - normalizedSegments(string subPath): Utility method to normalize and split the request path into segments for routing.
+ * - respondError(HTTPServerResponse res, string message, int statusCode): Utility method to send an error response with a JSON body containing the error message and status code.
+ */
 class AEMServer {
   private AEMService _service;
 

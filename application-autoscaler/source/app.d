@@ -7,7 +7,7 @@ import std.stdio : writeln;
 import uim.sap.aas;
 
 void main() {
-    AASConfig config;
+    AASConfig config = new AASConfig;
     config.host = envOr("AAS_HOST", "0.0.0.0");
     config.port = readPort(envOr("AAS_PORT", "8086"), 8086);
     config.basePath = envOr("AAS_BASE_PATH", "/api/autoscaler");

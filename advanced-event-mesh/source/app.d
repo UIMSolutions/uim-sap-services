@@ -11,9 +11,10 @@ mixin(ShowModule!());
 
 @safe:
 
-
+version (unittest) {
+} else {
 void main() {
-    AEMConfig config;
+    AEMConfig config = new AEMConfig;
     config.host = envOr("AEM_HOST", "0.0.0.0");
     config.port = readPort(envOr("AEM_PORT", "8088"), 8088);
     config.basePath = envOr("AEM_BASE_PATH", "/api/aem");
@@ -36,7 +37,7 @@ void main() {
     writeln("Starting AEM service on ", config.host, ":", config.port);
     writeln("Base path: ", config.basePath);
     server.run();
-}
+}}
 
 private string envOr(string key, string fallback) {
     auto value = environment.get(key, "");
