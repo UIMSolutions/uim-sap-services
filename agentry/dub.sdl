@@ -21,7 +21,7 @@ buildOptions "ignoreDeprecations" "debugInfo"
 
 // Configurations 
 configuration "default" {
-	targetType "library"
+	targetType "executable"
 }
 
 configuration "modules" {

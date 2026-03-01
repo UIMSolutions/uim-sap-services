@@ -6,6 +6,7 @@
 module app;
 
 import uim.sap.agentry;
+import std.process : environment;
 
 version (unittest) {
 } else {
