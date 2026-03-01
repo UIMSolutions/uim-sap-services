@@ -5,6 +5,8 @@
 *****************************************************************************************************************/
 module uim.sap.aas.store;
 
+import core.sync.mutex : Mutex;
+
 import uim.sap.aas;
 @safe:
 

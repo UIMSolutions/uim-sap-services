@@ -5,9 +5,9 @@
 *****************************************************************************************************************/
 module uim.sap.aas.config;
 
-import std.string : startsWith;
+import uim.sap.aas;
 
-import uim.sap.aas.exceptions;
+@safe:
 
 class AASConfig : SAPConfig {
     string host = "0.0.0.0";

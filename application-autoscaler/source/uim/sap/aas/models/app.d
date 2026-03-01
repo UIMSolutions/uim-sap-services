@@ -4,7 +4,9 @@
 * Authors: Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*)
 *****************************************************************************************************************/
 module uim.sap.aas.models.app;
+import uim.sap.aas;
 
+@safe:
 struct AASApp {
     string id;
     string name;

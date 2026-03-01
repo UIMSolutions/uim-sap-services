@@ -4,3 +4,10 @@
 * Authors: Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*)
 *****************************************************************************************************************/
 module uim.sap.aas.models;
+
+public {
+  import uim.sap.aas.models.app;
+  import uim.sap.aas.models.metricsnapshot;
+  import uim.sap.aas.models.scaledecision;
+  import uim.sap.aas.models.scalingpolicy;
+}
