@@ -5,6 +5,11 @@
 *****************************************************************************************************************/
 module uim.sap.smg.exceptions.notfound;
 
+import uim.sap.smg;
+
+mixin(ShowModule!());
+
+@safe:
 class SMGNotFoundException : SMGException {
     this(string msg) {
         super(msg);

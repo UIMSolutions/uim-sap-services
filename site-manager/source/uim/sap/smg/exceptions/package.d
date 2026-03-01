@@ -5,3 +5,11 @@
 *****************************************************************************************************************/
 module uim.sap.smg.exceptions;
 
+public {
+  import uim.sap.smg.exceptions.exception;
+
+  import uim.sap.smg.exceptions.authorization;
+  import uim.sap.smg.exceptions.configuration;
+  import uim.sap.smg.exceptions.notfound;
+  import uim.sap.smg.exceptions.validation;
+}

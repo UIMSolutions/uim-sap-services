@@ -5,9 +5,11 @@
 *****************************************************************************************************************/
 module uim.sap.smg.config;
 
-import std.string : startsWith;
+import uim.sap.smg;
 
-import uim.sap.smg.exceptions;
+mixin(ShowModule!());
+
+@safe:
 
 struct SMGConfig {
     string host = "0.0.0.0";

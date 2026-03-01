@@ -5,6 +5,11 @@
 *****************************************************************************************************************/
 module uim.sap.smg.exceptions.validation;
 
+import uim.sap.smg;
+
+mixin(ShowModule!());
+
+@safe:
 class SMGValidationException : SMGException {
     this(string msg) {
         super(msg);

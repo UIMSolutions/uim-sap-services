@@ -5,6 +5,8 @@
 *****************************************************************************************************************/
 module uim.sap.smg;
 
+public import uim.sap.smg.exceptions;
+public import uim.sap.smg.helpers;
 public import uim.sap.smg.config;
 public import uim.sap.smg.models;
 public import uim.sap.smg.service;

@@ -5,15 +5,11 @@
 *****************************************************************************************************************/
 module uim.sap.smg.service;
 
-import std.datetime : Clock;
-import std.string : toLower;
+import uim.sap.smg;
 
-import vibe.data.json : Json;
+mixin(ShowModule!());
 
-import uim.sap.smg.config;
-import uim.sap.smg.exceptions;
-import uim.sap.smg.models;
-import uim.sap.smg.store;
+@safe:
 
 class SMGService {
     private SMGConfig _config;

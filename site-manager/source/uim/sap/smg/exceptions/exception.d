@@ -5,6 +5,11 @@
 *****************************************************************************************************************/
 module uim.sap.smg.exceptions.exception;
 
+import uim.sap.smg;
+
+mixin(ShowModule!());
+
+@safe:
 class SMGException : Exception {
     this(string msg) {
         super(msg);

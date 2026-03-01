@@ -7,6 +7,9 @@ module uim.sap.smg.server;
 
 import uim.sap.smg;
 
+mixin(ShowModule!());
+
+@safe:
 class SMGServer {
   private SMGService _service;
 

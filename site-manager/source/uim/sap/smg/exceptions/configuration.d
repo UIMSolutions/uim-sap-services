@@ -6,8 +6,10 @@
 module uim.sap.smg.exceptions.configuration;
 
 import uim.sap.smg;
-@safe:
 
+mixin(ShowModule!());
+
+@safe:
 /** 
     * Exception thrown when there is a configuration error in the Site Manager.
     *
