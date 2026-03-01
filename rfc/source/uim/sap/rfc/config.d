@@ -10,13 +10,13 @@ import std.string : format, startsWith;
 
 import uim.sap.rfc.exceptions;
 
-enum SAPRFCAuthType {
+enum RFCAuthType {
     None,
     Basic,
     Bearer
 }
 
-struct SAPRFCConfig {
+struct RFCConfig {
     string baseUrl;
     string endpointPath = "/sap/bc/rfc";
 
@@ -24,7 +24,7 @@ struct SAPRFCConfig {
     bool useSSL = true;
     bool verifySSL = true;
 
-    SAPRFCAuthType authType = SAPRFCAuthType.None;
+    RFCAuthType authType = RFCAuthType.None;
     string username;
     string password;
     string bearerToken;
@@ -39,18 +39,18 @@ struct SAPRFCConfig {
 
     void validate() const {
         if (baseUrl.length == 0) {
-            throw new SAPRFCConfigurationException("Base URL cannot be empty");
+            throw new RFCConfigurationException("Base URL cannot be empty");
         }
 
-        if (authType == SAPRFCAuthType.Basic) {
+        if (authType == RFCAuthType.Basic) {
             if (username.length == 0 || password.length == 0) {
-                throw new SAPRFCConfigurationException(
+                throw new RFCConfigurationException(
                     "Username and password are required for Basic authentication");
             }
         }
 
-        if (authType == SAPRFCAuthType.Bearer && bearerToken.length == 0) {
-            throw new SAPRFCConfigurationException(
+        if (authType == RFCAuthType.Bearer && bearerToken.length == 0) {
+            throw new RFCConfigurationException(
                 "Bearer token is required for Bearer authentication");
         }
     }
@@ -75,31 +75,31 @@ struct SAPRFCConfig {
         return stripTrailingSlash(fullBaseUrl()) ~ path;
     }
 
-    static SAPRFCConfig createBasic(
+    static RFCConfig createBasic(
         string baseUrl,
         string username,
         string password,
         string sapClient = ""
     ) {
-        SAPRFCConfig cfg;
+        RFCConfig cfg;
         cfg.baseUrl = baseUrl;
         cfg.username = username;
         cfg.password = password;
         cfg.sapClient = sapClient;
-        cfg.authType = SAPRFCAuthType.Basic;
+        cfg.authType = RFCAuthType.Basic;
         return cfg;
     }
 
-    static SAPRFCConfig createBearer(
+    static RFCConfig createBearer(
         string baseUrl,
         string token,
         string sapClient = ""
     ) {
-        SAPRFCConfig cfg;
+        RFCConfig cfg;
         cfg.baseUrl = baseUrl;
         cfg.bearerToken = token;
         cfg.sapClient = sapClient;
-        cfg.authType = SAPRFCAuthType.Bearer;
+        cfg.authType = RFCAuthType.Bearer;
         return cfg;
     }
 

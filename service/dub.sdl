@@ -11,7 +11,7 @@ targetName "uim-sap-service"
 targetType "library"
 
 // Dependencies
-dependency "uim-framework" version="~>26.2.3"
+dependency "uim-framework" version="~>26.3.5"
 
 // Configurations
 configuration "default" {

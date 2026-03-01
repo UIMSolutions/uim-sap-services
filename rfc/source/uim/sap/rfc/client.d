@@ -17,15 +17,15 @@ import uim.sap.rfc.config;
 import uim.sap.rfc.models;
 import uim.sap.rfc.exceptions;
 
-class SAPRFCClient {
-    private SAPRFCConfig _config;
+class RFCClient {
+    private RFCConfig _config;
 
-    this(SAPRFCConfig config) {
+    this(RFCConfig config) {
         config.validate();
         _config = config;
     }
 
-    @property const(SAPRFCConfig) config() const {
+    @property const(RFCConfig) config() const {
         return _config;
     }
 
@@ -38,19 +38,19 @@ class SAPRFCClient {
         }
     }
 
-    SAPRFCResponse ping() {
-        SAPRFCRequest request;
+    RFCResponse ping() {
+        RFCRequest request;
         request.functionName = "RFC_PING";
         request.parameters = Json.emptyObject;
         return invoke(request);
     }
 
-    SAPRFCResponse invoke(
+    RFCResponse invoke(
         string functionName,
         Json parameters = Json.emptyObject,
         string destination = ""
     ) {
-        SAPRFCRequest request;
+        RFCRequest request;
         request.functionName = functionName;
         request.parameters = parameters;
         request.destination = destination;
@@ -58,9 +58,9 @@ class SAPRFCClient {
         return invoke(request);
     }
 
-    SAPRFCResponse invoke(SAPRFCRequest request) {
+    RFCResponse invoke(RFCRequest request) {
         if (request.functionName.length == 0) {
-            throw new SAPRFCInvocationException("RFC function name cannot be empty");
+            throw new RFCInvocationException("RFC function name cannot be empty");
         }
 
         auto url = format("%s/%s", _config.serviceUrl(), request.functionName);
@@ -68,7 +68,7 @@ class SAPRFCClient {
         uint attempts = 0;
         while (attempts <= _config.maxRetries) {
             try {
-                SAPRFCResponse response;
+                RFCResponse response;
                 response.timestamp = Clock.currTime();
 
                 requestHTTP(url,
@@ -110,35 +110,35 @@ class SAPRFCClient {
                 );
 
                 if (!response.success) {
-                    throw new SAPRFCInvocationException(response.errorMessage, response.statusCode);
+                    throw new RFCInvocationException(response.errorMessage, response.statusCode);
                 }
 
                 return response;
-            } catch (SAPRFCInvocationException e) {
+            } catch (RFCInvocationException e) {
                 throw e;
             } catch (Exception e) {
                 attempts++;
                 if (attempts > _config.maxRetries) {
-                    throw new SAPRFCConnectionException(
+                    throw new RFCConnectionException(
                         format("RFC request failed after %d retries: %s", attempts, e.msg)
                     );
                 }
             }
         }
 
-        throw new SAPRFCConnectionException("RFC request failed with unknown error");
+        throw new RFCConnectionException("RFC request failed with unknown error");
     }
 
     private void applyAuth(HTTPClientRequest req) {
         final switch (_config.authType) {
-            case SAPRFCAuthType.None:
+            case RFCAuthType.None:
                 break;
-            case SAPRFCAuthType.Basic:
+            case RFCAuthType.Basic:
                 auto creds = _config.username ~ ":" ~ _config.password;
                 auto token = Base64.encode(cast(const(ubyte)[])creds);
                 req.headers["Authorization"] = "Basic " ~ token;
                 break;
-            case SAPRFCAuthType.Bearer:
+            case RFCAuthType.Bearer:
                 req.headers["Authorization"] = "Bearer " ~ _config.bearerToken;
                 break;
         }

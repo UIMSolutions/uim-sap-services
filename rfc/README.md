@@ -37,7 +37,7 @@ import uim.sap.rfc;
 import vibe.data.json : Json;
 
 void main() {
-    auto config = SAPRFCConfig.createBasic(
+    auto config = RFCConfig.createBasic(
         "https://my.sap.system",
         "SAPUSER",
         "SAPPASSWORD",
@@ -46,7 +46,7 @@ void main() {
 
     config.endpointPath = "/sap/bc/rfc";
 
-    auto client = new SAPRFCClient(config);
+    auto client = new RFCClient(config);
 
     if (client.testConnection()) {
         Json params = Json.emptyObject;
@@ -61,12 +61,12 @@ void main() {
 ## Configuration
 
 ```d
-SAPRFCConfig config;
+RFCConfig config;
 config.baseUrl = "my.sap.system";
 config.useSSL = true;
 config.port = 443;
 config.endpointPath = "/sap/bc/rfc";
-config.authType = SAPRFCAuthType.Bearer;
+config.authType = RFCAuthType.Bearer;
 config.bearerToken = "<access-token>";
 config.sapClient = "100";
 config.sapLanguage = "EN";
@@ -77,7 +77,7 @@ config.maxRetries = 3;
 
 The adapter provides these exception types:
 
-- `SAPRFCException` (base)
-- `SAPRFCConfigurationException`
-- `SAPRFCConnectionException`
-- `SAPRFCInvocationException`
+- `RFCException` (base)
+- `RFCConfigurationException`
+- `RFCConnectionException`
+- `RFCInvocationException`

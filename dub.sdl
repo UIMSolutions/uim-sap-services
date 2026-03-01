@@ -11,7 +11,7 @@ targetType "library"
 targetName "uim-sap"
 
 // External dependencies
-dependency "uim-framework" version="~>26.2.3"
+dependency "uim-framework" version="~>26.3.5"
 
 // Internal Dependencies
 dependency ":service" version="*"

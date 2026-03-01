@@ -1,5 +1,7 @@
 # UIM ABAP Runtime (ART)
 
+[![uim-compilers](https://github.com/UIMSolutions/uim-sap/actions/workflows/abap-runtime.yml/badge.svg)](https://github.com/UIMSolutions/uim-sap/blob/main/.github/workflows/abap-runtime.yml)
+
 ABAP Runtime implementation in D language using `uim-framework` and `vibe.d`.
 
 This package provides a lightweight ABAP-like runtime host where you can:

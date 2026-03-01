@@ -1,34 +1,27 @@
-/**
- * Exception handling for RFC adapter
- *
- * Copyright: Copyright © 2018-2026, Ozan Nurettin Süel
- * License: Apache-2.0
- * Authors: Ozan Nurettin Süel
- */
 module uim.sap.rfc.exceptions.exceptions;
 
-class SAPRFCException : Exception {
+class RFCException : Exception {
     this(string msg, string file = __FILE__, size_t line = __LINE__, Throwable next = null)
     pure nothrow @safe @nogc {
         super(msg, file, line, next);
     }
 }
 
-class SAPRFCConfigurationException : SAPRFCException {
+class RFCConfigurationException : RFCException {
     this(string msg, string file = __FILE__, size_t line = __LINE__, Throwable next = null)
     pure nothrow @safe @nogc {
         super(msg, file, line, next);
     }
 }
 
-class SAPRFCConnectionException : SAPRFCException {
+class RFCConnectionException : RFCException {
     this(string msg, string file = __FILE__, size_t line = __LINE__, Throwable next = null)
     pure nothrow @safe @nogc {
         super(msg, file, line, next);
     }
 }
 
-class SAPRFCInvocationException : SAPRFCException {
+class RFCInvocationException : RFCException {
     int statusCode;
 
     this(

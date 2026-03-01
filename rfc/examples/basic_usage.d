@@ -8,7 +8,7 @@ import vibe.data.json : Json;
 import std.stdio : writeln;
 
 void main() {
-    auto cfg = SAPRFCConfig.createBasic(
+    auto cfg = RFCConfig.createBasic(
         "https://my.sap.system",
         "SAPUSER",
         "SAPPASSWORD",
@@ -17,7 +17,7 @@ void main() {
 
     cfg.endpointPath = "/sap/bc/rfc";
 
-    auto client = new SAPRFCClient(cfg);
+    auto client = new RFCClient(cfg);
 
     if (!client.testConnection()) {
         writeln("Could not connect to RFC adapter endpoint");
@@ -31,7 +31,7 @@ void main() {
         auto result = client.invoke("STFC_CONNECTION", params);
         writeln("RFC call successful with status: ", result.statusCode);
         writeln("Response payload: ", result.data.toString());
-    } catch (SAPRFCException e) {
+    } catch (RFCException e) {
         writeln("RFC call failed: ", e.msg);
     }
 }

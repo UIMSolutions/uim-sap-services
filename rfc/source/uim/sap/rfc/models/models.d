@@ -10,7 +10,7 @@ module uim.sap.rfc.models;
 import vibe.data.json : Json;
 import std.datetime : SysTime;
 
-struct SAPRFCRequest {
+struct RFCRequest {
     string functionName;
     Json parameters = Json.emptyObject;
     string destination;
@@ -28,7 +28,7 @@ struct SAPRFCRequest {
     }
 }
 
-struct SAPRFCResponse {
+struct RFCResponse {
     bool success;
     int statusCode;
     Json data = Json.emptyObject;
