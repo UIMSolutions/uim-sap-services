@@ -7,5 +7,17 @@ mixin(ShowModule!());
 
 @safe:
 
-class SAPStore : SAPStore {
+class SAPStore {
+  this() {
+    initialize();
+  }
+
+  this(Json[string] initData = null) {
+    initialize(initData);
+  }
+
+  bool initialize(Json[string] initData = null) {
+    // Initialization logic for the store
+    return true;
+  }
 }

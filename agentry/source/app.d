@@ -10,7 +10,7 @@ import uim.sap.agentry;
 version (unittest) {
 } else {
 void main() {
-    AgentryConfig config;
+    AgentryConfig config = new AgentryConfig;
     config.host = envOr("AGENTRY_HOST", "0.0.0.0");
     config.port = readPort(envOr("AGENTRY_PORT", "8089"), 8089);
     config.basePath = envOr("AGENTRY_BASE_PATH", "/api/agentry");

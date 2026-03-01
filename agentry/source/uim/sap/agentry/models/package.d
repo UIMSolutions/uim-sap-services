@@ -5,3 +5,6 @@
 *****************************************************************************************************************/
 module uim.sap.agentry.models;
 
+public {
+  import uim.sap.agentry.models.mobileapp;
+}

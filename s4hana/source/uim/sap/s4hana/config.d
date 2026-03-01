@@ -16,7 +16,7 @@ enum S4HANAAuthType {
     ApiKey
 }
 
-struct S4HANAConfig : SAPConfig {
+class S4HANAConfig : SAPConfig {
     string baseUrl;
     ushort port = 443;
     bool useSSL = true;
@@ -95,7 +95,7 @@ struct S4HANAConfig : SAPConfig {
         string password,
         string sapClient = ""
     ) {
-        S4HANAConfig cfg;
+        S4HANAConfig cfg = new S4HANAConfig;
         cfg.baseUrl = baseUrl;
         cfg.username = username;
         cfg.password = password;
@@ -105,7 +105,7 @@ struct S4HANAConfig : SAPConfig {
     }
 
     static S4HANAConfig createOAuth2(string baseUrl, string accessToken, string sapClient = "") {
-        S4HANAConfig cfg;
+        S4HANAConfig cfg = new S4HANAConfig;
         cfg.baseUrl = baseUrl;
         cfg.accessToken = accessToken;
         cfg.sapClient = sapClient;

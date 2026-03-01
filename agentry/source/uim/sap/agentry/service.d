@@ -5,15 +5,11 @@
 *****************************************************************************************************************/
 module uim.sap.agentry.service;
 
-import std.datetime : Clock;
-import std.string : toLower;
+import uim.sap.agentry;
 
-import vibe.data.json : Json;
+mixin(ShowModule!());
 
-import uim.sap.agentry.config;
-import uim.sap.agentry.exceptions;
-import uim.sap.agentry.models;
-import uim.sap.agentry.store;
+@safe:
 
 class AgentryService : SAPService {
     private AgentryConfig _config;

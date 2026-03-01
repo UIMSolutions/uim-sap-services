@@ -7,8 +7,11 @@ module uim.sap.agentry.store;
 
 import core.sync.mutex : Mutex;
 
-import uim.sap.agentry.models;
+import uim.sap.agentry;
 
+mixin(ShowModule!());
+
+@safe:
 class AgentryStore : SAPStore {
     private AgentryMobileApp[string] _apps;
     private AgentryAppVersion[][string] _versionsByApp;
