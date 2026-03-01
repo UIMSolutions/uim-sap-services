@@ -1,12 +1,6 @@
-/**
- * Models for S/4HANA client
- */
-module uim.sap.s4hana.models;
+module uim.sap.s4hana.models.request;
 
-import vibe.data.json : Json;
-import std.datetime : SysTime;
-
-struct SAPS4HANARequest {
+struct S4HANARequest {
     string servicePath;
     string entityPath;
     string[string] query;
@@ -28,18 +22,5 @@ struct SAPS4HANARequest {
         }
 
         return service ~ "/" ~ entity;
-    }
-}
-
-struct SAPS4HANAResponse {
-    bool success;
-    int statusCode;
-    Json data = Json.emptyObject;
-    string errorMessage;
-    string[string] headers;
-    SysTime timestamp;
-
-    bool isSuccess() const pure nothrow @safe @nogc {
-        return success;
     }
 }

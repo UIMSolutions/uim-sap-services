@@ -8,14 +8,14 @@ import vibe.data.json : Json;
 import std.stdio : writeln;
 
 void main() {
-    auto config = SAPS4HANAConfig.createBasic(
+    auto config = S4HANAConfig.createBasic(
         "https://my-s4hana.example.com",
         "SAPUSER",
         "SAPPASSWORD",
         "100"
     );
 
-    auto client = new SAPS4HANAClient(config);
+    auto client = new S4HANAClient(config);
 
     try {
         if (!client.testConnection()) {
@@ -32,7 +32,7 @@ void main() {
 
         auto created = client.postOData("API_BUSINESS_PARTNER", "A_BusinessPartner", payload);
         writeln("Create request status: ", created.statusCode);
-    } catch (SAPS4HANAException e) {
+    } catch (S4HANAException e) {
         writeln("S/4HANA error: ", e.msg);
     }
 }

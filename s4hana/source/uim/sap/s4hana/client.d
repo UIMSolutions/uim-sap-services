@@ -18,15 +18,15 @@ import uim.sap.s4hana.config;
 import uim.sap.s4hana.exceptions;
 import uim.sap.s4hana.models;
 
-class SAPS4HANAClient {
-    private SAPS4HANAConfig _config;
+class S4HANAClient {
+    private S4HANAConfig _config;
 
-    this(SAPS4HANAConfig config) {
+    this(S4HANAConfig config) {
         config.validate();
         _config = config;
     }
 
-    @property const(SAPS4HANAConfig) config() const {
+    @property const(S4HANAConfig) config() const {
         return _config;
     }
 
@@ -39,26 +39,26 @@ class SAPS4HANAClient {
         }
     }
 
-    SAPS4HANAResponse getOData(
+    S4HANAResponse getOData(
         string servicePath,
         string entityPath,
         string[string] query = null
     ) {
-        auto req = SAPS4HANARequest(servicePath, entityPath, query, Json.emptyObject);
+        auto req = S4HANARequest(servicePath, entityPath, query, Json.emptyObject);
         return request(HTTPMethod.GET, req);
     }
 
-    SAPS4HANAResponse postOData(
+    S4HANAResponse postOData(
         string servicePath,
         string entityPath,
         Json payload,
         string[string] query = null
     ) {
-        auto req = SAPS4HANARequest(servicePath, entityPath, query, payload);
+        auto req = S4HANARequest(servicePath, entityPath, query, payload);
         return request(HTTPMethod.POST, req);
     }
 
-    SAPS4HANAResponse getBusinessPartners(uint top = 20, uint skip = 0) {
+    S4HANAResponse getBusinessPartners(uint top = 20, uint skip = 0) {
         string[string] query;
         query["$top"] = format("%d", top);
         query["$skip"] = format("%d", skip);
@@ -66,14 +66,14 @@ class SAPS4HANAClient {
         return getOData("API_BUSINESS_PARTNER", "A_BusinessPartner", query);
     }
 
-    SAPS4HANAResponse request(
+    S4HANAResponse request(
         HTTPMethod method,
         string path,
         Json payload = Json.emptyObject,
         string[string] query = null,
         bool isAbsolute = false
     ) {
-        SAPS4HANARequest req;
+        S4HANARequest req;
 
         if (isAbsolute) {
             req.servicePath = "";
@@ -89,13 +89,13 @@ class SAPS4HANAClient {
         return executeRequest(method, req, isAbsolute ? path : "");
     }
 
-    SAPS4HANAResponse request(HTTPMethod method, SAPS4HANARequest request) {
+    S4HANAResponse request(HTTPMethod method, S4HANARequest request) {
         return executeRequest(method, request, "");
     }
 
-    private SAPS4HANAResponse executeRequest(
+    private S4HANAResponse executeRequest(
         HTTPMethod method,
-        SAPS4HANARequest request,
+        S4HANARequest request,
         string absoluteUrl
     ) {
         auto url = absoluteUrl.length > 0
@@ -110,7 +110,7 @@ class SAPS4HANAClient {
         uint attempts = 0;
         while (attempts <= _config.maxRetries) {
             try {
-                SAPS4HANAResponse response;
+                S4HANAResponse response;
                 response.timestamp = Clock.currTime();
 
                 requestHTTP(url,
@@ -147,23 +147,23 @@ class SAPS4HANAClient {
                 );
 
                 if (!response.success) {
-                    throw new SAPS4HANARequestException(response.errorMessage, response.statusCode);
+                    throw new S4HANARequestException(response.errorMessage, response.statusCode);
                 }
 
                 return response;
-            } catch (SAPS4HANARequestException e) {
+            } catch (S4HANARequestException e) {
                 throw e;
             } catch (Exception e) {
                 attempts++;
                 if (attempts > _config.maxRetries) {
-                    throw new SAPS4HANAConnectionException(
+                    throw new S4HANAConnectionException(
                         format("S/4HANA request failed after %d retries: %s", attempts, e.msg)
                     );
                 }
             }
         }
 
-        throw new SAPS4HANAConnectionException("S/4HANA request failed with unknown error");
+        throw new S4HANAConnectionException("S/4HANA request failed with unknown error");
     }
 
     private string buildQueryString(string[string] query) {
@@ -210,15 +210,15 @@ class SAPS4HANAClient {
 
     private void applyAuth(HTTPClientRequest req) {
         final switch (_config.authType) {
-            case SAPS4HANAAuthType.Basic:
+            case S4HANAAuthType.Basic:
                 auto creds = _config.username ~ ":" ~ _config.password;
                 auto token = Base64.encode(cast(const(ubyte)[])creds).idup;
                 req.headers["Authorization"] = "Basic " ~ token;
                 break;
-            case SAPS4HANAAuthType.OAuth2:
+            case S4HANAAuthType.OAuth2:
                 req.headers["Authorization"] = "Bearer " ~ _config.accessToken;
                 break;
-            case SAPS4HANAAuthType.ApiKey:
+            case S4HANAAuthType.ApiKey:
                 req.headers[_config.apiKeyHeader] = _config.apiKey;
                 break;
         }

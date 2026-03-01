@@ -10,13 +10,13 @@ import std.string : format, startsWith;
 
 import uim.sap.s4hana.exceptions;
 
-enum SAPS4HANAAuthType {
+enum S4HANAAuthType {
     Basic,
     OAuth2,
     ApiKey
 }
 
-struct SAPS4HANAConfig {
+struct S4HANAConfig {
     string baseUrl;
     ushort port = 443;
     bool useSSL = true;
@@ -25,7 +25,7 @@ struct SAPS4HANAConfig {
     string sapClient;
     string sapLanguage = "EN";
 
-    SAPS4HANAAuthType authType = SAPS4HANAAuthType.Basic;
+    S4HANAAuthType authType = S4HANAAuthType.Basic;
     string username;
     string password;
     string accessToken;
@@ -40,27 +40,27 @@ struct SAPS4HANAConfig {
 
     void validate() const {
         if (baseUrl.length == 0) {
-            throw new SAPS4HANAConfigurationException("Base URL cannot be empty");
+            throw new S4HANAConfigurationException("Base URL cannot be empty");
         }
 
         final switch (authType) {
-            case SAPS4HANAAuthType.Basic:
+            case S4HANAAuthType.Basic:
                 if (username.length == 0 || password.length == 0) {
-                    throw new SAPS4HANAConfigurationException(
+                    throw new S4HANAConfigurationException(
                         "Username and password are required for Basic authentication"
                     );
                 }
                 break;
-            case SAPS4HANAAuthType.OAuth2:
+            case S4HANAAuthType.OAuth2:
                 if (accessToken.length == 0) {
-                    throw new SAPS4HANAConfigurationException(
+                    throw new S4HANAConfigurationException(
                         "Access token is required for OAuth2 authentication"
                     );
                 }
                 break;
-            case SAPS4HANAAuthType.ApiKey:
+            case S4HANAAuthType.ApiKey:
                 if (apiKey.length == 0) {
-                    throw new SAPS4HANAConfigurationException(
+                    throw new S4HANAConfigurationException(
                         "API key is required for API key authentication"
                     );
                 }
@@ -89,27 +89,27 @@ struct SAPS4HANAConfig {
         return (fullBaseUrl() ~ path).idup;
     }
 
-    static SAPS4HANAConfig createBasic(
+    static S4HANAConfig createBasic(
         string baseUrl,
         string username,
         string password,
         string sapClient = ""
     ) {
-        SAPS4HANAConfig cfg;
+        S4HANAConfig cfg;
         cfg.baseUrl = baseUrl;
         cfg.username = username;
         cfg.password = password;
         cfg.sapClient = sapClient;
-        cfg.authType = SAPS4HANAAuthType.Basic;
+        cfg.authType = S4HANAAuthType.Basic;
         return cfg;
     }
 
-    static SAPS4HANAConfig createOAuth2(string baseUrl, string accessToken, string sapClient = "") {
-        SAPS4HANAConfig cfg;
+    static S4HANAConfig createOAuth2(string baseUrl, string accessToken, string sapClient = "") {
+        S4HANAConfig cfg;
         cfg.baseUrl = baseUrl;
         cfg.accessToken = accessToken;
         cfg.sapClient = sapClient;
-        cfg.authType = SAPS4HANAAuthType.OAuth2;
+        cfg.authType = S4HANAAuthType.OAuth2;
         return cfg;
     }
 

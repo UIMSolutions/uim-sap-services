@@ -35,14 +35,14 @@ import uim.sap.s4hana;
 import vibe.data.json : Json;
 
 void main() {
-    auto config = SAPS4HANAConfig.createBasic(
+    auto config = S4HANAConfig.createBasic(
         "https://my-s4hana.example.com",
         "SAPUSER",
         "SAPPASSWORD",
         "100"
     );
 
-    auto client = new SAPS4HANAClient(config);
+    auto client = new S4HANAClient(config);
 
     if (client.testConnection()) {
         auto partners = client.getBusinessPartners(10, 0);
