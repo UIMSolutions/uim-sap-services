@@ -6,7 +6,11 @@
 module uim.sap.rms.models.teams.member;
 
 import uim.sap.rms;
+
+mixin(ShowModule!());
+
 @safe:
+
 
 /**
     * This file defines the TeamMember struct which represents a member of a team in the responsibility management system.

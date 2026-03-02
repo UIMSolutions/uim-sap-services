@@ -5,6 +5,12 @@
 *****************************************************************************************************************/
 module uim.sap.rms.models.determinationlog;
 
+import uim.sap.rms;
+
+mixin(ShowModule!());
+
+@safe:
+
 struct DeterminationLog {
     string id;
     string timestamp;

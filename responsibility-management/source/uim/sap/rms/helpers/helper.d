@@ -1,7 +1,11 @@
-module uim.sap.rms.helpers.models;
+module uim.sap.rms.helpers.helper;
 
 import uim.sap.rms;
+
+mixin(ShowModule!());
+
 @safe:
+
 
 enum RuleMode {
     condition,

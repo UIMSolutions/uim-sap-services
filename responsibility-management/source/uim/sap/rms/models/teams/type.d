@@ -6,18 +6,21 @@
 module uim.sap.rms.models.models.teams.type;
 
 import uim.sap.rms;
+
+mixin(ShowModule!());
+
 @safe:
 
 struct TeamTypeDef {
-    string code;
-    string name;
-    string description;
+  string code;
+  string name;
+  string description;
 
-    Json toJson() const {
-        Json payload = Json.emptyObject;
-        payload["code"] = code;
-        payload["name"] = name;
-        payload["description"] = description;
-        return payload;
-    }
+  Json toJson() const {
+    Json payload = Json.emptyObject;
+    payload["code"] = code;
+    payload["name"] = name;
+    payload["description"] = description;
+    return payload;
+  }
 }

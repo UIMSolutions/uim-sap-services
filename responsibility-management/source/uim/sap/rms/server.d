@@ -5,18 +5,11 @@
 *****************************************************************************************************************/
 module uim.sap.rms.server;
 
-import std.array : split;
-import std.conv : to;
-import std.string : startsWith;
+import uim.sap.rms;
 
-import vibe.data.json : Json;
-import vibe.core.core : runApplication;
-import vibe.http.common : HTTPMethod;
-import vibe.http.server : HTTPServerRequest, HTTPServerResponse, HTTPServerSettings, listenHTTP;
+mixin(ShowModule!());
 
-import uim.sap.rms.exceptions;
-import uim.sap.rms.models;
-import uim.sap.rms.service;
+@safe:
 
 class RMSServer {
   private RMSService _service;
