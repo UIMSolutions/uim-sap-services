@@ -5,11 +5,12 @@
 *****************************************************************************************************************/
 module uim.sap.rms.service;
 
-import vibe.data.json : Json;
+import uim.sap.rms;
 
-import uim.sap.rms.config;
-import uim.sap.rms.models;
-import uim.sap.rms.store;
+mixin(ShowModule!());
+
+@safe:
+
 
 class RMSService : SAPService {
     private RMSConfig _config;

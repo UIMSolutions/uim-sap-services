@@ -5,10 +5,12 @@
 *****************************************************************************************************************/
 module uim.sap.rms.config;
 
+import uim.sap.rms;
 
-import std.string : startsWith;
+mixin(ShowModule!());
 
-import uim.sap.rms.exceptions;
+@safe:
+
 
 struct RMSConfig : SAPConfig {
     string host = "0.0.0.0";

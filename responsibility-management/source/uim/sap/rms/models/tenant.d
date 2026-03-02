@@ -6,7 +6,11 @@
 module uim.sap.rms.models.tenant;
 
 import uim.sap.rms;
+
+mixin(ShowModule!());
+
 @safe:
+
 
 struct TenantContext {
     string tenantId;

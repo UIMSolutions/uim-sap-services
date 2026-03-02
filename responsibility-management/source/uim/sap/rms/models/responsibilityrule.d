@@ -5,6 +5,12 @@
 *****************************************************************************************************************/
 module uim.sap.rms.models.responsibilityrule;
 
+import uim.sap.rms;
+
+mixin(ShowModule!());
+
+@safe:
+
 struct ResponsibilityRule {
     string id;
     string name;
