@@ -10,6 +10,7 @@ targetName "uim-sap-ctm-service"
 targetPath "build"
 sourcePaths "source"
 importPaths "source"
+stringImportPaths "source/uim/sap/ctm/views"
 
 // Dependency on the core framework
 dependency "uim-sap:service" path=".."

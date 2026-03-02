@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>Cloud Transport Management</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family:'72',Arial,Helvetica,sans-serif; margin:0; background:#f7f7f7; color:#333; }
+    header { background:#354a5f; color:#fff; padding:1rem 2rem; }
+    header h1 { margin:0 0 .2rem; font-size:1.4rem; }
+    header p  { margin:0; font-size:.9rem; opacity:.85; }
+    .container { max-width:1320px; margin:0 auto; padding:1rem 2rem 2rem; }
+    h2 { font-size:1.15rem; margin-top:1.6rem; border-bottom:2px solid #0a6ed1; padding-bottom:.25rem; }
+    .row { display:flex; gap:.55rem; flex-wrap:wrap; margin:.45rem 0; align-items:center; }
+    input,select,button { padding:.45rem .7rem; font-size:.9rem; border:1px solid #bbb; border-radius:4px; }
+    button { cursor:pointer; background:#0a6ed1; color:#fff; border:none; }
+    button:hover { background:#085caf; }
+    button.secondary { background:#6c757d; }
+    button.secondary:hover { background:#565e64; }
+    pre { background:#fff; border:1px solid #ddd; padding:1rem; overflow:auto; border-radius:6px; max-height:450px; font-size:.85rem; }
+    .badge { display:inline-block; padding:2px 8px; border-radius:10px; font-size:.78rem; font-weight:600; }
+    .initial  { background:#e8eaf6; color:#283593; }
+    .queued   { background:#fff3e0; color:#e65100; }
+    .imported { background:#e8f5e9; color:#2e7d32; }
+    .error    { background:#fce4ec; color:#c62828; }
+  </style>
+</head>
+<body>
+<header>
+  <h1>Cloud Transport Management</h1>
+  <p>Manage software deliverables across Cloud Foundry, ABAP, and Neo environments.</p>
+</header>
+
+<div class="container">
+
+  <div class="row">
+    <label><b>Tenant:</b></label>
+    <input id="tenant" value="acme" style="width:130px"/>
+    <button onclick="refreshAll()">&#8635; Refresh All</button>
+  </div>
+
+  <!-- NODES -->
+  <h2>Transport Nodes (Landscape)</h2>
+  <div class="row">
+    <input id="nName"  placeholder="name" style="width:160px"/>
+    <select id="nRuntime">
+      <option value="cloud-foundry">Cloud Foundry</option>
+      <option value="abap">ABAP</option>
+      <option value="neo">Neo</option>
+    </select>
+    <input id="nGlobal" placeholder="global account" style="width:160px"/>
+    <input id="nSub"    placeholder="subaccount"      style="width:160px"/>
+    <input id="nDest"   placeholder="destination"     style="width:160px"/>
+    <label><input type="checkbox" id="nAuto"/> auto-import</label>
+    <button onclick="createNode()">Add Node</button>
+  </div>
+  <div class="row">
+    <input id="nId" placeholder="node id" style="width:220px"/>
+    <button onclick="getNode()">Get Node</button>
+  </div>
+
+  <!-- ROUTES -->
+  <h2>Transport Routes</h2>
+  <div class="row">
+    <input id="rSrc" placeholder="source node id" style="width:220px"/>
+    <span>&rarr;</span>
+    <input id="rTgt" placeholder="target node id" style="width:220px"/>
+    <input id="rDesc" placeholder="description" style="width:180px"/>
+    <button onclick="createRoute()">Add Route</button>
+    <button class="secondary" onclick="listRoutes()">List Routes</button>
+  </div>
+
+  <!-- TRANSPORT REQUESTS -->
+  <h2>Transport Requests</h2>
+  <div class="row">
+    <input id="trSrc"  placeholder="source node id" style="width:200px"/>
+    <input id="trDesc" placeholder="description"    style="width:260px"/>
+    <input id="trBy"   placeholder="created by"     style="width:140px" value="ci-pipeline"/>
+    <button onclick="createRequest()">New Request</button>
+    <button class="secondary" onclick="listRequests()">List All</button>
+  </div>
+  <div class="row">
+    <input id="trId" placeholder="request id" style="width:300px"/>
+    <button onclick="getRequest()">Detail</button>
+    <button onclick="forwardRequest()">Forward</button>
+    <button onclick="resetRequest()">Reset</button>
+    <button class="secondary" onclick="listLogs()">View Logs</button>
+  </div>
+
+  <!-- CONTENT -->
+  <h2>Content Attachments</h2>
+  <div class="row">
+    <input id="cReqId" placeholder="request id" style="width:300px"/>
+    <input id="cName"  placeholder="content name" style="width:180px"/>
+    <select id="cType">
+      <option value="mta">MTA Archive</option>
+      <option value="iflow">iFlow</option>
+      <option value="abap-transport">ABAP Transport</option>
+      <option value="destination-config">Destination Config</option>
+      <option value="role">Role</option>
+      <option value="other">Other</option>
+    </select>
+    <input id="cVer" placeholder="version" style="width:90px" value="1.0.0"/>
+    <input id="cRef" placeholder="reference / URL" style="width:260px"/>
+    <button onclick="attachContent()">Attach</button>
+    <button class="secondary" onclick="listContent()">List</button>
+  </div>
+
+  <!-- IMPORT QUEUE -->
+  <h2>Import Queue</h2>
+  <div class="row">
+    <input id="qNode" placeholder="node id" style="width:220px"/>
+    <button onclick="listQueue()">Show Queue</button>
+    <button onclick="importAll()">Import All</button>
+    <input id="qReqIds" placeholder="request ids (comma)" style="width:260px"/>
+    <button onclick="importSelected()">Import Selected</button>
+  </div>
+  <div class="row">
+    <input id="sNode" placeholder="node id" style="width:220px"/>
+    <input id="sCron" placeholder="cron expression" style="width:180px"/>
+    <label><input type="checkbox" id="sAuto" checked/> enabled</label>
+    <button onclick="setSchedule()">Set Schedule</button>
+  </div>
+
+  <h2>Result</h2>
+  <pre id="out">Click an action above …</pre>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const tenant = () => $('tenant').value.trim() || 'acme';
+const base   = () => `/api/cloud-transport/v1/tenants/${tenant()}`;
+
+async function api(method, path, body) {
+  const opts = { method, headers: {'Content-Type':'application/json'} };
+  if (body) opts.body = JSON.stringify(body);
+  const r = await fetch(path, opts);
+  return r.json();
+}
+const show = d => $('out').textContent = JSON.stringify(d, null, 2);
+
+async function refreshAll() {
+  const [nodes, routes, requests] = await Promise.all([
+    api('GET', base()+'/nodes'),
+    api('GET', base()+'/routes'),
+    api('GET', base()+'/requests')
+  ]);
+  show({nodes, routes, requests});
+}
+
+// Nodes
+async function createNode() {
+  show(await api('POST', base()+'/nodes', {
+    name: $('nName').value, runtime: $('nRuntime').value,
+    global_account_id: $('nGlobal').value, subaccount_id: $('nSub').value,
+    destination: $('nDest').value, auto_import: $('nAuto').checked
+  }));
+}
+async function getNode() { show(await api('GET', base()+'/nodes/'+$('nId').value)); }
+
+// Routes
+async function createRoute() {
+  show(await api('POST', base()+'/routes', {
+    source_node_id: $('rSrc').value, target_node_id: $('rTgt').value,
+    description: $('rDesc').value
+  }));
+}
+async function listRoutes() { show(await api('GET', base()+'/routes')); }
+
+// Requests
+async function createRequest() {
+  show(await api('POST', base()+'/requests', {
+    source_node_id: $('trSrc').value, description: $('trDesc').value,
+    created_by: $('trBy').value
+  }));
+}
+async function listRequests()  { show(await api('GET',  base()+'/requests')); }
+async function getRequest()    { show(await api('GET',  base()+'/requests/'+$('trId').value)); }
+async function forwardRequest(){ show(await api('POST', base()+'/requests/'+$('trId').value+'/forward', {})); }
+async function resetRequest()  { show(await api('POST', base()+'/requests/'+$('trId').value+'/reset',   {})); }
+async function listLogs()      { show(await api('GET',  base()+'/requests/'+$('trId').value+'/logs')); }
+
+// Content
+async function attachContent() {
+  show(await api('POST', base()+'/requests/'+$('cReqId').value+'/content', {
+    name: $('cName').value, content_type: $('cType').value,
+    version: $('cVer').value, reference: $('cRef').value
+  }));
+}
+async function listContent() { show(await api('GET', base()+'/requests/'+$('cReqId').value+'/content')); }
+
+// Import queue
+async function listQueue()  { show(await api('GET', base()+'/nodes/'+$('qNode').value+'/queue')); }
+async function importAll()  { show(await api('POST', base()+'/nodes/'+$('qNode').value+'/queue/import', {})); }
+async function importSelected() {
+  const ids = $('qReqIds').value.split(',').map(s=>s.trim()).filter(Boolean);
+  show(await api('POST', base()+'/nodes/'+$('qNode').value+'/queue/import', {request_ids: ids}));
+}
+async function setSchedule() {
+  show(await api('POST', base()+'/nodes/'+$('sNode').value+'/queue/schedule', {
+    auto_import: $('sAuto').checked, schedule: $('sCron').value
+  }));
+}
+</script>
+</body>
+</html>

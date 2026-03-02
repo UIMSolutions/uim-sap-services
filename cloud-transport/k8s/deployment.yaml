@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uim-sap-ctm
+  labels:
+    app: uim-sap-ctm
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: uim-sap-ctm
+  template:
+    metadata:
+      labels:
+        app: uim-sap-ctm
+    spec:
+      containers:
+      - name: uim-sap-ctm
+        image: ghcr.io/uimsolutions/uim-sap-ctm:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 8100
+        envFrom:
+        - configMapRef:
+            name: uim-sap-ctm-config
+        env:
+        - name: CTM_AUTH_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: uim-sap-ctm-secret
+              key: auth-token
+              optional: true
+        readinessProbe:
+          httpGet:
+            path: /api/cloud-transport/ready
+            port: http
+          initialDelaySeconds: 3
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /api/cloud-transport/health
+            port: http
+          initialDelaySeconds: 8
+          periodSeconds: 10
+        resources:
+          requests:
+            cpu: 150m
+            memory: 192Mi
+          limits:
+            cpu: 1000m
+            memory: 1Gi
