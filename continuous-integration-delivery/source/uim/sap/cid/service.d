@@ -86,7 +86,7 @@ class CIDService : SAPService {
         // Validate credential reference if given
         if (r.credentialId.length > 0) {
             CIDCredential cred;
-            if (!_store.tryGetCredential(tenantId, r.credentialId))
+            if (!_store.tryGetCredential(tenantId, r.credentialId, cred))
                 throw new CIDNotFoundException("Credential", r.credentialId);
         }
 

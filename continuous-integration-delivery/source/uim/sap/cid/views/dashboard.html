@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>Continuous Integration &amp; Delivery</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family:'72',Arial,Helvetica,sans-serif; margin:0; background:#f7f7f7; color:#333; }
+    header { background:#354a5f; color:#fff; padding:1rem 2rem; }
+    header h1 { margin:0 0 .2rem; font-size:1.4rem; }
+    header p  { margin:0; font-size:.9rem; opacity:.85; }
+    .container { max-width:1320px; margin:0 auto; padding:1rem 2rem 2rem; }
+    h2 { font-size:1.15rem; margin-top:1.6rem; border-bottom:2px solid #0a6ed1; padding-bottom:.25rem; }
+    .row { display:flex; gap:.55rem; flex-wrap:wrap; margin:.45rem 0; align-items:center; }
+    input,select,button { padding:.45rem .7rem; font-size:.9rem; border:1px solid #bbb; border-radius:4px; }
+    button { cursor:pointer; background:#0a6ed1; color:#fff; border:none; }
+    button:hover { background:#085caf; }
+    button.secondary { background:#6c757d; }
+    button.secondary:hover { background:#565e64; }
+    button.danger { background:#c0392b; }
+    button.danger:hover { background:#96281b; }
+    pre { background:#fff; border:1px solid #ddd; padding:1rem; overflow:auto; border-radius:6px; max-height:500px; font-size:.85rem; }
+    .badge { display:inline-block; padding:2px 8px; border-radius:10px; font-size:.78rem; font-weight:600; }
+    .pending { background:#e8eaf6; color:#283593; }
+    .running { background:#fff3e0; color:#e65100; }
+    .success { background:#e8f5e9; color:#2e7d32; }
+    .failure { background:#fce4ec; color:#c62828; }
+    .aborted { background:#eceff1; color:#546e7a; }
+    table { border-collapse:collapse; width:100%; margin:.5rem 0; }
+    th, td { text-align:left; padding:.4rem .6rem; border-bottom:1px solid #ddd; font-size:.88rem; }
+    th { background:#eee; }
+  </style>
+</head>
+<body>
+<header>
+  <h1>Continuous Integration &amp; Delivery</h1>
+  <p>Configure and run predefined CI/CD pipelines — build, test, and deploy automatically.</p>
+</header>
+
+<div class="container">
+
+  <div class="row">
+    <label><b>Tenant:</b></label>
+    <input id="tenant" value="acme" style="width:130px"/>
+    <button onclick="refreshAll()">&#8635; Refresh All</button>
+  </div>
+
+  <!-- CREDENTIALS -->
+  <h2>Credentials</h2>
+  <div class="row">
+    <input id="credName" placeholder="name" style="width:140px"/>
+    <select id="credType">
+      <option value="token">Token</option>
+      <option value="basic">Basic Auth</option>
+      <option value="ssh-key">SSH Key</option>
+    </select>
+    <input id="credUser" placeholder="username" style="width:130px"/>
+    <input id="credToken" placeholder="token / password" type="password" style="width:200px"/>
+    <button onclick="createCredential()">Create Credential</button>
+    <button class="secondary" onclick="listCredentials()">List</button>
+  </div>
+  <div class="row">
+    <input id="credDelId" placeholder="credential id" style="width:300px"/>
+    <button class="danger" onclick="deleteCredential()">Delete</button>
+  </div>
+
+  <!-- REPOSITORIES -->
+  <h2>Git Repositories</h2>
+  <div class="row">
+    <input id="repoName" placeholder="name" style="width:140px"/>
+    <input id="repoUrl" placeholder="clone URL" style="width:280px"/>
+    <input id="repoBranch" placeholder="branch" value="main" style="width:100px"/>
+    <select id="repoProvider">
+      <option value="github">GitHub</option>
+      <option value="gitlab">GitLab</option>
+      <option value="bitbucket">Bitbucket</option>
+      <option value="other">Other</option>
+    </select>
+    <input id="repoCredId" placeholder="credential id (opt)" style="width:200px"/>
+    <button onclick="createRepo()">Connect Repository</button>
+    <button class="secondary" onclick="listRepos()">List</button>
+  </div>
+  <div class="row">
+    <input id="repoId" placeholder="repo id" style="width:300px"/>
+    <button onclick="getRepo()">Detail</button>
+    <button class="danger" onclick="deleteRepo()">Remove</button>
+  </div>
+
+  <!-- PIPELINES -->
+  <h2>CI/CD Pipelines</h2>
+  <div class="row">
+    <input id="pipName" placeholder="name" style="width:160px"/>
+    <select id="pipType">
+      <option value="sap-cloud-sdk">SAP Cloud SDK</option>
+      <option value="sap-fiori">SAP Fiori</option>
+      <option value="sap-integration">SAP Integration</option>
+      <option value="sap-abap">SAP ABAP</option>
+      <option value="custom">Custom</option>
+    </select>
+    <input id="pipRepoId" placeholder="repository id" style="width:200px"/>
+    <input id="pipBranch" placeholder="branch" value="main" style="width:100px"/>
+    <select id="pipTarget">
+      <option value="cloud-foundry">Cloud Foundry</option>
+      <option value="abap">ABAP</option>
+      <option value="neo">Neo</option>
+      <option value="kyma">Kyma</option>
+    </select>
+    <label><input type="checkbox" id="pipAuto"/> auto-trigger</label>
+    <button onclick="createPipeline()">Create Pipeline</button>
+    <button class="secondary" onclick="listPipelines()">List</button>
+  </div>
+  <div class="row">
+    <input id="pipId" placeholder="pipeline id" style="width:300px"/>
+    <button onclick="getPipeline()">Detail</button>
+    <button class="danger" onclick="deletePipeline()">Delete</button>
+  </div>
+
+  <!-- BUILDS -->
+  <h2>Builds</h2>
+  <div class="row">
+    <input id="trigPipId" placeholder="pipeline id" style="width:260px"/>
+    <input id="trigCommit" placeholder="commit hash" style="width:200px" value="HEAD"/>
+    <input id="trigBy" placeholder="triggered by" style="width:140px" value="manual"/>
+    <button onclick="triggerBuild()">&#9654; Trigger Build</button>
+    <button class="secondary" onclick="listBuilds()">List All Builds</button>
+  </div>
+  <div class="row">
+    <input id="buildId" placeholder="build id" style="width:300px"/>
+    <button onclick="getBuild()">Detail</button>
+    <button class="danger" onclick="abortBuild()">Abort</button>
+    <button class="secondary" onclick="listStages()">Stages</button>
+    <button class="secondary" onclick="listBuildLogs()">Logs</button>
+  </div>
+
+  <h2>Result</h2>
+  <pre id="out">Click an action above …</pre>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const tenant = () => $('tenant').value.trim() || 'acme';
+const base   = () => `/api/cicd/v1/tenants/${tenant()}`;
+
+async function api(method, path, body) {
+  const opts = { method, headers: {'Content-Type':'application/json'} };
+  if (body) opts.body = JSON.stringify(body);
+  const r = await fetch(path, opts);
+  return r.json();
+}
+const show = d => $('out').textContent = JSON.stringify(d, null, 2);
+
+async function refreshAll() {
+  const [repos, creds, pipelines, builds] = await Promise.all([
+    api('GET', base()+'/repositories'),
+    api('GET', base()+'/credentials'),
+    api('GET', base()+'/pipelines'),
+    api('GET', base()+'/builds')
+  ]);
+  show({repositories: repos, credentials: creds, pipelines, builds});
+}
+
+// Credentials
+async function createCredential() {
+  show(await api('POST', base()+'/credentials', {
+    name: $('credName').value, credential_type: $('credType').value,
+    username: $('credUser').value, token: $('credToken').value
+  }));
+}
+async function listCredentials() { show(await api('GET', base()+'/credentials')); }
+async function deleteCredential() { show(await api('DELETE', base()+'/credentials/'+$('credDelId').value)); }
+
+// Repositories
+async function createRepo() {
+  show(await api('POST', base()+'/repositories', {
+    name: $('repoName').value, clone_url: $('repoUrl').value,
+    default_branch: $('repoBranch').value, provider: $('repoProvider').value,
+    credential_id: $('repoCredId').value || undefined
+  }));
+}
+async function listRepos()  { show(await api('GET', base()+'/repositories')); }
+async function getRepo()    { show(await api('GET', base()+'/repositories/'+$('repoId').value)); }
+async function deleteRepo() { show(await api('DELETE', base()+'/repositories/'+$('repoId').value)); }
+
+// Pipelines
+async function createPipeline() {
+  show(await api('POST', base()+'/pipelines', {
+    name: $('pipName').value, pipeline_type: $('pipType').value,
+    repository_id: $('pipRepoId').value, branch: $('pipBranch').value,
+    deploy_target: $('pipTarget').value, auto_trigger: $('pipAuto').checked
+  }));
+}
+async function listPipelines()  { show(await api('GET', base()+'/pipelines')); }
+async function getPipeline()    { show(await api('GET', base()+'/pipelines/'+$('pipId').value)); }
+async function deletePipeline() { show(await api('DELETE', base()+'/pipelines/'+$('pipId').value)); }
+
+// Builds
+async function triggerBuild() {
+  show(await api('POST', base()+'/pipelines/'+$('trigPipId').value+'/trigger', {
+    commit_hash: $('trigCommit').value, triggered_by: $('trigBy').value
+  }));
+}
+async function listBuilds()    { show(await api('GET', base()+'/builds')); }
+async function getBuild()      { show(await api('GET', base()+'/builds/'+$('buildId').value)); }
+async function abortBuild()    { show(await api('POST', base()+'/builds/'+$('buildId').value+'/abort', {})); }
+async function listStages()    { show(await api('GET', base()+'/builds/'+$('buildId').value+'/stages')); }
+async function listBuildLogs() { show(await api('GET', base()+'/builds/'+$('buildId').value+'/logs')); }
+</script>
+</body>
+</html>

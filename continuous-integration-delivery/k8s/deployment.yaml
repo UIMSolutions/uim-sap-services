@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uim-sap-cid
+  labels:
+    app: uim-sap-cid
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: uim-sap-cid
+  template:
+    metadata:
+      labels:
+        app: uim-sap-cid
+    spec:
+      containers:
+      - name: uim-sap-cid
+        image: ghcr.io/uimsolutions/uim-sap-cid:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 8102
+        envFrom:
+        - configMapRef:
+            name: uim-sap-cid-config
+        env:
+        - name: CID_AUTH_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: uim-sap-cid-secret
+              key: auth-token
+              optional: true
+        readinessProbe:
+          httpGet:
+            path: /api/cicd/ready
+            port: http
+          initialDelaySeconds: 3
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /api/cicd/health
+            port: http
+          initialDelaySeconds: 8
+          periodSeconds: 10
+        resources:
+          requests:
+            cpu: 150m
+            memory: 192Mi
+          limits:
+            cpu: 1000m
+            memory: 1Gi
