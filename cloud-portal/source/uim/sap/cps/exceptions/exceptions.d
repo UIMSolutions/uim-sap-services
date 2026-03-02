@@ -1,4 +1,4 @@
-module uim.sap.cps.exceptions;
+module uim.sap.cps.exceptions.exceptions;
 
 class CPSException : Exception {
     this(string msg) { super(msg); }

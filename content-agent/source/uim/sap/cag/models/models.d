@@ -1,4 +1,4 @@
-module uim.sap.cag.models;
+module uim.sap.cag.models.models;
 
 import std.datetime : SysTime;
 
