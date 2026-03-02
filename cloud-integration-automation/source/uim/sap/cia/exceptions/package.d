@@ -1,4 +1,4 @@
-module uim.sap.auditlog.exceptions;
+module uim.sap.cia.exceptions;
 
 public {
   import uim.framework.exceptions;
