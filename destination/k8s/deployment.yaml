@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uim-sap-dst
+  labels:
+    app: uim-sap-dst
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: uim-sap-dst
+  template:
+    metadata:
+      labels:
+        app: uim-sap-dst
+    spec:
+      containers:
+      - name: uim-sap-dst
+        image: ghcr.io/uimsolutions/uim-sap-dst:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 8104
+        envFrom:
+        - configMapRef:
+            name: uim-sap-dst-config
+        env:
+        - name: DST_AUTH_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: uim-sap-dst-secret
+              key: auth-token
+              optional: true
+        readinessProbe:
+          httpGet:
+            path: /api/destination/ready
+            port: http
+          initialDelaySeconds: 3
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /api/destination/health
+            port: http
+          initialDelaySeconds: 8
+          periodSeconds: 10
+        resources:
+          requests:
+            cpu: 150m
+            memory: 192Mi
+          limits:
+            cpu: 1000m
+            memory: 1Gi

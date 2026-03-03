@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>Destination Service</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family:'72',Arial,Helvetica,sans-serif; margin:0; background:#f7f7f7; color:#333; }
+    header { background:#354a5f; color:#fff; padding:1rem 2rem; }
+    header h1 { margin:0 0 .2rem; font-size:1.4rem; }
+    header p  { margin:0; font-size:.9rem; opacity:.85; }
+    .container { max-width:1360px; margin:0 auto; padding:1rem 2rem 2rem; }
+    h2 { font-size:1.15rem; margin-top:1.6rem; border-bottom:2px solid #0a6ed1; padding-bottom:.25rem; }
+    .row { display:flex; gap:.55rem; flex-wrap:wrap; margin:.45rem 0; align-items:center; }
+    input,select,button,textarea { padding:.45rem .7rem; font-size:.9rem; border:1px solid #bbb; border-radius:4px; }
+    button { cursor:pointer; background:#0a6ed1; color:#fff; border:none; }
+    button:hover { background:#085caf; }
+    button.secondary { background:#6c757d; }
+    button.secondary:hover { background:#565e64; }
+    button.danger { background:#c0392b; }
+    button.danger:hover { background:#96281b; }
+    button.success { background:#27ae60; }
+    button.success:hover { background:#1e8449; }
+    pre { background:#fff; border:1px solid #ddd; padding:1rem; overflow:auto; border-radius:6px; max-height:500px; font-size:.85rem; }
+    .note { font-size:.82rem; color:#666; margin:.2rem 0; }
+  </style>
+</head>
+<body>
+<header>
+  <h1>Destination Service</h1>
+  <p>Configure destinations to connect cloud applications to remote services and systems.</p>
+</header>
+
+<div class="container">
+
+  <div class="row">
+    <label><b>Tenant:</b></label>
+    <input id="tenant" value="acme" style="width:130px"/>
+    <button onclick="refreshAll()">&#8635; Refresh All</button>
+  </div>
+
+  <!-- DESTINATIONS -->
+  <h2>Destinations</h2>
+  <div class="row">
+    <input id="dName" placeholder="name" style="width:140px"/>
+    <input id="dUrl"  placeholder="URL" style="width:260px"/>
+    <select id="dProto">
+      <option value="HTTP">HTTP</option>
+      <option value="RFC">RFC</option>
+      <option value="LDAP">LDAP</option>
+      <option value="MAIL">MAIL</option>
+      <option value="TCP">TCP</option>
+    </select>
+    <select id="dAuth">
+      <option value="NoAuthentication">NoAuthentication</option>
+      <option value="BasicAuthentication">BasicAuthentication</option>
+      <option value="OAuth2ClientCredentials">OAuth2ClientCredentials</option>
+      <option value="OAuth2SAMLBearerAssertion">OAuth2SAMLBearer</option>
+      <option value="OAuth2UserTokenExchange">OAuth2UserTokenExchange</option>
+      <option value="OAuth2JWTBearer">OAuth2JWTBearer</option>
+      <option value="OAuth2Password">OAuth2Password</option>
+      <option value="ClientCertificateAuthentication">ClientCertificate</option>
+      <option value="PrincipalPropagation">PrincipalPropagation</option>
+      <option value="SAMLAssertion">SAMLAssertion</option>
+    </select>
+    <select id="dProxy">
+      <option value="Internet">Internet</option>
+      <option value="OnPremise">OnPremise</option>
+      <option value="PrivateLink">PrivateLink</option>
+    </select>
+  </div>
+  <div class="row">
+    <input id="dUser" placeholder="user" style="width:120px"/>
+    <input id="dPass" placeholder="password" type="password" style="width:140px"/>
+    <input id="dTokenUrl" placeholder="token service URL" style="width:220px"/>
+    <input id="dClientId" placeholder="client id" style="width:140px"/>
+    <input id="dClientSec" placeholder="client secret" type="password" style="width:140px"/>
+  </div>
+  <div class="row">
+    <input id="dCert" placeholder="certificate name" style="width:160px"/>
+    <input id="dLoc" placeholder="location ID" style="width:130px"/>
+    <input id="dSapCli" placeholder="SAP client" style="width:100px"/>
+    <select id="dEnv">
+      <option value="cloud-foundry">Cloud Foundry</option>
+      <option value="kyma">Kyma</option>
+      <option value="abap">ABAP</option>
+      <option value="kubernetes">Kubernetes</option>
+    </select>
+    <button onclick="createDest()">Create Destination</button>
+  </div>
+  <div class="row">
+    <input id="dGet" placeholder="destination name" style="width:220px"/>
+    <button onclick="getDest()">Get</button>
+    <button class="success" onclick="lookupDest()">&#x1F50D; Lookup</button>
+    <button class="danger" onclick="deleteDest()">Delete</button>
+    <button class="secondary" onclick="listDests()">List All</button>
+  </div>
+  <p class="note">Lookup resolves auth tokens &amp; proxy headers at runtime.</p>
+
+  <!-- UPDATE -->
+  <h2>Update Destination</h2>
+  <div class="row">
+    <input id="uName" placeholder="destination name" style="width:200px"/>
+    <input id="uUrl"  placeholder="new URL (optional)" style="width:260px"/>
+    <input id="uDesc" placeholder="new description" style="width:200px"/>
+    <button onclick="updateDest()">Update</button>
+  </div>
+
+  <!-- CERTIFICATES -->
+  <h2>Certificates</h2>
+  <div class="row">
+    <input id="cName" placeholder="name" style="width:140px"/>
+    <select id="cType">
+      <option value="PEM">PEM</option>
+      <option value="PFX">PFX</option>
+      <option value="P12">P12</option>
+      <option value="JKS">JKS</option>
+    </select>
+    <input id="cIssuer"  placeholder="issuer" style="width:140px"/>
+    <input id="cSubject" placeholder="subject" style="width:140px"/>
+    <input id="cExpires" placeholder="expires (ISO)" style="width:160px"/>
+    <button onclick="createCert()">Upload Certificate</button>
+    <button class="secondary" onclick="listCerts()">List</button>
+  </div>
+  <div class="row">
+    <textarea id="cContent" placeholder="paste base64 certificate content" rows="2" style="width:500px"></textarea>
+  </div>
+  <div class="row">
+    <input id="cGet" placeholder="certificate name" style="width:220px"/>
+    <button onclick="getCert()">Get</button>
+    <button class="danger" onclick="deleteCert()">Delete</button>
+  </div>
+
+  <!-- LOGS -->
+  <h2>Audit Logs</h2>
+  <div class="row">
+    <button onclick="listLogs()">View All Logs</button>
+  </div>
+
+  <h2>Result</h2>
+  <pre id="out">Click an action above …</pre>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const tenant = () => $('tenant').value.trim() || 'acme';
+const base   = () => `/api/destination/v1/tenants/${tenant()}`;
+
+async function api(method, path, body) {
+  const opts = { method, headers: {'Content-Type':'application/json'} };
+  if (body) opts.body = JSON.stringify(body);
+  const r = await fetch(path, opts);
+  return r.json();
+}
+const show = d => $('out').textContent = JSON.stringify(d, null, 2);
+
+async function refreshAll() {
+  const [dests, certs, logs] = await Promise.all([
+    api('GET', base()+'/destinations'),
+    api('GET', base()+'/certificates'),
+    api('GET', base()+'/logs')
+  ]);
+  show({destinations: dests, certificates: certs, audit_logs: logs});
+}
+
+// Destinations
+async function createDest() {
+  const body = {
+    name: $('dName').value, url: $('dUrl').value,
+    protocol: $('dProto').value, authentication_type: $('dAuth').value,
+    proxy_type: $('dProxy').value, environment: $('dEnv').value,
+    user: $('dUser').value || undefined, password: $('dPass').value || undefined,
+    token_service_url: $('dTokenUrl').value || undefined,
+    client_id: $('dClientId').value || undefined,
+    client_secret: $('dClientSec').value || undefined,
+    certificate_name: $('dCert').value || undefined,
+    location_id: $('dLoc').value || undefined,
+    sap_client: $('dSapCli').value || undefined
+  };
+  show(await api('POST', base()+'/destinations', body));
+}
+async function listDests()   { show(await api('GET', base()+'/destinations')); }
+async function getDest()     { show(await api('GET', base()+'/destinations/'+$('dGet').value)); }
+async function lookupDest()  { show(await api('GET', base()+'/destinations/'+$('dGet').value+'/lookup')); }
+async function deleteDest()  { show(await api('DELETE', base()+'/destinations/'+$('dGet').value)); }
+
+// Update
+async function updateDest() {
+  const body = {};
+  if ($('uUrl').value)  body.url = $('uUrl').value;
+  if ($('uDesc').value) body.description = $('uDesc').value;
+  show(await api('PUT', base()+'/destinations/'+$('uName').value, body));
+}
+
+// Certificates
+async function createCert() {
+  show(await api('POST', base()+'/certificates', {
+    name: $('cName').value, cert_type: $('cType').value,
+    content: $('cContent').value,
+    issuer: $('cIssuer').value || undefined,
+    subject: $('cSubject').value || undefined,
+    expires_at: $('cExpires').value || undefined
+  }));
+}
+async function listCerts()  { show(await api('GET', base()+'/certificates')); }
+async function getCert()    { show(await api('GET', base()+'/certificates/'+$('cGet').value)); }
+async function deleteCert() { show(await api('DELETE', base()+'/certificates/'+$('cGet').value)); }
+
+// Logs
+async function listLogs() { show(await api('GET', base()+'/logs')); }
+</script>
+</body>
+</html>

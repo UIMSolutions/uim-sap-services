@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: uim-sap-dst
+  labels:
+    app: uim-sap-dst
+spec:
+  selector:
+    app: uim-sap-dst
+  ports:
+  - name: http
+    port: 8104
+    targetPort: 8104
+  type: ClusterIP
