@@ -1,0 +1,102 @@
+@startuml sequence_provisioning_job
+!theme plain
+
+title IP Sequence - Run Provisioning Job
+
+actor Administrator
+participant "IPServer" as Server
+participant "IPService" as Service
+participant "IPStore" as Store
+
+== Create Source & Target Systems ==
+Administrator -> Server : POST /systems (source)
+Server -> Service : createSystem(tenant, json)
+Service -> Store : upsertSystem(system)
+Store --> Service : IPSystem
+Service --> Server : {success: true, system: {...}}
+Server --> Administrator : 201 Created
+
+Administrator -> Server : POST /systems (target)
+Server -> Service : createSystem(tenant, json)
+Service -> Store : upsertSystem(system)
+Store --> Service : IPSystem
+Service --> Server : {success: true, system: {...}}
+Server --> Administrator : 201 Created
+
+== Define Transformation Rules ==
+Administrator -> Server : POST /transformations
+Server -> Service : createTransformation(tenant, json)
+Service -> Store : upsertTransformation(t)
+Store --> Service : IPTransformation
+Service --> Server : {success: true, transformation: {...}}
+Server --> Administrator : 201 Created
+
+== Run Full Provisioning Job ==
+Administrator -> Server : POST /jobs {read_mode: "full"}
+Server -> Service : runJob(tenant, json)
+
+Service -> Store : getSystemById(source)
+Store --> Service : IPSystem (source)
+
+Service -> Store : listSystemsByType("target")
+Store --> Service : IPSystem[] (targets)
+
+note right of Service: Job status = "running"
+Service -> Store : upsertJob(job)
+
+Service -> Store : listUsersBySystem(source)
+Store --> Service : IPUser[] (all users)
+
+Service -> Store : listGroupsBySystem(source)
+Store --> Service : IPGroup[] (all groups)
+
+Service -> Store : listTransformationsForSystem(source)
+Store --> Service : IPTransformation[]
+
+loop for each user
+  alt filter matches
+    Service -> Store : upsertUser(provisioned)
+    Service -> Store : appendJobLog(info)
+    note right: usersWritten++
+  else filter rejects
+    Service -> Store : appendJobLog(info, "skipped")
+    note right: usersSkipped++
+  end
+end
+
+loop for each group
+  Service -> Store : upsertGroup(provisioned)
+  Service -> Store : appendJobLog(info)
+end
+
+Service -> Store : updateSystemCounts(source, userCount, groupCount)
+
+note right of Service: Job status = "completed"
+Service -> Store : upsertJob(job)
+Service -> Store : appendJobLog(info, "completed")
+
+Service -> Store : listNotificationsForSystem(source)
+Store --> Service : IPNotification[]
+note right: Notify subscribers of "job.completed"
+
+Service --> Server : {success: true, job: {...}}
+Server --> Administrator : 201 Created
+
+== View Job Logs ==
+Administrator -> Server : GET /jobs/{jobId}/logs?level=error
+Server -> Service : listJobLogs(tenant, jobId, "error")
+Service -> Store : listJobLogsByLevel(tenant, jobId, "error")
+Store --> Service : IPJobLog[]
+Service --> Server : {resources: [...]}
+Server --> Administrator : 200 OK
+
+== Delta Read Job ==
+Administrator -> Server : POST /jobs {read_mode: "delta"}
+Server -> Service : runJob(tenant, json)
+Service -> Store : listModifiedUsersSince(source, deltaToken)
+Store --> Service : IPUser[] (only modified)
+note right: Only entities modified since\nlast delta token are provisioned
+Service --> Server : {success: true, job: {...}}
+Server --> Administrator : 201 Created
+
+@enduml

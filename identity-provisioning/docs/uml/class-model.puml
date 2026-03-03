@@ -1,0 +1,210 @@
+@startuml class_model
+!theme plain
+
+title UIM SAP Identity Provisioning (IP) - Class Model
+
+package "uim.sap.identityprovisioning" {
+  class IPConfig {
+    +host : string
+    +port : ushort
+    +basePath : string
+    +serviceName : string
+    +serviceVersion : string
+    +requireAuthToken : bool
+    +authToken : string
+    +validate()
+  }
+
+  class IPServer {
+    -_service : IPService
+    +run()
+    -handleRequest()
+    -validateAuth()
+    -normalizedSegments()
+    -respondError()
+  }
+
+  class IPService {
+    -_config : IPConfig
+    -_store : IPStore
+    +health() : Json
+    +ready() : Json
+    +createSystem() : Json
+    +listSystems() : Json
+    +getSystem() : Json
+    +updateSystem() : Json
+    +deleteSystem() : Json
+    +createUser() : Json
+    +listUsers() : Json
+    +getUser() : Json
+    +updateUser() : Json
+    +deleteUser() : Json
+    +createGroup() : Json
+    +listGroups() : Json
+    +getGroup() : Json
+    +deleteGroup() : Json
+    +createTransformation() : Json
+    +listTransformations() : Json
+    +deleteTransformation() : Json
+    +runJob() : Json
+    +listJobs() : Json
+    +getJob() : Json
+    +cancelJob() : Json
+    +listJobLogs() : Json
+    +exportJobLogs() : Json
+    +createNotification() : Json
+    +listNotifications() : Json
+    +deleteNotification() : Json
+    +dashboard() : Json
+    -executeProvisioning()
+    -applyUserTransformations()
+    -notifySubscribers()
+  }
+
+  class IPStore {
+    -_systems : IPSystem[string]
+    -_users : IPUser[string]
+    -_groups : IPGroup[string]
+    -_transformations : IPTransformation[string]
+    -_jobs : IPJob[string]
+    -_jobLogs : IPJobLog[string][]
+    -_notifications : IPNotification[string]
+    -_lock : Mutex
+    +upsertSystem() : IPSystem
+    +getSystem() : IPSystem
+    +listSystems() : IPSystem[]
+    +deleteSystem() : bool
+    +upsertUser() : IPUser
+    +getUser() : IPUser
+    +listUsers() : IPUser[]
+    +deleteUser() : bool
+    +upsertGroup() : IPGroup
+    +getGroup() : IPGroup
+    +listGroups() : IPGroup[]
+    +deleteGroup() : bool
+    +upsertTransformation() : IPTransformation
+    +listTransformations() : IPTransformation[]
+    +deleteTransformation() : bool
+    +upsertJob() : IPJob
+    +getJob() : IPJob
+    +listJobs() : IPJob[]
+    +deleteJob() : bool
+    +appendJobLog()
+    +listJobLogs() : IPJobLog[]
+    +upsertNotification() : IPNotification
+    +listNotifications() : IPNotification[]
+    +deleteNotification() : bool
+  }
+
+  struct IPSystem {
+    +tenantId : string
+    +systemId : string
+    +systemName : string
+    +systemType : string
+    +connectorType : string
+    +endpointUrl : string
+    +authType : string
+    +status : string
+    +userCount : long
+    +groupCount : long
+    +toJson() : Json
+  }
+
+  struct IPUser {
+    +tenantId : string
+    +userId : string
+    +userName : string
+    +email : string
+    +firstName : string
+    +lastName : string
+    +active : bool
+    +status : string
+    +groupIds : string[]
+    +toJson() : Json
+  }
+
+  struct IPGroup {
+    +tenantId : string
+    +groupId : string
+    +groupName : string
+    +description : string
+    +memberUserIds : string[]
+    +toJson() : Json
+  }
+
+  struct IPTransformation {
+    +tenantId : string
+    +transformationId : string
+    +systemId : string
+    +entityType : string
+    +action : string
+    +sourceAttribute : string
+    +targetAttribute : string
+    +condition : string
+    +priority : int
+    +active : bool
+    +toJson() : Json
+  }
+
+  struct IPJob {
+    +tenantId : string
+    +jobId : string
+    +jobName : string
+    +sourceSystemId : string
+    +targetSystemIds : string[]
+    +readMode : string
+    +status : string
+    +usersRead : long
+    +usersWritten : long
+    +usersSkipped : long
+    +usersFailed : long
+    +groupsRead : long
+    +groupsWritten : long
+    +groupsSkipped : long
+    +groupsFailed : long
+    +deltaToken : string
+    +toJson() : Json
+  }
+
+  struct IPJobLog {
+    +tenantId : string
+    +logId : string
+    +jobId : string
+    +level : string
+    +entityType : string
+    +entityId : string
+    +message : string
+    +timestamp : string
+    +toJson() : Json
+  }
+
+  struct IPNotification {
+    +tenantId : string
+    +subscriptionId : string
+    +sourceSystemId : string
+    +callbackUrl : string
+    +eventTypes : string[]
+    +active : bool
+    +toJson() : Json
+  }
+}
+
+' Relationships
+IPServer --> IPService : delegates
+IPService --> IPStore : persists
+IPService --> IPConfig : reads
+
+IPStore *-- IPSystem
+IPStore *-- IPUser
+IPStore *-- IPGroup
+IPStore *-- IPTransformation
+IPStore *-- IPJob
+IPStore *-- IPJobLog
+IPStore *-- IPNotification
+
+IPJob --> IPSystem : sourceSystemId
+IPTransformation --> IPSystem : systemId
+IPUser --> IPSystem : sourceSystemId
+IPUser --> IPGroup : groupIds
+
+@enduml

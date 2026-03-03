@@ -1,0 +1,39 @@
+@startuml component_architecture
+!theme plain
+
+title UIM SAP Identity Provisioning (IP) - Component Architecture
+
+actor "Administrators" as Admin
+actor "Scheduler / CI" as Scheduler
+
+node "Identity Provisioning Service Runtime" {
+  component "IPServer\n(vibe.d REST API)" as Api
+  component "IPService\n(Provisioning Engine +\nCRUD + Notifications)" as Domain
+  database "IPStore\n(In-Memory Data)" as Store
+}
+
+cloud "Source Systems\n(SAP IAS, SCIM, LDAP…)" as Src
+cloud "Target Systems\n(Azure AD, SCIM, LDAP…)" as Tgt
+
+Admin --> Api : register systems,\ndefine transformations,\nsubscribe to notifications
+Scheduler --> Api : trigger provisioning\njobs (full/delta)
+Api --> Domain : routed use-case operations
+Domain --> Store : persist/retrieve\nentity data
+
+Domain ..> Src : read users & groups\n(simulated in-memory)
+Domain ..> Tgt : write provisioned entities\n(simulated in-memory)
+
+note right of Domain
+Capabilities:
+- Source / target / proxy systems
+- User & group provisioning
+- Transformation & filter rules
+- Full and delta read modes
+- Job execution with counters
+- Job logging (info/warning/error)
+- Notification subscriptions
+- Tenant-scoped multitenancy
+- Dashboard analytics
+end note
+
+@enduml

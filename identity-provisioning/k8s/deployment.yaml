@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uim-sap-ip
+  labels:
+    app: uim-sap-ip
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: uim-sap-ip
+  template:
+    metadata:
+      labels:
+        app: uim-sap-ip
+    spec:
+      containers:
+      - name: uim-sap-ip
+        image: ghcr.io/uimsolutions/uim-sap-ip:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 8095
+        envFrom:
+        - configMapRef:
+            name: uim-sap-ip-config
+        env:
+        - name: IP_AUTH_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: uim-sap-ip-secret
+              key: auth-token
+              optional: true
+        readinessProbe:
+          httpGet:
+            path: /api/ip/ready
+            port: http
+          initialDelaySeconds: 3
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /api/ip/health
+            port: http
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        resources:
+          requests:
+            cpu: 150m
+            memory: 192Mi
+          limits:
+            cpu: 1000m
+            memory: 1Gi
