@@ -1,0 +1,127 @@
+@startuml class_model
+!theme plain
+
+title UIM SAP Feature Flags (FF) - Class Model
+
+package "uim.sap.featureflags" {
+  class FFConfig {
+    +host : string
+    +port : ushort
+    +basePath : string
+    +serviceName : string
+    +serviceVersion : string
+    +requireAuthToken : bool
+    +authToken : string
+    +validate()
+  }
+
+  class FFServer {
+    -_service : FFService
+    +run()
+    -handleRequest()
+    -validateAuth()
+    -normalizedSegments()
+    -respondError()
+  }
+
+  class FFService {
+    -_config : FFConfig
+    -_store : FFStore
+    +health() : Json
+    +ready() : Json
+    +createFlag() : Json
+    +listFlags() : Json
+    +getFlag() : Json
+    +updateFlag() : Json
+    +deleteFlag() : Json
+    +toggleFlag() : Json
+    +evaluateFlag() : Json
+    +exportFlags() : Json
+    +importFlags() : Json
+    +dashboard() : Json
+    -evaluateBoolean() : FFEvaluation
+    -evaluateString() : FFEvaluation
+    -resolveDefaultVariation() : FFEvaluation
+  }
+
+  class FFStore {
+    -_flags : FFFlag[string]
+    -_lock : Mutex
+    +upsertFlag() : FFFlag
+    +getFlag() : FFFlag
+    +getFlagById() : FFFlag
+    +listFlags() : FFFlag[]
+    +deleteFlag() : bool
+    +incrementEvaluationCount()
+    +importFlags() : long
+  }
+
+  struct FFFlag {
+    +tenantId : string
+    +flagId : string
+    +flagName : string
+    +flagType : string
+    +enabled : bool
+    +variations : FFVariation[]
+    +directRules : FFDirectRule[]
+    +percentageRule : FFPercentageRule
+    +evaluationCount : long
+    +toJson() : Json
+  }
+
+  struct FFVariation {
+    +variationId : string
+    +name : string
+    +value : string
+    +weight : uint
+    +toJson() : Json
+  }
+
+  struct FFDirectRule {
+    +ruleId : string
+    +identifiers : string[]
+    +variationId : string
+    +booleanValue : bool
+    +toJson() : Json
+  }
+
+  struct FFPercentageRule {
+    +ruleId : string
+    +entries : FFPercentageEntry[]
+    +toJson() : Json
+  }
+
+  struct FFPercentageEntry {
+    +variationId : string
+    +weight : uint
+    +toJson() : Json
+  }
+
+  struct FFEvaluation {
+    +flagId : string
+    +flagName : string
+    +flagType : string
+    +booleanValue : bool
+    +variationId : string
+    +variationValue : string
+    +strategy : string
+    +toJson() : Json
+  }
+
+  struct FFExportData {
+    +tenantId : string
+    +flags : FFFlag[]
+    +toJson() : Json
+  }
+}
+
+FFServer --> FFService
+FFService --> FFConfig
+FFService --> FFStore
+FFStore o-- FFFlag
+FFFlag *-- FFVariation
+FFFlag *-- FFDirectRule
+FFFlag *-- FFPercentageRule
+FFPercentageRule *-- FFPercentageEntry
+
+@enduml

@@ -1,0 +1,55 @@
+@startuml sequence_evaluate_flag
+!theme plain
+
+title FF Sequence - Evaluate Feature Flag
+
+actor Application
+participant "FFServer" as Server
+participant "FFService" as Service
+participant "FFStore" as Store
+
+== Boolean Flag - Default ==
+Application -> Server : GET /flags/{flagName}/evaluate
+Server -> Service : evaluateFlag(tenant, flagName, "")
+Service -> Store : getFlag(tenant, flagName)
+Store --> Service : FFFlag (boolean, enabled=true)
+Service -> Store : incrementEvaluationCount(tenant, flagName)
+Service --> Server : {boolean_value: true, strategy: "default"}
+Server --> Application : 200 OK
+
+== Boolean Flag - Direct Delivery ==
+Application -> Server : GET /flags/{flagName}/evaluate?identifier=user-42
+Server -> Service : evaluateFlag(tenant, flagName, "user-42")
+Service -> Store : getFlag(tenant, flagName)
+Store --> Service : FFFlag (boolean, directRules=[{identifiers:["user-42"], booleanValue:true}])
+Service -> Store : incrementEvaluationCount(tenant, flagName)
+note right: identifier matches direct rule
+Service --> Server : {boolean_value: true, strategy: "direct"}
+Server --> Application : 200 OK
+
+== String Flag - Percentage Delivery ==
+Application -> Server : GET /flags/{flagName}/evaluate?identifier=tenant-7
+Server -> Service : evaluateFlag(tenant, flagName, "tenant-7")
+Service -> Store : getFlag(tenant, flagName)
+Store --> Service : FFFlag (string, variations, percentageRule)
+Service -> Store : incrementEvaluationCount(tenant, flagName)
+note right: hash("tenant-7") → bucket 37\nmatches variation "B" (range 30-60)
+Service --> Server : {variation_value: "B", strategy: "percentage"}
+Server --> Application : 200 OK
+
+== Export & Import ==
+Application -> Server : GET /tenants/{tenantId}/export
+Server -> Service : exportFlags(tenantId)
+Service -> Store : listFlags(tenantId)
+Store --> Service : FFFlag[]
+Service --> Server : {flags: [...], total_flags: N}
+Server --> Application : 200 OK (JSON export)
+
+Application -> Server : POST /tenants/{anotherTenantId}/import
+Server -> Service : importFlags(anotherTenantId, exportedJson)
+Service -> Store : importFlags(anotherTenantId, flags[])
+Store --> Service : imported count
+Service --> Server : {imported_count: N}
+Server --> Application : 200 OK
+
+@enduml
