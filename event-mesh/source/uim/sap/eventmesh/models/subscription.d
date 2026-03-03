@@ -1,0 +1,51 @@
+module uim.sap.eventmesh.models.subscription;
+
+import uim.sap.eventmesh;
+
+mixin(ShowModule!());
+
+@safe:
+
+struct EMSubscription {
+    string tenantId;
+    string subscriptionId;
+    string topicName;
+    string queueName;
+    string deliveryMode = "push";
+    bool active = true;
+    string createdAt;
+    string updatedAt;
+
+    Json toJson() const {
+        Json j = Json.emptyObject;
+        j["tenant_id"] = tenantId;
+        j["subscription_id"] = subscriptionId;
+        j["topic_name"] = topicName;
+        j["queue_name"] = queueName;
+        j["delivery_mode"] = deliveryMode;
+        j["active"] = active;
+        j["created_at"] = createdAt;
+        j["updated_at"] = updatedAt;
+        return j;
+    }
+}
+
+EMSubscription subscriptionFromJson(string tenantId, Json request) {
+    EMSubscription s;
+    s.tenantId = tenantId;
+    s.subscriptionId = randomUUID().toString();
+
+    if ("topic_name" in request && request["topic_name"].type == Json.Type.string) {
+        s.topicName = request["topic_name"].get!string;
+    }
+    if ("queue_name" in request && request["queue_name"].type == Json.Type.string) {
+        s.queueName = request["queue_name"].get!string;
+    }
+    if ("delivery_mode" in request && request["delivery_mode"].type == Json.Type.string) {
+        s.deliveryMode = request["delivery_mode"].get!string;
+    }
+
+    s.createdAt = Clock.currTime().toISOExtString();
+    s.updatedAt = s.createdAt;
+    return s;
+}

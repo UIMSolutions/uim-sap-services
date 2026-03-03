@@ -1,0 +1,34 @@
+@startuml class_model
+!theme plain
+
+title UIM SAP Event Mesh (EM) - Class Model
+
+package "uim.sap.eventmesh" {
+  class EMConfig
+  class EMServer
+  class EMService
+  class EMStore
+
+  class EMQueue
+  class EMTopic
+  class EMSubscription
+  class EMMessage
+  class EMWebhook
+  class EMDeadLetter
+}
+
+EMServer --> EMService
+EMService --> EMConfig
+EMService --> EMStore
+EMStore o-- EMQueue
+EMStore o-- EMTopic
+EMStore o-- EMSubscription
+EMStore o-- EMMessage
+EMStore o-- EMWebhook
+EMStore o-- EMDeadLetter
+
+EMSubscription --> EMTopic : routes from
+EMSubscription --> EMQueue : routes to
+EMWebhook --> EMQueue : delivers from
+
+@enduml

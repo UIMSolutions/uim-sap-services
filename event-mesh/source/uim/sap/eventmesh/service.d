@@ -1,0 +1,421 @@
+module uim.sap.eventmesh.service;
+
+import uim.sap.eventmesh;
+
+mixin(ShowModule!());
+
+@safe:
+
+
+
+class EMService : SAPService {
+    private EMConfig _config;
+    private EMStore _store;
+
+    this(EMConfig config) {
+        config.validate();
+        _config = config;
+        _store = new EMStore;
+    }
+
+    @property const(EMConfig) config() const {
+        return _config;
+    }
+
+    // --- Platform ---
+
+    Json health() {
+        Json result = Json.emptyObject;
+        result["ok"] = true;
+        result["serviceName"] = _config.serviceName;
+        result["serviceVersion"] = _config.serviceVersion;
+        return result;
+    }
+
+    Json ready() {
+        Json result = Json.emptyObject;
+        result["ready"] = true;
+        result["timestamp"] = Clock.currTime().toISOExtString();
+        return result;
+    }
+
+    // --- Queue management ---
+
+    Json createQueue(string tenantId, Json request) {
+        validateId(tenantId, "Tenant ID");
+
+        auto queue = queueFromJson(tenantId, request);
+        if (queue.queueName.length == 0) {
+            throw new EMValidationException("queue_name is required");
+        }
+
+        auto existing = _store.getQueue(tenantId, queue.queueName);
+        if (existing.queueName.length > 0) {
+            throw new EMValidationException("Queue already exists: " ~ queue.queueName);
+        }
+
+        auto saved = _store.upsertQueue(queue);
+
+        Json result = Json.emptyObject;
+        result["success"] = true;
+        result["queue"] = saved.toJson();
+        return result;
+    }
+
+    Json listQueues(string tenantId) {
+        validateId(tenantId, "Tenant ID");
+
+        Json resources = Json.emptyArray;
+        foreach (queue; _store.listQueues(tenantId)) {
+            resources ~= queue.toJson();
+        }
+
+        Json result = Json.emptyObject;
+        result["tenant_id"] = tenantId;
+        result["resources"] = resources;
+        result["total_results"] = cast(long)resources.length;
+        return result;
+    }
+
+    Json getQueue(string tenantId, string queueName) {
+        validateId(tenantId, "Tenant ID");
+        validateId(queueName, "Queue name");
+
+        auto queue = _store.getQueue(tenantId, queueName);
+        if (queue.queueName.length == 0) {
+            throw new EMNotFoundException("Queue", tenantId ~ "/" ~ queueName);
+        }
+
+        Json result = Json.emptyObject;
+        result["queue"] = queue.toJson();
+        result["pending_messages"] = _store.queueDepth(tenantId, queueName);
+        return result;
+    }
+
+    Json deleteQueue(string tenantId, string queueName) {
+        validateId(tenantId, "Tenant ID");
+        validateId(queueName, "Queue name");
+
+        if (!_store.deleteQueue(tenantId, queueName)) {
+            throw new EMNotFoundException("Queue", tenantId ~ "/" ~ queueName);
+        }
+
+        Json result = Json.emptyObject;
+        result["success"] = true;
+        result["message"] = "Queue deleted: " ~ queueName;
+        return result;
+    }
+
+    // --- Topic management ---
+
+    Json createTopic(string tenantId, Json request) {
+        validateId(tenantId, "Tenant ID");
+
+        auto topic = topicFromJson(tenantId, request);
+        if (topic.topicName.length == 0) {
+            throw new EMValidationException("topic_name is required");
+        }
+
+        auto existing = _store.getTopic(tenantId, topic.topicName);
+        if (existing.topicName.length > 0) {
+            throw new EMValidationException("Topic already exists: " ~ topic.topicName);
+        }
+
+        auto saved = _store.upsertTopic(topic);
+
+        Json result = Json.emptyObject;
+        result["success"] = true;
+        result["topic"] = saved.toJson();
+        return result;
+    }
+
+    Json listTopics(string tenantId) {
+        validateId(tenantId, "Tenant ID");
+
+        Json resources = Json.emptyArray;
+        foreach (topic; _store.listTopics(tenantId)) {
+            resources ~= topic.toJson();
+        }
+
+        Json result = Json.emptyObject;
+        result["tenant_id"] = tenantId;
+        result["resources"] = resources;
+        result["total_results"] = cast(long)resources.length;
+        return result;
+    }
+
+    // --- Subscription management ---
+
+    Json createSubscription(string tenantId, Json request) {
+        validateId(tenantId, "Tenant ID");
+
+        auto subscription = subscriptionFromJson(tenantId, request);
+        if (subscription.topicName.length == 0) {
+            throw new EMValidationException("topic_name is required");
+        }
+        if (subscription.queueName.length == 0) {
+            throw new EMValidationException("queue_name is required");
+        }
+
+        auto topic = _store.getTopic(tenantId, subscription.topicName);
+        if (topic.topicName.length == 0) {
+            throw new EMNotFoundException("Topic", tenantId ~ "/" ~ subscription.topicName);
+        }
+
+        auto queue = _store.getQueue(tenantId, subscription.queueName);
+        if (queue.queueName.length == 0) {
+            throw new EMNotFoundException("Queue", tenantId ~ "/" ~ subscription.queueName);
+        }
+
+        auto saved = _store.addSubscription(subscription);
+
+        Json result = Json.emptyObject;
+        result["success"] = true;
+        result["subscription"] = saved.toJson();
+        return result;
+    }
+
+    Json listSubscriptions(string tenantId) {
+        validateId(tenantId, "Tenant ID");
+
+        Json resources = Json.emptyArray;
+        foreach (sub; _store.listSubscriptions(tenantId)) {
+            resources ~= sub.toJson();
+        }
+
+        Json result = Json.emptyObject;
+        result["tenant_id"] = tenantId;
+        result["resources"] = resources;
+        result["total_results"] = cast(long)resources.length;
+        return result;
+    }
+
+    // --- Publish events ---
+
+    Json publishMessage(string tenantId, string topicName, Json request) {
+        validateId(tenantId, "Tenant ID");
+        validateId(topicName, "Topic name");
+
+        auto topic = _store.getTopic(tenantId, topicName);
+        if (topic.topicName.length == 0) {
+            throw new EMNotFoundException("Topic", tenantId ~ "/" ~ topicName);
+        }
+
+        auto message = messageFromJson(tenantId, topicName, request);
+
+        // Route message to all subscribed queues
+        auto subscriptions = _store.subscriptionsForTopic(tenantId, topicName);
+        long routedCount = 0;
+
+        foreach (sub; subscriptions) {
+            auto queue = _store.getQueue(tenantId, sub.queueName);
+            if (queue.queueName.length > 0 && queue.status == "active") {
+                auto queuedMsg = message;
+                queuedMsg.queueName = sub.queueName;
+                _store.enqueueMessage(tenantId, sub.queueName, queuedMsg);
+                ++routedCount;
+            }
+        }
+
+        // Update topic stats
+        topic.messagesPublished = topic.messagesPublished + 1;
+        topic.updatedAt = Clock.currTime().toISOExtString();
+        _store.upsertTopic(topic);
+
+        Json result = Json.emptyObject;
+        result["success"] = true;
+        result["message_id"] = message.messageId;
+        result["topic"] = topicName;
+        result["routed_to_queues"] = routedCount;
+        result["message"] = "Event published successfully";
+        return result;
+    }
+
+    // --- Consume events ---
+
+    Json consumeMessage(string tenantId, string queueName) {
+        validateId(tenantId, "Tenant ID");
+        validateId(queueName, "Queue name");
+
+        auto queue = _store.getQueue(tenantId, queueName);
+        if (queue.queueName.length == 0) {
+            throw new EMNotFoundException("Queue", tenantId ~ "/" ~ queueName);
+        }
+
+        auto message = _store.consumeMessage(tenantId, queueName);
+        if (message.messageId.length == 0) {
+            Json result = Json.emptyObject;
+            result["success"] = true;
+            result["message"] = Json(null);
+            result["info"] = "No pending messages in queue";
+            return result;
+        }
+
+        Json result = Json.emptyObject;
+        result["success"] = true;
+        result["message"] = message.toJson();
+        return result;
+    }
+
+    Json acknowledgeMessage(string tenantId, string queueName, string messageId) {
+        validateId(tenantId, "Tenant ID");
+        validateId(queueName, "Queue name");
+        validateId(messageId, "Message ID");
+
+        if (!_store.acknowledgeMessage(tenantId, queueName, messageId)) {
+            throw new EMNotFoundException("Message", tenantId ~ "/" ~ queueName ~ "/" ~ messageId);
+        }
+
+        Json result = Json.emptyObject;
+        result["success"] = true;
+        result["message"] = "Message acknowledged";
+        return result;
+    }
+
+    Json listQueueMessages(string tenantId, string queueName) {
+        validateId(tenantId, "Tenant ID");
+        validateId(queueName, "Queue name");
+
+        auto queue = _store.getQueue(tenantId, queueName);
+        if (queue.queueName.length == 0) {
+            throw new EMNotFoundException("Queue", tenantId ~ "/" ~ queueName);
+        }
+
+        Json resources = Json.emptyArray;
+        foreach (msg; _store.listMessages(tenantId, queueName)) {
+            resources ~= msg.toJson();
+        }
+
+        Json result = Json.emptyObject;
+        result["tenant_id"] = tenantId;
+        result["queue_name"] = queueName;
+        result["resources"] = resources;
+        result["total_results"] = cast(long)resources.length;
+        return result;
+    }
+
+    // --- Webhook management ---
+
+    Json registerWebhook(string tenantId, Json request) {
+        validateId(tenantId, "Tenant ID");
+
+        auto webhook = webhookFromJson(tenantId, request);
+        if (webhook.queueName.length == 0) {
+            throw new EMValidationException("queue_name is required");
+        }
+        if (webhook.callbackUrl.length == 0) {
+            throw new EMValidationException("callback_url is required");
+        }
+
+        auto queue = _store.getQueue(tenantId, webhook.queueName);
+        if (queue.queueName.length == 0) {
+            throw new EMNotFoundException("Queue", tenantId ~ "/" ~ webhook.queueName);
+        }
+
+        auto saved = _store.upsertWebhook(webhook);
+
+        Json result = Json.emptyObject;
+        result["success"] = true;
+        result["webhook"] = saved.toJson();
+        return result;
+    }
+
+    Json listWebhooks(string tenantId) {
+        validateId(tenantId, "Tenant ID");
+
+        Json resources = Json.emptyArray;
+        foreach (wh; _store.listWebhooks(tenantId)) {
+            resources ~= wh.toJson();
+        }
+
+        Json result = Json.emptyObject;
+        result["tenant_id"] = tenantId;
+        result["resources"] = resources;
+        result["total_results"] = cast(long)resources.length;
+        return result;
+    }
+
+    Json deleteWebhook(string tenantId, string webhookId) {
+        validateId(tenantId, "Tenant ID");
+        validateId(webhookId, "Webhook ID");
+
+        if (!_store.deleteWebhook(tenantId, webhookId)) {
+            throw new EMNotFoundException("Webhook", tenantId ~ "/" ~ webhookId);
+        }
+
+        Json result = Json.emptyObject;
+        result["success"] = true;
+        result["message"] = "Webhook deleted";
+        return result;
+    }
+
+    // --- Dead letter queue ---
+
+    Json listDeadLetters(string tenantId, string queueName) {
+        validateId(tenantId, "Tenant ID");
+        validateId(queueName, "Queue name");
+
+        auto queue = _store.getQueue(tenantId, queueName);
+        if (queue.queueName.length == 0) {
+            throw new EMNotFoundException("Queue", tenantId ~ "/" ~ queueName);
+        }
+
+        Json resources = Json.emptyArray;
+        foreach (dl; _store.listDeadLetters(tenantId, queueName)) {
+            resources ~= dl.toJson();
+        }
+
+        Json result = Json.emptyObject;
+        result["tenant_id"] = tenantId;
+        result["queue_name"] = queueName;
+        result["resources"] = resources;
+        result["total_results"] = cast(long)resources.length;
+        return result;
+    }
+
+    // --- Dashboard ---
+
+    Json dashboard(string tenantId) {
+        validateId(tenantId, "Tenant ID");
+
+        auto queues = _store.listQueues(tenantId);
+        auto topics = _store.listTopics(tenantId);
+        auto subscriptions = _store.listSubscriptions(tenantId);
+        auto webhooks = _store.listWebhooks(tenantId);
+
+        long totalMessages = 0;
+        long totalPending = 0;
+        long totalDeadLetters = 0;
+
+        foreach (queue; queues) {
+            totalMessages += queue.messageCount;
+            totalDeadLetters += queue.deadLetterCount;
+            totalPending += _store.queueDepth(tenantId, queue.queueName);
+        }
+
+        long totalPublished = 0;
+        foreach (topic; topics) {
+            totalPublished += topic.messagesPublished;
+        }
+
+        Json result = Json.emptyObject;
+        result["tenant_id"] = tenantId;
+        result["queues"] = cast(long)queues.length;
+        result["topics"] = cast(long)topics.length;
+        result["subscriptions"] = cast(long)subscriptions.length;
+        result["webhooks"] = cast(long)webhooks.length;
+        result["total_messages"] = totalMessages;
+        result["total_published"] = totalPublished;
+        result["pending_messages"] = totalPending;
+        result["dead_letters"] = totalDeadLetters;
+        return result;
+    }
+
+    // --- Helpers ---
+
+    private void validateId(string value, string fieldName) {
+        if (value.length == 0) {
+            throw new EMValidationException(fieldName ~ " cannot be empty");
+        }
+    }
+}

@@ -1,0 +1,28 @@
+@startuml component_architecture
+!theme plain
+
+title UIM SAP Event Mesh (EM) - Component Architecture
+
+actor "Business Application / Integration" as User
+
+node "Event Mesh Service Runtime" {
+  component "EMServer\n(vibe.d REST API)" as Api
+  component "EMService\n(Publish + Consume + Subscribe + Webhooks)" as Domain
+  database "EMStore\n(In-Memory Data)" as Store
+}
+
+User --> Api : publish events, consume messages,\nmanage queues/topics/webhooks
+Api --> Domain : routed use-case operations
+Domain --> Store : persist/retrieve runtime data
+
+note right of Domain
+Capabilities:
+- publish business events to topics
+- route events to subscribed queues
+- consume messages from queues
+- webhook delivery registration
+- dead letter queue management
+- tenant-scoped dashboard
+end note
+
+@enduml

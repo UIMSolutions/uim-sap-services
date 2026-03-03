@@ -1,0 +1,40 @@
+@startuml sequence_publish_consume
+!theme plain
+
+title EM Sequence - Publish Event and Consume Message
+
+actor Producer
+actor Consumer
+participant "EMServer" as Server
+participant "EMService" as Service
+participant "EMStore" as Store
+
+== Publish ==
+Producer -> Server : POST /topics/{topicName}/publish
+Server -> Service : publishMessage(tenant, topicName, payload)
+Service -> Store : getTopic(tenant, topicName)
+Store --> Service : EMTopic
+Service -> Store : subscriptionsForTopic(tenant, topicName)
+Store --> Service : EMSubscription[]
+loop for each subscription
+  Service -> Store : enqueueMessage(tenant, queueName, message)
+end
+Service -> Store : upsertTopic(updated stats)
+Service --> Server : publish response
+Server --> Producer : 200 OK
+
+== Consume ==
+Consumer -> Server : POST /queues/{queueName}/consume
+Server -> Service : consumeMessage(tenant, queueName)
+Service -> Store : consumeMessage(tenant, queueName)
+Store --> Service : EMMessage (status=consumed)
+Service --> Server : message response
+Server --> Consumer : 200 OK
+
+Consumer -> Server : POST /queues/{queueName}/ack/{messageId}
+Server -> Service : acknowledgeMessage(tenant, queueName, messageId)
+Service -> Store : acknowledgeMessage(tenant, queueName, messageId)
+Service --> Server : ack response
+Server --> Consumer : 200 OK
+
+@enduml
