@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uim-sap-document-management
+  labels:
+    app: uim-sap-document-management
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: uim-sap-document-management
+  template:
+    metadata:
+      labels:
+        app: uim-sap-document-management
+    spec:
+      containers:
+      - name: uim-sap-document-management
+        image: ghcr.io/uimsolutions/uim-sap-document-management:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 8090
+        envFrom:
+        - configMapRef:
+            name: uim-sap-document-management-config
+        env:
+        - name: DMS_AUTH_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: uim-sap-document-management-secret
+              key: auth-token
+              optional: true
+        - name: DMS_ENCRYPTION_KEY
+          valueFrom:
+            secretKeyRef:
+              name: uim-sap-document-management-secret
+              key: encryption-key
+              optional: true
+        readinessProbe:
+          httpGet:
+            path: /api/docmgmt/ready
+            port: http
+          initialDelaySeconds: 3
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /api/docmgmt/health
+            port: http
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        resources:
+          requests:
+            cpu: 200m
+            memory: 256Mi
+          limits:
+            cpu: 1000m
+            memory: 2Gi
+        volumeMounts:
+        - name: document-storage
+          mountPath: /data/documents
+      volumes:
+      - name: document-storage
+        persistentVolumeClaim:
+          claimName: uim-sap-document-management-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: uim-sap-document-management-pvc
+  labels:
+    app: uim-sap-document-management
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi

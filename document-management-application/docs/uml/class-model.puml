@@ -1,0 +1,183 @@
+@startuml class_model
+!theme plain
+
+title UIM Document Management Service — Class Model
+
+class DocumentManagementConfig {
+    +host : string
+    +port : ushort
+    +basePath : string
+    +serviceName : string
+    +serviceVersion : string
+    +maxUploadSizeMB : int
+    +defaultRepository : string
+    +encryptionEnabled : bool
+    +encryptionKey : string
+    +versioningEnabled : bool
+    +requireAuthToken : bool
+    +authToken : string
+    +customHeaders : string[string]
+    +validate() : void
+}
+
+class DocumentManagementService {
+    -_config : DocumentManagementConfig
+    -_store : DocumentManagementStore
+    -_encryption : EncryptionManager
+    -_registry : RepositoryRegistry
+    +health() : Json
+    +ready() : Json
+    +listRepositories() : Json
+    +connectRepository(Json) : Json
+    +disconnectRepository(string) : Json
+    +createFolder(string, string, Json) : Json
+    +getFolder(string) : Json
+    +updateFolder(string, Json) : Json
+    +deleteFolder(string) : Json
+    +listFolderContents(string, string) : Json
+    +moveFolder(string, Json) : Json
+    +copyFolder(string, Json) : Json
+    +createDocument(string, string, Json) : Json
+    +getDocument(string) : Json
+    +updateDocument(string, Json) : Json
+    +deleteDocument(string) : Json
+    +moveDocument(string, Json) : Json
+    +copyDocument(string, Json) : Json
+    +viewDocument(string) : Json
+    +downloadDocument(string) : Json
+    +getDocumentMetadata(string) : Json
+    +updateDocumentMetadata(string, Json) : Json
+    +getFolderProperties(string) : Json
+    +updateFolderProperties(string, Json) : Json
+    +listVersions(string) : Json
+    +createVersion(string, Json) : Json
+    +getVersion(string, string) : Json
+    +checkOutDocument(string, Json) : Json
+    +checkInDocument(string, Json) : Json
+    +cancelCheckOut(string, Json) : Json
+    +listDocumentsSorted(string, string, Json) : Json
+    +encryptionStatus() : Json
+}
+
+class DocumentManagementServer {
+    -_service : DocumentManagementService
+    +run() : void
+    -handleRequest(req, res) : void
+    -validateAuth(req) : void
+}
+
+class DocumentManagementStore {
+    -_repositories : Repository[string]
+    -_folders : Folder[string]
+    -_documents : Document[string]
+    -_versions : DocumentVersion[][string]
+    -_contentStore : string[string]
+    -_lock : Mutex
+    +addRepository(Repository) : Repository
+    +getRepository(string) : Repository
+    +listRepositories() : Repository[]
+    +addFolder(Folder) : Folder
+    +getFolder(string) : Folder
+    +updateFolder(Folder) : Folder
+    +removeFolder(string) : bool
+    +listFolders(string, string) : Folder[]
+    +buildBreadcrumbs(string) : Breadcrumb[]
+    +addDocument(Document) : Document
+    +getDocument(string) : Document
+    +updateDocument(Document) : Document
+    +removeDocument(string) : bool
+    +listDocuments(string, string) : Document[]
+    +moveDocument(string, string) : Document
+    +copyDocument(string, string) : Document
+    +addVersion(DocumentVersion) : DocumentVersion
+    +listVersions(string) : DocumentVersion[]
+    +storeContent(string, string) : void
+    +getContent(string) : string
+}
+
+class EncryptionManager {
+    -_enabled : bool
+    -_keyBytes : ubyte[]
+    +encrypt(ubyte[]) : string
+    +decrypt(string) : ubyte[]
+    +contentHash(ubyte[]) : string
+}
+
+interface IRepositoryConnector {
+    +ping() : bool
+    +info() : Repository
+    +repositoryId() : string
+}
+
+class RepositoryRegistry {
+    -_connectors : IRepositoryConnector[string]
+    +register(IRepositoryConnector) : void
+    +get(string) : IRepositoryConnector
+    +list() : IRepositoryConnector[]
+    +remove(string) : void
+}
+
+struct Repository {
+    +repositoryId : string
+    +name : string
+    +description : string
+    +vendorName : string
+    +cmisCompliant : bool
+    +encryptionEnabled : bool
+    +toJson() : Json
+}
+
+struct Folder {
+    +folderId : string
+    +repositoryId : string
+    +parentFolderId : string
+    +name : string
+    +properties : Json
+    +toJson() : Json
+}
+
+struct Document {
+    +documentId : string
+    +repositoryId : string
+    +folderId : string
+    +name : string
+    +mimeType : string
+    +sizeBytes : long
+    +status : DocumentStatus
+    +checkedOutBy : string
+    +encrypted : bool
+    +properties : Json
+    +currentVersion : int
+    +toJson() : Json
+}
+
+struct DocumentVersion {
+    +versionId : string
+    +documentId : string
+    +versionNumber : int
+    +versionLabel : string
+    +comment : string
+    +isMajor : bool
+    +toJson() : Json
+}
+
+enum DocumentStatus {
+    draft
+    checked_out
+    checked_in
+    approved
+    archived
+}
+
+DocumentManagementServer --> DocumentManagementService
+DocumentManagementService --> DocumentManagementConfig
+DocumentManagementService --> DocumentManagementStore
+DocumentManagementService --> EncryptionManager
+DocumentManagementService --> RepositoryRegistry
+RepositoryRegistry --> IRepositoryConnector
+DocumentManagementStore --> Repository
+DocumentManagementStore --> Folder
+DocumentManagementStore --> Document
+DocumentManagementStore --> DocumentVersion
+
+@enduml

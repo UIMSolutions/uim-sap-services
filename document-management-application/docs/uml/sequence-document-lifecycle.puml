@@ -1,0 +1,74 @@
+@startuml sequence_document_lifecycle
+!theme plain
+
+title UIM Document Management Service — Document Lifecycle Sequence
+
+actor "Client" as C
+participant "Server\n(REST API)" as S
+participant "Service\n(Business Logic)" as SVC
+participant "Store\n(In-Memory)" as DB
+participant "EncryptionManager" as ENC
+
+== Create Document ==
+C -> S : POST /v1/repositories/{id}/documents
+S -> SVC : createDocument(repoId, folderId, body)
+SVC -> DB : addDocument(doc)
+SVC -> DB : addVersion(v1)
+alt encryption enabled
+    SVC -> ENC : encrypt(content)
+    ENC --> SVC : ciphertext (Base64)
+end
+SVC -> DB : storeContent(versionId, content)
+SVC --> S : {success, document}
+S --> C : 201 Created
+
+== View / Download ==
+C -> S : GET /v1/documents/{id}/view
+S -> SVC : viewDocument(docId)
+SVC -> DB : getDocument(docId)
+SVC -> DB : getContent(latestVersionId)
+alt encrypted
+    SVC -> ENC : decrypt(ciphertext)
+    ENC --> SVC : plaintext
+end
+SVC --> S : {viewable, viewer_type, content}
+S --> C : 200 OK
+
+== Check-Out / Edit / Check-In ==
+C -> S : POST /v1/documents/{id}/checkout
+S -> SVC : checkOutDocument(docId, {user})
+SVC -> DB : updateDocument(status=checked_out)
+SVC --> S : {success, document}
+S --> C : 200 OK
+
+C -> S : PUT /v1/documents/{id}
+S -> SVC : updateDocument(docId, changes)
+SVC -> DB : updateDocument(doc)
+SVC --> S : {success, document}
+S --> C : 200 OK
+
+C -> S : POST /v1/documents/{id}/checkin
+S -> SVC : checkInDocument(docId, {user, content})
+SVC -> DB : addVersion(newVer)
+SVC -> DB : storeContent(versionId, content)
+SVC -> DB : updateDocument(status=checked_in)
+SVC --> S : {success, document}
+S --> C : 200 OK
+
+== Move / Copy ==
+C -> S : POST /v1/documents/{id}/move
+S -> SVC : moveDocument(docId, {target_folder_id})
+SVC -> DB : moveDocument(docId, targetFolderId)
+SVC --> S : {success, document}
+S --> C : 200 OK
+
+== Versioning ==
+C -> S : POST /v1/documents/{id}/versions
+S -> SVC : createVersion(docId, body)
+SVC -> DB : nextVersionNumber(docId)
+SVC -> DB : addVersion(ver)
+SVC -> DB : updateDocument(doc)
+SVC --> S : {success, version, document}
+S --> C : 201 Created
+
+@enduml

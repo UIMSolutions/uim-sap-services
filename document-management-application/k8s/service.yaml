@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: uim-sap-document-management
+  labels:
+    app: uim-sap-document-management
+spec:
+  selector:
+    app: uim-sap-document-management
+  ports:
+  - name: http
+    protocol: TCP
+    port: 80
+    targetPort: 8090
+  type: ClusterIP

@@ -1,0 +1,41 @@
+@startuml component_architecture
+!theme plain
+
+title UIM Document Management Service — Component Architecture
+
+actor "End User\n(Browser / Client)" as User
+actor "Admin / Operator" as Admin
+
+node "Document Management Service Runtime" {
+    component "DocumentManagementServer\n(vibe.d REST API)" as Api
+    component "DocumentManagementService\n(Business Logic)" as Domain
+    component "EncryptionManager\n(AES-256 / XOR-SHA256)" as Crypto
+    component "RepositoryRegistry\n(Connector Manager)" as Registry
+    database "DocumentManagementStore\n(In-Memory Documents,\nFolders, Versions)" as Store
+}
+
+cloud "External CMIS Repository\n(On-Premise / Cloud)" as ExtRepo
+
+User --> Api : REST API calls\n(CRUD, View, Download)
+Admin --> Api : Repository mgmt,\nEncryption config
+Api --> Domain : route + validate
+Domain --> Crypto : encrypt / decrypt content
+Domain --> Registry : connect / list repos
+Domain --> Store : persist / read / move / copy
+Registry --> ExtRepo : CMIS AtomPub binding
+
+note right of Domain
+  Features:
+  - File & Folder CRUD
+  - Breadcrumb navigation
+  - Move & Copy operations
+  - Document versioning
+  - Check-out / Check-in workflow
+  - Metadata management
+  - Built-in PDF/Image viewer
+  - Sorting / personalization
+  - Encryption at rest
+  - CMIS repository support
+end note
+
+@enduml
