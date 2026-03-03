@@ -83,10 +83,12 @@ IPJob jobFromJson(string tenantId, Json request) {
         j.jobId = request["job_id"].get!string;
 
     if ("target_system_ids" in request && request["target_system_ids"].type == Json.Type.array) {
-        foreach (item; request["target_system_ids"]) {
-            if (item.type == Json.Type.string)
-                j.targetSystemIds ~= item.get!string;
-        }
+        () @trusted {
+            foreach (item; request["target_system_ids"]) {
+                if (item.type == Json.Type.string)
+                    j.targetSystemIds ~= item.get!string;
+            }
+        }();
     }
 
     j.createdAt = Clock.currTime().toISOExtString();

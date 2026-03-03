@@ -214,10 +214,12 @@ class IPService : SAPService {
 
         if ("group_ids" in request && request["group_ids"].type == Json.Type.array) {
             string[] gids;
-            foreach (item; request["group_ids"]) {
-                if (item.type == Json.Type.string)
-                    gids ~= item.get!string;
-            }
+            () @trusted {
+                foreach (item; request["group_ids"]) {
+                    if (item.type == Json.Type.string)
+                        gids ~= item.get!string;
+                }
+            }();
             existing.groupIds = gids;
         }
 

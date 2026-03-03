@@ -134,18 +134,22 @@ class FFService : SAPService {
         // Replace variations if supplied
         if ("variations" in request && request["variations"].type == Json.Type.array) {
             FFVariation[] newVars;
-            foreach (item; request["variations"]) {
-                newVars ~= variationFromJson(item);
-            }
+            () @trusted {
+                foreach (item; request["variations"]) {
+                    newVars ~= variationFromJson(item);
+                }
+            }();
             existing.variations = newVars;
         }
 
         // Replace direct rules if supplied
         if ("direct_rules" in request && request["direct_rules"].type == Json.Type.array) {
             FFDirectRule[] newRules;
-            foreach (item; request["direct_rules"]) {
-                newRules ~= directRuleFromJson(item);
-            }
+            () @trusted {
+                foreach (item; request["direct_rules"]) {
+                    newRules ~= directRuleFromJson(item);
+                }
+            }();
             existing.directRules = newRules;
         }
 
@@ -267,16 +271,18 @@ class FFService : SAPService {
         }
 
         FFFlag[] flags;
-        foreach (item; request["flags"]) {
-            auto flag = flagFromJson(tenantId, item);
-            if (flag.flagName.length == 0) {
-                throw new FFValidationException("Each flag must have a flag_name");
+        () @trusted {
+            foreach (item; request["flags"]) {
+                auto flag = flagFromJson(tenantId, item);
+                if (flag.flagName.length == 0) {
+                    throw new FFValidationException("Each flag must have a flag_name");
+                }
+                // Ensure tenant ownership
+                flag.tenantId = tenantId;
+                flag.updatedAt = Clock.currTime().toISOExtString();
+                flags ~= flag;
             }
-            // Ensure tenant ownership
-            flag.tenantId = tenantId;
-            flag.updatedAt = Clock.currTime().toISOExtString();
-            flags ~= flag;
-        }
+        }();
 
         auto imported = _store.importFlags(tenantId, flags);
 

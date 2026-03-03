@@ -101,16 +101,20 @@ FFFlag flagFromJson(string tenantId, Json request) {
 
     // Parse variations
     if ("variations" in request && request["variations"].type == Json.Type.array) {
-        foreach (item; request["variations"]) {
-            f.variations ~= variationFromJson(item);
-        }
+        () @trusted {
+            foreach (item; request["variations"]) {
+                f.variations ~= variationFromJson(item);
+            }
+        }();
     }
 
     // Parse direct rules
     if ("direct_rules" in request && request["direct_rules"].type == Json.Type.array) {
-        foreach (item; request["direct_rules"]) {
-            f.directRules ~= directRuleFromJson(item);
-        }
+        () @trusted {
+            foreach (item; request["direct_rules"]) {
+                f.directRules ~= directRuleFromJson(item);
+            }
+        }();
     }
 
     // Parse percentage rule

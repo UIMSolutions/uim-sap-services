@@ -64,10 +64,12 @@ IPGroup groupFromJson(string tenantId, Json request) {
         g.groupId = request["group_id"].get!string;
 
     if ("member_user_ids" in request && request["member_user_ids"].type == Json.Type.array) {
-        foreach (item; request["member_user_ids"]) {
-            if (item.type == Json.Type.string)
-                g.memberUserIds ~= item.get!string;
-        }
+        () @trusted {
+            foreach (item; request["member_user_ids"]) {
+                if (item.type == Json.Type.string)
+                    g.memberUserIds ~= item.get!string;
+            }
+        }();
     }
 
     g.createdAt = Clock.currTime().toISOExtString();

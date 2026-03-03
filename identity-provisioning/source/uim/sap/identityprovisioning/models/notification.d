@@ -62,10 +62,12 @@ IPNotification notificationFromJson(string tenantId, Json request) {
         n.subscriptionId = request["subscription_id"].get!string;
 
     if ("event_types" in request && request["event_types"].type == Json.Type.array) {
-        foreach (item; request["event_types"]) {
-            if (item.type == Json.Type.string)
-                n.eventTypes ~= item.get!string;
-        }
+        () @trusted {
+            foreach (item; request["event_types"]) {
+                if (item.type == Json.Type.string)
+                    n.eventTypes ~= item.get!string;
+            }
+        }();
     }
 
     n.createdAt = Clock.currTime().toISOExtString();

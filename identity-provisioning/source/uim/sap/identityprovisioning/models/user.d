@@ -78,10 +78,12 @@ IPUser userFromJson(string tenantId, Json request) {
         u.userId = request["user_id"].get!string;
 
     if ("group_ids" in request && request["group_ids"].type == Json.Type.array) {
-        foreach (item; request["group_ids"]) {
-            if (item.type == Json.Type.string)
-                u.groupIds ~= item.get!string;
-        }
+        () @trusted {
+            foreach (item; request["group_ids"]) {
+                if (item.type == Json.Type.string)
+                    u.groupIds ~= item.get!string;
+            }
+        }();
     }
 
     u.createdAt = Clock.currTime().toISOExtString();

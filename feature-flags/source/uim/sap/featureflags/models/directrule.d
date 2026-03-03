@@ -39,11 +39,13 @@ FFDirectRule directRuleFromJson(Json request) {
     r.ruleId = randomUUID().toString();
 
     if ("identifiers" in request && request["identifiers"].type == Json.Type.array) {
-        foreach (item; request["identifiers"]) {
-            if (item.type == Json.Type.string) {
-                r.identifiers ~= item.get!string;
+        () @trusted {
+            foreach (item; request["identifiers"]) {
+                if (item.type == Json.Type.string) {
+                    r.identifiers ~= item.get!string;
+                }
             }
-        }
+        }();
     }
     if ("variation_id" in request && request["variation_id"].type == Json.Type.string) {
         r.variationId = request["variation_id"].get!string;

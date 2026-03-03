@@ -1,6 +1,8 @@
 module uim.sap.featureflags;
 
 public {
+  import uim.sap.service;
+
   import uim.sap.featureflags.config;
   import uim.sap.featureflags.exceptions;
   import uim.sap.featureflags.helpers;
@@ -9,7 +11,5 @@ public {
   import uim.sap.featureflags.service;
   import uim.sap.featureflags.server;
 }
-
-import uim.sap.service;
 
 enum UIM_FF_VERSION = "1.0.0";

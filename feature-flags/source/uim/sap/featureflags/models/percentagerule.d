@@ -47,16 +47,18 @@ FFPercentageRule percentageRuleFromJson(Json request) {
     r.ruleId = randomUUID().toString();
 
     if ("entries" in request && request["entries"].type == Json.Type.array) {
-        foreach (item; request["entries"]) {
-            FFPercentageEntry entry;
-            if ("variation_id" in item && item["variation_id"].type == Json.Type.string) {
-                entry.variationId = item["variation_id"].get!string;
+        () @trusted {
+            foreach (item; request["entries"]) {
+                FFPercentageEntry entry;
+                if ("variation_id" in item && item["variation_id"].type == Json.Type.string) {
+                    entry.variationId = item["variation_id"].get!string;
+                }
+                if ("weight" in item && item["weight"].type == Json.Type.int_) {
+                    entry.weight = cast(uint) item["weight"].get!long;
+                }
+                r.entries ~= entry;
             }
-            if ("weight" in item && item["weight"].type == Json.Type.int_) {
-                entry.weight = cast(uint) item["weight"].get!long;
-            }
-            r.entries ~= entry;
-        }
+        }();
     }
     if ("rule_id" in request && request["rule_id"].type == Json.Type.string) {
         r.ruleId = request["rule_id"].get!string;
