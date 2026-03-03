@@ -1,0 +1,79 @@
+module uim.sap.identityprovisioning.models.system;
+
+import uim.sap.identityprovisioning;
+
+mixin(ShowModule!());
+
+@safe:
+
+/** A provisioning system — either source or target.
+ *
+ *  Source systems are read from during provisioning jobs.
+ *  Target systems are written to.
+ *  A system may be both (proxy mode).
+ *
+ *  `systemType` values: "source", "target", "proxy"
+ *  `connectorType` values: "sap-ias", "sap-sf", "scim", "ldap", "custom", …
+ */
+struct IPSystem {
+    string tenantId;
+    string systemId;
+    string systemName;
+    string description;
+    string systemType = "source";     // "source" | "target" | "proxy"
+    string connectorType = "scim";    // "sap-ias" | "sap-sf" | "scim" | "ldap" | "custom"
+    string endpointUrl;
+    string authType = "basic";        // "basic" | "bearer" | "oauth2" | "certificate"
+    string status = "active";         // "active" | "inactive" | "error"
+    long userCount = 0;
+    long groupCount = 0;
+    string lastSyncAt;
+    string createdAt;
+    string updatedAt;
+
+    Json toJson() const {
+        Json j = Json.emptyObject;
+        j["tenant_id"] = tenantId;
+        j["system_id"] = systemId;
+        j["system_name"] = systemName;
+        j["description"] = description;
+        j["system_type"] = systemType;
+        j["connector_type"] = connectorType;
+        j["endpoint_url"] = endpointUrl;
+        j["auth_type"] = authType;
+        j["status"] = status;
+        j["user_count"] = userCount;
+        j["group_count"] = groupCount;
+        j["last_sync_at"] = lastSyncAt;
+        j["created_at"] = createdAt;
+        j["updated_at"] = updatedAt;
+        return j;
+    }
+}
+
+IPSystem systemFromJson(string tenantId, Json request) {
+    IPSystem s;
+    s.tenantId = tenantId;
+    s.systemId = randomUUID().toString();
+
+    if ("system_name" in request && request["system_name"].type == Json.Type.string)
+        s.systemName = request["system_name"].get!string;
+    if ("description" in request && request["description"].type == Json.Type.string)
+        s.description = request["description"].get!string;
+    if ("system_type" in request && request["system_type"].type == Json.Type.string)
+        s.systemType = request["system_type"].get!string;
+    if ("connector_type" in request && request["connector_type"].type == Json.Type.string)
+        s.connectorType = request["connector_type"].get!string;
+    if ("endpoint_url" in request && request["endpoint_url"].type == Json.Type.string)
+        s.endpointUrl = request["endpoint_url"].get!string;
+    if ("auth_type" in request && request["auth_type"].type == Json.Type.string)
+        s.authType = request["auth_type"].get!string;
+    if ("status" in request && request["status"].type == Json.Type.string)
+        s.status = request["status"].get!string;
+    if ("system_id" in request && request["system_id"].type == Json.Type.string)
+        s.systemId = request["system_id"].get!string;
+
+    s.createdAt = Clock.currTime().toISOExtString();
+    s.updatedAt = s.createdAt;
+    return s;
+}
