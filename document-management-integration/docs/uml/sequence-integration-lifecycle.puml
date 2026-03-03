@@ -1,0 +1,99 @@
+@startuml sequence_integration_lifecycle
+!theme plain
+
+title UIM Document Management Integration Service — Integration Lifecycle Sequence
+
+actor "Business App\n(e.g. SAP Fiori)" as App
+participant "Server\n(REST API)" as S
+participant "Service\n(Business Logic)" as SVC
+participant "Store\n(In-Memory)" as DB
+participant "EncryptionManager" as ENC
+
+== Register Tenant ==
+App -> S : POST /v1/tenants  {name: "Acme Corp"}
+S -> SVC : createTenant(body)
+SVC -> DB : addTenant(tenant)
+SVC -> DB : addRepository(internalRepo)
+SVC --> S : {success, tenant}
+S --> App : 201 Created
+
+== Create Document (tenant-scoped) ==
+App -> S : POST /v1/tenants/{tid}/repositories/{rid}/documents
+S -> SVC : createDocument(tid, repoId, folderId, body)
+SVC -> DB : addDocument(doc)
+SVC -> DB : addVersion(v1)
+alt encryption enabled
+    SVC -> ENC : encrypt(content)
+    ENC --> SVC : ciphertext (Base64)
+end
+SVC -> DB : storeContent(versionId, content)
+SVC --> S : {success, document}
+S --> App : 201 Created
+
+== Create Integration Link ==
+App -> S : POST /v1/tenants/{tid}/links
+note right
+  Body:
+  { external_object_id: "SO-12345",
+    external_object_type: "SalesOrder",
+    document_id: "..." }
+end note
+S -> SVC : createLink(tid, body)
+SVC -> DB : addLink(link)
+SVC --> S : {success, link}
+S --> App : 201 Created
+
+== Retrieve Links for Business Object ==
+App -> S : GET /v1/tenants/{tid}/links?external_object_type=SalesOrder&external_object_id=SO-12345
+S -> SVC : listLinksByObject(tid, "SalesOrder", "SO-12345")
+SVC -> DB : listLinksByObject(...)
+SVC --> S : {resources: [...]}
+S --> App : 200 OK
+
+== Configure Embedded UI5 Component ==
+App -> S : PUT /v1/tenants/{tid}/ui-component
+note right
+  Body:
+  { theme: "sap_horizon",
+    allow_upload: true,
+    show_version_history: true }
+end note
+S -> SVC : setUIComponentConfig(tid, body)
+SVC -> DB : setUIConfig(cfg)
+SVC --> S : {success, ui_component}
+S --> App : 200 OK
+
+== Check-Out / Edit / Check-In ==
+App -> S : POST /v1/tenants/{tid}/documents/{id}/checkout
+S -> SVC : checkOutDocument(tid, docId, {user})
+SVC -> DB : updateDocument(status=checked_out)
+SVC --> S : {success, document}
+S --> App : 200 OK
+
+App -> S : PUT /v1/tenants/{tid}/documents/{id}
+S -> SVC : updateDocument(tid, docId, changes)
+SVC -> DB : updateDocument(doc)
+SVC --> S : {success, document}
+S --> App : 200 OK
+
+App -> S : POST /v1/tenants/{tid}/documents/{id}/checkin
+S -> SVC : checkInDocument(tid, docId, {user, content})
+SVC -> DB : addVersion(newVer)
+SVC -> DB : storeContent(versionId, content)
+SVC -> DB : updateDocument(status=checked_in)
+SVC --> S : {success, document}
+S --> App : 200 OK
+
+== View / Download ==
+App -> S : GET /v1/tenants/{tid}/documents/{id}/view
+S -> SVC : viewDocument(tid, docId)
+SVC -> DB : getDocument(docId)
+SVC -> DB : getContent(latestVersionId)
+alt encrypted
+    SVC -> ENC : decrypt(ciphertext)
+    ENC --> SVC : plaintext
+end
+SVC --> S : {viewable, viewer_type, content}
+S --> App : 200 OK
+
+@enduml

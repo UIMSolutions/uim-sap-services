@@ -1,0 +1,47 @@
+@startuml component_architecture
+!theme plain
+
+title UIM Document Management Integration Service — Component Architecture
+
+actor "Business App\n(SAP Fiori / Custom)" as App
+actor "End User\n(Embedded UI5 Component)" as User
+actor "Admin / Operator" as Admin
+
+node "Document Management Integration Service Runtime" {
+    component "DocMgmtIntegrationServer\n(vibe.d REST API)" as Api
+    component "DocMgmtIntegrationService\n(Tenant-Scoped Business Logic)" as Domain
+    component "EncryptionManager\n(XOR-SHA256-derived)" as Crypto
+    component "RepositoryRegistry\n(Tenant-Scoped Connectors)" as Registry
+    database "DocMgmtIntegrationStore\n(In-Memory: Tenants,\nDocs, Folders, Versions,\nLinks, UI Configs)" as Store
+}
+
+cloud "External CMIS Repository\n(On-Premise / Cloud)" as ExtRepo
+
+App --> Api : Integration APIs\n(tenant-scoped CRUD)
+User --> Api : Embedded UI5 component\ncalls via REST
+Admin --> Api : Tenant mgmt,\nEncryption config
+Api --> Domain : route + validate\n+ extract tenantId
+Domain --> Crypto : encrypt / decrypt content
+Domain --> Registry : connect / list repos\n(per tenant)
+Domain --> Store : persist / read / move / copy\n(tenant-isolated)
+Registry --> ExtRepo : CMIS AtomPub binding
+
+note right of Domain
+  Integration Features:
+  - Multi-tenant isolation
+  - Tenant CRUD lifecycle
+  - Integration Links
+    (bind external business objects)
+  - Embeddable UI5 component config
+  - File & Folder CRUD
+  - Breadcrumb navigation
+  - Move & Copy operations
+  - Document versioning
+  - Check-out / Check-in workflow
+  - Metadata management
+  - Encryption at rest
+  - CMIS repository support
+  - Sorting / personalisation
+end note
+
+@enduml

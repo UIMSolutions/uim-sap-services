@@ -1,0 +1,247 @@
+@startuml class_model
+!theme plain
+
+title UIM Document Management Integration Service — Class Model
+
+class DocMgmtIntegrationConfig {
+    +host : string
+    +port : ushort
+    +basePath : string
+    +serviceName : string
+    +serviceVersion : string
+    +maxUploadSizeMB : int
+    +defaultRepository : string
+    +encryptionEnabled : bool
+    +encryptionKey : string
+    +versioningEnabled : bool
+    +multitenancyEnabled : bool
+    +requireAuthToken : bool
+    +authToken : string
+    +customHeaders : string[string]
+    +validate() : void
+}
+
+class DocMgmtIntegrationService {
+    -_config : DocMgmtIntegrationConfig
+    -_store : DocMgmtIntegrationStore
+    -_encryption : EncryptionManager
+    -_registry : RepositoryRegistry
+    +health() : Json
+    +ready() : Json
+    -- Tenants --
+    +createTenant(Json) : Json
+    +getTenant(string) : Json
+    +listTenants() : Json
+    +updateTenant(string, Json) : Json
+    +deleteTenant(string) : Json
+    -- Repositories (tenant-scoped) --
+    +listRepositories(tid) : Json
+    +getRepository(tid, repoId) : Json
+    +connectRepository(tid, Json) : Json
+    +disconnectRepository(tid, repoId) : Json
+    -- Folders --
+    +createFolder(tid, repoId, parentId, Json) : Json
+    +getFolder(tid, folderId) : Json
+    +updateFolder(tid, folderId, Json) : Json
+    +deleteFolder(tid, folderId) : Json
+    +listFolderContents(tid, repoId, folderId) : Json
+    +moveFolder(tid, folderId, Json) : Json
+    +copyFolder(tid, folderId, Json) : Json
+    -- Documents --
+    +createDocument(tid, repoId, folderId, Json) : Json
+    +getDocument(tid, docId) : Json
+    +updateDocument(tid, docId, Json) : Json
+    +deleteDocument(tid, docId) : Json
+    +moveDocument(tid, docId, Json) : Json
+    +copyDocument(tid, docId, Json) : Json
+    +viewDocument(tid, docId) : Json
+    +downloadDocument(tid, docId) : Json
+    -- Metadata --
+    +getDocumentMetadata(tid, docId) : Json
+    +updateDocumentMetadata(tid, docId, Json) : Json
+    +getFolderProperties(tid, folderId) : Json
+    +updateFolderProperties(tid, folderId, Json) : Json
+    -- Versioning --
+    +listVersions(tid, docId) : Json
+    +createVersion(tid, docId, Json) : Json
+    +getVersion(tid, docId, verId) : Json
+    -- Check-out / Check-in --
+    +checkOutDocument(tid, docId, Json) : Json
+    +checkInDocument(tid, docId, Json) : Json
+    +cancelCheckOut(tid, docId, Json) : Json
+    -- Sorting --
+    +listDocumentsSorted(tid, repoId, folderId, Json) : Json
+    -- Encryption --
+    +encryptionStatus() : Json
+    -- UI Component --
+    +getUIComponentConfig(tid) : Json
+    +setUIComponentConfig(tid, Json) : Json
+    +deleteUIComponentConfig(tid) : Json
+    -- Integration Links --
+    +createLink(tid, Json) : Json
+    +getLink(tid, linkId) : Json
+    +deleteLink(tid, linkId) : Json
+    +listLinks(tid) : Json
+    +listLinksByObject(tid, type, id) : Json
+    +listLinksByDocument(tid, docId) : Json
+}
+
+class DocMgmtIntegrationServer {
+    -_service : DocMgmtIntegrationService
+    +run() : void
+    -handleRequest(req, res) : void
+    -validateAuth(req) : void
+    -routeV1(seg, req, res) : bool
+    -routeTenants(seg, req, res) : bool
+    -routeTenantSubResources(tid, seg, req, res) : bool
+}
+
+class DocMgmtIntegrationStore {
+    -_tenants : Tenant[string]
+    -_repositories : Repository[string]
+    -_folders : Folder[string]
+    -_documents : Document[string]
+    -_versions : DocumentVersion[][string]
+    -_contentStore : string[string]
+    -_uiConfigs : UIComponentConfig[string]
+    -_links : IntegrationLink[string]
+    -_lock : Mutex
+    +addTenant() / getTenant() / listTenants()
+    +addRepository() / getRepository() / listRepositories(tid)
+    +addFolder() / getFolder() / listFolders(tid, repoId, parentId)
+    +addDocument() / getDocument() / listDocuments(tid, repoId, folderId)
+    +moveDocument() / copyDocument()
+    +addVersion() / listVersions() / getVersion()
+    +storeContent() / getContent()
+    +setUIConfig() / getUIConfig() / removeUIConfig()
+    +addLink() / getLink() / removeLink()
+    +listLinks(tid) / listLinksByObject() / listLinksByDocument()
+}
+
+class EncryptionManager {
+    -_enabled : bool
+    -_keyBytes : ubyte[]
+    +encrypt(ubyte[]) : string
+    +decrypt(string) : ubyte[]
+    +contentHash(ubyte[]) : string
+}
+
+interface IRepositoryConnector {
+    +ping() : bool
+    +info() : Repository
+    +repositoryId() : string
+    +tenantId() : string
+}
+
+class RepositoryRegistry {
+    -_connectors : IRepositoryConnector[string]
+    +register(IRepositoryConnector) : void
+    +get(string) : IRepositoryConnector
+    +listForTenant(string) : IRepositoryConnector[]
+    +listAll() : IRepositoryConnector[]
+    +remove(string) : void
+}
+
+struct Tenant {
+    +tenantId : string
+    +name : string
+    +description : string
+    +active : bool
+    +createdAt : SysTime
+    +modifiedAt : SysTime
+}
+
+struct Repository {
+    +repositoryId : string
+    +tenantId : string
+    +name : string
+    +vendorName : string
+    +cmisCompliant : bool
+    +encryptionEnabled : bool
+}
+
+struct Folder {
+    +folderId : string
+    +tenantId : string
+    +repositoryId : string
+    +parentFolderId : string
+    +name : string
+    +properties : Json
+}
+
+struct Document {
+    +documentId : string
+    +tenantId : string
+    +repositoryId : string
+    +folderId : string
+    +name : string
+    +mimeType : string
+    +sizeBytes : long
+    +status : DocumentStatus
+    +encrypted : bool
+    +currentVersion : int
+    +latestVersionId : string
+    +properties : Json
+}
+
+struct DocumentVersion {
+    +versionId : string
+    +documentId : string
+    +tenantId : string
+    +versionNumber : int
+    +versionLabel : string
+    +isMajor : bool
+    +encrypted : bool
+}
+
+struct UIComponentConfig {
+    +tenantId : string
+    +repositoryId : string
+    +componentName : string
+    +theme : string
+    +locale : string
+    +showBreadcrumbs : bool
+    +allowUpload : bool
+    +showStatusManagement : bool
+}
+
+struct IntegrationLink {
+    +linkId : string
+    +tenantId : string
+    +externalObjectId : string
+    +externalObjectType : string
+    +documentId : string
+    +repositoryId : string
+}
+
+struct Breadcrumb {
+    +folderId : string
+    +name : string
+}
+
+' Relationships
+DocMgmtIntegrationServer --> DocMgmtIntegrationService
+DocMgmtIntegrationService --> DocMgmtIntegrationConfig
+DocMgmtIntegrationService --> DocMgmtIntegrationStore
+DocMgmtIntegrationService --> EncryptionManager
+DocMgmtIntegrationService --> RepositoryRegistry
+DocMgmtIntegrationStore --> Tenant
+DocMgmtIntegrationStore --> Repository
+DocMgmtIntegrationStore --> Folder
+DocMgmtIntegrationStore --> Document
+DocMgmtIntegrationStore --> DocumentVersion
+DocMgmtIntegrationStore --> UIComponentConfig
+DocMgmtIntegrationStore --> IntegrationLink
+
+Tenant "1" -- "*" Repository : owns
+Tenant "1" -- "*" IntegrationLink : owns
+Tenant "1" -- "0..1" UIComponentConfig : configures
+Repository "1" -- "*" Folder : contains
+Folder "1" -- "*" Document : contains
+Document "1" -- "*" DocumentVersion : has
+Document "1" -- "*" IntegrationLink : referenced by
+
+IRepositoryConnector <|.. InternalRepositoryConnector
+IRepositoryConnector <|.. ExternalCmisConnector
+
+@enduml

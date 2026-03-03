@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uim-sap-docmgmt-integration
+  labels:
+    app: uim-sap-docmgmt-integration
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: uim-sap-docmgmt-integration
+  template:
+    metadata:
+      labels:
+        app: uim-sap-docmgmt-integration
+    spec:
+      containers:
+      - name: uim-sap-docmgmt-integration
+        image: ghcr.io/uimsolutions/uim-sap-docmgmt-integration:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 8091
+        envFrom:
+        - configMapRef:
+            name: uim-sap-docmgmt-integration-config
+        env:
+        - name: DMSI_AUTH_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: uim-sap-docmgmt-integration-secret
+              key: auth-token
+              optional: true
+        - name: DMSI_ENCRYPTION_KEY
+          valueFrom:
+            secretKeyRef:
+              name: uim-sap-docmgmt-integration-secret
+              key: encryption-key
+              optional: true
+        readinessProbe:
+          httpGet:
+            path: /api/docmgmt-integration/ready
+            port: http
+          initialDelaySeconds: 3
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /api/docmgmt-integration/health
+            port: http
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        resources:
+          requests:
+            cpu: 200m
+            memory: 256Mi
+          limits:
+            cpu: 1000m
+            memory: 2Gi
+        volumeMounts:
+        - name: document-storage
+          mountPath: /data/documents
+      volumes:
+      - name: document-storage
+        persistentVolumeClaim:
+          claimName: uim-sap-docmgmt-integration-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: uim-sap-docmgmt-integration-pvc
+  labels:
+    app: uim-sap-docmgmt-integration
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
