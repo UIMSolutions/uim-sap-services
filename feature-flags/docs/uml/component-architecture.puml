@@ -1,0 +1,31 @@
+@startuml component_architecture
+!theme plain
+
+title UIM SAP Feature Flags (FF) - Component Architecture
+
+actor "Business Application" as App
+actor "DevOps / Admin" as Admin
+
+node "Feature Flags Service Runtime" {
+  component "FFServer\n(vibe.d REST API)" as Api
+  component "FFService\n(Evaluation Engine +\nCRUD + Export/Import)" as Domain
+  database "FFStore\n(In-Memory Data)" as Store
+}
+
+App --> Api : evaluate flags,\nquery flag state
+Admin --> Api : create/update/delete flags,\ntoggle, export/import,\ndashboard
+Api --> Domain : routed use-case operations
+Domain --> Store : persist/retrieve flag data
+
+note right of Domain
+Capabilities:
+- Boolean flags (on/off)
+- String flags (multi-variation)
+- Direct delivery (identifier targeting)
+- Percentage delivery (weighted rollout)
+- Export / import all flags
+- Tenant-scoped multitenancy
+- Dashboard analytics
+end note
+
+@enduml

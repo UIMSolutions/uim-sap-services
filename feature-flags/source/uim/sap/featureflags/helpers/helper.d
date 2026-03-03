@@ -1,0 +1,22 @@
+module uim.sap.featureflags.helpers.helper;
+
+import uim.sap.featureflags;
+
+mixin(ShowModule!());
+
+@safe:
+
+/** Compute a deterministic bucket (0–99) for percentage-based rollout.
+ *
+ *  Uses a simple FNV-1a-inspired hash of the identifier string so that
+ *  the same identifier always lands in the same bucket, providing
+ *  consistent delivery across evaluations.
+ */
+uint percentageBucket(string identifier) {
+    ulong hash = 2_166_136_261;
+    foreach (c; identifier) {
+        hash ^= cast(ulong) c;
+        hash *= 16_777_619;
+    }
+    return cast(uint)(hash % 100);
+}

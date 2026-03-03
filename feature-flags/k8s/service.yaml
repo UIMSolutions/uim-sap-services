@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: uim-sap-ff
+  labels:
+    app: uim-sap-ff
+spec:
+  selector:
+    app: uim-sap-ff
+  ports:
+  - name: http
+    protocol: TCP
+    port: 80
+    targetPort: 8094
+  type: ClusterIP
