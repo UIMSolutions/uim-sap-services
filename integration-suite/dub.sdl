@@ -1,0 +1,50 @@
+// Metadata
+name "integration-suite"
+description "SAP Integration Suite-like iPaaS service for end-to-end process integration, API management, event-driven architecture, and more — built with D, vibe.d and uim-framework"
+homepage "https://github.com/UIMSolutions/uim-sap"
+authors "Ozan Nurettin Süel" "UI Manufaktur"
+copyright "Copyright © 2018-2026, Ozan Nurettin Süel"
+license "Apache-2.0"
+
+targetType "executable"
+targetName "uim-sap-is-service"
+targetPath "build"
+sourcePaths "source"
+importPaths "source"
+
+// Dependency on the core framework
+dependency "uim-sap:service" path=".."
+
+// Build settings
+buildRequirements "allowWarnings" "silenceDeprecations"
+buildOptions "ignoreDeprecations" "debugInfo"
+
+// Configurations
+configuration "default" {
+	targetType "executable"
+}
+
+configuration "modules" {
+	targetType "library"
+	versions "show_module"
+}
+
+configuration "tests" {
+	targetType "library"
+	versions "show_module" "show_test"
+}
+
+configuration "inits" {
+	targetType "library"
+	versions "show_module" "show_init"
+}
+
+configuration "calls" {
+	targetType "library"
+	versions "show_module" "show_test" "show_function"
+}
+
+configuration "verbose" {
+	targetType "library"
+	versions "show_module" "show_test" "show_init" "show_function"
+}

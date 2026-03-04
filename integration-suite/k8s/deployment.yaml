@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uim-sap-is
+  labels:
+    app: uim-sap-is
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: uim-sap-is
+  template:
+    metadata:
+      labels:
+        app: uim-sap-is
+    spec:
+      containers:
+      - name: uim-sap-is
+        image: ghcr.io/uimsolutions/uim-sap-is:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 8100
+        envFrom:
+        - configMapRef:
+            name: uim-sap-is-config
+        env:
+        - name: IS_AUTH_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: uim-sap-is-secret
+              key: auth-token
+              optional: true
+        readinessProbe:
+          httpGet:
+            path: /api/is/ready
+            port: http
+          initialDelaySeconds: 3
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /api/is/health
+            port: http
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        resources:
+          requests:
+            cpu: 200m
+            memory: 256Mi
+          limits:
+            cpu: 1000m
+            memory: 1Gi
