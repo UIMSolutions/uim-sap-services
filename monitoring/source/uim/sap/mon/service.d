@@ -1,15 +1,12 @@
+/****************************************************************************************************************
+* Copyright: © 2018-2026 Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*) 
+* License: Subject to the terms of the Apache 2.0 license, as written in the included LICENSE.txt file. 
+* Authors: Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*)
+*****************************************************************************************************************/
 module uim.sap.mon.service;
 
-import std.datetime : Clock;
-import std.math : fmod;
-import std.string : toLower;
-
-import vibe.data.json : Json;
-
-import uim.sap.mon.config;
-import uim.sap.mon.exceptions;
-import uim.sap.mon.models;
-import uim.sap.mon.store;
+import uim.sap.mon;
+@safe:
 
 class MONService : SAPService {
     private MONConfig _config;
