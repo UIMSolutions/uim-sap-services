@@ -13,13 +13,13 @@ import uim.sap.documentmanagement.service;
 /**
  * HTTP server for the Document Management Service.
  *
- * Routes all incoming requests to the appropriate DocumentManagementService
+ * Routes all incoming requests to the appropriate DOCService
  * method based on URL path segments and HTTP method.
  */
-class DocumentManagementServer {
-    private DocumentManagementService _service;
+class DOCServer {
+    private DOCService _service;
 
-    this(DocumentManagementService service) {
+    this(DOCService service) {
         _service = service;
     }
 
@@ -78,17 +78,17 @@ class DocumentManagementServer {
 
             respondError(res, "Not found", 404);
 
-        } catch (DocumentManagementAuthorizationException e) {
+        } catch (DOCAuthorizationException e) {
             respondError(res, e.msg, 401);
-        } catch (DocumentManagementNotFoundException e) {
+        } catch (DOCNotFoundException e) {
             respondError(res, e.msg, 404);
-        } catch (DocumentManagementConflictException e) {
+        } catch (DOCConflictException e) {
             respondError(res, e.msg, 409);
-        } catch (DocumentManagementPayloadTooLargeException e) {
+        } catch (DOCPayloadTooLargeException e) {
             respondError(res, e.msg, 413);
-        } catch (DocumentManagementValidationException e) {
+        } catch (DOCValidationException e) {
             respondError(res, e.msg, 422);
-        } catch (DocumentManagementException e) {
+        } catch (DOCException e) {
             respondError(res, e.msg, 500);
         } catch (Exception e) {
             respondError(res, e.msg, 500);
@@ -373,10 +373,10 @@ class DocumentManagementServer {
         if (!_service.config.requireAuthToken)
             return;
         if (!("Authorization" in req.headers))
-            throw new DocumentManagementAuthorizationException("Missing Authorization header");
+            throw new DOCAuthorizationException("Missing Authorization header");
         auto expected = "Bearer " ~ _service.config.authToken;
         if (req.headers["Authorization"] != expected)
-            throw new DocumentManagementAuthorizationException("Invalid management token");
+            throw new DOCAuthorizationException("Invalid management token");
     }
 
     // -------------------------------------------------------------------

@@ -11,49 +11,49 @@ public {
 }
 
 /// Base exception for all Document Management errors.
-class DocumentManagementException : SAPException {
+class DOCException : SAPException {
     this(string message) {
         super(message);
     }
 }
 
 /// Thrown when input validation fails (maps to HTTP 422).
-class DocumentManagementValidationException : DocumentManagementException {
+class DOCValidationException : DOCException {
     this(string message) {
         super("Validation failed: " ~ message);
     }
 }
 
 /// Thrown when a resource is not found (maps to HTTP 404).
-class DocumentManagementNotFoundException : DocumentManagementException {
+class DOCNotFoundException : DOCException {
     this(string resource, string identifier) {
         super(resource ~ " not found: " ~ identifier);
     }
 }
 
 /// Thrown when authorization fails (maps to HTTP 401).
-class DocumentManagementAuthorizationException : DocumentManagementException {
+class DOCAuthorizationException : DOCException {
     this(string message) {
         super("Unauthorized: " ~ message);
     }
 }
 
 /// Thrown on configuration problems (startup failure).
-class DocumentManagementConfigurationException : DocumentManagementException {
+class DOCConfigurationException : DOCException {
     this(string message) {
         super("Configuration error: " ~ message);
     }
 }
 
 /// Thrown when a conflict occurs (maps to HTTP 409), e.g. checked-out document.
-class DocumentManagementConflictException : DocumentManagementException {
+class DOCConflictException : DOCException {
     this(string message) {
         super("Conflict: " ~ message);
     }
 }
 
 /// Thrown when the upload exceeds maximum allowed size (maps to HTTP 413).
-class DocumentManagementPayloadTooLargeException : DocumentManagementException {
+class DOCPayloadTooLargeException : DOCException {
     this(string message) {
         super("Payload too large: " ~ message);
     }

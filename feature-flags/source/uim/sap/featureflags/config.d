@@ -6,8 +6,17 @@ mixin(ShowModule!());
 
 @safe:
 
-class FFLConfig : SAPConfig {
-    string host = "0.0.0.0";
+class FFLConfig : SAPHostConfig {
+  mixin(SAPConfigTemplate!HTMRepoConfig);
+
+  override bool initialize(Json[string] initData = null) {
+    if (!super.initialize(initData)) {
+      return false;
+    }
+
+    host(initData.getString("host", "0.0.0.0"));
+    return true;
+  }
     ushort port = 8094;
     string basePath = "/api/ff";
     string serviceName = "uim-sap-ff";

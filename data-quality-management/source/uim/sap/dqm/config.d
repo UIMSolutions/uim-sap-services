@@ -4,8 +4,18 @@ import std.string : startsWith;
 
 import uim.sap.dqm.exceptions;
 
-struct DQMConfig : SAPConfig {
-    string host = "0.0.0.0";
+struct DQMConfig : SAPHostConfig {
+  mixin(SAPConfigTemplate!HTMRepoConfig);
+
+  override bool initialize(Json[string] initData = null) {
+    if (!super.initialize(initData)) {
+      return false;
+    }
+
+    host(initData.getString("host", "0.0.0.0"));
+    return true;
+  }
+
     ushort port = 8091;
     string basePath = "/api/dqm";
 

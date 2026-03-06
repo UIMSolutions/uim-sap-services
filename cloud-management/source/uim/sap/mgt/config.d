@@ -32,8 +32,17 @@ mixin(ShowModule!());
   *     basePath: "/api/mgt"
   * );
   */
-struct MGTConfig : SAPConfig {
-  string host = "0.0.0.0";
+struct MGTConfig : SAPHostConfig {
+  mixin(SAPConfigTemplate!HTMRepoConfig);
+
+  override bool initialize(Json[string] initData = null) {
+    if (!super.initialize(initData)) {
+      return false;
+    }
+
+    host(initData.getString("host", "0.0.0.0"));
+    return true;
+  }
   ushort port = 8088;
   string basePath = "/api/mgt";
 

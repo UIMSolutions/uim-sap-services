@@ -5,8 +5,17 @@ import std.string : startsWith;
 import uim.sap.cia.exceptions;
 
 /// Configuration for the Cloud Integration Automation service
-struct CIAConfig : SAPConfig {
-    string host = "0.0.0.0";
+struct CIAConfig : SAPHostConfig {
+  mixin(SAPConfigTemplate!CIAConfig);
+
+  override bool initialize(Json[string] initData = null) {
+    if (!super.initialize(initData)) {
+      return false;
+    }
+
+    host(initData.getString("host", "0.0.0.0"));
+    return true;
+  }
     ushort port = 8098;
     string basePath = "/api/cloud-integration-automation";
 

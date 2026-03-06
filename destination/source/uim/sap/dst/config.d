@@ -4,8 +4,18 @@ import std.string : startsWith;
 
 import uim.sap.dst.exceptions;
 
-struct DSTConfig : SAPConfig {
-    string host = "0.0.0.0";
+struct DSTConfig : SAPHostConfig {
+  mixin(SAPConfigTemplate!HTMRepoConfig);
+
+  override bool initialize(Json[string] initData = null) {
+    if (!super.initialize(initData)) {
+      return false;
+    }
+
+    host(initData.getString("host", "0.0.0.0"));
+    return true;
+  }
+
     ushort port = 8104;
     string basePath = "/api/destination";
 

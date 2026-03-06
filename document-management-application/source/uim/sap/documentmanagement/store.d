@@ -13,7 +13,7 @@ import uim.sap.documentmanagement.exceptions;
  * All public methods are synchronized via a Mutex to allow safe concurrent
  * access from multiple vibe.d request handler fibers.
  */
-class DocumentManagementStore : SAPStore {
+class DOCStore : SAPStore {
     // Repositories
     private Repository[string] _repositories;
 

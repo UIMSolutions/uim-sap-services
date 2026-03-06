@@ -1,11 +1,19 @@
 module uim.sap.html5repo.config;
 
-import std.string : startsWith;
+import uim.sap.html5repo;
 
-import uim.sap.html5repo.exceptions;
+struct HTMRepoConfig : SAPHostConfig {
+  mixin(SAPConfigTemplate!HTMRepoConfig);
 
-struct HTMRepoConfig : SAPConfig {
-    string host = "0.0.0.0";
+  override bool initialize(Json[string] initData = null) {
+    if (!super.initialize(initData)) {
+      return false;
+    }
+
+    host(initData.getString("host", "0.0.0.0"));
+    return true;
+  }
+
     ushort port = 8094;
     string basePath = "/api/html5-repo";
 

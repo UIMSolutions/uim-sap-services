@@ -11,8 +11,18 @@ mixin(ShowModule!());
 
 @safe:
 
-class DSPConfig : SAPConfig {
-  string host = "0.0.0.0";
+class DSPConfig : SAPHostConfig {
+  mixin(SAPConfigTemplate!DSPConfig);
+
+  override bool initialize(Json[string] initData = null) {
+    if (!super.initialize(initData)) {
+      return false;
+    }
+
+    host(initData.getString("host", "0.0.0.0"));
+    return true;
+  }
+
   ushort port = 8098;
   string basePath = "/api/datasphere";
 

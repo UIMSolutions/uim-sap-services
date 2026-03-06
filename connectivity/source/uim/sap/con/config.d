@@ -4,8 +4,18 @@ import std.string : startsWith;
 
 import uim.sap.con.exceptions;
 
-struct CONConfig : SAPConfig {
-    string host = "0.0.0.0";
+struct CONConfig : SAPHostConfig {
+  mixin(SAPConfigTemplate!CONConfig);
+
+  override bool initialize(Json[string] initData = null) {
+    if (!super.initialize(initData)) {
+      return false;
+    }
+
+    host(initData.getString("host", "0.0.0.0"));
+    return true;
+  }
+
     ushort port = 8085;
     string basePath = "/api/con";
 
