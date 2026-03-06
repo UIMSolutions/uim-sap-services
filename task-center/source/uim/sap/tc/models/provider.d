@@ -1,4 +1,4 @@
-module uim.sap.tc.models.provider;
+module uim.sap.tkc.models.provider;
 
 import std.datetime : SysTime;
 

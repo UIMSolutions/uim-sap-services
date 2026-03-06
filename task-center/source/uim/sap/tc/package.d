@@ -1,10 +1,19 @@
-module uim.sap.tc;
+/****************************************************************************************************************
+* Copyright: © 2018-2026 Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*) 
+* License: Subject to the terms of the Apache 2.0 license, as written in the included LICENSE.txt file. 
+* Authors: Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*)
+*****************************************************************************************************************/
+module uim.sap.tkc;
 
-public import uim.sap.tc.config;
-public import uim.sap.tc.exceptions;
-public import uim.sap.tc.models;
-public import uim.sap.tc.store;
-public import uim.sap.tc.service;
-public import uim.sap.tc.server;
+public {
+  import uim.sap.service;
+
+  import uim.sap.tkc.config;
+  import uim.sap.tkc.exceptions;
+  import uim.sap.tkc.models;
+  import uim.sap.tkc.store;
+  import uim.sap.tkc.service;
+  import uim.sap.tkc.server;
+}
 
 enum UIM_TC_VERSION = "1.0.0";

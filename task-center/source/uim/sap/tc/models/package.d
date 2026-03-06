@@ -1,5 +1,5 @@
-module uim.sap.tc.models;
+module uim.sap.tkc.models;
 
-public import uim.sap.tc.models.provider;
-public import uim.sap.tc.models.task;
-public import uim.sap.tc.models.taskaction;
+public import uim.sap.tkc.models.provider;
+public import uim.sap.tkc.models.task;
+public import uim.sap.tkc.models.taskaction;

@@ -1,9 +1,11 @@
-module uim.sap.tc.config;
+/****************************************************************************************************************
+* Copyright: © 2018-2026 Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*) 
+* License: Subject to the terms of the Apache 2.0 license, as written in the included LICENSE.txt file. 
+* Authors: Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*)
+*****************************************************************************************************************/
+module uim.sap.tkc.config;
 
-import std.path : buildPath;
-import std.string : startsWith;
-
-import uim.sap.tc.exceptions;
+import uim.sap.tkc;
 
 struct TCConfig : SAPConfig {
     string host = "0.0.0.0";

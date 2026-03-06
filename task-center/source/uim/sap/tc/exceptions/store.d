@@ -1,4 +1,4 @@
-module uim.sap.tc.exceptions.store;
+module uim.sap.tkc.exceptions.store;
 
 class TCStoreException : TCException {
     this(string message, string file = __FILE__, size_t line = __LINE__) {

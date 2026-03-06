@@ -1,10 +1,10 @@
-module uim.sap.tc.models.task;
+module uim.sap.tkc.models.task;
 
 import std.datetime : SysTime;
 
 import vibe.data.json : Json;
 
-import uim.sap.tc.models.taskaction;
+import uim.sap.tkc.models.taskaction;
 
 @safe:
 

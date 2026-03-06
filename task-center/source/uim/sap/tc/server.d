@@ -1,4 +1,9 @@
-module uim.sap.tc.server;
+/****************************************************************************************************************
+* Copyright: © 2018-2026 Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*) 
+* License: Subject to the terms of the Apache 2.0 license, as written in the included LICENSE.txt file. 
+* Authors: Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*)
+*****************************************************************************************************************/
+module uim.sap.tkc.server;
 
 import std.array : split;
 import std.conv : to;
@@ -8,8 +13,8 @@ import vibe.data.json : Json;
 import vibe.http.common : HTTPMethod;
 import vibe.http.server : HTTPServerRequest, HTTPServerResponse, HTTPServerSettings, listenHTTP;
 
-import uim.sap.tc.exceptions;
-import uim.sap.tc.service;
+import uim.sap.tkc.exceptions;
+import uim.sap.tkc.service;
 
 class TCServer {
   private TCService _service;

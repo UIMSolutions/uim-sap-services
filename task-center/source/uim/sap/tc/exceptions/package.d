@@ -1,3 +1,3 @@
-module uim.sap.tc.exceptions;
+module uim.sap.tkc.exceptions;
 
-public import uim.sap.tc.exceptions.exception;
+public import uim.sap.tkc.exceptions.exception;

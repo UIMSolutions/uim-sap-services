@@ -1,4 +1,4 @@
-module uim.sap.tc.exceptions.configuration;
+module uim.sap.tkc.exceptions.configuration;
 
 
 class TCConfigurationException : TCException {
