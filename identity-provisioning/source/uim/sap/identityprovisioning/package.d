@@ -12,4 +12,4 @@ public {
   import uim.sap.identityprovisioning.server;
 }
 
-enum UIM_IP_VERSION = "1.0.0";
+enum UIM_IPV_VERSION = "1.0.0";

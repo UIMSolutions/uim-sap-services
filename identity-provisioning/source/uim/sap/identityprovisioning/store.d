@@ -9,14 +9,14 @@ mixin(ShowModule!());
 @safe:
 
 /** Thread-safe in-memory store for all Identity Provisioning data. */
-class IPStore : SAPStore {
-    private IPSystem[string] _systems;
-    private IPUser[string] _users;
-    private IPGroup[string] _groups;
-    private IPTransformation[string] _transformations;
-    private IPJob[string] _jobs;
-    private IPJobLog[][string] _jobLogs;        // jobId → logs
-    private IPNotification[string] _notifications;
+class IPVStore : SAPStore {
+    private IPVSystem[string] _systems;
+    private IPVUser[string] _users;
+    private IPVGroup[string] _groups;
+    private IPVTransformation[string] _transformations;
+    private IPVJob[string] _jobs;
+    private IPVJobLog[][string] _jobLogs;        // jobId → logs
+    private IPVNotification[string] _notifications;
 
     private Mutex _lock;
 
@@ -26,7 +26,7 @@ class IPStore : SAPStore {
 
     // ─── System operations ────────────────────────────────────
 
-    IPSystem upsertSystem(IPSystem system) {
+    IPVSystem upsertSystem(IPVSystem system) {
         synchronized (_lock) {
             auto key = systemKey(system.tenantId, system.systemName);
             if (auto existing = key in _systems) {
@@ -39,27 +39,27 @@ class IPStore : SAPStore {
         }
     }
 
-    IPSystem getSystem(string tenantId, string systemName) {
+    IPVSystem getSystem(string tenantId, string systemName) {
         synchronized (_lock) {
             auto key = systemKey(tenantId, systemName);
             if (auto value = key in _systems)
                 return *value;
         }
-        return IPSystem.init;
+        return IPVSystem.init;
     }
 
-    IPSystem getSystemById(string tenantId, string systemId) {
+    IPVSystem getSystemById(string tenantId, string systemId) {
         synchronized (_lock) {
             foreach (_, sys; _systems) {
                 if (sys.tenantId == tenantId && sys.systemId == systemId)
                     return sys;
             }
         }
-        return IPSystem.init;
+        return IPVSystem.init;
     }
 
-    IPSystem[] listSystems(string tenantId) {
-        IPSystem[] list;
+    IPVSystem[] listSystems(string tenantId) {
+        IPVSystem[] list;
         synchronized (_lock) {
             foreach (key, sys; _systems) {
                 if (belongsToTenant(key, tenantId))
@@ -69,8 +69,8 @@ class IPStore : SAPStore {
         return list;
     }
 
-    IPSystem[] listSystemsByType(string tenantId, string systemType) {
-        IPSystem[] list;
+    IPVSystem[] listSystemsByType(string tenantId, string systemType) {
+        IPVSystem[] list;
         synchronized (_lock) {
             foreach (key, sys; _systems) {
                 if (belongsToTenant(key, tenantId) && sys.systemType == systemType)
@@ -93,7 +93,7 @@ class IPStore : SAPStore {
 
     // ─── User operations ──────────────────────────────────────
 
-    IPUser upsertUser(IPUser user) {
+    IPVUser upsertUser(IPVUser user) {
         synchronized (_lock) {
             auto key = userKey(user.tenantId, user.userId);
             if (auto existing = key in _users) {
@@ -104,17 +104,17 @@ class IPStore : SAPStore {
         }
     }
 
-    IPUser getUser(string tenantId, string userId) {
+    IPVUser getUser(string tenantId, string userId) {
         synchronized (_lock) {
             auto key = userKey(tenantId, userId);
             if (auto value = key in _users)
                 return *value;
         }
-        return IPUser.init;
+        return IPVUser.init;
     }
 
-    IPUser[] listUsers(string tenantId) {
-        IPUser[] list;
+    IPVUser[] listUsers(string tenantId) {
+        IPVUser[] list;
         synchronized (_lock) {
             foreach (key, user; _users) {
                 if (belongsToTenant(key, tenantId))
@@ -124,8 +124,8 @@ class IPStore : SAPStore {
         return list;
     }
 
-    IPUser[] listUsersBySystem(string tenantId, string systemId) {
-        IPUser[] list;
+    IPVUser[] listUsersBySystem(string tenantId, string systemId) {
+        IPVUser[] list;
         synchronized (_lock) {
             foreach (key, user; _users) {
                 if (belongsToTenant(key, tenantId) && user.sourceSystemId == systemId)
@@ -136,8 +136,8 @@ class IPStore : SAPStore {
     }
 
     /** List users modified after the given timestamp (for delta reads). */
-    IPUser[] listModifiedUsersSince(string tenantId, string systemId, string sinceTimestamp) {
-        IPUser[] list;
+    IPVUser[] listModifiedUsersSince(string tenantId, string systemId, string sinceTimestamp) {
+        IPVUser[] list;
         synchronized (_lock) {
             foreach (key, user; _users) {
                 if (belongsToTenant(key, tenantId)
@@ -163,7 +163,7 @@ class IPStore : SAPStore {
 
     // ─── Group operations ─────────────────────────────────────
 
-    IPGroup upsertGroup(IPGroup group) {
+    IPVGroup upsertGroup(IPVGroup group) {
         synchronized (_lock) {
             auto key = groupKey(group.tenantId, group.groupId);
             if (auto existing = key in _groups) {
@@ -174,17 +174,17 @@ class IPStore : SAPStore {
         }
     }
 
-    IPGroup getGroup(string tenantId, string groupId) {
+    IPVGroup getGroup(string tenantId, string groupId) {
         synchronized (_lock) {
             auto key = groupKey(tenantId, groupId);
             if (auto value = key in _groups)
                 return *value;
         }
-        return IPGroup.init;
+        return IPVGroup.init;
     }
 
-    IPGroup[] listGroups(string tenantId) {
-        IPGroup[] list;
+    IPVGroup[] listGroups(string tenantId) {
+        IPVGroup[] list;
         synchronized (_lock) {
             foreach (key, group; _groups) {
                 if (belongsToTenant(key, tenantId))
@@ -194,8 +194,8 @@ class IPStore : SAPStore {
         return list;
     }
 
-    IPGroup[] listGroupsBySystem(string tenantId, string systemId) {
-        IPGroup[] list;
+    IPVGroup[] listGroupsBySystem(string tenantId, string systemId) {
+        IPVGroup[] list;
         synchronized (_lock) {
             foreach (key, group; _groups) {
                 if (belongsToTenant(key, tenantId) && group.sourceSystemId == systemId)
@@ -218,25 +218,25 @@ class IPStore : SAPStore {
 
     // ─── Transformation operations ────────────────────────────
 
-    IPTransformation upsertTransformation(IPTransformation transformation) {
+    IPVTransformation upsertTransformation(IPVTransformation transformation) {
         synchronized (_lock) {
             _transformations[transformation.transformationId] = transformation;
             return transformation;
         }
     }
 
-    IPTransformation getTransformation(string tenantId, string transformationId) {
+    IPVTransformation getTransformation(string tenantId, string transformationId) {
         synchronized (_lock) {
             if (auto value = transformationId in _transformations) {
                 if (value.tenantId == tenantId)
                     return *value;
             }
         }
-        return IPTransformation.init;
+        return IPVTransformation.init;
     }
 
-    IPTransformation[] listTransformations(string tenantId) {
-        IPTransformation[] list;
+    IPVTransformation[] listTransformations(string tenantId) {
+        IPVTransformation[] list;
         synchronized (_lock) {
             foreach (_, t; _transformations) {
                 if (t.tenantId == tenantId)
@@ -246,8 +246,8 @@ class IPStore : SAPStore {
         return list;
     }
 
-    IPTransformation[] listTransformationsForSystem(string tenantId, string systemId) {
-        IPTransformation[] list;
+    IPVTransformation[] listTransformationsForSystem(string tenantId, string systemId) {
+        IPVTransformation[] list;
         synchronized (_lock) {
             foreach (_, t; _transformations) {
                 if (t.tenantId == tenantId && t.systemId == systemId && t.active)
@@ -271,25 +271,25 @@ class IPStore : SAPStore {
 
     // ─── Job operations ───────────────────────────────────────
 
-    IPJob upsertJob(IPJob job) {
+    IPVJob upsertJob(IPVJob job) {
         synchronized (_lock) {
             _jobs[job.jobId] = job;
             return job;
         }
     }
 
-    IPJob getJob(string tenantId, string jobId) {
+    IPVJob getJob(string tenantId, string jobId) {
         synchronized (_lock) {
             if (auto value = jobId in _jobs) {
                 if (value.tenantId == tenantId)
                     return *value;
             }
         }
-        return IPJob.init;
+        return IPVJob.init;
     }
 
-    IPJob[] listJobs(string tenantId) {
-        IPJob[] list;
+    IPVJob[] listJobs(string tenantId) {
+        IPVJob[] list;
         synchronized (_lock) {
             foreach (_, job; _jobs) {
                 if (job.tenantId == tenantId)
@@ -299,8 +299,8 @@ class IPStore : SAPStore {
         return list;
     }
 
-    IPJob[] listJobsBySystem(string tenantId, string sourceSystemId) {
-        IPJob[] list;
+    IPVJob[] listJobsBySystem(string tenantId, string sourceSystemId) {
+        IPVJob[] list;
         synchronized (_lock) {
             foreach (_, job; _jobs) {
                 if (job.tenantId == tenantId && job.sourceSystemId == sourceSystemId)
@@ -325,16 +325,16 @@ class IPStore : SAPStore {
 
     // ─── Job log operations ───────────────────────────────────
 
-    void appendJobLog(IPJobLog log) {
+    void appendJobLog(IPVJobLog log) {
         synchronized (_lock) {
             _jobLogs[log.jobId] ~= log;
         }
     }
 
-    IPJobLog[] listJobLogs(string tenantId, string jobId) {
+    IPVJobLog[] listJobLogs(string tenantId, string jobId) {
         synchronized (_lock) {
             if (auto logs = jobId in _jobLogs) {
-                IPJobLog[] filtered;
+                IPVJobLog[] filtered;
                 foreach (ref log; *logs) {
                     if (log.tenantId == tenantId)
                         filtered ~= log;
@@ -345,10 +345,10 @@ class IPStore : SAPStore {
         return [];
     }
 
-    IPJobLog[] listJobLogsByLevel(string tenantId, string jobId, string level) {
+    IPVJobLog[] listJobLogsByLevel(string tenantId, string jobId, string level) {
         synchronized (_lock) {
             if (auto logs = jobId in _jobLogs) {
-                IPJobLog[] filtered;
+                IPVJobLog[] filtered;
                 foreach (ref log; *logs) {
                     if (log.tenantId == tenantId && log.level == level)
                         filtered ~= log;
@@ -361,25 +361,25 @@ class IPStore : SAPStore {
 
     // ─── Notification subscription operations ─────────────────
 
-    IPNotification upsertNotification(IPNotification notification) {
+    IPVNotification upsertNotification(IPVNotification notification) {
         synchronized (_lock) {
             _notifications[notification.subscriptionId] = notification;
             return notification;
         }
     }
 
-    IPNotification getNotification(string tenantId, string subscriptionId) {
+    IPVNotification getNotification(string tenantId, string subscriptionId) {
         synchronized (_lock) {
             if (auto value = subscriptionId in _notifications) {
                 if (value.tenantId == tenantId)
                     return *value;
             }
         }
-        return IPNotification.init;
+        return IPVNotification.init;
     }
 
-    IPNotification[] listNotifications(string tenantId) {
-        IPNotification[] list;
+    IPVNotification[] listNotifications(string tenantId) {
+        IPVNotification[] list;
         synchronized (_lock) {
             foreach (_, n; _notifications) {
                 if (n.tenantId == tenantId)
@@ -389,8 +389,8 @@ class IPStore : SAPStore {
         return list;
     }
 
-    IPNotification[] listNotificationsForSystem(string tenantId, string sourceSystemId) {
-        IPNotification[] list;
+    IPVNotification[] listNotificationsForSystem(string tenantId, string sourceSystemId) {
+        IPVNotification[] list;
         synchronized (_lock) {
             foreach (_, n; _notifications) {
                 if (n.tenantId == tenantId && n.sourceSystemId == sourceSystemId && n.active)

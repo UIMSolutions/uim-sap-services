@@ -17,17 +17,17 @@ mixin(ShowModule!());
  *  - Notification subscriptions for job events
  *  - Tenant-scoped multitenancy
  */
-class IPService : SAPService {
-    private IPConfig _config;
-    private IPStore _store;
+class IPVService : SAPService {
+    private IPVConfig _config;
+    private IPVStore _store;
 
-    this(IPConfig config) {
+    this(IPVConfig config) {
         config.validate();
         _config = config;
-        _store = new IPStore;
+        _store = new IPVStore;
     }
 
-    @property const(IPConfig) config() const {
+    @property const(IPVConfig) config() const {
         return _config;
     }
 
@@ -55,13 +55,13 @@ class IPService : SAPService {
 
         auto system = systemFromJson(tenantId, request);
         if (system.systemName.length == 0)
-            throw new IPValidationException("system_name is required");
+            throw new IPVValidationException("system_name is required");
         if (system.systemType != "source" && system.systemType != "target" && system.systemType != "proxy")
-            throw new IPValidationException("system_type must be 'source', 'target', or 'proxy'");
+            throw new IPVValidationException("system_type must be 'source', 'target', or 'proxy'");
 
         auto existing = _store.getSystem(tenantId, system.systemName);
         if (existing.systemName.length > 0)
-            throw new IPValidationException("System already exists: " ~ system.systemName);
+            throw new IPVValidationException("System already exists: " ~ system.systemName);
 
         auto saved = _store.upsertSystem(system);
 
@@ -74,7 +74,7 @@ class IPService : SAPService {
     Json listSystems(string tenantId, string systemType = "") {
         validateId(tenantId, "Tenant ID");
 
-        IPSystem[] systems;
+        IPVSystem[] systems;
         if (systemType.length > 0)
             systems = _store.listSystemsByType(tenantId, systemType);
         else
@@ -98,7 +98,7 @@ class IPService : SAPService {
 
         auto system = _store.getSystem(tenantId, systemName);
         if (system.systemName.length == 0)
-            throw new IPNotFoundException("System", tenantId ~ "/" ~ systemName);
+            throw new IPVNotFoundException("System", tenantId ~ "/" ~ systemName);
 
         Json result = Json.emptyObject;
         result["system"] = system.toJson();
@@ -111,7 +111,7 @@ class IPService : SAPService {
 
         auto existing = _store.getSystem(tenantId, systemName);
         if (existing.systemName.length == 0)
-            throw new IPNotFoundException("System", tenantId ~ "/" ~ systemName);
+            throw new IPVNotFoundException("System", tenantId ~ "/" ~ systemName);
 
         if ("description" in request && request["description"].type == Json.Type.string)
             existing.description = request["description"].get!string;
@@ -138,7 +138,7 @@ class IPService : SAPService {
         validateId(systemName, "System name");
 
         if (!_store.deleteSystem(tenantId, systemName))
-            throw new IPNotFoundException("System", tenantId ~ "/" ~ systemName);
+            throw new IPVNotFoundException("System", tenantId ~ "/" ~ systemName);
 
         Json result = Json.emptyObject;
         result["success"] = true;
@@ -153,7 +153,7 @@ class IPService : SAPService {
 
         auto user = userFromJson(tenantId, request);
         if (user.userName.length == 0)
-            throw new IPValidationException("user_name is required");
+            throw new IPVValidationException("user_name is required");
 
         auto saved = _store.upsertUser(user);
 
@@ -184,7 +184,7 @@ class IPService : SAPService {
 
         auto user = _store.getUser(tenantId, userId);
         if (user.userId.length == 0)
-            throw new IPNotFoundException("User", tenantId ~ "/" ~ userId);
+            throw new IPVNotFoundException("User", tenantId ~ "/" ~ userId);
 
         Json result = Json.emptyObject;
         result["user"] = user.toJson();
@@ -197,7 +197,7 @@ class IPService : SAPService {
 
         auto existing = _store.getUser(tenantId, userId);
         if (existing.userId.length == 0)
-            throw new IPNotFoundException("User", tenantId ~ "/" ~ userId);
+            throw new IPVNotFoundException("User", tenantId ~ "/" ~ userId);
 
         if ("email" in request && request["email"].type == Json.Type.string)
             existing.email = request["email"].get!string;
@@ -238,7 +238,7 @@ class IPService : SAPService {
         validateId(userId, "User ID");
 
         if (!_store.deleteUser(tenantId, userId))
-            throw new IPNotFoundException("User", tenantId ~ "/" ~ userId);
+            throw new IPVNotFoundException("User", tenantId ~ "/" ~ userId);
 
         Json result = Json.emptyObject;
         result["success"] = true;
@@ -253,7 +253,7 @@ class IPService : SAPService {
 
         auto group = groupFromJson(tenantId, request);
         if (group.groupName.length == 0)
-            throw new IPValidationException("group_name is required");
+            throw new IPVValidationException("group_name is required");
 
         auto saved = _store.upsertGroup(group);
 
@@ -284,7 +284,7 @@ class IPService : SAPService {
 
         auto group = _store.getGroup(tenantId, groupId);
         if (group.groupId.length == 0)
-            throw new IPNotFoundException("Group", tenantId ~ "/" ~ groupId);
+            throw new IPVNotFoundException("Group", tenantId ~ "/" ~ groupId);
 
         Json result = Json.emptyObject;
         result["group"] = group.toJson();
@@ -296,7 +296,7 @@ class IPService : SAPService {
         validateId(groupId, "Group ID");
 
         if (!_store.deleteGroup(tenantId, groupId))
-            throw new IPNotFoundException("Group", tenantId ~ "/" ~ groupId);
+            throw new IPVNotFoundException("Group", tenantId ~ "/" ~ groupId);
 
         Json result = Json.emptyObject;
         result["success"] = true;
@@ -311,7 +311,7 @@ class IPService : SAPService {
 
         auto transformation = transformationFromJson(tenantId, request);
         if (transformation.systemId.length == 0)
-            throw new IPValidationException("system_id is required");
+            throw new IPVValidationException("system_id is required");
 
         auto saved = _store.upsertTransformation(transformation);
 
@@ -324,7 +324,7 @@ class IPService : SAPService {
     Json listTransformations(string tenantId, string systemId = "") {
         validateId(tenantId, "Tenant ID");
 
-        IPTransformation[] transformations;
+        IPVTransformation[] transformations;
         if (systemId.length > 0)
             transformations = _store.listTransformationsForSystem(tenantId, systemId);
         else
@@ -348,7 +348,7 @@ class IPService : SAPService {
 
         auto t = _store.getTransformation(tenantId, transformationId);
         if (t.transformationId.length == 0)
-            throw new IPNotFoundException("Transformation", tenantId ~ "/" ~ transformationId);
+            throw new IPVNotFoundException("Transformation", tenantId ~ "/" ~ transformationId);
 
         Json result = Json.emptyObject;
         result["transformation"] = t.toJson();
@@ -360,7 +360,7 @@ class IPService : SAPService {
         validateId(transformationId, "Transformation ID");
 
         if (!_store.deleteTransformation(tenantId, transformationId))
-            throw new IPNotFoundException("Transformation", tenantId ~ "/" ~ transformationId);
+            throw new IPVNotFoundException("Transformation", tenantId ~ "/" ~ transformationId);
 
         Json result = Json.emptyObject;
         result["success"] = true;
@@ -384,14 +384,14 @@ class IPService : SAPService {
 
         auto job = jobFromJson(tenantId, request);
         if (job.sourceSystemId.length == 0)
-            throw new IPValidationException("source_system_id is required");
+            throw new IPVValidationException("source_system_id is required");
         if (job.readMode != "full" && job.readMode != "delta")
-            throw new IPValidationException("read_mode must be 'full' or 'delta'");
+            throw new IPVValidationException("read_mode must be 'full' or 'delta'");
 
         // Verify source system exists
         auto sourceSystem = _store.getSystemById(tenantId, job.sourceSystemId);
         if (sourceSystem.systemId.length == 0)
-            throw new IPNotFoundException("Source system", job.sourceSystemId);
+            throw new IPVNotFoundException("Source system", job.sourceSystemId);
 
         // If no targets specified, use all target systems
         if (job.targetSystemIds.length == 0) {
@@ -472,7 +472,7 @@ class IPService : SAPService {
 
         auto job = _store.getJob(tenantId, jobId);
         if (job.jobId.length == 0)
-            throw new IPNotFoundException("Job", tenantId ~ "/" ~ jobId);
+            throw new IPVNotFoundException("Job", tenantId ~ "/" ~ jobId);
 
         Json result = Json.emptyObject;
         result["job"] = job.toJson();
@@ -485,10 +485,10 @@ class IPService : SAPService {
 
         auto job = _store.getJob(tenantId, jobId);
         if (job.jobId.length == 0)
-            throw new IPNotFoundException("Job", tenantId ~ "/" ~ jobId);
+            throw new IPVNotFoundException("Job", tenantId ~ "/" ~ jobId);
 
         if (job.status != "running" && job.status != "pending")
-            throw new IPValidationException("Job is not running or pending");
+            throw new IPVValidationException("Job is not running or pending");
 
         job.status = "cancelled";
         job.completedAt = Clock.currTime().toISOExtString();
@@ -514,9 +514,9 @@ class IPService : SAPService {
 
         auto job = _store.getJob(tenantId, jobId);
         if (job.jobId.length == 0)
-            throw new IPNotFoundException("Job", tenantId ~ "/" ~ jobId);
+            throw new IPVNotFoundException("Job", tenantId ~ "/" ~ jobId);
 
-        IPJobLog[] logs;
+        IPVJobLog[] logs;
         if (level.length > 0)
             logs = _store.listJobLogsByLevel(tenantId, jobId, level);
         else
@@ -542,7 +542,7 @@ class IPService : SAPService {
 
         auto job = _store.getJob(tenantId, jobId);
         if (job.jobId.length == 0)
-            throw new IPNotFoundException("Job", tenantId ~ "/" ~ jobId);
+            throw new IPVNotFoundException("Job", tenantId ~ "/" ~ jobId);
 
         auto logs = _store.listJobLogs(tenantId, jobId);
 
@@ -569,11 +569,11 @@ class IPService : SAPService {
 
         auto notification = notificationFromJson(tenantId, request);
         if (notification.sourceSystemId.length == 0)
-            throw new IPValidationException("source_system_id is required");
+            throw new IPVValidationException("source_system_id is required");
         if (notification.callbackUrl.length == 0)
-            throw new IPValidationException("callback_url is required");
+            throw new IPVValidationException("callback_url is required");
         if (notification.eventTypes.length == 0)
-            throw new IPValidationException("event_types must contain at least one event type");
+            throw new IPVValidationException("event_types must contain at least one event type");
 
         auto saved = _store.upsertNotification(notification);
 
@@ -603,7 +603,7 @@ class IPService : SAPService {
         validateId(subscriptionId, "Subscription ID");
 
         if (!_store.deleteNotification(tenantId, subscriptionId))
-            throw new IPNotFoundException("Notification subscription", tenantId ~ "/" ~ subscriptionId);
+            throw new IPVNotFoundException("Notification subscription", tenantId ~ "/" ~ subscriptionId);
 
         Json result = Json.emptyObject;
         result["success"] = true;
@@ -657,9 +657,9 @@ class IPService : SAPService {
 
     // ─── Private provisioning engine ──────────────────────────
 
-    private void executeProvisioning(string tenantId, ref IPJob job) {
+    private void executeProvisioning(string tenantId, ref IPVJob job) {
         // Get users from source system
-        IPUser[] sourceUsers;
+        IPVUser[] sourceUsers;
         if (job.readMode == "delta" && job.deltaToken.length > 0) {
             sourceUsers = _store.listModifiedUsersSince(tenantId, job.sourceSystemId, job.deltaToken);
         } else {
@@ -778,7 +778,7 @@ class IPService : SAPService {
         _store.upsertJob(job);
     }
 
-    private IPUser applyUserTransformations(IPUser user, IPTransformation[] transformations) {
+    private IPVUser applyUserTransformations(IPVUser user, IPVTransformation[] transformations) {
         foreach (t; transformations) {
             if (t.entityType != "user" || !t.active) continue;
             if (t.action == "default") {
@@ -793,7 +793,7 @@ class IPService : SAPService {
         return user;
     }
 
-    private string getUserAttribute(const IPUser user, string attr) {
+    private string getUserAttribute(const IPVUser user, string attr) {
         switch (attr) {
             case "user_name":    return user.userName;
             case "email":        return user.email;
@@ -805,7 +805,7 @@ class IPService : SAPService {
         }
     }
 
-    private void setUserAttribute(ref IPUser user, string attr, string value) {
+    private void setUserAttribute(ref IPVUser user, string attr, string value) {
         switch (attr) {
             case "user_name":    user.userName = value; break;
             case "email":        user.email = value; break;
@@ -817,7 +817,7 @@ class IPService : SAPService {
         }
     }
 
-    private string getGroupAttribute(const IPGroup group, string attr) {
+    private string getGroupAttribute(const IPVGroup group, string attr) {
         switch (attr) {
             case "group_name":   return group.groupName;
             case "display_name": return group.displayName;
@@ -828,7 +828,7 @@ class IPService : SAPService {
     }
 
     /** Simple insertion sort by priority (stable, ascending). */
-    private void sortTransformations(ref IPTransformation[] ts) {
+    private void sortTransformations(ref IPVTransformation[] ts) {
         for (size_t i = 1; i < ts.length; ++i) {
             auto tmp = ts[i];
             long j = cast(long) i - 1;
@@ -863,6 +863,6 @@ class IPService : SAPService {
 
     private void validateId(string value, string fieldName) {
         if (value.length == 0)
-            throw new IPValidationException(fieldName ~ " cannot be empty");
+            throw new IPVValidationException(fieldName ~ " cannot be empty");
     }
 }

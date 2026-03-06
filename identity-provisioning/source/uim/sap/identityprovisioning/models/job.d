@@ -12,7 +12,7 @@ mixin(ShowModule!());
  *  `readMode` values: "full", "delta"
  *  `status` values: "pending", "running", "completed", "failed", "cancelled"
  */
-struct IPJob {
+struct IPVJob {
     string tenantId;
     string jobId;
     string jobName;
@@ -66,8 +66,8 @@ struct IPJob {
     }
 }
 
-IPJob jobFromJson(string tenantId, Json request) {
-    IPJob j;
+IPVJob jobFromJson(string tenantId, Json request) {
+    IPVJob j;
     j.tenantId = tenantId;
     j.jobId = randomUUID().toString();
 

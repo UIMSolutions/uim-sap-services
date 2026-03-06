@@ -6,7 +6,7 @@ mixin(ShowModule!());
 
 @safe:
 
-class IPConfigurationException : IPException {
+class IPVConfigurationException : IPVException {
   this(string message) {
     super("Configuration error: " ~ message);
   }

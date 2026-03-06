@@ -13,7 +13,7 @@ mixin(ShowModule!());
  *
  *  `eventTypes` values: "job.started", "job.completed", "job.failed", "job.cancelled"
  */
-struct IPNotification {
+struct IPVNotification {
     string tenantId;
     string subscriptionId;
     string sourceSystemId;
@@ -47,8 +47,8 @@ struct IPNotification {
     }
 }
 
-IPNotification notificationFromJson(string tenantId, Json request) {
-    IPNotification n;
+IPVNotification notificationFromJson(string tenantId, Json request) {
+    IPVNotification n;
     n.tenantId = tenantId;
     n.subscriptionId = randomUUID().toString();
 

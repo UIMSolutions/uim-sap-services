@@ -6,7 +6,7 @@ mixin(ShowModule!());
 
 @safe:
 
-class IPConfig : SAPConfig {
+class IPVConfig : SAPConfig {
     string host = "0.0.0.0";
     ushort port = 8095;
     string basePath = "/api/ip";
@@ -18,13 +18,13 @@ class IPConfig : SAPConfig {
 
     void validate() {
         if (port == 0) {
-            throw new IPConfigurationException("Port must be greater than zero");
+            throw new IPVConfigurationException("Port must be greater than zero");
         }
         if (basePath.length == 0) {
-            throw new IPConfigurationException("Base path cannot be empty");
+            throw new IPVConfigurationException("Base path cannot be empty");
         }
         if (requireAuthToken && authToken.length == 0) {
-            throw new IPConfigurationException("Auth token required but not set");
+            throw new IPVConfigurationException("Auth token required but not set");
         }
     }
 }

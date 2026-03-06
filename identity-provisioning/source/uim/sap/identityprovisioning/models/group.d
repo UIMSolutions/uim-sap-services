@@ -7,7 +7,7 @@ mixin(ShowModule!());
 @safe:
 
 /** A group identity that is provisioned between systems. */
-struct IPGroup {
+struct IPVGroup {
     string tenantId;
     string groupId;
     string externalId;
@@ -43,8 +43,8 @@ struct IPGroup {
     }
 }
 
-IPGroup groupFromJson(string tenantId, Json request) {
-    IPGroup g;
+IPVGroup groupFromJson(string tenantId, Json request) {
+    IPVGroup g;
     g.tenantId = tenantId;
     g.groupId = randomUUID().toString();
 

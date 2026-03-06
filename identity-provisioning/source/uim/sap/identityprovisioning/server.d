@@ -7,7 +7,7 @@ mixin(ShowModule!());
 @safe:
 
 /**
- * IPServer handles HTTP requests and routes them to the Identity Provisioning service.
+ * IPVServer handles HTTP requests and routes them to the Identity Provisioning service.
  *
  * Platform:
  * - GET  /health                                                      Health check
@@ -55,10 +55,11 @@ mixin(ShowModule!());
  * Dashboard:
  * - GET    /v1/tenants/{tenantId}/dashboard                          Dashboard metrics
  */
-class IPServer {
-  private IPService _service;
+class IPVServer : SAPServer {
+  mixin(SAPServerTemplate!IPVServer);
+  private IPVService _service;
 
-  this(IPService service) {
+  this(IPVService service) {
     _service = service;
   }
 
@@ -321,13 +322,13 @@ class IPServer {
       }
 
       respondError(res, "Not found", 404);
-    } catch (IPAuthorizationException e) {
+    } catch (IPVAuthorizationException e) {
       respondError(res, e.msg, 401);
-    } catch (IPNotFoundException e) {
+    } catch (IPVNotFoundException e) {
       respondError(res, e.msg, 404);
-    } catch (IPValidationException e) {
+    } catch (IPVValidationException e) {
       respondError(res, e.msg, 422);
-    } catch (IPException e) {
+    } catch (IPVException e) {
       respondError(res, e.msg, 500);
     } catch (Exception e) {
       respondError(res, e.msg, 500);
@@ -340,12 +341,12 @@ class IPServer {
     }
 
     if (!("Authorization" in req.headers)) {
-      throw new IPAuthorizationException("Missing Authorization header");
+      throw new IPVAuthorizationException("Missing Authorization header");
     }
 
     auto expected = "Bearer " ~ _service.config.authToken;
     if (req.headers["Authorization"] != expected) {
-      throw new IPAuthorizationException("Invalid token");
+      throw new IPVAuthorizationException("Invalid token");
     }
   }
 

@@ -6,7 +6,7 @@ mixin(ShowModule!());
 
 @safe:
 
-class IPValidationException : IPException {
+class IPVValidationException : IPVException {
   this(string message) {
     super("Validation failed: " ~ message);
   }

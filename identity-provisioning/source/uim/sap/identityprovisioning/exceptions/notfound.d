@@ -6,7 +6,7 @@ mixin(ShowModule!());
 
 @safe:
 
-class IPNotFoundException : IPException {
+class IPVNotFoundException : IPVException {
   this(string resource, string identifier) {
     super(resource ~ " not found: " ~ identifier);
   }

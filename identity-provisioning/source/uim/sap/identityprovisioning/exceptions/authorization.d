@@ -6,7 +6,7 @@ mixin(ShowModule!());
 
 @safe:
 
-class IPAuthorizationException : IPException {
+class IPVAuthorizationException : IPVException {
   this(string message) {
     super("Unauthorized: " ~ message);
   }

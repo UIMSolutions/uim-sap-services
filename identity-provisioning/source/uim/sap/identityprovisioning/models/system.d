@@ -15,7 +15,7 @@ mixin(ShowModule!());
  *  `systemType` values: "source", "target", "proxy"
  *  `connectorType` values: "sap-ias", "sap-sf", "scim", "ldap", "custom", …
  */
-struct IPSystem {
+struct IPVSystem {
     string tenantId;
     string systemId;
     string systemName;
@@ -51,8 +51,8 @@ struct IPSystem {
     }
 }
 
-IPSystem systemFromJson(string tenantId, Json request) {
-    IPSystem s;
+IPVSystem systemFromJson(string tenantId, Json request) {
+    IPVSystem s;
     s.tenantId = tenantId;
     s.systemId = randomUUID().toString();
 

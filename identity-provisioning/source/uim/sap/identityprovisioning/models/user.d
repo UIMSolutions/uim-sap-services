@@ -7,7 +7,7 @@ mixin(ShowModule!());
 @safe:
 
 /** A user identity that is provisioned between systems. */
-struct IPUser {
+struct IPVUser {
     string tenantId;
     string userId;
     string externalId;        // ID in the external system
@@ -51,8 +51,8 @@ struct IPUser {
     }
 }
 
-IPUser userFromJson(string tenantId, Json request) {
-    IPUser u;
+IPVUser userFromJson(string tenantId, Json request) {
+    IPVUser u;
     u.tenantId = tenantId;
     u.userId = randomUUID().toString();
 

@@ -14,7 +14,7 @@ mixin(ShowModule!());
  *  `entityType` values: "user", "group"
  *  `action` values: "map", "filter", "skip", "default"
  */
-struct IPTransformation {
+struct IPVTransformation {
     string tenantId;
     string transformationId;
     string systemId;           // which system this rule belongs to
@@ -48,8 +48,8 @@ struct IPTransformation {
     }
 }
 
-IPTransformation transformationFromJson(string tenantId, Json request) {
-    IPTransformation t;
+IPVTransformation transformationFromJson(string tenantId, Json request) {
+    IPVTransformation t;
     t.tenantId = tenantId;
     t.transformationId = randomUUID().toString();
 

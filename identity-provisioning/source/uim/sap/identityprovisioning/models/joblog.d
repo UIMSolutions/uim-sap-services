@@ -11,7 +11,7 @@ mixin(ShowModule!());
  *  `level` values: "info", "warning", "error"
  *  `entityType` values: "user", "group", "system", "job"
  */
-struct IPJobLog {
+struct IPVJobLog {
     string tenantId;
     string logId;
     string jobId;
@@ -38,9 +38,9 @@ struct IPJobLog {
 }
 
 /** Factory helper to create a new log entry. */
-IPJobLog createJobLog(string tenantId, string jobId, string level, string entityType,
+IPVJobLog createJobLog(string tenantId, string jobId, string level, string entityType,
                       string entityId, string message, string details = "") {
-    IPJobLog log;
+    IPVJobLog log;
     log.tenantId = tenantId;
     log.logId = randomUUID().toString();
     log.jobId = jobId;
