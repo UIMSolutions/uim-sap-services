@@ -10,7 +10,7 @@ import uim.sap.clf;
 mixin(ShowModule!());
 
 @safe:
-class CLFException : Exception {
+class CLFException : SAPException {
     this(string msg, string file = __FILE__, size_t line = __LINE__, Throwable next = null) {
         super(msg, file, line, next);
     }

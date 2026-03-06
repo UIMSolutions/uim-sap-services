@@ -1,6 +1,6 @@
 module uim.sap.dpi.exceptions;
 
-class DPIException : Exception {
+class DPIException : SAPException {
     this(string msg) { super(msg); }
 }
 

@@ -11,7 +11,7 @@ public {
 }
 
 /// Base exception for all Document Management Integration errors.
-class DocMgmtIntegrationException : Exception {
+class DocMgmtIntegrationException : SAPException {
     this(string message) {
         super(message);
     }
