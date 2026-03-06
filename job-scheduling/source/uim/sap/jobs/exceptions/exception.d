@@ -5,6 +5,6 @@
 *****************************************************************************************************************/
 module uim.sap.jobs.exceptions.exception;
 
-class JobSchedulingException : Exception {
+class JobSchedulingException : SAPException {
     this(string msg) { super(msg); }
 }

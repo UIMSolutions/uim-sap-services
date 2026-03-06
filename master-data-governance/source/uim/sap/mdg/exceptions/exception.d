@@ -6,7 +6,7 @@ import uim.sap.mdg;
 /** 
  * Base class for all exceptions in MDG.
  */
-class MDGException : Exception {
+class MDGException : SAPException {
     this(string msg) {
         super(msg);
     }
