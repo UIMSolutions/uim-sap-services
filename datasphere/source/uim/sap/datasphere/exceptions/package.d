@@ -3,12 +3,13 @@
 * License: Subject to the terms of the Apache 2.0 license, as written in the included LICENSE.txt file. 
 * Authors: Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*)
 *****************************************************************************************************************/
-module uim.sap.datasphere.models;
+module uim.sap.datasphere.exceptions;
 
 public {
-    import uim.sap.datasphere.models.datamodel;
-    import uim.sap.datasphere.models.space;
-    import uim.sap.datasphere.models.businessmodel;
-    import uim.sap.datasphere.models.integrationconnection;
-    import uim.sap.datasphere.models.governanceasset;
+  import uim.sap.datasphere.exceptions.exception;
+
+  import uim.sap.datasphere.exceptions.authorization;
+  import uim.sap.datasphere.exceptions.configuration;
+  import uim.sap.datasphere.exceptions.notfound;
+  import uim.sap.datasphere.exceptions.validation;
 }

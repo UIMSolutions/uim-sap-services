@@ -3,12 +3,8 @@
 * License: Subject to the terms of the Apache 2.0 license, as written in the included LICENSE.txt file. 
 * Authors: Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*)
 *****************************************************************************************************************/
-module uim.sap.datasphere.models;
+module uim.sap.datasphere.exceptions.notfound;
 
-public {
-    import uim.sap.datasphere.models.datamodel;
-    import uim.sap.datasphere.models.space;
-    import uim.sap.datasphere.models.businessmodel;
-    import uim.sap.datasphere.models.integrationconnection;
-    import uim.sap.datasphere.models.governanceasset;
+class DatasphereNotFoundException : DatasphereException {
+    this(string kind, string id) { super(kind ~ " not found: " ~ id); }
 }
