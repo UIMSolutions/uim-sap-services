@@ -12,19 +12,19 @@ mixin(ShowModule!());
 @safe:
 
 /** 
-    * Exception thrown when a user is not authorized to perform an action.
-    *
-    * This could be due to insufficient permissions, invalid credentials, or other authorization issues.
-    * 
-    * Example usage:
-    * try {
-    *     // Code that may throw an authorization exception
-    * } catch (SMGAuthorizationException ex) {
-    *     // Handle the authorization error
-    * }
-    */
+  * Exception thrown when a user is not authorized to perform an action.
+  *
+  * This could be due to insufficient permissions, invalid credentials, or other authorization issues.
+  * 
+  * Example usage:
+  * try {
+  *     // Code that may throw an authorization exception
+  * } catch (SMGAuthorizationException ex) {
+  *     // Handle the authorization error
+  * }
+  */
 class SMGAuthorizationException : SMGException {
-    this(string msg) {
-        super(msg);
-    }
+  this(string msg) {
+    super(msg);
+  }
 }

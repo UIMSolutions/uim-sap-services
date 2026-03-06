@@ -10,7 +10,7 @@ import uim.sap.smg;
 mixin(ShowModule!());
 
 @safe:
-class SMGException : Exception {
+class SMGException : SAPException {
     this(string msg) {
         super(msg);
     }

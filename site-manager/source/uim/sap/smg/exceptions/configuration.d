@@ -11,19 +11,19 @@ mixin(ShowModule!());
 
 @safe:
 /** 
-    * Exception thrown when there is a configuration error in the Site Manager.
-    *
-    * This could be due to missing or invalid configuration values, or issues with loading configuration files.
-    *
-    * Example usage:
-    * try {
-    *     // Code that may throw a configuration exception
-    * } catch (SMGConfigurationException ex) {
-    *     // Handle the configuration error
-    * }
-    */
+  * Exception thrown when there is a configuration error in the Site Manager.
+  *
+  * This could be due to missing or invalid configuration values, or issues with loading configuration files.
+  *
+  * Example usage:
+  * try {
+  *     // Code that may throw a configuration exception
+  * } catch (SMGConfigurationException ex) {
+  *     // Handle the configuration error
+  * }
+  */
 class SMGConfigurationException : SMGException {
-    this(string msg) {
-        super(msg);
-    }
+  this(string msg) {
+    super(msg);
+  }
 }
