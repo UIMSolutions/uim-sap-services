@@ -1,13 +1,13 @@
 module app;
 
-import std.conv : to;
-import std.process : environment;
-import std.stdio : writeln;
-
 import uim.sap.datasphere;
 
+mixin(ShowModule!());
+
+@safe:
+
 void main() {
-    DatasphereConfig config;
+    DatasphereConfig config  = new DatasphereConfig();
     config.host = envOr("DATASPHERE_HOST", "0.0.0.0");
     config.port = readPort(envOr("DATASPHERE_PORT", "8098"), 8098);
     config.basePath = envOr("DATASPHERE_BASE_PATH", "/api/datasphere");

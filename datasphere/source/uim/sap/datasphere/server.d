@@ -2,6 +2,8 @@ module uim.sap.datasphere.server;
 
 import uim.sap.datasphere;
 
+mixin(ShowModule!());
+
 @safe:
 
 class DatasphereServer {

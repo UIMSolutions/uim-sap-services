@@ -7,8 +7,9 @@ module uim.sap.datasphere.models.governanceasset;
 
 import uim.sap.datasphere;
 
-@safe:
+mixin(ShowModule!());
 
+@safe:
 /** 
  * Represents a governance asset in the Datasphere context, such as a catalog entry or glossary term.
  * This struct is designed to be flexible to accommodate various types of governance assets by including

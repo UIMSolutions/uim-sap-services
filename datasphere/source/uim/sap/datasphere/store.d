@@ -4,6 +4,10 @@ import core.sync.mutex : Mutex;
 
 import uim.sap.datasphere;
 
+mixin(ShowModule!());
+
+@safe:
+
 class DatasphereStore : SAPStore {
     private DATSpace[string] _spaces;
     private DATDataModel[string] _dataModels;

@@ -7,6 +7,8 @@ module uim.sap.datasphere.models.glossaryterm;
 
 import uim.sap.datasphere;
 
+mixin(ShowModule!());
+
 @safe:
 
 /**

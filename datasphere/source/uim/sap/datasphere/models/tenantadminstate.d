@@ -7,8 +7,9 @@ module uim.sap.datasphere.models.tenantadminstate;
 
 import uim.sap.datasphere;
 
-@safe:
+mixin(ShowModule!());
 
+@safe:
 /**
     * Represents the state of a tenant administrator, including connectivity, maintenance mode, and associated users.
     *

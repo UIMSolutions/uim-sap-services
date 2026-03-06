@@ -5,6 +5,11 @@
 *****************************************************************************************************************/
 module uim.sap.datasphere.exceptions.notfound;
 
+import uim.sap.datasphere;
+
+mixin(ShowModule!());
+
+@safe:
 class DatasphereNotFoundException : DatasphereException {
     this(string kind, string id) { super(kind ~ " not found: " ~ id); }
 }
