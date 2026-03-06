@@ -1,6 +1,6 @@
-module uim.sap.atm.exceptions;
+module uim.sap.atm.exceptions.exceptions;
 
-class ATMException : Exception {
+class ATMException : SAPException {
     this(string message) {
         super(message);
     }

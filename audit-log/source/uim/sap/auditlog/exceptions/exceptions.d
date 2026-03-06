@@ -1,6 +1,6 @@
 module uim.sap.auditlog.exceptions;
 
-class AuditLogException : Exception {
+class AuditLogException : SAPException {
     this(string message) {
         super(message);
     }

@@ -1,7 +1,7 @@
 module uim.sap.cia.exceptions;
 
 /// Base exception for all CIA service errors
-class CIAException : Exception {
+class CIAException : SAPException {
     this(string message) { super(message); }
 }
 

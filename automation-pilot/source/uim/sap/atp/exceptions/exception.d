@@ -6,7 +6,7 @@ mixin(ShowModule!());
 
 @safe:
 
-class ATPException : Exception {
+class ATPException : SAPException {
   this(string msg) {
     super(msg);
   }

@@ -23,7 +23,7 @@ mixin(ShowModule!());
   *
   * By catching `AgentryException`, you can handle all Agentry-related errors in a single catch block, while still allowing for more specific handling of individual exception types if needed.
   */
-class AgentryException : Exception {
+class AgentryException : SAPException {
   this(string message) {
     super(message);
   }
