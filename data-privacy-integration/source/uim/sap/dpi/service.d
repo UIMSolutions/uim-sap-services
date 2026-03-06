@@ -1,16 +1,11 @@
 module uim.sap.dpi.service;
 
-import std.datetime : Clock;
-import std.algorithm.searching : canFind;
-import std.regex : regex, replaceAll, matchAll;
-import std.string : toLower, replace;
+import uim.sap.dpi;
 
-import vibe.data.json : Json;
+mixin(ShowModule!());
 
-import uim.sap.dpi.config;
-import uim.sap.dpi.exceptions;
-import uim.sap.dpi.models;
-import uim.sap.dpi.store;
+@safe:
+
 
 class DPIService : SAPService {
     private DPIConfig _config;

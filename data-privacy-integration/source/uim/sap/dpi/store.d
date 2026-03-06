@@ -1,11 +1,11 @@
 module uim.sap.dpi.store;
 
 import core.sync.mutex : Mutex;
-import std.algorithm.searching : canFind;
-import std.conv : to;
-import std.string : toLower;
+import uim.sap.dpi;
 
-import uim.sap.dpi.models;
+mixin(ShowModule!());
+
+@safe:
 
 class DPIStore : SAPStore {
     private DPIRetentionRule[string] _rules;
