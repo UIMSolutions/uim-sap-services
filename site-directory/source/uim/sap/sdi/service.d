@@ -3,6 +3,22 @@ module uim.sap.sdi.service;
 import uim.sap.sdi;
 @safe:
 
+/**
+  * SDIService is the main service class for the Site Directory Integration (SDI) module. It provides methods to manage sites, including creating, retrieving, updating, and deleting site information. The service also includes health and readiness checks.
+  *
+  * The service uses SDIConfig for configuration and SDIStore for data persistence. It validates input data and handles exceptions using custom exception classes defined in the uim.sap.sdi.exceptions package.
+  *
+  * Each method returns a Json object as a response payload, which can be used by the server to send responses to clients.
+  *
+  * Example usage:
+  * ```
+  * SDIConfig config = new SDIConfig();
+  * SDIService service = new SDIService(config);
+  * SDIServer server = new SDIServer(service);
+  * server.run();
+  * ```
+  * Note: The example usage demonstrates how to initialize the SDIConfig, create an instance of SDIService with the configuration, and then start the SDIServer to listen for incoming requests. The server will use the service instance to handle requests related to site management and health checks.
+  */
 class SDIService : SAPService {
   private SDIConfig _config;
   private SDIStore _store;

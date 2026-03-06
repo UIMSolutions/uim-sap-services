@@ -4,7 +4,11 @@ string sapConfigTemplate() {
   return "
   this() {
     super();
-  };
+  }
+
+  this(Json[string] initData) {
+    super(initData);
+  }
   ";
 }
 

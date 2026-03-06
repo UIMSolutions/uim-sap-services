@@ -3,7 +3,7 @@
 * License: Subject to the terms of the Apache 2.0 license, as written in the included LICENSE.txt file. 
 * Authors: Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*)
 *****************************************************************************************************************/
-module uim.sap.service.classes.config;
+module uim.sap.service.classes.configs.config;
 
 import core.sync.mutex : Mutex;
 import uim.sap.service;
@@ -17,7 +17,7 @@ class SAPConfig {
     initialize();
   }
 
-  this(Json[string] initData = null) {
+  this(Json[string] initData) {
     initialize(initData);
   }
 
