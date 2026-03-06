@@ -6,6 +6,6 @@ mixin(ShowModule!());
 
 @safe:
 
-class CMGException : Exception {
+class CMGException : SAPException {
     this(string msg) { super(msg); }
 }

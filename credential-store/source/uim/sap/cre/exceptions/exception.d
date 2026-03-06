@@ -6,7 +6,7 @@ mixin(ShowModule!());
 
 @safe:
 
-class CREException : Exception {
+class CREException : SAPException {
     this(string msg) {
         super(msg);
     }

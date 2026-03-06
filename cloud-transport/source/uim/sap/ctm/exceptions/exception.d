@@ -1,6 +1,6 @@
 module uim.sap.ctm.exceptions.exception;
 
-class CTMException : Exception {
+class CTMException : SAPException {
     this(string msg) {
         super(msg);
     }

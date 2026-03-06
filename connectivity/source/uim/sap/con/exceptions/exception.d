@@ -1,6 +1,6 @@
 module uim.sap.con.exceptions.exception;
 
-class CONException : Exception {
+class CONException : SAPException {
     this(string msg) {
         super(msg);
     }

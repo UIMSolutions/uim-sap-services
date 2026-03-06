@@ -17,7 +17,7 @@ mixin(ShowModule!());
   *     // Handle the exception
   * }
   */
-class MGTException : Exception {
+class MGTException : SAPException {
   this(string msg) {
     super(msg);
   }

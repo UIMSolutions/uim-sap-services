@@ -1,6 +1,6 @@
 module uim.sap.cag.exceptions.exception;
 
-class CAGException : Exception {
+class CAGException : SAPException {
     this(string message) {
         super(message);
     }
