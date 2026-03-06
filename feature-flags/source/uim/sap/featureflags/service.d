@@ -17,17 +17,17 @@ mixin(ShowModule!());
  *  - Import flags into a tenant (replaces existing flags)
  *  - Full multitenancy: every operation is scoped to a tenantId
  */
-class FFService : SAPService {
-    private FFConfig _config;
-    private FFStore _store;
+class FFLService : SAPService {
+    private FFLConfig _config;
+    private FFLStore _store;
 
-    this(FFConfig config) {
+    this(FFLConfig config) {
         config.validate();
         _config = config;
-        _store = new FFStore;
+        _store = new FFLStore;
     }
 
-    @property const(FFConfig) config() const {
+    @property const(FFLConfig) config() const {
         return _config;
     }
 
@@ -55,20 +55,20 @@ class FFService : SAPService {
 
         auto flag = flagFromJson(tenantId, request);
         if (flag.flagName.length == 0) {
-            throw new FFValidationException("flag_name is required");
+            throw new FFLValidationException("flag_name is required");
         }
         if (flag.flagType != "boolean" && flag.flagType != "string") {
-            throw new FFValidationException("flag_type must be 'boolean' or 'string'");
+            throw new FFLValidationException("flag_type must be 'boolean' or 'string'");
         }
 
         auto existing = _store.getFlag(tenantId, flag.flagName);
         if (existing.flagName.length > 0) {
-            throw new FFValidationException("Flag already exists: " ~ flag.flagName);
+            throw new FFLValidationException("Flag already exists: " ~ flag.flagName);
         }
 
         // String flags must have at least two variations
         if (flag.flagType == "string" && flag.variations.length < 2) {
-            throw new FFValidationException("String flags require at least two variations");
+            throw new FFLValidationException("String flags require at least two variations");
         }
 
         auto saved = _store.upsertFlag(flag);
@@ -100,7 +100,7 @@ class FFService : SAPService {
 
         auto flag = _store.getFlag(tenantId, flagName);
         if (flag.flagName.length == 0) {
-            throw new FFNotFoundException("Flag", tenantId ~ "/" ~ flagName);
+            throw new FFLNotFoundException("Flag", tenantId ~ "/" ~ flagName);
         }
 
         Json result = Json.emptyObject;
@@ -114,7 +114,7 @@ class FFService : SAPService {
 
         auto existing = _store.getFlag(tenantId, flagName);
         if (existing.flagName.length == 0) {
-            throw new FFNotFoundException("Flag", tenantId ~ "/" ~ flagName);
+            throw new FFLNotFoundException("Flag", tenantId ~ "/" ~ flagName);
         }
 
         // Apply partial updates
@@ -133,7 +133,7 @@ class FFService : SAPService {
 
         // Replace variations if supplied
         if ("variations" in request && request["variations"].type == Json.Type.array) {
-            FFVariation[] newVars;
+            FFLVariation[] newVars;
             () @trusted {
                 foreach (item; request["variations"]) {
                     newVars ~= variationFromJson(item);
@@ -144,7 +144,7 @@ class FFService : SAPService {
 
         // Replace direct rules if supplied
         if ("direct_rules" in request && request["direct_rules"].type == Json.Type.array) {
-            FFDirectRule[] newRules;
+            FFLDirectRule[] newRules;
             () @trusted {
                 foreach (item; request["direct_rules"]) {
                     newRules ~= directRuleFromJson(item);
@@ -172,7 +172,7 @@ class FFService : SAPService {
         validateId(flagName, "Flag name");
 
         if (!_store.deleteFlag(tenantId, flagName)) {
-            throw new FFNotFoundException("Flag", tenantId ~ "/" ~ flagName);
+            throw new FFLNotFoundException("Flag", tenantId ~ "/" ~ flagName);
         }
 
         Json result = Json.emptyObject;
@@ -189,7 +189,7 @@ class FFService : SAPService {
 
         auto flag = _store.getFlag(tenantId, flagName);
         if (flag.flagName.length == 0) {
-            throw new FFNotFoundException("Flag", tenantId ~ "/" ~ flagName);
+            throw new FFLNotFoundException("Flag", tenantId ~ "/" ~ flagName);
         }
 
         flag.enabled = !flag.enabled;
@@ -222,13 +222,13 @@ class FFService : SAPService {
 
         auto flag = _store.getFlag(tenantId, flagName);
         if (flag.flagName.length == 0) {
-            throw new FFNotFoundException("Flag", tenantId ~ "/" ~ flagName);
+            throw new FFLNotFoundException("Flag", tenantId ~ "/" ~ flagName);
         }
 
         // Track evaluation
         _store.incrementEvaluationCount(tenantId, flagName);
 
-        FFEvaluation eval;
+        FFLEvaluation eval;
         eval.flagId = flag.flagId;
         eval.flagName = flag.flagName;
         eval.flagType = flag.flagType;
@@ -251,7 +251,7 @@ class FFService : SAPService {
     Json exportFlags(string tenantId) {
         validateId(tenantId, "Tenant ID");
 
-        FFExportData data;
+        FFLExportData data;
         data.tenantId = tenantId;
         data.exportedAt = Clock.currTime().toISOExtString();
         data.serviceVersion = _config.serviceVersion;
@@ -267,15 +267,15 @@ class FFService : SAPService {
         validateId(tenantId, "Tenant ID");
 
         if (!("flags" in request) || request["flags"].type != Json.Type.array) {
-            throw new FFValidationException("Request must contain a 'flags' array");
+            throw new FFLValidationException("Request must contain a 'flags' array");
         }
 
-        FFFlag[] flags;
+        FFLFlag[] flags;
         () @trusted {
             foreach (item; request["flags"]) {
                 auto flag = flagFromJson(tenantId, item);
                 if (flag.flagName.length == 0) {
-                    throw new FFValidationException("Each flag must have a flag_name");
+                    throw new FFLValidationException("Each flag must have a flag_name");
                 }
                 // Ensure tenant ownership
                 flag.tenantId = tenantId;
@@ -329,7 +329,7 @@ class FFService : SAPService {
 
     // ─── Private evaluation helpers ───────────────────────────
 
-    private FFEvaluation evaluateBoolean(FFFlag flag, string identifier, FFEvaluation eval) {
+    private FFLEvaluation evaluateBoolean(FFLFlag flag, string identifier, FFLEvaluation eval) {
         // Inactive flag → always false
         if (flag.status != "active") {
             eval.booleanValue = false;
@@ -356,7 +356,7 @@ class FFService : SAPService {
         return eval;
     }
 
-    private FFEvaluation evaluateString(FFFlag flag, string identifier, FFEvaluation eval) {
+    private FFLEvaluation evaluateString(FFLFlag flag, string identifier, FFLEvaluation eval) {
         if (flag.variations.length == 0) {
             eval.strategy = "default";
             return eval;
@@ -409,7 +409,7 @@ class FFService : SAPService {
         return resolveDefaultVariation(flag, eval);
     }
 
-    private FFEvaluation resolveDefaultVariation(FFFlag flag, FFEvaluation eval) {
+    private FFLEvaluation resolveDefaultVariation(FFLFlag flag, FFLEvaluation eval) {
         // Try explicit default
         if (flag.defaultVariationId.length > 0) {
             foreach (v; flag.variations) {
@@ -435,7 +435,7 @@ class FFService : SAPService {
 
     private void validateId(string value, string fieldName) {
         if (value.length == 0) {
-            throw new FFValidationException(fieldName ~ " cannot be empty");
+            throw new FFLValidationException(fieldName ~ " cannot be empty");
         }
     }
 }

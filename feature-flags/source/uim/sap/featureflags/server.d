@@ -7,7 +7,7 @@ mixin(ShowModule!());
 @safe:
 
 /**
- * FFServer handles HTTP requests and routes them to the Feature Flags service.
+ * FFLServer handles HTTP requests and routes them to the Feature Flags service.
  *
  * Platform:
  * - GET  /health                                              Health check
@@ -32,10 +32,12 @@ mixin(ShowModule!());
  * Dashboard:
  * - GET    /v1/tenants/{tenantId}/dashboard                   Dashboard metrics
  */
-class FFServer {
-  private FFService _service;
+class FFLServer : SAPServer {
+  mixin(SAPServerTemplate!FFLServer);
+  
+  private FFLService _service;
 
-  this(FFService service) {
+  this(FFLService service) {
     _service = service;
   }
 
@@ -163,13 +165,13 @@ class FFServer {
       }
 
       respondError(res, "Not found", 404);
-    } catch (FFAuthorizationException e) {
+    } catch (FFLAuthorizationException e) {
       respondError(res, e.msg, 401);
-    } catch (FFNotFoundException e) {
+    } catch (FFLNotFoundException e) {
       respondError(res, e.msg, 404);
-    } catch (FFValidationException e) {
+    } catch (FFLValidationException e) {
       respondError(res, e.msg, 422);
-    } catch (FFException e) {
+    } catch (FFLException e) {
       respondError(res, e.msg, 500);
     } catch (Exception e) {
       respondError(res, e.msg, 500);
@@ -182,12 +184,12 @@ class FFServer {
     }
 
     if (!("Authorization" in req.headers)) {
-      throw new FFAuthorizationException("Missing Authorization header");
+      throw new FFLAuthorizationException("Missing Authorization header");
     }
 
     auto expected = "Bearer " ~ _service.config.authToken;
     if (req.headers["Authorization"] != expected) {
-      throw new FFAuthorizationException("Invalid token");
+      throw new FFLAuthorizationException("Invalid token");
     }
   }
 

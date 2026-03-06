@@ -12,4 +12,4 @@ public {
   import uim.sap.featureflags.server;
 }
 
-enum UIM_FF_VERSION = "1.0.0";
+enum UIM_FFL_VERSION = "1.0.0";

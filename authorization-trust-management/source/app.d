@@ -9,7 +9,7 @@ import vibe.core.core : runApplication;
 import uim.sap.atm;
 
 void main() {
-    ATMConfig config;
+    ATMConfig config = new ATMConfig;
     config.host = envOr("ATM_HOST", "0.0.0.0");
     config.port = readPort(envOr("ATM_PORT", "8088"), 8088);
     config.basePath = envOr("ATM_BASE_PATH", "/api/atm");

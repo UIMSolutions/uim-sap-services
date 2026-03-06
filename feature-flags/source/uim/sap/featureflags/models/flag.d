@@ -20,7 +20,7 @@ mixin(ShowModule!());
  *  and, for String flags, `percentageRule` (distributing traffic across
  *  variations by weight).
  */
-struct FFFlag {
+struct FFLFlag {
     string tenantId;
     string flagId;
     string flagName;
@@ -31,12 +31,12 @@ struct FFFlag {
     bool enabled = false;
 
     // String-specific
-    FFVariation[] variations;
+    FFLVariation[] variations;
     string defaultVariationId;
 
     // Delivery rules
-    FFDirectRule[] directRules;
-    FFPercentageRule percentageRule;
+    FFLDirectRule[] directRules;
+    FFLPercentageRule percentageRule;
 
     // Metadata
     string status = "active";         // "active" | "inactive"
@@ -75,8 +75,8 @@ struct FFFlag {
     }
 }
 
-FFFlag flagFromJson(string tenantId, Json request) {
-    FFFlag f;
+FFLFlag flagFromJson(string tenantId, Json request) {
+    FFLFlag f;
     f.tenantId = tenantId;
     f.flagId = randomUUID().toString();
 

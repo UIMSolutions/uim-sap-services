@@ -6,7 +6,7 @@ mixin(ShowModule!());
 
 @safe:
 
-class FFAuthorizationException : FFException {
+class FFLAuthorizationException : FFLException {
   this(string message) {
     super("Unauthorized: " ~ message);
   }

@@ -13,7 +13,7 @@ mixin(ShowModule!());
  *  flag returns `variationId` (String flag) or `booleanValue` (Boolean
  *  flag) instead of the default.
  */
-struct FFDirectRule {
+struct FFLDirectRule {
     string ruleId;
     string[] identifiers;     // targeted identifier values
     string variationId;       // for String flags — which variation to serve
@@ -34,8 +34,8 @@ struct FFDirectRule {
     }
 }
 
-FFDirectRule directRuleFromJson(Json request) {
-    FFDirectRule r;
+FFLDirectRule directRuleFromJson(Json request) {
+    FFLDirectRule r;
     r.ruleId = randomUUID().toString();
 
     if ("identifiers" in request && request["identifiers"].type == Json.Type.array) {

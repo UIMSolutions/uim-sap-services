@@ -4,8 +4,16 @@ import std.string : startsWith;
 
 import uim.sap.atp.exceptions;
 
-struct ATPConfig : SAPConfig {
-    string host = "0.0.0.0";
+class ATPConfig : SAPHostConfig {
+  mixin(SAPConfigTemplate!AgentryConfig);
+
+  override bool initialize(Json[string] initData = null) {
+    if (!super.initialize(initData)) {
+      return false;
+    }
+
+    host(initData.getString("host", "0.0.0.0"));
+  }
     ushort port = 8097;
     string basePath = "/api/automation-pilot";
 

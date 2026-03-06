@@ -13,7 +13,7 @@ mixin(ShowModule!());
  *  the identifier is hashed to a consistent bucket (0-99) and the
  *  bucket is matched against the cumulative weight ranges.
  */
-struct FFPercentageEntry {
+struct FFLPercentageEntry {
     string variationId;
     uint weight = 0;
 
@@ -25,9 +25,9 @@ struct FFPercentageEntry {
     }
 }
 
-struct FFPercentageRule {
+struct FFLPercentageRule {
     string ruleId;
-    FFPercentageEntry[] entries;
+    FFLPercentageEntry[] entries;
 
     Json toJson() const {
         Json j = Json.emptyObject;
@@ -42,14 +42,14 @@ struct FFPercentageRule {
     }
 }
 
-FFPercentageRule percentageRuleFromJson(Json request) {
-    FFPercentageRule r;
+FFLPercentageRule percentageRuleFromJson(Json request) {
+    FFLPercentageRule r;
     r.ruleId = randomUUID().toString();
 
     if ("entries" in request && request["entries"].type == Json.Type.array) {
         () @trusted {
             foreach (item; request["entries"]) {
-                FFPercentageEntry entry;
+                FFLPercentageEntry entry;
                 if ("variation_id" in item && item["variation_id"].type == Json.Type.string) {
                     entry.variationId = item["variation_id"].get!string;
                 }

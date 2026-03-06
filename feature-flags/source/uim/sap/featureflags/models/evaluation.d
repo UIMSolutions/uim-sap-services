@@ -7,7 +7,7 @@ mixin(ShowModule!());
 @safe:
 
 /** Result returned by the flag-evaluation endpoint. */
-struct FFEvaluation {
+struct FFLEvaluation {
     string flagId;
     string flagName;
     string flagType;

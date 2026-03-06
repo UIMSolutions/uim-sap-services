@@ -7,11 +7,11 @@ mixin(ShowModule!());
 @safe:
 
 /** Container used for export/import of all flags from a tenant. */
-struct FFExportData {
+struct FFLExportData {
     string tenantId;
     string exportedAt;
     string serviceVersion;
-    FFFlag[] flags;
+    FFLFlag[] flags;
 
     Json toJson() const {
         Json j = Json.emptyObject;

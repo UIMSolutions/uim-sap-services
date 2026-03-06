@@ -7,7 +7,7 @@ import std.stdio : writeln;
 import uim.sap.atp;
 
 void main() {
-    ATPConfig config;
+    ATPConfig config = new ATPConfig;
     config.host = envOr("ATP_HOST", "0.0.0.0");
     config.port = readPort(envOr("ATP_PORT", "8097"), 8097);
     config.basePath = envOr("ATP_BASE_PATH", "/api/automation-pilot");

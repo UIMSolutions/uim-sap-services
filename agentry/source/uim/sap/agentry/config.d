@@ -6,8 +6,17 @@ mixin(ShowModule!());
 
 @safe:
 
-class AgentryConfig : SAPConfig {
-    string host = "0.0.0.0";
+class AgentryConfig : SAPHostConfig {
+  mixin(SAPConfigTemplate!AgentryConfig);
+
+  override bool initialize(Json[string] initData = null) {
+    if (!super.initialize(initData)) {
+      return false;
+    }
+
+    host(initData.getString("host", "0.0.0.0"));
+  }
+
     ushort port = 8089;
     string basePath = "/api/agentry";
 

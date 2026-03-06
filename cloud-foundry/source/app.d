@@ -12,7 +12,7 @@ import std.stdio : writeln;
 import uim.sap.clf;
 
 void main() {
-    CLFConfig config;
+    CLFConfig config = new CLFConfig;
     config.host = envOr("CLF_HOST", "0.0.0.0");
     config.port = readPort(envOr("CLF_PORT", "8082"), 8082);
     config.basePath = envOr("CLF_BASE_PATH", "/api/cf");

@@ -12,7 +12,7 @@ mixin(ShowModule!());
  *  evaluates to this variation, plus a `weight` used by the
  *  percentage-delivery strategy to distribute traffic.
  */
-struct FFVariation {
+struct FFLVariation {
     string variationId;
     string name;
     string value;
@@ -28,8 +28,8 @@ struct FFVariation {
     }
 }
 
-FFVariation variationFromJson(Json request) {
-    FFVariation v;
+FFLVariation variationFromJson(Json request) {
+    FFLVariation v;
     v.variationId = randomUUID().toString();
 
     if ("name" in request && request["name"].type == Json.Type.string) {

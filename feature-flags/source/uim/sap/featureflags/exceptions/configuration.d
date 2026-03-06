@@ -6,7 +6,7 @@ mixin(ShowModule!());
 
 @safe:
 
-class FFConfigurationException : FFException {
+class FFLConfigurationException : FFLException {
   this(string message) {
     super("Configuration error: " ~ message);
   }

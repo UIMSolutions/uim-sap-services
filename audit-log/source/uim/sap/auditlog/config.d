@@ -4,16 +4,16 @@ import std.string : startsWith, toLower;
 
 import uim.sap.auditlog.exceptions;
 
-class AuditLogConfig : SAPConfig {
-  this() {
-    super();
-  }
+class AuditLogConfig : SAPHostConfig {
+  mixin(SAPConfigTemplate!AgentryConfig);
 
-  this(Json[string] initData = null) {
-    super(initData);
-  }
+  override bool initialize(Json[string] initData = null) {
+    if (!super.initialize(initData)) {
+      return false;
+    }
 
-  string host = "0.0.0.0";
+    host(initData.getString("host", "0.0.0.0"));
+  }
   ushort port = 8090;
   string basePath = "/api/auditlog";
 

@@ -14,8 +14,8 @@ mixin(ShowModule!());
  *  associative arrays, making the store safe for concurrent
  *  vibe.d request handling.
  */
-class FFStore : SAPStore {
-    private FFFlag[string] _flags;      // key = tenantId:flag:flagName
+class FFLStore : SAPStore {
+    private FFLFlag[string] _flags;      // key = tenantId:flag:flagName
     private Mutex _lock;
 
     this() {
@@ -24,7 +24,7 @@ class FFStore : SAPStore {
 
     // --- Flag CRUD ---
 
-    FFFlag upsertFlag(FFFlag flag) {
+    FFLFlag upsertFlag(FFLFlag flag) {
         synchronized (_lock) {
             auto key = flagKey(flag.tenantId, flag.flagName);
             if (auto existing = key in _flags) {
@@ -39,17 +39,17 @@ class FFStore : SAPStore {
         }
     }
 
-    FFFlag getFlag(string tenantId, string flagName) {
+    FFLFlag getFlag(string tenantId, string flagName) {
         synchronized (_lock) {
             auto key = flagKey(tenantId, flagName);
             if (auto value = key in _flags) {
                 return *value;
             }
         }
-        return FFFlag.init;
+        return FFLFlag.init;
     }
 
-    FFFlag getFlagById(string tenantId, string flagId) {
+    FFLFlag getFlagById(string tenantId, string flagId) {
         synchronized (_lock) {
             foreach (_, flag; _flags) {
                 if (flag.tenantId == tenantId && flag.flagId == flagId) {
@@ -57,11 +57,11 @@ class FFStore : SAPStore {
                 }
             }
         }
-        return FFFlag.init;
+        return FFLFlag.init;
     }
 
-    FFFlag[] listFlags(string tenantId) {
-        FFFlag[] list;
+    FFLFlag[] listFlags(string tenantId) {
+        FFLFlag[] list;
         synchronized (_lock) {
             foreach (key, flag; _flags) {
                 if (belongsToTenant(key, tenantId)) {
@@ -95,7 +95,7 @@ class FFStore : SAPStore {
     }
 
     /** Replace all flags for a tenant (used by import). */
-    long importFlags(string tenantId, FFFlag[] flags) {
+    long importFlags(string tenantId, FFLFlag[] flags) {
         synchronized (_lock) {
             // Remove existing flags for the tenant
             string[] keysToRemove;

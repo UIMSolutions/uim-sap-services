@@ -6,7 +6,7 @@ mixin(ShowModule!());
 
 @safe:
 
-class FFConfig : SAPConfig {
+class FFLConfig : SAPConfig {
     string host = "0.0.0.0";
     ushort port = 8094;
     string basePath = "/api/ff";
@@ -18,13 +18,13 @@ class FFConfig : SAPConfig {
 
     void validate() {
         if (port == 0) {
-            throw new FFConfigurationException("Port must be greater than zero");
+            throw new FFLConfigurationException("Port must be greater than zero");
         }
         if (basePath.length == 0) {
-            throw new FFConfigurationException("Base path cannot be empty");
+            throw new FFLConfigurationException("Base path cannot be empty");
         }
         if (requireAuthToken && authToken.length == 0) {
-            throw new FFConfigurationException("Auth token required but not set");
+            throw new FFLConfigurationException("Auth token required but not set");
         }
     }
 }

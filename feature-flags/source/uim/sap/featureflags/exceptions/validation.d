@@ -6,7 +6,7 @@ mixin(ShowModule!());
 
 @safe:
 
-class FFValidationException : FFException {
+class FFLValidationException : FFLException {
   this(string message) {
     super("Validation failed: " ~ message);
   }

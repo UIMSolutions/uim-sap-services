@@ -4,8 +4,16 @@ import std.string : startsWith;
 
 import uim.sap.atm.exceptions;
 
-struct ATMConfig : SAPConfig {
-    string host = "0.0.0.0";
+class ATMConfig : SAPHostConfig {
+  mixin(SAPConfigTemplate!AgentryConfig);
+
+  override bool initialize(Json[string] initData = null) {
+    if (!super.initialize(initData)) {
+      return false;
+    }
+
+    host(initData.getString("host", "0.0.0.0"));
+  }
     ushort port = 8088;
     string basePath = "/api/atm";
 

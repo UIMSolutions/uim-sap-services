@@ -12,7 +12,7 @@ import vibe.data.json : Json;
 import uim.sap.art;
 
 void main() {
-    ARTRuntimeConfig config;
+    ARTRuntimeConfig config = new ARTRuntimeConfig();
     config.host = "127.0.0.1";
     config.port = 8080;
     config.basePath = "/sap/abap/runtime";

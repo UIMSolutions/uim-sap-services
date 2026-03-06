@@ -6,7 +6,7 @@ mixin(ShowModule!());
 
 @safe:
 
-class FFNotFoundException : FFException {
+class FFLNotFoundException : FFLException {
   this(string resource, string identifier) {
     super(resource ~ " not found: " ~ identifier);
   }

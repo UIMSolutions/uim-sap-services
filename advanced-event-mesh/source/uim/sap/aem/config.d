@@ -10,8 +10,17 @@ import uim.sap.aem;
 mixin(ShowModule!());
 
 @safe:
-class AEMConfig : SAPConfig {
-    string host = "0.0.0.0";
+class AEMConfig : SAPHostConfig {
+  mixin(SAPConfigTemplate!AgentryConfig);
+
+  override bool initialize(Json[string] initData = null) {
+    if (!super.initialize(initData)) {
+      return false;
+    }
+
+    host(initData.getString("host", "0.0.0.0"));
+  }
+
     ushort port = 8088;
     string basePath = "/api/aem";
 
