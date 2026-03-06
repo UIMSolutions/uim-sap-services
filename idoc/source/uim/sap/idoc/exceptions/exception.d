@@ -12,7 +12,7 @@ import uim.sap.idoc;
   * Example usage:
   * throw new IDocException("An error occurred while processing the IDoc");
   */
-class IDocException : Exception {
+class IDocException : SAPException {
   this(string msg, string file = __FILE__, size_t line = __LINE__, Throwable next = null)
   pure nothrow @safe @nogc {
     super(msg, file, line, next);

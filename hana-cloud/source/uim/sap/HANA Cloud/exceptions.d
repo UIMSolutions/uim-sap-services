@@ -7,12 +7,12 @@
  */
 module uim.sap.exceptions;
 
-import std.exception : Exception;
+import std.exception : SAPException;
 
 /**
  * Base exception for all HANA related errors
  */
-class SAPException : Exception {
+class SAPException : SAPException {
     this(string msg, string file = __FILE__, size_t line = __LINE__, Throwable nextInChain = null) pure nothrow @nogc @safe {
         super(msg, file, line, nextInChain);
     }

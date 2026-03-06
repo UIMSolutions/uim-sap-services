@@ -11,7 +11,7 @@ public {
 }
 
 /// Base exception for all Document Management errors.
-class DocumentManagementException : Exception {
+class DocumentManagementException : SAPException {
     this(string message) {
         super(message);
     }

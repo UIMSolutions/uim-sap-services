@@ -1,6 +1,6 @@
 module uim.sap.html5repo.exceptions.exception;
 
-class HTML5RepoException : Exception {
+class HTML5RepoException : SAPException {
     this(string message, string file = __FILE__, size_t line = __LINE__) {
         super(message, file, line);
     }

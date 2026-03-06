@@ -1,6 +1,6 @@
 module uim.sap.dst.exceptions.exception;
 
-class DSTException : Exception {
+class DSTException : SAPException {
     this(string msg) {
         super(msg);
     }

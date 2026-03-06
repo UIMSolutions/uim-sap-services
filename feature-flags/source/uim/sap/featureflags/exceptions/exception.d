@@ -6,7 +6,7 @@ mixin(ShowModule!());
 
 @safe:
 
-class FFException : Exception {
+class FFException : SAPException {
   this(string message) {
     super(message);
   }
