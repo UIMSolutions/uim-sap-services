@@ -12,10 +12,12 @@ import uim.sap.html5repo.exceptions;
 import uim.sap.html5repo.models;
 import uim.sap.html5repo.service;
 
-class HTML5RepoServer {
-  private HTML5RepoService _service;
+class HTMRepoServer : SAPServer {
+  mixin(SAPServerTemplate!HTMRepoServer);
+  
+  private HTMRepoService _service;
 
-  this(HTML5RepoService service) {
+  this(HTMRepoService service) {
     _service = service;
   }
 
@@ -67,13 +69,13 @@ class HTML5RepoServer {
       }
 
       respondError(res, "Not found", 404);
-    } catch (HTML5RepoAuthorizationException e) {
+    } catch (HTMRepoAuthorizationException e) {
       respondError(res, e.msg, 401);
-    } catch (HTML5RepoNotFoundException e) {
+    } catch (HTMRepoNotFoundException e) {
       respondError(res, e.msg, 404);
-    } catch (HTML5RepoValidationException e) {
+    } catch (HTMRepoValidationException e) {
       respondError(res, e.msg, 422);
-    } catch (HTML5RepoException e) {
+    } catch (HTMRepoException e) {
       respondError(res, e.msg, 500);
     } catch (Exception e) {
       respondError(res, e.msg, 500);
@@ -211,12 +213,12 @@ class HTML5RepoServer {
     }
 
     if (!("Authorization" in req.headers)) {
-      throw new HTML5RepoAuthorizationException("Missing Authorization header");
+      throw new HTMRepoAuthorizationException("Missing Authorization header");
     }
 
     auto expected = "Bearer " ~ _service.config.managementAuthToken;
     if (req.headers["Authorization"] != expected) {
-      throw new HTML5RepoAuthorizationException("Invalid management token");
+      throw new HTMRepoAuthorizationException("Invalid management token");
     }
   }
 
@@ -236,7 +238,7 @@ class HTML5RepoServer {
 
   private string joinFrom(string[] segments, size_t startIndex) {
     if (segments.length <= startIndex) {
-      throw new HTML5RepoValidationException("Asset path is required");
+      throw new HTMRepoValidationException("Asset path is required");
     }
 
     string resultPath;

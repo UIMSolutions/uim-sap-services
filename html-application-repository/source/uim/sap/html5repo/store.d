@@ -15,7 +15,7 @@ import vibe.data.json : Json, parseJsonString;
 import uim.sap.html5repo.exceptions;
 import uim.sap.html5repo.models;
 
-class HTML5RepositoryStore : SAPStore {
+class HTMRepositoryStore : SAPStore {
     private string _root;
 
     this(string rootPath) {
@@ -38,7 +38,7 @@ class HTML5RepositoryStore : SAPStore {
         validateIdentity(versionId, "version");
 
         if (files.length == 0) {
-            throw new HTML5RepoValidationException("At least one file is required");
+            throw new HTMRepoValidationException("At least one file is required");
         }
 
         auto versionRoot = versionDirectory(tenant.tenantId, tenant.spaceId, appId, versionId);
@@ -51,19 +51,19 @@ class HTML5RepositoryStore : SAPStore {
         foreach (asset; files) {
             auto cleanPath = normalizeAssetPath(asset.path);
             if (asset.contentBase64.length == 0) {
-                throw new HTML5RepoValidationException("content_base64 is required for " ~ cleanPath);
+                throw new HTMRepoValidationException("content_base64 is required for " ~ cleanPath);
             }
 
             ubyte[] binaryContent;
             try {
                 binaryContent = Base64.decode(asset.contentBase64);
             } catch (Exception) {
-                throw new HTML5RepoValidationException("Invalid content_base64 for " ~ cleanPath);
+                throw new HTMRepoValidationException("Invalid content_base64 for " ~ cleanPath);
             }
 
             totalBytes += cast(long)binaryContent.length;
             if (totalBytes > maxUploadBytes) {
-                throw new HTML5RepoValidationException("Upload exceeds max upload size limit");
+                throw new HTMRepoValidationException("Upload exceeds max upload size limit");
             }
 
             auto target = buildPath(contentRoot, cleanPath);
@@ -97,7 +97,7 @@ class HTML5RepositoryStore : SAPStore {
     void setActiveVersion(string tenantId, string spaceId, string appId, string versionId) {
         auto requested = tryGetVersionInfo(tenantId, spaceId, appId, versionId);
         if (requested.versionId.length == 0) {
-            throw new HTML5RepoNotFoundException("Version", appId ~ ":" ~ versionId);
+            throw new HTMRepoNotFoundException("Version", appId ~ ":" ~ versionId);
         }
 
         auto versions = listVersions(tenantId, spaceId, appId);
@@ -233,7 +233,7 @@ class HTML5RepositoryStore : SAPStore {
         string[] files;
         auto contentRoot = buildPath(versionDirectory(tenantId, spaceId, appId, versionId), "content");
         if (!exists(contentRoot)) {
-            throw new HTML5RepoNotFoundException("Version", appId ~ ":" ~ versionId);
+            throw new HTMRepoNotFoundException("Version", appId ~ ":" ~ versionId);
         }
 
         foreach (entry; dirEntries(contentRoot, SpanMode.depth)) {
@@ -264,28 +264,28 @@ class HTML5RepositoryStore : SAPStore {
     ) {
         auto info = tryGetVersionInfo(tenantId, spaceId, appId, versionId);
         if (info.versionId.length == 0) {
-            throw new HTML5RepoNotFoundException("Version", appId ~ ":" ~ versionId);
+            throw new HTMRepoNotFoundException("Version", appId ~ ":" ~ versionId);
         }
 
         if (consumerTenantId.length > 0 && consumerTenantId != tenantId) {
-            throw new HTML5RepoAuthorizationException("Cross-tenant consumption is not allowed");
+            throw new HTMRepoAuthorizationException("Cross-tenant consumption is not allowed");
         }
 
         auto privateAsset = info.visibility == Visibility.privateAccess;
         auto crossSpace = consumerSpaceId.length > 0 && consumerSpaceId != spaceId;
 
         if (privateAsset && crossSpace) {
-            throw new HTML5RepoAuthorizationException("Private application cannot be consumed from another space");
+            throw new HTMRepoAuthorizationException("Private application cannot be consumed from another space");
         }
 
         if (!privateAsset && crossSpace && !allowPublicCrossSpace) {
-            throw new HTML5RepoAuthorizationException("Cross-space public sharing is disabled");
+            throw new HTMRepoAuthorizationException("Cross-space public sharing is disabled");
         }
 
         auto cleanPath = normalizeAssetPath(assetPath);
         auto assetFile = buildPath(versionDirectory(tenantId, spaceId, appId, versionId), "content", cleanPath);
         if (!exists(assetFile)) {
-            throw new HTML5RepoNotFoundException("Asset", cleanPath);
+            throw new HTMRepoNotFoundException("Asset", cleanPath);
         }
 
         RuntimeAsset asset;
@@ -304,7 +304,7 @@ class HTML5RepositoryStore : SAPStore {
     void deleteVersion(string tenantId, string spaceId, string appId, string versionId) {
         auto root = versionDirectory(tenantId, spaceId, appId, versionId);
         if (!exists(root)) {
-            throw new HTML5RepoNotFoundException("Version", appId ~ ":" ~ versionId);
+            throw new HTMRepoNotFoundException("Version", appId ~ ":" ~ versionId);
         }
         rmdirRecurse(root);
 
@@ -331,7 +331,7 @@ class HTML5RepositoryStore : SAPStore {
     private string normalizeAssetPath(string pathValue) {
         auto value = strip(pathValue);
         if (value.length == 0) {
-            throw new HTML5RepoValidationException("asset path is required");
+            throw new HTMRepoValidationException("asset path is required");
         }
 
         if (value[0] == '/') {
@@ -342,7 +342,7 @@ class HTML5RepositoryStore : SAPStore {
         string[] clean;
         foreach (segment; segments) {
             if (segment.length == 0 || segment == "." || segment == "..") {
-                throw new HTML5RepoValidationException("Invalid asset path");
+                throw new HTMRepoValidationException("Invalid asset path");
             }
             clean ~= segment;
         }
@@ -405,7 +405,7 @@ class HTML5RepositoryStore : SAPStore {
 
     private void validateIdentity(string value, string fieldName) {
         if (strip(value).length == 0) {
-            throw new HTML5RepoValidationException(fieldName ~ " is required");
+            throw new HTMRepoValidationException(fieldName ~ " is required");
         }
     }
 }

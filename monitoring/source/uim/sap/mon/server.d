@@ -8,7 +8,9 @@ module uim.sap.mon.server;
 import uim.sap.mon;
 @safe:
 
-class MONServer {
+class MONServer : SAPServer {
+  mixin(SAPServerTemplate!MONServer);
+  
   private MONService _service;
 
   this(MONService service) {

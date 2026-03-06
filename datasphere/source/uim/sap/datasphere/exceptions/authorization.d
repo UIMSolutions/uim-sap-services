@@ -10,6 +10,6 @@ import uim.sap.datasphere;
 mixin(ShowModule!());
 
 @safe:
-class DatasphereAuthorizationException : DatasphereException {
+class DSPAuthorizationException : DatasphereException {
     this(string msg) { super(msg); }
 }

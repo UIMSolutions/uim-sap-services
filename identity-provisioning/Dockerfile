@@ -17,9 +17,9 @@ WORKDIR /opt/uim-sap-ip
 
 COPY --from=build /app/build/uim-sap-ip-service ./uim-sap-ip-service
 
-ENV IP_HOST=0.0.0.0 \
-    IP_PORT=8095 \
-    IP_BASE_PATH=/api/ip
+ENV IPV_HOST=0.0.0.0 \
+    IPV_PORT=8095 \
+    IPV_BASE_PATH=/api/ip
 
 EXPOSE 8095
 

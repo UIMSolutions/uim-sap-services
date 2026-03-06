@@ -25,7 +25,7 @@ spec:
         - configMapRef:
             name: uim-sap-ip-config
         env:
-        - name: IP_AUTH_TOKEN
+        - name: IPV_AUTH_TOKEN
           valueFrom:
             secretKeyRef:
               name: uim-sap-ip-secret

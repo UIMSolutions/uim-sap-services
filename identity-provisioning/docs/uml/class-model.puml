@@ -1,10 +1,10 @@
 @startuml class_model
 !theme plain
 
-title UIM SAP Identity Provisioning (IP) - Class Model
+title UIM SAP Identity Provisioning (IPV) - Class Model
 
 package "uim.sap.identityprovisioning" {
-  class IPConfig {
+  class IPVConfig {
     +host : string
     +port : ushort
     +basePath : string
@@ -15,8 +15,8 @@ package "uim.sap.identityprovisioning" {
     +validate()
   }
 
-  class IPServer {
-    -_service : IPService
+  class IPVServer {
+    -_service : IPVService
     +run()
     -handleRequest()
     -validateAuth()
@@ -24,9 +24,9 @@ package "uim.sap.identityprovisioning" {
     -respondError()
   }
 
-  class IPService {
-    -_config : IPConfig
-    -_store : IPStore
+  class IPVService {
+    -_config : IPVConfig
+    -_store : IPVStore
     +health() : Json
     +ready() : Json
     +createSystem() : Json
@@ -61,42 +61,42 @@ package "uim.sap.identityprovisioning" {
     -notifySubscribers()
   }
 
-  class IPStore {
-    -_systems : IPSystem[string]
-    -_users : IPUser[string]
-    -_groups : IPGroup[string]
-    -_transformations : IPTransformation[string]
-    -_jobs : IPJob[string]
-    -_jobLogs : IPJobLog[string][]
-    -_notifications : IPNotification[string]
+  class IPVStore {
+    -_systems : IPVSystem[string]
+    -_users : IPVUser[string]
+    -_groups : IPVGroup[string]
+    -_transformations : IPVTransformation[string]
+    -_jobs : IPVJob[string]
+    -_jobLogs : IPVJobLog[string][]
+    -_notifications : IPVNotification[string]
     -_lock : Mutex
-    +upsertSystem() : IPSystem
-    +getSystem() : IPSystem
-    +listSystems() : IPSystem[]
+    +upsertSystem() : IPVSystem
+    +getSystem() : IPVSystem
+    +listSystems() : IPVSystem[]
     +deleteSystem() : bool
-    +upsertUser() : IPUser
-    +getUser() : IPUser
-    +listUsers() : IPUser[]
+    +upsertUser() : IPVUser
+    +getUser() : IPVUser
+    +listUsers() : IPVUser[]
     +deleteUser() : bool
-    +upsertGroup() : IPGroup
-    +getGroup() : IPGroup
-    +listGroups() : IPGroup[]
+    +upsertGroup() : IPVGroup
+    +getGroup() : IPVGroup
+    +listGroups() : IPVGroup[]
     +deleteGroup() : bool
-    +upsertTransformation() : IPTransformation
-    +listTransformations() : IPTransformation[]
+    +upsertTransformation() : IPVTransformation
+    +listTransformations() : IPVTransformation[]
     +deleteTransformation() : bool
-    +upsertJob() : IPJob
-    +getJob() : IPJob
-    +listJobs() : IPJob[]
+    +upsertJob() : IPVJob
+    +getJob() : IPVJob
+    +listJobs() : IPVJob[]
     +deleteJob() : bool
     +appendJobLog()
-    +listJobLogs() : IPJobLog[]
-    +upsertNotification() : IPNotification
-    +listNotifications() : IPNotification[]
+    +listJobLogs() : IPVJobLog[]
+    +upsertNotification() : IPVNotification
+    +listNotifications() : IPVNotification[]
     +deleteNotification() : bool
   }
 
-  struct IPSystem {
+  struct IPVSystem {
     +tenantId : string
     +systemId : string
     +systemName : string
@@ -110,7 +110,7 @@ package "uim.sap.identityprovisioning" {
     +toJson() : Json
   }
 
-  struct IPUser {
+  struct IPVUser {
     +tenantId : string
     +userId : string
     +userName : string
@@ -123,7 +123,7 @@ package "uim.sap.identityprovisioning" {
     +toJson() : Json
   }
 
-  struct IPGroup {
+  struct IPVGroup {
     +tenantId : string
     +groupId : string
     +groupName : string
@@ -132,7 +132,7 @@ package "uim.sap.identityprovisioning" {
     +toJson() : Json
   }
 
-  struct IPTransformation {
+  struct IPVTransformation {
     +tenantId : string
     +transformationId : string
     +systemId : string
@@ -146,7 +146,7 @@ package "uim.sap.identityprovisioning" {
     +toJson() : Json
   }
 
-  struct IPJob {
+  struct IPVJob {
     +tenantId : string
     +jobId : string
     +jobName : string
@@ -166,7 +166,7 @@ package "uim.sap.identityprovisioning" {
     +toJson() : Json
   }
 
-  struct IPJobLog {
+  struct IPVJobLog {
     +tenantId : string
     +logId : string
     +jobId : string
@@ -178,7 +178,7 @@ package "uim.sap.identityprovisioning" {
     +toJson() : Json
   }
 
-  struct IPNotification {
+  struct IPVNotification {
     +tenantId : string
     +subscriptionId : string
     +sourceSystemId : string
@@ -190,21 +190,21 @@ package "uim.sap.identityprovisioning" {
 }
 
 ' Relationships
-IPServer --> IPService : delegates
-IPService --> IPStore : persists
-IPService --> IPConfig : reads
+IPVServer --> IPVService : delegates
+IPVService --> IPVStore : persists
+IPVService --> IPVConfig : reads
 
-IPStore *-- IPSystem
-IPStore *-- IPUser
-IPStore *-- IPGroup
-IPStore *-- IPTransformation
-IPStore *-- IPJob
-IPStore *-- IPJobLog
-IPStore *-- IPNotification
+IPVStore *-- IPVSystem
+IPVStore *-- IPVUser
+IPVStore *-- IPVGroup
+IPVStore *-- IPVTransformation
+IPVStore *-- IPVJob
+IPVStore *-- IPVJobLog
+IPVStore *-- IPVNotification
 
-IPJob --> IPSystem : sourceSystemId
-IPTransformation --> IPSystem : systemId
-IPUser --> IPSystem : sourceSystemId
-IPUser --> IPGroup : groupIds
+IPVJob --> IPVSystem : sourceSystemId
+IPVTransformation --> IPVSystem : systemId
+IPVUser --> IPVSystem : sourceSystemId
+IPVUser --> IPVGroup : groupIds
 
 @enduml

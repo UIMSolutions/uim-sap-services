@@ -7,15 +7,15 @@ mixin(ShowModule!());
 @safe:
 
 /**
-  * DatasphereService provides core functionalities for data modeling, integration, governance, and consumption.
+  * DSPService provides core functionalities for data modeling, integration, governance, and consumption.
   * It manages in-memory storage of data models, business models, connections, spaces, and other resources. The service includes methods for creating, listing, and managing these resources, as well as handling tenant administration and audit events. It serves as the main interface for the Datasphere application logic.
   * 
   * Note: This implementation uses in-memory storage for simplicity and demonstration purposes. In a production environment, it would be necessary to integrate with a persistent storage solution to ensure data durability and scalability.
   *
   * Example usage:
   * ```
-  * DatasphereConfig config = new DatasphereConfig();
-  * DatasphereService service = new DatasphereService(config);
+  * DSPConfig config = new DSPConfig();
+  * DSPService service = new DSPService(config);
   * Json healthResponse = service.health();
   * Json readyResponse = service.ready();
   * Json createModelResponse = service.createDataModel("tenant123", json!({"name": "Sales Model"}));
@@ -24,17 +24,17 @@ mixin(ShowModule!());
   * The example usage demonstrates how to initialize the DatasphereService with a configuration, check the health and readiness of the service, create a new data model for a tenant, and list all data models for that tenant. Similar methods can be used for managing business models, connections, spaces, row policies, and other resources provided by the service.
   */
 
-class DatasphereService : SAPService {
-  private DatasphereConfig _config;
-  private DatasphereStore _store;
+class DSPService : SAPService {
+  private DSPConfig _config;
+  private DSPStore _store;
 
-  this(DatasphereConfig config) {
+  this(DSPConfig config) {
     config.validate();
     _config = config;
-    _store = new DatasphereStore;
+    _store = new DSPStore;
   }
 
-  @property const(DatasphereConfig) config() const {
+  @property const(DSPConfig) config() const {
     return _config;
   }
 
@@ -103,7 +103,7 @@ class DatasphereService : SAPService {
     validateTenant(tenantId);
     auto sourceType = toLower(requiredString(request, "source_type"));
     if (sourceType != "csv" && sourceType != "marketplace" && sourceType != "third_party") {
-      throw new DatasphereValidationException(
+      throw new DSPValidationException(
         "source_type must be csv, marketplace, or third_party");
     }
 
@@ -137,7 +137,7 @@ class DatasphereService : SAPService {
 
     DATDataModel model;
     if (!_store.getDataModel(tenantId, modelId, model)) {
-      throw new DatasphereNotFoundException("Data model", modelId);
+      throw new DSPNotFoundException("Data model", modelId);
     }
 
     model.status = "replicated";
@@ -190,7 +190,7 @@ class DatasphereService : SAPService {
 
     DATBusinessModel model;
     if (!_store.getBusinessModel(tenantId, modelId, model)) {
-      throw new DatasphereNotFoundException("Business model", modelId);
+      throw new DSPNotFoundException("Business model", modelId);
     }
 
     Json sample = Json.emptyArray;
@@ -222,7 +222,7 @@ class DatasphereService : SAPService {
     auto sourceType = requiredString(request, "source_type");
     auto mode = toLower(optionalString(request, "mode", "federate"));
     if (mode != "federate" && mode != "replicate" && mode != "transform_load") {
-      throw new DatasphereValidationException("mode must be federate, replicate, or transform_load");
+      throw new DSPValidationException("mode must be federate, replicate, or transform_load");
     }
 
     DATIntegrationConnection item;
@@ -308,7 +308,7 @@ class DatasphereService : SAPService {
 
     DATSpace item;
     if (!_store.getSpace(tenantId, spaceId, item)) {
-      throw new DatasphereNotFoundException("Space", spaceId);
+      throw new DSPNotFoundException("Space", spaceId);
     }
 
     item.name = optionalString(request, "name", item.name);
@@ -337,7 +337,7 @@ class DatasphereService : SAPService {
 
     DATSpace item;
     if (!_store.getSpace(tenantId, spaceId, item)) {
-      throw new DatasphereNotFoundException("Space", spaceId);
+      throw new DSPNotFoundException("Space", spaceId);
     }
 
     if (!contains(item.users, user))
@@ -621,16 +621,16 @@ class DatasphereService : SAPService {
 
   private void validateId(string value, string fieldName) {
     if (value.length == 0)
-      throw new DatasphereValidationException(fieldName ~ " cannot be empty");
+      throw new DSPValidationException(fieldName ~ " cannot be empty");
   }
 
   private string requiredString(Json request, string key) {
     if (!(key in request) || request[key].type != Json.Type.string) {
-      throw new DatasphereValidationException(key ~ " is required");
+      throw new DSPValidationException(key ~ " is required");
     }
     auto value = request[key].get!string;
     if (value.length == 0)
-      throw new DatasphereValidationException(key ~ " cannot be empty");
+      throw new DSPValidationException(key ~ " cannot be empty");
     return value;
   }
 

@@ -1,8 +1,8 @@
-# UIM HTML5 Application Repository Service
+# UIM HTM Application Repository Service
 
-HTML5 Application Repository style service for BTP scenarios, built with D, `vibe.d`, and `uim-framework`.
+HTM Application Repository style service for BTP scenarios, built with D, `vibe.d`, and `uim-framework`.
 
-This service provides central storage and runtime delivery of HTML5 application static content with:
+This service provides central storage and runtime delivery of HTM application static content with:
 
 - zero down-time activation by switching active version pointers
 - versioned application content lifecycle
@@ -14,7 +14,7 @@ This service provides central storage and runtime delivery of HTML5 application 
 ## Build and Run
 
 ```bash
-cd "HTML5 Application Repository"
+cd "HTM Application Repository"
 dub build
 ./build/uim-sap-html5-app-repo-service
 ```
@@ -24,7 +24,7 @@ dub build
 Run the automated flow (health, upload v1, upload v2 without activation, activate v2, runtime validation):
 
 ```bash
-cd "HTML5 Application Repository"
+cd "HTM Application Repository"
 bash scripts/smoke-test.sh
 ```
 
@@ -38,27 +38,27 @@ Optional variables:
 
 ### Environment variables
 
-- `HTML5_REPO_HOST` (default `0.0.0.0`)
-- `HTML5_REPO_PORT` (default `8094`)
-- `HTML5_REPO_BASE_PATH` (default `/api/html5-repo`)
-- `HTML5_REPO_SERVICE_NAME` (default `uim-sap-html5-app-repo`)
-- `HTML5_REPO_SERVICE_VERSION` (default `1.0.0`)
-- `HTML5_REPO_DATA_DIR` (default `/tmp/uim-html5-repo-data`)
-- `HTML5_REPO_DEFAULT_TENANT` (default `provider`)
-- `HTML5_REPO_DEFAULT_SPACE` (default `dev`)
-- `HTML5_REPO_CACHE_TTL_SECONDS` (default `120`)
-- `HTML5_REPO_ALLOW_PUBLIC_CROSS_SPACE` (default `true`)
-- `HTML5_REPO_MAX_UPLOAD_BYTES` (default `52428800`)
-- `HTML5_REPO_AUTH_TOKEN` (optional bearer token for `/v1` management APIs)
+- `HTM_REPO_HOST` (default `0.0.0.0`)
+- `HTM_REPO_PORT` (default `8094`)
+- `HTM_REPO_BASE_PATH` (default `/api/html5-repo`)
+- `HTM_REPO_SERVICE_NAME` (default `uim-sap-html5-app-repo`)
+- `HTM_REPO_SERVICE_VERSION` (default `1.0.0`)
+- `HTM_REPO_DATA_DIR` (default `/tmp/uim-html5-repo-data`)
+- `HTM_REPO_DEFAULT_TENANT` (default `provider`)
+- `HTM_REPO_DEFAULT_SPACE` (default `dev`)
+- `HTM_REPO_CACHE_TTL_SECONDS` (default `120`)
+- `HTM_REPO_ALLOW_PUBLIC_CROSS_SPACE` (default `true`)
+- `HTM_REPO_MAX_UPLOAD_BYTES` (default `52428800`)
+- `HTM_REPO_AUTH_TOKEN` (optional bearer token for `/v1` management APIs)
 
 ## Podman
 
 ```bash
-cd "HTML5 Application Repository"
+cd "HTM Application Repository"
 podman build -t uim-sap-html5-repo:local -f Dockerfile .
 podman run --rm \
   -p 8094:8094 \
-  -e HTML5_REPO_AUTH_TOKEN=secret123 \
+  -e HTM_REPO_AUTH_TOKEN=secret123 \
   -v $(pwd)/build/repo-data:/var/lib/uim-html5-repo:Z \
   --name uim-sap-html5-repo \
   uim-sap-html5-repo:local
@@ -88,7 +88,7 @@ Headers:
 
 - `X-Tenant-ID` (optional, defaults by config)
 - `X-Space-ID` (optional, defaults by config)
-- `Authorization: Bearer <token>` (required only if `HTML5_REPO_AUTH_TOKEN` is configured)
+- `Authorization: Bearer <token>` (required only if `HTM_REPO_AUTH_TOKEN` is configured)
 
 Endpoints:
 

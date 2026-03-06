@@ -8,20 +8,20 @@ import std.string : toLower;
 import uim.sap.html5repo;
 
 void main() {
-    HTML5RepoConfig config;
-    config.host = envOr("HTML5_REPO_HOST", "0.0.0.0");
-    config.port = readPort(envOr("HTML5_REPO_PORT", "8094"), 8094);
-    config.basePath = envOr("HTML5_REPO_BASE_PATH", "/api/html5-repo");
-    config.serviceName = envOr("HTML5_REPO_SERVICE_NAME", "uim-sap-html5-app-repo");
-    config.serviceVersion = envOr("HTML5_REPO_SERVICE_VERSION", UIM_HTML5_REPO_VERSION);
-    config.dataDirectory = envOr("HTML5_REPO_DATA_DIR", "/tmp/uim-html5-repo-data");
-    config.defaultTenant = envOr("HTML5_REPO_DEFAULT_TENANT", "provider");
-    config.defaultSpace = envOr("HTML5_REPO_DEFAULT_SPACE", "dev");
-    config.allowPublicCrossSpace = toLower(envOr("HTML5_REPO_ALLOW_PUBLIC_CROSS_SPACE", "true")) == "true";
-    config.cacheTtlSeconds = readInt(envOr("HTML5_REPO_CACHE_TTL_SECONDS", "120"), 120);
-    config.maxUploadBytes = readLong(envOr("HTML5_REPO_MAX_UPLOAD_BYTES", "52428800"), 52_428_800L);
+    HTMRepoConfig config;
+    config.host = envOr("HTM_REPO_HOST", "0.0.0.0");
+    config.port = readPort(envOr("HTM_REPO_PORT", "8094"), 8094);
+    config.basePath = envOr("HTM_REPO_BASE_PATH", "/api/html5-repo");
+    config.serviceName = envOr("HTM_REPO_SERVICE_NAME", "uim-sap-html5-app-repo");
+    config.serviceVersion = envOr("HTM_REPO_SERVICE_VERSION", UIM_HTM_REPO_VERSION);
+    config.dataDirectory = envOr("HTM_REPO_DATA_DIR", "/tmp/uim-html5-repo-data");
+    config.defaultTenant = envOr("HTM_REPO_DEFAULT_TENANT", "provider");
+    config.defaultSpace = envOr("HTM_REPO_DEFAULT_SPACE", "dev");
+    config.allowPublicCrossSpace = toLower(envOr("HTM_REPO_ALLOW_PUBLIC_CROSS_SPACE", "true")) == "true";
+    config.cacheTtlSeconds = readInt(envOr("HTM_REPO_CACHE_TTL_SECONDS", "120"), 120);
+    config.maxUploadBytes = readLong(envOr("HTM_REPO_MAX_UPLOAD_BYTES", "52428800"), 52_428_800L);
 
-    auto token = envOr("HTML5_REPO_AUTH_TOKEN", "");
+    auto token = envOr("HTM_REPO_AUTH_TOKEN", "");
     if (token.length > 0) {
         config.requireManagementAuth = true;
         config.managementAuthToken = token;
@@ -30,10 +30,10 @@ void main() {
     config.customHeaders["X-Service"] = config.serviceName;
     config.customHeaders["X-Version"] = config.serviceVersion;
 
-    auto service = new HTML5RepoService(config);
-    auto server = new HTML5RepoServer(service);
+    auto service = new HTMRepoService(config);
+    auto server = new HTMRepoServer(service);
 
-    writeln("Starting HTML5 Repository service on ", config.host, ":", config.port);
+    writeln("Starting HTM Repository service on ", config.host, ":", config.port);
     writeln("Base path: ", config.basePath);
     writeln("Data directory: ", config.dataDirectory);
     server.run();

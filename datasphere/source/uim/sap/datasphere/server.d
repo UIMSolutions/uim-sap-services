@@ -6,10 +6,10 @@ mixin(ShowModule!());
 
 @safe:
 
-class DatasphereServer {
-  private DatasphereService _service;
+class DSPServer {
+  private DSPService _service;
 
-  this(DatasphereService service) {
+  this(DSPService service) {
     _service = service;
   }
 
@@ -292,13 +292,13 @@ class DatasphereServer {
       }
 
       respondError(res, "Not found", 404);
-    } catch (DatasphereAuthorizationException e) {
+    } catch (DSPAuthorizationException e) {
       respondError(res, e.msg, 401);
-    } catch (DatasphereNotFoundException e) {
+    } catch (DSPNotFoundException e) {
       respondError(res, e.msg, 404);
-    } catch (DatasphereValidationException e) {
+    } catch (DSPValidationException e) {
       respondError(res, e.msg, 422);
-    } catch (DatasphereException e) {
+    } catch (DSPException e) {
       respondError(res, e.msg, 500);
     } catch (Exception e) {
       respondError(res, e.msg, 500);
@@ -309,11 +309,11 @@ class DatasphereServer {
     if (!_service.config.requireAuthToken)
       return;
     if (!("Authorization" in req.headers)) {
-      throw new DatasphereAuthorizationException("Missing Authorization header");
+      throw new DSPAuthorizationException("Missing Authorization header");
     }
     auto expected = "Bearer " ~ _service.config.authToken;
     if (req.headers["Authorization"] != expected)
-      throw new DatasphereAuthorizationException("Invalid token");
+      throw new DSPAuthorizationException("Invalid token");
   }
 
   private string[] normalizedSegments(string subPath) {

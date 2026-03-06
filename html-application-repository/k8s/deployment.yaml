@@ -25,7 +25,7 @@ spec:
         - configMapRef:
             name: uim-sap-html5-repo-config
         env:
-        - name: HTML5_REPO_AUTH_TOKEN
+        - name: HTM_REPO_AUTH_TOKEN
           valueFrom:
             secretKeyRef:
               name: uim-sap-html5-repo-secret

@@ -10,6 +10,6 @@ import uim.sap.datasphere;
 mixin(ShowModule!());
 
 @safe:
-class DatasphereValidationException : DatasphereException {
+class DSPValidationException : DSPException {
     this(string msg) { super(msg); }
 }

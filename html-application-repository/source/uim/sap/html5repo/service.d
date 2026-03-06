@@ -8,19 +8,19 @@ import uim.sap.html5repo.exceptions;
 import uim.sap.html5repo.models;
 import uim.sap.html5repo.store;
 
-class HTML5RepoService : SAPService {
-    private HTML5RepoConfig _config;
-    private HTML5RepositoryStore _store;
+class HTMRepoService : SAPService {
+    private HTMRepoConfig _config;
+    private HTMRepositoryStore _store;
     private RuntimeAssetCache _cache;
 
-    this(HTML5RepoConfig config) {
+    this(HTMRepoConfig config) {
         config.validate();
         _config = config;
-        _store = new HTML5RepositoryStore(_config.dataDirectory);
+        _store = new HTMRepositoryStore(_config.dataDirectory);
         _cache = new RuntimeAssetCache(_config.cacheTtlSeconds);
     }
 
-    @property const(HTML5RepoConfig) config() const {
+    @property const(HTMRepoConfig) config() const {
         return _config;
     }
 
@@ -44,13 +44,13 @@ class HTML5RepoService : SAPService {
         auto activate = getBool(request, "activate", true);
 
         if (!("files" in request) || request["files"].type != Json.Type.array) {
-            throw new HTML5RepoValidationException("files array is required");
+            throw new HTMRepoValidationException("files array is required");
         }
 
         UploadedAsset[] files;
         foreach (item; request["files"]) {
             if (item.type != Json.Type.object) {
-                throw new HTML5RepoValidationException("files entries must be objects");
+                throw new HTMRepoValidationException("files entries must be objects");
             }
 
             UploadedAsset file;
@@ -152,7 +152,7 @@ class HTML5RepoService : SAPService {
     ) {
         auto activeVersion = _store.activeVersion(tenantId, spaceId, appId);
         if (activeVersion.length == 0) {
-            throw new HTML5RepoNotFoundException("Active version", appId);
+            throw new HTMRepoNotFoundException("Active version", appId);
         }
         return runtimeAssetByVersion(
             tenantId,
@@ -198,7 +198,7 @@ class HTML5RepoService : SAPService {
     Json activeVersion(TenantContext tenant, string appId) {
         auto activeVersionId = _store.activeVersion(tenant.tenantId, tenant.spaceId, appId);
         if (activeVersionId.length == 0) {
-            throw new HTML5RepoNotFoundException("Active version", appId);
+            throw new HTMRepoNotFoundException("Active version", appId);
         }
 
         auto info = _store.tryGetVersionInfo(tenant.tenantId, tenant.spaceId, appId, activeVersionId);

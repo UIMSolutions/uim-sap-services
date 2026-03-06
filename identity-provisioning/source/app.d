@@ -14,14 +14,14 @@ mixin(ShowModule!());
 version (unittest) {
 } else {
 void main() {
-    IPConfig config = new IPConfig;
-    config.host = envOr("IP_HOST", "0.0.0.0");
-    config.port = readPort(envOr("IP_PORT", "8095"), 8095);
-    config.basePath = envOr("IP_BASE_PATH", "/api/ip");
-    config.serviceName = envOr("IP_SERVICE_NAME", "uim-sap-ip");
-    config.serviceVersion = envOr("IP_SERVICE_VERSION", UIM_IP_VERSION);
+    IPVConfig config = new IPVConfig;
+    config.host = envOr("IPV_HOST", "0.0.0.0");
+    config.port = readPort(envOr("IPV_PORT", "8095"), 8095);
+    config.basePath = envOr("IPV_BASE_PATH", "/api/ip");
+    config.serviceName = envOr("IPV_SERVICE_NAME", "uim-sap-ip");
+    config.serviceVersion = envOr("IPV_SERVICE_VERSION", UIM_IPV_VERSION);
 
-    auto token = envOr("IP_AUTH_TOKEN", "");
+    auto token = envOr("IPV_AUTH_TOKEN", "");
     if (token.length > 0) {
         config.requireAuthToken = true;
         config.authToken = token;
@@ -30,8 +30,8 @@ void main() {
     config.customHeaders["X-Service"] = config.serviceName;
     config.customHeaders["X-Version"] = config.serviceVersion;
 
-    auto service = new IPService(config);
-    auto server = new IPServer(service);
+    auto service = new IPVService(config);
+    auto server = new IPVServer(service);
 
     writeln("Starting Identity Provisioning service on ", config.host, ":", config.port);
     writeln("Base path: ", config.basePath);

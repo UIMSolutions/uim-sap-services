@@ -11,7 +11,7 @@ mixin(ShowModule!());
 
 @safe:
 
-class DatasphereConfig : SAPConfig {
+class DSPConfig : SAPConfig {
   string host = "0.0.0.0";
   ushort port = 8098;
   string basePath = "/api/datasphere";
@@ -28,20 +28,20 @@ class DatasphereConfig : SAPConfig {
 
   void validate() const {
     if (host.length == 0)
-      throw new DatasphereConfigurationException("Host cannot be empty");
+      throw new DSPConfigurationException("Host cannot be empty");
     if (port == 0)
-      throw new DatasphereConfigurationException("Port must be greater than zero");
+      throw new DSPConfigurationException("Port must be greater than zero");
     if (basePath.length == 0 || !basePath.startsWith("/")) {
-      throw new DatasphereConfigurationException("Base path must start with '/'");
+      throw new DSPConfigurationException("Base path must start with '/'");
     }
     if (serviceName.length == 0)
-      throw new DatasphereConfigurationException("Service name cannot be empty");
+      throw new DSPConfigurationException("Service name cannot be empty");
     if (defaultSpaceDiskGb <= 0)
-      throw new DatasphereConfigurationException("Default space disk must be > 0");
+      throw new DSPConfigurationException("Default space disk must be > 0");
     if (defaultSpaceMemoryGb <= 0)
-      throw new DatasphereConfigurationException("Default space memory must be > 0");
+      throw new DSPConfigurationException("Default space memory must be > 0");
     if (requireAuthToken && authToken.length == 0) {
-      throw new DatasphereConfigurationException("Auth token required when token auth is enabled");
+      throw new DSPConfigurationException("Auth token required when token auth is enabled");
     }
   }
 }

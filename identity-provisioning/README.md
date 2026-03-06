@@ -53,12 +53,12 @@ kubectl apply -f k8s/service.yaml
 
 | Variable | Default | Description |
 |---|---|---|
-| `IP_HOST` | `0.0.0.0` | Listen address |
-| `IP_PORT` | `8095` | Listen port |
-| `IP_BASE_PATH` | `/api/ip` | URL prefix for all endpoints |
-| `IP_SERVICE_NAME` | `uim-sap-ip` | Reported in `/health` |
-| `IP_SERVICE_VERSION` | `1.0.0` | Reported in `/health` |
-| `IP_AUTH_TOKEN` | *(empty)* | If set, every request must carry `Authorization: Bearer <token>` |
+| `IPV_HOST` | `0.0.0.0` | Listen address |
+| `IPV_PORT` | `8095` | Listen port |
+| `IPV_BASE_PATH` | `/api/ip` | URL prefix for all endpoints |
+| `IPV_SERVICE_NAME` | `uim-sap-ip` | Reported in `/health` |
+| `IPV_SERVICE_VERSION` | `1.0.0` | Reported in `/health` |
+| `IPV_AUTH_TOKEN` | *(empty)* | If set, every request must carry `Authorization: Bearer <token>` |
 
 ## API Reference
 
@@ -252,19 +252,19 @@ identity-provisioning/
 │   ├── app.d                                 # Entry point
 │   └── uim/sap/identityprovisioning/
 │       ├── package.d                         # Barrel imports
-│       ├── config.d                          # IPConfig
-│       ├── server.d                          # IPServer (vibe.d HTTP)
-│       ├── service.d                         # IPService (provisioning engine)
-│       ├── store.d                           # IPStore (in-memory, mutex)
+│       ├── config.d                          # IPVConfig
+│       ├── server.d                          # IPVServer (vibe.d HTTP)
+│       ├── service.d                         # IPVService (provisioning engine)
+│       ├── store.d                           # IPVStore (in-memory, mutex)
 │       ├── models/
-│       │   ├── system.d                      # IPSystem struct
-│       │   ├── user.d                        # IPUser struct
-│       │   ├── group.d                       # IPGroup struct
-│       │   ├── transformation.d              # IPTransformation struct
-│       │   ├── job.d                         # IPJob struct
-│       │   ├── joblog.d                      # IPJobLog struct
-│       │   └── notification.d                # IPNotification struct
-│       ├── exceptions/                       # IP*Exception hierarchy
+│       │   ├── system.d                      # IPVSystem struct
+│       │   ├── user.d                        # IPVUser struct
+│       │   ├── group.d                       # IPVGroup struct
+│       │   ├── transformation.d              # IPVTransformation struct
+│       │   ├── job.d                         # IPVJob struct
+│       │   ├── joblog.d                      # IPVJobLog struct
+│       │   └── notification.d                # IPVNotification struct
+│       ├── exceptions/                       # IPV*Exception hierarchy
 │       └── helpers/
 │           └── helper.d                      # evaluateCondition()
 ├── Dockerfile                                # Multi-stage Podman/Docker build

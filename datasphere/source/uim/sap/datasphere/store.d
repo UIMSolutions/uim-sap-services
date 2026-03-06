@@ -8,7 +8,7 @@ mixin(ShowModule!());
 
 @safe:
 
-class DatasphereStore : SAPStore {
+class DSPStore : SAPStore {
     private DATSpace[string] _spaces;
     private DATDataModel[string] _dataModels;
     private DATBusinessModel[string] _businessModels;

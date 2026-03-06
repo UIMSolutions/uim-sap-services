@@ -10,6 +10,6 @@ import uim.sap.datasphere;
 mixin(ShowModule!());
 
 @safe:
-class DatasphereNotFoundException : DatasphereException {
+class DSPNotFoundException : DSPException {
     this(string kind, string id) { super(kind ~ " not found: " ~ id); }
 }

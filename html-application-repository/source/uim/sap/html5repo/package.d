@@ -1,5 +1,5 @@
 /**
- * UIM HTML5 Application Repository Service
+ * UIM HTM Application Repository Service
  */
 module uim.sap.html5repo;
 
@@ -11,4 +11,4 @@ public import uim.sap.html5repo.cache;
 public import uim.sap.html5repo.service;
 public import uim.sap.html5repo.server;
 
-enum UIM_HTML5_REPO_VERSION = "1.0.0";
+enum UIM_HTM_REPO_VERSION = "1.0.0";

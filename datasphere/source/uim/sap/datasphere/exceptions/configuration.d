@@ -19,11 +19,11 @@ mixin(ShowModule!());
   * Example usage:
   * ```
   * if (configValue is invalid) {
-  *     throw new DatasphereConfigurationException("Invalid configuration value: " ~ configValue);
+  *     throw new DSPConfigurationException("Invalid configuration value: " ~ configValue);
   * }
   * ```
   */
-class DatasphereConfigurationException : DatasphereException {
+class DSPConfigurationException : DSPException {
   this(string msg) {
     super(msg);
   }

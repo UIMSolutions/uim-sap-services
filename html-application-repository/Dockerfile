@@ -17,14 +17,14 @@ WORKDIR /opt/uim-sap-html5-app-repo
 
 COPY --from=build /app/build/uim-sap-html5-app-repo-service ./uim-sap-html5-app-repo-service
 
-ENV HTML5_REPO_HOST=0.0.0.0 \
-    HTML5_REPO_PORT=8094 \
-    HTML5_REPO_BASE_PATH=/api/html5-repo \
-    HTML5_REPO_DATA_DIR=/var/lib/uim-html5-repo \
-    HTML5_REPO_CACHE_TTL_SECONDS=120 \
-    HTML5_REPO_DEFAULT_TENANT=provider \
-    HTML5_REPO_DEFAULT_SPACE=dev \
-    HTML5_REPO_ALLOW_PUBLIC_CROSS_SPACE=true
+ENV HTM_REPO_HOST=0.0.0.0 \
+    HTM_REPO_PORT=8094 \
+    HTM_REPO_BASE_PATH=/api/html5-repo \
+    HTM_REPO_DATA_DIR=/var/lib/uim-html5-repo \
+    HTM_REPO_CACHE_TTL_SECONDS=120 \
+    HTM_REPO_DEFAULT_TENANT=provider \
+    HTM_REPO_DEFAULT_SPACE=dev \
+    HTM_REPO_ALLOW_PUBLIC_CROSS_SPACE=true
 
 VOLUME ["/var/lib/uim-html5-repo"]
 

@@ -7,6 +7,7 @@ module uim.sap.service.classes;
 
 public {
   import uim.sap.service.classes.configs;
+  import uim.sap.service.classes.server;
   import uim.sap.service.classes.service;
   import uim.sap.service.classes.store;
 }

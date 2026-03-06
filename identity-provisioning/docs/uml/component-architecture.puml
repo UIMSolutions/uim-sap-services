@@ -1,15 +1,15 @@
 @startuml component_architecture
 !theme plain
 
-title UIM SAP Identity Provisioning (IP) - Component Architecture
+title UIM SAP Identity Provisioning (IPV) - Component Architecture
 
 actor "Administrators" as Admin
 actor "Scheduler / CI" as Scheduler
 
 node "Identity Provisioning Service Runtime" {
-  component "IPServer\n(vibe.d REST API)" as Api
-  component "IPService\n(Provisioning Engine +\nCRUD + Notifications)" as Domain
-  database "IPStore\n(In-Memory Data)" as Store
+  component "IPVServer\n(vibe.d REST API)" as Api
+  component "IPVService\n(Provisioning Engine +\nCRUD + Notifications)" as Domain
+  database "IPVStore\n(In-Memory Data)" as Store
 }
 
 cloud "Source Systems\n(SAP IAS, SCIM, LDAP…)" as Src
