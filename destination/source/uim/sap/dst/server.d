@@ -1,15 +1,10 @@
 module uim.sap.dst.server;
 
-import std.array  : split;
-import std.string : startsWith;
+import uim.sap.dst;
 
-import vibe.data.json   : Json;
-import vibe.http.common : HTTPMethod;
-import vibe.http.server : HTTPServerRequest, HTTPServerResponse,
-                          HTTPServerSettings, listenHTTP;
+mixin(ShowModule!());
 
-import uim.sap.dst.exceptions;
-import uim.sap.dst.service;
+@safe:
 
 // ---------------------------------------------------------------------------
 // DSTServer – Vibe.D HTTP server for the Destination service

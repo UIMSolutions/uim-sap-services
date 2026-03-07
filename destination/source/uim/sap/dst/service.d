@@ -1,17 +1,10 @@
 module uim.sap.dst.service;
 
-import std.algorithm : canFind;
-import std.array     : array;
-import std.conv      : to;
-import std.datetime  : Clock, SysTime;
-import std.string    : toLower;
+import uim.sap.dst;
 
-import vibe.data.json : Json;
+mixin(ShowModule!());
 
-import uim.sap.dst.config;
-import uim.sap.dst.exceptions;
-import uim.sap.dst.models;
-import uim.sap.dst.store;
+@safe:
 
 // ---------------------------------------------------------------------------
 // DSTService – business logic for the Destination service

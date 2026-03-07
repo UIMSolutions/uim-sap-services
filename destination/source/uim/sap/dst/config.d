@@ -1,8 +1,10 @@
 module uim.sap.dst.config;
 
-import std.string : startsWith;
+import uim.sap.dst;
 
-import uim.sap.dst.exceptions;
+mixin(ShowModule!());
+
+@safe:
 
 struct DSTConfig : SAPHostConfig {
   mixin(SAPConfigTemplate!HTMRepoConfig);

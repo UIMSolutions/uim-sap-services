@@ -6,6 +6,11 @@ mixin(ShowModule!());
 
 @safe:
 
+string createId() {
+    return randomUUID().toString();
+}
+
+
 private string envOr(string key, string fallback) {
   auto value = environment.get(key, "");
   return value.length > 0 ? value : fallback;
