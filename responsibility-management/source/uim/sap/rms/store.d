@@ -685,9 +685,9 @@ class RMSStore : SAPStore {
                 }
             }
 
-            if ("rules" in payload && payload["rules"].type == Json.Type.array) {
+            if ("rules" in payload && payload["rules"].isArray) {
                 foreach (item; payload["rules"]) {
-                    if (item.type != Json.Type.object) continue;
+                    if (!item.isObject) continue;
                     ResponsibilityRule rule;
                     rule.id = getString(item, "id", "");
                     rule.name = getString(item, "name", "");
@@ -707,9 +707,9 @@ class RMSStore : SAPStore {
                 }
             }
 
-            if ("logs" in payload && payload["logs"].type == Json.Type.array) {
+            if ("logs" in payload && payload["logs"].isArray) {
                 foreach (item; payload["logs"]) {
-                    if (item.type != Json.Type.object) continue;
+                    if (!item.isObject) continue;
                     DeterminationLog log;
                     log.id = getString(item, "id", "");
                     log.timestamp = getString(item, "timestamp", nowIso());

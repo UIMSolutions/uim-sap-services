@@ -139,10 +139,10 @@ class MDIService : SAPService {
     Json replicate(string tenantId, Json request) {
         validateId(tenantId, "Tenant ID");
 
-        if (!("source_client_id" in request) || request["source_client_id"].type != Json.Type.string) {
-            throw new MDIValidationException("source_client_id is required");
+        if (!("source_client_id" in request) || !request["source_client_id"].isString) {
+             throw new MDIValidationException("source_client_id is required");
         }
-        if (!("target_client_id" in request) || request["target_client_id"].type != Json.Type.string) {
+        if (!("target_client_id" in request) || !request["target_client_id"].isString) {
             throw new MDIValidationException("target_client_id is required");
         }
 

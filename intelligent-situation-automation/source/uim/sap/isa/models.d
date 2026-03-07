@@ -220,7 +220,7 @@ SituationInstance situationFromJson(Json payload, string tenantId) {
 
 private BusinessRule[] parseRules(Json payload) {
     BusinessRule[] rules;
-    if (!("business_rules" in payload) || payload["business_rules"].type != Json.Type.array) {
+    if (!("business_rules" in payload) || !payload["business_rules"].isArray) {
         return rules;
     }
 

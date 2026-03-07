@@ -407,7 +407,7 @@ class ODataClient {
                 body ~= key ~ ": " ~ value ~ "\r\n";
             }
             
-            if (req.body.type != Json.Type.undefined) {
+            if (!req.body.isUndefined) {
                 auto jsonBody = req.body.toString();
                 body ~= "Content-Length: " ~ jsonBody.length.to!string ~ "\r\n";
                 body ~= "\r\n";

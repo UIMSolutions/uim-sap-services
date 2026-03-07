@@ -91,7 +91,7 @@ class DPIService : SAPService {
 
     Json triggerRetentionDeletion(string tenantId, Json request) {
         validateTenant(tenantId);
-        if (!("data_category" in request) || request["data_category"].type != Json.Type.string) {
+        if (!("data_category" in request) || !request["data_category"].isString) {
             throw new DPIValidationException("data_category is required");
         }
 
@@ -135,7 +135,7 @@ class DPIService : SAPService {
 
     Json exportReport(string tenantId, Json request) {
         validateTenant(tenantId);
-        if (!("subject_id" in request) || request["subject_id"].type != Json.Type.string) {
+        if (!("subject_id" in request) || !request["subject_id"].isString) {
             throw new DPIValidationException("subject_id is required");
         }
 

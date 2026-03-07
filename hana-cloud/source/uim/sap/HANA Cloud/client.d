@@ -188,12 +188,12 @@ class HanaClient {
             col.dataType = result.getCell(i, "DATA_TYPE_NAME").get!string;
             
             auto lengthCell = result.getCell(i, "LENGTH");
-            if (lengthCell.type != Json.Type.null_) {
+            if (!lengthCell.isNull) {
                 col.length = lengthCell.get!int;
             }
             
             auto scaleCell = result.getCell(i, "SCALE");
-            if (scaleCell.type != Json.Type.null_) {
+            if (!scaleCell.isNull) {
                 col.scale = scaleCell.get!int;
             }
             

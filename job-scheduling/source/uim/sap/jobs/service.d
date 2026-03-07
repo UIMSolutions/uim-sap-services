@@ -1000,7 +1000,7 @@ HTML";
     }
 
     private string requiredString(Json request, string key) {
-        if (!(key in request) || request[key].type != Json.Type.string) {
+        if (!(key in request) || !request[key].isString) {
             throw new JobSchedulingValidationException(key ~ " is required");
         }
         auto value = request[key].get!string;
