@@ -55,3 +55,21 @@ string[] stringArrayFromJson(Json values) {
   }
   return result;
 }
+
+private int readInt(string value, int fallback) {
+  try {
+    auto parsed = to!int(value);
+    return parsed > 0 ? parsed : fallback;
+  } catch (Exception) {
+    return fallback;
+  }
+}
+
+private double readDouble(string value, double fallback) {
+    try {
+        auto parsed = to!double(value);
+        return parsed > 0 ? parsed : fallback;
+    } catch (Exception) {
+        return fallback;
+    }
+}
