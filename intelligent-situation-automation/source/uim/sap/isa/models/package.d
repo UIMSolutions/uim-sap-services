@@ -4,3 +4,10 @@
 * Authors: Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*)
 *****************************************************************************************************************/
 module uim.sap.isa.models;
+
+public {
+  import uim.sap.isa.models.automationconfiguration;
+  import uim.sap.isa.models.businessrule;
+  import uim.sap.isa.models.datacontextreport;
+  import uim.sap.isa.models.situationinstance;
+}
