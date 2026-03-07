@@ -1,4 +1,4 @@
-module uim.sap.isa.models;
+module uim.sap.isa.models.models;
 
 import std.algorithm.comparison : max;
 import std.datetime : Clock, SysTime;
@@ -36,19 +36,7 @@ SituationStatus situationStatusFromString(string value) {
   }
 }
 
-struct BusinessRule {
-  string field;
-  string op;
-  string expected;
 
-  Json toJson() const {
-    Json payload = Json.emptyObject;
-    payload["field"] = field;
-    payload["op"] = op;
-    payload["expected"] = expected;
-    return payload;
-  }
-}
 
 struct AutomationConfiguration {
   string id;
