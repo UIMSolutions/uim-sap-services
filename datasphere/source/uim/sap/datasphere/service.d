@@ -38,14 +38,14 @@ class DSPService : SAPService {
     return _config;
   }
 
-  Json health() {
+  override Json health() {
     Json capabilities = [
       "data_modeling", "business_modeling", "data_integration", 
       "space_management", "administration", "data_protection_and_privacy", 
       "data_governance", "consumption"
     ].toJson;
 
-    Json healthInfo = Json.emptyObject;
+    Json healthInfo = super.health();
     healthInfo["ok"] = true;
     healthInfo["serviceName"] = _config.serviceName;
     healthInfo["serviceVersion"] = _config.serviceVersion;
@@ -53,8 +53,8 @@ class DSPService : SAPService {
     return healthInfo;
   }
 
-  Json ready() {
-    Json readyInfo = Json.emptyObject;
+  override Json ready() {
+    Json readyInfo = super.raedy();
     readyInfo["ready"] = true;
     readyInfo["timestamp"] = Clock.currTime().toISOExtString();
     return readyInfo;

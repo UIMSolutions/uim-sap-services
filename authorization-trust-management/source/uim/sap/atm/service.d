@@ -20,19 +20,19 @@ class ATMService : SAPService {
         return _config;
     }
 
-    Json health() {
-        Json result = Json.emptyObject;
-        result["ok"] = true;
-        result["serviceName"] = _config.serviceName;
-        result["serviceVersion"] = _config.serviceVersion;
-        return result;
+    override Json health() {
+        Json healthInfo = super.health();
+        healthInfo["ok"] = true;
+        healthInfo["serviceName"] = _config.serviceName;
+        healthInfo["serviceVersion"] = _config.serviceVersion;
+        return healthInfo;
     }
 
-    Json ready() {
-        Json result = Json.emptyObject;
-        result["ready"] = true;
-        result["timestamp"] = Clock.currTime().toISOExtString();
-        return result;
+    override Json ready() {
+        Json readyInfo = super.ready();
+        readyInfo["ready"] = true;
+        readyInfo["timestamp"] = Clock.currTime().toISOExtString();
+        return readyInfo;
     }
 
     Json upsertIdentityProvider(string tenantId, string idpId, Json request) {

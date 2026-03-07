@@ -28,6 +28,10 @@ class SAPService : IService {
 
   Json ready() {
     Json readyInfo = Json.emptyObject;
+    readyInfo["ready"] = true;
+    readyInfo["status"] = "READY";
+    readyInfo["timestamp"] = Clock.currTime().toISOExtString();
+
     return readyInfo;
   }
 }

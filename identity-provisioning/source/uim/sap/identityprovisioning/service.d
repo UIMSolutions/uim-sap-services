@@ -38,7 +38,7 @@ class IPVService : SAPService {
 
     // ─── Platform endpoints ───────────────────────────────────
 
-    Json health() {
+    override Json health() {
         Json healthInfo = super.health();
         healthInfo["ok"] = true;
         healthInfo["serviceName"] = _config.serviceName;
@@ -46,7 +46,7 @@ class IPVService : SAPService {
         return healthInfo;
     }
 
-    Json ready() {
+    override Json ready() {
         Json readyInfo = super.ready();
         readyInfo["ready"] = true;
         readyInfo["timestamp"] = Clock.currTime().toISOExtString();

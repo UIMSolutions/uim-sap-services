@@ -44,8 +44,6 @@ class CIAService : SAPService {
 
     Json ready() const {
         Json j = Json.emptyObject;
-        j["status"]    = "READY";
-        j["timestamp"] = Clock.currTime().toISOExtString();
         return j;
     }
 
