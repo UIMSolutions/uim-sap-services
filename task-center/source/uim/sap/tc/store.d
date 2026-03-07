@@ -101,14 +101,14 @@ class TCStore : SAPStore {
         return;
 
       auto snapshot = parseJsonString(raw);
-      if ("providers" in snapshot && snapshot["providers"].type == Json.Type.array) {
+      if ("providers" in snapshot && snapshot["providers"].isArray) {
         foreach (item; snapshot["providers"]) {
           auto provider = parseProvider(item);
           _providers[scopedProviderKey(provider.providerId)] = provider;
         }
       }
 
-      if ("tasks" in snapshot && snapshot["tasks"].type == Json.Type.array) {
+      if ("tasks" in snapshot && snapshot["tasks"].isArray) {
         foreach (item; snapshot["tasks"]) {
           auto task = parseTask(item);
           _tasks[scopedTaskKey(task.tenantId, task.taskId)] = task;
@@ -186,7 +186,7 @@ class TCStore : SAPStore {
       task.dueAt = SysTime.fromISOExtString(item["due_at"].get!string);
     }
 
-    if ("action_history" in item && item["action_history"].type == Json.Type.array) {
+    if ("action_history" in item && item["action_history"].isArray) {
       foreach (entry; item["action_history"]) {
         if (entry.type != Json.Type.object)
           continue;

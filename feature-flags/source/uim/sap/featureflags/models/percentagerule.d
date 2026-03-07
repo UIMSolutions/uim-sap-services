@@ -46,7 +46,7 @@ FFLPercentageRule percentageRuleFromJson(Json request) {
     FFLPercentageRule r;
     r.ruleId = randomUUID().toString();
 
-    if ("entries" in request && request["entries"].type == Json.Type.array) {
+    if ("entries" in request && request["entries"].isArray) {
         () @trusted {
             foreach (item; request["entries"]) {
                 FFLPercentageEntry entry;

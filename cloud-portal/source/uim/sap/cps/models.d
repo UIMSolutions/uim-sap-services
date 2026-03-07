@@ -136,9 +136,9 @@ CPSSite siteFromJson(string tenantId, Json request, string defaultTheme) {
     if ("site_id" in request && request["site_id"].isString) site.siteId = request["site_id"].get!string;
     if ("name" in request && request["name"].isString) site.name = request["name"].get!string;
     if ("design" in request && request["design"].isString) site.design = request["design"].get!string;
-    if ("pages" in request && request["pages"].type == Json.Type.array) site.pages = request["pages"];
-    if ("apps" in request && request["apps"].type == Json.Type.array) site.apps = request["apps"];
-    if ("widgets" in request && request["widgets"].type == Json.Type.array) site.widgets = request["widgets"];
-    if ("menu" in request && request["menu"].type == Json.Type.array) site.menu = request["menu"];
+    if ("pages" in request && request["pages"].isArray) site.pages = request["pages"];
+    if ("apps" in request && request["apps"].isArray) site.apps = request["apps"];
+    if ("widgets" in request && request["widgets"].isArray) site.widgets = request["widgets"];
+    if ("menu" in request && request["menu"].isArray) site.menu = request["menu"];
     return site;
 }

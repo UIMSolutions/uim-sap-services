@@ -38,7 +38,7 @@ ATMTechnicalRole technicalRoleFromJson(string tenantId, string roleId, Json requ
   if ("description" in request && request["description"].isString) {
     role.description = request["description"].get!string;
   }
-  if ("permissions" in request && request["permissions"].type == Json.Type.array) {
+  if ("permissions" in request && request["permissions"].isArray) {
     role.permissions = stringArrayFromJson(request["permissions"]);
   }
 

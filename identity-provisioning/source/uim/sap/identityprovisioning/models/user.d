@@ -77,7 +77,7 @@ IPVUser userFromJson(string tenantId, Json request) {
     if ("user_id" in request && request["user_id"].isString)
         u.userId = request["user_id"].get!string;
 
-    if ("group_ids" in request && request["group_ids"].type == Json.Type.array) {
+    if ("group_ids" in request && request["group_ids"].isArray) {
         () @trusted {
             foreach (item; request["group_ids"]) {
                 if (item.isString)

@@ -58,7 +58,7 @@ ISApiProduct apiProductFromJson(string tenantId, Json request) {
         p.version_ = request["version"].get!string;
     if ("rate_limit_policy" in request && request["rate_limit_policy"].isString)
         p.rateLimitPolicy = request["rate_limit_policy"].get!string;
-    if ("proxy_ids" in request && request["proxy_ids"].type == Json.Type.array) {
+    if ("proxy_ids" in request && request["proxy_ids"].isArray) {
         foreach (item; request["proxy_ids"]) {
             if (item.isString)
                 p.proxyIds ~= item.get!string;

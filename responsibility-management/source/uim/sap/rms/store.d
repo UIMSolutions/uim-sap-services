@@ -180,7 +180,7 @@ class RMSStore : SAPStore {
     team.categoryCode = getString(request, "category_code", team.categoryCode);
     team.description = getString(request, "description", team.description);
 
-    if ("members" in request && request["members"].type == Json.Type.array) {
+    if ("members" in request && request["members"].isArray) {
       team.members = parseMembers(request);
     }
 
@@ -569,7 +569,7 @@ class RMSStore : SAPStore {
       member.isOwner = getBool(item, "is_owner", false);
       member.notificationsEnabled = getBool(item, "notifications_enabled", true);
 
-      if ("functions" in item && item["functions"].type == Json.Type.array) {
+      if ("functions" in item && item["functions"].isArray) {
         foreach (fn; item["functions"]) {
           if (fn.isString) {
             member.functions ~= fn.get!string;
@@ -675,7 +675,7 @@ class RMSStore : SAPStore {
     try {
       auto payload = parseJsonString(readText(file));
 
-      if ("team_types" in payload && payload["team_types"].type == Json.Type.array) {
+      if ("team_types" in payload && payload["team_types"].isArray) {
         foreach (item; payload["team_types"]) {
           if (item.type != Json.Type.object)
             continue;
@@ -688,7 +688,7 @@ class RMSStore : SAPStore {
         }
       }
 
-      if ("functions" in payload && payload["functions"].type == Json.Type.array) {
+      if ("functions" in payload && payload["functions"].isArray) {
         foreach (item; payload["functions"]) {
           if (item.type != Json.Type.object)
             continue;
@@ -701,7 +701,7 @@ class RMSStore : SAPStore {
         }
       }
 
-      if ("teams" in payload && payload["teams"].type == Json.Type.array) {
+      if ("teams" in payload && payload["teams"].isArray) {
         foreach (item; payload["teams"]) {
           if (item.type != Json.Type.object)
             continue;

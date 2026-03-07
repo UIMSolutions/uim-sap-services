@@ -38,7 +38,7 @@ ATMRoleCollection roleCollectionFromJson(string tenantId, string collectionId, J
   if ("description" in request && request["description"].isString) {
     collection.description = request["description"].get!string;
   }
-  if ("technical_role_ids" in request && request["technical_role_ids"].type == Json.Type.array) {
+  if ("technical_role_ids" in request && request["technical_role_ids"].isArray) {
     collection.technicalRoleIds = stringArrayFromJson(request["technical_role_ids"]);
   }
 

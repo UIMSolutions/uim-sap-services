@@ -194,7 +194,7 @@ class CIDService : SAPService {
         p.updatedAt         = p.createdAt;
 
         // Parse stages from payload or use defaults based on pipeline type
-        if ("stages" in payload && payload["stages"].type == Json.Type.array) {
+        if ("stages" in payload && payload["stages"].isArray) {
             foreach (s; payload["stages"].get!(Json[]))
                 p.stages ~= s.get!string;
         } else {

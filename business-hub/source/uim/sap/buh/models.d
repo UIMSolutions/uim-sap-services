@@ -101,7 +101,7 @@ BUHApi apiFromJson(Json payload) {
         api.summary = payload["summary"].get!string;
     }
 
-    if ("tags" in payload && payload["tags"].type == Json.Type.array) {
+    if ("tags" in payload && payload["tags"].isArray) {
         foreach (entry; payload["tags"]) {
             if (entry.isString) {
                 api.tags ~= entry.get!string;
@@ -123,7 +123,7 @@ BUHProduct productFromJson(Json payload) {
     if ("description" in payload && payload["description"].isString) {
         product.description = payload["description"].get!string;
     }
-    if ("api_ids" in payload && payload["api_ids"].type == Json.Type.array) {
+    if ("api_ids" in payload && payload["api_ids"].isArray) {
         foreach (entry; payload["api_ids"]) {
             if (entry.isString) {
                 product.apiIds ~= entry.get!string;

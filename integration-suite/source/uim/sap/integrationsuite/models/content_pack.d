@@ -67,12 +67,12 @@ ISContentPack contentPackFromJson(string tenantId, Json request) {
         p.version_ = request["version"].get!string;
     if ("category" in request && request["category"].isString)
         p.category = request["category"].get!string;
-    if ("iflow_ids" in request && request["iflow_ids"].type == Json.Type.array) {
+    if ("iflow_ids" in request && request["iflow_ids"].isArray) {
         foreach (item; request["iflow_ids"]) {
             if (item.isString) p.iflowIds ~= item.get!string;
         }
     }
-    if ("mapping_ids" in request && request["mapping_ids"].type == Json.Type.array) {
+    if ("mapping_ids" in request && request["mapping_ids"].isArray) {
         foreach (item; request["mapping_ids"]) {
             if (item.isString) p.mappingIds ~= item.get!string;
         }

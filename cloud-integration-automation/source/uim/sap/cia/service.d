@@ -311,7 +311,7 @@ HTML";
 
         // Collect system ids
         string[] sysIds;
-        if ("system_ids" in payload && payload["system_ids"].type == Json.Type.array)
+        if ("system_ids" in payload && payload["system_ids"].isArray)
             foreach (s; payload["system_ids"].get!(Json[]))
                 sysIds ~= s.get!string;
 

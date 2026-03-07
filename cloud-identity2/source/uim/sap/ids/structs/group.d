@@ -103,7 +103,7 @@ struct Group {
             group.displayName = json["displayName"].get!string;
         }
         
-        if ("members" in json && json["members"].type == Json.Type.array) {
+        if ("members" in json && json["members"].isArray) {
             foreach (memberJson; json["members"]) {
                 GroupMember member;
                 if ("value" in memberJson) member.value = memberJson["value"].get!string;

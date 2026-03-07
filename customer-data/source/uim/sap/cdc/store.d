@@ -176,35 +176,35 @@ class CDCStore : SAPStore {
       if (raw.length == 0) return;
 
       auto snapshot = parseJsonString(raw);
-      if ("profiles" in snapshot && snapshot["profiles"].type == Json.Type.array) {
+      if ("profiles" in snapshot && snapshot["profiles"].isArray) {
         foreach (item; snapshot["profiles"]) {
           auto value = parseProfile(item);
           _profiles[scopedProfileKey(value.tenantId, value.region, value.userId)] = value;
         }
       }
 
-      if ("consents" in snapshot && snapshot["consents"].type == Json.Type.array) {
+      if ("consents" in snapshot && snapshot["consents"].isArray) {
         foreach (item; snapshot["consents"]) {
           auto value = parseConsent(item);
           _consents[scopedConsentKey(value.tenantId, value.userId, value.consentId)] = value;
         }
       }
 
-      if ("site_groups" in snapshot && snapshot["site_groups"].type == Json.Type.array) {
+      if ("site_groups" in snapshot && snapshot["site_groups"].isArray) {
         foreach (item; snapshot["site_groups"]) {
           auto value = parseSiteGroup(item);
           _siteGroups[scopedSiteGroupKey(value.tenantId, value.groupId)] = value;
         }
       }
 
-      if ("risk_providers" in snapshot && snapshot["risk_providers"].type == Json.Type.array) {
+      if ("risk_providers" in snapshot && snapshot["risk_providers"].isArray) {
         foreach (item; snapshot["risk_providers"]) {
           auto value = parseRiskProvider(item);
           _riskProviders[scopedRiskProviderKey(value.tenantId, value.providerId)] = value;
         }
       }
 
-      if ("auth_events" in snapshot && snapshot["auth_events"].type == Json.Type.array) {
+      if ("auth_events" in snapshot && snapshot["auth_events"].isArray) {
         foreach (item; snapshot["auth_events"]) {
           auto value = parseAuthEvent(item);
           _authEvents[scopedAuthEventKey(value.tenantId, value.eventId)] = value;

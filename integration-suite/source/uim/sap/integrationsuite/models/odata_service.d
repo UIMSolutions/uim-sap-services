@@ -62,7 +62,7 @@ ISODataService odataServiceFromJson(string tenantId, Json request) {
         svc.odataVersion = request["odata_version"].get!string;
     if ("backend_system" in request && request["backend_system"].isString)
         svc.backendSystem = request["backend_system"].get!string;
-    if ("entity_sets" in request && request["entity_sets"].type == Json.Type.array) {
+    if ("entity_sets" in request && request["entity_sets"].isArray) {
         foreach (item; request["entity_sets"]) {
             if (item.isString)
                 svc.entitySets ~= item.get!string;

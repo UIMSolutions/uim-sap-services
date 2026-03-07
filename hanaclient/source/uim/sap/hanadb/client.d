@@ -153,7 +153,7 @@ class HanaDBClient {
     private HanaDBResultSet parseResultSet(Json payload) {
         HanaDBResultSet resultSet;
 
-        if ("columns" in payload && payload["columns"].type == Json.Type.array) {
+        if ("columns" in payload && payload["columns"].isArray) {
             foreach (col; payload["columns"]) {
                 if (col.isString) {
                     resultSet.columns ~= col.get!string;
@@ -161,14 +161,14 @@ class HanaDBClient {
             }
         }
 
-        if ("rows" in payload && payload["rows"].type == Json.Type.array) {
+        if ("rows" in payload && payload["rows"].isArray) {
             foreach (row; payload["rows"]) {
                 resultSet.rows ~= row;
             }
             resultSet.rowCount = cast(long)resultSet.rows.length;
         } else if ("d" in payload && payload["d"].isObject && "results" in payload["d"]) {
             auto results = payload["d"]["results"];
-            if (results.type == Json.Type.array) {
+            if (results.isArray) {
                 foreach (row; results) {
                     resultSet.rows ~= row;
                 }

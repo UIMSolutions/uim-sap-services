@@ -61,7 +61,7 @@ IPVNotification notificationFromJson(string tenantId, Json request) {
     if ("subscription_id" in request && request["subscription_id"].isString)
         n.subscriptionId = request["subscription_id"].get!string;
 
-    if ("event_types" in request && request["event_types"].type == Json.Type.array) {
+    if ("event_types" in request && request["event_types"].isArray) {
         () @trusted {
             foreach (item; request["event_types"]) {
                 if (item.isString)

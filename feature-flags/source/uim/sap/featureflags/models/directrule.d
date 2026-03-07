@@ -38,7 +38,7 @@ FFLDirectRule directRuleFromJson(Json request) {
     FFLDirectRule r;
     r.ruleId = randomUUID().toString();
 
-    if ("identifiers" in request && request["identifiers"].type == Json.Type.array) {
+    if ("identifiers" in request && request["identifiers"].isArray) {
         () @trusted {
             foreach (item; request["identifiers"]) {
                 if (item.isString) {

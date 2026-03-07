@@ -73,7 +73,7 @@ class MDIService : SAPService {
         filter.updatedAt = Clock.currTime();
 
         if ("object_type" in request && request["object_type"].isString) filter.objectType = toLower(request["object_type"].get!string);
-        if ("conditions" in request && request["conditions"].type == Json.Type.array) filter.conditions = request["conditions"];
+        if ("conditions" in request && request["conditions"].isArray) filter.conditions = request["conditions"];
         if ("active" in request && request["active"].isBoolean) filter.active = request["active"].get!bool;
 
         if (!isAllowedObjectType(filter.objectType)) throw new MDIValidationException("Unsupported object_type");
@@ -111,8 +111,8 @@ class MDIService : SAPService {
         extension.updatedAt = Clock.currTime();
 
         if ("object_type" in request && request["object_type"].isString) extension.objectType = toLower(request["object_type"].get!string);
-        if ("fields" in request && request["fields"].type == Json.Type.array) extension.fields = request["fields"];
-        if ("entities" in request && request["entities"].type == Json.Type.array) extension.entities = request["entities"];
+        if ("fields" in request && request["fields"].isArray) extension.fields = request["fields"];
+        if ("entities" in request && request["entities"].isArray) extension.entities = request["entities"];
 
         if (!isAllowedObjectType(extension.objectType)) throw new MDIValidationException("Unsupported object_type");
 
@@ -168,7 +168,7 @@ class MDIService : SAPService {
 
         if ("object_type" in request && request["object_type"].isString) job.objectType = toLower(request["object_type"].get!string);
         if ("mode" in request && request["mode"].isString) job.mode = request["mode"].get!string;
-        if ("filter_ids" in request && request["filter_ids"].type == Json.Type.array) job.filterIds = request["filter_ids"];
+        if ("filter_ids" in request && request["filter_ids"].isArray) job.filterIds = request["filter_ids"];
 
         if (!isAllowedObjectType(job.objectType)) throw new MDIValidationException("Unsupported object_type");
 

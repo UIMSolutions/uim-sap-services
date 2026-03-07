@@ -100,7 +100,7 @@ FFLFlag flagFromJson(string tenantId, Json request) {
     }
 
     // Parse variations
-    if ("variations" in request && request["variations"].type == Json.Type.array) {
+    if ("variations" in request && request["variations"].isArray) {
         () @trusted {
             foreach (item; request["variations"]) {
                 f.variations ~= variationFromJson(item);
@@ -109,7 +109,7 @@ FFLFlag flagFromJson(string tenantId, Json request) {
     }
 
     // Parse direct rules
-    if ("direct_rules" in request && request["direct_rules"].type == Json.Type.array) {
+    if ("direct_rules" in request && request["direct_rules"].isArray) {
         () @trusted {
             foreach (item; request["direct_rules"]) {
                 f.directRules ~= directRuleFromJson(item);

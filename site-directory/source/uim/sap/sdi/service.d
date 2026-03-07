@@ -119,7 +119,7 @@ class SDIService : SAPService {
       existing.name = body["name"].get!string;
     if ("description" in body && body["description"].isString)
       existing.description = body["description"].get!string;
-    if ("roles" in body && body["roles"].type == Json.Type.array)
+    if ("roles" in body && body["roles"].isArray)
       existing.roles = readStringArray(body, "roles");
     if ("settings" in body && body["settings"].isObject)
       existing.settings = settingsFromObject(body["settings"]);

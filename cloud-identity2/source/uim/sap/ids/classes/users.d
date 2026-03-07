@@ -260,7 +260,7 @@ class UserManager {
             listResponse.itemsPerPage = data["itemsPerPage"].get!long;
         }
         
-        if ("Resources" in data && data["Resources"].type == Json.Type.array) {
+        if ("Resources" in data && data["Resources"].isArray) {
             foreach (userJson; data["Resources"]) {
                 listResponse.resources ~= User.fromJson(userJson);
             }

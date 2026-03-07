@@ -270,7 +270,7 @@ struct User {
             user.active = json["active"].get!bool;
         }
         
-        if ("emails" in json && json["emails"].type == Json.Type.array) {
+        if ("emails" in json && json["emails"].isArray) {
             foreach (emailJson; json["emails"]) {
                 Email email;
                 if ("value" in emailJson) email.value = emailJson["value"].get!string;
@@ -280,7 +280,7 @@ struct User {
             }
         }
         
-        if ("phoneNumbers" in json && json["phoneNumbers"].type == Json.Type.array) {
+        if ("phoneNumbers" in json && json["phoneNumbers"].isArray) {
             foreach (phoneJson; json["phoneNumbers"]) {
                 PhoneNumber phone;
                 if ("value" in phoneJson) phone.value = phoneJson["value"].get!string;

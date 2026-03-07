@@ -32,7 +32,7 @@ ATMUserAssignment userAssignmentFromJson(string tenantId, string userId, Json re
   if ("idp_id" in request && request["idp_id"].isString) {
     assignment.idpId = request["idp_id"].get!string;
   }
-  if ("role_collection_ids" in request && request["role_collection_ids"].type == Json.Type.array) {
+  if ("role_collection_ids" in request && request["role_collection_ids"].isArray) {
     assignment.roleCollectionIds = stringArrayFromJson(request["role_collection_ids"]);
   }
 

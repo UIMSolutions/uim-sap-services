@@ -82,7 +82,7 @@ IPVJob jobFromJson(string tenantId, Json request) {
     if ("job_id" in request && request["job_id"].isString)
         j.jobId = request["job_id"].get!string;
 
-    if ("target_system_ids" in request && request["target_system_ids"].type == Json.Type.array) {
+    if ("target_system_ids" in request && request["target_system_ids"].isArray) {
         () @trusted {
             foreach (item; request["target_system_ids"]) {
                 if (item.isString)

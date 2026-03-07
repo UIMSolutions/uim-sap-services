@@ -133,7 +133,7 @@ class FFLService : SAPService {
     }
 
     // Replace variations if supplied
-    if ("variations" in request && request["variations"].type == Json.Type.array) {
+    if ("variations" in request && request["variations"].isArray) {
       FFLVariation[] newVars;
       () @trusted {
         foreach (item; request["variations"]) {
@@ -144,7 +144,7 @@ class FFLService : SAPService {
     }
 
     // Replace direct rules if supplied
-    if ("direct_rules" in request && request["direct_rules"].type == Json.Type.array) {
+    if ("direct_rules" in request && request["direct_rules"].isArray) {
       FFLDirectRule[] newRules;
       () @trusted {
         foreach (item; request["direct_rules"]) {

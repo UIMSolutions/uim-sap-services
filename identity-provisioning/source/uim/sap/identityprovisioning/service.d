@@ -212,7 +212,7 @@ class IPVService : SAPService {
         if ("status" in request && request["status"].isString)
             existing.status = request["status"].get!string;
 
-        if ("group_ids" in request && request["group_ids"].type == Json.Type.array) {
+        if ("group_ids" in request && request["group_ids"].isArray) {
             string[] gids;
             () @trusted {
                 foreach (item; request["group_ids"]) {

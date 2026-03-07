@@ -81,7 +81,7 @@ struct Role {
             role.isSystemRole = json["isSystemRole"].get!bool;
         }
         
-        if ("permissions" in json && json["permissions"].type == Json.Type.array) {
+        if ("permissions" in json && json["permissions"].isArray) {
             foreach (perm; json["permissions"]) {
                 role.permissions ~= perm.get!string;
             }

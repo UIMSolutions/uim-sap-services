@@ -49,7 +49,7 @@ class RoleManager {
         }
         
         Role[] roles;
-        if ("Resources" in response.data && response.data["Resources"].type == Json.Type.array) {
+        if ("Resources" in response.data && response.data["Resources"].isArray) {
             foreach (roleJson; response.data["Resources"]) {
                 roles ~= Role.fromJson(roleJson);
             }
@@ -99,7 +99,7 @@ class RoleManager {
         }
         
         Role[] roles;
-        if ("Resources" in response.data && response.data["Resources"].type == Json.Type.array) {
+        if ("Resources" in response.data && response.data["Resources"].isArray) {
             foreach (roleJson; response.data["Resources"]) {
                 roles ~= Role.fromJson(roleJson);
             }

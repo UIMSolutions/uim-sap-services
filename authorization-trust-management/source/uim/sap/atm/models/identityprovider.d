@@ -64,7 +64,7 @@ ATMIdentityProvider idpFromJson(string tenantId, string idpId, Json request) {
   if ("is_default" in request && request["is_default"].isBoolean) {
     idp.isDefault = request["is_default"].get!bool;
   }
-  if ("trusted_algorithms" in request && request["trusted_algorithms"].type == Json.Type.array) {
+  if ("trusted_algorithms" in request && request["trusted_algorithms"].isArray) {
     idp.trustedAlgorithms = stringArrayFromJson(request["trusted_algorithms"]);
   }
 

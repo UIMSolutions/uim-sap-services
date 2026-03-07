@@ -428,7 +428,7 @@ class HanaClient {
         
         if ("columns" in data) {
             auto cols = data["columns"];
-            if (cols.type == Json.Type.array) {
+            if (cols.isArray) {
                 foreach (col; cols) {
                     result.columns ~= col.get!string;
                 }
@@ -437,9 +437,9 @@ class HanaClient {
         
         if ("rows" in data) {
             auto rows = data["rows"];
-            if (rows.type == Json.Type.array) {
+            if (rows.isArray) {
                 foreach (row; rows) {
-                    if (row.type == Json.Type.array) {
+                    if (row.isArray) {
                         Json[] rowData;
                         foreach (cell; row) {
                             rowData ~= cell;

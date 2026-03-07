@@ -87,7 +87,7 @@ class CPSService : SAPService {
         validateId(tenantId, "Tenant ID");
 
         Json roles = Json.emptyArray;
-        if ("roles" in request && request["roles"].type == Json.Type.array) roles = request["roles"];
+        if ("roles" in request && request["roles"].isArray) roles = request["roles"];
 
         Json entries = Json.emptyArray;
         foreach (site; _store.listSites(tenantId)) {
@@ -154,11 +154,11 @@ class CPSService : SAPService {
         admin.extensions = Json.emptyArray;
         admin.updatedAt = Clock.currTime();
 
-        if ("themes" in request && request["themes"].type == Json.Type.array) admin.themes = request["themes"];
-        if ("transports" in request && request["transports"].type == Json.Type.array) admin.transports = request["transports"];
-        if ("translations" in request && request["translations"].type == Json.Type.array) admin.translations = request["translations"];
-        if ("templates" in request && request["templates"].type == Json.Type.array) admin.templates = request["templates"];
-        if ("extensions" in request && request["extensions"].type == Json.Type.array) admin.extensions = request["extensions"];
+        if ("themes" in request && request["themes"].isArray) admin.themes = request["themes"];
+        if ("transports" in request && request["transports"].isArray) admin.transports = request["transports"];
+        if ("translations" in request && request["translations"].isArray) admin.translations = request["translations"];
+        if ("templates" in request && request["templates"].isArray) admin.templates = request["templates"];
+        if ("extensions" in request && request["extensions"].isArray) admin.extensions = request["extensions"];
 
         auto saved = _store.upsertAdmin(admin);
         Json payload = Json.emptyObject;
@@ -272,7 +272,7 @@ class CPSService : SAPService {
         if ("provider_id" in request && request["provider_id"].isString) provider.providerId = request["provider_id"].get!string;
         if ("solution_name" in request && request["solution_name"].isString) provider.solutionName = request["solution_name"].get!string;
         if ("saas_enabled" in request && request["saas_enabled"].isBoolean) provider.saasEnabled = request["saas_enabled"].get!bool;
-        if ("catalogs" in request && request["catalogs"].type == Json.Type.array) provider.catalogs = request["catalogs"];
+        if ("catalogs" in request && request["catalogs"].isArray) provider.catalogs = request["catalogs"];
 
         if (provider.solutionName.length == 0) throw new CPSValidationException("solution_name is required");
 

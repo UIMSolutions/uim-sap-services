@@ -135,7 +135,7 @@ class MDGService : SAPService {
         }
 
         Json items = Json.emptyArray;
-        if ("business_partners" in request && request["business_partners"].type == Json.Type.array) {
+        if ("business_partners" in request && request["business_partners"].isArray) {
             items = request["business_partners"];
         }
 

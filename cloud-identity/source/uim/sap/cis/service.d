@@ -240,8 +240,8 @@ class CISService : SAPService {
         if ("name" in request && request["name"].isString) policy.name = request["name"].get!string;
         if ("resource_type" in request && request["resource_type"].isString) policy.resourceType = request["resource_type"].get!string;
         if ("instance_id" in request && request["instance_id"].isString) policy.instanceId = request["instance_id"].get!string;
-        if ("allowed_groups" in request && request["allowed_groups"].type == Json.Type.array) policy.allowedGroups = request["allowed_groups"];
-        if ("allowed_user_types" in request && request["allowed_user_types"].type == Json.Type.array) policy.allowedUserTypes = request["allowed_user_types"];
+        if ("allowed_groups" in request && request["allowed_groups"].isArray) policy.allowedGroups = request["allowed_groups"];
+        if ("allowed_user_types" in request && request["allowed_user_types"].isArray) policy.allowedUserTypes = request["allowed_user_types"];
 
         if (policy.name.length == 0 || policy.resourceType.length == 0 || policy.instanceId.length == 0) {
             throw new CISValidationException("name, resource_type and instance_id are required");
@@ -303,8 +303,8 @@ class CISService : SAPService {
         policy.ipRanges = Json.emptyArray;
         policy.groups = Json.emptyArray;
 
-        if ("ip_ranges" in request && request["ip_ranges"].type == Json.Type.array) policy.ipRanges = request["ip_ranges"];
-        if ("groups" in request && request["groups"].type == Json.Type.array) policy.groups = request["groups"];
+        if ("ip_ranges" in request && request["ip_ranges"].isArray) policy.ipRanges = request["ip_ranges"];
+        if ("groups" in request && request["groups"].isArray) policy.groups = request["groups"];
         if ("user_type" in request && request["user_type"].isString) policy.userType = request["user_type"].get!string;
         if ("authentication_method" in request && request["authentication_method"].isString) policy.authenticationMethod = toLower(request["authentication_method"].get!string);
         if ("require_two_factor" in request && request["require_two_factor"].isBoolean) policy.requireTwoFactor = request["require_two_factor"].get!bool;

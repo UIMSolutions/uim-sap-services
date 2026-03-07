@@ -81,7 +81,7 @@ AEMEventMesh meshFromJson(string tenantId, string brokerServiceId, Json request)
     if ("name" in request && request["name"].isString) {
         mesh.name = request["name"].get!string;
     }
-    if ("topics" in request && request["topics"].type == Json.Type.array) {
+    if ("topics" in request && request["topics"].isArray) {
         foreach (topicJson; request["topics"].get!(Json[])) {
             if (topicJson.isString) {
                 mesh.topics ~= topicJson.get!string;

@@ -348,7 +348,7 @@ class ATMService : SAPService {
         validateId(appId, "Application ID");
 
         string[] requiredPermissions;
-        if ("required_permissions" in request && request["required_permissions"].type == Json.Type.array) {
+        if ("required_permissions" in request && request["required_permissions"].isArray) {
             requiredPermissions = stringArrayFromJson(request["required_permissions"]);
         }
 
@@ -452,7 +452,7 @@ class ATMService : SAPService {
             return claims[key].get!string;
         }
 
-        if (claims[key].type == Json.Type.array) {
+        if (claims[key].isArray) {
             foreach (item; claims[key].get!(Json[])) {
                 if (item.isString) {
                     return item.get!string;
@@ -479,7 +479,7 @@ class ATMService : SAPService {
         if (!(key in claims)) {
             return [];
         }
-        if (claims[key].type == Json.Type.array) {
+        if (claims[key].isArray) {
             return stringArrayFromJson(claims[key]);
         }
         return [];
@@ -498,7 +498,7 @@ class ATMService : SAPService {
             }
         }
 
-        if ("scp" in claims && claims["scp"].type == Json.Type.array) {
+        if ("scp" in claims && claims["scp"].isArray) {
             foreach (scopeName; stringArrayFromJson(claims["scp"])) {
                 if (!scopes.canFind(scopeName)) {
                     scopes ~= scopeName;

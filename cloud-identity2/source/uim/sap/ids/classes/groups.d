@@ -240,7 +240,7 @@ class GroupManager {
             listResponse.itemsPerPage = data["itemsPerPage"].get!long;
         }
         
-        if ("Resources" in data && data["Resources"].type == Json.Type.array) {
+        if ("Resources" in data && data["Resources"].isArray) {
             foreach (groupJson; data["Resources"]) {
                 listResponse.resources ~= Group.fromJson(groupJson);
             }

@@ -43,7 +43,7 @@ unittest {
   assert(json["id"] == "group123");
   assert(json["tenant_id"] == "tenant123");
   assert(json["displayName"] == "Test Group");
-  assert(json["members"].type == Json.Type.array);
+  assert(json["members"].isArray);
   assert(json["updated_at"].isString);
 }
 
@@ -58,7 +58,7 @@ CISGroup groupFromJson(string tenantId, Json request) {
     group.groupId = request["id"].get!string;
   if ("displayName" in request && request["displayName"].isString)
     group.displayName = request["displayName"].get!string;
-  if ("members" in request && request["members"].type == Json.Type.array)
+  if ("members" in request && request["members"].isArray)
     group.members = request["members"];
 
   return group;
@@ -76,5 +76,5 @@ unittest {
   assert(group.tenantId == "tenant123");
   assert(group.groupId == "group123");
   assert(group.displayName == "Test Group");
-  assert(group.members.type == Json.Type.array);
+  assert(group.members.isArray);
 }

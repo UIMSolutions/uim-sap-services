@@ -63,7 +63,7 @@ IPVGroup groupFromJson(string tenantId, Json request) {
     if ("group_id" in request && request["group_id"].isString)
         g.groupId = request["group_id"].get!string;
 
-    if ("member_user_ids" in request && request["member_user_ids"].type == Json.Type.array) {
+    if ("member_user_ids" in request && request["member_user_ids"].isArray) {
         () @trusted {
             foreach (item; request["member_user_ids"]) {
                 if (item.isString)
