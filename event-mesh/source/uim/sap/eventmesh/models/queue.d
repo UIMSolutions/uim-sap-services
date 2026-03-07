@@ -38,7 +38,7 @@ EMQueue queueFromJson(string tenantId, Json request) {
     EMQueue q;
     q.tenantId = tenantId;
 
-    if ("queue_name" in request && request["queue_name"].type == Json.Type.string) {
+    if ("queue_name" in request && request["queue_name"].isString) {
         q.queueName = request["queue_name"].get!string;
     }
     if ("max_depth" in request && request["max_depth"].type == Json.Type.int_) {

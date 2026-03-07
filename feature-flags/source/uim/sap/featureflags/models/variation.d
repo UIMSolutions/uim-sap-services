@@ -32,16 +32,16 @@ FFLVariation variationFromJson(Json request) {
     FFLVariation v;
     v.variationId = randomUUID().toString();
 
-    if ("name" in request && request["name"].type == Json.Type.string) {
+    if ("name" in request && request["name"].isString) {
         v.name = request["name"].get!string;
     }
-    if ("value" in request && request["value"].type == Json.Type.string) {
+    if ("value" in request && request["value"].isString) {
         v.value = request["value"].get!string;
     }
     if ("weight" in request && request["weight"].type == Json.Type.int_) {
         v.weight = cast(uint) request["weight"].get!long;
     }
-    if ("variation_id" in request && request["variation_id"].type == Json.Type.string) {
+    if ("variation_id" in request && request["variation_id"].isString) {
         v.variationId = request["variation_id"].get!string;
     }
 

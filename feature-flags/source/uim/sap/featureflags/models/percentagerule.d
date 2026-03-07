@@ -50,7 +50,7 @@ FFLPercentageRule percentageRuleFromJson(Json request) {
         () @trusted {
             foreach (item; request["entries"]) {
                 FFLPercentageEntry entry;
-                if ("variation_id" in item && item["variation_id"].type == Json.Type.string) {
+                if ("variation_id" in item && item["variation_id"].isString) {
                     entry.variationId = item["variation_id"].get!string;
                 }
                 if ("weight" in item && item["weight"].type == Json.Type.int_) {
@@ -60,7 +60,7 @@ FFLPercentageRule percentageRuleFromJson(Json request) {
             }
         }();
     }
-    if ("rule_id" in request && request["rule_id"].type == Json.Type.string) {
+    if ("rule_id" in request && request["rule_id"].isString) {
         r.ruleId = request["rule_id"].get!string;
     }
 

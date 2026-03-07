@@ -121,9 +121,9 @@ class DocMgmtIntegrationService : SAPService {
         if (tenant.tenantId.length == 0)
             throw new DocMgmtIntegrationNotFoundException("Tenant", tenantId);
 
-        if ("name" in request && request["name"].type == Json.Type.string)
+        if ("name" in request && request["name"].isString)
             tenant.name = request["name"].get!string;
-        if ("description" in request && request["description"].type == Json.Type.string)
+        if ("description" in request && request["description"].isString)
             tenant.description = request["description"].get!string;
         if ("active" in request && request["active"].type == Json.Type.bool_)
             tenant.active = request["active"].get!bool;
@@ -264,9 +264,9 @@ class DocMgmtIntegrationService : SAPService {
         if (folder.folderId.length == 0 || folder.tenantId != tenantId)
             throw new DocMgmtIntegrationNotFoundException("Folder", folderId);
 
-        if ("name" in request && request["name"].type == Json.Type.string)
+        if ("name" in request && request["name"].isString)
             folder.name = request["name"].get!string;
-        if ("description" in request && request["description"].type == Json.Type.string)
+        if ("description" in request && request["description"].isString)
             folder.description = request["description"].get!string;
         if ("properties" in request && request["properties"].isObject)
             folder.properties = request["properties"];
@@ -335,7 +335,7 @@ class DocMgmtIntegrationService : SAPService {
             throw new DocMgmtIntegrationNotFoundException("Folder", folderId);
 
         string targetParentId = "";
-        if ("target_folder_id" in request && request["target_folder_id"].type == Json.Type.string)
+        if ("target_folder_id" in request && request["target_folder_id"].isString)
             targetParentId = request["target_folder_id"].get!string;
 
         if (targetParentId.length > 0) {
@@ -364,7 +364,7 @@ class DocMgmtIntegrationService : SAPService {
             throw new DocMgmtIntegrationNotFoundException("Folder", folderId);
 
         string targetParentId = "";
-        if ("target_folder_id" in request && request["target_folder_id"].type == Json.Type.string)
+        if ("target_folder_id" in request && request["target_folder_id"].isString)
             targetParentId = request["target_folder_id"].get!string;
         if (targetParentId.length > 0)
             ensureFolder(targetParentId);
@@ -423,7 +423,7 @@ class DocMgmtIntegrationService : SAPService {
             _store.addVersion(ver);
 
             // Store initial content if provided
-            if ("content" in request && request["content"].type == Json.Type.string) {
+            if ("content" in request && request["content"].isString) {
                 auto content = request["content"].get!string;
                 if (saved.encrypted) {
                     import std.string : representation;
@@ -466,20 +466,20 @@ class DocMgmtIntegrationService : SAPService {
         // Cannot edit if checked out by someone else
         if (doc.status == DocumentStatus.checkedOut) {
             string actor = "system";
-            if ("modified_by" in request && request["modified_by"].type == Json.Type.string)
+            if ("modified_by" in request && request["modified_by"].isString)
                 actor = request["modified_by"].get!string;
             if (doc.checkedOutBy != actor)
                 throw new DocMgmtIntegrationConflictException(
                     "Document is checked out by " ~ doc.checkedOutBy);
         }
 
-        if ("name" in request && request["name"].type == Json.Type.string)
+        if ("name" in request && request["name"].isString)
             doc.name = request["name"].get!string;
-        if ("description" in request && request["description"].type == Json.Type.string)
+        if ("description" in request && request["description"].isString)
             doc.description = request["description"].get!string;
-        if ("mime_type" in request && request["mime_type"].type == Json.Type.string)
+        if ("mime_type" in request && request["mime_type"].isString)
             doc.mimeType = request["mime_type"].get!string;
-        if ("modified_by" in request && request["modified_by"].type == Json.Type.string)
+        if ("modified_by" in request && request["modified_by"].isString)
             doc.modifiedBy = request["modified_by"].get!string;
 
         auto saved = _store.updateDocument(doc);
@@ -521,7 +521,7 @@ class DocMgmtIntegrationService : SAPService {
             throw new DocMgmtIntegrationNotFoundException("Document", documentId);
 
         string targetFolderId = "";
-        if ("target_folder_id" in request && request["target_folder_id"].type == Json.Type.string)
+        if ("target_folder_id" in request && request["target_folder_id"].isString)
             targetFolderId = request["target_folder_id"].get!string;
         if (targetFolderId.length > 0)
             ensureFolder(targetFolderId);
@@ -542,7 +542,7 @@ class DocMgmtIntegrationService : SAPService {
             throw new DocMgmtIntegrationNotFoundException("Document", documentId);
 
         string targetFolderId = "";
-        if ("target_folder_id" in request && request["target_folder_id"].type == Json.Type.string)
+        if ("target_folder_id" in request && request["target_folder_id"].isString)
             targetFolderId = request["target_folder_id"].get!string;
         if (targetFolderId.length > 0)
             ensureFolder(targetFolderId);
@@ -659,7 +659,7 @@ class DocMgmtIntegrationService : SAPService {
 
         if ("properties" in request && request["properties"].isObject)
             doc.properties = request["properties"];
-        if ("description" in request && request["description"].type == Json.Type.string)
+        if ("description" in request && request["description"].isString)
             doc.description = request["description"].get!string;
 
         auto saved = _store.updateDocument(doc);
@@ -700,7 +700,7 @@ class DocMgmtIntegrationService : SAPService {
 
         if ("properties" in request && request["properties"].isObject)
             folder.properties = request["properties"];
-        if ("description" in request && request["description"].type == Json.Type.string)
+        if ("description" in request && request["description"].isString)
             folder.description = request["description"].get!string;
 
         auto saved = _store.updateFolder(folder);
@@ -746,7 +746,7 @@ class DocMgmtIntegrationService : SAPService {
 
         if (doc.status == DocumentStatus.checkedOut) {
             string actor = "system";
-            if ("created_by" in request && request["created_by"].type == Json.Type.string)
+            if ("created_by" in request && request["created_by"].isString)
                 actor = request["created_by"].get!string;
             if (doc.checkedOutBy != actor)
                 throw new DocMgmtIntegrationConflictException(
@@ -757,7 +757,7 @@ class DocMgmtIntegrationService : SAPService {
         auto ver = versionFromJson(tenantId, documentId, nextVer, request);
         ver.encrypted = doc.encrypted;
 
-        if ("content" in request && request["content"].type == Json.Type.string) {
+        if ("content" in request && request["content"].isString) {
             auto content = request["content"].get!string;
             if (doc.encrypted) {
                 import std.string : representation;
@@ -813,7 +813,7 @@ class DocMgmtIntegrationService : SAPService {
                 "Document is already checked out by " ~ doc.checkedOutBy);
 
         string actor = "system";
-        if ("user" in request && request["user"].type == Json.Type.string)
+        if ("user" in request && request["user"].isString)
             actor = request["user"].get!string;
 
         doc.status = DocumentStatus.checkedOut;
@@ -839,7 +839,7 @@ class DocMgmtIntegrationService : SAPService {
                 "Document is not currently checked out");
 
         string actor = "system";
-        if ("user" in request && request["user"].type == Json.Type.string)
+        if ("user" in request && request["user"].isString)
             actor = request["user"].get!string;
         if (doc.checkedOutBy != actor)
             throw new DocMgmtIntegrationConflictException(
@@ -854,7 +854,7 @@ class DocMgmtIntegrationService : SAPService {
             ver.encrypted = doc.encrypted;
             ver.createdBy = actor;
 
-            if ("content" in request && request["content"].type == Json.Type.string) {
+            if ("content" in request && request["content"].isString) {
                 auto content = request["content"].get!string;
                 if (doc.encrypted) {
                     import std.string : representation;
@@ -912,7 +912,7 @@ class DocMgmtIntegrationService : SAPService {
         auto docs = _store.listDocuments(tenantId, repositoryId, folderId);
 
         string sortBy = "name";
-        if ("sort_by" in request && request["sort_by"].type == Json.Type.string)
+        if ("sort_by" in request && request["sort_by"].isString)
             sortBy = toLower(request["sort_by"].get!string);
 
         bool descending = false;

@@ -56,31 +56,31 @@ IPVUser userFromJson(string tenantId, Json request) {
     u.tenantId = tenantId;
     u.userId = randomUUID().toString();
 
-    if ("user_name" in request && request["user_name"].type == Json.Type.string)
+    if ("user_name" in request && request["user_name"].isString)
         u.userName = request["user_name"].get!string;
-    if ("external_id" in request && request["external_id"].type == Json.Type.string)
+    if ("external_id" in request && request["external_id"].isString)
         u.externalId = request["external_id"].get!string;
-    if ("email" in request && request["email"].type == Json.Type.string)
+    if ("email" in request && request["email"].isString)
         u.email = request["email"].get!string;
-    if ("first_name" in request && request["first_name"].type == Json.Type.string)
+    if ("first_name" in request && request["first_name"].isString)
         u.firstName = request["first_name"].get!string;
-    if ("last_name" in request && request["last_name"].type == Json.Type.string)
+    if ("last_name" in request && request["last_name"].isString)
         u.lastName = request["last_name"].get!string;
-    if ("display_name" in request && request["display_name"].type == Json.Type.string)
+    if ("display_name" in request && request["display_name"].isString)
         u.displayName = request["display_name"].get!string;
     if ("active" in request && request["active"].type == Json.Type.bool_)
         u.active = request["active"].get!bool;
-    if ("source_system_id" in request && request["source_system_id"].type == Json.Type.string)
+    if ("source_system_id" in request && request["source_system_id"].isString)
         u.sourceSystemId = request["source_system_id"].get!string;
-    if ("status" in request && request["status"].type == Json.Type.string)
+    if ("status" in request && request["status"].isString)
         u.status = request["status"].get!string;
-    if ("user_id" in request && request["user_id"].type == Json.Type.string)
+    if ("user_id" in request && request["user_id"].isString)
         u.userId = request["user_id"].get!string;
 
     if ("group_ids" in request && request["group_ids"].type == Json.Type.array) {
         () @trusted {
             foreach (item; request["group_ids"]) {
-                if (item.type == Json.Type.string)
+                if (item.isString)
                     u.groupIds ~= item.get!string;
             }
         }();

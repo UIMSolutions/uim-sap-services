@@ -50,15 +50,15 @@ ISHybridRuntime hybridRuntimeFromJson(string tenantId, Json request) {
     r.tenantId = tenantId;
     r.runtimeId = randomUUID().toString();
 
-    if ("name" in request && request["name"].type == Json.Type.string)
+    if ("name" in request && request["name"].isString)
         r.name = request["name"].get!string;
-    if ("description" in request && request["description"].type == Json.Type.string)
+    if ("description" in request && request["description"].isString)
         r.description = request["description"].get!string;
-    if ("location" in request && request["location"].type == Json.Type.string)
+    if ("location" in request && request["location"].isString)
         r.location = request["location"].get!string;
-    if ("runtime_type" in request && request["runtime_type"].type == Json.Type.string)
+    if ("runtime_type" in request && request["runtime_type"].isString)
         r.runtimeType = request["runtime_type"].get!string;
-    if ("version" in request && request["version"].type == Json.Type.string)
+    if ("version" in request && request["version"].isString)
         r.version_ = request["version"].get!string;
 
     r.createdAt = Clock.currTime().toISOExtString();

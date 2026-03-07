@@ -41,19 +41,19 @@ FFLDirectRule directRuleFromJson(Json request) {
     if ("identifiers" in request && request["identifiers"].type == Json.Type.array) {
         () @trusted {
             foreach (item; request["identifiers"]) {
-                if (item.type == Json.Type.string) {
+                if (item.isString) {
                     r.identifiers ~= item.get!string;
                 }
             }
         }();
     }
-    if ("variation_id" in request && request["variation_id"].type == Json.Type.string) {
+    if ("variation_id" in request && request["variation_id"].isString) {
         r.variationId = request["variation_id"].get!string;
     }
     if ("boolean_value" in request && request["boolean_value"].type == Json.Type.bool_) {
         r.booleanValue = request["boolean_value"].get!bool;
     }
-    if ("rule_id" in request && request["rule_id"].type == Json.Type.string) {
+    if ("rule_id" in request && request["rule_id"].isString) {
         r.ruleId = request["rule_id"].get!string;
     }
 

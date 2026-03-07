@@ -56,21 +56,21 @@ ISMigration migrationFromJson(string tenantId, Json request) {
     m.tenantId = tenantId;
     m.migrationId = randomUUID().toString();
 
-    if ("name" in request && request["name"].type == Json.Type.string)
+    if ("name" in request && request["name"].isString)
         m.name = request["name"].get!string;
-    if ("description" in request && request["description"].type == Json.Type.string)
+    if ("description" in request && request["description"].isString)
         m.description = request["description"].get!string;
-    if ("source_system" in request && request["source_system"].type == Json.Type.string)
+    if ("source_system" in request && request["source_system"].isString)
         m.sourceSystem = request["source_system"].get!string;
-    if ("source_version" in request && request["source_version"].type == Json.Type.string)
+    if ("source_version" in request && request["source_version"].isString)
         m.sourceVersion = request["source_version"].get!string;
-    if ("scenario_type" in request && request["scenario_type"].type == Json.Type.string)
+    if ("scenario_type" in request && request["scenario_type"].isString)
         m.scenarioType = request["scenario_type"].get!string;
-    if ("complexity" in request && request["complexity"].type == Json.Type.string)
+    if ("complexity" in request && request["complexity"].isString)
         m.complexity = request["complexity"].get!string;
     if ("estimated_hours" in request && request["estimated_hours"].type == Json.Type.int_)
         m.estimatedHours = request["estimated_hours"].get!long;
-    if ("target_runtime" in request && request["target_runtime"].type == Json.Type.string)
+    if ("target_runtime" in request && request["target_runtime"].isString)
         m.targetRuntime = request["target_runtime"].get!string;
     if ("scenario_details" in request)
         m.scenarioDetails = request["scenario_details"];

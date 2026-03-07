@@ -113,15 +113,15 @@ class IPVService : SAPService {
         if (existing.systemName.length == 0)
             throw new IPVNotFoundException("System", tenantId ~ "/" ~ systemName);
 
-        if ("description" in request && request["description"].type == Json.Type.string)
+        if ("description" in request && request["description"].isString)
             existing.description = request["description"].get!string;
-        if ("endpoint_url" in request && request["endpoint_url"].type == Json.Type.string)
+        if ("endpoint_url" in request && request["endpoint_url"].isString)
             existing.endpointUrl = request["endpoint_url"].get!string;
-        if ("auth_type" in request && request["auth_type"].type == Json.Type.string)
+        if ("auth_type" in request && request["auth_type"].isString)
             existing.authType = request["auth_type"].get!string;
-        if ("status" in request && request["status"].type == Json.Type.string)
+        if ("status" in request && request["status"].isString)
             existing.status = request["status"].get!string;
-        if ("connector_type" in request && request["connector_type"].type == Json.Type.string)
+        if ("connector_type" in request && request["connector_type"].isString)
             existing.connectorType = request["connector_type"].get!string;
 
         existing.updatedAt = Clock.currTime().toISOExtString();
@@ -199,24 +199,24 @@ class IPVService : SAPService {
         if (existing.userId.length == 0)
             throw new IPVNotFoundException("User", tenantId ~ "/" ~ userId);
 
-        if ("email" in request && request["email"].type == Json.Type.string)
+        if ("email" in request && request["email"].isString)
             existing.email = request["email"].get!string;
-        if ("first_name" in request && request["first_name"].type == Json.Type.string)
+        if ("first_name" in request && request["first_name"].isString)
             existing.firstName = request["first_name"].get!string;
-        if ("last_name" in request && request["last_name"].type == Json.Type.string)
+        if ("last_name" in request && request["last_name"].isString)
             existing.lastName = request["last_name"].get!string;
-        if ("display_name" in request && request["display_name"].type == Json.Type.string)
+        if ("display_name" in request && request["display_name"].isString)
             existing.displayName = request["display_name"].get!string;
         if ("active" in request && request["active"].type == Json.Type.bool_)
             existing.active = request["active"].get!bool;
-        if ("status" in request && request["status"].type == Json.Type.string)
+        if ("status" in request && request["status"].isString)
             existing.status = request["status"].get!string;
 
         if ("group_ids" in request && request["group_ids"].type == Json.Type.array) {
             string[] gids;
             () @trusted {
                 foreach (item; request["group_ids"]) {
-                    if (item.type == Json.Type.string)
+                    if (item.isString)
                         gids ~= item.get!string;
                 }
             }();

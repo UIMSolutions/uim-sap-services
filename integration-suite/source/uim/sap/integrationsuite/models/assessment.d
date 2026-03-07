@@ -48,17 +48,17 @@ ISAssessment assessmentFromJson(string tenantId, Json request) {
     a.tenantId = tenantId;
     a.assessmentId = randomUUID().toString();
 
-    if ("name" in request && request["name"].type == Json.Type.string)
+    if ("name" in request && request["name"].isString)
         a.name = request["name"].get!string;
-    if ("description" in request && request["description"].type == Json.Type.string)
+    if ("description" in request && request["description"].isString)
         a.description = request["description"].get!string;
-    if ("integration_domain" in request && request["integration_domain"].type == Json.Type.string)
+    if ("integration_domain" in request && request["integration_domain"].isString)
         a.integrationDomain = request["integration_domain"].get!string;
-    if ("integration_style" in request && request["integration_style"].type == Json.Type.string)
+    if ("integration_style" in request && request["integration_style"].isString)
         a.integrationStyle = request["integration_style"].get!string;
-    if ("recommended_technology" in request && request["recommended_technology"].type == Json.Type.string)
+    if ("recommended_technology" in request && request["recommended_technology"].isString)
         a.recommendedTechnology = request["recommended_technology"].get!string;
-    if ("assessor" in request && request["assessor"].type == Json.Type.string)
+    if ("assessor" in request && request["assessor"].isString)
         a.assessor = request["assessor"].get!string;
     if ("findings" in request)
         a.findings = request["findings"];

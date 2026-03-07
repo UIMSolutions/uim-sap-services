@@ -48,25 +48,25 @@ IPVGroup groupFromJson(string tenantId, Json request) {
     g.tenantId = tenantId;
     g.groupId = randomUUID().toString();
 
-    if ("group_name" in request && request["group_name"].type == Json.Type.string)
+    if ("group_name" in request && request["group_name"].isString)
         g.groupName = request["group_name"].get!string;
-    if ("external_id" in request && request["external_id"].type == Json.Type.string)
+    if ("external_id" in request && request["external_id"].isString)
         g.externalId = request["external_id"].get!string;
-    if ("display_name" in request && request["display_name"].type == Json.Type.string)
+    if ("display_name" in request && request["display_name"].isString)
         g.displayName = request["display_name"].get!string;
-    if ("description" in request && request["description"].type == Json.Type.string)
+    if ("description" in request && request["description"].isString)
         g.description = request["description"].get!string;
-    if ("source_system_id" in request && request["source_system_id"].type == Json.Type.string)
+    if ("source_system_id" in request && request["source_system_id"].isString)
         g.sourceSystemId = request["source_system_id"].get!string;
-    if ("status" in request && request["status"].type == Json.Type.string)
+    if ("status" in request && request["status"].isString)
         g.status = request["status"].get!string;
-    if ("group_id" in request && request["group_id"].type == Json.Type.string)
+    if ("group_id" in request && request["group_id"].isString)
         g.groupId = request["group_id"].get!string;
 
     if ("member_user_ids" in request && request["member_user_ids"].type == Json.Type.array) {
         () @trusted {
             foreach (item; request["member_user_ids"]) {
-                if (item.type == Json.Type.string)
+                if (item.isString)
                     g.memberUserIds ~= item.get!string;
             }
         }();

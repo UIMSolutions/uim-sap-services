@@ -58,23 +58,23 @@ ISIFlow iflowFromJson(string tenantId, Json request) {
     f.tenantId = tenantId;
     f.iflowId = randomUUID().toString();
 
-    if ("name" in request && request["name"].type == Json.Type.string)
+    if ("name" in request && request["name"].isString)
         f.name = request["name"].get!string;
-    if ("description" in request && request["description"].type == Json.Type.string)
+    if ("description" in request && request["description"].isString)
         f.description = request["description"].get!string;
-    if ("package_id" in request && request["package_id"].type == Json.Type.string)
+    if ("package_id" in request && request["package_id"].isString)
         f.packageId = request["package_id"].get!string;
-    if ("version" in request && request["version"].type == Json.Type.string)
+    if ("version" in request && request["version"].isString)
         f.version_ = request["version"].get!string;
-    if ("runtime" in request && request["runtime"].type == Json.Type.string)
+    if ("runtime" in request && request["runtime"].isString)
         f.runtime = request["runtime"].get!string;
-    if ("sender" in request && request["sender"].type == Json.Type.string)
+    if ("sender" in request && request["sender"].isString)
         f.sender = request["sender"].get!string;
-    if ("receiver" in request && request["receiver"].type == Json.Type.string)
+    if ("receiver" in request && request["receiver"].isString)
         f.receiver = request["receiver"].get!string;
-    if ("protocol" in request && request["protocol"].type == Json.Type.string)
+    if ("protocol" in request && request["protocol"].isString)
         f.protocol = request["protocol"].get!string;
-    if ("endpoint_url" in request && request["endpoint_url"].type == Json.Type.string)
+    if ("endpoint_url" in request && request["endpoint_url"].isString)
         f.endpointUrl = request["endpoint_url"].get!string;
 
     f.createdAt = Clock.currTime().toISOExtString();

@@ -71,21 +71,21 @@ IPVJob jobFromJson(string tenantId, Json request) {
     j.tenantId = tenantId;
     j.jobId = randomUUID().toString();
 
-    if ("job_name" in request && request["job_name"].type == Json.Type.string)
+    if ("job_name" in request && request["job_name"].isString)
         j.jobName = request["job_name"].get!string;
-    if ("source_system_id" in request && request["source_system_id"].type == Json.Type.string)
+    if ("source_system_id" in request && request["source_system_id"].isString)
         j.sourceSystemId = request["source_system_id"].get!string;
-    if ("read_mode" in request && request["read_mode"].type == Json.Type.string)
+    if ("read_mode" in request && request["read_mode"].isString)
         j.readMode = request["read_mode"].get!string;
-    if ("delta_token" in request && request["delta_token"].type == Json.Type.string)
+    if ("delta_token" in request && request["delta_token"].isString)
         j.deltaToken = request["delta_token"].get!string;
-    if ("job_id" in request && request["job_id"].type == Json.Type.string)
+    if ("job_id" in request && request["job_id"].isString)
         j.jobId = request["job_id"].get!string;
 
     if ("target_system_ids" in request && request["target_system_ids"].type == Json.Type.array) {
         () @trusted {
             foreach (item; request["target_system_ids"]) {
-                if (item.type == Json.Type.string)
+                if (item.isString)
                     j.targetSystemIds ~= item.get!string;
             }
         }();

@@ -50,19 +50,19 @@ ISMapping mappingFromJson(string tenantId, Json request) {
     m.tenantId = tenantId;
     m.mappingId = randomUUID().toString();
 
-    if ("name" in request && request["name"].type == Json.Type.string)
+    if ("name" in request && request["name"].isString)
         m.name = request["name"].get!string;
-    if ("description" in request && request["description"].type == Json.Type.string)
+    if ("description" in request && request["description"].isString)
         m.description = request["description"].get!string;
-    if ("source_format" in request && request["source_format"].type == Json.Type.string)
+    if ("source_format" in request && request["source_format"].isString)
         m.sourceFormat = request["source_format"].get!string;
-    if ("target_format" in request && request["target_format"].type == Json.Type.string)
+    if ("target_format" in request && request["target_format"].isString)
         m.targetFormat = request["target_format"].get!string;
-    if ("source_schema" in request && request["source_schema"].type == Json.Type.string)
+    if ("source_schema" in request && request["source_schema"].isString)
         m.sourceSchema = request["source_schema"].get!string;
-    if ("target_schema" in request && request["target_schema"].type == Json.Type.string)
+    if ("target_schema" in request && request["target_schema"].isString)
         m.targetSchema = request["target_schema"].get!string;
-    if ("generation_method" in request && request["generation_method"].type == Json.Type.string)
+    if ("generation_method" in request && request["generation_method"].isString)
         m.generationMethod = request["generation_method"].get!string;
     if ("mapping_rules" in request)
         m.mappingRules = request["mapping_rules"];

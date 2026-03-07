@@ -39,13 +39,13 @@ EMWebhook webhookFromJson(string tenantId, Json request) {
     w.tenantId = tenantId;
     w.webhookId = randomUUID().toString();
 
-    if ("queue_name" in request && request["queue_name"].type == Json.Type.string) {
+    if ("queue_name" in request && request["queue_name"].isString) {
         w.queueName = request["queue_name"].get!string;
     }
-    if ("callback_url" in request && request["callback_url"].type == Json.Type.string) {
+    if ("callback_url" in request && request["callback_url"].isString) {
         w.callbackUrl = request["callback_url"].get!string;
     }
-    if ("method" in request && request["method"].type == Json.Type.string) {
+    if ("method" in request && request["method"].isString) {
         w.method = request["method"].get!string;
     }
 

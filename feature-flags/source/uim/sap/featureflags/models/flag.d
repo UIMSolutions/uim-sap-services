@@ -80,22 +80,22 @@ FFLFlag flagFromJson(string tenantId, Json request) {
     f.tenantId = tenantId;
     f.flagId = randomUUID().toString();
 
-    if ("flag_name" in request && request["flag_name"].type == Json.Type.string) {
+    if ("flag_name" in request && request["flag_name"].isString) {
         f.flagName = request["flag_name"].get!string;
     }
-    if ("description" in request && request["description"].type == Json.Type.string) {
+    if ("description" in request && request["description"].isString) {
         f.description = request["description"].get!string;
     }
-    if ("flag_type" in request && request["flag_type"].type == Json.Type.string) {
+    if ("flag_type" in request && request["flag_type"].isString) {
         f.flagType = request["flag_type"].get!string;
     }
     if ("enabled" in request && request["enabled"].type == Json.Type.bool_) {
         f.enabled = request["enabled"].get!bool;
     }
-    if ("status" in request && request["status"].type == Json.Type.string) {
+    if ("status" in request && request["status"].isString) {
         f.status = request["status"].get!string;
     }
-    if ("default_variation_id" in request && request["default_variation_id"].type == Json.Type.string) {
+    if ("default_variation_id" in request && request["default_variation_id"].isString) {
         f.defaultVariationId = request["default_variation_id"].get!string;
     }
 
@@ -123,7 +123,7 @@ FFLFlag flagFromJson(string tenantId, Json request) {
     }
 
     // Import support: preserve IDs when present
-    if ("flag_id" in request && request["flag_id"].type == Json.Type.string) {
+    if ("flag_id" in request && request["flag_id"].isString) {
         f.flagId = request["flag_id"].get!string;
     }
     if ("evaluation_count" in request && request["evaluation_count"].type == Json.Type.int_) {

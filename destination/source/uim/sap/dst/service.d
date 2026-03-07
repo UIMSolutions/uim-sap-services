@@ -117,7 +117,7 @@ class DSTService : SAPService {
         // Parse custom properties
         if ("properties" in payload && payload["properties"].isObject) {
             foreach (string k, v; payload["properties"])
-                if (v.type == Json.Type.string)
+                if (v.isString)
                     d.properties[k] = v.get!string;
         }
 
@@ -186,7 +186,7 @@ class DSTService : SAPService {
         if ("properties" in payload && payload["properties"].isObject) {
             string[string] newProps;
             foreach (string k, v; payload["properties"])
-                if (v.type == Json.Type.string)
+                if (v.isString)
                     newProps[k] = v.get!string;
             d.properties = newProps;
         }
@@ -425,7 +425,7 @@ class DSTService : SAPService {
     // JSON helpers
     // -----------------------------------------------------------------------
     private static string jstr(Json j, string key, string fallback = "") {
-        if (key in j && j[key].type == Json.Type.string)
+        if (key in j && j[key].isString)
             return j[key].get!string;
         return fallback;
     }

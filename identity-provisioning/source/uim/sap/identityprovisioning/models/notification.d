@@ -52,19 +52,19 @@ IPVNotification notificationFromJson(string tenantId, Json request) {
     n.tenantId = tenantId;
     n.subscriptionId = randomUUID().toString();
 
-    if ("source_system_id" in request && request["source_system_id"].type == Json.Type.string)
+    if ("source_system_id" in request && request["source_system_id"].isString)
         n.sourceSystemId = request["source_system_id"].get!string;
-    if ("callback_url" in request && request["callback_url"].type == Json.Type.string)
+    if ("callback_url" in request && request["callback_url"].isString)
         n.callbackUrl = request["callback_url"].get!string;
     if ("active" in request && request["active"].type == Json.Type.bool_)
         n.active = request["active"].get!bool;
-    if ("subscription_id" in request && request["subscription_id"].type == Json.Type.string)
+    if ("subscription_id" in request && request["subscription_id"].isString)
         n.subscriptionId = request["subscription_id"].get!string;
 
     if ("event_types" in request && request["event_types"].type == Json.Type.array) {
         () @trusted {
             foreach (item; request["event_types"]) {
-                if (item.type == Json.Type.string)
+                if (item.isString)
                     n.eventTypes ~= item.get!string;
             }
         }();

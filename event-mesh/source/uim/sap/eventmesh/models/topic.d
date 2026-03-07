@@ -32,10 +32,10 @@ EMTopic topicFromJson(string tenantId, Json request) {
     EMTopic t;
     t.tenantId = tenantId;
 
-    if ("topic_name" in request && request["topic_name"].type == Json.Type.string) {
+    if ("topic_name" in request && request["topic_name"].isString) {
         t.topicName = request["topic_name"].get!string;
     }
-    if ("description" in request && request["description"].type == Json.Type.string) {
+    if ("description" in request && request["description"].isString) {
         t.description = request["description"].get!string;
     }
 

@@ -52,19 +52,19 @@ ISODataService odataServiceFromJson(string tenantId, Json request) {
     svc.tenantId = tenantId;
     svc.serviceId = randomUUID().toString();
 
-    if ("name" in request && request["name"].type == Json.Type.string)
+    if ("name" in request && request["name"].isString)
         svc.name = request["name"].get!string;
-    if ("description" in request && request["description"].type == Json.Type.string)
+    if ("description" in request && request["description"].isString)
         svc.description = request["description"].get!string;
-    if ("service_url" in request && request["service_url"].type == Json.Type.string)
+    if ("service_url" in request && request["service_url"].isString)
         svc.serviceUrl = request["service_url"].get!string;
-    if ("odata_version" in request && request["odata_version"].type == Json.Type.string)
+    if ("odata_version" in request && request["odata_version"].isString)
         svc.odataVersion = request["odata_version"].get!string;
-    if ("backend_system" in request && request["backend_system"].type == Json.Type.string)
+    if ("backend_system" in request && request["backend_system"].isString)
         svc.backendSystem = request["backend_system"].get!string;
     if ("entity_sets" in request && request["entity_sets"].type == Json.Type.array) {
         foreach (item; request["entity_sets"]) {
-            if (item.type == Json.Type.string)
+            if (item.isString)
                 svc.entitySets ~= item.get!string;
         }
     }

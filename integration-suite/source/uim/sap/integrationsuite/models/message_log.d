@@ -50,19 +50,19 @@ ISMessageLog messageLogFromJson(string tenantId, Json request) {
     l.tenantId = tenantId;
     l.logId = randomUUID().toString();
 
-    if ("iflow_id" in request && request["iflow_id"].type == Json.Type.string)
+    if ("iflow_id" in request && request["iflow_id"].isString)
         l.iflowId = request["iflow_id"].get!string;
-    if ("correlation_id" in request && request["correlation_id"].type == Json.Type.string)
+    if ("correlation_id" in request && request["correlation_id"].isString)
         l.correlationId = request["correlation_id"].get!string;
-    if ("status" in request && request["status"].type == Json.Type.string)
+    if ("status" in request && request["status"].isString)
         l.status = request["status"].get!string;
-    if ("sender" in request && request["sender"].type == Json.Type.string)
+    if ("sender" in request && request["sender"].isString)
         l.sender = request["sender"].get!string;
-    if ("receiver" in request && request["receiver"].type == Json.Type.string)
+    if ("receiver" in request && request["receiver"].isString)
         l.receiver = request["receiver"].get!string;
     if ("payload_size_bytes" in request && request["payload_size_bytes"].type == Json.Type.int_)
         l.payloadSizeBytes = request["payload_size_bytes"].get!long;
-    if ("error_message" in request && request["error_message"].type == Json.Type.string)
+    if ("error_message" in request && request["error_message"].isString)
         l.errorMessage = request["error_message"].get!string;
     if ("duration_ms" in request && request["duration_ms"].type == Json.Type.int_)
         l.durationMs = request["duration_ms"].get!long;

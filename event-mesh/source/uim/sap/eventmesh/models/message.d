@@ -42,10 +42,10 @@ EMMessage messageFromJson(string tenantId, string topicName, Json request) {
     m.messageId = randomUUID().toString();
     m.topicName = topicName;
 
-    if ("publisher" in request && request["publisher"].type == Json.Type.string) {
+    if ("publisher" in request && request["publisher"].isString) {
         m.publisher = request["publisher"].get!string;
     }
-    if ("source" in request && request["source"].type == Json.Type.string) {
+    if ("source" in request && request["source"].isString) {
         m.source = request["source"].get!string;
     }
     if ("payload" in request) {

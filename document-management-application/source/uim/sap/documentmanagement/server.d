@@ -179,7 +179,7 @@ class DOCServer {
             && req.method == HTTPMethod.POST) {
             string folderId = "";
             auto body_ = req.json;
-            if ("folder_id" in body_ && body_["folder_id"].type == Json.Type.string)
+            if ("folder_id" in body_ && body_["folder_id"].isString)
                 folderId = body_["folder_id"].get!string;
             res.writeJsonBody(_service.listDocumentsSorted(repoId, folderId, body_), 200);
             return true;
@@ -200,7 +200,7 @@ class DOCServer {
             if ("parent_folder_id" in req.query)
                 parentId = req.query["parent_folder_id"];
             auto body_ = req.json;
-            if ("parent_folder_id" in body_ && body_["parent_folder_id"].type == Json.Type.string)
+            if ("parent_folder_id" in body_ && body_["parent_folder_id"].isString)
                 parentId = body_["parent_folder_id"].get!string;
             res.writeJsonBody(_service.createFolder(repoId, parentId, body_), 201);
             return true;
@@ -220,7 +220,7 @@ class DOCServer {
             if ("folder_id" in req.query)
                 folderId = req.query["folder_id"];
             auto body_ = req.json;
-            if ("folder_id" in body_ && body_["folder_id"].type == Json.Type.string)
+            if ("folder_id" in body_ && body_["folder_id"].isString)
                 folderId = body_["folder_id"].get!string;
             res.writeJsonBody(_service.createDocument(repoId, folderId, body_), 201);
             return true;

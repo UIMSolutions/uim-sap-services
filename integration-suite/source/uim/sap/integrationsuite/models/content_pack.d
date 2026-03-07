@@ -57,24 +57,24 @@ ISContentPack contentPackFromJson(string tenantId, Json request) {
     p.tenantId = tenantId;
     p.packId = randomUUID().toString();
 
-    if ("name" in request && request["name"].type == Json.Type.string)
+    if ("name" in request && request["name"].isString)
         p.name = request["name"].get!string;
-    if ("description" in request && request["description"].type == Json.Type.string)
+    if ("description" in request && request["description"].isString)
         p.description = request["description"].get!string;
-    if ("vendor" in request && request["vendor"].type == Json.Type.string)
+    if ("vendor" in request && request["vendor"].isString)
         p.vendor = request["vendor"].get!string;
-    if ("version" in request && request["version"].type == Json.Type.string)
+    if ("version" in request && request["version"].isString)
         p.version_ = request["version"].get!string;
-    if ("category" in request && request["category"].type == Json.Type.string)
+    if ("category" in request && request["category"].isString)
         p.category = request["category"].get!string;
     if ("iflow_ids" in request && request["iflow_ids"].type == Json.Type.array) {
         foreach (item; request["iflow_ids"]) {
-            if (item.type == Json.Type.string) p.iflowIds ~= item.get!string;
+            if (item.isString) p.iflowIds ~= item.get!string;
         }
     }
     if ("mapping_ids" in request && request["mapping_ids"].type == Json.Type.array) {
         foreach (item; request["mapping_ids"]) {
-            if (item.type == Json.Type.string) p.mappingIds ~= item.get!string;
+            if (item.isString) p.mappingIds ~= item.get!string;
         }
     }
 

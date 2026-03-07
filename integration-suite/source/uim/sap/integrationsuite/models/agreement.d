@@ -50,19 +50,19 @@ ISAgreement agreementFromJson(string tenantId, Json request) {
     a.tenantId = tenantId;
     a.agreementId = randomUUID().toString();
 
-    if ("partner_id" in request && request["partner_id"].type == Json.Type.string)
+    if ("partner_id" in request && request["partner_id"].isString)
         a.partnerId = request["partner_id"].get!string;
-    if ("name" in request && request["name"].type == Json.Type.string)
+    if ("name" in request && request["name"].isString)
         a.name = request["name"].get!string;
-    if ("description" in request && request["description"].type == Json.Type.string)
+    if ("description" in request && request["description"].isString)
         a.description = request["description"].get!string;
-    if ("document_standard" in request && request["document_standard"].type == Json.Type.string)
+    if ("document_standard" in request && request["document_standard"].isString)
         a.documentStandard = request["document_standard"].get!string;
-    if ("direction" in request && request["direction"].type == Json.Type.string)
+    if ("direction" in request && request["direction"].isString)
         a.direction = request["direction"].get!string;
-    if ("valid_from" in request && request["valid_from"].type == Json.Type.string)
+    if ("valid_from" in request && request["valid_from"].isString)
         a.validFrom = request["valid_from"].get!string;
-    if ("valid_to" in request && request["valid_to"].type == Json.Type.string)
+    if ("valid_to" in request && request["valid_to"].isString)
         a.validTo = request["valid_to"].get!string;
 
     a.createdAt = Clock.currTime().toISOExtString();

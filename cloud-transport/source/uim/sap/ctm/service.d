@@ -375,7 +375,7 @@ class CTMService : SAPService {
     // JSON helpers
     // -----------------------------------------------------------------------
     private static string jstr(Json j, string key, string fallback = "") {
-        if (key in j && j[key].type == Json.Type.string)
+        if (key in j && j[key].isString)
             return j[key].get!string;
         return fallback;
     }

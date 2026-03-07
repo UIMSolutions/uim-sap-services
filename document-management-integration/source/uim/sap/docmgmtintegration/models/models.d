@@ -65,9 +65,9 @@ Tenant tenantFromJson(Json request) {
     t.modifiedAt = t.createdAt;
     t.active = true;
 
-    if ("name" in request && request["name"].type == Json.Type.string)
+    if ("name" in request && request["name"].isString)
         t.name = request["name"].get!string;
-    if ("description" in request && request["description"].type == Json.Type.string)
+    if ("description" in request && request["description"].isString)
         t.description = request["description"].get!string;
 
     return t;
@@ -115,15 +115,15 @@ Repository repositoryFromJson(string tenantId, Json request) {
     repo.connectedAt = Clock.currTime();
     repo.rootFolderId = randomUUID().toString();
 
-    if ("name" in request && request["name"].type == Json.Type.string)
+    if ("name" in request && request["name"].isString)
         repo.name = request["name"].get!string;
-    if ("description" in request && request["description"].type == Json.Type.string)
+    if ("description" in request && request["description"].isString)
         repo.description = request["description"].get!string;
-    if ("vendor_name" in request && request["vendor_name"].type == Json.Type.string)
+    if ("vendor_name" in request && request["vendor_name"].isString)
         repo.vendorName = request["vendor_name"].get!string;
-    if ("product_name" in request && request["product_name"].type == Json.Type.string)
+    if ("product_name" in request && request["product_name"].isString)
         repo.productName = request["product_name"].get!string;
-    if ("product_version" in request && request["product_version"].type == Json.Type.string)
+    if ("product_version" in request && request["product_version"].isString)
         repo.productVersion = request["product_version"].get!string;
     if ("cmis_compliant" in request && request["cmis_compliant"].type == Json.Type.bool_)
         repo.cmisCompliant = request["cmis_compliant"].get!bool;
@@ -182,11 +182,11 @@ Folder folderFromJson(string tenantId, string repositoryId, string parentFolderI
     f.properties = Json.emptyObject;
     f.createdBy = "system";
 
-    if ("name" in request && request["name"].type == Json.Type.string)
+    if ("name" in request && request["name"].isString)
         f.name = request["name"].get!string;
-    if ("description" in request && request["description"].type == Json.Type.string)
+    if ("description" in request && request["description"].isString)
         f.description = request["description"].get!string;
-    if ("created_by" in request && request["created_by"].type == Json.Type.string)
+    if ("created_by" in request && request["created_by"].isString)
         f.createdBy = request["created_by"].get!string;
     if ("properties" in request && request["properties"].isObject)
         f.properties = request["properties"];
@@ -261,15 +261,15 @@ Document documentFromJson(string tenantId, string repositoryId, string folderId,
     d.currentVersion = 1;
     d.latestVersionId = randomUUID().toString();
 
-    if ("name" in request && request["name"].type == Json.Type.string)
+    if ("name" in request && request["name"].isString)
         d.name = request["name"].get!string;
-    if ("description" in request && request["description"].type == Json.Type.string)
+    if ("description" in request && request["description"].isString)
         d.description = request["description"].get!string;
-    if ("mime_type" in request && request["mime_type"].type == Json.Type.string)
+    if ("mime_type" in request && request["mime_type"].isString)
         d.mimeType = request["mime_type"].get!string;
     if ("size_bytes" in request && request["size_bytes"].type == Json.Type.int_)
         d.sizeBytes = request["size_bytes"].get!long;
-    if ("created_by" in request && request["created_by"].type == Json.Type.string)
+    if ("created_by" in request && request["created_by"].isString)
         d.createdBy = request["created_by"].get!string;
     if ("properties" in request && request["properties"].isObject)
         d.properties = request["properties"];
@@ -333,13 +333,13 @@ DocumentVersion versionFromJson(string tenantId, string documentId,
         v.versionLabel = "1." ~ to!string(versionNumber - 1);
     }
 
-    if ("comment" in request && request["comment"].type == Json.Type.string)
+    if ("comment" in request && request["comment"].isString)
         v.comment = request["comment"].get!string;
     if ("size_bytes" in request && request["size_bytes"].type == Json.Type.int_)
         v.sizeBytes = request["size_bytes"].get!long;
-    if ("mime_type" in request && request["mime_type"].type == Json.Type.string)
+    if ("mime_type" in request && request["mime_type"].isString)
         v.mimeType = request["mime_type"].get!string;
-    if ("created_by" in request && request["created_by"].type == Json.Type.string)
+    if ("created_by" in request && request["created_by"].isString)
         v.createdBy = request["created_by"].get!string;
     if ("is_major" in request && request["is_major"].type == Json.Type.bool_) {
         v.isMajor = request["is_major"].get!bool;
@@ -347,7 +347,7 @@ DocumentVersion versionFromJson(string tenantId, string documentId,
             v.versionLabel = to!string(versionNumber) ~ ".0";
         }
     }
-    if ("version_label" in request && request["version_label"].type == Json.Type.string)
+    if ("version_label" in request && request["version_label"].isString)
         v.versionLabel = request["version_label"].get!string;
 
     return v;
@@ -418,13 +418,13 @@ UIComponentConfig uiConfigFromJson(string tenantId, Json request) {
     UIComponentConfig cfg;
     cfg.tenantId = tenantId;
 
-    if ("repository_id" in request && request["repository_id"].type == Json.Type.string)
+    if ("repository_id" in request && request["repository_id"].isString)
         cfg.repositoryId = request["repository_id"].get!string;
-    if ("root_folder_id" in request && request["root_folder_id"].type == Json.Type.string)
+    if ("root_folder_id" in request && request["root_folder_id"].isString)
         cfg.rootFolderId = request["root_folder_id"].get!string;
-    if ("theme" in request && request["theme"].type == Json.Type.string)
+    if ("theme" in request && request["theme"].isString)
         cfg.theme = request["theme"].get!string;
-    if ("locale" in request && request["locale"].type == Json.Type.string)
+    if ("locale" in request && request["locale"].isString)
         cfg.locale = request["locale"].get!string;
     if ("show_breadcrumbs" in request && request["show_breadcrumbs"].type == Json.Type.bool_)
         cfg.showBreadcrumbs = request["show_breadcrumbs"].get!bool;
@@ -487,17 +487,17 @@ IntegrationLink linkFromJson(string tenantId, Json request) {
     lnk.createdAt = Clock.currTime();
     lnk.createdBy = "system";
 
-    if ("external_object_id" in request && request["external_object_id"].type == Json.Type.string)
+    if ("external_object_id" in request && request["external_object_id"].isString)
         lnk.externalObjectId = request["external_object_id"].get!string;
-    if ("external_object_type" in request && request["external_object_type"].type == Json.Type.string)
+    if ("external_object_type" in request && request["external_object_type"].isString)
         lnk.externalObjectType = request["external_object_type"].get!string;
-    if ("document_id" in request && request["document_id"].type == Json.Type.string)
+    if ("document_id" in request && request["document_id"].isString)
         lnk.documentId = request["document_id"].get!string;
-    if ("repository_id" in request && request["repository_id"].type == Json.Type.string)
+    if ("repository_id" in request && request["repository_id"].isString)
         lnk.repositoryId = request["repository_id"].get!string;
-    if ("description" in request && request["description"].type == Json.Type.string)
+    if ("description" in request && request["description"].isString)
         lnk.description = request["description"].get!string;
-    if ("created_by" in request && request["created_by"].type == Json.Type.string)
+    if ("created_by" in request && request["created_by"].isString)
         lnk.createdBy = request["created_by"].get!string;
 
     return lnk;

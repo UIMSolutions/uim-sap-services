@@ -44,13 +44,13 @@ ISApiPolicy apiPolicyFromJson(string tenantId, Json request) {
     p.tenantId = tenantId;
     p.policyId = randomUUID().toString();
 
-    if ("name" in request && request["name"].type == Json.Type.string)
+    if ("name" in request && request["name"].isString)
         p.name = request["name"].get!string;
-    if ("description" in request && request["description"].type == Json.Type.string)
+    if ("description" in request && request["description"].isString)
         p.description = request["description"].get!string;
-    if ("policy_type" in request && request["policy_type"].type == Json.Type.string)
+    if ("policy_type" in request && request["policy_type"].isString)
         p.policyType = request["policy_type"].get!string;
-    if ("enforcement" in request && request["enforcement"].type == Json.Type.string)
+    if ("enforcement" in request && request["enforcement"].isString)
         p.enforcement = request["enforcement"].get!string;
     if ("enabled" in request && request["enabled"].type == Json.Type.bool_)
         p.enabled = request["enabled"].get!bool;

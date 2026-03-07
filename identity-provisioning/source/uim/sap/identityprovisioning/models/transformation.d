@@ -53,25 +53,25 @@ IPVTransformation transformationFromJson(string tenantId, Json request) {
     t.tenantId = tenantId;
     t.transformationId = randomUUID().toString();
 
-    if ("system_id" in request && request["system_id"].type == Json.Type.string)
+    if ("system_id" in request && request["system_id"].isString)
         t.systemId = request["system_id"].get!string;
-    if ("entity_type" in request && request["entity_type"].type == Json.Type.string)
+    if ("entity_type" in request && request["entity_type"].isString)
         t.entityType = request["entity_type"].get!string;
-    if ("source_attribute" in request && request["source_attribute"].type == Json.Type.string)
+    if ("source_attribute" in request && request["source_attribute"].isString)
         t.sourceAttribute = request["source_attribute"].get!string;
-    if ("target_attribute" in request && request["target_attribute"].type == Json.Type.string)
+    if ("target_attribute" in request && request["target_attribute"].isString)
         t.targetAttribute = request["target_attribute"].get!string;
-    if ("action" in request && request["action"].type == Json.Type.string)
+    if ("action" in request && request["action"].isString)
         t.action = request["action"].get!string;
-    if ("condition" in request && request["condition"].type == Json.Type.string)
+    if ("condition" in request && request["condition"].isString)
         t.condition = request["condition"].get!string;
-    if ("default_value" in request && request["default_value"].type == Json.Type.string)
+    if ("default_value" in request && request["default_value"].isString)
         t.defaultValue = request["default_value"].get!string;
     if ("priority" in request && request["priority"].type == Json.Type.int_)
         t.priority = request["priority"].get!long;
     if ("active" in request && request["active"].type == Json.Type.bool_)
         t.active = request["active"].get!bool;
-    if ("transformation_id" in request && request["transformation_id"].type == Json.Type.string)
+    if ("transformation_id" in request && request["transformation_id"].isString)
         t.transformationId = request["transformation_id"].get!string;
 
     t.createdAt = Clock.currTime().toISOExtString();

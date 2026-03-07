@@ -50,19 +50,19 @@ ISTradingPartner tradingPartnerFromJson(string tenantId, Json request) {
     tp.tenantId = tenantId;
     tp.partnerId = randomUUID().toString();
 
-    if ("name" in request && request["name"].type == Json.Type.string)
+    if ("name" in request && request["name"].isString)
         tp.name = request["name"].get!string;
-    if ("description" in request && request["description"].type == Json.Type.string)
+    if ("description" in request && request["description"].isString)
         tp.description = request["description"].get!string;
-    if ("partner_type" in request && request["partner_type"].type == Json.Type.string)
+    if ("partner_type" in request && request["partner_type"].isString)
         tp.partnerType = request["partner_type"].get!string;
-    if ("identifier_type" in request && request["identifier_type"].type == Json.Type.string)
+    if ("identifier_type" in request && request["identifier_type"].isString)
         tp.identifierType = request["identifier_type"].get!string;
-    if ("identifier" in request && request["identifier"].type == Json.Type.string)
+    if ("identifier" in request && request["identifier"].isString)
         tp.identifier = request["identifier"].get!string;
-    if ("contact_email" in request && request["contact_email"].type == Json.Type.string)
+    if ("contact_email" in request && request["contact_email"].isString)
         tp.contactEmail = request["contact_email"].get!string;
-    if ("contact_phone" in request && request["contact_phone"].type == Json.Type.string)
+    if ("contact_phone" in request && request["contact_phone"].isString)
         tp.contactPhone = request["contact_phone"].get!string;
 
     tp.createdAt = Clock.currTime().toISOExtString();

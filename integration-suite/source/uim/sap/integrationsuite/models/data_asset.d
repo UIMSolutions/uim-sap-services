@@ -52,21 +52,21 @@ ISDataAsset dataAssetFromJson(string tenantId, Json request) {
     a.tenantId = tenantId;
     a.assetId = randomUUID().toString();
 
-    if ("name" in request && request["name"].type == Json.Type.string)
+    if ("name" in request && request["name"].isString)
         a.name = request["name"].get!string;
-    if ("description" in request && request["description"].type == Json.Type.string)
+    if ("description" in request && request["description"].isString)
         a.description = request["description"].get!string;
-    if ("asset_type" in request && request["asset_type"].type == Json.Type.string)
+    if ("asset_type" in request && request["asset_type"].isString)
         a.assetType = request["asset_type"].get!string;
-    if ("format" in request && request["format"].type == Json.Type.string)
+    if ("format" in request && request["format"].isString)
         a.format = request["format"].get!string;
-    if ("access_policy" in request && request["access_policy"].type == Json.Type.string)
+    if ("access_policy" in request && request["access_policy"].isString)
         a.accessPolicy = request["access_policy"].get!string;
-    if ("provider" in request && request["provider"].type == Json.Type.string)
+    if ("provider" in request && request["provider"].isString)
         a.provider = request["provider"].get!string;
-    if ("data_space_name" in request && request["data_space_name"].type == Json.Type.string)
+    if ("data_space_name" in request && request["data_space_name"].isString)
         a.dataSpaceName = request["data_space_name"].get!string;
-    if ("contract_id" in request && request["contract_id"].type == Json.Type.string)
+    if ("contract_id" in request && request["contract_id"].isString)
         a.contractId = request["contract_id"].get!string;
 
     a.createdAt = Clock.currTime().toISOExtString();

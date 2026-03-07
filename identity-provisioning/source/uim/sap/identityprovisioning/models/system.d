@@ -56,21 +56,21 @@ IPVSystem systemFromJson(string tenantId, Json request) {
     s.tenantId = tenantId;
     s.systemId = randomUUID().toString();
 
-    if ("system_name" in request && request["system_name"].type == Json.Type.string)
+    if ("system_name" in request && request["system_name"].isString)
         s.systemName = request["system_name"].get!string;
-    if ("description" in request && request["description"].type == Json.Type.string)
+    if ("description" in request && request["description"].isString)
         s.description = request["description"].get!string;
-    if ("system_type" in request && request["system_type"].type == Json.Type.string)
+    if ("system_type" in request && request["system_type"].isString)
         s.systemType = request["system_type"].get!string;
-    if ("connector_type" in request && request["connector_type"].type == Json.Type.string)
+    if ("connector_type" in request && request["connector_type"].isString)
         s.connectorType = request["connector_type"].get!string;
-    if ("endpoint_url" in request && request["endpoint_url"].type == Json.Type.string)
+    if ("endpoint_url" in request && request["endpoint_url"].isString)
         s.endpointUrl = request["endpoint_url"].get!string;
-    if ("auth_type" in request && request["auth_type"].type == Json.Type.string)
+    if ("auth_type" in request && request["auth_type"].isString)
         s.authType = request["auth_type"].get!string;
-    if ("status" in request && request["status"].type == Json.Type.string)
+    if ("status" in request && request["status"].isString)
         s.status = request["status"].get!string;
-    if ("system_id" in request && request["system_id"].type == Json.Type.string)
+    if ("system_id" in request && request["system_id"].isString)
         s.systemId = request["system_id"].get!string;
 
     s.createdAt = Clock.currTime().toISOExtString();

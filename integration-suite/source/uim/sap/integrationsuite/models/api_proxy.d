@@ -56,17 +56,17 @@ ISApiProxy apiProxyFromJson(string tenantId, Json request) {
     p.tenantId = tenantId;
     p.proxyId = randomUUID().toString();
 
-    if ("name" in request && request["name"].type == Json.Type.string)
+    if ("name" in request && request["name"].isString)
         p.name = request["name"].get!string;
-    if ("description" in request && request["description"].type == Json.Type.string)
+    if ("description" in request && request["description"].isString)
         p.description = request["description"].get!string;
-    if ("base_path" in request && request["base_path"].type == Json.Type.string)
+    if ("base_path" in request && request["base_path"].isString)
         p.basePath = request["base_path"].get!string;
-    if ("target_url" in request && request["target_url"].type == Json.Type.string)
+    if ("target_url" in request && request["target_url"].isString)
         p.targetUrl = request["target_url"].get!string;
-    if ("version" in request && request["version"].type == Json.Type.string)
+    if ("version" in request && request["version"].isString)
         p.version_ = request["version"].get!string;
-    if ("auth_scheme" in request && request["auth_scheme"].type == Json.Type.string)
+    if ("auth_scheme" in request && request["auth_scheme"].isString)
         p.authScheme = request["auth_scheme"].get!string;
 
     p.createdAt = Clock.currTime().toISOExtString();

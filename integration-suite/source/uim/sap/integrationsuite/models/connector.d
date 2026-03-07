@@ -50,17 +50,17 @@ ISConnector connectorFromJson(string tenantId, Json request) {
     c.tenantId = tenantId;
     c.connectorId = randomUUID().toString();
 
-    if ("name" in request && request["name"].type == Json.Type.string)
+    if ("name" in request && request["name"].isString)
         c.name = request["name"].get!string;
-    if ("description" in request && request["description"].type == Json.Type.string)
+    if ("description" in request && request["description"].isString)
         c.description = request["description"].get!string;
-    if ("connector_type" in request && request["connector_type"].type == Json.Type.string)
+    if ("connector_type" in request && request["connector_type"].isString)
         c.connectorType = request["connector_type"].get!string;
-    if ("provider" in request && request["provider"].type == Json.Type.string)
+    if ("provider" in request && request["provider"].isString)
         c.provider = request["provider"].get!string;
-    if ("auth_scheme" in request && request["auth_scheme"].type == Json.Type.string)
+    if ("auth_scheme" in request && request["auth_scheme"].isString)
         c.authScheme = request["auth_scheme"].get!string;
-    if ("base_url" in request && request["base_url"].type == Json.Type.string)
+    if ("base_url" in request && request["base_url"].isString)
         c.baseUrl = request["base_url"].get!string;
     if ("configuration" in request)
         c.configuration = request["configuration"];

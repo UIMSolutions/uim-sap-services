@@ -259,7 +259,7 @@ class DocMgmtIntegrationServer {
             && req.method == HTTPMethod.POST) {
             string folderId = "";
             auto body_ = req.json;
-            if ("folder_id" in body_ && body_["folder_id"].type == Json.Type.string)
+            if ("folder_id" in body_ && body_["folder_id"].isString)
                 folderId = body_["folder_id"].get!string;
             res.writeJsonBody(
                 _service.listDocumentsSorted(tenantId, repoId, folderId, body_), 200);
@@ -281,7 +281,7 @@ class DocMgmtIntegrationServer {
             if ("parent_folder_id" in req.query)
                 parentId = req.query["parent_folder_id"];
             auto body_ = req.json;
-            if ("parent_folder_id" in body_ && body_["parent_folder_id"].type == Json.Type.string)
+            if ("parent_folder_id" in body_ && body_["parent_folder_id"].isString)
                 parentId = body_["parent_folder_id"].get!string;
             res.writeJsonBody(
                 _service.createFolder(tenantId, repoId, parentId, body_), 201);
@@ -302,7 +302,7 @@ class DocMgmtIntegrationServer {
             if ("folder_id" in req.query)
                 folderId = req.query["folder_id"];
             auto body_ = req.json;
-            if ("folder_id" in body_ && body_["folder_id"].type == Json.Type.string)
+            if ("folder_id" in body_ && body_["folder_id"].isString)
                 folderId = body_["folder_id"].get!string;
             res.writeJsonBody(
                 _service.createDocument(tenantId, repoId, folderId, body_), 201);

@@ -50,17 +50,17 @@ ISApiProduct apiProductFromJson(string tenantId, Json request) {
     p.tenantId = tenantId;
     p.productId = randomUUID().toString();
 
-    if ("name" in request && request["name"].type == Json.Type.string)
+    if ("name" in request && request["name"].isString)
         p.name = request["name"].get!string;
-    if ("description" in request && request["description"].type == Json.Type.string)
+    if ("description" in request && request["description"].isString)
         p.description = request["description"].get!string;
-    if ("version" in request && request["version"].type == Json.Type.string)
+    if ("version" in request && request["version"].isString)
         p.version_ = request["version"].get!string;
-    if ("rate_limit_policy" in request && request["rate_limit_policy"].type == Json.Type.string)
+    if ("rate_limit_policy" in request && request["rate_limit_policy"].isString)
         p.rateLimitPolicy = request["rate_limit_policy"].get!string;
     if ("proxy_ids" in request && request["proxy_ids"].type == Json.Type.array) {
         foreach (item; request["proxy_ids"]) {
-            if (item.type == Json.Type.string)
+            if (item.isString)
                 p.proxyIds ~= item.get!string;
         }
     }
