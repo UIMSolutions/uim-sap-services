@@ -1,6 +1,6 @@
 module uim.sap.service.mixins.server;
 
-string sapConfigTemplate() {
+string sapServerTemplate() {
   return "
   this() {
     super();
@@ -12,6 +12,6 @@ string sapConfigTemplate() {
   ";
 }
 
-template SAPConfigTemplate(alias Symbol) {
-  const char[] SAPConfigTemplate = sapConfigTemplate();
+template SAPServerTemplate(alias Symbol) {
+  const char[] SAPServerTemplate = sapServerTemplate();
 }

@@ -7,7 +7,7 @@ mixin(ShowModule!());
 
 @safe:
 
-class SAPService {
+class SAPService : IService {
   this() {
     initialize();
   }
@@ -19,5 +19,15 @@ class SAPService {
   bool initialize(Json[string] initData = null) {
     // Initialization logic for the store
     return true;
+  }
+
+  Json health() {
+    Json healthInfo = Json.emptyObject;
+    return healthInfo;
+  }
+
+  Json ready() {
+    Json readyInfo = Json.emptyObject;
+    return readyInfo;
   }
 }

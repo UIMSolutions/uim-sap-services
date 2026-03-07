@@ -26,16 +26,16 @@ class CLFService : SAPService {
         return _config;
     }
 
-    Json health() {
-        Json payload = Json.emptyObject;
+    override Json health() {
+        Json payload = super.health();
         payload["ok"] = true;
         payload["serviceName"] = _config.serviceName;
         payload["serviceVersion"] = _config.serviceVersion;
         return payload;
     }
 
-    Json ready() {
-        Json payload = Json.emptyObject;
+    override Json ready() {
+        Json payload = super.ready();
         payload["ready"] = true;
         return payload;
     }
