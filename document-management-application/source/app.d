@@ -1,16 +1,16 @@
+/****************************************************************************************************************
+* Copyright: © 2018-2026 Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*) 
+* License: Subject to the terms of the Apache 2.0 license, as written in the included LICENSE.txt file. 
+* Authors: Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*)
+*****************************************************************************************************************/
 module app;
-
-import std.conv : to;
-import std.process : environment;
-import std.stdio : writeln;
-import std.string : toLower;
 
 import uim.sap.documentmanagement;
 
 version (unittest) {
 } else {
-void main() {
-    DocumentManagementConfig config;
+  void main() {
+    DocumentManagementConfig config = new DocumentManagementConfig();
     config.host = envOr("DMS_HOST", "0.0.0.0");
     config.port = readPort(envOr("DMS_PORT", "8090"), 8090);
     config.basePath = envOr("DMS_BASE_PATH", "/api/docmgmt");
@@ -23,12 +23,12 @@ void main() {
 
     auto encKey = envOr("DMS_ENCRYPTION_KEY", "");
     if (encKey.length > 0)
-        config.encryptionKey = encKey;
+      config.encryptionKey = encKey;
 
     auto authToken = envOr("DMS_AUTH_TOKEN", "");
     if (authToken.length > 0) {
-        config.requireAuthToken = true;
-        config.authToken = authToken;
+      config.requireAuthToken = true;
+      config.authToken = authToken;
     }
 
     config.customHeaders["X-Service"] = config.serviceName;
@@ -43,44 +43,22 @@ void main() {
     writeln("Versioning: ", config.versioningEnabled ? "enabled" : "disabled");
     writeln("Encryption: ", config.encryptionEnabled ? "enabled" : "disabled");
     server.run();
-}
-}
-
-private string envOr(string key, string fallback) {
-    auto value = environment.get(key, "");
-    return value.length > 0 ? value : fallback;
-}
-
-private ushort readPort(string value, ushort fallback) {
-    try {
-        auto parsed = to!ushort(value);
-        return parsed > 0 ? parsed : fallback;
-    } catch (Exception) {
-        return fallback;
-    }
-}
-
-private int readInt(string value, int fallback) {
-    try {
-        return to!int(value);
-    } catch (Exception) {
-        return fallback;
-    }
+  }
 }
 
 private bool readBool(string value, bool fallback) {
-    auto lower = toLower(value);
-    if (lower == "true" || lower == "1" || lower == "yes")
-        return true;
-    if (lower == "false" || lower == "0" || lower == "no")
-        return false;
-    return fallback;
+  auto lower = toLower(value);
+  if (lower == "true" || lower == "1" || lower == "yes")
+    return true;
+  if (lower == "false" || lower == "0" || lower == "no")
+    return false;
+  return fallback;
 }
 
 private double readDouble(string value, double fallback) {
-    try {
-        return to!double(value);
-    } catch (Exception) {
-        return fallback;
-    }
+  try {
+    return to!double(value);
+  } catch (Exception) {
+    return fallback;
+  }
 }

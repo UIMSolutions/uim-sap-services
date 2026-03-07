@@ -1,3 +1,8 @@
+/****************************************************************************************************************
+* Copyright: © 2018-2026 Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*) 
+* License: Subject to the terms of the Apache 2.0 license, as written in the included LICENSE.txt file. 
+* Authors: Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*)
+*****************************************************************************************************************/
 module app;
 
 import uim.sap.datasphere;
@@ -31,20 +36,6 @@ void main() {
     writeln("Starting Datasphere service on ", config.host, ":", config.port);
     writeln("Base path: ", config.basePath);
     server.run();
-}
-
-private string envOr(string key, string fallback) {
-    auto value = environment.get(key, "");
-    return value.length > 0 ? value : fallback;
-}
-
-private ushort readPort(string value, ushort fallback) {
-    try {
-        auto parsed = to!ushort(value);
-        return parsed > 0 ? parsed : fallback;
-    } catch (Exception) {
-        return fallback;
-    }
 }
 
 private int readInt(string value, int fallback) {

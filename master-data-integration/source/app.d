@@ -1,47 +1,36 @@
+/****************************************************************************************************************
+* Copyright: © 2018-2026 Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*) 
+* License: Subject to the terms of the Apache 2.0 license, as written in the included LICENSE.txt file. 
+* Authors: Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*)
+*****************************************************************************************************************/
 module app;
 
-import std.conv : to;
-import std.process : environment;
-import std.stdio : writeln;
-
 import uim.sap.mdi;
+mixin(ShowModule!());
 
+@safe:
 void main() {
-    MDIConfig config;
-    config.host = envOr("MDI_HOST", "0.0.0.0");
-    config.port = readPort(envOr("MDI_PORT", "8092"), 8092);
-    config.basePath = envOr("MDI_BASE_PATH", "/api/mdi");
-    config.serviceName = envOr("MDI_SERVICE_NAME", "uim-sap-mdi");
-    config.serviceVersion = envOr("MDI_SERVICE_VERSION", UIM_MDI_VERSION);
-    config.defaultObjectType = envOr("MDI_DEFAULT_OBJECT_TYPE", "business_partner");
+  MDIConfig config = new MDIConfig();
+  config.host = envOr("MDI_HOST", "0.0.0.0");
+  config.port = readPort(envOr("MDI_PORT", "8092"), 8092);
+  config.basePath = envOr("MDI_BASE_PATH", "/api/mdi");
+  config.serviceName = envOr("MDI_SERVICE_NAME", "uim-sap-mdi");
+  config.serviceVersion = envOr("MDI_SERVICE_VERSION", UIM_MDI_VERSION);
+  config.defaultObjectType = envOr("MDI_DEFAULT_OBJECT_TYPE", "business_partner");
 
-    auto token = envOr("MDI_AUTH_TOKEN", "");
-    if (token.length > 0) {
-        config.requireAuthToken = true;
-        config.authToken = token;
-    }
+  auto token = envOr("MDI_AUTH_TOKEN", "");
+  if (token.length > 0) {
+    config.requireAuthToken = true;
+    config.authToken = token;
+  }
 
-    config.customHeaders["X-Service"] = config.serviceName;
-    config.customHeaders["X-Version"] = config.serviceVersion;
+  config.customHeaders["X-Service"] = config.serviceName;
+  config.customHeaders["X-Version"] = config.serviceVersion;
 
-    auto service = new MDIService(config);
-    auto server = new MDIServer(service);
+  auto service = new MDIService(config);
+  auto server = new MDIServer(service);
 
-    writeln("Starting MDI service on ", config.host, ":", config.port);
-    writeln("Base path: ", config.basePath);
-    server.run();
-}
-
-private string envOr(string key, string fallback) {
-    auto value = environment.get(key, "");
-    return value.length > 0 ? value : fallback;
-}
-
-private ushort readPort(string value, ushort fallback) {
-    try {
-        auto parsed = to!ushort(value);
-        return parsed > 0 ? parsed : fallback;
-    } catch (Exception) {
-        return fallback;
-    }
+  writeln("Starting MDI service on ", config.host, ":", config.port);
+  writeln("Base path: ", config.basePath);
+  server.run();
 }

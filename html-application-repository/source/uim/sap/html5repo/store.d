@@ -1,19 +1,12 @@
+/****************************************************************************************************************
+* Copyright: © 2018-2026 Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*) 
+* License: Subject to the terms of the Apache 2.0 license, as written in the included LICENSE.txt file. 
+* Authors: Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*)
+*****************************************************************************************************************/
 module uim.sap.html5repo.store;
 
-import std.algorithm.searching : canFind;
-import std.array : join;
-import std.base64 : Base64;
-import std.conv : to;
-import std.datetime : Clock;
-import std.file : SpanMode, dirEntries, exists, isDir, mkdirRecurse, read,
-    readText, remove, rename, rmdirRecurse, write;
-import std.path : baseName, buildPath, dirName, extension;
-import std.string : split, strip, toLower;
+import uim.sap.html5repo;
 
-import vibe.data.json : Json, parseJsonString;
-
-import uim.sap.html5repo.exceptions;
-import uim.sap.html5repo.models;
 
 class HTMRepositoryStore : SAPStore {
     private string _root;
