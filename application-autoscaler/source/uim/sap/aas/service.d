@@ -10,6 +10,8 @@ import uim.sap.aas;
 @safe:
 
 class AASService : SAPService {
+  mixin(SAPServiceTemplate!AASService);
+
   private AASConfig _config;
   private AASStore _store;
 

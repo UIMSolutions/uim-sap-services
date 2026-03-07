@@ -1,15 +1,11 @@
 module uim.sap.con.service;
 
-import std.datetime : Clock;
-
-import vibe.data.json : Json;
-
-import uim.sap.con.config;
-import uim.sap.con.exceptions;
-import uim.sap.con.models;
-import uim.sap.con.store;
+import uim.sap.con;
+@safe:
 
 class CONService : SAPService {
+  mixin(SAPServiceTemplate!CONService);
+
   private CONConfig _config;
   private CONStore _store;
 

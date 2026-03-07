@@ -16,6 +16,8 @@ import repositories.certificate_repository;
     *     certificateService.uploadCertificate(cert);
     */
 class CertificateService : SAPService {
+  mixin(SAPServiceTemplate!CertificateService);
+
     private CertificateRepository certificateRepo;
 
     this(CertificateRepository repo) {

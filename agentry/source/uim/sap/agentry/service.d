@@ -12,6 +12,8 @@ mixin(ShowModule!());
 @safe:
 
 class AgentryService : SAPService {
+  mixin(SAPServiceTemplate!AgentryService);
+
   private AgentryConfig _config;
   private AgentryStore _store;
 

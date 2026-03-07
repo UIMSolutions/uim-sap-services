@@ -12,6 +12,8 @@ mixin(ShowModule!());
 @safe:
 
 class AEMService : SAPService {
+  mixin(SAPServiceTemplate!AEMService);
+
   private AEMConfig _config;
   private AEMStore _store;
 

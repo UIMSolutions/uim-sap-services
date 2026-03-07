@@ -16,6 +16,8 @@ import repositories.tenant_repository;
     *     btpExtensionService.manageCustomDomain(domain);
     */
 class BtpExtensionService : SAPService {
+  mixin(SAPServiceTemplate!BtpExtensionService);
+
     private CustomDomainRepository customDomainRepo;
     private TenantRepository tenantRepo;
 

@@ -12,6 +12,8 @@ import uim.sap.cag.models;
 import uim.sap.cag.store;
 
 class CAGService : SAPService {
+  mixin(SAPServiceTemplate!CAGService);
+
   private CAGConfig _config;
   private CAGStore _store;
 

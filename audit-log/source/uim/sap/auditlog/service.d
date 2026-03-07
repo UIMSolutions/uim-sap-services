@@ -5,6 +5,8 @@ import uim.sap.auditlog;
 @safe:
 
 class AuditLogService : SAPService {
+  mixin(SAPServiceTemplate!AuditLogService);
+
   private AuditLogConfig _config;
   private AuditLogStore _store;
 

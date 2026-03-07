@@ -15,24 +15,26 @@ import vibe.vibe;
     *     auto kpis = kpiService.getKpis();
     */
 class KpiService : SAPService {
-    private KpiRepository kpiRepo;
+  mixin(SAPServiceTemplate!KpiService);
 
-    this(KpiRepository repo) {
-        kpiRepo = repo;
-    }
+  private KpiRepository kpiRepo;
 
-    // Retrieves KPIs related to custom domains
-    Kpi[] getKpis() {
-        return kpiRepo.fetchAllKpis();
-    }
+  this(KpiRepository repo) {
+    kpiRepo = repo;
+  }
 
-    // Retrieves a specific KPI by its identifier
-    Kpi getKpiById(string id) {
-        return kpiRepo.fetchKpiById(id);
-    }
+  // Retrieves KPIs related to custom domains
+  Kpi[] getKpis() {
+    return kpiRepo.fetchAllKpis();
+  }
 
-    // Processes and calculates KPI metrics
-    void processKpiMetrics() {
-        // Implementation for processing KPI metrics
-    }
+  // Retrieves a specific KPI by its identifier
+  Kpi getKpiById(string id) {
+    return kpiRepo.fetchKpiById(id);
+  }
+
+  // Processes and calculates KPI metrics
+  void processKpiMetrics() {
+    // Implementation for processing KPI metrics
+  }
 }

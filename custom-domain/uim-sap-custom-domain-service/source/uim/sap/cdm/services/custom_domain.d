@@ -15,44 +15,46 @@ import vibe.vibe;
     *     customDomainService.createCustomDomain(domain);
     */
 class CustomDomainService : SAPService {
-    private CustomDomainRepository customDomainRepo;
+  mixin(SAPServiceTemplate!CustomDomainService);
 
-    this() {
-        customDomainRepo = new CustomDomainRepository();
-    }
+  private CustomDomainRepository customDomainRepo;
 
-    // Method to create a new custom domain
-    void createCustomDomain(CustomDomain domain) {
-        // Validate domain
-        validateDomain(domain);
-        // Save domain to repository
-        customDomainRepo.save(domain);
-    }
+  this() {
+    customDomainRepo = new CustomDomainRepository();
+  }
 
-    // Method to retrieve a custom domain by ID
-    CustomDomain getCustomDomain(string id) {
-        return customDomainRepo.findById(id);
-    }
+  // Method to create a new custom domain
+  void createCustomDomain(CustomDomain domain) {
+    // Validate domain
+    validateDomain(domain);
+    // Save domain to repository
+    customDomainRepo.save(domain);
+  }
 
-    // Method to update an existing custom domain
-    void updateCustomDomain(string id, CustomDomain updatedDomain) {
-        // Validate domain
-        validateDomain(updatedDomain);
-        // Update domain in repository
-        customDomainRepo.update(id, updatedDomain);
-    }
+  // Method to retrieve a custom domain by ID
+  CustomDomain getCustomDomain(string id) {
+    return customDomainRepo.findById(id);
+  }
 
-    // Method to delete a custom domain
-    void deleteCustomDomain(string id) {
-        customDomainRepo.delete(id);
-    }
+  // Method to update an existing custom domain
+  void updateCustomDomain(string id, CustomDomain updatedDomain) {
+    // Validate domain
+    validateDomain(updatedDomain);
+    // Update domain in repository
+    customDomainRepo.update(id, updatedDomain);
+  }
 
-    // Method to validate the custom domain
-    private void validateDomain(CustomDomain domain) {
-        // Implement validation logic (e.g., check domain format, uniqueness)
-        if (domain.name.length == 0) {
-            throw new Exception("Domain name cannot be empty.");
-        }
-        // Additional validation can be added here
+  // Method to delete a custom domain
+  void deleteCustomDomain(string id) {
+    customDomainRepo.delete(id);
+  }
+
+  // Method to validate the custom domain
+  private void validateDomain(CustomDomain domain) {
+    // Implement validation logic (e.g., check domain format, uniqueness)
+    if (domain.name.length == 0) {
+      throw new Exception("Domain name cannot be empty.");
     }
+    // Additional validation can be added here
+  }
 }

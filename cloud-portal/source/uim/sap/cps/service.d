@@ -10,6 +10,8 @@ import uim.sap.cps.models;
 import uim.sap.cps.store;
 
 class CPSService : SAPService {
+  mixin(SAPServiceTemplate!CPSService);
+
   private CPSConfig _config;
   private CPSStore _store;
 

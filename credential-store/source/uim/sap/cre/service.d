@@ -57,6 +57,8 @@ import uim.sap.cre.store;
   * - deleteServiceKey(instanceId, serviceKeyId): Deletes a specific service key for a service instance.
   */
 class CREService : SAPService {
+  mixin(SAPServiceTemplate!CREService);
+
   private CREConfig _config;
   private CREStore _store;
 
