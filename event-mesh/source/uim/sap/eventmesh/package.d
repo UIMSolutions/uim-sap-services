@@ -12,4 +12,4 @@ public {
 
 import uim.sap.service;
 
-enum UIM_EM_VERSION = "1.0.0";
+enum UIM_EVM_VERSION = "1.0.0";

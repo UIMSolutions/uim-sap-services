@@ -6,7 +6,7 @@ mixin(ShowModule!());
 
 @safe:
 
-struct EMWebhook {
+struct EVMWebhook {
     string tenantId;
     string webhookId;
     string queueName;
@@ -34,8 +34,8 @@ struct EMWebhook {
     }
 }
 
-EMWebhook webhookFromJson(string tenantId, Json request) {
-    EMWebhook w;
+EVMWebhook webhookFromJson(string tenantId, Json request) {
+    EVMWebhook w;
     w.tenantId = tenantId;
     w.webhookId = randomUUID().toString();
 

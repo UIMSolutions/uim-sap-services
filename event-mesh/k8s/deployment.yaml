@@ -25,7 +25,7 @@ spec:
         - configMapRef:
             name: uim-sap-em-config
         env:
-        - name: EM_AUTH_TOKEN
+        - name: EVM_AUTH_TOKEN
           valueFrom:
             secretKeyRef:
               name: uim-sap-em-secret

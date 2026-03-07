@@ -6,7 +6,7 @@ mixin(ShowModule!());
 
 @safe:
 
-class EMValidationException : EMException {
+class EVMValidationException : EVMException {
   this(string message) {
     super("Validation failed: " ~ message);
   }

@@ -1,21 +1,21 @@
 @startuml sequence_publish_consume
 !theme plain
 
-title EM Sequence - Publish Event and Consume Message
+title EVM Sequence - Publish Event and Consume Message
 
 actor Producer
 actor Consumer
-participant "EMServer" as Server
-participant "EMService" as Service
-participant "EMStore" as Store
+participant "EVMServer" as Server
+participant "EVMService" as Service
+participant "EVMStore" as Store
 
 == Publish ==
 Producer -> Server : POST /topics/{topicName}/publish
 Server -> Service : publishMessage(tenant, topicName, payload)
 Service -> Store : getTopic(tenant, topicName)
-Store --> Service : EMTopic
+Store --> Service : EVMTopic
 Service -> Store : subscriptionsForTopic(tenant, topicName)
-Store --> Service : EMSubscription[]
+Store --> Service : EVMSubscription[]
 loop for each subscription
   Service -> Store : enqueueMessage(tenant, queueName, message)
 end
@@ -27,7 +27,7 @@ Server --> Producer : 200 OK
 Consumer -> Server : POST /queues/{queueName}/consume
 Server -> Service : consumeMessage(tenant, queueName)
 Service -> Store : consumeMessage(tenant, queueName)
-Store --> Service : EMMessage (status=consumed)
+Store --> Service : EVMMessage (status=consumed)
 Service --> Server : message response
 Server --> Consumer : 200 OK
 

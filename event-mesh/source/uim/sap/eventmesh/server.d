@@ -7,7 +7,7 @@ mixin(ShowModule!());
 @safe:
 
 /**
- * EMServer is responsible for handling HTTP requests and routing them to the appropriate service methods.
+ * EVMServer is responsible for handling HTTP requests and routing them to the appropriate service methods.
  *
  * It listens on the configured host and port, and supports the following endpoints:
  *
@@ -42,10 +42,10 @@ mixin(ShowModule!());
  * Dashboard:
  * - GET  /v1/tenants/{tenantId}/dashboard                           Get dashboard metrics
  */
-class EMServer {
-  private EMService _service;
+class EVMServer {
+  private EVMService _service;
 
-  this(EMService service) {
+  this(EVMService service) {
     _service = service;
   }
 
@@ -211,13 +211,13 @@ class EMServer {
       }
 
       respondError(res, "Not found", 404);
-    } catch (EMAuthorizationException e) {
+    } catch (EVMAuthorizationException e) {
       respondError(res, e.msg, 401);
-    } catch (EMNotFoundException e) {
+    } catch (EVMNotFoundException e) {
       respondError(res, e.msg, 404);
-    } catch (EMValidationException e) {
+    } catch (EVMValidationException e) {
       respondError(res, e.msg, 422);
-    } catch (EMException e) {
+    } catch (EVMException e) {
       respondError(res, e.msg, 500);
     } catch (Exception e) {
       respondError(res, e.msg, 500);
@@ -230,12 +230,12 @@ class EMServer {
     }
 
     if (!("Authorization" in req.headers)) {
-      throw new EMAuthorizationException("Missing Authorization header");
+      throw new EVMAuthorizationException("Missing Authorization header");
     }
 
     auto expected = "Bearer " ~ _service.config.authToken;
     if (req.headers["Authorization"] != expected) {
-      throw new EMAuthorizationException("Invalid token");
+      throw new EVMAuthorizationException("Invalid token");
     }
   }
 

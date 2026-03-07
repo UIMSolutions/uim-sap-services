@@ -6,7 +6,7 @@ mixin(ShowModule!());
 
 @safe:
 
-struct EMTopic {
+struct EVMTopic {
     string tenantId;
     string topicName;
     string description;
@@ -28,8 +28,8 @@ struct EMTopic {
     }
 }
 
-EMTopic topicFromJson(string tenantId, Json request) {
-    EMTopic t;
+EVMTopic topicFromJson(string tenantId, Json request) {
+    EVMTopic t;
     t.tenantId = tenantId;
 
     if ("topic_name" in request && request["topic_name"].isString) {

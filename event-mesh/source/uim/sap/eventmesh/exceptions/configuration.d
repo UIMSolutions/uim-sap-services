@@ -6,7 +6,7 @@ mixin(ShowModule!());
 
 @safe:
 
-class EMConfigurationException : EMException {
+class EVMConfigurationException : EVMException {
   this(string message) {
     super("Configuration error: " ~ message);
   }

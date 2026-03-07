@@ -6,7 +6,7 @@ mixin(ShowModule!());
 
 @safe:
 
-class EMConfig : SAPConfig {
+class EVMConfig : SAPConfig {
     string host = "0.0.0.0";
     ushort port = 8092;
     string basePath = "/api/em";
@@ -18,13 +18,13 @@ class EMConfig : SAPConfig {
 
     void validate() {
         if (port == 0) {
-            throw new EMConfigurationException("Port must be greater than zero");
+            throw new EVMConfigurationException("Port must be greater than zero");
         }
         if (basePath.length == 0) {
-            throw new EMConfigurationException("Base path cannot be empty");
+            throw new EVMConfigurationException("Base path cannot be empty");
         }
         if (requireAuthToken && authToken.length == 0) {
-            throw new EMConfigurationException("Auth token required but not set");
+            throw new EVMConfigurationException("Auth token required but not set");
         }
     }
 }

@@ -6,7 +6,7 @@ mixin(ShowModule!());
 
 @safe:
 
-class EMNotFoundException : EMException {
+class EVMNotFoundException : EVMException {
   this(string resource, string identifier) {
     super(resource ~ " not found: " ~ identifier);
   }

@@ -6,7 +6,7 @@ mixin(ShowModule!());
 
 @safe:
 
-class EMAuthorizationException : EMException {
+class EVMAuthorizationException : EVMException {
   this(string message) {
     super("Unauthorized: " ~ message);
   }

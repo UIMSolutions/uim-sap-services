@@ -6,7 +6,7 @@ mixin(ShowModule!());
 
 @safe:
 
-struct EMDeadLetter {
+struct EVMDeadLetter {
     string tenantId;
     string deadLetterId;
     string queueName;

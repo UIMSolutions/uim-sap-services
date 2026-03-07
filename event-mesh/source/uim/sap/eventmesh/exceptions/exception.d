@@ -6,7 +6,7 @@ mixin(ShowModule!());
 
 @safe:
 
-class EMException : SAPException {
+class EVMException : SAPException {
   this(string message) {
     super(message);
   }

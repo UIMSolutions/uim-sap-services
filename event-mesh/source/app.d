@@ -8,14 +8,14 @@ mixin(ShowModule!());
 version (unittest) {
 } else {
   void main() {
-    EMConfig config = new EMConfig;
-    config.host = envOr("EM_HOST", "0.0.0.0");
-    config.port = readPort(envOr("EM_PORT", "8092"), 8092);
-    config.basePath = envOr("EM_BASE_PATH", "/api/em");
-    config.serviceName = envOr("EM_SERVICE_NAME", "uim-sap-em");
-    config.serviceVersion = envOr("EM_SERVICE_VERSION", UIM_EM_VERSION);
+    EVMConfig config = new EVMConfig;
+    config.host = envOr("EVM_HOST", "0.0.0.0");
+    config.port = readPort(envOr("EVM_PORT", "8092"), 8092);
+    config.basePath = envOr("EVM_BASE_PATH", "/api/em");
+    config.serviceName = envOr("EVM_SERVICE_NAME", "uim-sap-em");
+    config.serviceVersion = envOr("EVM_SERVICE_VERSION", UIM_EVM_VERSION);
 
-    auto token = envOr("EM_AUTH_TOKEN", "");
+    auto token = envOr("EVM_AUTH_TOKEN", "");
     if (token.length > 0) {
       config.requireAuthToken = true;
       config.authToken = token;
@@ -24,8 +24,8 @@ version (unittest) {
     config.customHeaders["X-Service"] = config.serviceName;
     config.customHeaders["X-Version"] = config.serviceVersion;
 
-    auto service = new EMService(config);
-    auto server = new EMServer(service);
+    auto service = new EVMService(config);
+    auto server = new EVMServer(service);
 
     writeln("Starting Event Mesh service on ", config.host, ":", config.port);
     writeln("Base path: ", config.basePath);

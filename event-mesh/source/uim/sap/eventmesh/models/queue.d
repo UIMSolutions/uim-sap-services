@@ -6,7 +6,7 @@ mixin(ShowModule!());
 
 @safe:
 
-struct EMQueue {
+struct EVMQueue {
     string tenantId;
     string queueName;
     long maxDepth = 1000;
@@ -34,8 +34,8 @@ struct EMQueue {
     }
 }
 
-EMQueue queueFromJson(string tenantId, Json request) {
-    EMQueue q;
+EVMQueue queueFromJson(string tenantId, Json request) {
+    EVMQueue q;
     q.tenantId = tenantId;
 
     if ("queue_name" in request && request["queue_name"].isString) {

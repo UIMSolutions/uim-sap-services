@@ -1,4 +1,4 @@
-# UIM SAP Event Mesh Service (EM)
+# UIM SAP Event Mesh Service (EVM)
 
 Business event messaging service built with Dlang, `vibe.d`, and `uim-framework`, deployable with Podman and Kubernetes.
 
@@ -20,12 +20,12 @@ dub build
 
 Environment variables:
 
-- `EM_HOST` (default `0.0.0.0`)
-- `EM_PORT` (default `8092`)
-- `EM_BASE_PATH` (default `/api/em`)
-- `EM_SERVICE_NAME` (default `uim-sap-em`)
-- `EM_SERVICE_VERSION` (default `1.0.0`)
-- `EM_AUTH_TOKEN` (optional bearer token)
+- `EVM_HOST` (default `0.0.0.0`)
+- `EVM_PORT` (default `8092`)
+- `EVM_BASE_PATH` (default `/api/em`)
+- `EVM_SERVICE_NAME` (default `uim-sap-em`)
+- `EVM_SERVICE_VERSION` (default `1.0.0`)
+- `EVM_AUTH_TOKEN` (optional bearer token)
 
 ## Podman
 

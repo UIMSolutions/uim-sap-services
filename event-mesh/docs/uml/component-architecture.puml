@@ -1,14 +1,14 @@
 @startuml component_architecture
 !theme plain
 
-title UIM SAP Event Mesh (EM) - Component Architecture
+title UIM SAP Event Mesh (EVM) - Component Architecture
 
 actor "Business Application / Integration" as User
 
 node "Event Mesh Service Runtime" {
-  component "EMServer\n(vibe.d REST API)" as Api
-  component "EMService\n(Publish + Consume + Subscribe + Webhooks)" as Domain
-  database "EMStore\n(In-Memory Data)" as Store
+  component "EVMServer\n(vibe.d REST API)" as Api
+  component "EVMService\n(Publish + Consume + Subscribe + Webhooks)" as Domain
+  database "EVMStore\n(In-Memory Data)" as Store
 }
 
 User --> Api : publish events, consume messages,\nmanage queues/topics/webhooks

@@ -6,7 +6,7 @@ mixin(ShowModule!());
 
 @safe:
 
-struct EMMessage {
+struct EVMMessage {
     string tenantId;
     string messageId;
     string topicName;
@@ -36,8 +36,8 @@ struct EMMessage {
     }
 }
 
-EMMessage messageFromJson(string tenantId, string topicName, Json request) {
-    EMMessage m;
+EVMMessage messageFromJson(string tenantId, string topicName, Json request) {
+    EVMMessage m;
     m.tenantId = tenantId;
     m.messageId = randomUUID().toString();
     m.topicName = topicName;

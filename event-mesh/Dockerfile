@@ -17,9 +17,9 @@ WORKDIR /opt/uim-sap-em
 
 COPY --from=build /app/build/uim-sap-em-service ./uim-sap-em-service
 
-ENV EM_HOST=0.0.0.0 \
-    EM_PORT=8092 \
-    EM_BASE_PATH=/api/em
+ENV EVM_HOST=0.0.0.0 \
+    EVM_PORT=8092 \
+    EVM_BASE_PATH=/api/em
 
 EXPOSE 8092
 

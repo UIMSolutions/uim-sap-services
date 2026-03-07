@@ -6,7 +6,7 @@ mixin(ShowModule!());
 
 @safe:
 
-struct EMSubscription {
+struct EVMSubscription {
     string tenantId;
     string subscriptionId;
     string topicName;
@@ -30,8 +30,8 @@ struct EMSubscription {
     }
 }
 
-EMSubscription subscriptionFromJson(string tenantId, Json request) {
-    EMSubscription s;
+EVMSubscription subscriptionFromJson(string tenantId, Json request) {
+    EVMSubscription s;
     s.tenantId = tenantId;
     s.subscriptionId = randomUUID().toString();
 
