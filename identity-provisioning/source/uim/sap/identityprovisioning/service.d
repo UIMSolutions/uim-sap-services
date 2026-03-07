@@ -46,12 +46,6 @@ class IPVService : SAPService {
         return healthInfo;
     }
 
-    override Json ready() {
-        Json readyInfo = super.ready();
-        readyInfo["ready"] = true;
-        readyInfo["timestamp"] = Clock.currTime().toISOExtString();
-        return readyInfo;
-    }
 
     // ─── System CRUD ──────────────────────────────────────────
 

@@ -53,12 +53,6 @@ class DSPService : SAPService {
     return healthInfo;
   }
 
-  override Json ready() {
-    Json readyInfo = super.raedy();
-    readyInfo["ready"] = true;
-    readyInfo["timestamp"] = Clock.currTime().toISOExtString();
-    return readyInfo;
-  }
 
   Json createDataModel(string tenantId, Json request) {
     validateTenant(tenantId);

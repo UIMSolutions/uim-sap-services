@@ -42,12 +42,6 @@ class SDIService : SAPService {
     return payload;
   }
 
-  Json ready() const {
-    Json payload = Json.emptyObject;
-    payload["status"] = "READY";
-    return payload;
-  }
-
   Json listSiteTiles(string tenantId) {
     validateTenant(tenantId);
     Json tiles = Json.emptyArray;

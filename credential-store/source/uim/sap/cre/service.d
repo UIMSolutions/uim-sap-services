@@ -78,12 +78,6 @@ class CREService : SAPService {
     return healthInfo;
   }
 
-  override Json ready() {
-    Json readyInfo = super.ready();
-    readyInfo["ready"] = true;
-    return payload;
-  }
-
   Json upsertServiceInstance(string instanceId, Json request) {
     auto instance = instanceFromJson(instanceId, request);
     if (instance.serviceId.length == 0) {

@@ -38,12 +38,6 @@ class HTMRepoService : SAPService {
         return healthInfo;
     }
 
-    override Json ready() {
-        Json readyInfo = super.ready();
-        readyInfo["ready"] = true;
-        return readyInfo;
-    }
-
     Json uploadVersion(TenantContext tenant, string appId, string versionId, Json request) {
         auto visibility = visibilityFromString(getString(request, "visibility", "private"));
         auto activate = getBool(request, "activate", true);

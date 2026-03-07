@@ -36,12 +36,6 @@ class CAGService : SAPService {
     return payload;
   }
 
-  Json ready() const {
-    Json payload = Json.emptyObject;
-    payload["status"] = "READY";
-    payload["timestamp"] = Clock.currTime().toISOExtString();
-    return payload;
-  }
 
   string dashboardHtml() const {
     return q"HTML

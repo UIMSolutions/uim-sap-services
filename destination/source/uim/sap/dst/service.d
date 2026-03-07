@@ -35,12 +35,6 @@ class DSTService : SAPService {
         return j;
     }
 
-    Json ready() const {
-        Json j = Json.emptyObject;
-        j["status"]    = "READY";
-        j["timestamp"] = Clock.currTime().toISOExtString();
-        return j;
-    }
 
     // -----------------------------------------------------------------------
     // Dashboard HTML

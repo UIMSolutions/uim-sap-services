@@ -34,12 +34,6 @@ class CLFService : SAPService {
         return payload;
     }
 
-    override Json ready() {
-        Json payload = super.ready();
-        payload["ready"] = true;
-        return payload;
-    }
-
     Json createOrganization(Json request) {
         auto org = orgFromJson(request);
         if (org.name.length == 0) {

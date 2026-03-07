@@ -34,12 +34,6 @@ class RMSService : SAPService {
         return healthInfo;
     }
 
-    override Json ready() {
-        Json readyInfo = super.ready();
-        readyInfo["ready"] = true;
-        return readyInfo;
-    }
-
     Json sapDeliveredCategories() {
         Json list = Json.emptyArray;
         foreach (item; _store.sapDeliveredTeamCategories()) {

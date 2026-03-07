@@ -33,11 +33,6 @@ class ISAService : SAPService {
     return healthInfo;
   }
 
-  override Json ready() {
-    Json readyInfo = super.ready();
-    readyInfo["ready"] = true;
-    return readyInfo;
-  }
 
   Json createConfiguration(string tenantId, Json request) {
     auto cfg = configFromJson(request, tenantId);

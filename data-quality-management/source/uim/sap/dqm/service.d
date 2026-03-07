@@ -32,12 +32,6 @@ class DQMService : SAPService {
     return healthInfo;
   }
 
-  Json ready() {
-    Json readyInfo = super.ready();
-    readyInfo["ready"] = true;
-    return readyInfo;
-  }
-
   Json cleanseAddress(Json request) {
     if (!("address" in request) || request["address"].type != Json.Type.object) {
       throw new DQMValidationException("address object is required");

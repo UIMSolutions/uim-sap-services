@@ -29,12 +29,6 @@ class MDGService : SAPService {
     return payload;
   }
 
-  override Json ready() {
-    Json readyInfo = super.ready();
-    readyInfo["ready"] = true;
-    readyInfo["timestamp"] = Clock.currTime().toISOExtString();
-    return readyInfo;
-  }
 
   Json upsertBusinessPartner(string tenantId, Json request) {
     validateId(tenantId, "Tenant ID");

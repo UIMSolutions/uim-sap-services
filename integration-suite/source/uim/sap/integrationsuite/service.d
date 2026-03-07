@@ -33,12 +33,6 @@ class ISService : SAPService {
         return healthInfo;
     }
 
-    override Json ready() {
-        Json readyInfo = Json.emptyObject;
-        readyInfo["ready"] = true;
-        readyInfo["timestamp"] = Clock.currTime().toISOExtString();
-        return readyInfo;
-    }
 
     // =================================================================
     //  Cloud Integration — IFlows

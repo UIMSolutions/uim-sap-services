@@ -39,12 +39,6 @@ class TCService : SAPService {
         return payload;
     }
 
-    Json ready() const {
-        Json payload = Json.emptyObject;
-        payload["status"] = "READY";
-        return payload;
-    }
-
     Json listProviders() {
         Json providers = Json.emptyArray;
         foreach (provider; _store.listProviders()) providers ~= provider.toJson();

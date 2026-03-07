@@ -33,11 +33,6 @@ class MONService : SAPService {
         return healthInfo;
     }
 
-    override Json ready() {
-        Json readyInfo = super.ready();
-        readyInfo["ready"] = true;
-        return readyInfo;
-    }
 
     Json fetchApplicationMetrics(string appId) {
         auto metrics = buildApplicationMetrics(appId);

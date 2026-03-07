@@ -34,14 +34,10 @@ class SMGService : SAPService {
         return payload;
     }
 
-    Json ready() const {
-        Json payload = Json.emptyObject;
-        payload["status"] = "READY";
-        Json checks = Json.emptyArray;
-        checks ~= "config";
-        checks ~= "in-memory-store";
-        payload["checks"] = checks;
-        return payload;
+    Json ready() const {        
+        Json readyInfo = Json.emptyObject;
+        readyInfo["checks"] = ["config", "in-memory-store"].toJson;
+        return readyInfo;
     }
 
     Json listSites(string tenantId) {

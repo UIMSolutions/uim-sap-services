@@ -44,12 +44,6 @@ class JobSchedulingService : SAPService {
         return healthInfo;
     }
 
-    override Json ready() {
-        Json data = super.ready();
-        readyInfo["ready"] = true;
-        readyInfo["timestamp"] = Clock.currTime().toISOExtString();
-        return readyInfo;
-    }
 
     string dashboardHtml() {
         return q"HTML
