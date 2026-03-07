@@ -18,14 +18,17 @@ class SAPService : IService {
 
   bool initialize(Json[string] initData = null) {
     // Initialization logic for the store
+
+
+
     return true;
   }
 
   Json health() {
     Json healthInfo = Json.emptyObject;
     healthInfo["ok"] = true;
-    // healthInfo["serviceName"] = _config.serviceName;
-    // healthInfo["serviceVersion"] = _config.serviceVersion;
+    healthInfo["serviceName"] = _config.serviceName;
+    healthInfo["serviceVersion"] = _config.serviceVersion;
     return healthInfo;
   }
 

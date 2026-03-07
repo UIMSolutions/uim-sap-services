@@ -1,11 +1,13 @@
 module uim.sap.dqm.config;
 
-import std.string : startsWith;
+import uim.sap.dqm;
 
-import uim.sap.dqm.exceptions;
+mixin(ShowModule!());
+
+@safe:
 
 struct DQMConfig : SAPHostConfig {
-  mixin(SAPConfigTemplate!HTMRepoConfig);
+  mixin(SAPConfigTemplate!DQMConfig);
 
   override bool initialize(Json[string] initData = null) {
     if (!super.initialize(initData)) {

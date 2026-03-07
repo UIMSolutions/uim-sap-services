@@ -12,6 +12,23 @@ mixin(ShowModule!());
 
 @safe:
 
+/**
+  * Base configuration class for SAP services.
+  * Contains common configuration properties and initialization logic.
+  * Specific services can extend this class to add their own configuration properties and validation.
+  *
+  * Example usage:
+  * class MyServiceConfig : SAPConfig {
+  *   string customProperty;
+  *   override bool initialize(Json[string] initData = null) {
+  *     if (!super.initialize(initData)) {
+  *       return false;
+  *     }
+  *     customProperty = initData.getString("customProperty", "defaultValue");    
+  *     return true;
+  *   }
+  * }
+  */
 class SAPConfig {
   this() {
     initialize();
@@ -22,7 +39,32 @@ class SAPConfig {
   }
 
   bool initialize(Json[string] initData = null) {
-    // Initialization logic for the store
+    if (initData.hasKey("serviceName") && initData.isString("serviceName")) {
+      serviceName(initData.getString("serviceName"));
+    }
+
+    if (initData.hasKey("serviceVersion") && initData.isString("serviceVersion")) {
+      serviceVersion(initData.getString("serviceVersion"));
+    }
+
     return true;
+  }
+
+  protected string _serviceName;
+  string serviceName() const {
+    return _serviceName;
+  }
+
+  void serviceName(string name) {
+    _serviceName = name;
+  }
+
+  protected string _serviceVersion;
+  string serviceVersion() const {
+    return _serviceVersion;
+  }
+
+  void serviceVersion(string version_) {
+    _serviceVersion = version_;
   }
 }
