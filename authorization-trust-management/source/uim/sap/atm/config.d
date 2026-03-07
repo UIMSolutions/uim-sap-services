@@ -1,8 +1,10 @@
 module uim.sap.atm.config;
 
-import std.string : startsWith;
+import uim.sap.atm;
 
-import uim.sap.atm.exceptions;
+mixin(ShowModule!());
+
+@safe:
 
 class ATMConfig : SAPHostConfig {
   mixin(SAPConfigTemplate!AgentryConfig);

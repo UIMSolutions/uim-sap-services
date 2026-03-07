@@ -1,4 +1,4 @@
-module uim.sap.atm.models;
+module uim.sap.atm.models.models;
 
 import std.datetime : Clock, SysTime;
 import std.uuid : randomUUID;

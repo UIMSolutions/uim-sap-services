@@ -5,16 +5,11 @@
 *****************************************************************************************************************/
 module uim.sap.atm.server;
 
-import std.array : split;
-import std.string : startsWith;
+import uim.sap.atm;
 
-import vibe.data.json : Json;
-import vibe.http.common : HTTPMethod;
-import vibe.http.server : HTTPServerRequest, HTTPServerResponse, HTTPServerSettings, listenHTTP;
+mixin(ShowModule!());
 
-import uim.sap.atm.exceptions;
-import uim.sap.atm.models;
-import uim.sap.atm.service;
+@safe:
 
 class ATMServer {
   private ATMService _service;

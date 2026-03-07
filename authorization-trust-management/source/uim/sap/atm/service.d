@@ -1,18 +1,10 @@
 module uim.sap.atm.service;
 
-import std.algorithm.searching : canFind;
-import std.array : split;
-import std.base64 : Base64;
-import std.conv : to;
-import std.datetime : Clock;
-import std.string : replace, strip, toLower;
+import uim.sap.atm;
 
-import vibe.data.json : Json, parseJsonString;
+mixin(ShowModule!());
 
-import uim.sap.atm.config;
-import uim.sap.atm.exceptions;
-import uim.sap.atm.models;
-import uim.sap.atm.store;
+@safe:
 
 class ATMService : SAPService {
     private ATMConfig _config;
