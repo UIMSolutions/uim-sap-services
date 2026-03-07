@@ -303,15 +303,13 @@ class BASService : SAPService {
     }
 
     private bool hasScenario(string scenarioId) const {
-        foreach (scenario; _scenarios) {
-            if (scenario.scenarioId == scenarioId) return true;
-        }
-        return false;
+        return _scenarios.any!(scenario => scenario.scenarioId == scenarioId);
     }
 
     private bool hasTemplate(string templateId, string scenarioId) const {
         foreach (templateValue; _templates) {
             if (templateValue.templateId != templateId) continue;
+            
             return templateValue.scenarioId == scenarioId;
         }
         return false;

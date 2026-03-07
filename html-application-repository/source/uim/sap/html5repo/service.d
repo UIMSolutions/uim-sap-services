@@ -43,13 +43,13 @@ class HTMRepoService : SAPService {
         auto visibility = visibilityFromString(getString(request, "visibility", "private"));
         auto activate = getBool(request, "activate", true);
 
-        if (!("files" in request) || request["files"].type != Json.Type.array) {
+        if (!("files" in request) || !request["files"].isArray) {
             throw new HTMRepoValidationException("files array is required");
         }
 
         UploadedAsset[] files;
         foreach (item; request["files"]) {
-            if (item.type != Json.Type.object) {
+            if (!item.isObject) {
                 throw new HTMRepoValidationException("files entries must be objects");
             }
 

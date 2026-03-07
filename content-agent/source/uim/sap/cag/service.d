@@ -12,39 +12,39 @@ import uim.sap.cag.models;
 import uim.sap.cag.store;
 
 class CAGService : SAPService {
-    private CAGConfig _config;
-    private CAGStore _store;
+  private CAGConfig _config;
+  private CAGStore _store;
 
-    this(CAGConfig config) {
-        config.validate();
-        _config = config;
-        _store = new CAGStore;
-    }
+  this(CAGConfig config) {
+    config.validate();
+    _config = config;
+    _store = new CAGStore;
+  }
 
-    @property const(CAGConfig) config() const {
-        return _config;
-    }
+  @property const(CAGConfig) config() const {
+    return _config;
+  }
 
-    Json health() const {
-        Json payload = Json.emptyObject;
-        payload["status"] = "UP";
-        payload["service"] = _config.serviceName;
-        payload["version"] = _config.serviceVersion;
-        payload["runtime"] = _config.runtime;
-        payload["multitenancy"] = true;
-        payload["domain"] = "content-agent";
-        return payload;
-    }
+  Json health() const {
+    Json payload = Json.emptyObject;
+    payload["status"] = "UP";
+    payload["service"] = _config.serviceName;
+    payload["version"] = _config.serviceVersion;
+    payload["runtime"] = _config.runtime;
+    payload["multitenancy"] = true;
+    payload["domain"] = "content-agent";
+    return payload;
+  }
 
-    Json ready() const {
-        Json payload = Json.emptyObject;
-        payload["status"] = "READY";
-        payload["timestamp"] = Clock.currTime().toISOExtString();
-        return payload;
-    }
+  Json ready() const {
+    Json payload = Json.emptyObject;
+    payload["status"] = "READY";
+    payload["timestamp"] = Clock.currTime().toISOExtString();
+    return payload;
+  }
 
-    string dashboardHtml() const {
-        return q"HTML
+  string dashboardHtml() const {
+    return q"HTML
 <!doctype html>
 <html>
 <head>
@@ -223,423 +223,453 @@ class CAGService : SAPService {
 </body>
 </html>
 HTML";
+  }
+
+  Json listProviders(string tenantId) {
+    validateTenant(tenantId);
+    Json resources = Json.emptyArray;
+    foreach (provider; _store.listProviders(tenantId))
+      resources ~= provider.toJson();
+
+    Json payload = Json.emptyObject;
+    payload["tenant_id"] = tenantId;
+    payload["resources"] = resources;
+    payload["total_results"] = cast(long)resources.length;
+    return payload;
+  }
+
+  Json upsertProvider(string tenantId, Json body) {
+    validateTenant(tenantId);
+    auto providerId = readRequired(body, "provider_id");
+    auto now = Clock.currTime();
+
+    CAGContentProvider existing;
+    bool hasExisting = _store.tryGetProvider(tenantId, providerId, existing);
+
+    CAGContentProvider provider;
+    provider.tenantId = tenantId;
+    provider.providerId = providerId;
+    provider.name = readRequired(body, "name");
+    provider.providerType = readOptional(body, "provider_type", "sap-content-provider");
+    provider.endpoint = readOptional(body, "endpoint", "");
+    provider.supportedTypes = normalizeContentTypes(readStringArray(body, "supported_types"));
+    if (provider.supportedTypes.length == 0) {
+      provider.supportedTypes = [
+        "application", "integration", "workflow", "destination", "role"
+      ];
+    }
+    provider.active = readOptionalBool(body, "active", true);
+    provider.createdAt = hasExisting ? existing.createdAt : now;
+    provider.updatedAt = now;
+
+    auto saved = _store.upsertProvider(provider);
+
+    Json payload = Json.emptyObject;
+    payload["message"] = "Content provider saved";
+    payload["provider"] = saved.toJson();
+    return payload;
+  }
+
+  Json listContent(string tenantId) {
+    validateTenant(tenantId);
+    Json resources = Json.emptyArray;
+    foreach (item; _store.listContent(tenantId))
+      resources ~= item.toJson();
+
+    Json payload = Json.emptyObject;
+    payload["tenant_id"] = tenantId;
+    payload["resources"] = resources;
+    payload["total_results"] = cast(long)resources.length;
+    return payload;
+  }
+
+  Json upsertContent(string tenantId, Json body) {
+    validateTenant(tenantId);
+    auto contentId = readRequired(body, "content_id");
+    auto now = Clock.currTime();
+
+    CAGContentItem existing;
+    bool hasExisting = _store.tryGetContent(tenantId, contentId, existing);
+
+    CAGContentItem item;
+    item.tenantId = tenantId;
+    item.contentId = contentId;
+    item.title = readRequired(body, "title");
+    item.contentType = normalizeContentType(readOptional(body, "content_type", "application"));
+    item.contentVersion = readOptional(body, "version", "1.0.0");
+    item.providerId = readOptional(body, "provider_id", "manual");
+    item.dependencies = readStringArray(body, "dependencies");
+    item.relatedContent = readStringArray(body, "related_content");
+    item.metadata = readObject(body, "metadata");
+    item.createdAt = hasExisting ? existing.createdAt : now;
+    item.updatedAt = now;
+
+    auto saved = _store.upsertContent(item);
+
+    Json payload = Json.emptyObject;
+    payload["message"] = "Content item saved";
+    payload["item"] = saved.toJson();
+    return payload;
+  }
+
+  Json getContent(string tenantId, string contentId) {
+    validateTenant(tenantId);
+    validateId(contentId, "content_id");
+
+    CAGContentItem item;
+    if (!_store.tryGetContent(tenantId, contentId, item)) {
+      throw new CAGNotFoundException("content item not found");
     }
 
-    Json listProviders(string tenantId) {
-        validateTenant(tenantId);
-        Json resources = Json.emptyArray;
-        foreach (provider; _store.listProviders(tenantId)) resources ~= provider.toJson();
-
-        Json payload = Json.emptyObject;
-        payload["tenant_id"] = tenantId;
-        payload["resources"] = resources;
-        payload["total_results"] = cast(long)resources.length;
-        return payload;
+    auto dependencyIds = resolveDependencies(tenantId, item.dependencies);
+    Json dependencyDetails = Json.emptyArray;
+    foreach (id; dependencyIds) {
+      CAGContentItem dep;
+      if (_store.tryGetContent(tenantId, id, dep))
+        dependencyDetails ~= dep.toJson();
     }
 
-    Json upsertProvider(string tenantId, Json body) {
-        validateTenant(tenantId);
-        auto providerId = readRequired(body, "provider_id");
-        auto now = Clock.currTime();
+    Json payload = Json.emptyObject;
+    payload["item"] = item.toJson();
+    payload["dependency_details"] = dependencyDetails;
+    return payload;
+  }
 
-        CAGContentProvider existing;
-        bool hasExisting = _store.tryGetProvider(tenantId, providerId, existing);
+  Json listQueues(string tenantId) {
+    validateTenant(tenantId);
+    Json resources = Json.emptyArray;
+    foreach (queue; _store.listQueues(tenantId))
+      resources ~= queue.toJson();
 
-        CAGContentProvider provider;
-        provider.tenantId = tenantId;
-        provider.providerId = providerId;
-        provider.name = readRequired(body, "name");
-        provider.providerType = readOptional(body, "provider_type", "sap-content-provider");
-        provider.endpoint = readOptional(body, "endpoint", "");
-        provider.supportedTypes = normalizeContentTypes(readStringArray(body, "supported_types"));
-        if (provider.supportedTypes.length == 0) {
-            provider.supportedTypes = ["application", "integration", "workflow", "destination", "role"];
-        }
-        provider.active = readOptionalBool(body, "active", true);
-        provider.createdAt = hasExisting ? existing.createdAt : now;
-        provider.updatedAt = now;
+    Json payload = Json.emptyObject;
+    payload["tenant_id"] = tenantId;
+    payload["resources"] = resources;
+    payload["total_results"] = cast(long)resources.length;
+    return payload;
+  }
 
-        auto saved = _store.upsertProvider(provider);
+  Json upsertQueue(string tenantId, Json body) {
+    validateTenant(tenantId);
+    auto queueId = readRequired(body, "queue_id");
+    auto now = Clock.currTime();
 
-        Json payload = Json.emptyObject;
-        payload["message"] = "Content provider saved";
-        payload["provider"] = saved.toJson();
-        return payload;
+    CAGTransportQueue existing;
+    bool hasExisting = _store.tryGetQueue(tenantId, queueId, existing);
+
+    CAGTransportQueue queue;
+    queue.tenantId = tenantId;
+    queue.queueId = queueId;
+    queue.name = readRequired(body, "name");
+    queue.queueType = normalizeQueueType(readRequired(body, "queue_type"));
+    queue.endpoint = readOptional(body, "endpoint", "");
+    queue.active = readOptionalBool(body, "active", true);
+    queue.createdAt = hasExisting ? existing.createdAt : now;
+    queue.updatedAt = now;
+
+    auto saved = _store.upsertQueue(queue);
+
+    Json payload = Json.emptyObject;
+    payload["message"] = "Transport queue saved";
+    payload["queue"] = saved.toJson();
+    return payload;
+  }
+
+  Json listAssemblies(string tenantId) {
+    validateTenant(tenantId);
+    Json resources = Json.emptyArray;
+    foreach (item; _store.listAssemblies(tenantId))
+      resources ~= item.toJson();
+
+    Json payload = Json.emptyObject;
+    payload["tenant_id"] = tenantId;
+    payload["resources"] = resources;
+    payload["total_results"] = cast(long)resources.length;
+    return payload;
+  }
+
+  Json createAssembly(string tenantId, Json body) {
+    validateTenant(tenantId);
+
+    auto sourceSubaccount = readRequired(body, "source_subaccount");
+    auto targetSubaccount = readRequired(body, "target_subaccount");
+    auto name = readRequired(body, "name");
+    auto requestedIds = readStringArray(body, "content_ids");
+    if (requestedIds.length == 0)
+      throw new CAGValidationException("content_ids must contain at least one entry");
+
+    foreach (id; requestedIds) {
+      CAGContentItem item;
+      if (!_store.tryGetContent(tenantId, id, item)) {
+        throw new CAGValidationException("content id not found: " ~ id);
+      }
     }
 
-    Json listContent(string tenantId) {
-        validateTenant(tenantId);
-        Json resources = Json.emptyArray;
-        foreach (item; _store.listContent(tenantId)) resources ~= item.toJson();
-
-        Json payload = Json.emptyObject;
-        payload["tenant_id"] = tenantId;
-        payload["resources"] = resources;
-        payload["total_results"] = cast(long)resources.length;
-        return payload;
+    auto includeDependencies = readOptionalBool(body, "include_dependencies", true);
+    auto resolvedIds = requestedIds.dup;
+    if (includeDependencies) {
+      auto additional = resolveDependencies(tenantId, requestedIds);
+      foreach (id; additional)
+        if (!contains(resolvedIds, id))
+          resolvedIds ~= id;
     }
 
-    Json upsertContent(string tenantId, Json body) {
-        validateTenant(tenantId);
-        auto contentId = readRequired(body, "content_id");
-        auto now = Clock.currTime();
+    auto now = Clock.currTime();
+    auto assemblyId = _store.nextId("assembly");
 
-        CAGContentItem existing;
-        bool hasExisting = _store.tryGetContent(tenantId, contentId, existing);
+    CAGAssembly assembly;
+    assembly.tenantId = tenantId;
+    assembly.assemblyId = assemblyId;
+    assembly.name = name;
+    assembly.sourceSubaccount = sourceSubaccount;
+    assembly.targetSubaccount = targetSubaccount;
+    assembly.requestedContentIds = requestedIds;
+    assembly.resolvedContentIds = resolvedIds;
+    assembly.includeDependencies = includeDependencies;
+    assembly.mtarName = tenantId ~ "-" ~ assemblyId ~ ".mtar";
+    assembly.mtarDownloadUrl = _config.basePath ~ "/v1/tenants/" ~ tenantId ~ "/assemblies/" ~ assemblyId ~ "/mtar";
+    assembly.status = "ASSEMBLED";
+    assembly.createdAt = now;
+    assembly.updatedAt = now;
 
-        CAGContentItem item;
-        item.tenantId = tenantId;
-        item.contentId = contentId;
-        item.title = readRequired(body, "title");
-        item.contentType = normalizeContentType(readOptional(body, "content_type", "application"));
-        item.contentVersion = readOptional(body, "version", "1.0.0");
-        item.providerId = readOptional(body, "provider_id", "manual");
-        item.dependencies = readStringArray(body, "dependencies");
-        item.relatedContent = readStringArray(body, "related_content");
-        item.metadata = readObject(body, "metadata");
-        item.createdAt = hasExisting ? existing.createdAt : now;
-        item.updatedAt = now;
+    auto saved = _store.upsertAssembly(assembly);
 
-        auto saved = _store.upsertContent(item);
-
-        Json payload = Json.emptyObject;
-        payload["message"] = "Content item saved";
-        payload["item"] = saved.toJson();
-        return payload;
+    Json manifestItems = Json.emptyArray;
+    foreach (contentId; saved.resolvedContentIds) {
+      CAGContentItem item;
+      if (_store.tryGetContent(tenantId, contentId, item))
+        manifestItems ~= item.toJson();
     }
 
-    Json getContent(string tenantId, string contentId) {
-        validateTenant(tenantId);
-        validateId(contentId, "content_id");
+    Json payload = Json.emptyObject;
+    payload["message"] = "Content assembled into MTAR metadata";
+    payload["assembly"] = saved.toJson();
+    payload["manifest_items"] = manifestItems;
+    payload["created_by"] = readOptional(body, "created_by", "system");
+    return payload;
+  }
 
-        CAGContentItem item;
-        if (!_store.tryGetContent(tenantId, contentId, item)) {
-            throw new CAGNotFoundException("content item not found");
-        }
+  Json getAssembly(string tenantId, string assemblyId) {
+    validateTenant(tenantId);
+    validateId(assemblyId, "assembly_id");
 
-        auto dependencyIds = resolveDependencies(tenantId, item.dependencies);
-        Json dependencyDetails = Json.emptyArray;
-        foreach (id; dependencyIds) {
-            CAGContentItem dep;
-            if (_store.tryGetContent(tenantId, id, dep)) dependencyDetails ~= dep.toJson();
-        }
-
-        Json payload = Json.emptyObject;
-        payload["item"] = item.toJson();
-        payload["dependency_details"] = dependencyDetails;
-        return payload;
+    CAGAssembly assembly;
+    if (!_store.tryGetAssembly(tenantId, assemblyId, assembly)) {
+      throw new CAGNotFoundException("assembly not found");
     }
 
-    Json listQueues(string tenantId) {
-        validateTenant(tenantId);
-        Json resources = Json.emptyArray;
-        foreach (queue; _store.listQueues(tenantId)) resources ~= queue.toJson();
+    Json payload = Json.emptyObject;
+    payload["assembly"] = assembly.toJson();
+    return payload;
+  }
 
-        Json payload = Json.emptyObject;
-        payload["tenant_id"] = tenantId;
-        payload["resources"] = resources;
-        payload["total_results"] = cast(long)resources.length;
-        return payload;
+  Json getMtarMetadata(string tenantId, string assemblyId) {
+    validateTenant(tenantId);
+    validateId(assemblyId, "assembly_id");
+
+    CAGAssembly assembly;
+    if (!_store.tryGetAssembly(tenantId, assemblyId, assembly)) {
+      throw new CAGNotFoundException("assembly not found");
     }
 
-    Json upsertQueue(string tenantId, Json body) {
-        validateTenant(tenantId);
-        auto queueId = readRequired(body, "queue_id");
-        auto now = Clock.currTime();
-
-        CAGTransportQueue existing;
-        bool hasExisting = _store.tryGetQueue(tenantId, queueId, existing);
-
-        CAGTransportQueue queue;
-        queue.tenantId = tenantId;
-        queue.queueId = queueId;
-        queue.name = readRequired(body, "name");
-        queue.queueType = normalizeQueueType(readRequired(body, "queue_type"));
-        queue.endpoint = readOptional(body, "endpoint", "");
-        queue.active = readOptionalBool(body, "active", true);
-        queue.createdAt = hasExisting ? existing.createdAt : now;
-        queue.updatedAt = now;
-
-        auto saved = _store.upsertQueue(queue);
-
-        Json payload = Json.emptyObject;
-        payload["message"] = "Transport queue saved";
-        payload["queue"] = saved.toJson();
-        return payload;
+    Json modules = Json.emptyArray;
+    foreach (contentId; assembly.resolvedContentIds) {
+      CAGContentItem item;
+      if (_store.tryGetContent(tenantId, contentId, item)) {
+        Json moduleData = Json.emptyObject;
+        moduleData["name"] = item.contentId;
+        moduleData["type"] = item.contentType;
+        moduleData["version"] = item.contentVersion;
+        modules ~= moduleData;
+      }
     }
 
-    Json listAssemblies(string tenantId) {
-        validateTenant(tenantId);
-        Json resources = Json.emptyArray;
-        foreach (item; _store.listAssemblies(tenantId)) resources ~= item.toJson();
+    Json payload = Json.emptyObject;
+    payload["tenant_id"] = tenantId;
+    payload["assembly_id"] = assemblyId;
+    payload["mtar_name"] = assembly.mtarName;
+    payload["download_url"] = assembly.mtarDownloadUrl;
+    payload["modules"] = modules;
+    return payload;
+  }
 
-        Json payload = Json.emptyObject;
-        payload["tenant_id"] = tenantId;
-        payload["resources"] = resources;
-        payload["total_results"] = cast(long)resources.length;
-        return payload;
+  Json exportAssembly(string tenantId, string assemblyId, Json body) {
+    validateTenant(tenantId);
+    validateId(assemblyId, "assembly_id");
+
+    CAGAssembly assembly;
+    if (!_store.tryGetAssembly(tenantId, assemblyId, assembly)) {
+      throw new CAGNotFoundException("assembly not found");
     }
 
-    Json createAssembly(string tenantId, Json body) {
-        validateTenant(tenantId);
+    auto queueId = readRequired(body, "queue_id");
+    CAGTransportQueue queue;
+    if (!_store.tryGetQueue(tenantId, queueId, queue)) {
+      throw new CAGValidationException("queue_id not found");
+    }
+    if (!queue.active)
+      throw new CAGValidationException("queue is inactive");
 
-        auto sourceSubaccount = readRequired(body, "source_subaccount");
-        auto targetSubaccount = readRequired(body, "target_subaccount");
-        auto name = readRequired(body, "name");
-        auto requestedIds = readStringArray(body, "content_ids");
-        if (requestedIds.length == 0) throw new CAGValidationException("content_ids must contain at least one entry");
+    Json exportPayload = Json.emptyObject;
+    exportPayload["assembly_id"] = assembly.assemblyId;
+    exportPayload["mtar_name"] = assembly.mtarName;
+    exportPayload["source_subaccount"] = assembly.sourceSubaccount;
+    exportPayload["target_subaccount"] = assembly.targetSubaccount;
+    exportPayload["queue_id"] = queue.queueId;
+    exportPayload["queue_type"] = queue.queueType;
+    exportPayload["queue_endpoint"] = queue.endpoint;
+    exportPayload["runtime"] = _config.runtime;
 
-        foreach (id; requestedIds) {
-            CAGContentItem item;
-            if (!_store.tryGetContent(tenantId, id, item)) {
-                throw new CAGValidationException("content id not found: " ~ id);
-            }
-        }
+    Json contentIds = Json.emptyArray;
+    foreach (id; assembly.resolvedContentIds)
+      contentIds ~= id;
+    exportPayload["content_ids"] = contentIds;
 
-        auto includeDependencies = readOptionalBool(body, "include_dependencies", true);
-        auto resolvedIds = requestedIds.dup;
-        if (includeDependencies) {
-            auto additional = resolveDependencies(tenantId, requestedIds);
-            foreach (id; additional) if (!contains(resolvedIds, id)) resolvedIds ~= id;
-        }
+    auto now = Clock.currTime();
+    CAGTransportActivity activity;
+    activity.tenantId = tenantId;
+    activity.activityId = _store.nextId("activity");
+    activity.assemblyId = assemblyId;
+    activity.queueId = queue.queueId;
+    activity.status = "EXPORTED";
+    activity.message = "Assembly exported to transport queue";
+    activity.initiatedBy = readOptional(body, "initiated_by", "system");
+    activity.exportPayload = exportPayload;
+    activity.createdAt = now;
 
-        auto now = Clock.currTime();
-        auto assemblyId = _store.nextId("assembly");
+    auto saved = _store.upsertActivity(activity);
 
-        CAGAssembly assembly;
-        assembly.tenantId = tenantId;
-        assembly.assemblyId = assemblyId;
-        assembly.name = name;
-        assembly.sourceSubaccount = sourceSubaccount;
-        assembly.targetSubaccount = targetSubaccount;
-        assembly.requestedContentIds = requestedIds;
-        assembly.resolvedContentIds = resolvedIds;
-        assembly.includeDependencies = includeDependencies;
-        assembly.mtarName = tenantId ~ "-" ~ assemblyId ~ ".mtar";
-        assembly.mtarDownloadUrl = _config.basePath ~ "/v1/tenants/" ~ tenantId ~ "/assemblies/" ~ assemblyId ~ "/mtar";
-        assembly.status = "ASSEMBLED";
-        assembly.createdAt = now;
-        assembly.updatedAt = now;
+    Json payload = Json.emptyObject;
+    payload["message"] = "Assembly exported successfully";
+    payload["activity"] = saved.toJson();
+    return payload;
+  }
 
-        auto saved = _store.upsertAssembly(assembly);
+  Json listActivities(string tenantId) {
+    validateTenant(tenantId);
+    Json resources = Json.emptyArray;
+    foreach (item; _store.listActivities(tenantId))
+      resources ~= item.toJson();
 
-        Json manifestItems = Json.emptyArray;
-        foreach (contentId; saved.resolvedContentIds) {
-            CAGContentItem item;
-            if (_store.tryGetContent(tenantId, contentId, item)) manifestItems ~= item.toJson();
-        }
+    Json payload = Json.emptyObject;
+    payload["tenant_id"] = tenantId;
+    payload["resources"] = resources;
+    payload["total_results"] = cast(long)resources.length;
+    return payload;
+  }
 
-        Json payload = Json.emptyObject;
-        payload["message"] = "Content assembled into MTAR metadata";
-        payload["assembly"] = saved.toJson();
-        payload["manifest_items"] = manifestItems;
-        payload["created_by"] = readOptional(body, "created_by", "system");
-        return payload;
+  private string[] resolveDependencies(string tenantId, string[] seedIds) {
+    bool[string] visited;
+    string[] ordered;
+    string[] queue = seedIds.dup;
+
+    while (queue.length > 0) {
+      auto id = queue[0];
+      queue = queue[1 .. $];
+      if ((id in visited) !is null)
+        continue;
+      visited[id] = true;
+
+      CAGContentItem item;
+      if (!_store.tryGetContent(tenantId, id, item))
+        continue;
+      foreach (dep; item.dependencies) {
+        if (!contains(ordered, dep))
+          ordered ~= dep;
+        if ((dep in visited) is null)
+          queue ~= dep;
+      }
     }
 
-    Json getAssembly(string tenantId, string assemblyId) {
-        validateTenant(tenantId);
-        validateId(assemblyId, "assembly_id");
+    return ordered.array;
+  }
 
-        CAGAssembly assembly;
-        if (!_store.tryGetAssembly(tenantId, assemblyId, assembly)) {
-            throw new CAGNotFoundException("assembly not found");
-        }
+  private bool contains(string[] items, string value) const {
+    foreach (item; items)
+      if (item == value)
+        return true;
+    return false;
+  }
 
-        Json payload = Json.emptyObject;
-        payload["assembly"] = assembly.toJson();
-        return payload;
+  private void validateTenant(string tenantId) const {
+    if (tenantId.length == 0)
+      throw new CAGValidationException("tenant_id is required");
+  }
+
+  private void validateId(string value, string fieldName) const {
+    if (value.length == 0)
+      throw new CAGValidationException(fieldName ~ " is required");
+  }
+
+  private string normalizeContentType(string value) const {
+    auto normalized = toLower(value);
+    if (normalized != "application"
+      && normalized != "integration"
+      && normalized != "workflow"
+      && normalized != "destination"
+      && normalized != "role") {
+      throw new CAGValidationException(
+        "content_type must be one of application|integration|workflow|destination|role"
+      );
     }
+    return normalized;
+  }
 
-    Json getMtarMetadata(string tenantId, string assemblyId) {
-        validateTenant(tenantId);
-        validateId(assemblyId, "assembly_id");
+  private string[] normalizeContentTypes(string[] values) const {
+    return values.map!(value => normalizeContentType(value)).array;
+  }
 
-        CAGAssembly assembly;
-        if (!_store.tryGetAssembly(tenantId, assemblyId, assembly)) {
-            throw new CAGNotFoundException("assembly not found");
-        }
-
-        Json modules = Json.emptyArray;
-        foreach (contentId; assembly.resolvedContentIds) {
-            CAGContentItem item;
-            if (_store.tryGetContent(tenantId, contentId, item)) {
-                Json moduleData = Json.emptyObject;
-                moduleData["name"] = item.contentId;
-                moduleData["type"] = item.contentType;
-                moduleData["version"] = item.contentVersion;
-                modules ~= moduleData;
-            }
-        }
-
-        Json payload = Json.emptyObject;
-        payload["tenant_id"] = tenantId;
-        payload["assembly_id"] = assemblyId;
-        payload["mtar_name"] = assembly.mtarName;
-        payload["download_url"] = assembly.mtarDownloadUrl;
-        payload["modules"] = modules;
-        return payload;
+  private string normalizeQueueType(string value) const {
+    auto normalized = toLower(value);
+    if (normalized == "ctm")
+      normalized = "cloud-transport-management";
+    if (normalized != "ctsplus" && normalized != "cloud-transport-management") {
+      throw new CAGValidationException("queue_type must be ctsplus or cloud-transport-management");
     }
+    return normalized;
+  }
 
-    Json exportAssembly(string tenantId, string assemblyId, Json body) {
-        validateTenant(tenantId);
-        validateId(assemblyId, "assembly_id");
-
-        CAGAssembly assembly;
-        if (!_store.tryGetAssembly(tenantId, assemblyId, assembly)) {
-            throw new CAGNotFoundException("assembly not found");
-        }
-
-        auto queueId = readRequired(body, "queue_id");
-        CAGTransportQueue queue;
-        if (!_store.tryGetQueue(tenantId, queueId, queue)) {
-            throw new CAGValidationException("queue_id not found");
-        }
-        if (!queue.active) throw new CAGValidationException("queue is inactive");
-
-        Json exportPayload = Json.emptyObject;
-        exportPayload["assembly_id"] = assembly.assemblyId;
-        exportPayload["mtar_name"] = assembly.mtarName;
-        exportPayload["source_subaccount"] = assembly.sourceSubaccount;
-        exportPayload["target_subaccount"] = assembly.targetSubaccount;
-        exportPayload["queue_id"] = queue.queueId;
-        exportPayload["queue_type"] = queue.queueType;
-        exportPayload["queue_endpoint"] = queue.endpoint;
-        exportPayload["runtime"] = _config.runtime;
-
-        Json contentIds = Json.emptyArray;
-        foreach (id; assembly.resolvedContentIds) contentIds ~= id;
-        exportPayload["content_ids"] = contentIds;
-
-        auto now = Clock.currTime();
-        CAGTransportActivity activity;
-        activity.tenantId = tenantId;
-        activity.activityId = _store.nextId("activity");
-        activity.assemblyId = assemblyId;
-        activity.queueId = queue.queueId;
-        activity.status = "EXPORTED";
-        activity.message = "Assembly exported to transport queue";
-        activity.initiatedBy = readOptional(body, "initiated_by", "system");
-        activity.exportPayload = exportPayload;
-        activity.createdAt = now;
-
-        auto saved = _store.upsertActivity(activity);
-
-        Json payload = Json.emptyObject;
-        payload["message"] = "Assembly exported successfully";
-        payload["activity"] = saved.toJson();
-        return payload;
+  private string readRequired(Json data, string key) const {
+    if (!(key in data) || !data[key].isString || data[key].get!string.length == 0) {
+      throw new CAGValidationException(key ~ " is required");
     }
+    return data[key].get!string;
+  }
 
-    Json listActivities(string tenantId) {
-        validateTenant(tenantId);
-        Json resources = Json.emptyArray;
-        foreach (item; _store.listActivities(tenantId)) resources ~= item.toJson();
+  private string readOptional(Json data, string key, string fallback) const {
+    if (!(key in data) || data[key].isNull)
+      return fallback;
+    if (!data[key].isString)
+      throw new CAGValidationException(key ~ " must be a string");
+    return data[key].get!string;
+  }
 
-        Json payload = Json.emptyObject;
-        payload["tenant_id"] = tenantId;
-        payload["resources"] = resources;
-        payload["total_results"] = cast(long)resources.length;
-        return payload;
+  private bool readOptionalBool(Json data, string key, bool fallback) const {
+    if (!(key in data) || data[key].isNull)
+      return fallback;
+    if (!data[key].isBoolean)
+      throw new CAGValidationException(key ~ " must be a boolean");
+    return data[key].get!bool;
+  }
+
+  private string[] readStringArray(Json data, string key) const {
+    string[] values;
+    if (!(key in data) || data[key].isNull)
+      return values;
+    if (!data[key].isArray)
+      throw new CAGValidationException(key ~ " must be an array");
+    foreach (item; data[key]) {
+      if (!item.isString)
+        throw new CAGValidationException(key ~ " must contain strings");
+      values ~= item.get!string;
     }
+    return values;
+  }
 
-    private string[] resolveDependencies(string tenantId, string[] seedIds) {
-        bool[string] visited;
-        string[] ordered;
-        string[] queue = seedIds.dup;
-
-        while (queue.length > 0) {
-            auto id = queue[0];
-            queue = queue[1 .. $];
-            if ((id in visited) !is null) continue;
-            visited[id] = true;
-
-            CAGContentItem item;
-            if (!_store.tryGetContent(tenantId, id, item)) continue;
-            foreach (dep; item.dependencies) {
-                if (!contains(ordered, dep)) ordered ~= dep;
-                if ((dep in visited) is null) queue ~= dep;
-            }
-        }
-
-        return ordered.array;
-    }
-
-    private bool contains(string[] items, string value) const {
-        foreach (item; items) if (item == value) return true;
-        return false;
-    }
-
-    private void validateTenant(string tenantId) const {
-        if (tenantId.length == 0) throw new CAGValidationException("tenant_id is required");
-    }
-
-    private void validateId(string value, string fieldName) const {
-        if (value.length == 0) throw new CAGValidationException(fieldName ~ " is required");
-    }
-
-    private string normalizeContentType(string value) const {
-        auto normalized = toLower(value);
-        if (normalized != "application"
-            && normalized != "integration"
-            && normalized != "workflow"
-            && normalized != "destination"
-            && normalized != "role") {
-            throw new CAGValidationException(
-                "content_type must be one of application|integration|workflow|destination|role"
-            );
-        }
-        return normalized;
-    }
-
-    private string[] normalizeContentTypes(string[] values) const {
-        string[] normalized;
-        foreach (value; values) normalized ~= normalizeContentType(value);
-        return normalized;
-    }
-
-    private string normalizeQueueType(string value) const {
-        auto normalized = toLower(value);
-        if (normalized == "ctm") normalized = "cloud-transport-management";
-        if (normalized != "ctsplus" && normalized != "cloud-transport-management") {
-            throw new CAGValidationException("queue_type must be ctsplus or cloud-transport-management");
-        }
-        return normalized;
-    }
-
-    private string readRequired(Json body, string key) const {
-        if (!(key in body) || body[key].type != Json.Type.string || body[key].get!string.length == 0) {
-            throw new CAGValidationException(key ~ " is required");
-        }
-        return body[key].get!string;
-    }
-
-    private string readOptional(Json body, string key, string fallback) const {
-        if (!(key in body) || body[key].type == Json.Type.null_) return fallback;
-        if (body[key].type != Json.Type.string) throw new CAGValidationException(key ~ " must be a string");
-        return body[key].get!string;
-    }
-
-    private bool readOptionalBool(Json body, string key, bool fallback) const {
-        if (!(key in body) || body[key].type == Json.Type.null_) return fallback;
-        if (body[key].type != Json.Type.bool_) throw new CAGValidationException(key ~ " must be a boolean");
-        return body[key].get!bool;
-    }
-
-    private string[] readStringArray(Json body, string key) const {
-        string[] values;
-        if (!(key in body) || body[key].type == Json.Type.null_) return values;
-        if (body[key].type != Json.Type.array) throw new CAGValidationException(key ~ " must be an array");
-        foreach (item; body[key]) {
-            if (item.type != Json.Type.string) throw new CAGValidationException(key ~ " must contain strings");
-            values ~= item.get!string;
-        }
-        return values;
-    }
-
-    private Json readObject(Json body, string key) const {
-        if (!(key in body) || body[key].type == Json.Type.null_) return Json.emptyObject;
-        if (body[key].type != Json.Type.object) throw new CAGValidationException(key ~ " must be an object");
-        return body[key];
-    }
+  private Json readObject(Json data, string key) const {
+    if (!(key in data) || data[key].isNull)
+      return Json.emptyObject;
+    if (!data[key].isObject)
+      throw new CAGValidationException(key ~ " must be an object");
+    return data[key];
+  }
 }

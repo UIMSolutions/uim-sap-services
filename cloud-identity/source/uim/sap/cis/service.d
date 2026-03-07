@@ -165,7 +165,7 @@ class CISService : SAPService {
 
     Json inviteUser(string tenantId, Json request) {
         validateId(tenantId, "Tenant ID");
-        if (!("email" in request) || request["email"].type != Json.Type.string) {
+        if (!("email" in request) || !request["email"].isString || request["email"].get!string.length == 0) {
             throw new CISValidationException("email is required");
         }
 

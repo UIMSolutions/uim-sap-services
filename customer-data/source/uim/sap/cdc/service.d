@@ -536,39 +536,39 @@ class CDCService : SAPService {
     return normalized;
   }
 
-  private string readRequired(Json body, string key) const {
-    if (!(key in body) || body[key].type != Json.Type.string || body[key].get!string.length == 0) {
+  private string readRequired(Json data, string key) const {
+    if (!(key in data) || !data[key].isString || data[key].get!string.length == 0) {
       throw new CDCValidationException(key ~ " is required");
     }
-    return body[key].get!string;
+    return data[key].get!string;
   }
 
-  private string readOptional(Json body, string key, string fallback) const {
-    if (!(key in body) || body[key].type == Json.Type.null_) return fallback;
-    if (body[key].type != Json.Type.string) throw new CDCValidationException(key ~ " must be a string");
-    return body[key].get!string;
+  private string readOptional(Json data, string key, string fallback) const {
+    if (!(key in data) || data[key].isNull) return fallback;
+    if (!data[key].isString) throw new CDCValidationException(key ~ " must be a string");
+    return data[key].get!string;
   }
 
-  private bool readOptionalBool(Json body, string key, bool fallback) const {
-    if (!(key in body) || body[key].type == Json.Type.null_) return fallback;
-    if (body[key].type != Json.Type.bool_) throw new CDCValidationException(key ~ " must be a boolean");
-    return body[key].get!bool;
+  private bool readOptionalBool(Json data, string key, bool fallback) const {
+    if (!(key in data) || data[key].isNull) return fallback;
+    if (!data[key].isBoolean) throw new CDCValidationException(key ~ " must be a boolean");
+    return data[key].get!bool;
   }
 
-  private string[] readStringArray(Json body, string key) const {
+  private string[] readStringArray(Json data, string key) const {
     string[] values;
-    if (!(key in body) || body[key].type == Json.Type.null_) return values;
-    if (body[key].type != Json.Type.array) throw new CDCValidationException(key ~ " must be an array");
-    foreach (item; body[key]) {
-      if (item.type != Json.Type.string) throw new CDCValidationException(key ~ " must contain strings");
+    if (!(key in data) || data[key].isNull) return values;
+    if (!data[key].isArray) throw new CDCValidationException(key ~ " must be an array");
+    foreach (item; data[key]) {
+      if (!item.isString) throw new CDCValidationException(key ~ " must contain strings");
       values ~= item.get!string;
     }
     return values;
   }
 
-  private Json readObject(Json body, string key, Json fallback) const {
-    if (!(key in body) || body[key].type == Json.Type.null_) return fallback;
-    if (body[key].type != Json.Type.object) throw new CDCValidationException(key ~ " must be an object");
-    return body[key];
+  private Json readObject(Json data, string key, Json fallback) const {
+    if (!(key in data) || data[key].isNull) return fallback;
+    if (!data[key].isObject) throw new CDCValidationException(key ~ " must be an object");
+    return data[key];
   }
 }

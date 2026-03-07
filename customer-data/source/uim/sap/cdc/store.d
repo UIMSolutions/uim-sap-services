@@ -360,8 +360,8 @@ class CDCStore : SAPStore {
 
   private string[] readStringArray(Json item, string key) {
     string[] values;
-    if (!(key in item) || item[key].type == Json.Type.null_) return values;
-    if (item[key].type != Json.Type.array) {
+    if (!(key in item) || item[key].isNull) return values;
+    if (!item[key].isArray) {
       throw new CDCStoreException(key ~ " must be an array in cache item");
     }
     foreach (entry; item[key]) {
@@ -371,8 +371,8 @@ class CDCStore : SAPStore {
   }
 
   private Json readObject(Json item, string key) {
-    if (!(key in item) || item[key].type == Json.Type.null_) return Json.emptyObject;
-    if (item[key].type != Json.Type.object) {
+    if (!(key in item) || item[key].isNull) return Json.emptyObject;
+    if (!item[key].isObject) {
       throw new CDCStoreException(key ~ " must be an object in cache item");
     }
     return item[key];
@@ -387,7 +387,7 @@ class CDCStore : SAPStore {
   }
 
   private SysTime readTime(Json item, string key) {
-    if (!(key in item) || item[key].type != Json.Type.string) {
+    if (!(key in item) || !item[key].isString) {
       return SysTime.fromISOExtString("1970-01-01T00:00:00Z");
     }
     return parseTime(item[key].get!string);

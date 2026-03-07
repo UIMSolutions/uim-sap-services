@@ -80,7 +80,7 @@ class DQMService : SAPService {
     }
 
     Json geocode(Json request) {
-        if (!("address" in request) || request["address"].type != Json.Type.object) {
+        if (!("address" in request) || !request["address"].isObject) {
             throw new DQMValidationException("address object is required");
         }
 
@@ -136,13 +136,13 @@ class DQMService : SAPService {
     }
 
     Json suggestAddresses(Json request) {
-        if (!("query" in request) || request["query"].type != Json.Type.string) {
+        if (!("query" in request) || !request["query"].isString || request["query"].get!string.length == 0) {
             throw new DQMValidationException("query is required");
         }
 
         auto query = request["query"].get!string;
         auto country = _config.defaultCountry;
-        if ("country" in request && request["country"].isString) {
+        if ("country" in request && request["country"].isString && request["country"].get!string.length > 0) {
             country = request["country"].get!string;
         }
 

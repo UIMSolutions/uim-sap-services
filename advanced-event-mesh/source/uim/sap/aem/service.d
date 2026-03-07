@@ -119,7 +119,7 @@ class AEMService : SAPService {
       throw new AEMNotFoundException("Event mesh", tenantId ~ "/" ~ meshId);
     }
 
-    if (!("topic" in request) || request["topic"].type != Json.Type.string) {
+    if (!("topic" in request) || !request["topic"].isString) {
       throw new AEMValidationException("topic is required");
     }
 

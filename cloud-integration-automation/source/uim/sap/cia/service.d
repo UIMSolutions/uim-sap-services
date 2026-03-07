@@ -240,7 +240,7 @@ HTML";
         auto role = CIARole(
             payload["id"].get!string,
             payload["name"].get!string,
-            payload.type != Json.Type.null_ && "description" in payload
+            !payload.isNull && "description" in payload
                 ? payload["description"].get!string : ""
         );
         return _store.upsertRole(role).toJson();
@@ -471,7 +471,7 @@ HTML";
         result.workflowId    = workflowId;
         result.taskId        = taskId;
         result.id            = resultId;
-        result.targetSystemId = task.context.type != Json.Type.null_
+        result.targetSystemId = !task.context.isNull
             && "target_system_id" in task.context
                 ? task.context["target_system_id"].get!string : "";
         result.status     = "success";
