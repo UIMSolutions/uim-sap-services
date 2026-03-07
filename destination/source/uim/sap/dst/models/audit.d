@@ -6,15 +6,6 @@ mixin(ShowModule!());
 
 @safe:
 
-string createId() {
-    return randomUUID().toString();
-}
-
-
-
-
-
-
 // ---------------------------------------------------------------------------
 // DSTAuditLog – audit trail for destination operations
 // ---------------------------------------------------------------------------

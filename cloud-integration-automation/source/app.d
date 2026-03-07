@@ -33,16 +33,3 @@ void main()
     server.run();
 }
 
-private string envOr(string key, string fallback) {
-    auto value = environment.get(key, "");
-    return value.length > 0 ? value : fallback;
-}
-
-private ushort readPort(string value, ushort fallback) {
-    try {
-        auto parsed = to!ushort(value);
-        return parsed > 0 ? parsed : fallback;
-    } catch (Exception) {
-        return fallback;
-    }
-}

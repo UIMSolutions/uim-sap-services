@@ -1,14 +1,10 @@
 module uim.sap.cid.models;
 
-import std.datetime : Clock, SysTime;
-import std.uuid     : randomUUID;
+import uim.sap.cid;
 
-import vibe.data.json : Json;
+mixin(ShowModule!());
 
-string createId() {
-    return randomUUID().toString();
-}
-
+@safe:
 // ---------------------------------------------------------------------------
 // CIDRepository – a connected Git repository
 // ---------------------------------------------------------------------------

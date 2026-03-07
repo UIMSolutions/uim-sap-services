@@ -11,11 +11,4 @@ mixin(ShowModule!());
 
 @safe:
 
-string createId() {
-    return randomUUID().toString();
-}
 
-string normalizeMode(string mode) {
-    auto value = toLower(mode);
-    return (value == "delta") ? "delta" : "full";
-}

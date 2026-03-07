@@ -1,13 +1,11 @@
 module uim.sap.ctm.models;
 
-import std.datetime : Clock, SysTime;
-import std.uuid     : randomUUID;
+import uim.sap.ctm;
 
-import vibe.data.json : Json;
+mixin(ShowModule!());
 
-string createId() {
-    return randomUUID().toString();
-}
+@safe:
+
 
 // ---------------------------------------------------------------------------
 // CTMNode – a logical environment in the transport landscape

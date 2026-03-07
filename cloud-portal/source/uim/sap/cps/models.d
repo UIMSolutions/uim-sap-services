@@ -1,14 +1,10 @@
 module uim.sap.cps.models;
 
-import std.datetime : Clock, SysTime;
-import std.uuid : randomUUID;
+import uim.sap.cps;
 
-import vibe.data.json : Json;
+mixin(ShowModule!());
 
-string createId() {
-    return randomUUID().toString();
-}
-
+@safe:
 struct CPSSite {
     string tenantId;
     string siteId;

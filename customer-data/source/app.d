@@ -49,19 +49,7 @@ void main() {
   runApplication();
 }
 
-private string envOr(string key, string fallback) {
-  auto value = environment.get(key, "");
-  return value.length > 0 ? value : fallback;
-}
 
-private ushort readPort(string value, ushort fallback) {
-  try {
-    auto parsed = to!ushort(value);
-    return parsed > 0 ? parsed : fallback;
-  } catch (Exception) {
-    return fallback;
-  }
-}
 
 private void runInternalSmoke(CDCService service) {
   auto tenantId = "demo-tenant";
