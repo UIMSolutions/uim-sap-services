@@ -166,7 +166,7 @@ class HanaDBClient {
                 resultSet.rows ~= row;
             }
             resultSet.rowCount = cast(long)resultSet.rows.length;
-        } else if ("d" in payload && payload["d"].type == Json.Type.object && "results" in payload["d"]) {
+        } else if ("d" in payload && payload["d"].isObject && "results" in payload["d"]) {
             auto results = payload["d"]["results"];
             if (results.type == Json.Type.array) {
                 foreach (row; results) {
@@ -183,14 +183,14 @@ class HanaDBClient {
         if ("error" in payload) {
             auto err = payload["error"];
 
-            if (err.type == Json.Type.object) {
+            if (err.isObject) {
                 if ("message" in err) {
                     auto messageNode = err["message"];
                     if (messageNode.isString) {
                         return messageNode.get!string;
                     }
 
-                    if (messageNode.type == Json.Type.object && "value" in messageNode) {
+                    if (messageNode.isObject && "value" in messageNode) {
                         return messageNode["value"].get!string;
                     }
                 }

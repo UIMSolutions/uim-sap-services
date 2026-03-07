@@ -268,7 +268,7 @@ class DocMgmtIntegrationService : SAPService {
             folder.name = request["name"].get!string;
         if ("description" in request && request["description"].type == Json.Type.string)
             folder.description = request["description"].get!string;
-        if ("properties" in request && request["properties"].type == Json.Type.object)
+        if ("properties" in request && request["properties"].isObject)
             folder.properties = request["properties"];
 
         auto saved = _store.updateFolder(folder);
@@ -657,7 +657,7 @@ class DocMgmtIntegrationService : SAPService {
         if (doc.documentId.length == 0 || doc.tenantId != tenantId)
             throw new DocMgmtIntegrationNotFoundException("Document", documentId);
 
-        if ("properties" in request && request["properties"].type == Json.Type.object)
+        if ("properties" in request && request["properties"].isObject)
             doc.properties = request["properties"];
         if ("description" in request && request["description"].type == Json.Type.string)
             doc.description = request["description"].get!string;
@@ -698,7 +698,7 @@ class DocMgmtIntegrationService : SAPService {
         if (folder.folderId.length == 0 || folder.tenantId != tenantId)
             throw new DocMgmtIntegrationNotFoundException("Folder", folderId);
 
-        if ("properties" in request && request["properties"].type == Json.Type.object)
+        if ("properties" in request && request["properties"].isObject)
             folder.properties = request["properties"];
         if ("description" in request && request["description"].type == Json.Type.string)
             folder.description = request["description"].get!string;

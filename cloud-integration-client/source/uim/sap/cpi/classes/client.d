@@ -174,13 +174,13 @@ class CPIClient {
     private string extractErrorMessage(Json data, int statusCode) {
         if ("error" in data) {
             auto errorObj = data["error"];
-            if (errorObj.type == Json.Type.object) {
+            if (errorObj.isObject) {
                 if ("message" in errorObj) {
                     auto msg = errorObj["message"];
                     if (msg.isString) {
                         return msg.get!string;
                     }
-                    if (msg.type == Json.Type.object && "value" in msg) {
+                    if (msg.isObject && "value" in msg) {
                         return msg["value"].get!string;
                     }
                 }

@@ -192,14 +192,14 @@ class S4HANAClient {
         if ("error" in data) {
             auto errorObj = data["error"];
 
-            if (errorObj.type == Json.Type.object && "message" in errorObj) {
+            if (errorObj.isObject && "message" in errorObj) {
                 auto msg = errorObj["message"];
 
                 if (msg.isString) {
                     return msg.get!string;
                 }
 
-                if (msg.type == Json.Type.object && "value" in msg) {
+                if (msg.isObject && "value" in msg) {
                     return msg["value"].get!string;
                 }
             }

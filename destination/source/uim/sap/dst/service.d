@@ -115,7 +115,7 @@ class DSTService : SAPService {
         d.updatedAt          = d.createdAt;
 
         // Parse custom properties
-        if ("properties" in payload && payload["properties"].type == Json.Type.object) {
+        if ("properties" in payload && payload["properties"].isObject) {
             foreach (string k, v; payload["properties"])
                 if (v.type == Json.Type.string)
                     d.properties[k] = v.get!string;
@@ -183,7 +183,7 @@ class DSTService : SAPService {
         if ("sap_client" in payload)           d.sapClient          = payload["sap_client"].get!string;
         if ("active" in payload)               d.active             = jbool(payload, "active", d.active);
 
-        if ("properties" in payload && payload["properties"].type == Json.Type.object) {
+        if ("properties" in payload && payload["properties"].isObject) {
             string[string] newProps;
             foreach (string k, v; payload["properties"])
                 if (v.type == Json.Type.string)

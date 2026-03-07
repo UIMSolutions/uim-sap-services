@@ -361,7 +361,7 @@ class DSPService : SAPService {
 
     if ("users" in request)
       state.users = stringArray(request, "users");
-    if ("custom" in request && request["custom"].type == Json.Type.object)
+    if ("custom" in request && request["custom"].isObject)
       state.custom = request["custom"];
 
     auto saved = _store.upsertTenantState(state);

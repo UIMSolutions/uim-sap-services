@@ -47,7 +47,7 @@ AASMetricSnapshot metricsFromJson(Json payload) {
         snapshot.throughputRps = numberValue;
     }
 
-    if ("custom" in payload && payload["custom"].type == Json.Type.object) {
+    if ("custom" in payload && payload["custom"].isObject) {
         foreach (key, value; payload["custom"].byKeyValue) {
             try {
                 snapshot.custom[key] = value.get!double;

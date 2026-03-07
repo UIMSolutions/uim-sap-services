@@ -340,7 +340,7 @@ HTML";
         item.description = optionalString(request, "description", item.description);
         item.actionEndpoint = optionalString(request, "action_endpoint", item.actionEndpoint);
         item.httpMethod = toUpper(optionalString(request, "http_method", item.httpMethod));
-        if ("payload" in request && request["payload"].type == Json.Type.object) item.payload = request["payload"];
+        if ("payload" in request && request["payload"].isObject) item.payload = request["payload"];
         item.runtime = optionalString(request, "runtime", item.runtime);
         item.executionMode = optionalString(request, "execution_mode", item.executionMode);
         item.longRunningTask = optionalBool(request, "long_running_task", item.longRunningTask);
@@ -1034,7 +1034,7 @@ HTML";
     }
 
     private Json optionalObject(Json request, string key) {
-        if (key in request && request[key].type == Json.Type.object) {
+        if (key in request && request[key].isObject) {
             return request[key];
         }
         return Json.emptyObject;

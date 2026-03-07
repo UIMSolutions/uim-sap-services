@@ -34,7 +34,7 @@ CRECredential credentialFromJson(string instanceId, string credentialName, Json 
   credential.createdAt = Clock.currTime();
   credential.updatedAt = credential.createdAt;
 
-  if ("metadata" in request && request["metadata"].type == Json.Type.object) {
+  if ("metadata" in request && request["metadata"].isObject) {
     credential.metadata = request["metadata"];
   } else {
     credential.metadata = Json.emptyObject;

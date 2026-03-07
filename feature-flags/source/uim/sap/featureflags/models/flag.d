@@ -118,7 +118,7 @@ FFLFlag flagFromJson(string tenantId, Json request) {
     }
 
     // Parse percentage rule
-    if ("percentage_rule" in request && request["percentage_rule"].type == Json.Type.object) {
+    if ("percentage_rule" in request && request["percentage_rule"].isObject) {
         f.percentageRule = percentageRuleFromJson(request["percentage_rule"]);
     }
 

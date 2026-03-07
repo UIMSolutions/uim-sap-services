@@ -41,7 +41,7 @@ CREServiceInstance instanceFromJson(string instanceId, Json request) {
   if ("plan_id" in request && request["plan_id"].isString) {
     instance.planId = request["plan_id"].get!string;
   }
-  if ("parameters" in request && request["parameters"].type == Json.Type.object) {
+  if ("parameters" in request && request["parameters"].isObject) {
     instance.parameters = request["parameters"];
   } else {
     instance.parameters = Json.emptyObject;

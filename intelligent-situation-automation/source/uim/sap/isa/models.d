@@ -205,7 +205,7 @@ SituationInstance situationFromJson(Json payload, string tenantId) {
     instance.resolutionFlow = getString(payload, "resolution_flow", "manual_review");
     instance.occurredAt = Clock.currTime();
 
-    if ("data_context" in payload && payload["data_context"].type == Json.Type.object) {
+    if ("data_context" in payload && payload["data_context"].isObject) {
         instance.dataContext = payload["data_context"];
     } else {
         instance.dataContext = Json.emptyObject;
@@ -225,7 +225,7 @@ private BusinessRule[] parseRules(Json payload) {
     }
 
     foreach (entry; payload["business_rules"]) {
-        if (entry.type != Json.Type.object) {
+        if (!entry.isObject) {
             continue;
         }
 

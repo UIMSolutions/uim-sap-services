@@ -155,7 +155,7 @@ class FFLService : SAPService {
     }
 
     // Replace percentage rule if supplied
-    if ("percentage_rule" in request && request["percentage_rule"].type == Json.Type.object) {
+    if ("percentage_rule" in request && request["percentage_rule"].isObject) {
       existing.percentageRule = percentageRuleFromJson(request["percentage_rule"]);
     }
 

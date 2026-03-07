@@ -67,7 +67,7 @@ CONDestination destinationFromJson(string tenantId, string name, Json request) {
     .isBoolean) {
     destination.identityPropagationEnabled = request["identity_propagation_enabled"].get!bool;
   }
-  if ("metadata" in request && request["metadata"].type == Json.Type.object) {
+  if ("metadata" in request && request["metadata"].isObject) {
     destination.metadata = request["metadata"];
   } else {
     destination.metadata = Json.emptyObject;

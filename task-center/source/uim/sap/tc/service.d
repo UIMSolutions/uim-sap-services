@@ -374,33 +374,33 @@ class TCService : SAPService {
         return body[key].get!string;
     }
 
-    private string readOptional(Json body, string key, string fallback) const {
-        if (!(key in body) || body[key].type == Json.Type.null_) return fallback;
-        if (body[key].type != Json.Type.string) throw new TCValidationException(key ~ " must be a string");
-        return body[key].get!string;
+    private string readOptional(Json data, string key, string fallback) const {
+        if (!(key in data) || data[key].type == Json.Type.null_) return fallback;
+        if (data[key].type != Json.Type.string) throw new TCValidationException(key ~ " must be a string");
+        return data[key].get!string;
     }
 
-    private bool readOptionalBool(Json body, string key, bool fallback) const {
-        if (!(key in body) || body[key].type == Json.Type.null_) return fallback;
-        if (body[key].type != Json.Type.bool_) throw new TCValidationException(key ~ " must be a boolean");
-        return body[key].get!bool;
+    private bool readOptionalBool(Json data, string key, bool fallback) const {
+        if (!(key in data) || data[key].type == Json.Type.null_) return fallback;
+        if (data[key].type != Json.Type.bool_) throw new TCValidationException(key ~ " must be a boolean");
+        return data[key].get!bool;
     }
 
-    private string[] readStringArray(Json body, string key) const {
+    private string[] readStringArray(Json data, string key) const {
         string[] values;
-        if (!(key in body) || body[key].type == Json.Type.null_) return values;
-        if (body[key].type != Json.Type.array) throw new TCValidationException(key ~ " must be an array");
-        foreach (item; body[key]) {
+        if (!(key in data) || data[key].type == Json.Type.null_) return values;
+        if (data[key].type != Json.Type.array) throw new TCValidationException(key ~ " must be an array");
+        foreach (item; data[key]) {
             if (item.type != Json.Type.string) throw new TCValidationException(key ~ " must contain strings");
             values ~= item.get!string;
         }
         return values;
     }
 
-    private Json readObject(Json body, string key) const {
-        if (!(key in body) || body[key].type == Json.Type.null_) return Json.emptyObject;
-        if (body[key].type != Json.Type.object) throw new TCValidationException(key ~ " must be an object");
-        return body[key];
+    private Json readObject(Json data, string key) const {
+        if (!(key in data) || data[key].type == Json.Type.null_) return Json.emptyObject;
+        if (data[key].type != Json.Type.object) throw new TCValidationException(key ~ " must be an object");
+        return data[key];
     }
 
     private SysTime parseIsoTime(string value, string key) const {

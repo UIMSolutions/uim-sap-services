@@ -80,7 +80,7 @@ MDGBusinessPartner businessPartnerFromJson(string tenantId, Json request, string
     if ("relationships" in request && request["relationships"].type == Json.Type.array) {
         bp.relationships = request["relationships"];
     }
-    if ("attributes" in request && request["attributes"].type == Json.Type.object) {
+    if ("attributes" in request && request["attributes"].isObject) {
         bp.attributes = request["attributes"];
     }
     if ("workflow_state" in request && request["workflow_state"].isString) {

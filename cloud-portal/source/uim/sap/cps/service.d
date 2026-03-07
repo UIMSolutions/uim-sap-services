@@ -198,7 +198,7 @@ class CPSService : SAPService {
 
         if ("item_id" in request && request["item_id"].isString) item.itemId = request["item_id"].get!string;
         if ("name" in request && request["name"].isString) item.name = request["name"].get!string;
-        if ("configuration" in request && request["configuration"].type == Json.Type.object) item.configuration = request["configuration"];
+        if ("configuration" in request && request["configuration"].isObject) item.configuration = request["configuration"];
 
         if (item.name.length == 0) throw new CPSValidationException("name is required");
 

@@ -175,7 +175,7 @@ class DOCService : SAPService {
             folder.name = request["name"].get!string;
         if ("description" in request && request["description"].type == Json.Type.string)
             folder.description = request["description"].get!string;
-        if ("properties" in request && request["properties"].type == Json.Type.object)
+        if ("properties" in request && request["properties"].isObject)
             folder.properties = request["properties"];
 
         auto saved = _store.updateFolder(folder);
@@ -545,7 +545,7 @@ class DOCService : SAPService {
         if (doc.documentId.length == 0)
             throw new DOCNotFoundException("Document", documentId);
 
-        if ("properties" in request && request["properties"].type == Json.Type.object)
+        if ("properties" in request && request["properties"].isObject)
             doc.properties = request["properties"];
         if ("description" in request && request["description"].type == Json.Type.string)
             doc.description = request["description"].get!string;
@@ -583,7 +583,7 @@ class DOCService : SAPService {
         if (folder.folderId.length == 0)
             throw new DOCNotFoundException("Folder", folderId);
 
-        if ("properties" in request && request["properties"].type == Json.Type.object)
+        if ("properties" in request && request["properties"].isObject)
             folder.properties = request["properties"];
         if ("description" in request && request["description"].type == Json.Type.string)
             folder.description = request["description"].get!string;

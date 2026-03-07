@@ -48,7 +48,7 @@ class DQMService : SAPService {
 
         bool uppercaseCity = false;
         bool keepLine2 = true;
-        if ("preferences" in request && request["preferences"].type == Json.Type.object) {
+        if ("preferences" in request && request["preferences"].isObject) {
             auto pref = request["preferences"];
             if ("uppercase_city" in pref && pref["uppercase_city"].isBoolean) uppercaseCity = pref["uppercase_city"].get!bool;
             if ("keep_line2" in pref && pref["keep_line2"].isBoolean) keepLine2 = pref["keep_line2"].get!bool;

@@ -377,7 +377,7 @@ class CISService : SAPService {
         if ("source_system" in request && request["source_system"].isString) job.sourceSystem = request["source_system"].get!string;
         if ("target_system" in request && request["target_system"].isString) job.targetSystem = request["target_system"].get!string;
         if ("mode" in request && request["mode"].isString) job.mode = normalizeMode(request["mode"].get!string);
-        if ("filters" in request && request["filters"].type == Json.Type.object) job.filters = request["filters"];
+        if ("filters" in request && request["filters"].isObject) job.filters = request["filters"];
 
         if (job.sourceSystem.length == 0 || job.targetSystem.length == 0) {
             throw new CISValidationException("source_system and target_system are required");

@@ -31,7 +31,7 @@ CREServiceKey serviceKeyFromJson(string instanceId, string keyId, Json request, 
   key.secret = encrypted;
   key.createdAt = Clock.currTime();
 
-  if ("parameters" in request && request["parameters"].type == Json.Type.object) {
+  if ("parameters" in request && request["parameters"].isObject) {
     key.parameters = request["parameters"];
   } else {
     key.parameters = Json.emptyObject;

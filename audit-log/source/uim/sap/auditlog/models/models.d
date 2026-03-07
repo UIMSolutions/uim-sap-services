@@ -115,7 +115,7 @@ AuditLogEvent eventFromJson(string tenantId, Json request) {
     if ("actor" in request && request["actor"].isString) {
         eventItem.actor = request["actor"].get!string;
     }
-    if ("details" in request && request["details"].type == Json.Type.object) {
+    if ("details" in request && request["details"].isObject) {
         eventItem.details = request["details"];
     }
 

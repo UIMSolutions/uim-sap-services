@@ -121,7 +121,7 @@ class SDIService : SAPService {
       existing.description = body["description"].get!string;
     if ("roles" in body && body["roles"].type == Json.Type.array)
       existing.roles = readStringArray(body, "roles");
-    if ("settings" in body && body["settings"].type == Json.Type.object)
+    if ("settings" in body && body["settings"].isObject)
       existing.settings = settingsFromObject(body["settings"]);
     existing.updatedAt = now;
 
@@ -256,22 +256,22 @@ class SDIService : SAPService {
     body[key].get!string;
   }
 
-  private bool readOptionalBool(Json body, string key, bool fallback) const {
-    if (!(key in body) || body[key].type == Json.Type.null_)
+  private bool readOptionalBool(Json data, string key, bool fallback) const {
+    if (!(key in data) || data[key].type == Json.Type.null_)
       return fallback;
-    if (body[key].type != Json.Type.bool_)
+    if (data[key].type != Json.Type.bool_)
       throw new SDIValidationException(key ~ " must be a boolean");
     return
-    body[key].get!bool;
+    data[key].get!bool;
   }
 
-  private string[] readStringArray(Json body, string key) const {
+  private string[] readStringArray(Json data, string key) const {
     string[] values;
-    if (!(key in body) || body[key].type == Json.Type.null_)
+    if (!(key in data) || data[key].type == Json.Type.null_)
       return values;
-    if (body[key].type != Json.Type.array)
+    if (data[key].type != Json.Type.array)
       throw new SDIValidationException(key ~ " must be an array");
-    foreach (item; body[key]) {
+    foreach (item; data[key]) {
       if (item.type != Json.Type.string)
         throw new SDIValidationException(key ~ " must contain strings");
       values ~= item.get!string;
@@ -279,14 +279,14 @@ class SDIService : SAPService {
     return values;
   }
 
-  private SDISiteSettings settingsFromJson(Json body) const {
-    if (!("settings" in body) || body["settings"].type == Json.Type.null_) {
+  private SDISiteSettings settingsFromJson(Json data) const {
+    if (!("settings" in data) || data["settings"].type == Json.Type.null_) {
       SDISiteSettings defaults;
       return defaults;
     }
-    if (body["settings"].type != Json.Type.object)
+    if (data["settings"].type != Json.Type.object)
       throw new SDIValidationException("settings must be an object");
-    return settingsFromObject(body["settings"]);
+    return settingsFromObject(data["settings"]);
   }
 
   private SDISiteSettings settingsFromObject(Json settingsBody) const {

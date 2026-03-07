@@ -142,7 +142,7 @@ Folder folderFromJson(string repositoryId, string parentFolderId, Json request) 
         f.description = request["description"].get!string;
     if ("created_by" in request && request["created_by"].type == Json.Type.string)
         f.createdBy = request["created_by"].get!string;
-    if ("properties" in request && request["properties"].type == Json.Type.object)
+    if ("properties" in request && request["properties"].isObject)
         f.properties = request["properties"];
 
     return f;
@@ -222,7 +222,7 @@ Document documentFromJson(string repositoryId, string folderId, Json request) {
         d.sizeBytes = request["size_bytes"].get!long;
     if ("created_by" in request && request["created_by"].type == Json.Type.string)
         d.createdBy = request["created_by"].get!string;
-    if ("properties" in request && request["properties"].type == Json.Type.object)
+    if ("properties" in request && request["properties"].isObject)
         d.properties = request["properties"];
 
     d.modifiedBy = d.createdBy;
