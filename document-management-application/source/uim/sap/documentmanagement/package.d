@@ -15,4 +15,4 @@ public import uim.sap.documentmanagement.repositories;
 public import uim.sap.documentmanagement.service;
 public import uim.sap.documentmanagement.server;
 
-enum UIM_DOCUMENT_MANAGEMENT_VERSION = "1.0.0";
+enum UIM_DMAUMENT_MANAGEMENT_VERSION = "1.0.0";

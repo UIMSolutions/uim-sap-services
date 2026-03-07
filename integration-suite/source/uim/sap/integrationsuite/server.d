@@ -11,7 +11,7 @@ mixin(ShowModule!());
  *
  * Routes are organised under `/api/is/v1/tenants/{tenantId}/...`
  */
-class ISServer {
+class ISServer : SAPServer {
     private ISService _service;
 
     this(ISService service) {

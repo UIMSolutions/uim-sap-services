@@ -13,13 +13,13 @@ import uim.sap.documentmanagement.service;
 /**
  * HTTP server for the Document Management Service.
  *
- * Routes all incoming requests to the appropriate DOCService
+ * Routes all incoming requests to the appropriate DMAService
  * method based on URL path segments and HTTP method.
  */
-class DOCServer {
-    private DOCService _service;
+class DMAServer {
+    private DMAService _service;
 
-    this(DOCService service) {
+    this(DMAService service) {
         _service = service;
     }
 
@@ -78,17 +78,17 @@ class DOCServer {
 
             respondError(res, "Not found", 404);
 
-        } catch (DOCAuthorizationException e) {
+        } catch (DMAAuthorizationException e) {
             respondError(res, e.msg, 401);
-        } catch (DOCNotFoundException e) {
+        } catch (DMANotFoundException e) {
             respondError(res, e.msg, 404);
-        } catch (DOCConflictException e) {
+        } catch (DMAConflictException e) {
             respondError(res, e.msg, 409);
-        } catch (DOCPayloadTooLargeException e) {
+        } catch (DMAPayloadTooLargeException e) {
             respondError(res, e.msg, 413);
-        } catch (DOCValidationException e) {
+        } catch (DMAValidationException e) {
             respondError(res, e.msg, 422);
-        } catch (DOCException e) {
+        } catch (DMAException e) {
             respondError(res, e.msg, 500);
         } catch (Exception e) {
             respondError(res, e.msg, 500);
@@ -373,10 +373,10 @@ class DOCServer {
         if (!_service.config.requireAuthToken)
             return;
         if (!("Authorization" in req.headers))
-            throw new DOCAuthorizationException("Missing Authorization header");
+            throw new DMAAuthorizationException("Missing Authorization header");
         auto expected = "Bearer " ~ _service.config.authToken;
         if (req.headers["Authorization"] != expected)
-            throw new DOCAuthorizationException("Invalid management token");
+            throw new DMAAuthorizationException("Invalid management token");
     }
 
     // -------------------------------------------------------------------

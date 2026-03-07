@@ -24,7 +24,7 @@ class EncryptionManager {
         _enabled = enabled;
         if (_enabled) {
             if (keyBase64.length == 0) {
-                throw new DOCConfigurationException(
+                throw new DMAConfigurationException(
                     "Encryption key must be provided when encryption is enabled");
             }
             // Derive a 256-bit key from the provided key material using SHA-256
@@ -62,7 +62,7 @@ class EncryptionManager {
         try {
             ciphertext = Base64.decode(ciphertextBase64);
         } catch (Exception e) {
-            throw new DOCValidationException("Invalid Base64 ciphertext");
+            throw new DMAValidationException("Invalid Base64 ciphertext");
         }
         if (!_enabled || ciphertext.length == 0) {
             return ciphertext;

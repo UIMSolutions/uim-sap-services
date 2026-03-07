@@ -27,16 +27,16 @@ import uim.sap.documentmanagement.store;
  *  - Document viewing and download
  *  - Encryption support for internal repositories
  */
-class DOCService : SAPService {
-    private DOCConfig _config;
-    private DOCStore _store;
+class DMAService : SAPService {
+    private DMAConfig _config;
+    private DMAStore _store;
     private EncryptionManager _encryption;
     private RepositoryRegistry _registry;
 
-    this(DOCConfig config) {
+    this(DMAConfig config) {
         config.validate();
         _config = config;
-        _store = new DOCStore;
+        _store = new DMAStore;
         _encryption = new EncryptionManager(config.encryptionEnabled, config.encryptionKey);
         _registry = new RepositoryRegistry;
 
@@ -47,7 +47,7 @@ class DOCService : SAPService {
         _store.addRepository(internal.info());
     }
 
-    @property const(DOCConfig) config() const {
+    @property const(DMAConfig) config() const {
         return _config;
     }
 
@@ -90,7 +90,7 @@ class DOCService : SAPService {
         validateId(repositoryId, "Repository ID");
         auto repo = _store.getRepository(repositoryId);
         if (repo.repositoryId.length == 0)
-            throw new DOCNotFoundException("Repository", repositoryId);
+            throw new DMANotFoundException("Repository", repositoryId);
         Json r = Json.emptyObject;
         r["repository"] = repo.toJson();
         return r;
@@ -99,11 +99,11 @@ class DOCService : SAPService {
     Json connectRepository(Json request) {
         auto repo = repositoryFromJson(request);
         if (repo.name.length == 0)
-            throw new DOCValidationException("Repository name is required");
+            throw new DMAValidationException("Repository name is required");
 
         auto connector = new ExternalCmisConnector(repo);
         if (!connector.ping())
-            throw new DOCValidationException(
+            throw new DMAValidationException(
                 "Cannot reach repository: " ~ repo.name);
 
         _registry.register(connector);
@@ -119,7 +119,7 @@ class DOCService : SAPService {
         validateId(repositoryId, "Repository ID");
         auto repo = _store.getRepository(repositoryId);
         if (repo.repositoryId.length == 0)
-            throw new DOCNotFoundException("Repository", repositoryId);
+            throw new DMANotFoundException("Repository", repositoryId);
 
         _registry.remove(repositoryId);
         _store.removeRepository(repositoryId);
@@ -143,7 +143,7 @@ class DOCService : SAPService {
 
         auto folder = folderFromJson(repositoryId, parentFolderId, request);
         if (folder.name.length == 0)
-            throw new DOCValidationException("Folder name is required");
+            throw new DMAValidationException("Folder name is required");
 
         auto saved = _store.addFolder(folder);
 
@@ -157,7 +157,7 @@ class DOCService : SAPService {
         validateId(folderId, "Folder ID");
         auto folder = _store.getFolder(folderId);
         if (folder.folderId.length == 0)
-            throw new DOCNotFoundException("Folder", folderId);
+            throw new DMANotFoundException("Folder", folderId);
 
         Json r = Json.emptyObject;
         r["folder"] = folder.toJson();
@@ -169,7 +169,7 @@ class DOCService : SAPService {
         validateId(folderId, "Folder ID");
         auto folder = _store.getFolder(folderId);
         if (folder.folderId.length == 0)
-            throw new DOCNotFoundException("Folder", folderId);
+            throw new DMANotFoundException("Folder", folderId);
 
         if ("name" in request && request["name"].isString)
             folder.name = request["name"].get!string;
@@ -190,7 +190,7 @@ class DOCService : SAPService {
         validateId(folderId, "Folder ID");
         auto folder = _store.getFolder(folderId);
         if (folder.folderId.length == 0)
-            throw new DOCNotFoundException("Folder", folderId);
+            throw new DMANotFoundException("Folder", folderId);
 
         // Remove all descendant folders and their documents
         auto descendants = _store.getDescendantFolderIds(folderId);
@@ -236,7 +236,7 @@ class DOCService : SAPService {
         validateId(folderId, "Folder ID");
         auto folder = _store.getFolder(folderId);
         if (folder.folderId.length == 0)
-            throw new DOCNotFoundException("Folder", folderId);
+            throw new DMANotFoundException("Folder", folderId);
 
         string targetParentId = "";
         if ("target_folder_id" in request && request["target_folder_id"].isString)
@@ -248,7 +248,7 @@ class DOCService : SAPService {
             auto descendants = _store.getDescendantFolderIds(folderId);
             import std.algorithm.searching : canFind;
             if (descendants.canFind(targetParentId))
-                throw new DOCValidationException(
+                throw new DMAValidationException(
                     "Cannot move a folder into its own subtree");
         }
 
@@ -265,7 +265,7 @@ class DOCService : SAPService {
         validateId(folderId, "Folder ID");
         auto folder = _store.getFolder(folderId);
         if (folder.folderId.length == 0)
-            throw new DOCNotFoundException("Folder", folderId);
+            throw new DMANotFoundException("Folder", folderId);
 
         string targetParentId = "";
         if ("target_folder_id" in request && request["target_folder_id"].isString)
@@ -305,7 +305,7 @@ class DOCService : SAPService {
 
         auto doc = documentFromJson(repositoryId, folderId, request);
         if (doc.name.length == 0)
-            throw new DOCValidationException("Document name is required");
+            throw new DMAValidationException("Document name is required");
 
         // Handle encryption for internal repositories
         auto repo = _store.getRepository(repositoryId);
@@ -350,7 +350,7 @@ class DOCService : SAPService {
         validateId(documentId, "Document ID");
         auto doc = _store.getDocument(documentId);
         if (doc.documentId.length == 0)
-            throw new DOCNotFoundException("Document", documentId);
+            throw new DMANotFoundException("Document", documentId);
 
         Json r = Json.emptyObject;
         r["document"] = doc.toJson();
@@ -363,7 +363,7 @@ class DOCService : SAPService {
         validateId(documentId, "Document ID");
         auto doc = _store.getDocument(documentId);
         if (doc.documentId.length == 0)
-            throw new DOCNotFoundException("Document", documentId);
+            throw new DMANotFoundException("Document", documentId);
 
         // Cannot edit if checked out by someone else
         if (doc.status == DocumentStatus.checkedOut) {
@@ -371,7 +371,7 @@ class DOCService : SAPService {
             if ("modified_by" in request && request["modified_by"].isString)
                 actor = request["modified_by"].get!string;
             if (doc.checkedOutBy != actor)
-                throw new DOCConflictException(
+                throw new DMAConflictException(
                     "Document is checked out by " ~ doc.checkedOutBy);
         }
 
@@ -396,10 +396,10 @@ class DOCService : SAPService {
         validateId(documentId, "Document ID");
         auto doc = _store.getDocument(documentId);
         if (doc.documentId.length == 0)
-            throw new DOCNotFoundException("Document", documentId);
+            throw new DMANotFoundException("Document", documentId);
 
         if (doc.status == DocumentStatus.checkedOut)
-            throw new DOCConflictException(
+            throw new DMAConflictException(
                 "Cannot delete a checked-out document. Check it in first.");
 
         _store.removeDocument(documentId);
@@ -414,7 +414,7 @@ class DOCService : SAPService {
         validateId(documentId, "Document ID");
         auto doc = _store.getDocument(documentId);
         if (doc.documentId.length == 0)
-            throw new DOCNotFoundException("Document", documentId);
+            throw new DMANotFoundException("Document", documentId);
 
         string targetFolderId = "";
         if ("target_folder_id" in request && request["target_folder_id"].isString)
@@ -434,7 +434,7 @@ class DOCService : SAPService {
         validateId(documentId, "Document ID");
         auto doc = _store.getDocument(documentId);
         if (doc.documentId.length == 0)
-            throw new DOCNotFoundException("Document", documentId);
+            throw new DMANotFoundException("Document", documentId);
 
         string targetFolderId = "";
         if ("target_folder_id" in request && request["target_folder_id"].isString)
@@ -458,7 +458,7 @@ class DOCService : SAPService {
         validateId(documentId, "Document ID");
         auto doc = _store.getDocument(documentId);
         if (doc.documentId.length == 0)
-            throw new DOCNotFoundException("Document", documentId);
+            throw new DMANotFoundException("Document", documentId);
 
         bool viewable = isViewableExtension(doc.name);
 
@@ -490,7 +490,7 @@ class DOCService : SAPService {
         validateId(documentId, "Document ID");
         auto doc = _store.getDocument(documentId);
         if (doc.documentId.length == 0)
-            throw new DOCNotFoundException("Document", documentId);
+            throw new DMANotFoundException("Document", documentId);
 
         string content = "";
         if (doc.latestVersionId.length > 0) {
@@ -520,7 +520,7 @@ class DOCService : SAPService {
         validateId(documentId, "Document ID");
         auto doc = _store.getDocument(documentId);
         if (doc.documentId.length == 0)
-            throw new DOCNotFoundException("Document", documentId);
+            throw new DMANotFoundException("Document", documentId);
 
         Json r = Json.emptyObject;
         r["document_id"] = documentId;
@@ -543,7 +543,7 @@ class DOCService : SAPService {
         validateId(documentId, "Document ID");
         auto doc = _store.getDocument(documentId);
         if (doc.documentId.length == 0)
-            throw new DOCNotFoundException("Document", documentId);
+            throw new DMANotFoundException("Document", documentId);
 
         if ("properties" in request && request["properties"].isObject)
             doc.properties = request["properties"];
@@ -564,7 +564,7 @@ class DOCService : SAPService {
         validateId(folderId, "Folder ID");
         auto folder = _store.getFolder(folderId);
         if (folder.folderId.length == 0)
-            throw new DOCNotFoundException("Folder", folderId);
+            throw new DMANotFoundException("Folder", folderId);
 
         Json r = Json.emptyObject;
         r["folder_id"] = folderId;
@@ -581,7 +581,7 @@ class DOCService : SAPService {
         validateId(folderId, "Folder ID");
         auto folder = _store.getFolder(folderId);
         if (folder.folderId.length == 0)
-            throw new DOCNotFoundException("Folder", folderId);
+            throw new DMANotFoundException("Folder", folderId);
 
         if ("properties" in request && request["properties"].isObject)
             folder.properties = request["properties"];
@@ -621,17 +621,17 @@ class DOCService : SAPService {
         validateId(documentId, "Document ID");
         auto doc = _store.getDocument(documentId);
         if (doc.documentId.length == 0)
-            throw new DOCNotFoundException("Document", documentId);
+            throw new DMANotFoundException("Document", documentId);
 
         if (!_config.versioningEnabled)
-            throw new DOCValidationException("Versioning is disabled");
+            throw new DMAValidationException("Versioning is disabled");
 
         if (doc.status == DocumentStatus.checkedOut) {
             string actor = "system";
             if ("created_by" in request && request["created_by"].isString)
                 actor = request["created_by"].get!string;
             if (doc.checkedOutBy != actor)
-                throw new DOCConflictException(
+                throw new DMAConflictException(
                     "Document is checked out by " ~ doc.checkedOutBy);
         }
 
@@ -673,7 +673,7 @@ class DOCService : SAPService {
 
         auto ver = _store.getVersion(documentId, versionId);
         if (ver.versionId.length == 0)
-            throw new DOCNotFoundException("Version", versionId);
+            throw new DMANotFoundException("Version", versionId);
 
         Json r = Json.emptyObject;
         r["version"] = ver.toJson();
@@ -688,10 +688,10 @@ class DOCService : SAPService {
         validateId(documentId, "Document ID");
         auto doc = _store.getDocument(documentId);
         if (doc.documentId.length == 0)
-            throw new DOCNotFoundException("Document", documentId);
+            throw new DMANotFoundException("Document", documentId);
 
         if (doc.status == DocumentStatus.checkedOut)
-            throw new DOCConflictException(
+            throw new DMAConflictException(
                 "Document is already checked out by " ~ doc.checkedOutBy);
 
         string actor = "system";
@@ -713,17 +713,17 @@ class DOCService : SAPService {
         validateId(documentId, "Document ID");
         auto doc = _store.getDocument(documentId);
         if (doc.documentId.length == 0)
-            throw new DOCNotFoundException("Document", documentId);
+            throw new DMANotFoundException("Document", documentId);
 
         if (doc.status != DocumentStatus.checkedOut)
-            throw new DOCConflictException(
+            throw new DMAConflictException(
                 "Document is not currently checked out");
 
         string actor = "system";
         if ("user" in request && request["user"].isString)
             actor = request["user"].get!string;
         if (doc.checkedOutBy != actor)
-            throw new DOCConflictException(
+            throw new DMAConflictException(
                 "Document was checked out by " ~ doc.checkedOutBy ~ ", not " ~ actor);
 
         doc.status = DocumentStatus.checkedIn;
@@ -763,10 +763,10 @@ class DOCService : SAPService {
         validateId(documentId, "Document ID");
         auto doc = _store.getDocument(documentId);
         if (doc.documentId.length == 0)
-            throw new DOCNotFoundException("Document", documentId);
+            throw new DMANotFoundException("Document", documentId);
 
         if (doc.status != DocumentStatus.checkedOut)
-            throw new DOCConflictException(
+            throw new DMAConflictException(
                 "Document is not currently checked out");
 
         doc.status = DocumentStatus.draft;
@@ -845,25 +845,25 @@ class DOCService : SAPService {
 
     private void validateId(string value, string fieldName) {
         if (value.length == 0)
-            throw new DOCValidationException(fieldName ~ " cannot be empty");
+            throw new DMAValidationException(fieldName ~ " cannot be empty");
     }
 
     private void ensureRepository(string repositoryId) {
         auto repo = _store.getRepository(repositoryId);
         if (repo.repositoryId.length == 0)
-            throw new DOCNotFoundException("Repository", repositoryId);
+            throw new DMANotFoundException("Repository", repositoryId);
     }
 
     private void ensureFolder(string folderId) {
         auto folder = _store.getFolder(folderId);
         if (folder.folderId.length == 0)
-            throw new DOCNotFoundException("Folder", folderId);
+            throw new DMANotFoundException("Folder", folderId);
     }
 
     private void ensureDocument(string documentId) {
         auto doc = _store.getDocument(documentId);
         if (doc.documentId.length == 0)
-            throw new DOCNotFoundException("Document", documentId);
+            throw new DMANotFoundException("Document", documentId);
     }
 
     private void removeDocumentsInFolder(string repositoryId, string folderId) {

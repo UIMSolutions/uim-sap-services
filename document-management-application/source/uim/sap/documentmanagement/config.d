@@ -4,7 +4,7 @@ import std.string : startsWith, toLower;
 
 import uim.sap.documentmanagement.exceptions;
 
-class DOCConfig : SAPHostConfig {
+class DMAConfig : SAPHostConfig {
   mixin(SAPConfigTemplate!HTMRepoConfig);
 
   override bool initialize(Json[string] initData = null) {
@@ -44,26 +44,26 @@ class DOCConfig : SAPHostConfig {
 
     void validate() const {
         if (host.length == 0) {
-            throw new DOCConfigurationException("Host cannot be empty");
+            throw new DMAConfigurationException("Host cannot be empty");
         }
         if (port == 0) {
-            throw new DOCConfigurationException("Port must be greater than zero");
+            throw new DMAConfigurationException("Port must be greater than zero");
         }
         if (basePath.length == 0 || !basePath.startsWith("/")) {
-            throw new DOCConfigurationException("Base path must start with '/'");
+            throw new DMAConfigurationException("Base path must start with '/'");
         }
         if (serviceName.length == 0) {
-            throw new DOCConfigurationException("Service name cannot be empty");
+            throw new DMAConfigurationException("Service name cannot be empty");
         }
         if (maxUploadSizeMB <= 0) {
-            throw new DOCConfigurationException("Max upload size must be greater than zero");
+            throw new DMAConfigurationException("Max upload size must be greater than zero");
         }
         if (encryptionEnabled && encryptionKey.length == 0) {
-            throw new DOCConfigurationException(
+            throw new DMAConfigurationException(
                 "Encryption key is required when encryption is enabled");
         }
         if (requireAuthToken && authToken.length == 0) {
-            throw new DOCConfigurationException(
+            throw new DMAConfigurationException(
                 "Auth token is required when authentication is enabled");
         }
     }
