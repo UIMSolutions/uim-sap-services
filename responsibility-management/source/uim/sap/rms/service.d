@@ -26,18 +26,18 @@ class RMSService : SAPService {
         return _config;
     }
 
-    Json health() {
-        Json payload = Json.emptyObject;
-        payload["ok"] = true;
-        payload["service_name"] = _config.serviceName;
-        payload["service_version"] = _config.serviceVersion;
-        return payload;
+    override Json health() {
+        Json healthInfo = super.health();
+        healthInfo["ok"] = true;
+        healthInfo["service_name"] = _config.serviceName;
+        healthInfo["service_version"] = _config.serviceVersion;
+        return healthInfo;
     }
 
-    Json ready() {
-        Json payload = Json.emptyObject;
-        payload["ready"] = true;
-        return payload;
+    override Json ready() {
+        Json readyInfo = super.ready();
+        readyInfo["ready"] = true;
+        return readyInfo;
     }
 
     Json sapDeliveredCategories() {

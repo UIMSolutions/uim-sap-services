@@ -40,20 +40,20 @@ class MGTService : SAPService {
     return _config;
   }
 
-  Json health() {
-    Json payload = Json.emptyObject;
-    payload["ok"] = true;
-    payload["serviceName"] = _config.serviceName;
-    payload["serviceVersion"] = _config.serviceVersion;
-    payload["subdomain"] = _config.subdomain;
-    payload["region"] = _config.region;
-    return payload;
+  override Json health() {
+    Json healthInfo = super.health();
+    healthInfo["ok"] = true;
+    healthInfo["serviceName"] = _config.serviceName;
+    healthInfo["serviceVersion"] = _config.serviceVersion;
+    healthInfo["subdomain"] = _config.subdomain;
+    healthInfo["region"] = _config.region;
+    return healthInfo;
   }
 
-  Json ready() {
-    Json payload = Json.emptyObject;
-    payload["ready"] = true;
-    return payload;
+  override Json ready() {
+    Json readyInfo = super.ready();
+    readyInfo["ready"] = true;
+    return readyInfo;
   }
 
   Json environments() {

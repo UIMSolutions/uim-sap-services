@@ -35,20 +35,20 @@ class JobSchedulingService : SAPService {
 
     @property const(JobSchedulingConfig) config() const { return _config; }
 
-    Json health() {
-        Json data = Json.emptyObject;
-        data["ok"] = true;
-        data["serviceName"] = _config.serviceName;
-        data["serviceVersion"] = _config.serviceVersion;
-        data["scheduler_running"] = _schedulerRunning;
-        return data;
+    override Json health() {
+        Json healthInfo = super.health();
+        healthInfo["ok"] = true;
+        healthInfo["serviceName"] = _config.serviceName;
+        healthInfo["serviceVersion"] = _config.serviceVersion;
+        healthInfo["scheduler_running"] = _schedulerRunning;
+        return healthInfo;
     }
 
-    Json ready() {
-        Json data = Json.emptyObject;
-        data["ready"] = true;
-        data["timestamp"] = Clock.currTime().toISOExtString();
-        return data;
+    override Json ready() {
+        Json data = super.ready();
+        readyInfo["ready"] = true;
+        readyInfo["timestamp"] = Clock.currTime().toISOExtString();
+        return readyInfo;
     }
 
     string dashboardHtml() {

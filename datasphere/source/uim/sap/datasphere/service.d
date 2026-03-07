@@ -39,29 +39,25 @@ class DSPService : SAPService {
   }
 
   Json health() {
-    Json payload = Json.emptyObject;
-    Json capabilities = Json.emptyArray;
-    capabilities ~= "data_modeling";
-    capabilities ~= "business_modeling";
-    capabilities ~= "data_integration";
-    capabilities ~= "space_management";
-    capabilities ~= "administration";
-    capabilities ~= "data_protection_and_privacy";
-    capabilities ~= "data_governance";
-    capabilities ~= "consumption";
+    Json capabilities = [
+      "data_modeling", "business_modeling", "data_integration", 
+      "space_management", "administration", "data_protection_and_privacy", 
+      "data_governance", "consumption"
+    ].toJson;
 
-    payload["ok"] = true;
-    payload["serviceName"] = _config.serviceName;
-    payload["serviceVersion"] = _config.serviceVersion;
-    payload["capabilities"] = capabilities;
-    return payload;
+    Json healthInfo = Json.emptyObject;
+    healthInfo["ok"] = true;
+    healthInfo["serviceName"] = _config.serviceName;
+    healthInfo["serviceVersion"] = _config.serviceVersion;
+    healthInfo["capabilities"] = capabilities;
+    return healthInfo;
   }
 
   Json ready() {
-    Json payload = Json.emptyObject;
-    payload["ready"] = true;
-    payload["timestamp"] = Clock.currTime().toISOExtString();
-    return payload;
+    Json readyInfo = Json.emptyObject;
+    readyInfo["ready"] = true;
+    readyInfo["timestamp"] = Clock.currTime().toISOExtString();
+    return readyInfo;
   }
 
   Json createDataModel(string tenantId, Json request) {

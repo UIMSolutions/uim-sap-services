@@ -19,20 +19,20 @@ class DPIService : SAPService {
 
     @property const(DPIConfig) config() const { return _config; }
 
-    Json health() {
-        Json payload = Json.emptyObject;
-        payload["ok"] = true;
-        payload["serviceName"] = _config.serviceName;
-        payload["serviceVersion"] = _config.serviceVersion;
-        payload["multitenancy"] = true;
-        return payload;
+    override Json health() {
+        Json healthInfo = super.health();
+        healthInfo["ok"] = true;
+        healthInfo["serviceName"] = _config.serviceName;
+        healthInfo["serviceVersion"] = _config.serviceVersion;
+        healthInfo["multitenancy"] = true;
+        return healthInfo;
     }
 
-    Json ready() {
-        Json payload = Json.emptyObject;
-        payload["ready"] = true;
-        payload["timestamp"] = Clock.currTime().toISOExtString();
-        return payload;
+    override Json ready() {
+        Json readyInfo = super.ready();
+        readyInfo["ready"] = true;
+        readyInfo["timestamp"] = Clock.currTime().toISOExtString();
+        return readyInfo;
     }
 
     Json ingestRecord(string tenantId, Json request) {

@@ -10,320 +10,356 @@ import uim.sap.cps.models;
 import uim.sap.cps.store;
 
 class CPSService : SAPService {
-    private CPSConfig _config;
-    private CPSStore _store;
+  private CPSConfig _config;
+  private CPSStore _store;
 
-    this(CPSConfig config) {
-        config.validate();
-        _config = config;
-        _store = new CPSStore;
-    }
+  this(CPSConfig config) {
+    config.validate();
+    _config = config;
+    _store = new CPSStore;
+  }
 
-    @property const(CPSConfig) config() const { return _config; }
+  @property const(CPSConfig) config() const {
+    return _config;
+  }
 
-    Json health() {
-        Json payload = Json.emptyObject;
-        payload["ok"] = true;
-        payload["serviceName"] = _config.serviceName;
-        payload["serviceVersion"] = _config.serviceVersion;
-        return payload;
-    }
+  override Json health() {
+    Json healthInfo = super.health();
+    healthInfo["ok"] = true;
+    healthInfo["serviceName"] = _config.serviceName;
+    healthInfo["serviceVersion"] = _config.serviceVersion;
+    return healthInfo;
+  }
 
-    Json ready() {
-        Json payload = Json.emptyObject;
-        payload["ready"] = true;
-        payload["timestamp"] = Clock.currTime().toISOExtString();
-        return payload;
-    }
+  override Json ready() {
+    Json readyInfo = super.ready();
+    readyInfo["ready"] = true;
+    readyInfo["timestamp"] = Clock.currTime().toISOExtString();
+    return readyInfo;
+  }
 
-    Json upsertSite(string tenantId, Json request) {
-        validateId(tenantId, "Tenant ID");
-        auto site = siteFromJson(tenantId, request, _config.defaultTheme);
-        if (site.name.length == 0) throw new CPSValidationException("name is required");
-        site.updatedAt = Clock.currTime();
-        auto saved = _store.upsertSite(site);
+  Json upsertSite(string tenantId, Json request) {
+    validateId(tenantId, "Tenant ID");
+    auto site = siteFromJson(tenantId, request, _config.defaultTheme);
+    if (site.name.length == 0)
+      throw new CPSValidationException("name is required");
+    site.updatedAt = Clock.currTime();
+    auto saved = _store.upsertSite(site);
 
-        Json payload = Json.emptyObject;
-        payload["success"] = true;
-        payload["site"] = saved.toJson();
-        payload["user_experience"] = "fiori3-or-custom";
-        return payload;
-    }
+    Json payload = Json.emptyObject;
+    payload["success"] = true;
+    payload["site"] = saved.toJson();
+    payload["user_experience"] = "fiori3-or-custom";
+    return payload;
+  }
 
-    Json listSites(string tenantId) {
-        validateId(tenantId, "Tenant ID");
-        Json resources = Json.emptyArray;
-        foreach (site; _store.listSites(tenantId)) resources ~= site.toJson();
+  Json listSites(string tenantId) {
+    validateId(tenantId, "Tenant ID");
+    Json resources = Json.emptyArray;
+    foreach (site; _store.listSites(tenantId))
+      resources ~= site.toJson();
 
-        Json payload = Json.emptyObject;
-        payload["resources"] = resources;
-        payload["total_results"] = cast(long)resources.length;
-        return payload;
-    }
+    Json payload = Json.emptyObject;
+    payload["resources"] = resources;
+    payload["total_results"] = cast(long)resources.length;
+    return payload;
+  }
 
-    Json getSite(string tenantId, string siteId) {
-        validateId(tenantId, "Tenant ID");
-        validateId(siteId, "Site ID");
-        auto site = _store.getSite(tenantId, siteId);
-        if (site.siteId.length == 0) throw new CPSNotFoundException("Site", tenantId ~ "/" ~ siteId);
+  Json getSite(string tenantId, string siteId) {
+    validateId(tenantId, "Tenant ID");
+    validateId(siteId, "Site ID");
+    auto site = _store.getSite(tenantId, siteId);
+    if (site.siteId.length == 0)
+      throw new CPSNotFoundException("Site", tenantId ~ "/" ~ siteId);
 
-        Json payload = Json.emptyObject;
-        payload["site"] = site.toJson();
-        return payload;
-    }
+    Json payload = Json.emptyObject;
+    payload["site"] = site.toJson();
+    return payload;
+  }
 
-    Json deleteSite(string tenantId, string siteId) {
-        validateId(tenantId, "Tenant ID");
-        validateId(siteId, "Site ID");
-        if (!_store.deleteSite(tenantId, siteId)) throw new CPSNotFoundException("Site", tenantId ~ "/" ~ siteId);
+  Json deleteSite(string tenantId, string siteId) {
+    validateId(tenantId, "Tenant ID");
+    validateId(siteId, "Site ID");
+    if (!_store.deleteSite(tenantId, siteId))
+      throw new CPSNotFoundException("Site", tenantId ~ "/" ~ siteId);
 
-        Json payload = Json.emptyObject;
-        payload["success"] = true;
-        payload["site_id"] = siteId;
-        return payload;
-    }
+    Json payload = Json.emptyObject;
+    payload["success"] = true;
+    payload["site_id"] = siteId;
+    return payload;
+  }
 
-    Json resolveNavigation(string tenantId, Json request) {
-        validateId(tenantId, "Tenant ID");
+  Json resolveNavigation(string tenantId, Json request) {
+    validateId(tenantId, "Tenant ID");
 
-        Json roles = Json.emptyArray;
-        if ("roles" in request && request["roles"].isArray) roles = request["roles"];
+    Json roles = Json.emptyArray;
+    if ("roles" in request && request["roles"].isArray)
+      roles = request["roles"];
 
-        Json entries = Json.emptyArray;
-        foreach (site; _store.listSites(tenantId)) {
-            foreach (app; site.apps.get!(Json[])) {
-                if (app.type != Json.Type.object) continue;
-                string requiredRole;
-                if ("required_role" in app && app["required_role"].isString) requiredRole = app["required_role"].get!string;
-                if (requiredRole.length == 0 || containsString(roles, requiredRole)) {
-                    Json entry = Json.emptyObject;
-                    entry["site_id"] = site.siteId;
-                    entry["app"] = app;
-                    entries ~= entry;
-                }
-            }
+    Json entries = Json.emptyArray;
+    foreach (site; _store.listSites(tenantId)) {
+      foreach (app; site.apps.get!(Json[])) {
+        if (app.type != Json.Type.object)
+          continue;
+        string requiredRole;
+        if ("required_role" in app && app["required_role"].isString)
+          requiredRole = app["required_role"].get!string;
+        if (requiredRole.length == 0 || containsString(roles, requiredRole)) {
+          Json entry = Json.emptyObject;
+          entry["site_id"] = site.siteId;
+          entry["app"] = app;
+          entries ~= entry;
         }
-
-        Json payload = Json.emptyObject;
-        payload["entries"] = entries;
-        payload["single_sign_on"] = true;
-        payload["sso_protocols"] = Json.emptyArray;
-        payload["sso_protocols"] ~= "openid-connect";
-        payload["sso_protocols"] ~= "saml2";
-        return payload;
+      }
     }
 
-    Json listEntryPoints(string tenantId) {
-        validateId(tenantId, "Tenant ID");
-        Json resources = Json.emptyArray;
+    Json payload = Json.emptyObject;
+    payload["entries"] = entries;
+    payload["single_sign_on"] = true;
+    payload["sso_protocols"] = Json.emptyArray;
+    payload["sso_protocols"] ~= "openid-connect";
+    payload["sso_protocols"] ~= "saml2";
+    return payload;
+  }
 
-        foreach (site; _store.listSites(tenantId)) {
-            Json item = Json.emptyObject;
-            item["type"] = "site";
-            item["site_id"] = site.siteId;
-            item["name"] = site.name;
-            item["apps"] = site.apps;
-            resources ~= item;
-        }
+  Json listEntryPoints(string tenantId) {
+    validateId(tenantId, "Tenant ID");
+    Json resources = Json.emptyArray;
 
-        foreach (provider; _store.listProviders(tenantId)) {
-            Json item = Json.emptyObject;
-            item["type"] = "content-provider";
-            item["provider_id"] = provider.providerId;
-            item["solution_name"] = provider.solutionName;
-            item["catalogs"] = provider.catalogs;
-            resources ~= item;
-        }
-
-        Json payload = Json.emptyObject;
-        payload["resources"] = resources;
-        payload["total_results"] = cast(long)resources.length;
-        payload["central_entry_point"] = true;
-        return payload;
+    foreach (site; _store.listSites(tenantId)) {
+      Json item = Json.emptyObject;
+      item["type"] = "site";
+      item["site_id"] = site.siteId;
+      item["name"] = site.name;
+      item["apps"] = site.apps;
+      resources ~= item;
     }
 
-    Json upsertSiteAdministration(string tenantId, Json request) {
-        validateId(tenantId, "Tenant ID");
-
-        CPSAdminSettings admin;
-        admin.tenantId = tenantId;
-        admin.themes = Json.emptyArray;
-        admin.transports = Json.emptyArray;
-        admin.translations = Json.emptyArray;
-        admin.templates = Json.emptyArray;
-        admin.extensions = Json.emptyArray;
-        admin.updatedAt = Clock.currTime();
-
-        if ("themes" in request && request["themes"].isArray) admin.themes = request["themes"];
-        if ("transports" in request && request["transports"].isArray) admin.transports = request["transports"];
-        if ("translations" in request && request["translations"].isArray) admin.translations = request["translations"];
-        if ("templates" in request && request["templates"].isArray) admin.templates = request["templates"];
-        if ("extensions" in request && request["extensions"].isArray) admin.extensions = request["extensions"];
-
-        auto saved = _store.upsertAdmin(admin);
-        Json payload = Json.emptyObject;
-        payload["success"] = true;
-        payload["administration"] = saved.toJson();
-        return payload;
+    foreach (provider; _store.listProviders(tenantId)) {
+      Json item = Json.emptyObject;
+      item["type"] = "content-provider";
+      item["provider_id"] = provider.providerId;
+      item["solution_name"] = provider.solutionName;
+      item["catalogs"] = provider.catalogs;
+      resources ~= item;
     }
 
-    Json getSiteAdministration(string tenantId) {
-        validateId(tenantId, "Tenant ID");
-        auto admin = _store.getAdmin(tenantId);
-        if (admin.tenantId.length == 0) {
-            admin.tenantId = tenantId;
-            admin.themes = Json.emptyArray;
-            admin.transports = Json.emptyArray;
-            admin.translations = Json.emptyArray;
-            admin.templates = Json.emptyArray;
-            admin.extensions = Json.emptyArray;
-            admin.updatedAt = Clock.currTime();
-        }
+    Json payload = Json.emptyObject;
+    payload["resources"] = resources;
+    payload["total_results"] = cast(long)resources.length;
+    payload["central_entry_point"] = true;
+    return payload;
+  }
 
-        Json payload = Json.emptyObject;
-        payload["administration"] = admin.toJson();
-        return payload;
+  Json upsertSiteAdministration(string tenantId, Json request) {
+    validateId(tenantId, "Tenant ID");
+
+    CPSAdminSettings admin;
+    admin.tenantId = tenantId;
+    admin.themes = Json.emptyArray;
+    admin.transports = Json.emptyArray;
+    admin.translations = Json.emptyArray;
+    admin.templates = Json.emptyArray;
+    admin.extensions = Json.emptyArray;
+    admin.updatedAt = Clock.currTime();
+
+    if ("themes" in request && request["themes"].isArray)
+      admin.themes = request["themes"];
+    if ("transports" in request && request["transports"].isArray)
+      admin.transports = request["transports"];
+    if ("translations" in request && request["translations"].isArray)
+      admin.translations = request["translations"];
+    if ("templates" in request && request["templates"].isArray)
+      admin.templates = request["templates"];
+    if ("extensions" in request && request["extensions"].isArray)
+      admin.extensions = request["extensions"];
+
+    auto saved = _store.upsertAdmin(admin);
+    Json payload = Json.emptyObject;
+    payload["success"] = true;
+    payload["administration"] = saved.toJson();
+    return payload;
+  }
+
+  Json getSiteAdministration(string tenantId) {
+    validateId(tenantId, "Tenant ID");
+    auto admin = _store.getAdmin(tenantId);
+    if (admin.tenantId.length == 0) {
+      admin.tenantId = tenantId;
+      admin.themes = Json.emptyArray;
+      admin.transports = Json.emptyArray;
+      admin.translations = Json.emptyArray;
+      admin.templates = Json.emptyArray;
+      admin.extensions = Json.emptyArray;
+      admin.updatedAt = Clock.currTime();
     }
 
-    Json upsertContent(string tenantId, string contentType, Json request) {
-        validateId(tenantId, "Tenant ID");
-        validateContentType(contentType);
+    Json payload = Json.emptyObject;
+    payload["administration"] = admin.toJson();
+    return payload;
+  }
 
-        CPSContentItem item;
-        item.tenantId = tenantId;
-        item.itemType = contentType;
-        item.itemId = createId();
-        item.configuration = Json.emptyObject;
-        item.updatedAt = Clock.currTime();
+  Json upsertContent(string tenantId, string contentType, Json request) {
+    validateId(tenantId, "Tenant ID");
+    validateContentType(contentType);
 
-        if ("item_id" in request && request["item_id"].isString) item.itemId = request["item_id"].get!string;
-        if ("name" in request && request["name"].isString) item.name = request["name"].get!string;
-        if ("configuration" in request && request["configuration"].isObject) item.configuration = request["configuration"];
+    CPSContentItem item;
+    item.tenantId = tenantId;
+    item.itemType = contentType;
+    item.itemId = createId();
+    item.configuration = Json.emptyObject;
+    item.updatedAt = Clock.currTime();
 
-        if (item.name.length == 0) throw new CPSValidationException("name is required");
+    if ("item_id" in request && request["item_id"].isString)
+      item.itemId = request["item_id"].get!string;
+    if ("name" in request && request["name"].isString)
+      item.name = request["name"].get!string;
+    if ("configuration" in request && request["configuration"].isObject)
+      item.configuration = request["configuration"];
 
-        auto saved = _store.upsertContent(item);
-        Json payload = Json.emptyObject;
-        payload["success"] = true;
-        payload["content"] = saved.toJson();
-        return payload;
+    if (item.name.length == 0)
+      throw new CPSValidationException("name is required");
+
+    auto saved = _store.upsertContent(item);
+    Json payload = Json.emptyObject;
+    payload["success"] = true;
+    payload["content"] = saved.toJson();
+    return payload;
+  }
+
+  Json listContent(string tenantId, string contentType) {
+    validateId(tenantId, "Tenant ID");
+    validateContentType(contentType);
+
+    Json resources = Json.emptyArray;
+    foreach (item; _store.listContent(tenantId, contentType))
+      resources ~= item.toJson();
+
+    Json payload = Json.emptyObject;
+    payload["resources"] = resources;
+    payload["total_results"] = cast(long)resources.length;
+    return payload;
+  }
+
+  Json upsertLaunchpadModule(string tenantId, Json request) {
+    validateId(tenantId, "Tenant ID");
+
+    CPSLaunchpadModule launchpadModule;
+    launchpadModule.tenantId = tenantId;
+    launchpadModule.moduleId = createId();
+    launchpadModule.personalization = true;
+    launchpadModule.translation = true;
+    launchpadModule.customThemes = true;
+    launchpadModule.updatedAt = Clock.currTime();
+
+    if ("module_id" in request && request["module_id"].isString)
+      launchpadModule.moduleId = request["module_id"].get!string;
+    if ("solution_name" in request && request["solution_name"].isString)
+      launchpadModule.solutionName = request["solution_name"].get!string;
+    if ("personalization" in request && request["personalization"].isBoolean)
+      launchpadModule.personalization = request["personalization"].get!bool;
+    if ("translation" in request && request["translation"].isBoolean)
+      launchpadModule.translation = request["translation"].get!bool;
+    if ("custom_themes" in request && request["custom_themes"].isBoolean)
+      launchpadModule.customThemes = request["custom_themes"].get!bool;
+
+    if (launchpadModule.solutionName.length == 0)
+      throw new CPSValidationException("solution_name is required");
+
+    auto saved = _store.upsertLaunchpad(launchpadModule);
+    Json payload = Json.emptyObject;
+    payload["success"] = true;
+    payload["launchpad_module"] = saved.toJson();
+    payload["embedded_launchpad"] = true;
+    return payload;
+  }
+
+  Json listLaunchpadModules(string tenantId) {
+    validateId(tenantId, "Tenant ID");
+    Json resources = Json.emptyArray;
+    foreach (launchpadModule; _store.listLaunchpad(tenantId))
+      resources ~= launchpadModule.toJson();
+
+    Json payload = Json.emptyObject;
+    payload["resources"] = resources;
+    payload["total_results"] = cast(long)resources.length;
+    return payload;
+  }
+
+  Json upsertProvider(string tenantId, Json request) {
+    validateId(tenantId, "Tenant ID");
+    CPSContentProvider provider;
+    provider.tenantId = tenantId;
+    provider.providerId = createId();
+    provider.saasEnabled = true;
+    provider.catalogs = Json.emptyArray;
+    provider.updatedAt = Clock.currTime();
+
+    if ("provider_id" in request && request["provider_id"].isString)
+      provider.providerId = request["provider_id"].get!string;
+    if ("solution_name" in request && request["solution_name"].isString)
+      provider.solutionName = request["solution_name"].get!string;
+    if ("saas_enabled" in request && request["saas_enabled"].isBoolean)
+      provider.saasEnabled = request["saas_enabled"].get!bool;
+    if ("catalogs" in request && request["catalogs"].isArray)
+      provider.catalogs = request["catalogs"];
+
+    if (provider.solutionName.length == 0)
+      throw new CPSValidationException("solution_name is required");
+
+    auto saved = _store.upsertProvider(provider);
+    Json payload = Json.emptyObject;
+    payload["success"] = true;
+    payload["provider"] = saved.toJson();
+    payload["saas_content_provider"] = true;
+    return payload;
+  }
+
+  Json listProviders(string tenantId) {
+    validateId(tenantId, "Tenant ID");
+    Json resources = Json.emptyArray;
+    foreach (provider; _store.listProviders(tenantId))
+      resources ~= provider.toJson();
+
+    Json payload = Json.emptyObject;
+    payload["resources"] = resources;
+    payload["total_results"] = cast(long)resources.length;
+    return payload;
+  }
+
+  Json consumeProvider(string tenantId, string providerId) {
+    validateId(tenantId, "Tenant ID");
+    validateId(providerId, "Provider ID");
+
+    auto provider = _store.getProvider(tenantId, providerId);
+    if (provider.providerId.length == 0)
+      throw new CPSNotFoundException("Provider", tenantId ~ "/" ~ providerId);
+
+    Json payload = Json.emptyObject;
+    payload["success"] = true;
+    payload["consumed"] = provider.toJson();
+    payload["message"] = "SaaS content provider exposed for portal consumption";
+    return payload;
+  }
+
+  private void validateContentType(string contentType) {
+    if (contentType != "apps" && contentType != "roles" && contentType != "groups" && contentType != "catalogs") {
+      throw new CPSValidationException("contentType must be apps, roles, groups, or catalogs");
     }
+  }
 
-    Json listContent(string tenantId, string contentType) {
-        validateId(tenantId, "Tenant ID");
-        validateContentType(contentType);
-
-        Json resources = Json.emptyArray;
-        foreach (item; _store.listContent(tenantId, contentType)) resources ~= item.toJson();
-
-        Json payload = Json.emptyObject;
-        payload["resources"] = resources;
-        payload["total_results"] = cast(long)resources.length;
-        return payload;
+  private bool containsString(Json values, string needle) {
+    if (values.type != Json.Type.array || needle.length == 0)
+      return false;
+    foreach (item; values.get!(Json[])) {
+      if (item.isString && item.get!string == needle)
+        return true;
     }
+    return false;
+  }
 
-    Json upsertLaunchpadModule(string tenantId, Json request) {
-        validateId(tenantId, "Tenant ID");
-
-        CPSLaunchpadModule launchpadModule;
-        launchpadModule.tenantId = tenantId;
-        launchpadModule.moduleId = createId();
-        launchpadModule.personalization = true;
-        launchpadModule.translation = true;
-        launchpadModule.customThemes = true;
-        launchpadModule.updatedAt = Clock.currTime();
-
-        if ("module_id" in request && request["module_id"].isString) launchpadModule.moduleId = request["module_id"].get!string;
-        if ("solution_name" in request && request["solution_name"].isString) launchpadModule.solutionName = request["solution_name"].get!string;
-        if ("personalization" in request && request["personalization"].isBoolean) launchpadModule.personalization = request["personalization"].get!bool;
-        if ("translation" in request && request["translation"].isBoolean) launchpadModule.translation = request["translation"].get!bool;
-        if ("custom_themes" in request && request["custom_themes"].isBoolean) launchpadModule.customThemes = request["custom_themes"].get!bool;
-
-        if (launchpadModule.solutionName.length == 0) throw new CPSValidationException("solution_name is required");
-
-        auto saved = _store.upsertLaunchpad(launchpadModule);
-        Json payload = Json.emptyObject;
-        payload["success"] = true;
-        payload["launchpad_module"] = saved.toJson();
-        payload["embedded_launchpad"] = true;
-        return payload;
-    }
-
-    Json listLaunchpadModules(string tenantId) {
-        validateId(tenantId, "Tenant ID");
-        Json resources = Json.emptyArray;
-        foreach (launchpadModule; _store.listLaunchpad(tenantId)) resources ~= launchpadModule.toJson();
-
-        Json payload = Json.emptyObject;
-        payload["resources"] = resources;
-        payload["total_results"] = cast(long)resources.length;
-        return payload;
-    }
-
-    Json upsertProvider(string tenantId, Json request) {
-        validateId(tenantId, "Tenant ID");
-        CPSContentProvider provider;
-        provider.tenantId = tenantId;
-        provider.providerId = createId();
-        provider.saasEnabled = true;
-        provider.catalogs = Json.emptyArray;
-        provider.updatedAt = Clock.currTime();
-
-        if ("provider_id" in request && request["provider_id"].isString) provider.providerId = request["provider_id"].get!string;
-        if ("solution_name" in request && request["solution_name"].isString) provider.solutionName = request["solution_name"].get!string;
-        if ("saas_enabled" in request && request["saas_enabled"].isBoolean) provider.saasEnabled = request["saas_enabled"].get!bool;
-        if ("catalogs" in request && request["catalogs"].isArray) provider.catalogs = request["catalogs"];
-
-        if (provider.solutionName.length == 0) throw new CPSValidationException("solution_name is required");
-
-        auto saved = _store.upsertProvider(provider);
-        Json payload = Json.emptyObject;
-        payload["success"] = true;
-        payload["provider"] = saved.toJson();
-        payload["saas_content_provider"] = true;
-        return payload;
-    }
-
-    Json listProviders(string tenantId) {
-        validateId(tenantId, "Tenant ID");
-        Json resources = Json.emptyArray;
-        foreach (provider; _store.listProviders(tenantId)) resources ~= provider.toJson();
-
-        Json payload = Json.emptyObject;
-        payload["resources"] = resources;
-        payload["total_results"] = cast(long)resources.length;
-        return payload;
-    }
-
-    Json consumeProvider(string tenantId, string providerId) {
-        validateId(tenantId, "Tenant ID");
-        validateId(providerId, "Provider ID");
-
-        auto provider = _store.getProvider(tenantId, providerId);
-        if (provider.providerId.length == 0) throw new CPSNotFoundException("Provider", tenantId ~ "/" ~ providerId);
-
-        Json payload = Json.emptyObject;
-        payload["success"] = true;
-        payload["consumed"] = provider.toJson();
-        payload["message"] = "SaaS content provider exposed for portal consumption";
-        return payload;
-    }
-
-    private void validateContentType(string contentType) {
-        if (contentType != "apps" && contentType != "roles" && contentType != "groups" && contentType != "catalogs") {
-            throw new CPSValidationException("contentType must be apps, roles, groups, or catalogs");
-        }
-    }
-
-    private bool containsString(Json values, string needle) {
-        if (values.type != Json.Type.array || needle.length == 0) return false;
-        foreach (item; values.get!(Json[])) {
-            if (item.isString && item.get!string == needle) return true;
-        }
-        return false;
-    }
-
-    private void validateId(string value, string fieldName) {
-        if (value.length == 0) throw new CPSValidationException(fieldName ~ " cannot be empty");
-    }
+  private void validateId(string value, string fieldName) {
+    if (value.length == 0)
+      throw new CPSValidationException(fieldName ~ " cannot be empty");
+  }
 }

@@ -10,178 +10,185 @@ import uim.sap.dqm.models;
 import uim.sap.dqm.store;
 
 class DQMService : SAPService {
-    private DQMConfig _config;
-    private DQMStore _store;
+  private DQMConfig _config;
+  private DQMStore _store;
 
-    this(DQMConfig config) {
-        config.validate();
-        _config = config;
-        _store = new DQMStore;
+  this(DQMConfig config) {
+    config.validate();
+    _config = config;
+    _store = new DQMStore;
+  }
+
+  @property const(DQMConfig) config() const {
+    return _config;
+  }
+
+  override Json health() {
+    Json healthInfo = super.health();
+    healthInfo["ok"] = true;
+    healthInfo["serviceName"] = _config.serviceName;
+    healthInfo["serviceVersion"] = _config.serviceVersion;
+    healthInfo["geodata_records"] = cast(long)_store.records().length;
+    return healthInfo;
+  }
+
+  Json ready() {
+    Json readyInfo = super.ready();
+    readyInfo["ready"] = true;
+    return readyInfo;
+  }
+
+  Json cleanseAddress(Json request) {
+    if (!("address" in request) || request["address"].type != Json.Type.object) {
+      throw new DQMValidationException("address object is required");
     }
 
-    @property const(DQMConfig) config() const {
-        return _config;
+    auto original = addressFromJson(request["address"], _config.defaultCountry);
+    validateAddress(original);
+
+    bool uppercaseCity = false;
+    bool keepLine2 = true;
+    if ("preferences" in request && request["preferences"].isObject) {
+      auto pref = request["preferences"];
+      if ("uppercase_city" in pref && pref["uppercase_city"].isBoolean)
+        uppercaseCity = pref["uppercase_city"].get!bool;
+      if ("keep_line2" in pref && pref["keep_line2"].isBoolean)
+        keepLine2 = pref["keep_line2"].get!bool;
     }
 
-    Json health() {
-        Json payload = Json.emptyObject;
-        payload["ok"] = true;
-        payload["serviceName"] = _config.serviceName;
-        payload["serviceVersion"] = _config.serviceVersion;
-        payload["geodata_records"] = cast(long)_store.records().length;
-        return payload;
+    auto standardized = standardizedAddress(original, uppercaseCity, keepLine2);
+    auto searchKey = standardized.line1 ~ " " ~ standardized.city;
+    auto proposals = _store.findAddressMatches(searchKey, standardized.country);
+
+    Json suggestionList = Json.emptyArray;
+    foreach (proposal; proposals) {
+      suggestionList ~= proposal.address.toJson();
     }
 
-    Json ready() {
-        Json payload = Json.emptyObject;
-        payload["ready"] = true;
-        return payload;
+    Json corrections = Json.emptyObject;
+    corrections["line1_changed"] = original.line1 != standardized.line1;
+    corrections["city_changed"] = original.city != standardized.city;
+    corrections["postal_code_changed"] = original.postalCode != standardized.postalCode;
+    corrections["country_changed"] = original.country != standardized.country;
+
+    Json payload = Json.emptyObject;
+    payload["valid"] = true;
+    payload["ambiguous"] = proposals.length > 1;
+    payload["input"] = original.toJson();
+    payload["standardized"] = standardized.toJson();
+    payload["suggestions"] = suggestionList;
+    payload["corrections"] = corrections;
+    return payload;
+  }
+
+  Json geocode(Json request) {
+    if (!("address" in request) || !request["address"].isObject) {
+      throw new DQMValidationException("address object is required");
     }
 
-    Json cleanseAddress(Json request) {
-        if (!("address" in request) || request["address"].type != Json.Type.object) {
-            throw new DQMValidationException("address object is required");
-        }
+    auto address = addressFromJson(request["address"], _config.defaultCountry);
+    validateAddress(address);
 
-        auto original = addressFromJson(request["address"], _config.defaultCountry);
-        validateAddress(original);
-
-        bool uppercaseCity = false;
-        bool keepLine2 = true;
-        if ("preferences" in request && request["preferences"].isObject) {
-            auto pref = request["preferences"];
-            if ("uppercase_city" in pref && pref["uppercase_city"].isBoolean) uppercaseCity = pref["uppercase_city"].get!bool;
-            if ("keep_line2" in pref && pref["keep_line2"].isBoolean) keepLine2 = pref["keep_line2"].get!bool;
-        }
-
-        auto standardized = standardizedAddress(original, uppercaseCity, keepLine2);
-        auto searchKey = standardized.line1 ~ " " ~ standardized.city;
-        auto proposals = _store.findAddressMatches(searchKey, standardized.country);
-
-        Json suggestionList = Json.emptyArray;
-        foreach (proposal; proposals) {
-            suggestionList ~= proposal.address.toJson();
-        }
-
-        Json corrections = Json.emptyObject;
-        corrections["line1_changed"] = original.line1 != standardized.line1;
-        corrections["city_changed"] = original.city != standardized.city;
-        corrections["postal_code_changed"] = original.postalCode != standardized.postalCode;
-        corrections["country_changed"] = original.country != standardized.country;
-
-        Json payload = Json.emptyObject;
-        payload["valid"] = true;
-        payload["ambiguous"] = proposals.length > 1;
-        payload["input"] = original.toJson();
-        payload["standardized"] = standardized.toJson();
-        payload["suggestions"] = suggestionList;
-        payload["corrections"] = corrections;
-        return payload;
+    auto query = address.line1 ~ " " ~ address.city;
+    auto matches = _store.findAddressMatches(query, address.country);
+    if (matches.length == 0) {
+      throw new DQMNotFoundException("Address geocode", query);
     }
 
-    Json geocode(Json request) {
-        if (!("address" in request) || !request["address"].isObject) {
-            throw new DQMValidationException("address object is required");
-        }
-
-        auto address = addressFromJson(request["address"], _config.defaultCountry);
-        validateAddress(address);
-
-        auto query = address.line1 ~ " " ~ address.city;
-        auto matches = _store.findAddressMatches(query, address.country);
-        if (matches.length == 0) {
-            throw new DQMNotFoundException("Address geocode", query);
-        }
-
-        auto best = matches[0];
-        Json alternatives = Json.emptyArray;
-        foreach (candidate; matches) {
-            alternatives ~= candidate.toJson();
-        }
-
-        Json payload = Json.emptyObject;
-        payload["address"] = best.address.toJson();
-        payload["point"] = best.point.toJson();
-        payload["ambiguous"] = matches.length > 1;
-        payload["proposed_addresses"] = alternatives;
-        return payload;
+    auto best = matches[0];
+    Json alternatives = Json.emptyArray;
+    foreach (candidate; matches) {
+      alternatives ~= candidate.toJson();
     }
 
-    Json reverseGeocode(Json request) {
-        auto latitude = getNumber(request, "latitude");
-        auto longitude = getNumber(request, "longitude");
+    Json payload = Json.emptyObject;
+    payload["address"] = best.address.toJson();
+    payload["point"] = best.point.toJson();
+    payload["ambiguous"] = matches.length > 1;
+    payload["proposed_addresses"] = alternatives;
+    return payload;
+  }
 
-        size_t limit = 3;
-        if ("limit" in request && request["limit"].isInteger) {
-            auto parsed = request["limit"].get!long;
-            if (parsed > 0) limit = cast(size_t)parsed;
-        }
+  Json reverseGeocode(Json request) {
+    auto latitude = getNumber(request, "latitude");
+    auto longitude = getNumber(request, "longitude");
 
-        auto nearest = _store.nearest(latitude, longitude, limit);
-        Json addresses = Json.emptyArray;
-        foreach (record; nearest) {
-            Json item = Json.emptyObject;
-            item["address"] = record.address.toJson();
-            item["point"] = record.point.toJson();
-            addresses ~= item;
-        }
-
-        Json payload = Json.emptyObject;
-        payload["query"] = Json.emptyObject;
-        payload["query"]["latitude"] = latitude;
-        payload["query"]["longitude"] = longitude;
-        payload["nearest_addresses"] = addresses;
-        payload["total_results"] = cast(long)addresses.length;
-        return payload;
+    size_t limit = 3;
+    if ("limit" in request && request["limit"].isInteger) {
+      auto parsed = request["limit"].get!long;
+      if (parsed > 0)
+        limit = cast(size_t)parsed;
     }
 
-    Json suggestAddresses(Json request) {
-        if (!("query" in request) || !request["query"].isString || request["query"].get!string.length == 0) {
-            throw new DQMValidationException("query is required");
-        }
-
-        auto query = request["query"].get!string;
-        auto country = _config.defaultCountry;
-        if ("country" in request && request["country"].isString && request["country"].get!string.length > 0) {
-            country = request["country"].get!string;
-        }
-
-        size_t limit = 5;
-        if ("limit" in request && request["limit"].isInteger) {
-            auto parsed = request["limit"].get!long;
-            if (parsed > 0) limit = cast(size_t)parsed;
-        }
-
-        auto suggestions = _store.suggest(query, toLower(country), limit);
-        Json resources = Json.emptyArray;
-        foreach (suggestion; suggestions) {
-            resources ~= suggestion.address.toJson();
-        }
-
-        Json payload = Json.emptyObject;
-        payload["query"] = query;
-        payload["country"] = country;
-        payload["resources"] = resources;
-        payload["total_results"] = cast(long)resources.length;
-        return payload;
+    auto nearest = _store.nearest(latitude, longitude, limit);
+    Json addresses = Json.emptyArray;
+    foreach (record; nearest) {
+      Json item = Json.emptyObject;
+      item["address"] = record.address.toJson();
+      item["point"] = record.point.toJson();
+      addresses ~= item;
     }
 
-    private double getNumber(Json request, string fieldName) {
-        if (!(fieldName in request)) {
-            throw new DQMValidationException(fieldName ~ " is required");
-        }
-        if (request[fieldName].isFloat) {
-            return request[fieldName].get!double;
-        }
-        if (request[fieldName].isInteger) {
-            return cast(double)request[fieldName].get!long;
-        }
-        throw new DQMValidationException(fieldName ~ " must be numeric");
+    Json payload = Json.emptyObject;
+    payload["query"] = Json.emptyObject;
+    payload["query"]["latitude"] = latitude;
+    payload["query"]["longitude"] = longitude;
+    payload["nearest_addresses"] = addresses;
+    payload["total_results"] = cast(long)addresses.length;
+    return payload;
+  }
+
+  Json suggestAddresses(Json request) {
+    if (!("query" in request) || !request["query"].isString || request["query"].get!string.length == 0) {
+      throw new DQMValidationException("query is required");
     }
 
-    private void validateAddress(DQMAddress address) {
-        if (address.line1.length == 0) throw new DQMValidationException("address.line1 is required");
-        if (address.city.length == 0) throw new DQMValidationException("address.city is required");
-        if (address.country.length == 0) throw new DQMValidationException("address.country is required");
+    auto query = request["query"].get!string;
+    auto country = _config.defaultCountry;
+    if ("country" in request && request["country"].isString && request["country"].get!string.length > 0) {
+      country = request["country"].get!string;
     }
+
+    size_t limit = 5;
+    if ("limit" in request && request["limit"].isInteger) {
+      auto parsed = request["limit"].get!long;
+      if (parsed > 0)
+        limit = cast(size_t)parsed;
+    }
+
+    auto suggestions = _store.suggest(query, toLower(country), limit);
+    Json resources = Json.emptyArray;
+    foreach (suggestion; suggestions) {
+      resources ~= suggestion.address.toJson();
+    }
+
+    Json payload = Json.emptyObject;
+    payload["query"] = query;
+    payload["country"] = country;
+    payload["resources"] = resources;
+    payload["total_results"] = cast(long)resources.length;
+    return payload;
+  }
+
+  private double getNumber(Json request, string fieldName) {
+    if (!(fieldName in request)) {
+      throw new DQMValidationException(fieldName ~ " is required");
+    }
+    if (request[fieldName].isFloat) {
+      return request[fieldName].get!double;
+    }
+    if (request[fieldName].isInteger) {
+      return cast(double)request[fieldName].get!long;
+    }
+    throw new DQMValidationException(fieldName ~ " must be numeric");
+  }
+
+  private void validateAddress(DQMAddress address) {
+    if (address.line1.length == 0)
+      throw new DQMValidationException("address.line1 is required");
+    if (address.city.length == 0)
+      throw new DQMValidationException("address.city is required");
+    if (address.country.length == 0)
+      throw new DQMValidationException("address.country is required");
+  }
 }

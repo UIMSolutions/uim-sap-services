@@ -55,20 +55,20 @@ class DMAService : SAPService {
     // Platform
     // ===================================================================
 
-    Json health() {
-        Json r = Json.emptyObject;
-        r["ok"] = true;
-        r["serviceName"] = _config.serviceName;
-        r["serviceVersion"] = _config.serviceVersion;
-        r["repositories_connected"] = cast(long) _registry.count();
-        return r;
+    override Json health() {
+        Json healthInfo = super.health();
+        healthInfo["ok"] = true;
+        healthInfo["serviceName"] = _config.serviceName;
+        healthInfo["serviceVersion"] = _config.serviceVersion;
+        healthInfo["repositories_connected"] = cast(long) _registry.count();
+        return healthInfo;
     }
 
-    Json ready() {
-        Json r = Json.emptyObject;
-        r["ready"] = true;
-        r["timestamp"] = Clock.currTime().toISOExtString();
-        return r;
+    override Json ready() {
+        Json readyInfo = super.ready();
+        readyInfo["ready"] = true;
+        readyInfo["timestamp"] = Clock.currTime().toISOExtString();
+        return readyInfo;
     }
 
     // ===================================================================
