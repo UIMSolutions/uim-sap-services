@@ -35,11 +35,6 @@ class BUHService : SAPService {
         return payload;
     }
 
-    override Json ready() {
-        Json payload = super.ready();
-        payload["ready"] = true;
-        return payload;
-    }
 
     Json createApi(Json request) {
         auto api = apiFromJson(request);

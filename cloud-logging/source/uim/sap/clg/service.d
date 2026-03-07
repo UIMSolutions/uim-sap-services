@@ -34,7 +34,6 @@ class CLGService : SAPService {
 
     override Json ready() {
         Json readyInfo = super.ready();
-        readyInfo["ready"] = true;
         readyInfo["storedEntries"] = cast(long)_store.count();
         return readyInfo;
     }

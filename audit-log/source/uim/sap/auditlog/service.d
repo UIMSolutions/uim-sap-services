@@ -26,13 +26,6 @@ class AuditLogService : SAPService {
     return healthInfo;
   }
 
-  override Json ready() {
-    Json readyInfo = super.ready();
-    readyInfo["ready"] = true;
-    readyInfo["timestamp"] = Clock.currTime().toISOExtString();
-    return readyInfo;
-  }
-
   Json listRecommendedEventTypes() {
     Json resources = Json.emptyArray;
     foreach (eventType; AUDIT_LOG_RECOMMENDED_EVENT_TYPES) {

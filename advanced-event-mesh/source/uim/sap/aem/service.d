@@ -33,13 +33,6 @@ class AEMService : SAPService {
     return healthInfo;
   }
 
-  overrideJson ready() {
-    Json readyInfo = super.ready();
-    readyInfo["ready"] = true;
-    readyInfo["timestamp"] = Clock.currTime().toISOExtString();
-    return readyInfo;
-  }
-
   Json createBrokerService(string tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
 

@@ -29,12 +29,6 @@ class CMGService : SAPService {
     return payload;
   }
 
-  Json ready() const {
-    Json payload = Json.emptyObject;
-    payload["status"] = "READY";
-    return payload;
-  }
-
   Json listContent(string tenantId, string contentType) {
     validateTenant(tenantId);
     auto normalizedType = normalizeContentType(contentType);

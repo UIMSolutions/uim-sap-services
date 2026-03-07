@@ -52,12 +52,6 @@ class ATPService : SAPService {
         return payload;
     }
 
-    Json ready() const {
-        Json payload = Json.emptyObject;
-        payload["status"] = "READY";
-        return payload;
-    }
-
     Json listCatalogs(string tenantId) {
         validateTenant(tenantId);
         Json catalogs = Json.emptyArray;

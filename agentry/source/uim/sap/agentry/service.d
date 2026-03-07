@@ -33,12 +33,6 @@ class AgentryService : SAPService {
     return readyInfo;
   }
 
-  override Json ready() {
-    Json readyInfo = super.ready();
-    readyInfo["ready"] = true;
-    readyInfo["timestamp"] = Clock.currTime().toISOExtString();
-    return readyInfo;
-  }
 
   Json upsertMobileApp(string tenantId, Json request) {
     validateId(tenantId, "Tenant ID");

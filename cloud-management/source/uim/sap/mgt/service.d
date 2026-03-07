@@ -50,12 +50,6 @@ class MGTService : SAPService {
     return healthInfo;
   }
 
-  override Json ready() {
-    Json readyInfo = super.ready();
-    readyInfo["ready"] = true;
-    return readyInfo;
-  }
-
   Json environments() {
     return toVibeJson(getEnvironment(_client));
   }

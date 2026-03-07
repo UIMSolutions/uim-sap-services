@@ -33,12 +33,6 @@ class CONService : SAPService {
     return healthInfo;
   }
 
-  override Json ready() {
-    Json readyInfo = super.ready();
-    readyInfo["ready"] = true;
-    readyInfo["timestamp"] = Clock.currTime().toISOExtString();
-    return readyInfo;
-  }
 
   Json supportedProtocols() {
     Json protocols = CON_SUPPORTED_PROTOCOLS.toJson;

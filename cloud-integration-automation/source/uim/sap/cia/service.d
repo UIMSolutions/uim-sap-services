@@ -42,11 +42,6 @@ class CIAService : SAPService {
         return j;
     }
 
-    Json ready() const {
-        Json j = Json.emptyObject;
-        return j;
-    }
-
     // -----------------------------------------------------------------------
     // Dashboard HTML
     // -----------------------------------------------------------------------

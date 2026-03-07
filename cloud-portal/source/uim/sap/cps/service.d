@@ -31,13 +31,6 @@ class CPSService : SAPService {
     return healthInfo;
   }
 
-  override Json ready() {
-    Json readyInfo = super.ready();
-    readyInfo["ready"] = true;
-    readyInfo["timestamp"] = Clock.currTime().toISOExtString();
-    return readyInfo;
-  }
-
   Json upsertSite(string tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
     auto site = siteFromJson(tenantId, request, _config.defaultTheme);

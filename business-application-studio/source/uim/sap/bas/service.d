@@ -37,11 +37,6 @@ class BASService : SAPService {
         return payload;
     }
 
-    Json ready() const {
-        Json payload = Json.emptyObject;
-        payload["status"] = "READY";
-        return payload;
-    }
 
     Json listScenarios(string tenantId) {
         validateTenant(tenantId);

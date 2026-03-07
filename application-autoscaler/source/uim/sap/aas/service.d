@@ -32,12 +32,6 @@ class AASService : SAPService {
     return healthInfo;
   }
 
-  override Json ready() {
-    Json readyInfo = super.ready();
-    readyInfo["ready"] = true;
-    return readyInfo;
-  }
-
   Json registerApp(Json request) {
     auto app = appFromJson(request);
     if (app.name.length == 0) {
