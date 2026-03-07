@@ -11,7 +11,7 @@ mixin(ShowModule!());
 
 @safe:
 
-class ISAServer {
+class ISAServer : SAPServer {
   private ISAService _service;
 
   this(ISAService service) {

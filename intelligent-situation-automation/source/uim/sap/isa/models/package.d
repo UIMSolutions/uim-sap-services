@@ -10,4 +10,5 @@ public {
   import uim.sap.isa.models.businessrule;
   import uim.sap.isa.models.datacontextreport;
   import uim.sap.isa.models.situationinstance;
+  import uim.sap.isa.models.model;
 }

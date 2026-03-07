@@ -5,6 +5,12 @@
 *****************************************************************************************************************/
 module uim.sap.isa.models.businessrule;
 
+import uim.sap.isa;
+
+mixin(ShowModule!());
+
+@safe:
+
 struct BusinessRule {
   string field;
   string op;
@@ -17,4 +23,29 @@ struct BusinessRule {
     payload["expected"] = expected;
     return payload;
   }
+}
+
+private BusinessRule[] parseRules(Json payload) {
+  BusinessRule[] rules;
+  if (!("business_rules" in payload) || !payload["business_rules"].isArray) {
+    return rules;
+  }
+
+  foreach (entry; payload["business_rules"]) {
+    if (!entry.isObject) {
+      continue;
+    }
+
+    BusinessRule rule;
+    rule.field = getString(entry, "field", "");
+    rule.op = getString(entry, "op", "equals");
+    rule.expected = getString(entry, "expected", "");
+
+    if (rule.field.length == 0) {
+      continue;
+    }
+    rules ~= rule;
+  }
+
+  return rules;
 }
