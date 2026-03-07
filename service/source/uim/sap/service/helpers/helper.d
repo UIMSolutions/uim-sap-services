@@ -1,3 +1,8 @@
+/****************************************************************************************************************
+* Copyright: © 2018-2026 Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*) 
+* License: Subject to the terms of the Apache 2.0 license, as written in the included LICENSE.txt file. 
+* Authors: Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*)
+*****************************************************************************************************************/
 module uim.sap.service.helpers.helper;
 
 import uim.sap.service;
@@ -7,16 +12,15 @@ mixin(ShowModule!());
 @safe:
 
 string createId() {
-    return randomUUID().toString();
+  return randomUUID().toString();
 }
 
-
-private string envOr(string key, string fallback) {
+string envOr(string key, string fallback) {
   auto value = environment.get(key, "");
   return value.length > 0 ? value : fallback;
 }
 
-private ushort readPort(string value, ushort fallback) {
+ushort readPort(string value, ushort fallback) {
   try {
     auto parsed = to!ushort(value);
     return parsed > 0 ? parsed : fallback;
@@ -25,7 +29,7 @@ private ushort readPort(string value, ushort fallback) {
   }
 }
 
-private bool readBool(string value, bool fallback) {
+bool readBool(string value, bool fallback) {
   auto normalized = value.dup;
   foreach (index, c; normalized) {
     if (c >= 'A' && c <= 'Z') {
@@ -56,7 +60,7 @@ string[] stringArrayFromJson(Json values) {
   return result;
 }
 
-private int readInt(string value, int fallback) {
+int readInt(string value, int fallback) {
   try {
     auto parsed = to!int(value);
     return parsed > 0 ? parsed : fallback;
@@ -65,11 +69,11 @@ private int readInt(string value, int fallback) {
   }
 }
 
-private double readDouble(string value, double fallback) {
-    try {
-        auto parsed = to!double(value);
-        return parsed > 0 ? parsed : fallback;
-    } catch (Exception) {
-        return fallback;
-    }
+double readDouble(string value, double fallback) {
+  try {
+    auto parsed = to!double(value);
+    return parsed > 0 ? parsed : fallback;
+  } catch (Exception) {
+    return fallback;
+  }
 }

@@ -18,7 +18,7 @@ mixin(ShowModule!());
 
 version (unittest) {
 } else {
-void main() {
+  void main() {
     IPVConfig config = new IPVConfig;
     config.host = envOr("IPV_HOST", "0.0.0.0");
     config.port = readPort(envOr("IPV_PORT", "8095"), 8095);
@@ -28,8 +28,8 @@ void main() {
 
     auto token = envOr("IPV_AUTH_TOKEN", "");
     if (token.length > 0) {
-        config.requireAuthToken = true;
-        config.authToken = token;
+      config.requireAuthToken = true;
+      config.authToken = token;
     }
 
     config.customHeaders["X-Service"] = config.serviceName;
@@ -41,18 +41,5 @@ void main() {
     writeln("Starting Identity Provisioning service on ", config.host, ":", config.port);
     writeln("Base path: ", config.basePath);
     server.run();
-}}
-
-private string envOr(string key, string fallback) {
-    auto value = environment.get(key, "");
-    return value.length > 0 ? value : fallback;
-}
-
-private ushort readPort(string value, ushort fallback) {
-    try {
-        auto parsed = to!ushort(value);
-        return parsed > 0 ? parsed : fallback;
-    } catch (Exception) {
-        return fallback;
-    }
+  }
 }

@@ -9,7 +9,7 @@ import uim.sap.docmgmtintegration;
 
 version (unittest) {
 } else {
-void main() {
+  void main() {
     DocMgmtIntegrationConfig config;
     config.host = envOr("DMSI_HOST", "0.0.0.0");
     config.port = readPort(envOr("DMSI_PORT", "8091"), 8091);
@@ -24,12 +24,12 @@ void main() {
 
     auto encKey = envOr("DMSI_ENCRYPTION_KEY", "");
     if (encKey.length > 0)
-        config.encryptionKey = encKey;
+      config.encryptionKey = encKey;
 
     auto authToken = envOr("DMSI_AUTH_TOKEN", "");
     if (authToken.length > 0) {
-        config.requireAuthToken = true;
-        config.authToken = authToken;
+      config.requireAuthToken = true;
+      config.authToken = authToken;
     }
 
     config.customHeaders["X-Service"] = config.serviceName;
@@ -40,51 +40,22 @@ void main() {
     auto server = new DocMgmtIntegrationServer(service);
 
     writeln("Starting Document Management Integration Service on ",
-            config.host, ":", config.port);
+      config.host, ":", config.port);
     writeln("Base path: ", config.basePath);
     writeln("Default repository: ", config.defaultRepository);
     writeln("Multitenancy: ", config.multitenancyEnabled ? "enabled" : "disabled");
     writeln("Versioning: ", config.versioningEnabled ? "enabled" : "disabled");
     writeln("Encryption: ", config.encryptionEnabled ? "enabled" : "disabled");
     server.run();
-}
-}
-
-private string envOr(string key, string fallback) {
-    auto value = environment.get(key, "");
-    return value.length > 0 ? value : fallback;
-}
-
-private ushort readPort(string value, ushort fallback) {
-    try {
-        auto parsed = to!ushort(value);
-        return parsed > 0 ? parsed : fallback;
-    } catch (Exception) {
-        return fallback;
-    }
-}
-
-private int readInt(string value, int fallback) {
-    try {
-        return to!int(value);
-    } catch (Exception) {
-        return fallback;
-    }
+  }
 }
 
 private bool readBool(string value, bool fallback) {
-    auto lower = toLower(value);
-    if (lower == "true" || lower == "1" || lower == "yes")
-        return true;
-    if (lower == "false" || lower == "0" || lower == "no")
-        return false;
-    return fallback;
+  auto lower = toLower(value);
+  if (lower == "true" || lower == "1" || lower == "yes")
+    return true;
+  if (lower == "false" || lower == "0" || lower == "no")
+    return false;
+  return fallback;
 }
 
-private double readDouble(string value, double fallback) {
-    try {
-        return to!double(value);
-    } catch (Exception) {
-        return fallback;
-    }
-}

@@ -16,22 +16,8 @@ mixin(ShowModule!());
    server.run();
 } */ 
 
-private string envOr(string key, string fallback) {
-    auto value = environment.get(key, "");
-    return value.length > 0 ? value : fallback;
-}
-
-private ushort readPort(string value, ushort fallback) {
-    try {
-        auto parsed = to!ushort(value);
-        return parsed > 0 ? parsed : fallback;
-    } catch (Exception) {
-        return fallback;
-    }
-} 
-
 void main() {
-    MONConfig config;
+    MONConfig config = new MONConfig;
     config.host = envOr("MON_HOST", "0.0.0.0");
     config.port = readPort(envOr("MON_PORT", "8090"), 8090);
     config.basePath = envOr("MON_BASE_PATH", "/api/mon");

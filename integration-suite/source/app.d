@@ -1,10 +1,5 @@
 module app;
 
-import std.conv : to;
-import std.process : environment;
-import std.stdio : writeln;
-
-import vibe.core.core : runApplication;
 import uim.sap.integrationsuite;
 
 mixin(ShowModule!());
@@ -13,7 +8,7 @@ mixin(ShowModule!());
 
 version (unittest) {
 } else {
-void main() {
+  void main() {
     ISConfig config = new ISConfig;
     config.host = envOr("IS_HOST", "0.0.0.0");
     config.port = readPort(envOr("IS_PORT", "8100"), 8100);
@@ -23,8 +18,8 @@ void main() {
 
     auto token = envOr("IS_AUTH_TOKEN", "");
     if (token.length > 0) {
-        config.requireAuthToken = true;
-        config.authToken = token;
+      config.requireAuthToken = true;
+      config.authToken = token;
     }
 
     config.customHeaders["X-Service"] = config.serviceName;
@@ -36,18 +31,5 @@ void main() {
     writeln("Starting Integration Suite service on ", config.host, ":", config.port);
     writeln("Base path: ", config.basePath);
     server.run();
-}}
-
-private string envOr(string key, string fallback) {
-    auto value = environment.get(key, "");
-    return value.length > 0 ? value : fallback;
-}
-
-private ushort readPort(string value, ushort fallback) {
-    try {
-        auto parsed = to!ushort(value);
-        return parsed > 0 ? parsed : fallback;
-    } catch (Exception) {
-        return fallback;
-    }
+  }
 }
