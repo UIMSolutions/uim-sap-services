@@ -36,3 +36,17 @@ private bool readBool(string value, bool fallback) {
   }
   return fallback;
 }
+
+string[] stringArrayFromJson(Json values) {
+  string[] result;
+  if (values.type != Json.Type.array) {
+    return result;
+  }
+
+  foreach (item; values.get!(Json[])) {
+    if (item.isString) {
+      result ~= item.get!string;
+    }
+  }
+  return result;
+}

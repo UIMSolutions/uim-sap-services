@@ -322,27 +322,27 @@ class BASService : SAPService {
     }
 
     private string readRequired(Json body, string key) const {
-        if (!(key in body) || body[key].type != Json.Type.string || body[key].get!string.length == 0) {
+        if (!(key in body) || !body[key].isString || body[key].get!string.length == 0) {
             throw new BASValidationException(key ~ " is required");
         }
         return body[key].get!string;
     }
 
-    private string readOptional(Json body, string key, string fallback) const {
-        if (!(key in body) || body[key].type == Json.Type.null_) return fallback;
-        if (body[key].type != Json.Type.string) throw new BASValidationException(key ~ " must be a string");
-        return body[key].get!string;
+    private string readOptional(Json data, string key, string fallback) const {
+        if (!(key in data) || data[key].type == Json.Type.null_) return fallback;
+        if (!data[key].isString) throw new BASValidationException(key ~ " must be a string");
+        return data[key].get!string;
     }
 
-    private bool readOptionalBool(Json body, string key, bool fallback) const {
-        if (!(key in body) || body[key].type == Json.Type.null_) return fallback;
-        if (body[key].type != Json.Type.bool_) throw new BASValidationException(key ~ " must be a boolean");
-        return body[key].get!bool;
+    private bool readOptionalBool(Json data, string key, bool fallback) const {
+        if (!(key in data) || data[key].type == Json.Type.null_) return fallback;
+        if (!data[key].isBoolean) throw new BASValidationException(key ~ " must be a boolean");
+        return data[key].get!bool;
     }
 
-    private Json readObject(Json body, string key) const {
-        if (!(key in body) || body[key].type == Json.Type.null_) return Json.emptyObject;
-        if (body[key].type != Json.Type.object) throw new BASValidationException(key ~ " must be an object");
-        return body[key];
+    private Json readObject(Json data, string key) const {
+        if (!(key in data) || data[key].type == Json.Type.null_) return Json.emptyObject;
+        if (!data[key].isObject) throw new BASValidationException(key ~ " must be an object");
+        return data[key];
     }
 }

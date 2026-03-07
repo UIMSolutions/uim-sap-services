@@ -367,8 +367,8 @@ class ATMService : SAPService {
         result["application_id"] = appId;
         result["user_id"] = context.userId;
         result["authorized"] = authorized;
-        result["required_permissions"] = asJsonArray(requiredPermissions);
-        result["effective_permissions"] = asJsonArray(context.permissions);
+        result["required_permissions"] = requiredPermissions.toJson;
+        result["effective_permissions"] = context.permissions.toJson;
         result["missing_permissions"] = missing;
         return result;
     }
