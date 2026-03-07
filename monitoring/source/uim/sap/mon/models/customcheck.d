@@ -7,7 +7,10 @@ module uim.sap.mon.models.customcheck;
 
 import uim.sap.mon;
 
+mixin(ShowModule!());
+
 @safe:
+
 
 struct MONCustomCheck {
     string checkId;

@@ -7,7 +7,10 @@ module uim.sap.mon.models.availabilitycheck;
 
 import uim.sap.mon;
 
+mixin(ShowModule!());
+
 @safe:
+
 
 /**
  * Represents a configuration for an availability check of a service or endpoint.

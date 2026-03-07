@@ -6,6 +6,9 @@
 module uim.sap.mon.service;
 
 import uim.sap.mon;
+
+mixin(ShowModule!());
+
 @safe:
 
 class MONService : SAPService {

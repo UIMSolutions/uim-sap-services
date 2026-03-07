@@ -7,6 +7,8 @@ module uim.sap.mon.models.alertemailchannel;
 
 import uim.sap.mon;
 
+mixin(ShowModule!());
+
 @safe:
 
 /**

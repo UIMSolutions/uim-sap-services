@@ -7,7 +7,10 @@ module uim.sap.mon.models.alertwebhookchannel;
 
 import uim.sap.mon;
 
+mixin(ShowModule!());
+
 @safe:
+
 
 /**
  * Represents the configuration for an alert webhook channel.

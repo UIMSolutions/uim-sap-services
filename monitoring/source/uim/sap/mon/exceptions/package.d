@@ -5,4 +5,10 @@
 *****************************************************************************************************************/
 module uim.sap.mon.exceptions;
 
-public import uim.sap.mon.exceptions.exceptions;
+public {
+  import uim.sap.mon.exceptions.exception;
+  import uim.sap.mon.exceptions.authorization;
+  import uim.sap.mon.exceptions.configuration;
+  import uim.sap.mon.exceptions.notfound;
+  import uim.sap.mon.exceptions.validation;
+}

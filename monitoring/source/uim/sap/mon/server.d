@@ -6,6 +6,9 @@
 module uim.sap.mon.server;
 
 import uim.sap.mon;
+
+mixin(ShowModule!());
+
 @safe:
 
 class MONServer : SAPServer {

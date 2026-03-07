@@ -8,6 +8,9 @@ module uim.sap.mon.store;
 import core.sync.mutex : Mutex;
 
 import uim.sap.mon;
+
+mixin(ShowModule!());
+
 @safe:
 
 class MONStore : SAPStore {

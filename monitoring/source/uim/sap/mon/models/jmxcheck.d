@@ -7,7 +7,10 @@ module uim.sap.mon.models.jmxcheck;
 
 import uim.sap.mon;
 
+mixin(ShowModule!());
+
 @safe:
+
 
 /**
   * Represents a JMX check configuration for monitoring.

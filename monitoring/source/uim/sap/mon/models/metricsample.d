@@ -7,6 +7,8 @@ module uim.sap.mon.models.metricsample;
 
 import uim.sap.mon;
 
+mixin(ShowModule!());
+
 @safe:
 
 /**

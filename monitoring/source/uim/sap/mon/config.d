@@ -6,9 +6,12 @@
 module uim.sap.mon.config;
 
 import uim.sap.mon;
+
+mixin(ShowModule!());
+
 @safe:
 
-struct MONConfig : SAPConfig {
+class MONConfig : SAPConfig {
   string host = "0.0.0.0";
   ushort port = 8090;
   string basePath = "/api/mon";
