@@ -1,4 +1,4 @@
-module uim.sap.bas.exceptions.exception;
+module uim.sap.bas.exceptions.validation;
 
 import uim.sap.bas;
 
@@ -6,7 +6,7 @@ module(ShowModule!());
 
 @safe:
 
-class BASException : SAPException {
+class BASValidationException : BASException {
     this(string message) {
         super(message);
     }

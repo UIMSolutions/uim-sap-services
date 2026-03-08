@@ -1,21 +1,10 @@
-module uim.sap.bas.models;
+module uim.sap.bas.models.terminalsession;
 
-import std.datetime : SysTime;
-
-import vibe.data.json : Json;
-
-
-
-
-
-
-
-struct BASDeployment {
+struct BASTerminalSession {
   string tenantId;
   string workspaceId;
-  string deploymentId;
-  string target;
-  string mode;
+  string sessionId;
+  string shell;
   string status;
   SysTime createdAt;
 
@@ -23,9 +12,8 @@ struct BASDeployment {
     Json payload = Json.emptyObject;
     payload["tenant_id"] = tenantId;
     payload["workspace_id"] = workspaceId;
-    payload["deployment_id"] = deploymentId;
-    payload["target"] = target;
-    payload["mode"] = mode;
+    payload["session_id"] = sessionId;
+    payload["shell"] = shell;
     payload["status"] = status;
     payload["created_at"] = createdAt.toISOExtString();
     return payload;

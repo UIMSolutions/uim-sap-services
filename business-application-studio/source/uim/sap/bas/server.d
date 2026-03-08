@@ -1,14 +1,10 @@
 module uim.sap.bas.server;
 
-import std.array : split;
-import std.string : startsWith;
+import uim.sap.bas;
 
-import vibe.data.json : Json;
-import vibe.http.common : HTTPMethod;
-import vibe.http.server : HTTPServerRequest, HTTPServerResponse, HTTPServerSettings, listenHTTP;
+module(ShowModule!());
 
-import uim.sap.bas.exceptions;
-import uim.sap.bas.service;
+@safe:
 
 class BASServer {
   private BASService _service;
