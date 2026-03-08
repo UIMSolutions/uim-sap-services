@@ -1,5 +1,12 @@
 module uim.sap.bas.models.template_;
 
+import uim.sap.bas;
+
+mixin(ShowModule!());
+
+@safe:
+
+
 struct BASTemplate {
   string templateId;
   string scenarioId;

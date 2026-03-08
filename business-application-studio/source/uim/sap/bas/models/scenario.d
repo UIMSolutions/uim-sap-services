@@ -1,5 +1,12 @@
 module uim.sap.bas.models.scenario;
 
+import uim.sap.bas;
+
+mixin(ShowModule!());
+
+@safe:
+
+
 struct BASScenario {
   string scenarioId;
   string name;

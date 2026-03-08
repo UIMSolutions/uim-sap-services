@@ -1,14 +1,10 @@
-module uim.sap.bas.models;
+module uim.sap.bas.models.deployment;
 
-import std.datetime : SysTime;
+import uim.sap.bas;
 
-import vibe.data.json : Json;
+mixin(ShowModule!());
 
-
-
-
-
-
+@safe:
 
 struct BASDeployment {
   string tenantId;

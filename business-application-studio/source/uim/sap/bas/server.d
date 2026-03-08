@@ -2,9 +2,10 @@ module uim.sap.bas.server;
 
 import uim.sap.bas;
 
-module(ShowModule!());
+mixin(ShowModule!());
 
 @safe:
+
 
 class BASServer {
   private BASService _service;

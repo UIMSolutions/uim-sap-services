@@ -1,5 +1,12 @@
 module uim.sap.bas.models.terminalsession;
 
+import uim.sap.bas;
+
+mixin(ShowModule!());
+
+@safe:
+
+
 struct BASTerminalSession {
   string tenantId;
   string workspaceId;

@@ -2,9 +2,10 @@ module uim.sap.bas.exceptions.exception;
 
 import uim.sap.bas;
 
-module(ShowModule!());
+mixin(ShowModule!());
 
 @safe:
+
 
 class BASException : SAPException {
     this(string message) {

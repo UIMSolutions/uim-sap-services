@@ -1,5 +1,12 @@
 module uim.sap.bas.models.workspace;
 
+import uim.sap.bas;
+
+mixin(ShowModule!());
+
+@safe:
+
+
 struct BASWorkspace {
   string tenantId;
   string workspaceId;

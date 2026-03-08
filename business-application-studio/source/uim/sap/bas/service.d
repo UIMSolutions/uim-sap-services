@@ -1,14 +1,11 @@
 module uim.sap.bas.service;
 
-import std.conv : to;
-import std.datetime : Clock;
+import uim.sap.bas;
 
-import vibe.data.json : Json;
+mixin(ShowModule!());
 
-import uim.sap.bas.config;
-import uim.sap.bas.exceptions;
-import uim.sap.bas.models;
-import uim.sap.bas.store;
+@safe:
+
 
 class BASService : SAPService {
   mixin(SAPServiceTemplate!BASService);

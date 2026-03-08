@@ -1,8 +1,10 @@
 module uim.sap.bas.config;
 
-import std.string : startsWith;
+import uim.sap.bas;
 
-import uim.sap.bas.exceptions;
+mixin(ShowModule!());
+
+@safe:
 
 struct BASConfig : SAPConfig {
     string host = "0.0.0.0";

@@ -2,7 +2,7 @@ module uim.sap.bas.exceptions.notfound;
 
 import uim.sap.bas;
 
-module(ShowModule!());
+mixin(ShowModule!());
 
 @safe:
 

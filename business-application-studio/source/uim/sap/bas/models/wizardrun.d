@@ -1,5 +1,12 @@
 module uim.sap.bas.models.wizardrun;
 
+import uim.sap.bas;
+
+mixin(ShowModule!());
+
+@safe:
+
+
 struct BASWizardRun {
   string tenantId;
   string runId;
