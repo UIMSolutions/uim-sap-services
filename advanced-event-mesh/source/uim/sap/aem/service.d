@@ -14,17 +14,12 @@ mixin(ShowModule!());
 class AEMService : SAPService {
   mixin(SAPServiceTemplate!AEMService);
 
-  private AEMConfig _config;
   private AEMStore _store;
 
   this(AEMConfig config) {
     config.validate();
     _config = config;
     _store = new AEMStore;
-  }
-
-  @property const(AEMConfig) config() const {
-    return _config;
   }
 
   override Json health() {

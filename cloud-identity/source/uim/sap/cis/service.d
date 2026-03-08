@@ -41,17 +41,12 @@ mixin(ShowModule!());
 class CISService : SAPService {
   mixin(SAPServiceTemplate!CISService);
 
-  private CISConfig _config;
   private CISStore _store;
 
   this(CISConfig config) {
     config.validate();
     _config = config;
     _store = new CISStore;
-  }
-
-  @property const(CISConfig) config() const {
-    return _config;
   }
 
   override Json health() {

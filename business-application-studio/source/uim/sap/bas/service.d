@@ -10,7 +10,6 @@ mixin(ShowModule!());
 class BASService : SAPService {
   mixin(SAPServiceTemplate!BASService);
 
-  private BASConfig _config;
   private BASStore _store;
   private BASScenario[] _scenarios;
   private BASTemplate[] _templates;
@@ -20,10 +19,6 @@ class BASService : SAPService {
     _config = config;
     _store = new BASStore;
     seedReferenceContent();
-  }
-
-  @property const(BASConfig) config() const {
-    return _config;
   }
 
   Json health() const {

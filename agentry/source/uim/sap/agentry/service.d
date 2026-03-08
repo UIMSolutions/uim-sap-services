@@ -14,17 +14,12 @@ mixin(ShowModule!());
 class AgentryService : SAPService {
   mixin(SAPServiceTemplate!AgentryService);
 
-  private AgentryConfig _config;
   private AgentryStore _store;
 
   this(AgentryConfig config) {
     config.validate();
     _config = config;
     _store = new AgentryStore;
-  }
-
-  @property const(AgentryConfig) config() const {
-    return _config;
   }
 
   override Json health() {

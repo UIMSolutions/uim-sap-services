@@ -29,8 +29,7 @@ mixin(ShowModule!());
   *   }
   * }
   */
-class SAPConfig : ISAPConfig {
-  mixin(SAPConfigTemplate!SAPConfig);
+class SAPConfig : ISAPConfig {  
   this() {
     initialize();
   }

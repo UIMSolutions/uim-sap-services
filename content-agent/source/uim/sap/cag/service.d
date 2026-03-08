@@ -14,7 +14,6 @@ import uim.sap.cag.store;
 class CAGService : SAPService {
   mixin(SAPServiceTemplate!CAGService);
 
-  private CAGConfig _config;
   private CAGStore _store;
 
   this(CAGConfig config) {
@@ -23,16 +22,14 @@ class CAGService : SAPService {
     _store = new CAGStore;
   }
 
-  @property const(CAGConfig) config() const {
-    return _config;
-  }
-
   Json health() const {
+    CAGConfig cfg = cast(CAGConfig)_config; 
+
     Json payload = Json.emptyObject;
     payload["status"] = "UP";
-    payload["service"] = _config.serviceName;
-    payload["version"] = _config.serviceVersion;
-    payload["runtime"] = _config.runtime;
+    payload["service"] = cfg.serviceName;
+    payload["version"] = cfg.serviceVersion;
+    payload["runtime"] = cfg.runtime;
     payload["multitenancy"] = true;
     payload["domain"] = "content-agent";
     return payload;

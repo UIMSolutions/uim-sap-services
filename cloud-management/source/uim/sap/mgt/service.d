@@ -29,17 +29,12 @@ mixin(ShowModule!());
 class MGTService : SAPService {
   mixin(SAPServiceTemplate!MGTService);
 
-  private MGTConfig _config;
   private BTPClient _client;
 
   this(MGTConfig config) {
     config.validate();
     _config = config;
     _client = new BTPClient(config.toBTPConfig());
-  }
-
-  @property const(MGTConfig) config() const {
-    return _config;
   }
 
   override Json health() {

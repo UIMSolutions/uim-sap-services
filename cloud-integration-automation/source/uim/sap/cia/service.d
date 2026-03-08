@@ -18,7 +18,6 @@ import uim.sap.cia.store;
 class CIAService : SAPService {
   mixin(SAPServiceTemplate!CIAService);
 
-  private CIAConfig _config;
   private CIAStore _store;
 
   this(CIAConfig config) {
@@ -26,10 +25,6 @@ class CIAService : SAPService {
     _config = config;
     _store = new CIAStore;
     _seedDefaultData();
-  }
-
-  @property const(CIAConfig) config() const {
-    return _config;
   }
 
   // -----------------------------------------------------------------------

@@ -19,17 +19,12 @@ import uim.sap.ctm.store;
 class CTMService : SAPService {
   mixin(SAPServiceTemplate!CTMService);
 
-  private CTMConfig _config;
   private CTMStore _store;
 
   this(CTMConfig config) {
     config.validate();
     _config = config;
     _store = new CTMStore;
-  }
-
-  @property const(CTMConfig) config() const {
-    return _config;
   }
 
   // -----------------------------------------------------------------------

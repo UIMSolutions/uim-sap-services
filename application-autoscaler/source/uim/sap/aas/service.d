@@ -12,7 +12,6 @@ import uim.sap.aas;
 class AASService : SAPService {
   mixin(SAPServiceTemplate!AASService);
 
-  private AASConfig _config;
   private AASStore _store;
 
   this(AASConfig config) {

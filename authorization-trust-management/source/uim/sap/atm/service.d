@@ -9,17 +9,12 @@ mixin(ShowModule!());
 class ATMService : SAPService {
   mixin(SAPServiceTemplate!ATMService);
 
-  private ATMConfig _config;
   private ATMStore _store;
 
   this(ATMConfig config) {
     config.validate();
     _config = config;
     _store = new ATMStore;
-  }
-
-  @property const(ATMConfig) config() const {
-    return _config;
   }
 
   override Json health() {
