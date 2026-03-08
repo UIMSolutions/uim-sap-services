@@ -14,4 +14,13 @@ mixin(ShowModule!());
 
 class SAPHostConfig : SAPConfig {
    mixin(SAPConfigTemplate!SAPHostConfig);
+
+  protected string _host;
+  string host() const {
+    return _host;
+  }
+
+  void host(string value) {
+    _host = value;
+  }
 }

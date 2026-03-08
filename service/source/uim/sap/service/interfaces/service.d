@@ -5,7 +5,7 @@ mixin(ShowModule!());
 
 @safe:
 interface ISAPService {
-  ISAPConfig config() const;
+  ISAPConfig config();
   void config(ISAPConfig cfg);
 
   Json health();

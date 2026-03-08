@@ -19,6 +19,7 @@ class ARTRuntimeConfig : SAPHostConfig {
     }
 
     host(initData.getString("host", "127.0.0.1"));
+    return true;
   }
 
   ushort port = 8080;

@@ -11,7 +11,7 @@ mixin(ShowModule!());
 
 @safe:
 class AEMConfig : SAPHostConfig {
-  mixin(SAPConfigTemplate!AgentryConfig);
+  mixin(SAPConfigTemplate!AEMConfig);
 
   override bool initialize(Json[string] initData = null) {
     if (!super.initialize(initData)) {
@@ -19,38 +19,39 @@ class AEMConfig : SAPHostConfig {
     }
 
     host(initData.getString("host", "0.0.0.0"));
+    return true;
   }
 
-    ushort port = 8088;
-    string basePath = "/api/aem";
+  ushort port = 8088;
+  string basePath = "/api/aem";
 
-    string serviceName = "uim-sap-aem";
-    string serviceVersion = "1.0.0";
-    string defaultMeshRegion = "eu10";
+  string serviceName = "uim-sap-aem";
+  string serviceVersion = "1.0.0";
+  string defaultMeshRegion = "eu10";
 
-    bool requireAuthToken = false;
-    string authToken;
+  bool requireAuthToken = false;
+  string authToken;
 
-    string[string] customHeaders;
+  string[string] customHeaders;
 
-    void validate() const {
-        if (host.length == 0) {
-            throw new AEMConfigurationException("Host cannot be empty");
-        }
-        if (port == 0) {
-            throw new AEMConfigurationException("Port must be greater than zero");
-        }
-        if (basePath.length == 0 || !basePath.startsWith("/")) {
-            throw new AEMConfigurationException("Base path must start with '/'");
-        }
-        if (serviceName.length == 0) {
-            throw new AEMConfigurationException("Service name cannot be empty");
-        }
-        if (defaultMeshRegion.length == 0) {
-            throw new AEMConfigurationException("Default mesh region cannot be empty");
-        }
-        if (requireAuthToken && authToken.length == 0) {
-            throw new AEMConfigurationException("Auth token required when token auth is enabled");
-        }
+  void validate() const {
+    if (host.length == 0) {
+      throw new AEMConfigurationException("Host cannot be empty");
     }
+    if (port == 0) {
+      throw new AEMConfigurationException("Port must be greater than zero");
+    }
+    if (basePath.length == 0 || !basePath.startsWith("/")) {
+      throw new AEMConfigurationException("Base path must start with '/'");
+    }
+    if (serviceName.length == 0) {
+      throw new AEMConfigurationException("Service name cannot be empty");
+    }
+    if (defaultMeshRegion.length == 0) {
+      throw new AEMConfigurationException("Default mesh region cannot be empty");
+    }
+    if (requireAuthToken && authToken.length == 0) {
+      throw new AEMConfigurationException("Auth token required when token auth is enabled");
+    }
+  }
 }

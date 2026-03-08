@@ -23,7 +23,7 @@ class SAPService : ISAPService {
   }
 
   protected ISAPConfig _config;
-  ISAPConfig config() const {
+  ISAPConfig config() {
     return _config;
   }
 
