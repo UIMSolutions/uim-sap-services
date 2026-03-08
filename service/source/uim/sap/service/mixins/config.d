@@ -1,5 +1,9 @@
 module uim.sap.service.mixins.config;
+import uim.sap.service;
 
+mixin(ShowModule!());
+
+@safe:
 string sapConfigTemplate() {
   return "
   this() {

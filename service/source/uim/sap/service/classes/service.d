@@ -7,7 +7,7 @@ mixin(ShowModule!());
 
 @safe:
 
-class SAPService : IService {
+class SAPService : ISAPService {
   this() {
     initialize();
   }
@@ -19,9 +19,16 @@ class SAPService : IService {
   bool initialize(Json[string] initData = null) {
     // Initialization logic for the store
 
-
-
     return true;
+  }
+
+  protected ISAPConfig _config;
+  ISAPConfig config() const {
+    return _config;
+  }
+
+  void config(ISAPConfig cfg) {
+    _config = cfg;
   }
 
   Json health() {

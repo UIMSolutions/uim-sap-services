@@ -5,6 +5,10 @@
 *****************************************************************************************************************/
 module uim.sap.service.helpers.helper;
 
+import std.process : environment;
+import std.uuid : randomUUID;
+import std.conv : to;
+import std.datetime : Clock;
 import uim.sap.service;
 
 mixin(ShowModule!());
