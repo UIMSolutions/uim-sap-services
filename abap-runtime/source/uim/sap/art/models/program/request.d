@@ -1,5 +1,12 @@
 module uim.sap.art.models.program.request;
 
+import uim.sap.art;
+
+mixin(ShowModule!());
+
+@safe:
+
+
 struct ARTProgramRequest {
   string program;
   string user;

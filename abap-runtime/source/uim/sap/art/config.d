@@ -5,11 +5,11 @@
 *****************************************************************************************************************/
 module uim.sap.art.config;
 
-import core.time : Duration, seconds;
-import std.string : startsWith;
+import uim.sap.art;
 
-import uim.sap.art.exceptions;
+mixin(ShowModule!());
 
+@safe:
 class ARTRuntimeConfig : SAPHostConfig {
   mixin(SAPConfigTemplate!ARTRuntimeConfig);
 

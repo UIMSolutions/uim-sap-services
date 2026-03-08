@@ -1,5 +1,12 @@
 module uim.sap.art.models.program.result;
 
+import uim.sap.art;
+
+mixin(ShowModule!());
+
+@safe:
+
+
 struct ARTProgramResult {
   bool success;
   string message;
