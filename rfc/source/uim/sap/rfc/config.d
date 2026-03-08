@@ -16,7 +16,7 @@ enum RFCAuthType {
     Bearer
 }
 
-struct RFCConfig : SAPConfig {
+struct RFCConfig : SAPConfig, ISAPConfig {
     string baseUrl;
     string endpointPath = "/sap/bc/rfc";
 

@@ -7,7 +7,7 @@ import std.string : startsWith;
 
 import uim.sap.buh.exceptions;
 
-struct BUHConfig : SAPConfig {
+struct BUHConfig : SAPConfig, ISAPConfig {
     string host = "0.0.0.0";
     ushort port = 8083;
     string basePath = "/api/hub";

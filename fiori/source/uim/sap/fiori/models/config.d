@@ -30,7 +30,7 @@ enum ODataVersion {
 /**
  * Configuration for Fiori Client
  */
-struct FioriConfig : SAPConfig {
+struct FioriConfig : SAPConfig, ISAPConfig {
     /// Base URL of the Fiori system (e.g., "https://myserver.com")
     string baseUrl;
     

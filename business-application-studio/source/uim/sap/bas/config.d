@@ -6,7 +6,7 @@ mixin(ShowModule!());
 
 @safe:
 
-struct BASConfig : SAPConfig {
+struct BASConfig : SAPConfig, ISAPConfig {
     string host = "0.0.0.0";
     ushort port = 8088;
     string basePath = "/api/business-application-studio";

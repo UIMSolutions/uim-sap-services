@@ -15,7 +15,7 @@ import core.time : Duration, seconds;
 /**
  * Connection configuration for HANA Cloud
  */
-struct ConnectionConfig : SAPConfig {
+struct ConnectionConfig : SAPConfig, ISAPConfig {
     /// Host address (e.g., "myaccount.hanacloud.ondemand.com")
     string host;
     

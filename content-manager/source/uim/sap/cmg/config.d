@@ -5,7 +5,7 @@ import uim.sap.cmg;
 mixin(ShowModule!());
 
 @safe:
-struct CMGConfig : SAPConfig {
+struct CMGConfig : SAPConfig, ISAPConfig {
     string host = "0.0.0.0";
     ushort port = 8095;
     string basePath = "/api/cmg";

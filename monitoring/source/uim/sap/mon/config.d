@@ -11,7 +11,7 @@ mixin(ShowModule!());
 
 @safe:
 
-class MONConfig : SAPConfig {
+class MONConfig : SAPConfig, ISAPConfig {
   string host = "0.0.0.0";
   ushort port = 8090;
   string basePath = "/api/mon";

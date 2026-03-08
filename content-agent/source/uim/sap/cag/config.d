@@ -4,7 +4,7 @@ import std.string : startsWith;
 
 import uim.sap.cag.exceptions;
 
-struct CAGConfig : SAPConfig {
+struct CAGConfig : SAPConfig, ISAPConfig {
     string host = "0.0.0.0";
     ushort port = 8096;
     string basePath = "/api/content-agent";

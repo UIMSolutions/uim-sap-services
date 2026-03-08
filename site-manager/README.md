@@ -117,7 +117,7 @@ Note: Render the following diagrams with a PlantUML-compatible Markdown viewer/e
 
 ```plantuml
 @startuml
-class SMGConfig : SAPConfig {
+class SMGConfig : SAPConfig, ISAPConfig {
   +host : string
   +port : ushort
   +basePath : string

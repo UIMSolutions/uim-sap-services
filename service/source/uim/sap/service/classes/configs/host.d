@@ -12,7 +12,7 @@ mixin(ShowModule!());
 
 @safe:
 
-class SAPHostConfig : SAPConfig {
+class SAPHostConfig : SAPConfig, ISAPConfig {
    mixin(SAPConfigTemplate!SAPHostConfig);
 
   protected string _host;

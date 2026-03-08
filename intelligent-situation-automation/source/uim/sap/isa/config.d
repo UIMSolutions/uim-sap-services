@@ -9,7 +9,7 @@ import uim.sap.isa;
 
 @safe:
 
-class ISAConfig : SAPConfig {
+class ISAConfig : SAPConfig, ISAPConfig {
   mixin(SAPConfigTemplate!ISAConfig);
   
   string host = "0.0.0.0";

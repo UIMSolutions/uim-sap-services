@@ -2,7 +2,7 @@ module config.tls_config;
 
 import vibe.vibe;
 
-struct TLSConfig : SAPConfig {
+struct TLSConfig : SAPConfig, ISAPConfig {
     string[] protocols;
     string[] cipherSuites;
 }

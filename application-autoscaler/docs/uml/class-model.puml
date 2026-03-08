@@ -4,7 +4,7 @@
 title UIM Application Autoscaler (AAS) - Class Model
 
 package "uim.sap.aas" {
-  class AASConfig : SAPConfig {
+  class AASConfig : SAPConfig, ISAPConfig {
     +host : string
     +port : ushort
     +basePath : string

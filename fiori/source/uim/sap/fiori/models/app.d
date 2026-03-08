@@ -46,7 +46,7 @@ struct AppSettings {
 /**
  * UI5 component configuration
  */
-struct UI5ComponentConfig : SAPConfig {
+struct UI5ComponentConfig : SAPConfig, ISAPConfig {
     string name;
     string version_;
     string[] dependencies;

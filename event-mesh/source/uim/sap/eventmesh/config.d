@@ -6,7 +6,7 @@ mixin(ShowModule!());
 
 @safe:
 
-class EVMConfig : SAPConfig {
+class EVMConfig : SAPConfig, ISAPConfig {
     string host = "0.0.0.0";
     ushort port = 8092;
     string basePath = "/api/em";
