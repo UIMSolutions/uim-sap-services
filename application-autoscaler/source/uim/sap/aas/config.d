@@ -9,7 +9,7 @@ import uim.sap.aas;
 
 @safe:
 
-class AASConfig : SAPConfig, ISAPConfig {
+class AASConfig : SAPConfig {
     string host = "0.0.0.0";
     ushort port = 8086;
     string basePath = "/api/autoscaler";

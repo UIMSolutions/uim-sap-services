@@ -37,7 +37,7 @@ mixin(ShowModule!());
   * config.validate();
   * ``` 
   */
-struct CISConfig : SAPConfig, ISAPConfig {
+struct CISConfig : SAPConfig {
   string host = "0.0.0.0";
   ushort port = 8088;
   string basePath = "/api/cis";

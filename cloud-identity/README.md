@@ -49,7 +49,7 @@ classDiagram
       +main()
     }
 
-    class CISConfig : SAPConfig, ISAPConfig {
+    class CISConfig : SAPConfig {
       +host
       +port
       +basePath

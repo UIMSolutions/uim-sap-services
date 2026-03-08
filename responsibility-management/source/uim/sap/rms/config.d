@@ -12,7 +12,7 @@ mixin(ShowModule!());
 @safe:
 
 
-struct RMSConfig : SAPConfig, ISAPConfig {
+struct RMSConfig : SAPConfig {
     string host = "0.0.0.0";
     ushort port = 8095;
     string basePath = "/api/rms";

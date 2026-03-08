@@ -7,7 +7,7 @@ mixin(ShowModule!());
 @safe:
 
 
-struct CREConfig : SAPConfig, ISAPConfig {
+struct CREConfig : SAPConfig {
     string host = "0.0.0.0";
     ushort port = 8086;
     string basePath = "/api/cre";

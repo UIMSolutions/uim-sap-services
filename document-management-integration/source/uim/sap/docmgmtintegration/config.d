@@ -4,7 +4,7 @@ import std.string : startsWith, toLower;
 
 import uim.sap.docmgmtintegration.exceptions;
 
-class DocMgmtIntegrationConfig : SAPConfig, ISAPConfig {
+class DocMgmtIntegrationConfig : SAPConfig {
     this() {
         super();
     }

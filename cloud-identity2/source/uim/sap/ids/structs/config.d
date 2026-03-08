@@ -13,7 +13,7 @@ import uim.sap.ids;
 /**
  * Configuration for Cloud Identity Services
  */
-struct IdentityConfig : SAPConfig, ISAPConfig {
+struct IdentityConfig : SAPConfig {
     /// Service type
     IdentityServiceType serviceType = IdentityServiceType.IAS;
     

@@ -11,7 +11,7 @@ mixin(ShowModule!());
 
 @safe:
 
-struct SMGConfig : SAPConfig, ISAPConfig {
+struct SMGConfig : SAPConfig {
   mixin(SAPConfigTemplate!SMGConfig);
 
   override bool initialize(Json[string] initData = null) {

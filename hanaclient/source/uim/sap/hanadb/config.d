@@ -13,7 +13,7 @@ enum HanaDBAuthType {
     Bearer
 }
 
-struct HanaDBConfig : SAPConfig, ISAPConfig {
+struct HanaDBConfig : SAPConfig {
     string host;
     ushort port = 443;
     bool useSSL = true;

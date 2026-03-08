@@ -18,7 +18,7 @@ mixin(ShowModule!());
   * Specific services can extend this class to add their own configuration properties and validation.
   *
   * Example usage:
-  * class MyServiceConfig : SAPConfig, ISAPConfig {
+  * class MyServiceConfig : SAPConfig {
   *   string customProperty;
   *   override bool initialize(Json[string] initData = null) {
   *     if (!super.initialize(initData)) {
@@ -29,7 +29,8 @@ mixin(ShowModule!());
   *   }
   * }
   */
-class SAPConfig {
+class SAPConfig : ISAPConfig {
+  mixin(SAPConfigTemplate!SAPConfig);
   this() {
     initialize();
   }

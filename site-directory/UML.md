@@ -4,7 +4,7 @@
 
 ```plantuml
 @startuml
-class SDIConfig : SAPConfig, ISAPConfig {
+class SDIConfig : SAPConfig {
   +host : string
   +port : ushort
   +basePath : string

@@ -9,7 +9,7 @@ mixin(ShowModule!());
 
 @safe:
 
-struct CLGConfig : SAPConfig, ISAPConfig {
+struct CLGConfig : SAPConfig {
     string host = "0.0.0.0";
     ushort port = 8081;
     string basePath = "/sap/cloud/logging/v1";

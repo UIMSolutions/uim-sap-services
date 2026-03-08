@@ -12,7 +12,7 @@ enum CPIAuthType {
   ApiKey
 }
 
-struct CPIConfig : SAPConfig, ISAPConfig {
+struct CPIConfig : SAPConfig {
   string baseUrl;
   ushort port = 443;
   bool useSSL = true;

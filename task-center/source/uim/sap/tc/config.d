@@ -7,7 +7,7 @@ module uim.sap.tkc.config;
 
 import uim.sap.tkc;
 
-struct TCConfig : SAPConfig, ISAPConfig {
+struct TCConfig : SAPConfig {
     string host = "0.0.0.0";
     ushort port = 8096;
     string basePath = "/api/task-center";

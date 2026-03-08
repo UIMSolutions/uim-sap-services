@@ -4,7 +4,7 @@ import std.string : startsWith;
 
 import uim.sap.sdi.exceptions;
 
-class SDIConfig : SAPConfig, ISAPConfig {
+class SDIConfig : SAPConfig {
   mixin(SAPConfigTemplate!SDIConfig);
   
   string host = "0.0.0.0";

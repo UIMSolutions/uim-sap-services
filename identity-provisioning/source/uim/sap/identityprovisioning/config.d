@@ -11,7 +11,7 @@ mixin(ShowModule!());
 
 @safe:
 
-class IPVConfig : SAPConfig, ISAPConfig {
+class IPVConfig : SAPConfig {
     string host = "0.0.0.0";
     ushort port = 8095;
     string basePath = "/api/ip";

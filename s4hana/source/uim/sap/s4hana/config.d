@@ -16,7 +16,7 @@ enum S4HANAAuthType {
     ApiKey
 }
 
-class S4HANAConfig : SAPConfig, ISAPConfig {
+class S4HANAConfig : SAPConfig {
     string baseUrl;
     ushort port = 443;
     bool useSSL = true;

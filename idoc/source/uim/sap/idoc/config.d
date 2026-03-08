@@ -17,7 +17,7 @@ enum IDocAuthType {
     Bearer
 }
 
-struct IDocConfig : SAPConfig, ISAPConfig {
+struct IDocConfig : SAPConfig {
     string baseUrl;
     string endpointPath = "/sap/idoc";
 

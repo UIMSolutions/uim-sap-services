@@ -121,7 +121,7 @@ Note: Render the following diagrams with a PlantUML-compatible Markdown viewer/e
 
 ```mermaid
 classDiagram
-    class CMGConfig : SAPConfig, ISAPConfig {
+    class CMGConfig : SAPConfig {
       +string host
       +ushort port
       +string basePath
