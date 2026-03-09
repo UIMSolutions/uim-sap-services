@@ -34,6 +34,7 @@ class SAPService : ISAPService {
   Json health() {
     Json healthInfo = Json.emptyObject;
     healthInfo["ok"] = true;
+    healthInfo["status"] = "UP";
     healthInfo["service"] = _config.serviceName;
     healthInfo["version"] = _config.serviceVersion;
     return healthInfo;

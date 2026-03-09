@@ -1,8 +1,4 @@
-/**
- * Domain service for BUH Business Hub-like API
- */
 module uim.sap.buh.service;
-
 
 import uim.sap.buh;
 
@@ -28,9 +24,6 @@ class BUHService : SAPService {
 
   override Json health() {
     Json payload = super.health();
-    payload["ok"] = true;
-    payload["serviceName"] = _config.serviceName;
-    payload["serviceVersion"] = _config.serviceVersion;
     payload["apis"] = cast(long)_store.listApis().length;
     payload["products"] = cast(long)_store.listProducts().length;
     payload["subscriptions"] = cast(long)_store.listSubscriptions().length;

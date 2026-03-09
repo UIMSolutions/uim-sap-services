@@ -14,7 +14,6 @@ mixin(ShowModule!());
 class CLFService : SAPService {
   mixin(SAPServiceTemplate!CLFService);
 
-  private CLFConfig _config;
   private CLFStore _store;
 
   this(CLFConfig config) {
@@ -22,18 +21,6 @@ class CLFService : SAPService {
     _config = config;
     _store = new CLFStore;
     _store.seedServiceOfferings();
-  }
-
-  @property const(CLFConfig) config() const {
-    return _config;
-  }
-
-  override Json health() {
-    Json payload = super.health();
-    payload["ok"] = true;
-    payload["serviceName"] = _config.serviceName;
-    payload["serviceVersion"] = _config.serviceVersion;
-    return payload;
   }
 
   Json createOrganization(Json request) {
@@ -99,11 +86,9 @@ class CLFService : SAPService {
   }
 
   Json listApps() {
+    Json resources = _store.listApps().map!(app => app.toJson()).array.toJson;
+    
     Json payload = Json.emptyObject;
-    Json resources = Json.emptyArray;
-    foreach (app; _store.listApps()) {
-      resources ~= app.toJson();
-    }
     payload["resources"] = resources;
     payload["total_results"] = cast(long)_store.listApps().length;
     return payload;

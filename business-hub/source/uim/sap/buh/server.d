@@ -1,8 +1,4 @@
-/**
- * HTTP server for BUH service
- */
 module uim.sap.buh.server;
-
 
 import uim.sap.buh;
 

@@ -31,14 +31,11 @@ class CIAService : SAPService {
   // Health / readiness
   // -----------------------------------------------------------------------
   Json health() const {
-    Json j = Json.emptyObject;
-    j["status"] = "UP";
-    j["service"] = _config.serviceName;
-    j["version"] = _config.serviceVersion;
-    j["runtime"] = _config.runtime;
-    j["multitenancy"] = true;
-    j["domain"] = "cloud-integration-automation";
-    return j;
+    Json healthInfo = super.health();
+    healthInfo["runtime"] = _config.runtime;
+    healthInfo["multitenancy"] = true;
+    healthInfo["domain"] = "cloud-integration-automation";
+    return healthInfo;
   }
 
   // -----------------------------------------------------------------------

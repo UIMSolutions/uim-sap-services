@@ -49,24 +49,11 @@ class CISService : SAPService {
     _store = new CISStore;
   }
 
-  override Json health() {
-    Json healthInfo = super.health();
-    healthInfo["ok"] = true;
-    healthInfo["serviceName"] = _config.serviceName;
-    healthInfo["serviceVersion"] = _config.serviceVersion;
-    return healthInfo;
-  }
-
   Json authenticationCapabilities() {
+    Json methods = CIS_AUTH_METHODS.toJson;
+    Json protocols = CIS_SSO_PROTOCOLS.toJson;
+
     Json payload = Json.emptyObject;
-    Json methods = Json.emptyArray;
-    foreach (method; CIS_AUTH_METHODS)
-      methods ~= method;
-
-    Json protocols = Json.emptyArray;
-    foreach (protocol; CIS_SSO_PROTOCOLS)
-      protocols ~= protocol;
-
     payload["supported_authentication_methods"] = methods;
     payload["supported_sso_protocols"] = protocols;
     payload["api_authentication_supported"] = true;
