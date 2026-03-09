@@ -1,6 +1,9 @@
 module uim.sap.mdg.models.qualityrule;
 
 import uim.sap.mdg;
+
+mixin(ShowModule!());
+
 @safe:
 
 struct MDGQualityRule {

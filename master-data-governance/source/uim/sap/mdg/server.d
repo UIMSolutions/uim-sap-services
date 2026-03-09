@@ -2,7 +2,9 @@ module uim.sap.mdg.server;
 
 import uim.sap.mdg;
 
-class MDGServer {
+mixin(ShowModule!());
+
+@safe:class MDGServer {
   private MDGService _service;
 
   this(MDGService service) {

@@ -1,6 +1,9 @@
 module uim.sap.mdg.exceptions.configuration;
 
 import uim.sap.mdg;
+
+mixin(ShowModule!());
+
 @safe:
 
 /** 

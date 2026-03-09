@@ -1,6 +1,9 @@
 module uim.sap.mdg.models.consolidationcandidate;
 
 import uim.sap.mdg;
+
+mixin(ShowModule!());
+
 @safe:
 
 struct MDGConsolidationCandidate {

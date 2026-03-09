@@ -1,6 +1,9 @@
 module uim.sap.mdg.exceptions.validation;
 
 import uim.sap.mdg;
+
+mixin(ShowModule!());
+
 @safe:
 
 /** 

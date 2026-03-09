@@ -2,13 +2,11 @@ module uim.sap.mdg.service;
 
 import uim.sap.mdg;
 
-import uim.sap.mdg.config;
-import uim.sap.mdg.exceptions;
-import uim.sap.mdg.models;
-import uim.sap.mdg.store;
+mixin(ShowModule!());
+
+@safe:
 
 class MDGService : SAPService {
-  private MDGConfig _config;
   private MDGStore _store;
 
   this(MDGConfig config) {
@@ -16,19 +14,6 @@ class MDGService : SAPService {
     _config = config;
     _store = new MDGStore;
   }
-
-  @property const(MDGConfig) config() const {
-    return _config;
-  }
-
-  override Json health() {
-    Json payload = super.health();
-    payload["ok"] = true;
-    payload["serviceName"] = _config.serviceName;
-    payload["serviceVersion"] = _config.serviceVersion;
-    return payload;
-  }
-
 
   Json upsertBusinessPartner(string tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
