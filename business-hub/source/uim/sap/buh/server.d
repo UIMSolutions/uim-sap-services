@@ -3,15 +3,12 @@
  */
 module uim.sap.buh.server;
 
-import std.array : split;
-import std.string : startsWith;
 
-import vibe.data.json : Json;
-import vibe.http.common : HTTPMethod;
-import vibe.http.server : HTTPServerRequest, HTTPServerResponse, HTTPServerSettings, listenHTTP;
+import uim.sap.buh;
 
-import uim.sap.buh.exceptions;
-import uim.sap.buh.service;
+mixin(ShowModule!());
+
+@safe:
 
 class BUHServer {
   private BUHService _service;

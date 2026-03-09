@@ -3,12 +3,12 @@
  */
 module uim.sap.buh.service;
 
-import vibe.data.json : Json;
 
-import uim.sap.buh.config;
-import uim.sap.buh.exceptions;
-import uim.sap.buh.models;
-import uim.sap.buh.store;
+import uim.sap.buh;
+
+mixin(ShowModule!());
+
+@safe:
 
 class BUHService : SAPService {
   mixin(SAPServiceTemplate!BUHService);

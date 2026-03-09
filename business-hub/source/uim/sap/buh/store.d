@@ -5,8 +5,11 @@ module uim.sap.buh.store;
 
 import core.sync.mutex : Mutex;
 
-import uim.sap.buh.models;
+import uim.sap.buh;
 
+mixin(ShowModule!());
+
+@safe:
 class BUHStore : SAPStore {
     private BUHApi[string] _apis;
     private BUHProduct[string] _products;

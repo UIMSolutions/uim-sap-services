@@ -1,15 +1,6 @@
 module uim.sap.cag.service;
 
-import std.array : array;
-import std.datetime : Clock;
-import std.string : toLower;
-
-import vibe.data.json : Json;
-
-import uim.sap.cag.config;
-import uim.sap.cag.exceptions;
-import uim.sap.cag.models;
-import uim.sap.cag.store;
+import uim.sap.cag;
 
 class CAGService : SAPService {
   mixin(SAPServiceTemplate!CAGService);
@@ -25,16 +16,13 @@ class CAGService : SAPService {
   Json health() const {
     CAGConfig cfg = cast(CAGConfig)_config; 
 
-    Json payload = Json.emptyObject;
-    payload["status"] = "UP";
-    payload["service"] = cfg.serviceName;
-    payload["version"] = cfg.serviceVersion;
-    payload["runtime"] = cfg.runtime;
-    payload["multitenancy"] = true;
-    payload["domain"] = "content-agent";
-    return payload;
+    Json healthInfo = super.health();
+    healthInfo["status"] = "UP";
+    healthInfo["runtime"] = cfg.runtime;
+    healthInfo["multitenancy"] = true;
+    healthInfo["domain"] = "content-agent";
+    return healthInfo;
   }
-
 
   string dashboardHtml() const {
     return q"HTML
