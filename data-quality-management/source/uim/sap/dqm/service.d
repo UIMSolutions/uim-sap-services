@@ -11,8 +11,7 @@ class DQMService : SAPService {
   private DQMStore _store;
 
   this(DQMConfig config) {
-    config.validate();
-    _config = config;
+    super(config);
     _store = new DQMStore;
   }
 

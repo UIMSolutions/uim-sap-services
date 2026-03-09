@@ -62,8 +62,8 @@ class CREService : SAPService {
   private CREStore _store;
 
   this(CREConfig config) {
-    config.validate();
-    _config = config;
+    super(config);
+
     _store = new CREStore;
   }
 

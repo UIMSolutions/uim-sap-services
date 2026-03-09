@@ -12,8 +12,8 @@ class CMGService : SAPService {
   private CMGStore _store;
 
   this(CMGConfig config) {
-    config.validate();
-    _config = config;
+    super(config);
+
     _store = new CMGStore;
   }
 

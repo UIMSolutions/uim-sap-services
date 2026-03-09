@@ -12,8 +12,8 @@ class BUHService : SAPService {
   private BUHStore _store;
 
   this(BUHConfig config) {
-    config.validate();
-    _config = config;
+    super(config);
+
     _store = new BUHStore;
   }
 

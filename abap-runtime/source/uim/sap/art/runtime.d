@@ -18,8 +18,7 @@ class ARTRuntime {
   private ARTProgramHandler[string] _programs;
 
   this(ARTRuntimeConfig config) {
-    config.validate();
-    _config = config;
+    super(config);
   }
 
   @property size_t registeredProgramCount() const {

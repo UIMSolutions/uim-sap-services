@@ -9,11 +9,17 @@ mixin(ShowModule!());
 
 class SAPService : ISAPService {
   this() {
-    initialize();
+    this.initialize();
   }
 
   this(Json[string] initData = null) {
-    initialize(initData);
+    this.initialize(initData);
+  }
+
+  this(ISAPConfig config) {
+    config.validate();
+    _config = config;
+    this.initialize();
   }
 
   bool initialize(Json[string] initData = null) {

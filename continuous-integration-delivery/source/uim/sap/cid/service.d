@@ -22,8 +22,8 @@ class CIDService : SAPService {
   private CIDStore _store;
 
   this(CIDConfig config) {
-    config.validate();
-    _config = config;
+    super(config);
+
     _store = new CIDStore;
   }
 

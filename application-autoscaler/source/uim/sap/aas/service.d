@@ -15,20 +15,15 @@ class AASService : SAPService {
   private AASStore _store;
 
   this(AASConfig config) {
+    super(config);
+
     config.validate();
     _config = config;
     _store = new AASStore;
   }
 
-  @property const(AASConfig) config() const {
-    return _config;
-  }
-
   override Json health() {
     Json healthInfo = super.health();
-    healthInfo["ok"] = true;
-    healthInfo["serviceName"] = _config.serviceName;
-    healthInfo["serviceVersion"] = _config.serviceVersion;
     healthInfo["apps"] = cast(long)_store.listApps().length;
     return healthInfo;
   }

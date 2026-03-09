@@ -12,8 +12,8 @@ class DPIService : SAPService {
   private DPIStore _store;
 
   this(DPIConfig config) {
-    config.validate();
-    _config = config;
+    super(config);
+
     _store = new DPIStore;
   }
 

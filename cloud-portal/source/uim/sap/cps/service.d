@@ -15,8 +15,8 @@ class CPSService : SAPService {
   private CPSStore _store;
 
   this(CPSConfig config) {
-    config.validate();
-    _config = config;
+    super(config);
+
     _store = new CPSStore;
   }
 

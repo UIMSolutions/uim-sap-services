@@ -13,8 +13,8 @@ class DSTService : SAPService {
   private DSTStore _store;
 
   this(DSTConfig config) {
-    config.validate();
-    _config = config;
+    super(config);
+
     _store = new DSTStore;
   }
 
@@ -40,11 +40,9 @@ class DSTService : SAPService {
   // DESTINATIONS
   // =======================================================================
   Json listDestinations(string tenantId, string protocolFilter, string proxyFilter) {
-    DSTDestination[] items;
-    if (protocolFilter.length > 0 || proxyFilter.length > 0)
-      items = _store.filterDestinations(tenantId, protocolFilter, proxyFilter);
-    else
-      items = _store.listDestinations(tenantId);
+    DSTDestination[] items = null;protocolFilter.length > 0 || proxyFilter.length > 0
+      ? _store.filterDestinations(tenantId, protocolFilter, proxyFilter)
+      : _store.listDestinations(tenantId);
 
     return items.map!(d => d.toJson()).array.toJson();
   }

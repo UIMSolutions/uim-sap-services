@@ -36,8 +36,8 @@ class ATPService : SAPService {
   private ATPStore _store;
 
   this(ATPConfig config) {
-    config.validate();
-    _config = config;
+    super(config);
+
     _store = new ATPStore;
     seedPredefinedCatalogs();
   }
