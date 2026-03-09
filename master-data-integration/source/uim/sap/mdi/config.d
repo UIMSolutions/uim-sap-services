@@ -2,6 +2,10 @@ module uim.sap.mdi.config;
 
 import uim.sap.mdi;
 
+mixin(ShowModule!());
+
+@safe:
+
 struct MDIConfig : SAPConfig {
     string host = "0.0.0.0";
     ushort port = 8092;

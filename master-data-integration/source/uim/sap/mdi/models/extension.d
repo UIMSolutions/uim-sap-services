@@ -1,5 +1,10 @@
 module uim.sap.mdi.models.extension;
 
+import uim.sap.mdi;
+
+mixin(ShowModule!());
+
+@safe:
 struct MDIExtension {
     string tenantId;
     string extensionId;

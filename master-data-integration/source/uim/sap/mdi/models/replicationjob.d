@@ -1,5 +1,10 @@
 module uim.sap.mdi.models.replicationjob;
 
+import uim.sap.mdi;
+
+mixin(ShowModule!());
+
+@safe:
 struct MDIReplicationJob {
     string tenantId;
     string jobId;

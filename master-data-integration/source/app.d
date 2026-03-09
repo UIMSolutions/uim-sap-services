@@ -6,6 +6,7 @@
 module app;
 
 import uim.sap.mdi;
+
 mixin(ShowModule!());
 
 @safe:

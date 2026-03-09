@@ -2,7 +2,11 @@ module uim.sap.mdi.store;
 
 import core.sync.mutex : Mutex;
 
-import uim.sap.mdi.models;
+import uim.sap.mdi;
+
+mixin(ShowModule!());
+
+@safe:
 
 class MDIStore : SAPStore {
     private MDIReplicationClient[string] _clients;

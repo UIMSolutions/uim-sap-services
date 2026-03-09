@@ -1,5 +1,10 @@
 module uim.sap.mdi.models.filter;
 
+import uim.sap.mdi;
+
+mixin(ShowModule!());
+
+@safe:
 struct MDIFilter {
     string tenantId;
     string filterId;

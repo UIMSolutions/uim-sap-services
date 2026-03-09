@@ -1,15 +1,10 @@
 module uim.sap.mdi.service;
 
-import std.datetime : Clock;
-import std.string : toLower;
+import uim.sap.mdi;
 
-import vibe.data.json : Json;
+mixin(ShowModule!());
 
-import uim.sap.mdi.config;
-import uim.sap.mdi.exceptions;
-import uim.sap.mdi.models;
-import uim.sap.mdi.store;
-
+@safe:
 class MDIService : SAPService {
   private MDIConfig _config;
   private MDIStore _store;
