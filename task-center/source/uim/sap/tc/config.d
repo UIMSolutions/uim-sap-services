@@ -7,7 +7,7 @@ module uim.sap.tkc.config;
 
 import uim.sap.tkc;
 
-struct TCConfig : SAPConfig {
+struct TKCConfig : SAPConfig {
     string host = "0.0.0.0";
     ushort port = 8096;
     string basePath = "/api/task-center";
@@ -28,16 +28,16 @@ struct TCConfig : SAPConfig {
     }
 
     void validate() const {
-        if (host.length == 0) throw new TCConfigurationException("Host cannot be empty");
-        if (port == 0) throw new TCConfigurationException("Port must be greater than zero");
+        if (host.length == 0) throw new TKCConfigurationException("Host cannot be empty");
+        if (port == 0) throw new TKCConfigurationException("Port must be greater than zero");
         if (basePath.length == 0 || !basePath.startsWith("/")) {
-            throw new TCConfigurationException("Base path must start with '/'");
+            throw new TKCConfigurationException("Base path must start with '/'");
         }
-        if (serviceName.length == 0) throw new TCConfigurationException("Service name cannot be empty");
-        if (dataDirectory.length == 0) throw new TCConfigurationException("Data directory cannot be empty");
-        if (cacheFileName.length == 0) throw new TCConfigurationException("Cache file name cannot be empty");
+        if (serviceName.length == 0) throw new TKCConfigurationException("Service name cannot be empty");
+        if (dataDirectory.length == 0) throw new TKCConfigurationException("Data directory cannot be empty");
+        if (cacheFileName.length == 0) throw new TKCConfigurationException("Cache file name cannot be empty");
         if (requireAuthToken && authToken.length == 0) {
-            throw new TCConfigurationException("Auth token required when token auth is enabled");
+            throw new TKCConfigurationException("Auth token required when token auth is enabled");
         }
     }
 }

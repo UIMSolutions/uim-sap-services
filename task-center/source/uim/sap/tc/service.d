@@ -16,17 +16,17 @@ import uim.sap.tkc.exceptions;
 import uim.sap.tkc.models;
 import uim.sap.tkc.store;
 
-class TCService : SAPService {
-    private TCConfig _config;
-    private TCStore _store;
+class TKCService : SAPService {
+    private TKCConfig _config;
+    private TKCStore _store;
 
-    this(TCConfig config) {
+    this(TKCConfig config) {
         config.validate();
         _config = config;
-        _store = new TCStore(config.cacheFilePath);
+        _store = new TKCStore(config.cacheFilePath);
     }
 
-    @property inout(TCConfig) config() inout {
+    @property inout(TKCConfig) config() inout {
         return _config;
     }
 
@@ -52,7 +52,7 @@ class TCService : SAPService {
     Json registerProvider(Json body) {
         auto now = Clock.currTime();
 
-        TCProvider provider;
+        TKCProvider provider;
         provider.providerId = readRequired(body, "provider_id");
         provider.name = readRequired(body, "name");
         provider.providerType = readOptional(body, "provider_type", "sap");
@@ -71,23 +71,23 @@ class TCService : SAPService {
 
     Json federateTasks(string tenantId, string providerId, Json body) {
         validateTenant(tenantId);
-        if (providerId.length == 0) throw new TCValidationException("provider_id is required");
+        if (providerId.length == 0) throw new TKCValidationException("provider_id is required");
 
         auto provider = _store.getProvider(providerId);
-        if (provider.isNull) throw new TCNotFoundException("Provider", providerId);
-        if (!provider.get.active) throw new TCValidationException("Provider is inactive");
+        if (provider.isNull) throw new TKCNotFoundException("Provider", providerId);
+        if (!provider.get.active) throw new TKCValidationException("Provider is inactive");
 
         if (!("tasks" in body) || body["tasks"].type != Json.Type.array) {
-            throw new TCValidationException("tasks must be an array");
+            throw new TKCValidationException("tasks must be an array");
         }
 
         auto now = Clock.currTime();
         Json savedTasks = Json.emptyArray;
 
         foreach (entry; body["tasks"]) {
-            if (entry.type != Json.Type.object) throw new TCValidationException("tasks must contain objects");
+            if (entry.type != Json.Type.object) throw new TKCValidationException("tasks must contain objects");
 
-            TCTask task;
+            TKCTask task;
             task.tenantId = tenantId;
             task.providerId = providerId;
             task.taskId = readRequired(entry, "task_id");
@@ -150,7 +150,7 @@ class TCService : SAPService {
         auto normalizedSortBy = normalizeSortBy(sortBy);
         auto descending = toLower(sortOrder) == "desc";
 
-        TCTask[] filtered;
+        TKCTask[] filtered;
         foreach (task; _store.listTasks()) {
             if (task.tenantId != tenantId) continue;
             if (assignee.length > 0 && task.assignee != assignee) continue;
@@ -187,10 +187,10 @@ class TCService : SAPService {
 
     Json getTask(string tenantId, string taskId) {
         validateTenant(tenantId);
-        if (taskId.length == 0) throw new TCValidationException("task_id is required");
+        if (taskId.length == 0) throw new TKCValidationException("task_id is required");
 
         auto task = _store.getTask(tenantId, taskId);
-        if (task.isNull) throw new TCNotFoundException("Task", taskId);
+        if (task.isNull) throw new TKCNotFoundException("Task", taskId);
 
         Json payload = Json.emptyObject;
         payload["task"] = task.get.toJson();
@@ -199,10 +199,10 @@ class TCService : SAPService {
 
     Json performTaskAction(string tenantId, string taskId, Json body) {
         validateTenant(tenantId);
-        if (taskId.length == 0) throw new TCValidationException("task_id is required");
+        if (taskId.length == 0) throw new TKCValidationException("task_id is required");
 
         auto storedTask = _store.getTask(tenantId, taskId);
-        if (storedTask.isNull) throw new TCNotFoundException("Task", taskId);
+        if (storedTask.isNull) throw new TKCNotFoundException("Task", taskId);
 
         auto action = normalizeAction(readRequired(body, "action"));
         auto performedBy = readRequired(body, "performed_by");
@@ -211,7 +211,7 @@ class TCService : SAPService {
         auto task = storedTask.get;
         auto now = Clock.currTime();
 
-        TCTaskAction history;
+        TKCTaskAction history;
         history.action = action;
         history.performedBy = performedBy;
         history.comment = comment;
@@ -231,13 +231,13 @@ class TCService : SAPService {
 
     Json navigateToTaskApp(string tenantId, string taskId) {
         validateTenant(tenantId);
-        if (taskId.length == 0) throw new TCValidationException("task_id is required");
+        if (taskId.length == 0) throw new TKCValidationException("task_id is required");
 
         auto storedTask = _store.getTask(tenantId, taskId);
-        if (storedTask.isNull) throw new TCNotFoundException("Task", taskId);
+        if (storedTask.isNull) throw new TKCNotFoundException("Task", taskId);
 
         auto task = storedTask.get;
-        if (task.nativeAppUrl.length == 0) throw new TCValidationException("Task has no native_app_url");
+        if (task.nativeAppUrl.length == 0) throw new TKCValidationException("Task has no native_app_url");
 
         Json payload = Json.emptyObject;
         payload["task_id"] = task.taskId;
@@ -248,7 +248,7 @@ class TCService : SAPService {
     }
 
     private void validateTenant(string tenantId) const {
-        if (tenantId.length == 0) throw new TCValidationException("tenant_id is required");
+        if (tenantId.length == 0) throw new TKCValidationException("tenant_id is required");
     }
 
     private string normalizeStatus(string value) const {
@@ -258,7 +258,7 @@ class TCService : SAPService {
             normalized != "open" && normalized != "in_progress" && normalized != "completed" &&
             normalized != "canceled" && normalized != "ready"
         ) {
-            throw new TCValidationException("status must be one of open|in_progress|completed|canceled|ready");
+            throw new TKCValidationException("status must be one of open|in_progress|completed|canceled|ready");
         }
         return normalized;
     }
@@ -266,7 +266,7 @@ class TCService : SAPService {
     private string normalizePriority(string value) const {
         auto normalized = toLower(value);
         if (normalized != "low" && normalized != "medium" && normalized != "high" && normalized != "critical") {
-            throw new TCValidationException("priority must be one of low|medium|high|critical");
+            throw new TKCValidationException("priority must be one of low|medium|high|critical");
         }
         return normalized;
     }
@@ -278,19 +278,19 @@ class TCService : SAPService {
             normalized != "updated_at" && normalized != "created_at" && normalized != "due_at" &&
             normalized != "priority" && normalized != "title" && normalized != "status"
         ) {
-            throw new TCValidationException(
+            throw new TKCValidationException(
                 "sort_by must be one of updated_at|created_at|due_at|priority|title|status"
             );
         }
         return normalized;
     }
 
-    private bool compareTasks(TCTask left, TCTask right, string sortBy, bool descending) const {
+    private bool compareTasks(TKCTask left, TKCTask right, string sortBy, bool descending) const {
         if (descending) return compareTasksAscending(right, left, sortBy);
         return compareTasksAscending(left, right, sortBy);
     }
 
-    private bool compareTasksAscending(TCTask left, TCTask right, string sortBy) const {
+    private bool compareTasksAscending(TKCTask left, TKCTask right, string sortBy) const {
         bool less;
         final switch (sortBy) {
             case "created_at":
@@ -339,7 +339,7 @@ class TCService : SAPService {
             normalized != "claim" && normalized != "release" && normalized != "approve" &&
             normalized != "reject" && normalized != "complete" && normalized != "reopen"
         ) {
-            throw new TCValidationException("action must be one of claim|release|approve|reject|complete|reopen");
+            throw new TKCValidationException("action must be one of claim|release|approve|reject|complete|reopen");
         }
         return normalized;
     }
@@ -363,29 +363,29 @@ class TCService : SAPService {
 
     private string readRequired(Json body, string key) const {
         if (!(key in body) || body[key].type != Json.Type.string || body[key].get!string.length == 0) {
-            throw new TCValidationException(key ~ " is required");
+            throw new TKCValidationException(key ~ " is required");
         }
         return body[key].get!string;
     }
 
     private string readOptional(Json data, string key, string fallback) const {
         if (!(key in data) || data[key].type == Json.Type.null_) return fallback;
-        if (data[key].type != Json.Type.string) throw new TCValidationException(key ~ " must be a string");
+        if (data[key].type != Json.Type.string) throw new TKCValidationException(key ~ " must be a string");
         return data[key].get!string;
     }
 
     private bool readOptionalBool(Json data, string key, bool fallback) const {
         if (!(key in data) || data[key].type == Json.Type.null_) return fallback;
-        if (data[key].type != Json.Type.bool_) throw new TCValidationException(key ~ " must be a boolean");
+        if (data[key].type != Json.Type.bool_) throw new TKCValidationException(key ~ " must be a boolean");
         return data[key].get!bool;
     }
 
     private string[] readStringArray(Json data, string key) const {
         string[] values;
         if (!(key in data) || data[key].type == Json.Type.null_) return values;
-        if (data[key].type != Json.Type.array) throw new TCValidationException(key ~ " must be an array");
+        if (data[key].type != Json.Type.array) throw new TKCValidationException(key ~ " must be an array");
         foreach (item; data[key]) {
-            if (item.type != Json.Type.string) throw new TCValidationException(key ~ " must contain strings");
+            if (item.type != Json.Type.string) throw new TKCValidationException(key ~ " must contain strings");
             values ~= item.get!string;
         }
         return values;
@@ -393,7 +393,7 @@ class TCService : SAPService {
 
     private Json readObject(Json data, string key) const {
         if (!(key in data) || data[key].type == Json.Type.null_) return Json.emptyObject;
-        if (data[key].type != Json.Type.object) throw new TCValidationException(key ~ " must be an object");
+        if (data[key].type != Json.Type.object) throw new TKCValidationException(key ~ " must be an object");
         return data[key];
     }
 
@@ -401,7 +401,7 @@ class TCService : SAPService {
         try {
             return SysTime.fromISOExtString(value);
         } catch (Exception) {
-            throw new TCValidationException(key ~ " must be an ISO-8601 datetime");
+            throw new TKCValidationException(key ~ " must be an ISO-8601 datetime");
         }
     }
 }

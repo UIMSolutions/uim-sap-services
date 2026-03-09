@@ -8,7 +8,7 @@ import uim.sap.tkc.models.taskaction;
 
 @safe:
 
-struct TCTask {
+struct TKCTask {
     string tenantId;
     string taskId;
     string providerId;
@@ -26,7 +26,7 @@ struct TCTask {
     SysTime updatedAt;
     bool hasDueAt;
     SysTime dueAt;
-    TCTaskAction[] actionHistory;
+    TKCTaskAction[] actionHistory;
 
     Json toJson() const {
         Json payload = Json.emptyObject;

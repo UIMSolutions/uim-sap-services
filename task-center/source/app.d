@@ -11,16 +11,16 @@ mixin(ShowModule!());
 
 @safe:
 void main() {
-  TCConfig config = new TCConfig();
-  config.host = envOr("TC_HOST", "0.0.0.0");
-  config.port = readPort(envOr("TC_PORT", "8096"), 8096);
-  config.basePath = envOr("TC_BASE_PATH", "/api/task-center");
-  config.serviceName = envOr("TC_SERVICE_NAME", "uim-sap-task-center");
-  config.serviceVersion = envOr("TC_SERVICE_VERSION", UIM_TC_VERSION);
-  config.dataDirectory = envOr("TC_DATA_DIR", "/tmp/uim-task-center-data");
-  config.cacheFileName = envOr("TC_CACHE_FILE", "task-cache.json");
+  TKCConfig config = new TKCConfig();
+  config.host = envOr("TKC_HOST", "0.0.0.0");
+  config.port = readPort(envOr("TKC_PORT", "8096"), 8096);
+  config.basePath = envOr("TKC_BASE_PATH", "/api/task-center");
+  config.serviceName = envOr("TKC_SERVICE_NAME", "uim-sap-task-center");
+  config.serviceVersion = envOr("TKC_SERVICE_VERSION", UIM_TKC_VERSION);
+  config.dataDirectory = envOr("TKC_DATA_DIR", "/tmp/uim-task-center-data");
+  config.cacheFileName = envOr("TKC_CACHE_FILE", "task-cache.json");
 
-  auto token = envOr("TC_AUTH_TOKEN", "");
+  auto token = envOr("TKC_AUTH_TOKEN", "");
   if (token.length > 0) {
     config.requireAuthToken = true;
     config.authToken = token;
@@ -29,8 +29,8 @@ void main() {
   config.customHeaders["X-Service"] = config.serviceName;
   config.customHeaders["X-Version"] = config.serviceVersion;
 
-  auto service = new TCService(config);
-  auto server = new TCServer(service);
+  auto service = new TKCService(config);
+  auto server = new TKCServer(service);
 
   writeln("Starting Task Center service on ", config.host, ":", config.port);
   writeln("Base path: ", config.basePath);

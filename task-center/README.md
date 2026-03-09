@@ -5,14 +5,14 @@ This service provides an Task Center-style runtime with a unified REST interface
 ## Features
 
 - Federate tasks from and non-providers via a single REST contract.
-- Cache federated tasks on disk (`TC_DATA_DIR` + `TC_CACHE_FILE`) for resilience and fast access.
+- Cache federated tasks on disk (`TKC_DATA_DIR` + `TKC_CACHE_FILE`) for resilience and fast access.
 - End-user task processing APIs for:
   - task inbox retrieval
   - search, sort, and filter
   - task detail inspection
   - task actions (claim, release, approve, reject, complete, reopen)
   - navigation hints to native task applications
-- Optional bearer-token API protection via `TC_AUTH_TOKEN`.
+- Optional bearer-token API protection via `TKC_AUTH_TOKEN`.
 
 ## Build
 
@@ -23,7 +23,7 @@ dub build --root=./task-center
 ## Run
 
 ```bash
-TC_AUTH_TOKEN=local-token dub run --root=./task-center
+TKC_AUTH_TOKEN=local-token dub run --root=./task-center
 ```
 
 Defaults:
@@ -139,8 +139,8 @@ Run container:
 
 ```bash
 podman run --rm -p 8096:8096 \
-  -e TC_AUTH_TOKEN=local-token \
-  -e TC_DATA_DIR=/var/lib/uim-task-center \
+  -e TKC_AUTH_TOKEN=local-token \
+  -e TKC_DATA_DIR=/var/lib/uim-task-center \
   -v task-center-cache:/var/lib/uim-task-center \
   uim-sap-task-center:latest
 ```

@@ -16,4 +16,4 @@ public {
   import uim.sap.tkc.server;
 }
 
-enum UIM_TC_VERSION = "1.0.0";
+enum UIM_TKC_VERSION = "1.0.0";

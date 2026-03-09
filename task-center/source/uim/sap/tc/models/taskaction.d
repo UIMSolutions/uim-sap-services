@@ -6,7 +6,7 @@ import vibe.data.json : Json;
 
 @safe:
 
-struct TCTaskAction {
+struct TKCTaskAction {
     string action;
     string performedBy;
     string comment;

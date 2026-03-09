@@ -18,9 +18,9 @@ import vibe.data.json : Json, parseJsonString;
 import uim.sap.tkc.exceptions;
 import uim.sap.tkc.models;
 
-class TCStore : SAPStore {
-  private TCProvider[string] _providers;
-  private TCTask[string] _tasks;
+class TKCStore : SAPStore {
+  private TKCProvider[string] _providers;
+  private TKCTask[string] _tasks;
   private string _cacheFilePath;
   private Mutex _lock;
 
@@ -30,7 +30,7 @@ class TCStore : SAPStore {
     loadSnapshot();
   }
 
-  TCProvider upsertProvider(TCProvider provider) {
+  TKCProvider upsertProvider(TKCProvider provider) {
     synchronized (_lock) {
       auto key = scopedProviderKey(provider.providerId);
       if (auto existing = key in _providers)
@@ -41,17 +41,17 @@ class TCStore : SAPStore {
     }
   }
 
-  Nullable!TCProvider getProvider(string providerId) {
+  Nullable!TKCProvider getProvider(string providerId) {
     synchronized (_lock) {
       auto key = scopedProviderKey(providerId);
       if (auto value = key in _providers)
-        return Nullable!TCProvider(*value);
-      return Nullable!TCProvider.init;
+        return Nullable!TKCProvider(*value);
+      return Nullable!TKCProvider.init;
     }
   }
 
-  TCProvider[] listProviders() {
-    TCProvider[] values;
+  TKCProvider[] listProviders() {
+    TKCProvider[] values;
     synchronized (_lock) {
       foreach (_key, value; _providers)
         values ~= value;
@@ -59,7 +59,7 @@ class TCStore : SAPStore {
     return values;
   }
 
-  TCTask upsertTask(TCTask task) {
+  TKCTask upsertTask(TKCTask task) {
     synchronized (_lock) {
       auto key = scopedTaskKey(task.tenantId, task.taskId);
       if (auto existing = key in _tasks) {
@@ -73,17 +73,17 @@ class TCStore : SAPStore {
     }
   }
 
-  Nullable!TCTask getTask(string tenantId, string taskId) {
+  Nullable!TKCTask getTask(string tenantId, string taskId) {
     synchronized (_lock) {
       auto key = scopedTaskKey(tenantId, taskId);
       if (auto value = key in _tasks)
-        return Nullable!TCTask(*value);
-      return Nullable!TCTask.init;
+        return Nullable!TKCTask(*value);
+      return Nullable!TKCTask.init;
     }
   }
 
-  TCTask[] listTasks() {
-    TCTask[] values;
+  TKCTask[] listTasks() {
+    TKCTask[] values;
     synchronized (_lock) {
       foreach (_key, value; _tasks)
         values ~= value;
@@ -115,7 +115,7 @@ class TCStore : SAPStore {
         }
       }
     } catch (Exception e) {
-      throw new TCStoreException("Failed to read task cache snapshot: " ~ e.msg);
+      throw new TKCStoreException("Failed to read task cache snapshot: " ~ e.msg);
     }
   }
 
@@ -139,14 +139,14 @@ class TCStore : SAPStore {
 
       write(_cacheFilePath, snapshot.toString());
     } catch (Exception e) {
-      throw new TCStoreException("Failed to persist task cache snapshot: " ~ e.msg);
+      throw new TKCStoreException("Failed to persist task cache snapshot: " ~ e.msg);
     }
   }
 
-  private TCProvider parseProvider(Json item) {
-    enforce(item.isObject, new TCStoreException("Provider entry must be an object"));
+  private TKCProvider parseProvider(Json item) {
+    enforce(item.isObject, new TKCStoreException("Provider entry must be an object"));
 
-    TCProvider provider;
+    TKCProvider provider;
     provider.providerId = readString(item, "provider_id", true);
     provider.name = readString(item, "name", true);
     provider.providerType = readString(item, "provider_type", false, "sap");
@@ -161,10 +161,10 @@ class TCStore : SAPStore {
     return provider;
   }
 
-  private TCTask parseTask(Json item) {
-    enforce(item.isObject, new TCStoreException("Task entry must be an object"));
+  private TKCTask parseTask(Json item) {
+    enforce(item.isObject, new TKCStoreException("Task entry must be an object"));
 
-    TCTask task;
+    TKCTask task;
     task.tenantId = readString(item, "tenant_id", true);
     task.taskId = readString(item, "task_id", true);
     task.providerId = readString(item, "provider_id", true);
@@ -190,7 +190,7 @@ class TCStore : SAPStore {
       foreach (entry; item["action_history"]) {
         if (entry.type != Json.Type.object)
           continue;
-        TCTaskAction action;
+        TKCTaskAction action;
         action.action = readString(entry, "action", false, "");
         action.performedBy = readString(entry, "performed_by", false, "");
         action.comment = readString(entry, "comment", false, "");
@@ -205,14 +205,14 @@ class TCStore : SAPStore {
   private string readString(Json item, string key, bool required, string fallback = "") {
     if (!(key in item) || item[key].type == Json.Type.null_) {
       if (required)
-        throw new TCStoreException(key ~ " is required in cache item");
+        throw new TKCStoreException(key ~ " is required in cache item");
       return fallback;
     }
     if (!item[key].isString)
-      throw new TCStoreException(key ~ " must be a string in cache item");
+      throw new TKCStoreException(key ~ " must be a string in cache item");
     auto value = item[key].get!string;
     if (required && value.length == 0)
-      throw new TCStoreException(key ~ " cannot be empty in cache item");
+      throw new TKCStoreException(key ~ " cannot be empty in cache item");
     return value.length > 0 ? value : fallback;
   }
 
@@ -220,7 +220,7 @@ class TCStore : SAPStore {
     if (!(key in item) || item[key].type == Json.Type.null_)
       return fallback;
     if (!item[key].isBoolean)
-      throw new TCStoreException(key ~ " must be boolean in cache item");
+      throw new TKCStoreException(key ~ " must be boolean in cache item");
     return item[key].get!bool;
   }
 
@@ -236,7 +236,7 @@ class TCStore : SAPStore {
     if (!(key in item) || item[key].type == Json.Type.null_)
       return values;
     if (!item[key].isArray)
-      throw new TCStoreException(key ~ " must be an array in cache item");
+      throw new TKCStoreException(key ~ " must be an array in cache item");
     foreach (entry; item[key]) {
       if (entry.isString)
         values ~= entry.get!string;
@@ -248,7 +248,7 @@ class TCStore : SAPStore {
     if (!(key in item) || item[key].type == Json.Type.null_)
       return Json.emptyObject;
     if (!item[key].isObject)
-      throw new TCStoreException(key ~ " must be an object in cache item");
+      throw new TKCStoreException(key ~ " must be an object in cache item");
     return item[key];
   }
 

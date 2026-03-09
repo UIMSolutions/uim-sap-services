@@ -14,13 +14,13 @@ WORKDIR /app
 
 COPY --from=build /workspace/build/uim-sap-task-center-service /app/uim-sap-task-center-service
 
-ENV TC_HOST=0.0.0.0 \
-    TC_PORT=8096 \
-    TC_BASE_PATH=/api/task-center \
-    TC_SERVICE_NAME=uim-sap-task-center \
-    TC_SERVICE_VERSION=1.0.0 \
-    TC_DATA_DIR=/var/lib/uim-task-center \
-    TC_CACHE_FILE=task-cache.json
+ENV TKC_HOST=0.0.0.0 \
+    TKC_PORT=8096 \
+    TKC_BASE_PATH=/api/task-center \
+    TKC_SERVICE_NAME=uim-sap-task-center \
+    TKC_SERVICE_VERSION=1.0.0 \
+    TKC_DATA_DIR=/var/lib/uim-task-center \
+    TKC_CACHE_FILE=task-cache.json
 
 EXPOSE 8096
 

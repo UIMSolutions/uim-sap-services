@@ -16,8 +16,8 @@ import vibe.http.server : HTTPServerRequest, HTTPServerResponse, HTTPServerSetti
 import uim.sap.tkc.exceptions;
 import uim.sap.tkc.service;
 
-class TCServer {
-  private TCService _service;
+class TKCServer {
+  private TKCService _service;
   private string _host;
   private ushort _port;
   private string _basePath;
@@ -25,7 +25,7 @@ class TCServer {
   private string _authToken;
   private string[string] _customHeaders;
 
-  this(TCService service) {
+  this(TKCService service) {
     _service = service;
 
     auto cfg = service.config;
@@ -162,15 +162,15 @@ class TCServer {
       }
 
       respondError(res, "Not found", 404);
-    } catch (TCAuthorizationException e) {
+    } catch (TKCAuthorizationException e) {
       respondError(res, e.msg, 401);
-    } catch (TCValidationException e) {
+    } catch (TKCValidationException e) {
       respondError(res, e.msg, 422);
-    } catch (TCNotFoundException e) {
+    } catch (TKCNotFoundException e) {
       respondError(res, e.msg, 404);
-    } catch (TCStoreException e) {
+    } catch (TKCStoreException e) {
       respondError(res, e.msg, 500);
-    } catch (TCException e) {
+    } catch (TKCException e) {
       respondError(res, e.msg, 500);
     } catch (Exception e) {
       respondError(res, e.msg, 500);
@@ -181,11 +181,11 @@ class TCServer {
     if (!_requireAuthToken)
       return;
     if (!("Authorization" in req.headers))
-      throw new TCAuthorizationException("Missing Authorization header");
+      throw new TKCAuthorizationException("Missing Authorization header");
 
     auto expected = "Bearer " ~ _authToken;
     if (req.headers["Authorization"] != expected)
-      throw new TCAuthorizationException("Invalid token");
+      throw new TKCAuthorizationException("Invalid token");
   }
 
   private string[] normalizedSegments(string subPath) {

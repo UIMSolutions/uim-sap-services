@@ -6,7 +6,7 @@ import vibe.data.json : Json;
 
 @safe:
 
-struct TCProvider {
+struct TKCProvider {
     string providerId;
     string name;
     string providerType;

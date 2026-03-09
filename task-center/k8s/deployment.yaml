@@ -24,7 +24,7 @@ spec:
         - configMapRef:
             name: uim-sap-task-center-config
         env:
-        - name: TC_AUTH_TOKEN
+        - name: TKC_AUTH_TOKEN
           valueFrom:
             secretKeyRef:
               name: uim-sap-task-center-secret
