@@ -10,7 +10,6 @@ mixin(ShowModule!());
  * INTService — business logic for all Integration Suite capabilities.
  */
 class INTService : SAPService {
-    private INTConfig _config;
     private INTStore _store;
 
     this(INTConfig config) {
@@ -20,18 +19,6 @@ class INTService : SAPService {
     }
 
     @property const(INTConfig) config() const { return _config; }
-
-    // =================================================================
-    //  Platform
-    // =================================================================
-
-    override Json health() {
-        Json healthInfo = Json.emptyObject;
-        healthInfo["ok"] = true;
-        healthInfo["serviceName"] = _config.serviceName;
-        healthInfo["serviceVersion"] = _config.serviceVersion;
-        return healthInfo;
-    }
 
 
     // =================================================================

@@ -11,6 +11,27 @@ mixin(ShowModule!());
 
 @safe:
 
+/**
+  * Represents an event subscription in the SAP Integration Suite.
+  * This model captures the details of a subscription to a specific event topic, including the callback URL and delivery mode.
+  *
+  * Fields:
+  * - tenantId: The ID of the tenant that owns this subscription.
+  * - subscriptionId: A unique identifier for the subscription.
+  * - topicName: The name of the event topic to which this subscription is subscribed.
+  * - callbackUrl: The URL to which events will be delivered for this subscription.
+  * - deliveryMode: The mode of event delivery (e.g., push or pull).  
+  * - active: Indicates whether the subscription is currently active.
+  * - deliveredCount: The number of events successfully delivered to the callback URL.
+  * - failedCount: The number of events that failed to be delivered to the callback URL.
+  * - createdAt: The timestamp when the subscription was created.
+  * - updatedAt: The timestamp when the subscription was last updated.
+  * 
+  * Methods:
+  * - toJson(): Converts the subscription instance into a JSON representation.
+  * - eventSubscriptionFromJson(string tenantId, Json request): Creates a new subscription instance from a JSON request, generating a unique subscriptionId and setting the createdAt and updatedAt timestamps. 
+  * For more information on event subscriptions and their management, refer to the SAP Integration Suite documentation.
+  */
 struct INTEventSubscription {
   string tenantId;
   string subscriptionId;

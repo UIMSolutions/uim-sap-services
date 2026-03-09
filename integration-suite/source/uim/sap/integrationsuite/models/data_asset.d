@@ -11,6 +11,37 @@ mixin(ShowModule!());
 
 @safe:
 
+/**
+  * Represents a data asset in the SAP Integration Suite.
+  * A data asset can be a dataset, an API, or a data stream that is used in integration scenarios.
+  *
+  * Fields:
+  * - tenantId: The ID of the tenant that owns this data asset.
+  * - assetId: A unique identifier for the data asset.
+  * - name: The name of the data asset.
+  * - description: A brief description of the data asset.
+  * - assetType: The type of the data asset (e.g., dataset, api, stream).
+  * - format: The data format (e.g., json, csv, parquet, xml).
+  * - accessPolicy: The access policy for the data asset (e.g., open, restricted, contractual).
+  * - provider: The provider of the data asset.
+  * - dataSpaceName: The name of the data space this asset belongs to.
+  * - contractId: The ID of the contract governing access to this data asset.
+  * - status: The current status of the data asset (e.g., available, consumed, retired).
+  * - accessCount: The number of times this data asset has been accessed.
+  * - createdAt: The timestamp when the data asset was created.
+  * - updatedAt: The timestamp when the data asset was last updated.
+  *
+  * Methods:
+  * - toJson(): Converts the data asset instance into a JSON representation.
+  * - dataAssetFromJson(string tenantId, Json request): Creates a new data asset instance from a JSON request, generating a unique assetId and setting the createdAt and updatedAt timestamps
+  * 
+  * Statuses:
+  * - available: The data asset is available for use.
+  * - consumed: The data asset has been consumed in an integration scenario.
+  * - retired: The data asset is retired and should not be used for new scenarios.
+  *
+  * For more information on data assets and their management, refer to the SAP Integration Suite documentation.
+  */
 struct INTDataAsset {
   string tenantId;
   string assetId;

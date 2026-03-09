@@ -11,6 +11,36 @@ mixin(ShowModule!());
 
 @safe:
 
+/**
+  * Represents an API Proxy in the SAP Integration Suite.
+  *
+  * An API Proxy is a virtual API endpoint that acts as an intermediary between clients and backend services.
+  * It allows you to apply policies, manage traffic, and secure access to your APIs without changing the backend services.
+  * Key properties include:
+  * - `tenantId`: The ID of the tenant that owns this API Proxy.
+  * - `proxyId`: A unique identifier for the API Proxy.
+  * - `name`: A human-readable name for the API Proxy.
+  * - `description`: A detailed description of the API Proxy's purpose and functionality.
+  * - `basePath`: The base path under which the API Proxy is exposed (e.g., `/myapi`).
+  * - `targetUrl`: The URL of the backend service that the API Proxy forwards requests to.
+  * - `version_`: The version of the API Proxy, following semantic versioning (e.g., `1.0.0`).
+  * `status`: The current status of the API Proxy (e.g., `active`, `deprecated`, `revoked`).
+  * `authScheme`: The authentication scheme used by the API Proxy (e.g., `none`, `apikey`, `oauth2`, `basic`).
+  * `callCount`: The total number of calls made to this API Proxy.
+  * `errorCount`: The total number of errors encountered when calling this API Proxy.
+  * `policies`: A list of policy IDs that are applied to this API Proxy.
+  * `createdAt`: The timestamp when the API Proxy was created.
+  * `updatedAt`: The timestamp when the API Proxy was last updated.
+  *
+  * The `toJson` method converts the API Proxy instance into a JSON representation, which can be used for API responses or storage.
+  * The `apiProxyFromJson` function creates a new API Proxy instance from a JSON request, generating a unique `proxyId` and setting the `createdAt` and `updatedAt` timestamps.
+  *
+  * Example usage:
+  * Json request = ...; // JSON payload from API request
+  * INTApiProxy proxy = apiProxyFromJson("tenant123", request);
+  * Json response = proxy.toJson(); // Convert API Proxy to JSON for API response
+  * For more information on API Proxies and their management, refer to the SAP Integration Suite documentation.
+  */
 struct INTApiProxy {
   string tenantId;
   string proxyId;

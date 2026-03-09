@@ -11,6 +11,29 @@ mixin(ShowModule!());
 
 @safe:
 
+/**
+  * Represents an integration flow (iFlow) in the SAP Integration Suite.
+  *
+  * An iFlow defines the routing and processing logic for messages between a sender and a receiver. It includes details such as the protocol used, endpoint URL, message count, error count, and deployment status.
+  *
+  * The `INTIFlow` struct includes fields for tenant ID, iFlow ID, name, description, package ID, version, status, runtime environment, sender and receiver information, protocol, endpoint URL, message and error counts, deployment timestamp, and creation/update timestamps.
+  *
+  * The `toJson` method converts the iFlow instance into a JSON representation for easy serialization and communication with external systems.
+  *
+  * The `iflowFromJson` function creates an `INTIFlow` instance from a JSON request payload, allowing for easy instantiation from incoming data.
+  * 
+  * Statuses:
+  * - draft: The iFlow is in draft status and not yet active.
+  * - active: The iFlow is active and can process messages.
+  * - error: The iFlow has encountered an error and cannot process messages.
+  * - deployed: The iFlow has been deployed to the runtime environment.
+  * 
+  * Runtime Environments:
+  * - cloud: The iFlow is designed to run in the cloud environment.
+  * - hybrid: The iFlow is designed to run in a hybrid environment, which may include both cloud and on-premises components.
+  * 
+  * For more information on iFlows and their management, refer to the SAP Integration Suite documentation.
+  */
 struct INTIFlow {
   string tenantId;
   string iflowId;

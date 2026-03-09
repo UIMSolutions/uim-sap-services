@@ -11,6 +11,35 @@ mixin(ShowModule!());
 
 @safe:
 
+/**
+  * Represents an API Product in the SAP Integration Suite.
+  * An API Product is a collection of API Proxies that are offered as a package to developers.
+  * It includes metadata such as name, description, version, status, and associated policies.
+  *
+  * Fields:
+  * - tenantId: The ID of the tenant that owns this API Product.
+  * - productId: Unique identifier for the API Product.
+  * - name: Name of the API Product.
+  * - description: A brief description of the API Product.
+  * - version: Version of the API Product, following semantic versioning.
+  * - status: Current lifecycle status of the API Product (e.g., draft, published, deprecated).
+  * - proxyIds: List of API Proxy IDs that are included in this API Product.
+  * - subscriberCount: Number of developers subscribed to this API Product.
+  * - rateLimitPolicy: The rate limiting policy applied to this API Product (e.g., 1000 requests per minute).
+  * - createdAt: Timestamp of when the API Product was created.
+  * - updatedAt: Timestamp of the last update to the API Product.
+  *
+  * Methods:
+  * - toJson(): Serializes the API Product to a JSON object for API responses.
+  * - apiProductFromJson(): Factory function to create an API Product instance from a JSON request.
+  *
+  * Example usage:
+  *   // Creating an API Product from a JSON request
+  *   Json request = ...; // JSON payload from API request
+  *   INTApiProduct product = apiProductFromJson("tenant123", request);
+  *   // Serializing an API Product to JSON for response
+  *   Json response = product.toJson();
+  */
 struct INTApiProduct {
   string tenantId;
   string productId;

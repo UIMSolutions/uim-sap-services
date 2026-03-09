@@ -11,6 +11,25 @@ mixin(ShowModule!());
 
 @safe:
 
+/**
+  * Represents a log entry for a message processed through the SAP Integration Suite.
+  * This model captures key information about the message, including its processing status, sender and receiver details, payload size, and any errors encountered.
+  *
+  * Status values:
+  * - processing: The message is currently being processed.
+  * - completed: The message was processed successfully.
+  * - failed: An error occurred during processing.
+  * - retry: The message is scheduled for retry after a failure.
+  *
+  * This model can be used for monitoring and troubleshooting message processing within the SAP Integration Suite.
+  * For more information on message logs and their management, refer to the SAP Integration Suite documentation.
+  *
+  * Fields:
+  * - tenantId: The ID of the tenant that owns this message log entry.
+  * - logId: A unique identifier for the message log entry.
+  * - iflowId: The ID of the integration flow that processed the message.
+  * - correlationId: A unique identifier that correlates related messages across different systems and processes
+
 struct INTMessageLog {
   string tenantId;
   string logId;
