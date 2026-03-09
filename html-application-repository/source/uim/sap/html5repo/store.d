@@ -3,12 +3,12 @@
 * License: Subject to the terms of the Apache 2.0 license, as written in the included LICENSE.txt file. 
 * Authors: Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*)
 *****************************************************************************************************************/
-module uim.sap.html5repo.store;
+module uim.sap.har.store;
 
-import uim.sap.html5repo;
+import uim.sap.har;
 
 
-class HTMRepositoryStore : SAPStore {
+class HARsitoryStore : SAPStore {
     private string _root;
 
     this(string rootPath) {
@@ -31,7 +31,7 @@ class HTMRepositoryStore : SAPStore {
         validateIdentity(versionId, "version");
 
         if (files.length == 0) {
-            throw new HTMRepoValidationException("At least one file is required");
+            throw new HARValidationException("At least one file is required");
         }
 
         auto versionRoot = versionDirectory(tenant.tenantId, tenant.spaceId, appId, versionId);
@@ -44,19 +44,19 @@ class HTMRepositoryStore : SAPStore {
         foreach (asset; files) {
             auto cleanPath = normalizeAssetPath(asset.path);
             if (asset.contentBase64.length == 0) {
-                throw new HTMRepoValidationException("content_base64 is required for " ~ cleanPath);
+                throw new HARValidationException("content_base64 is required for " ~ cleanPath);
             }
 
             ubyte[] binaryContent;
             try {
                 binaryContent = Base64.decode(asset.contentBase64);
             } catch (Exception) {
-                throw new HTMRepoValidationException("Invalid content_base64 for " ~ cleanPath);
+                throw new HARValidationException("Invalid content_base64 for " ~ cleanPath);
             }
 
             totalBytes += cast(long)binaryContent.length;
             if (totalBytes > maxUploadBytes) {
-                throw new HTMRepoValidationException("Upload exceeds max upload size limit");
+                throw new HARValidationException("Upload exceeds max upload size limit");
             }
 
             auto target = buildPath(contentRoot, cleanPath);
@@ -90,7 +90,7 @@ class HTMRepositoryStore : SAPStore {
     void setActiveVersion(string tenantId, string spaceId, string appId, string versionId) {
         auto requested = tryGetVersionInfo(tenantId, spaceId, appId, versionId);
         if (requested.versionId.length == 0) {
-            throw new HTMRepoNotFoundException("Version", appId ~ ":" ~ versionId);
+            throw new HARNotFoundException("Version", appId ~ ":" ~ versionId);
         }
 
         auto versions = listVersions(tenantId, spaceId, appId);
@@ -226,7 +226,7 @@ class HTMRepositoryStore : SAPStore {
         string[] files;
         auto contentRoot = buildPath(versionDirectory(tenantId, spaceId, appId, versionId), "content");
         if (!exists(contentRoot)) {
-            throw new HTMRepoNotFoundException("Version", appId ~ ":" ~ versionId);
+            throw new HARNotFoundException("Version", appId ~ ":" ~ versionId);
         }
 
         foreach (entry; dirEntries(contentRoot, SpanMode.depth)) {
@@ -257,28 +257,28 @@ class HTMRepositoryStore : SAPStore {
     ) {
         auto info = tryGetVersionInfo(tenantId, spaceId, appId, versionId);
         if (info.versionId.length == 0) {
-            throw new HTMRepoNotFoundException("Version", appId ~ ":" ~ versionId);
+            throw new HARNotFoundException("Version", appId ~ ":" ~ versionId);
         }
 
         if (consumerTenantId.length > 0 && consumerTenantId != tenantId) {
-            throw new HTMRepoAuthorizationException("Cross-tenant consumption is not allowed");
+            throw new HARAuthorizationException("Cross-tenant consumption is not allowed");
         }
 
         auto privateAsset = info.visibility == Visibility.privateAccess;
         auto crossSpace = consumerSpaceId.length > 0 && consumerSpaceId != spaceId;
 
         if (privateAsset && crossSpace) {
-            throw new HTMRepoAuthorizationException("Private application cannot be consumed from another space");
+            throw new HARAuthorizationException("Private application cannot be consumed from another space");
         }
 
         if (!privateAsset && crossSpace && !allowPublicCrossSpace) {
-            throw new HTMRepoAuthorizationException("Cross-space public sharing is disabled");
+            throw new HARAuthorizationException("Cross-space public sharing is disabled");
         }
 
         auto cleanPath = normalizeAssetPath(assetPath);
         auto assetFile = buildPath(versionDirectory(tenantId, spaceId, appId, versionId), "content", cleanPath);
         if (!exists(assetFile)) {
-            throw new HTMRepoNotFoundException("Asset", cleanPath);
+            throw new HARNotFoundException("Asset", cleanPath);
         }
 
         RuntimeAsset asset;
@@ -297,7 +297,7 @@ class HTMRepositoryStore : SAPStore {
     void deleteVersion(string tenantId, string spaceId, string appId, string versionId) {
         auto root = versionDirectory(tenantId, spaceId, appId, versionId);
         if (!exists(root)) {
-            throw new HTMRepoNotFoundException("Version", appId ~ ":" ~ versionId);
+            throw new HARNotFoundException("Version", appId ~ ":" ~ versionId);
         }
         rmdirRecurse(root);
 
@@ -324,7 +324,7 @@ class HTMRepositoryStore : SAPStore {
     private string normalizeAssetPath(string pathValue) {
         auto value = strip(pathValue);
         if (value.length == 0) {
-            throw new HTMRepoValidationException("asset path is required");
+            throw new HARValidationException("asset path is required");
         }
 
         if (value[0] == '/') {
@@ -335,7 +335,7 @@ class HTMRepositoryStore : SAPStore {
         string[] clean;
         foreach (segment; segments) {
             if (segment.length == 0 || segment == "." || segment == "..") {
-                throw new HTMRepoValidationException("Invalid asset path");
+                throw new HARValidationException("Invalid asset path");
             }
             clean ~= segment;
         }
@@ -398,7 +398,7 @@ class HTMRepositoryStore : SAPStore {
 
     private void validateIdentity(string value, string fieldName) {
         if (strip(value).length == 0) {
-            throw new HTMRepoValidationException(fieldName ~ " is required");
+            throw new HARValidationException(fieldName ~ " is required");
         }
     }
 }

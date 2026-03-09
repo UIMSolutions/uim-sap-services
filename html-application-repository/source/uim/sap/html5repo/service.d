@@ -3,29 +3,29 @@
 * License: Subject to the terms of the Apache 2.0 license, as written in the included LICENSE.txt file. 
 * Authors: Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*)
 *****************************************************************************************************************/
-module uim.sap.html5repo.service;
+module uim.sap.har.service;
 
 import vibe.data.json : Json;
 
-import uim.sap.html5repo.cache;
-import uim.sap.html5repo.config;
-import uim.sap.html5repo.exceptions;
-import uim.sap.html5repo.models;
-import uim.sap.html5repo.store;
+import uim.sap.har.cache;
+import uim.sap.har.config;
+import uim.sap.har.exceptions;
+import uim.sap.har.models;
+import uim.sap.har.store;
 
-class HTMRepoService : SAPService {
-    private HTMRepoConfig _config;
-    private HTMRepositoryStore _store;
+class HARService : SAPService {
+    private HARConfig _config;
+    private HARsitoryStore _store;
     private RuntimeAssetCache _cache;
 
-    this(HTMRepoConfig config) {
+    this(HARConfig config) {
         config.validate();
         _config = config;
-        _store = new HTMRepositoryStore(_config.dataDirectory);
+        _store = new HARsitoryStore(_config.dataDirectory);
         _cache = new RuntimeAssetCache(_config.cacheTtlSeconds);
     }
 
-    @property const(HTMRepoConfig) config() const {
+    @property const(HARConfig) config() const {
         return _config;
     }
 
@@ -43,13 +43,13 @@ class HTMRepoService : SAPService {
         auto activate = getBool(request, "activate", true);
 
         if (!("files" in request) || !request["files"].isArray) {
-            throw new HTMRepoValidationException("files array is required");
+            throw new HARValidationException("files array is required");
         }
 
         UploadedAsset[] files;
         foreach (item; request["files"]) {
             if (!item.isObject) {
-                throw new HTMRepoValidationException("files entries must be objects");
+                throw new HARValidationException("files entries must be objects");
             }
 
             UploadedAsset file;
@@ -151,7 +151,7 @@ class HTMRepoService : SAPService {
     ) {
         auto activeVersion = _store.activeVersion(tenantId, spaceId, appId);
         if (activeVersion.length == 0) {
-            throw new HTMRepoNotFoundException("Active version", appId);
+            throw new HARNotFoundException("Active version", appId);
         }
         return runtimeAssetByVersion(
             tenantId,
@@ -197,7 +197,7 @@ class HTMRepoService : SAPService {
     Json activeVersion(TenantContext tenant, string appId) {
         auto activeVersionId = _store.activeVersion(tenant.tenantId, tenant.spaceId, appId);
         if (activeVersionId.length == 0) {
-            throw new HTMRepoNotFoundException("Active version", appId);
+            throw new HARNotFoundException("Active version", appId);
         }
 
         auto info = _store.tryGetVersionInfo(tenant.tenantId, tenant.spaceId, appId, activeVersionId);

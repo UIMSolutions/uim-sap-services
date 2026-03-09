@@ -3,6 +3,6 @@
 * License: Subject to the terms of the Apache 2.0 license, as written in the included LICENSE.txt file. 
 * Authors: Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*)
 *****************************************************************************************************************/
-module uim.sap.html5repo.exceptions;
+module uim.sap.har.exceptions;
 
-public import uim.sap.html5repo.exceptions.exception;
+public import uim.sap.har.exceptions.exception;

@@ -5,14 +5,14 @@
 *****************************************************************************************************************/
 module app;
 
-import uim.sap.html5repo;
+import uim.sap.har;
 
 mixin(ShowModule!());
 
 @safe:
 
 void main() {
-  HTMRepoConfig config = new HTMRepoConfig;
+  HARConfig config = new HARConfig;
   config.host = envOr("HTM_REPO_HOST", "0.0.0.0");
   config.port = readPort(envOr("HTM_REPO_PORT", "8094"), 8094);
   config.basePath = envOr("HTM_REPO_BASE_PATH", "/api/html5-repo");
@@ -34,8 +34,8 @@ void main() {
   config.customHeaders["X-Service"] = config.serviceName;
   config.customHeaders["X-Version"] = config.serviceVersion;
 
-  auto service = new HTMRepoService(config);
-  auto server = new HTMRepoServer(service);
+  auto service = new HARService(config);
+  auto server = new HARServer(service);
 
   writeln("Starting HTM Repository service on ", config.host, ":", config.port);
   writeln("Base path: ", config.basePath);

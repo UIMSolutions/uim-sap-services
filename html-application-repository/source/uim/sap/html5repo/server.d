@@ -3,17 +3,17 @@
 * License: Subject to the terms of the Apache 2.0 license, as written in the included LICENSE.txt file. 
 * Authors: Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*)
 *****************************************************************************************************************/
-module uim.sap.html5repo.server;
+module uim.sap.har.server;
 
-import uim.sap.html5repo;
+import uim.sap.har;
 @safe:
 
-class HTMRepoServer : SAPServer {
-  mixin(SAPServerTemplate!HTMRepoServer);
+class HARServer : SAPServer {
+  mixin(SAPServerTemplate!HARServer);
   
-  private HTMRepoService _service;
+  private HARService _service;
 
-  this(HTMRepoService service) {
+  this(HARService service) {
     _service = service;
   }
 
@@ -65,13 +65,13 @@ class HTMRepoServer : SAPServer {
       }
 
       respondError(res, "Not found", 404);
-    } catch (HTMRepoAuthorizationException e) {
+    } catch (HARAuthorizationException e) {
       respondError(res, e.msg, 401);
-    } catch (HTMRepoNotFoundException e) {
+    } catch (HARNotFoundException e) {
       respondError(res, e.msg, 404);
-    } catch (HTMRepoValidationException e) {
+    } catch (HARValidationException e) {
       respondError(res, e.msg, 422);
-    } catch (HTMRepoException e) {
+    } catch (HARException e) {
       respondError(res, e.msg, 500);
     } catch (Exception e) {
       respondError(res, e.msg, 500);
@@ -209,12 +209,12 @@ class HTMRepoServer : SAPServer {
     }
 
     if (!("Authorization" in req.headers)) {
-      throw new HTMRepoAuthorizationException("Missing Authorization header");
+      throw new HARAuthorizationException("Missing Authorization header");
     }
 
     auto expected = "Bearer " ~ _service.config.managementAuthToken;
     if (req.headers["Authorization"] != expected) {
-      throw new HTMRepoAuthorizationException("Invalid management token");
+      throw new HARAuthorizationException("Invalid management token");
     }
   }
 
@@ -234,7 +234,7 @@ class HTMRepoServer : SAPServer {
 
   private string joinFrom(string[] segments, size_t startIndex) {
     if (segments.length <= startIndex) {
-      throw new HTMRepoValidationException("Asset path is required");
+      throw new HARValidationException("Asset path is required");
     }
 
     string resultPath;

@@ -3,14 +3,14 @@
 * License: Subject to the terms of the Apache 2.0 license, as written in the included LICENSE.txt file. 
 * Authors: Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*)
 *****************************************************************************************************************/
-module uim.sap.html5repo;
+module uim.sap.har;
 
-public import uim.sap.html5repo.config;
-public import uim.sap.html5repo.exceptions;
-public import uim.sap.html5repo.models;
-public import uim.sap.html5repo.store;
-public import uim.sap.html5repo.cache;
-public import uim.sap.html5repo.service;
-public import uim.sap.html5repo.server;
+public import uim.sap.har.config;
+public import uim.sap.har.exceptions;
+public import uim.sap.har.models;
+public import uim.sap.har.store;
+public import uim.sap.har.cache;
+public import uim.sap.har.service;
+public import uim.sap.har.server;
 
 enum UIM_HTM_REPO_VERSION = "1.0.0";

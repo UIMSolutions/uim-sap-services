@@ -3,11 +3,11 @@
 * License: Subject to the terms of the Apache 2.0 license, as written in the included LICENSE.txt file. 
 * Authors: Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*)
 *****************************************************************************************************************/
-module uim.sap.html5repo.cache;
+module uim.sap.har.cache;
 
 import std.datetime : Clock, SysTime, dur;
 
-import uim.sap.html5repo.models;
+import uim.sap.har.models;
 
 class RuntimeAssetCache {
   private struct CacheEntry {
