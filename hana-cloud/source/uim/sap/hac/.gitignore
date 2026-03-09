@@ -1,0 +1,55 @@
+# Ignore dub artifacts
+.dub/
+dub.selections.json
+*.a
+*.o
+*.obj
+*.lib
+*.so
+*.dylib
+*.dll
+*.exe
+
+# Ignore build directories
+build/
+bin/
+lib/
+docs/
+
+# Ignore IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Ignore test artifacts
+__test__*
+*.lst
+
+# Ignore dependencies
+deps.txt
+
+# Ignore generated documentation
+*.html
+*.css
+*.js
+doc/
+
+# Ignore temporary files
+*.tmp
+*.bak
+*.log
+
+# Ignore credentials and configuration
+config.json
+credentials.json
+.env
+*.key
+*.pem
+*.crt
+
+# Ignore coverage reports
+*.lst
+coverage/

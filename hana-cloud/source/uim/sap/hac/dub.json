@@ -1,0 +1,21 @@
+{
+    "name": "uim-sap",
+    "description": "D language library for HANA Cloud integration using uim-framework and vibe.d",
+    "homepage": "https://www.sueel.de/uim/framework",
+    "authors": ["Ozan Nurettin Süel", "UI Manufaktur"],
+    "copyright": "Copyright © 2018-2026, Ozan Nurettin Süel",
+    "license": "Apache-2.0",
+    
+    "targetType": "library",
+    "targetName": "uim-sap",
+    
+    "dependencies": {
+        "uim-framework": "~>26.1.2",
+        "vibe-d": "~>0.10.0"
+    },
+    
+    "sourceFiles": ["./source/uim/sap/package.d"],
+    
+    "buildRequirements": ["allowWarnings", "silenceDeprecations"],
+    "buildOptions": ["ignoreDeprecations", "debugInfo"]
+}
