@@ -4,8 +4,9 @@
 * Authors: Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*)
 *****************************************************************************************************************/
 module uim.sap.isa.config;
-
 import uim.sap.isa;
+
+mixin(ShowModule!());
 
 @safe:
 

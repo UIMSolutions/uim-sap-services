@@ -5,7 +5,11 @@
 *****************************************************************************************************************/
 module uim.sap.isa.exceptions.notfound;
 
-import uim.sap.isa.exceptions.exception;
+import uim.sap.isa;
+
+mixin(ShowModule!());
+
+@safe:
 
 class ISANotFoundException : ISAException {
   this(string entityType, string id, string file = __FILE__, size_t line = __LINE__, Throwable next = null) {

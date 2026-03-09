@@ -7,6 +7,8 @@ module uim.sap.isa.service;
 
 import uim.sap.isa;
 
+mixin(ShowModule!());
+
 @safe:
 
 class ISAService : SAPService {

@@ -1,10 +1,10 @@
 module uim.sap.isa.models.model;
 
-import std.algorithm.comparison : max;
-import std.datetime : Clock, SysTime;
-import std.uuid : randomUUID;
+import uim.sap.isa;
 
-import vibe.data.json : Json;
+mixin(ShowModule!());
+
+@safe:
 
 enum SituationStatus {
   open,

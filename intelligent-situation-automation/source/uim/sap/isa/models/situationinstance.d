@@ -1,5 +1,9 @@
 module uim.sap.isa.models.situationinstance;
+import uim.sap.isa;
 
+mixin(ShowModule!());
+
+@safe:
 struct SituationInstance {
   string id;
   string tenantId;

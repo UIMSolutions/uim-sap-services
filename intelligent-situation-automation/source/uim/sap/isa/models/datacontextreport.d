@@ -1,5 +1,9 @@
 module uim.sap.isa.models.datacontextreport;
+import uim.sap.isa;
 
+mixin(ShowModule!());
+
+@safe:
 struct DataContextReport {
   string id;
   string tenantId;

@@ -7,8 +7,10 @@ module uim.sap.isa.store;
 
 import core.sync.mutex : Mutex;
 import uim.sap.isa;
-@safe:
 
+mixin(ShowModule!());
+
+@safe:
 class ISAStore : SAPStore {
     private AutomationConfiguration[string] _configs;
     private SituationInstance[][string] _situationsByTenant;

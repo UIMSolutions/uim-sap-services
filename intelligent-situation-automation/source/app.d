@@ -2,6 +2,10 @@ module app;
 
 import uim.sap.isa;
 
+mixin(ShowModule!());
+
+@safe:
+
 void main() {
   ISAConfig config = new ISAConfig();
   config.host = envOr("ISA_HOST", "0.0.0.0");
