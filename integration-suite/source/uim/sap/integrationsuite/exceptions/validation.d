@@ -11,7 +11,7 @@ mixin(ShowModule!());
 
 @safe:
 
-class ISValidationException : ISException {
+class INTValidationException : INTException {
   this(string message) {
     super("Validation failed: " ~ message);
   }

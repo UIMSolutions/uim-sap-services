@@ -11,7 +11,7 @@ mixin(ShowModule!());
 
 @safe:
 
-struct ISTradingPartner {
+struct INTTradingPartner {
     string tenantId;
     string partnerId;
     string name;
@@ -45,8 +45,8 @@ struct ISTradingPartner {
     }
 }
 
-ISTradingPartner tradingPartnerFromJson(string tenantId, Json request) {
-    ISTradingPartner tp;
+INTTradingPartner tradingPartnerFromJson(string tenantId, Json request) {
+    INTTradingPartner tp;
     tp.tenantId = tenantId;
     tp.partnerId = randomUUID().toString();
 
@@ -65,7 +65,7 @@ ISTradingPartner tradingPartnerFromJson(string tenantId, Json request) {
     if ("contact_phone" in request && request["contact_phone"].isString)
         tp.contactPhone = request["contact_phone"].get!string;
 
-    tp.createdAt = Clock.currTime().toISOExtString();
+    tp.createdAt = Clock.currTime().toINTOExtString();
     tp.updatedAt = tp.createdAt;
     return tp;
 }

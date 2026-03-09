@@ -11,7 +11,7 @@ mixin(ShowModule!());
 
 @safe:
 
-struct ISHybridRuntime {
+struct INTHybridRuntime {
     string tenantId;
     string runtimeId;
     string name;
@@ -45,8 +45,8 @@ struct ISHybridRuntime {
     }
 }
 
-ISHybridRuntime hybridRuntimeFromJson(string tenantId, Json request) {
-    ISHybridRuntime r;
+INTHybridRuntime hybridRuntimeFromJson(string tenantId, Json request) {
+    INTHybridRuntime r;
     r.tenantId = tenantId;
     r.runtimeId = randomUUID().toString();
 
@@ -61,7 +61,7 @@ ISHybridRuntime hybridRuntimeFromJson(string tenantId, Json request) {
     if ("version" in request && request["version"].isString)
         r.version_ = request["version"].get!string;
 
-    r.createdAt = Clock.currTime().toISOExtString();
+    r.createdAt = Clock.currTime().toINTOExtString();
     r.updatedAt = r.createdAt;
     return r;
 }

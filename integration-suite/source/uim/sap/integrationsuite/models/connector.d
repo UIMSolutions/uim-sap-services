@@ -11,7 +11,7 @@ mixin(ShowModule!());
 
 @safe:
 
-struct ISConnector {
+struct INTConnector {
     string tenantId;
     string connectorId;
     string name;
@@ -45,8 +45,8 @@ struct ISConnector {
     }
 }
 
-ISConnector connectorFromJson(string tenantId, Json request) {
-    ISConnector c;
+INTConnector connectorFromJson(string tenantId, Json request) {
+    INTConnector c;
     c.tenantId = tenantId;
     c.connectorId = randomUUID().toString();
 
@@ -67,7 +67,7 @@ ISConnector connectorFromJson(string tenantId, Json request) {
     else
         c.configuration = Json.emptyObject;
 
-    c.createdAt = Clock.currTime().toISOExtString();
+    c.createdAt = Clock.currTime().toINTOExtString();
     c.updatedAt = c.createdAt;
     return c;
 }

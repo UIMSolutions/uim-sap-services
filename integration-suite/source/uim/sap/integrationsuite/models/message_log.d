@@ -11,7 +11,7 @@ mixin(ShowModule!());
 
 @safe:
 
-struct ISMessageLog {
+struct INTMessageLog {
   string tenantId;
   string logId;
   string iflowId;
@@ -45,8 +45,8 @@ struct ISMessageLog {
   }
 }
 
-ISMessageLog messageLogFromJson(string tenantId, Json request) {
-  ISMessageLog l;
+INTMessageLog messageLogFromJson(string tenantId, Json request) {
+  INTMessageLog l;
   l.tenantId = tenantId;
   l.logId = randomUUID().toString();
 
@@ -67,7 +67,7 @@ ISMessageLog messageLogFromJson(string tenantId, Json request) {
   if ("duration_ms" in request && request["duration_ms"].type == Json.Type.int_)
     l.durationMs = request["duration_ms"].get!long;
 
-  l.createdAt = Clock.currTime().toISOExtString();
+  l.createdAt = Clock.currTime().toINTOExtString();
   l.startedAt = l.createdAt;
   return l;
 }

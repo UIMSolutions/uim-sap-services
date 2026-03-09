@@ -11,7 +11,7 @@ podman rm -f "$CONTAINER_NAME" >/dev/null 2>&1 || true
 
 podman run --name "$CONTAINER_NAME" --rm \
   -p "$HOST_PORT":8100 \
-  -e IS_HOST=0.0.0.0 \
-  -e IS_PORT=8100 \
-  -e IS_BASE_PATH=/api/is \
+  -e INT_HOST=0.0.0.0 \
+  -e INT_PORT=8100 \
+  -e INT_BASE_PATH=/api/is \
   "$IMAGE_TAG"

@@ -16,13 +16,13 @@ mixin(ShowModule!());
   * It includes details about the agreement such as the partner, document standard, direction, status, validity period, and transaction count.
   * The toJson method allows for easy serialization of the agreement data to JSON format for API responses or storage.
   *
-  * The agreementFromJson function is a helper that creates an ISAgreement instance from a JSON request, typically used when creating a new agreement via an API endpoint.
+  * The agreementFromJson function is a helper that creates an INTAgreement instance from a JSON request, typically used when creating a new agreement via an API endpoint.
   *
   * Note: The agreementId is generated as a random UUID when creating a new agreement from JSON.
   *
   * Example usage:
   * Json request = ...; // JSON payload from API request
-  * ISAgreement agreement = agreementFromJson("tenant123", request);  
+  * INTAgreement agreement = agreementFromJson("tenant123", request);  
   * Json response = agreement.toJson(); // Convert agreement to JSON for API response
   *
   * Document Standards:
@@ -41,13 +41,13 @@ mixin(ShowModule!());
   * - terminated: The agreement is terminated and cannot be used for transactions.
   *
   * Validity Period:
-  * - validFrom: The date and time when the agreement becomes valid (ISO 8601 format).
-  * - validTo: The date and time when the agreement expires (ISO 8601 format).
+  * - validFrom: The date and time when the agreement becomes valid (INTO 8601 format).
+  * - validTo: The date and time when the agreement expires (INTO 8601 format).
   * Transaction Count:
   * - transactionCount: The number of transactions that have been processed under this agreement.
   * Timestamps:
-  * - createdAt: The date and time when the agreement was created (ISO 8601 format).
-  * - updatedAt: The date and time when the agreement was last updated (ISO 8601 format).
+  * - createdAt: The date and time when the agreement was created (INTO 8601 format).
+  * - updatedAt: The date and time when the agreement was last updated (INTO 8601 format).
   *
   * This struct and its associated functions are part of the SAP Integration Suite and are used to manage trading agreements with partners.
   *
@@ -62,17 +62,17 @@ mixin(ShowModule!());
   * - documentStandard: The standard used for the documents exchanged under this agreement (e.g., EDIFACT, X12, cXML, SAP IDoc).
   * - direction: The direction of the agreement (inbound, outbound, bidirectional).
   * - status: The current status of the agreement (draft, active, suspended, terminated).
-  * - validFrom: The date and time when the agreement becomes valid (in ISO 8601 format).
-  * - validTo: The date and time when the agreement expires (in ISO 8601 format).
+  * - validFrom: The date and time when the agreement becomes valid (in INTO 8601 format).
+  * - validTo: The date and time when the agreement expires (in INTO 8601 format).
   * - transactionCount: The number of transactions processed under this agreement.
-  * - createdAt: The date and time when the agreement was created (in ISO 8601 format).
-  * - updatedAt: The date and time when the agreement was last updated (in ISO 8601 format).
+  * - createdAt: The date and time when the agreement was created (in INTO 8601 format).
+  * - updatedAt: The date and time when the agreement was last updated (in INTO 8601 format).
   *
   * Methods:
   * - toJson: Converts the agreement instance to a JSON object for easy serialization.
-  * - agreementFromJson: A helper function that creates an ISAgreement instance from a JSON request, typically used when creating a new agreement via an API endpoint.
+  * - agreementFromJson: A helper function that creates an INTAgreement instance from a JSON request, typically used when creating a new agreement via an API endpoint.
   */
-struct ISAgreement {
+struct INTAgreement {
     string tenantId;
     string agreementId;
     string partnerId;
@@ -106,8 +106,8 @@ struct ISAgreement {
     }
 }
 
-ISAgreement agreementFromJson(string tenantId, Json request) {
-    ISAgreement a;
+INTAgreement agreementFromJson(string tenantId, Json request) {
+    INTAgreement a;
     a.tenantId = tenantId;
     a.agreementId = randomUUID().toString();
 
@@ -126,7 +126,7 @@ ISAgreement agreementFromJson(string tenantId, Json request) {
     if ("valid_to" in request && request["valid_to"].isString)
         a.validTo = request["valid_to"].get!string;
 
-    a.createdAt = Clock.currTime().toISOExtString();
+    a.createdAt = Clock.currTime().toINTOExtString();
     a.updatedAt = a.createdAt;
     return a;
 }

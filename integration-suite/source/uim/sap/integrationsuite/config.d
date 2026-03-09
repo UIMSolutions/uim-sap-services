@@ -6,7 +6,7 @@ mixin(ShowModule!());
 
 @safe:
 
-class ISConfig : SAPConfig {
+class INTConfig : SAPConfig {
     string host = "0.0.0.0";
     ushort port = 8100;
     string basePath = "/api/is";
@@ -18,13 +18,13 @@ class ISConfig : SAPConfig {
 
     void validate() {
         if (port == 0) {
-            throw new ISConfigurationException("Port must be greater than zero");
+            throw new INTConfigurationException("Port must be greater than zero");
         }
         if (basePath.length == 0) {
-            throw new ISConfigurationException("Base path cannot be empty");
+            throw new INTConfigurationException("Base path cannot be empty");
         }
         if (requireAuthToken && authToken.length == 0) {
-            throw new ISConfigurationException("Auth token required but not set");
+            throw new INTConfigurationException("Auth token required but not set");
         }
     }
 }

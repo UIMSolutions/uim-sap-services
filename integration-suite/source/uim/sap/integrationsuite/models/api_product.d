@@ -11,7 +11,7 @@ mixin(ShowModule!());
 
 @safe:
 
-struct ISApiProduct {
+struct INTApiProduct {
     string tenantId;
     string productId;
     string name;
@@ -45,8 +45,8 @@ struct ISApiProduct {
     }
 }
 
-ISApiProduct apiProductFromJson(string tenantId, Json request) {
-    ISApiProduct p;
+INTApiProduct apiProductFromJson(string tenantId, Json request) {
+    INTApiProduct p;
     p.tenantId = tenantId;
     p.productId = randomUUID().toString();
 
@@ -65,7 +65,7 @@ ISApiProduct apiProductFromJson(string tenantId, Json request) {
         }
     }
 
-    p.createdAt = Clock.currTime().toISOExtString();
+    p.createdAt = Clock.currTime().toINTOExtString();
     p.updatedAt = p.createdAt;
     return p;
 }

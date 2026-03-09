@@ -9,14 +9,14 @@ mixin(ShowModule!());
 version (unittest) {
 } else {
   void main() {
-    ISConfig config = new ISConfig;
-    config.host = envOr("IS_HOST", "0.0.0.0");
-    config.port = readPort(envOr("IS_PORT", "8100"), 8100);
-    config.basePath = envOr("IS_BASE_PATH", "/api/is");
-    config.serviceName = envOr("IS_SERVICE_NAME", "uim-sap-is");
-    config.serviceVersion = envOr("IS_SERVICE_VERSION", UIM_IS_VERSION);
+    INTConfig config = new INTConfig;
+    config.host = envOr("INT_HOST", "0.0.0.0");
+    config.port = readPort(envOr("INT_PORT", "8100"), 8100);
+    config.basePath = envOr("INT_BASE_PATH", "/api/is");
+    config.serviceName = envOr("INT_SERVICE_NAME", "uim-sap-is");
+    config.serviceVersion = envOr("INT_SERVICE_VERSION", UIM_INT_VERSION);
 
-    auto token = envOr("IS_AUTH_TOKEN", "");
+    auto token = envOr("INT_AUTH_TOKEN", "");
     if (token.length > 0) {
       config.requireAuthToken = true;
       config.authToken = token;
@@ -25,8 +25,8 @@ version (unittest) {
     config.customHeaders["X-Service"] = config.serviceName;
     config.customHeaders["X-Version"] = config.serviceVersion;
 
-    auto service = new ISService(config);
-    auto server = new ISServer(service);
+    auto service = new INTService(config);
+    auto server = new INTServer(service);
 
     writeln("Starting Integration Suite service on ", config.host, ":", config.port);
     writeln("Base path: ", config.basePath);

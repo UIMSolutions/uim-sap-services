@@ -11,7 +11,7 @@ mixin(ShowModule!());
 
 @safe:
 
-struct ISContentPack {
+struct INTContentPack {
     string tenantId;
     string packId;
     string name;
@@ -52,8 +52,8 @@ struct ISContentPack {
     }
 }
 
-ISContentPack contentPackFromJson(string tenantId, Json request) {
-    ISContentPack p;
+INTContentPack contentPackFromJson(string tenantId, Json request) {
+    INTContentPack p;
     p.tenantId = tenantId;
     p.packId = randomUUID().toString();
 
@@ -78,7 +78,7 @@ ISContentPack contentPackFromJson(string tenantId, Json request) {
         }
     }
 
-    p.createdAt = Clock.currTime().toISOExtString();
+    p.createdAt = Clock.currTime().toINTOExtString();
     p.updatedAt = p.createdAt;
     return p;
 }

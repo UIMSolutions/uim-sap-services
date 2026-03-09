@@ -11,7 +11,7 @@ mixin(ShowModule!());
 
 @safe:
 
-struct ISAssessment {
+struct INTAssessment {
     string tenantId;
     string assessmentId;
     string name;
@@ -43,8 +43,8 @@ struct ISAssessment {
     }
 }
 
-ISAssessment assessmentFromJson(string tenantId, Json request) {
-    ISAssessment a;
+INTAssessment assessmentFromJson(string tenantId, Json request) {
+    INTAssessment a;
     a.tenantId = tenantId;
     a.assessmentId = randomUUID().toString();
 
@@ -65,7 +65,7 @@ ISAssessment assessmentFromJson(string tenantId, Json request) {
     else
         a.findings = Json.emptyObject;
 
-    a.createdAt = Clock.currTime().toISOExtString();
+    a.createdAt = Clock.currTime().toINTOExtString();
     a.updatedAt = a.createdAt;
     return a;
 }

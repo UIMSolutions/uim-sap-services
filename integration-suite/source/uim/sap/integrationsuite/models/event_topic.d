@@ -11,7 +11,7 @@ mixin(ShowModule!());
 
 @safe:
 
-struct ISEventTopic {
+struct INTEventTopic {
     string tenantId;
     string topicId;
     string topicName;
@@ -35,8 +35,8 @@ struct ISEventTopic {
     }
 }
 
-ISEventTopic eventTopicFromJson(string tenantId, Json request) {
-    ISEventTopic t;
+INTEventTopic eventTopicFromJson(string tenantId, Json request) {
+    INTEventTopic t;
     t.tenantId = tenantId;
     t.topicId = randomUUID().toString();
 
@@ -45,7 +45,7 @@ ISEventTopic eventTopicFromJson(string tenantId, Json request) {
     if ("description" in request && request["description"].isString)
         t.description = request["description"].get!string;
 
-    t.createdAt = Clock.currTime().toISOExtString();
+    t.createdAt = Clock.currTime().toINTOExtString();
     t.updatedAt = t.createdAt;
     return t;
 }

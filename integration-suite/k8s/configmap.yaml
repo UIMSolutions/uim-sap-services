@@ -5,8 +5,8 @@ metadata:
   labels:
     app: uim-sap-is
 data:
-  IS_HOST: "0.0.0.0"
-  IS_PORT: "8100"
-  IS_BASE_PATH: "/api/is"
-  IS_SERVICE_NAME: "uim-sap-is"
-  IS_SERVICE_VERSION: "1.0.0"
+  INT_HOST: "0.0.0.0"
+  INT_PORT: "8100"
+  INT_BASE_PATH: "/api/is"
+  INT_SERVICE_NAME: "uim-sap-is"
+  INT_SERVICE_VERSION: "1.0.0"

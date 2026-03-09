@@ -14,47 +14,47 @@ mixin(ShowModule!());
  * Thread-safe via Mutex. In production this would be backed by a
  * persistent data store.
  */
-class ISStore : SAPStore {
+class INTStore : SAPStore {
     // ---- Cloud Integration ----
-    private ISIFlow[string] _iflows;
-    private ISMessageLog[][string] _messageLogs;  // keyed by tenantId
+    private INTIFlow[string] _iflows;
+    private INTMessageLog[][string] _messageLogs;  // keyed by tenantId
 
     // ---- API Management ----
-    private ISApiProxy[string] _apiProxies;
-    private ISApiProduct[string] _apiProducts;
-    private ISApiPolicy[string] _apiPolicies;
+    private INTApiProxy[string] _apiProxies;
+    private INTApiProduct[string] _apiProducts;
+    private INTApiPolicy[string] _apiPolicies;
 
     // ---- Event Management ----
-    private ISEventTopic[string] _eventTopics;
-    private ISEventSubscription[string] _eventSubscriptions;
+    private INTEventTopic[string] _eventTopics;
+    private INTEventSubscription[string] _eventSubscriptions;
 
     // ---- Open Connectors ----
-    private ISConnector[string] _connectors;
+    private INTConnector[string] _connectors;
 
     // ---- Integration Advisor ----
-    private ISMapping[string] _mappings;
+    private INTMapping[string] _mappings;
 
     // ---- Trading Partner Management ----
-    private ISTradingPartner[string] _tradingPartners;
-    private ISAgreement[string] _agreements;
+    private INTTradingPartner[string] _tradingPartners;
+    private INTAgreement[string] _agreements;
 
     // ---- OData Provisioning ----
-    private ISODataService[string] _odataServices;
+    private INTODataService[string] _odataServices;
 
     // ---- Integration Assessment ----
-    private ISAssessment[string] _assessments;
+    private INTAssessment[string] _assessments;
 
     // ---- Migration Assessment ----
-    private ISMigration[string] _migrations;
+    private INTMigration[string] _migrations;
 
     // ---- Hybrid Integration ----
-    private ISHybridRuntime[string] _hybridRuntimes;
+    private INTHybridRuntime[string] _hybridRuntimes;
 
     // ---- Data Space Integration ----
-    private ISDataAsset[string] _dataAssets;
+    private INTDataAsset[string] _dataAssets;
 
     // ---- Content Packs ----
-    private ISContentPack[string] _contentPacks;
+    private INTContentPack[string] _contentPacks;
 
     private Mutex _lock;
 
@@ -66,7 +66,7 @@ class ISStore : SAPStore {
     //  Cloud Integration — IFlows
     // =====================================================================
 
-    ISIFlow upsertIFlow(ISIFlow f) {
+    INTIFlow upsertIFlow(INTIFlow f) {
         synchronized (_lock) {
             auto key = tenantKey(f.tenantId, f.iflowId);
             if (auto existing = key in _iflows) {
@@ -77,16 +77,16 @@ class ISStore : SAPStore {
         }
     }
 
-    ISIFlow getIFlow(string tenantId, string iflowId) {
+    INTIFlow getIFlow(string tenantId, string iflowId) {
         synchronized (_lock) {
             auto key = tenantKey(tenantId, iflowId);
             if (auto v = key in _iflows) return *v;
         }
-        return ISIFlow.init;
+        return INTIFlow.init;
     }
 
-    ISIFlow[] listIFlows(string tenantId) {
-        ISIFlow[] list;
+    INTIFlow[] listIFlows(string tenantId) {
+        INTIFlow[] list;
         synchronized (_lock) {
             foreach (key, f; _iflows) {
                 if (belongsTo(key, tenantId)) list ~= f;
@@ -107,14 +107,14 @@ class ISStore : SAPStore {
     //  Cloud Integration — Message Logs
     // =====================================================================
 
-    ISMessageLog appendMessageLog(ISMessageLog l) {
+    INTMessageLog appendMessageLog(INTMessageLog l) {
         synchronized (_lock) {
             _messageLogs[l.tenantId] ~= l;
             return l;
         }
     }
 
-    ISMessageLog[] listMessageLogs(string tenantId) {
+    INTMessageLog[] listMessageLogs(string tenantId) {
         synchronized (_lock) {
             if (auto logs = tenantId in _messageLogs)
                 return (*logs).dup;
@@ -122,8 +122,8 @@ class ISStore : SAPStore {
         return [];
     }
 
-    ISMessageLog[] listMessageLogsByIFlow(string tenantId, string iflowId) {
-        ISMessageLog[] result;
+    INTMessageLog[] listMessageLogsByIFlow(string tenantId, string iflowId) {
+        INTMessageLog[] result;
         synchronized (_lock) {
             if (auto logs = tenantId in _messageLogs) {
                 foreach (l; *logs) {
@@ -138,7 +138,7 @@ class ISStore : SAPStore {
     //  API Management — Proxies
     // =====================================================================
 
-    ISApiProxy upsertApiProxy(ISApiProxy p) {
+    INTApiProxy upsertApiProxy(INTApiProxy p) {
         synchronized (_lock) {
             auto key = tenantKey(p.tenantId, p.proxyId);
             if (auto existing = key in _apiProxies) {
@@ -151,16 +151,16 @@ class ISStore : SAPStore {
         }
     }
 
-    ISApiProxy getApiProxy(string tenantId, string proxyId) {
+    INTApiProxy getApiProxy(string tenantId, string proxyId) {
         synchronized (_lock) {
             auto key = tenantKey(tenantId, proxyId);
             if (auto v = key in _apiProxies) return *v;
         }
-        return ISApiProxy.init;
+        return INTApiProxy.init;
     }
 
-    ISApiProxy[] listApiProxies(string tenantId) {
-        ISApiProxy[] list;
+    INTApiProxy[] listApiProxies(string tenantId) {
+        INTApiProxy[] list;
         synchronized (_lock) {
             foreach (key, p; _apiProxies) {
                 if (belongsTo(key, tenantId)) list ~= p;
@@ -181,7 +181,7 @@ class ISStore : SAPStore {
     //  API Management — Products
     // =====================================================================
 
-    ISApiProduct upsertApiProduct(ISApiProduct p) {
+    INTApiProduct upsertApiProduct(INTApiProduct p) {
         synchronized (_lock) {
             auto key = tenantKey(p.tenantId, p.productId);
             if (auto existing = key in _apiProducts) {
@@ -193,16 +193,16 @@ class ISStore : SAPStore {
         }
     }
 
-    ISApiProduct getApiProduct(string tenantId, string productId) {
+    INTApiProduct getApiProduct(string tenantId, string productId) {
         synchronized (_lock) {
             auto key = tenantKey(tenantId, productId);
             if (auto v = key in _apiProducts) return *v;
         }
-        return ISApiProduct.init;
+        return INTApiProduct.init;
     }
 
-    ISApiProduct[] listApiProducts(string tenantId) {
-        ISApiProduct[] list;
+    INTApiProduct[] listApiProducts(string tenantId) {
+        INTApiProduct[] list;
         synchronized (_lock) {
             foreach (key, p; _apiProducts) {
                 if (belongsTo(key, tenantId)) list ~= p;
@@ -223,7 +223,7 @@ class ISStore : SAPStore {
     //  API Management — Policies
     // =====================================================================
 
-    ISApiPolicy upsertApiPolicy(ISApiPolicy p) {
+    INTApiPolicy upsertApiPolicy(INTApiPolicy p) {
         synchronized (_lock) {
             auto key = tenantKey(p.tenantId, p.policyId);
             if (auto existing = key in _apiPolicies) {
@@ -234,16 +234,16 @@ class ISStore : SAPStore {
         }
     }
 
-    ISApiPolicy getApiPolicy(string tenantId, string policyId) {
+    INTApiPolicy getApiPolicy(string tenantId, string policyId) {
         synchronized (_lock) {
             auto key = tenantKey(tenantId, policyId);
             if (auto v = key in _apiPolicies) return *v;
         }
-        return ISApiPolicy.init;
+        return INTApiPolicy.init;
     }
 
-    ISApiPolicy[] listApiPolicies(string tenantId) {
-        ISApiPolicy[] list;
+    INTApiPolicy[] listApiPolicies(string tenantId) {
+        INTApiPolicy[] list;
         synchronized (_lock) {
             foreach (key, p; _apiPolicies) {
                 if (belongsTo(key, tenantId)) list ~= p;
@@ -264,7 +264,7 @@ class ISStore : SAPStore {
     //  Event Management — Topics
     // =====================================================================
 
-    ISEventTopic upsertEventTopic(ISEventTopic t) {
+    INTEventTopic upsertEventTopic(INTEventTopic t) {
         synchronized (_lock) {
             auto key = tenantKey(t.tenantId, t.topicId);
             if (auto existing = key in _eventTopics) {
@@ -277,26 +277,26 @@ class ISStore : SAPStore {
         }
     }
 
-    ISEventTopic getEventTopic(string tenantId, string topicId) {
+    INTEventTopic getEventTopic(string tenantId, string topicId) {
         synchronized (_lock) {
             auto key = tenantKey(tenantId, topicId);
             if (auto v = key in _eventTopics) return *v;
         }
-        return ISEventTopic.init;
+        return INTEventTopic.init;
     }
 
-    ISEventTopic getEventTopicByName(string tenantId, string topicName) {
+    INTEventTopic getEventTopicByName(string tenantId, string topicName) {
         synchronized (_lock) {
             foreach (_, t; _eventTopics) {
                 if (t.tenantId == tenantId && t.topicName == topicName)
                     return t;
             }
         }
-        return ISEventTopic.init;
+        return INTEventTopic.init;
     }
 
-    ISEventTopic[] listEventTopics(string tenantId) {
-        ISEventTopic[] list;
+    INTEventTopic[] listEventTopics(string tenantId) {
+        INTEventTopic[] list;
         synchronized (_lock) {
             foreach (key, t; _eventTopics) {
                 if (belongsTo(key, tenantId)) list ~= t;
@@ -317,7 +317,7 @@ class ISStore : SAPStore {
     //  Event Management — Subscriptions
     // =====================================================================
 
-    ISEventSubscription upsertEventSubscription(ISEventSubscription s) {
+    INTEventSubscription upsertEventSubscription(INTEventSubscription s) {
         synchronized (_lock) {
             auto key = tenantKey(s.tenantId, s.subscriptionId);
             if (auto existing = key in _eventSubscriptions) {
@@ -328,8 +328,8 @@ class ISStore : SAPStore {
         }
     }
 
-    ISEventSubscription[] listEventSubscriptions(string tenantId) {
-        ISEventSubscription[] list;
+    INTEventSubscription[] listEventSubscriptions(string tenantId) {
+        INTEventSubscription[] list;
         synchronized (_lock) {
             foreach (_, s; _eventSubscriptions) {
                 if (s.tenantId == tenantId) list ~= s;
@@ -338,8 +338,8 @@ class ISStore : SAPStore {
         return list;
     }
 
-    ISEventSubscription[] subscriptionsForTopic(string tenantId, string topicName) {
-        ISEventSubscription[] list;
+    INTEventSubscription[] subscriptionsForTopic(string tenantId, string topicName) {
+        INTEventSubscription[] list;
         synchronized (_lock) {
             foreach (_, s; _eventSubscriptions) {
                 if (s.tenantId == tenantId && s.topicName == topicName && s.active)
@@ -361,7 +361,7 @@ class ISStore : SAPStore {
     //  Open Connectors
     // =====================================================================
 
-    ISConnector upsertConnector(ISConnector c) {
+    INTConnector upsertConnector(INTConnector c) {
         synchronized (_lock) {
             auto key = tenantKey(c.tenantId, c.connectorId);
             if (auto existing = key in _connectors) {
@@ -373,16 +373,16 @@ class ISStore : SAPStore {
         }
     }
 
-    ISConnector getConnector(string tenantId, string connectorId) {
+    INTConnector getConnector(string tenantId, string connectorId) {
         synchronized (_lock) {
             auto key = tenantKey(tenantId, connectorId);
             if (auto v = key in _connectors) return *v;
         }
-        return ISConnector.init;
+        return INTConnector.init;
     }
 
-    ISConnector[] listConnectors(string tenantId) {
-        ISConnector[] list;
+    INTConnector[] listConnectors(string tenantId) {
+        INTConnector[] list;
         synchronized (_lock) {
             foreach (key, c; _connectors) {
                 if (belongsTo(key, tenantId)) list ~= c;
@@ -403,7 +403,7 @@ class ISStore : SAPStore {
     //  Integration Advisor — Mappings
     // =====================================================================
 
-    ISMapping upsertMapping(ISMapping m) {
+    INTMapping upsertMapping(INTMapping m) {
         synchronized (_lock) {
             auto key = tenantKey(m.tenantId, m.mappingId);
             if (auto existing = key in _mappings) {
@@ -414,16 +414,16 @@ class ISStore : SAPStore {
         }
     }
 
-    ISMapping getMapping(string tenantId, string mappingId) {
+    INTMapping getMapping(string tenantId, string mappingId) {
         synchronized (_lock) {
             auto key = tenantKey(tenantId, mappingId);
             if (auto v = key in _mappings) return *v;
         }
-        return ISMapping.init;
+        return INTMapping.init;
     }
 
-    ISMapping[] listMappings(string tenantId) {
-        ISMapping[] list;
+    INTMapping[] listMappings(string tenantId) {
+        INTMapping[] list;
         synchronized (_lock) {
             foreach (key, m; _mappings) {
                 if (belongsTo(key, tenantId)) list ~= m;
@@ -444,7 +444,7 @@ class ISStore : SAPStore {
     //  Trading Partner Management — Partners
     // =====================================================================
 
-    ISTradingPartner upsertTradingPartner(ISTradingPartner tp) {
+    INTTradingPartner upsertTradingPartner(INTTradingPartner tp) {
         synchronized (_lock) {
             auto key = tenantKey(tp.tenantId, tp.partnerId);
             if (auto existing = key in _tradingPartners) {
@@ -456,16 +456,16 @@ class ISStore : SAPStore {
         }
     }
 
-    ISTradingPartner getTradingPartner(string tenantId, string partnerId) {
+    INTTradingPartner getTradingPartner(string tenantId, string partnerId) {
         synchronized (_lock) {
             auto key = tenantKey(tenantId, partnerId);
             if (auto v = key in _tradingPartners) return *v;
         }
-        return ISTradingPartner.init;
+        return INTTradingPartner.init;
     }
 
-    ISTradingPartner[] listTradingPartners(string tenantId) {
-        ISTradingPartner[] list;
+    INTTradingPartner[] listTradingPartners(string tenantId) {
+        INTTradingPartner[] list;
         synchronized (_lock) {
             foreach (key, tp; _tradingPartners) {
                 if (belongsTo(key, tenantId)) list ~= tp;
@@ -486,7 +486,7 @@ class ISStore : SAPStore {
     //  Trading Partner Management — Agreements
     // =====================================================================
 
-    ISAgreement upsertAgreement(ISAgreement a) {
+    INTAgreement upsertAgreement(INTAgreement a) {
         synchronized (_lock) {
             auto key = tenantKey(a.tenantId, a.agreementId);
             if (auto existing = key in _agreements) {
@@ -498,16 +498,16 @@ class ISStore : SAPStore {
         }
     }
 
-    ISAgreement getAgreement(string tenantId, string agreementId) {
+    INTAgreement getAgreement(string tenantId, string agreementId) {
         synchronized (_lock) {
             auto key = tenantKey(tenantId, agreementId);
             if (auto v = key in _agreements) return *v;
         }
-        return ISAgreement.init;
+        return INTAgreement.init;
     }
 
-    ISAgreement[] listAgreements(string tenantId) {
-        ISAgreement[] list;
+    INTAgreement[] listAgreements(string tenantId) {
+        INTAgreement[] list;
         synchronized (_lock) {
             foreach (key, a; _agreements) {
                 if (belongsTo(key, tenantId)) list ~= a;
@@ -516,8 +516,8 @@ class ISStore : SAPStore {
         return list;
     }
 
-    ISAgreement[] listAgreementsForPartner(string tenantId, string partnerId) {
-        ISAgreement[] list;
+    INTAgreement[] listAgreementsForPartner(string tenantId, string partnerId) {
+        INTAgreement[] list;
         synchronized (_lock) {
             foreach (_, a; _agreements) {
                 if (a.tenantId == tenantId && a.partnerId == partnerId)
@@ -539,7 +539,7 @@ class ISStore : SAPStore {
     //  OData Provisioning
     // =====================================================================
 
-    ISODataService upsertODataService(ISODataService svc) {
+    INTODataService upsertODataService(INTODataService svc) {
         synchronized (_lock) {
             auto key = tenantKey(svc.tenantId, svc.serviceId);
             if (auto existing = key in _odataServices) {
@@ -551,16 +551,16 @@ class ISStore : SAPStore {
         }
     }
 
-    ISODataService getODataService(string tenantId, string serviceId) {
+    INTODataService getODataService(string tenantId, string serviceId) {
         synchronized (_lock) {
             auto key = tenantKey(tenantId, serviceId);
             if (auto v = key in _odataServices) return *v;
         }
-        return ISODataService.init;
+        return INTODataService.init;
     }
 
-    ISODataService[] listODataServices(string tenantId) {
-        ISODataService[] list;
+    INTODataService[] listODataServices(string tenantId) {
+        INTODataService[] list;
         synchronized (_lock) {
             foreach (key, svc; _odataServices) {
                 if (belongsTo(key, tenantId)) list ~= svc;
@@ -581,7 +581,7 @@ class ISStore : SAPStore {
     //  Integration Assessment
     // =====================================================================
 
-    ISAssessment upsertAssessment(ISAssessment a) {
+    INTAssessment upsertAssessment(INTAssessment a) {
         synchronized (_lock) {
             auto key = tenantKey(a.tenantId, a.assessmentId);
             if (auto existing = key in _assessments) {
@@ -592,16 +592,16 @@ class ISStore : SAPStore {
         }
     }
 
-    ISAssessment getAssessment(string tenantId, string assessmentId) {
+    INTAssessment getAssessment(string tenantId, string assessmentId) {
         synchronized (_lock) {
             auto key = tenantKey(tenantId, assessmentId);
             if (auto v = key in _assessments) return *v;
         }
-        return ISAssessment.init;
+        return INTAssessment.init;
     }
 
-    ISAssessment[] listAssessments(string tenantId) {
-        ISAssessment[] list;
+    INTAssessment[] listAssessments(string tenantId) {
+        INTAssessment[] list;
         synchronized (_lock) {
             foreach (key, a; _assessments) {
                 if (belongsTo(key, tenantId)) list ~= a;
@@ -622,7 +622,7 @@ class ISStore : SAPStore {
     //  Migration Assessment
     // =====================================================================
 
-    ISMigration upsertMigration(ISMigration m) {
+    INTMigration upsertMigration(INTMigration m) {
         synchronized (_lock) {
             auto key = tenantKey(m.tenantId, m.migrationId);
             if (auto existing = key in _migrations) {
@@ -633,16 +633,16 @@ class ISStore : SAPStore {
         }
     }
 
-    ISMigration getMigration(string tenantId, string migrationId) {
+    INTMigration getMigration(string tenantId, string migrationId) {
         synchronized (_lock) {
             auto key = tenantKey(tenantId, migrationId);
             if (auto v = key in _migrations) return *v;
         }
-        return ISMigration.init;
+        return INTMigration.init;
     }
 
-    ISMigration[] listMigrations(string tenantId) {
-        ISMigration[] list;
+    INTMigration[] listMigrations(string tenantId) {
+        INTMigration[] list;
         synchronized (_lock) {
             foreach (key, m; _migrations) {
                 if (belongsTo(key, tenantId)) list ~= m;
@@ -663,7 +663,7 @@ class ISStore : SAPStore {
     //  Hybrid Integration
     // =====================================================================
 
-    ISHybridRuntime upsertHybridRuntime(ISHybridRuntime r) {
+    INTHybridRuntime upsertHybridRuntime(INTHybridRuntime r) {
         synchronized (_lock) {
             auto key = tenantKey(r.tenantId, r.runtimeId);
             if (auto existing = key in _hybridRuntimes) {
@@ -674,16 +674,16 @@ class ISStore : SAPStore {
         }
     }
 
-    ISHybridRuntime getHybridRuntime(string tenantId, string runtimeId) {
+    INTHybridRuntime getHybridRuntime(string tenantId, string runtimeId) {
         synchronized (_lock) {
             auto key = tenantKey(tenantId, runtimeId);
             if (auto v = key in _hybridRuntimes) return *v;
         }
-        return ISHybridRuntime.init;
+        return INTHybridRuntime.init;
     }
 
-    ISHybridRuntime[] listHybridRuntimes(string tenantId) {
-        ISHybridRuntime[] list;
+    INTHybridRuntime[] listHybridRuntimes(string tenantId) {
+        INTHybridRuntime[] list;
         synchronized (_lock) {
             foreach (key, r; _hybridRuntimes) {
                 if (belongsTo(key, tenantId)) list ~= r;
@@ -704,7 +704,7 @@ class ISStore : SAPStore {
     //  Data Space Integration
     // =====================================================================
 
-    ISDataAsset upsertDataAsset(ISDataAsset a) {
+    INTDataAsset upsertDataAsset(INTDataAsset a) {
         synchronized (_lock) {
             auto key = tenantKey(a.tenantId, a.assetId);
             if (auto existing = key in _dataAssets) {
@@ -716,16 +716,16 @@ class ISStore : SAPStore {
         }
     }
 
-    ISDataAsset getDataAsset(string tenantId, string assetId) {
+    INTDataAsset getDataAsset(string tenantId, string assetId) {
         synchronized (_lock) {
             auto key = tenantKey(tenantId, assetId);
             if (auto v = key in _dataAssets) return *v;
         }
-        return ISDataAsset.init;
+        return INTDataAsset.init;
     }
 
-    ISDataAsset[] listDataAssets(string tenantId) {
-        ISDataAsset[] list;
+    INTDataAsset[] listDataAssets(string tenantId) {
+        INTDataAsset[] list;
         synchronized (_lock) {
             foreach (key, a; _dataAssets) {
                 if (belongsTo(key, tenantId)) list ~= a;
@@ -746,7 +746,7 @@ class ISStore : SAPStore {
     //  Content Packs
     // =====================================================================
 
-    ISContentPack upsertContentPack(ISContentPack p) {
+    INTContentPack upsertContentPack(INTContentPack p) {
         synchronized (_lock) {
             auto key = tenantKey(p.tenantId, p.packId);
             if (auto existing = key in _contentPacks) {
@@ -757,16 +757,16 @@ class ISStore : SAPStore {
         }
     }
 
-    ISContentPack getContentPack(string tenantId, string packId) {
+    INTContentPack getContentPack(string tenantId, string packId) {
         synchronized (_lock) {
             auto key = tenantKey(tenantId, packId);
             if (auto v = key in _contentPacks) return *v;
         }
-        return ISContentPack.init;
+        return INTContentPack.init;
     }
 
-    ISContentPack[] listContentPacks(string tenantId) {
-        ISContentPack[] list;
+    INTContentPack[] listContentPacks(string tenantId) {
+        INTContentPack[] list;
         synchronized (_lock) {
             foreach (key, p; _contentPacks) {
                 if (belongsTo(key, tenantId)) list ~= p;

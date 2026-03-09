@@ -1,4 +1,4 @@
-# UIM SAP Integration Suite Service (IS)
+# UIM SAP Integration Suite Service (INT)
 
 Enterprise-grade integration platform-as-a-service built with Dlang, `vibe.d`, and `uim-framework`, deployable with Podman and Kubernetes.
 
@@ -15,7 +15,7 @@ This service provides an SAP Integration Suite-like iPaaS capability covering 11
 | 5 | **Integration Advisor** | `mappings` | Design interfaces & mappings (crowdsourcing / ML) |
 | 6 | **Trading Partner Mgmt** | `trading-partners`, `agreements` | Design & operate B2B scenarios |
 | 7 | **OData Provisioning** | `odata-services` | Access business data in SAP Business Suite |
-| 8 | **Integration Assessment** | `assessments` | ISA-M powered integration strategy guidance |
+| 8 | **Integration Assessment** | `assessments` | INTA-M powered integration strategy guidance |
 | 9 | **Migration Assessment** | `migrations` | Estimate SAP PO migration effort |
 | 10 | **Hybrid Integration** | `hybrid-runtimes` | Manage private-landscape runtimes |
 | 11 | **Data Space Integration** | `data-assets` | Offer, consume & maintain data space assets |
@@ -33,12 +33,12 @@ dub build
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `IS_HOST` | `0.0.0.0` | Bind address |
-| `IS_PORT` | `8100` | Listen port |
-| `IS_BASE_PATH` | `/api/is` | URL prefix |
-| `IS_SERVICE_NAME` | `uim-sap-is` | Service identifier |
-| `IS_SERVICE_VERSION` | `1.0.0` | Reported version |
-| `IS_AUTH_TOKEN` | *(empty)* | Optional Bearer token |
+| `INT_HOST` | `0.0.0.0` | Bind address |
+| `INT_PORT` | `8100` | Listen port |
+| `INT_BASE_PATH` | `/api/is` | URL prefix |
+| `INT_SERVICE_NAME` | `uim-sap-is` | Service identifier |
+| `INT_SERVICE_VERSION` | `1.0.0` | Reported version |
+| `INT_AUTH_TOKEN` | *(empty)* | Optional Bearer token |
 
 ## Podman
 
@@ -157,7 +157,7 @@ All business routes follow the pattern `/v1/tenants/{tenant_id}/...`
 | `GET` | `.../odata-services/{id}` | Get OData service |
 | `DELETE` | `.../odata-services/{id}` | Delete OData service |
 
-### Integration Assessment (ISA-M)
+### Integration Assessment (INTA-M)
 
 | Method | Path | Description |
 |--------|------|-------------|

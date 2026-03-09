@@ -11,7 +11,7 @@ mixin(ShowModule!());
 
 @safe:
 
-class ISConfigurationException : ISException {
+class INTConfigurationException : INTException {
   this(string message) {
     super("Configuration error: " ~ message);
   }

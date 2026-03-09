@@ -7,14 +7,14 @@ mixin(ShowModule!());
 @safe:
 
 /**
- * ISServer — HTTP front-end for the Integration Suite service.
+ * INTServer — HTTP front-end for the Integration Suite service.
  *
  * Routes are organised under `/api/is/v1/tenants/{tenantId}/...`
  */
-class ISServer : SAPServer {
-    private ISService _service;
+class INTServer : SAPServer {
+    private INTService _service;
 
-    this(ISService service) {
+    this(INTService service) {
         _service = service;
     }
 
@@ -65,13 +65,13 @@ class ISServer : SAPServer {
             }
 
             respondError(res, "Not found", 404);
-        } catch (ISAuthorizationException e) {
+        } catch (INTAuthorizationException e) {
             respondError(res, e.msg, 401);
-        } catch (ISNotFoundException e) {
+        } catch (INTNotFoundException e) {
             respondError(res, e.msg, 404);
-        } catch (ISValidationException e) {
+        } catch (INTValidationException e) {
             respondError(res, e.msg, 422);
-        } catch (ISException e) {
+        } catch (INTException e) {
             respondError(res, e.msg, 500);
         } catch (Exception e) {
             respondError(res, e.msg, 500);
@@ -698,11 +698,11 @@ class ISServer : SAPServer {
         if (!_service.config.requireAuthToken) return;
 
         if (!("Authorization" in req.headers))
-            throw new ISAuthorizationException("Missing Authorization header");
+            throw new INTAuthorizationException("Missing Authorization header");
 
         auto expected = "Bearer " ~ _service.config.authToken;
         if (req.headers["Authorization"] != expected)
-            throw new ISAuthorizationException("Invalid token");
+            throw new INTAuthorizationException("Invalid token");
     }
 
     private string[] normalizedSegments(string subPath) {

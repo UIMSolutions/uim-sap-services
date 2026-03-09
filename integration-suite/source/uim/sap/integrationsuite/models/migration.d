@@ -11,7 +11,7 @@ mixin(ShowModule!());
 
 @safe:
 
-struct ISMigration {
+struct INTMigration {
     string tenantId;
     string migrationId;
     string name;
@@ -51,8 +51,8 @@ struct ISMigration {
     }
 }
 
-ISMigration migrationFromJson(string tenantId, Json request) {
-    ISMigration m;
+INTMigration migrationFromJson(string tenantId, Json request) {
+    INTMigration m;
     m.tenantId = tenantId;
     m.migrationId = randomUUID().toString();
 
@@ -77,7 +77,7 @@ ISMigration migrationFromJson(string tenantId, Json request) {
     else
         m.scenarioDetails = Json.emptyObject;
 
-    m.createdAt = Clock.currTime().toISOExtString();
+    m.createdAt = Clock.currTime().toINTOExtString();
     m.updatedAt = m.createdAt;
     return m;
 }

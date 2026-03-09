@@ -11,7 +11,7 @@ mixin(ShowModule!());
 
 @safe:
 
-struct ISIFlow {
+struct INTIFlow {
     string tenantId;
     string iflowId;
     string name;
@@ -53,8 +53,8 @@ struct ISIFlow {
     }
 }
 
-ISIFlow iflowFromJson(string tenantId, Json request) {
-    ISIFlow f;
+INTIFlow iflowFromJson(string tenantId, Json request) {
+    INTIFlow f;
     f.tenantId = tenantId;
     f.iflowId = randomUUID().toString();
 
@@ -77,7 +77,7 @@ ISIFlow iflowFromJson(string tenantId, Json request) {
     if ("endpoint_url" in request && request["endpoint_url"].isString)
         f.endpointUrl = request["endpoint_url"].get!string;
 
-    f.createdAt = Clock.currTime().toISOExtString();
+    f.createdAt = Clock.currTime().toINTOExtString();
     f.updatedAt = f.createdAt;
     return f;
 }

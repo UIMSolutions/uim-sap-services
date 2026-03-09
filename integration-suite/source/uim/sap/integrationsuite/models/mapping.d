@@ -11,7 +11,7 @@ mixin(ShowModule!());
 
 @safe:
 
-struct ISMapping {
+struct INTMapping {
     string tenantId;
     string mappingId;
     string name;
@@ -45,8 +45,8 @@ struct ISMapping {
     }
 }
 
-ISMapping mappingFromJson(string tenantId, Json request) {
-    ISMapping m;
+INTMapping mappingFromJson(string tenantId, Json request) {
+    INTMapping m;
     m.tenantId = tenantId;
     m.mappingId = randomUUID().toString();
 
@@ -69,7 +69,7 @@ ISMapping mappingFromJson(string tenantId, Json request) {
     else
         m.mappingRules = Json.emptyObject;
 
-    m.createdAt = Clock.currTime().toISOExtString();
+    m.createdAt = Clock.currTime().toINTOExtString();
     m.updatedAt = m.createdAt;
     return m;
 }

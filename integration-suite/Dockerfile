@@ -17,9 +17,9 @@ WORKDIR /opt/uim-sap-is
 
 COPY --from=build /app/build/uim-sap-is-service ./uim-sap-is-service
 
-ENV IS_HOST=0.0.0.0 \
-    IS_PORT=8100 \
-    IS_BASE_PATH=/api/is
+ENV INT_HOST=0.0.0.0 \
+    INT_PORT=8100 \
+    INT_BASE_PATH=/api/is
 
 EXPOSE 8100
 

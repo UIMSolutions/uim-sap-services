@@ -11,7 +11,7 @@ mixin(ShowModule!());
 
 @safe:
 
-class ISAuthorizationException : ISException {
+class INTAuthorizationException : INTException {
   this(string message) {
     super("Unauthorized: " ~ message);
   }

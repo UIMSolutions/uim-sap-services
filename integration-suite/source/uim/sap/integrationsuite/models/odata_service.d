@@ -11,7 +11,7 @@ mixin(ShowModule!());
 
 @safe:
 
-struct ISODataService {
+struct INTODataService {
     string tenantId;
     string serviceId;
     string name;
@@ -47,8 +47,8 @@ struct ISODataService {
     }
 }
 
-ISODataService odataServiceFromJson(string tenantId, Json request) {
-    ISODataService svc;
+INTODataService odataServiceFromJson(string tenantId, Json request) {
+    INTODataService svc;
     svc.tenantId = tenantId;
     svc.serviceId = randomUUID().toString();
 
@@ -69,7 +69,7 @@ ISODataService odataServiceFromJson(string tenantId, Json request) {
         }
     }
 
-    svc.createdAt = Clock.currTime().toISOExtString();
+    svc.createdAt = Clock.currTime().toINTOExtString();
     svc.updatedAt = svc.createdAt;
     return svc;
 }

@@ -9,7 +9,7 @@
  * - Integration Advisor (interfaces & mappings)
  * - Trading Partner Management (B2B scenarios)
  * - OData Provisioning (SAP Business Suite data access)
- * - Integration Assessment (ISA-M guidance)
+ * - Integration Assessment (INTA-M guidance)
  * - Migration Assessment (PO migration)
  * - Hybrid Integration (private landscape)
  * - Data Space Integration (data space assets)
@@ -28,4 +28,4 @@ public {
   import uim.sap.integrationsuite.server;
 }
 
-enum UIM_IS_VERSION = "1.0.0";
+enum UIM_INT_VERSION = "1.0.0";

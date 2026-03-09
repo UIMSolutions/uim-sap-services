@@ -11,7 +11,7 @@ mixin(ShowModule!());
 
 @safe:
 
-struct ISApiProxy {
+struct INTApiProxy {
     string tenantId;
     string proxyId;
     string name;
@@ -51,8 +51,8 @@ struct ISApiProxy {
     }
 }
 
-ISApiProxy apiProxyFromJson(string tenantId, Json request) {
-    ISApiProxy p;
+INTApiProxy apiProxyFromJson(string tenantId, Json request) {
+    INTApiProxy p;
     p.tenantId = tenantId;
     p.proxyId = randomUUID().toString();
 
@@ -69,7 +69,7 @@ ISApiProxy apiProxyFromJson(string tenantId, Json request) {
     if ("auth_scheme" in request && request["auth_scheme"].isString)
         p.authScheme = request["auth_scheme"].get!string;
 
-    p.createdAt = Clock.currTime().toISOExtString();
+    p.createdAt = Clock.currTime().toINTOExtString();
     p.updatedAt = p.createdAt;
     return p;
 }

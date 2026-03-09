@@ -11,7 +11,7 @@ mixin(ShowModule!());
 
 @safe:
 
-struct ISApiPolicy {
+struct INTApiPolicy {
     string tenantId;
     string policyId;
     string name;
@@ -39,8 +39,8 @@ struct ISApiPolicy {
     }
 }
 
-ISApiPolicy apiPolicyFromJson(string tenantId, Json request) {
-    ISApiPolicy p;
+INTApiPolicy apiPolicyFromJson(string tenantId, Json request) {
+    INTApiPolicy p;
     p.tenantId = tenantId;
     p.policyId = randomUUID().toString();
 
@@ -59,7 +59,7 @@ ISApiPolicy apiPolicyFromJson(string tenantId, Json request) {
     else
         p.configuration = Json.emptyObject;
 
-    p.createdAt = Clock.currTime().toISOExtString();
+    p.createdAt = Clock.currTime().toINTOExtString();
     p.updatedAt = p.createdAt;
     return p;
 }

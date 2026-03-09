@@ -25,7 +25,7 @@ spec:
         - configMapRef:
             name: uim-sap-is-config
         env:
-        - name: IS_AUTH_TOKEN
+        - name: INT_AUTH_TOKEN
           valueFrom:
             secretKeyRef:
               name: uim-sap-is-secret
