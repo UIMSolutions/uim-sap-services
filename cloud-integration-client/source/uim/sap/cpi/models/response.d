@@ -7,6 +7,12 @@ import vibe.data.json : Json;
 import std.datetime : SysTime;
 
 
+import uim.sap.cpi;
+
+mixin(ShowModule!());
+
+@safe:
+
 
 struct CPIResponse {
     bool success;
