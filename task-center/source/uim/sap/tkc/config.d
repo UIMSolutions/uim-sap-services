@@ -7,6 +7,10 @@ module uim.sap.tkc.config;
 
 import uim.sap.tkc;
 
+mixin(ShowModule!());
+
+@safe:
+
 struct TKCConfig : SAPConfig {
     string host = "0.0.0.0";
     ushort port = 8096;

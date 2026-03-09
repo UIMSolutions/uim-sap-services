@@ -5,18 +5,13 @@
 *****************************************************************************************************************/
 module uim.sap.tkc.server;
 
-import std.array : split;
-import std.conv : to;
-import std.string : startsWith;
+import uim.sap.tkc;
 
-import vibe.data.json : Json;
-import vibe.http.common : HTTPMethod;
-import vibe.http.server : HTTPServerRequest, HTTPServerResponse, HTTPServerSettings, listenHTTP;
+mixin(ShowModule!());
 
-import uim.sap.tkc.exceptions;
-import uim.sap.tkc.service;
+@safe:
 
-class TKCServer {
+class TKCServer : SAPServer{
   private TKCService _service;
   private string _host;
   private ushort _port;

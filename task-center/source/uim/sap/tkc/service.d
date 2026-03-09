@@ -5,16 +5,11 @@
 *****************************************************************************************************************/
 module uim.sap.tkc.service;
 
-import std.algorithm.sorting : sort;
-import std.datetime : Clock, SysTime;
-import std.string : indexOf, toLower;
+import uim.sap.tkc;
 
-import vibe.data.json : Json;
+mixin(ShowModule!());
 
-import uim.sap.tkc.config;
-import uim.sap.tkc.exceptions;
-import uim.sap.tkc.models;
-import uim.sap.tkc.store;
+@safe:
 
 class TKCService : SAPService {
     private TKCConfig _config;
