@@ -12,24 +12,18 @@ mixin(ShowModule!());
 class CLGService : SAPService {
   mixin(SAPServiceTemplate!CLGService);
 
-  private CLGConfig _config;
   private CLGLogStore _store;
 
   this(CLGConfig config) {
+    super(config);
+
     config.validate();
     _config = config;
     _store = new CLGLogStore(config.maxEntries);
   }
 
-  @property const(CLGConfig) config() const {
-    return _config;
-  }
-
   override Json health() {
-    Json payload = super.health();
-    healthInfo["ok"] = true;
-    healthInfo["serviceName"] = _config.serviceName;
-    healthInfo["serviceVersion"] = _config.serviceVersion;
+    Json healthInfo = super.health();
     healthInfo["storedEntries"] = cast(long)_store.count();
     return healthInfo;
   }

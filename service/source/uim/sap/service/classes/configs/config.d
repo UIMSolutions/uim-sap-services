@@ -67,4 +67,13 @@ class SAPConfig : ISAPConfig {
   void serviceVersion(string version_) {
     _serviceVersion = version_;
   }
+
+  protected string _host;
+  string host() const {
+    return _host;
+  }
+
+  void host(string host_) {
+    _host = host_;
+  }
 }

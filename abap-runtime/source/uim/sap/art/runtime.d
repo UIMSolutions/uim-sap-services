@@ -5,119 +5,108 @@
 *****************************************************************************************************************/
 module uim.sap.art.runtime;
 
-
 import uim.sap.art;
 
 mixin(ShowModule!());
 
 @safe:
 
-
-
 alias ARTProgramHandler = ARTProgramResult delegate(ARTProgramRequest request);
 
 class ARTRuntime {
-    private ARTRuntimeConfig _config;
-    private ARTProgramHandler[string] _programs;
+  private ARTRuntimeConfig _config;
+  private ARTProgramHandler[string] _programs;
 
-    this(ARTRuntimeConfig config) {
-        config.validate();
-        _config = config;
+  this(ARTRuntimeConfig config) {
+    config.validate();
+    _config = config;
+  }
+
+  @property size_t registeredProgramCount() const {
+    return _programs.length;
+  }
+
+  string[] listPrograms() const {
+    return _programs.keys.map!(name => name).array;
+  }
+
+  void registerProgram(string programName, ARTProgramHandler handler) {
+    if (programName.length == 0) {
+      throw new ARTRuntimeConfigurationException("Program name cannot be empty");
     }
 
-    @property const(ARTRuntimeConfig) config() const {
-        return _config;
+    if (handler is null) {
+      throw new ARTRuntimeConfigurationException("Program handler cannot be null");
     }
 
-    @property size_t registeredProgramCount() const {
-        return _programs.length;
+    _programs[normalizeProgramName(programName)] = handler;
+  }
+
+  void unregisterProgram(string programName) {
+    _programs.remove(normalizeProgramName(programName));
+  }
+
+  ARTProgramResult execute(ARTProgramRequest request) {
+    if (request.program.length == 0) {
+      throw new ARTRuntimeExecutionException("Program name is required");
     }
 
-    string[] listPrograms() const {
-        string[] names;
-        foreach (name; _programs.keys) {
-            names ~= name;
-        }
-        return names;
+    auto normalizedName = normalizeProgramName(request.program);
+    if (normalizedName !in _programs) {
+      throw new ARTRuntimeProgramNotFoundException(request.program);
     }
 
-    void registerProgram(string programName, ARTProgramHandler handler) {
-        if (programName.length == 0) {
-            throw new ARTRuntimeConfigurationException("Program name cannot be empty");
-        }
+    auto handler = _programs[normalizedName];
 
-        if (handler is null) {
-            throw new ARTRuntimeConfigurationException("Program handler cannot be null");
-        }
-
-        _programs[normalizeProgramName(programName)] = handler;
+    try {
+      auto result = handler(request);
+      if (result.program.length == 0) {
+        result.program = normalizedName;
+      }
+      if (result.timestamp == SysTime.init) {
+        result.timestamp = Clock.currTime();
+      }
+      if (result.correlationId.length == 0) {
+        result.correlationId = request.correlationId;
+      }
+      return result;
+    } catch (ARTRuntimeException e) {
+      throw e;
+    } catch (Exception e) {
+      throw new ARTRuntimeExecutionException(e.msg, __FILE__, __LINE__, e);
     }
+  }
 
-    void unregisterProgram(string programName) {
-        _programs.remove(normalizeProgramName(programName));
-    }
+  ARTRuntimeHealth health() const {
+    ARTRuntimeHealth status;
+    status.ok = true;
+    status.runtimeName = _config.runtimeName;
+    status.runtimeVersion = _config.runtimeVersion;
+    status.registeredPrograms = _programs.length;
+    return status;
+  }
 
-    ARTProgramResult execute(ARTProgramRequest request) {
-        if (request.program.length == 0) {
-            throw new ARTRuntimeExecutionException("Program name is required");
-        }
-
-        auto normalizedName = normalizeProgramName(request.program);
-        if (normalizedName !in _programs) {
-            throw new ARTRuntimeProgramNotFoundException(request.program);
-        }
-
-        auto handler = _programs[normalizedName];
-
-        try {
-            auto result = handler(request);
-            if (result.program.length == 0) {
-                result.program = normalizedName;
-            }
-            if (result.timestamp == SysTime.init) {
-                result.timestamp = Clock.currTime();
-            }
-            if (result.correlationId.length == 0) {
-                result.correlationId = request.correlationId;
-            }
-            return result;
-        } catch (ARTRuntimeException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new ARTRuntimeExecutionException(e.msg, __FILE__, __LINE__, e);
-        }
-    }
-
-    ARTRuntimeHealth health() const {
-        ARTRuntimeHealth status;
-        status.ok = true;
-        status.runtimeName = _config.runtimeName;
-        status.runtimeVersion = _config.runtimeVersion;
-        status.registeredPrograms = _programs.length;
-        return status;
-    }
-
-    private static string normalizeProgramName(string value) {
-        return toUpper(value).idup;
-    }
+  private static string normalizeProgramName(string value) {
+    return toUpper(value).idup;
+  }
 }
 
 ARTProgramResult successResult(string message, Json data = Json.emptyObject, int statusCode = 200) {
-    ARTProgramResult result;
-    result.success = true;
-    result.message = message;
-    result.statusCode = statusCode;
-    result.data = data;
-    result.timestamp = Clock.currTime();
-    return result;
+  ARTProgramResult result;
+  result.success = true;
+  result.message = message;
+  result.statusCode = statusCode;
+  result.data = data;
+  result.timestamp = Clock.currTime();
+  return result;
 }
 
 ARTProgramResult errorResult(string message, int statusCode = 500, Json data = Json.emptyObject) {
-    ARTProgramResult result;
-    result.success = false;
-    result.message = message;
-    result.statusCode = statusCode;
-    result.data = data;
-    result.timestamp = Clock.currTime();
-    return result;
+  ARTProgramResult result;
+  result.success = false;
+  result.message = message;
+  result.statusCode = statusCode;
+  result.data = data;
+  result.timestamp = Clock.currTime();
+  return result;
 }

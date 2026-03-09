@@ -12,7 +12,6 @@ import uim.sap.cps.store;
 class CPSService : SAPService {
   mixin(SAPServiceTemplate!CPSService);
 
-  private CPSConfig _config;
   private CPSStore _store;
 
   this(CPSConfig config) {
@@ -21,21 +20,11 @@ class CPSService : SAPService {
     _store = new CPSStore;
   }
 
-  @property const(CPSConfig) config() const {
-    return _config;
-  }
-
-  override Json health() {
-    Json healthInfo = super.health();
-    healthInfo["ok"] = true;
-    healthInfo["serviceName"] = _config.serviceName;
-    healthInfo["serviceVersion"] = _config.serviceVersion;
-    return healthInfo;
-  }
-
   Json upsertSite(string tenantId, Json request) {
+    CPSConfig cfg = cast(CPSConfig)_config;
+
     validateId(tenantId, "Tenant ID");
-    auto site = siteFromJson(tenantId, request, _config.defaultTheme);
+    auto site = siteFromJson(tenantId, request, cfg.defaultTheme);
     if (site.name.length == 0)
       throw new CPSValidationException("name is required");
     site.updatedAt = Clock.currTime();

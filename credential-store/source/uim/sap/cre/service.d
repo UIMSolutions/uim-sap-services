@@ -59,25 +59,12 @@ import uim.sap.cre.store;
 class CREService : SAPService {
   mixin(SAPServiceTemplate!CREService);
 
-  private CREConfig _config;
   private CREStore _store;
 
   this(CREConfig config) {
     config.validate();
     _config = config;
     _store = new CREStore;
-  }
-
-  @property const(CREConfig) config() const {
-    return _config;
-  }
-
-  override Json health() {
-    Json healthInfo = super.health();
-    healthInfo["ok"] = true;
-    healthInfo["serviceName"] = _config.serviceName;
-    healthInfo["serviceVersion"] = _config.serviceVersion;
-    return healthInfo;
   }
 
   Json upsertServiceInstance(string instanceId, Json request) {
@@ -98,11 +85,9 @@ class CREService : SAPService {
   }
 
   Json listServiceInstances() {
+    Json resources = _store.listInstances().map!(item => item.toJson()).array.toJson();
+
     Json payload = Json.emptyObject;
-    Json resources = Json.emptyArray;
-    foreach (item; _store.listInstances()) {
-      resources ~= item.toJson();
-    }
     payload["resources"] = resources;
     payload["total_results"] = cast(long)_store.listInstances().length;
     return payload;
@@ -150,11 +135,9 @@ class CREService : SAPService {
 
   Json listCredentials(string instanceId) {
     validateInstance(instanceId);
+    Json resources = _store.listCredentials(instanceId).map!(credential => credential.toJsonSummary()).array.toJson();
+    
     Json payload = Json.emptyObject;
-    Json resources = Json.emptyArray;
-    foreach (credential; _store.listCredentials(instanceId)) {
-      resources ~= credential.toJsonSummary();
-    }
     payload["resources"] = resources;
     payload["total_results"] = cast(long)_store.listCredentials(instanceId).length;
     return payload;

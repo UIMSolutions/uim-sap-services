@@ -9,7 +9,6 @@ mixin(ShowModule!());
 class DPIService : SAPService {
   mixin(SAPServiceTemplate!DPIService);
 
-  private DPIConfig _config;
   private DPIStore _store;
 
   this(DPIConfig config) {
@@ -18,15 +17,8 @@ class DPIService : SAPService {
     _store = new DPIStore;
   }
 
-  @property const(DPIConfig) config() const {
-    return _config;
-  }
-
   override Json health() {
     Json healthInfo = super.health();
-    healthInfo["ok"] = true;
-    healthInfo["serviceName"] = _config.serviceName;
-    healthInfo["serviceVersion"] = _config.serviceVersion;
     healthInfo["multitenancy"] = true;
     return healthInfo;
   }

@@ -47,19 +47,12 @@ class DMAService : SAPService {
         _store.addRepository(internal.info());
     }
 
-    @property const(DMAConfig) config() const {
-        return _config;
-    }
-
     // ===================================================================
     // Platform
     // ===================================================================
 
     override Json health() {
         Json healthInfo = super.health();
-        healthInfo["ok"] = true;
-        healthInfo["serviceName"] = _config.serviceName;
-        healthInfo["serviceVersion"] = _config.serviceVersion;
         healthInfo["repositories_connected"] = cast(long) _registry.count();
         return healthInfo;
     }
@@ -70,10 +63,8 @@ class DMAService : SAPService {
     // ===================================================================
 
     Json listRepositories() {
-        Json resources = Json.emptyArray;
-        foreach (repo; _store.listRepositories()) {
-            resources ~= repo.toJson();
-        }
+        Json resources = _store.listRepositories().map!(repo => repo.toJson()).array.toJson();  
+ 
         Json r = Json.emptyObject;
         r["resources"] = resources;
         r["total_results"] = cast(long) resources.length;

@@ -8,7 +8,6 @@ mixin(ShowModule!());
 
 
 class DQMService : SAPService {
-  private DQMConfig _config;
   private DQMStore _store;
 
   this(DQMConfig config) {
@@ -17,15 +16,10 @@ class DQMService : SAPService {
     _store = new DQMStore;
   }
 
-  @property const(DQMConfig) config() const {
-    return _config;
-  }
-
   override Json health() {
+    DQMConfig cfg = cast(DQMConfig)_config;
+
     Json healthInfo = super.health();
-    healthInfo["ok"] = true;
-    healthInfo["serviceName"] = _config.serviceName;
-    healthInfo["serviceVersion"] = _config.serviceVersion;
     healthInfo["geodata_records"] = cast(long)_store.records().length;
     return healthInfo;
   }
@@ -35,7 +29,8 @@ class DQMService : SAPService {
       throw new DQMValidationException("address object is required");
     }
 
-    auto original = addressFromJson(request["address"], _config.defaultCountry);
+    DQMConfig cfg = cast(DQMConfig)_config;
+    auto original = addressFromJson(request["address"], cfg.defaultCountry);
     validateAddress(original);
 
     bool uppercaseCity = false;
@@ -78,7 +73,8 @@ class DQMService : SAPService {
       throw new DQMValidationException("address object is required");
     }
 
-    auto address = addressFromJson(request["address"], _config.defaultCountry);
+    DQMConfig cfg = cast(DQMConfig)_config;
+    auto address = addressFromJson(request["address"], cfg.defaultCountry);
     validateAddress(address);
 
     auto query = address.line1 ~ " " ~ address.city;
@@ -136,7 +132,8 @@ class DQMService : SAPService {
     }
 
     auto query = request["query"].get!string;
-    auto country = _config.defaultCountry;
+    DQMConfig cfg = cast(DQMConfig)_config;
+    auto country = cfg.defaultCountry;
     if ("country" in request && request["country"].isString && request["country"].get!string.length > 0) {
       country = request["country"].get!string;
     }

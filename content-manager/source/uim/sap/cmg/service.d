@@ -9,7 +9,6 @@ mixin(ShowModule!());
 class CMGService : SAPService {
   mixin(SAPServiceTemplate!CMGService);
 
-  private CMGConfig _config;
   private CMGStore _store;
 
   this(CMGConfig config) {
@@ -18,27 +17,17 @@ class CMGService : SAPService {
     _store = new CMGStore;
   }
 
-  @property const(CMGConfig) config() const {
-    return _config;
-  }
-
   Json health() const {
-    Json payload = Json.emptyObject;
-    payload["status"] = "UP";
-    payload["service"] = _config.serviceName;
-    payload["version"] = _config.serviceVersion;
-    payload["domain"] = "content-manager";
-    return payload;
+    Json healthInfo = Json.emptyObject;
+    healthInfo["domain"] = "content-manager";
+    return healthInfo;
   }
 
   Json listContent(string tenantId, string contentType) {
     validateTenant(tenantId);
     auto normalizedType = normalizeContentType(contentType);
 
-    Json items = Json.emptyArray;
-    foreach (item; _store.listItems(tenantId, normalizedType)) {
-      items ~= item.toJson();
-    }
+    Json items = _store.listItems(tenantId, normalizedType).map!(item => item.toJson()).array.toJson();
 
     Json payload = Json.emptyObject;
     payload["tenant_id"] = tenantId;
@@ -79,10 +68,7 @@ class CMGService : SAPService {
   Json listProviders(string tenantId) {
     validateTenant(tenantId);
 
-    Json providers = Json.emptyArray;
-    foreach (provider; _store.listProviders(tenantId)) {
-      providers ~= provider.toJson();
-    }
+    Json providers = _store.listProviders(tenantId).map!(provider => provider.toJson()).array.toJson();
 
     Json payload = Json.emptyObject;
     payload["tenant_id"] = tenantId;

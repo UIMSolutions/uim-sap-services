@@ -44,7 +44,9 @@ mixin(ShowModule!());
  * - normalizedSegments(string subPath): Utility method to normalize and split the request path into segments for routing.
  * - respondError(HTTPServerResponse res, string message, int statusCode): Utility method to send an error response with a JSON body containing the error message and status code.
  */
-class AEMServer {
+class AEMServer : SAPServer {
+  mixin(SAPServerTemplate!AEMServer);
+  
   private AEMService _service;
 
   this(AEMService service) {
@@ -221,7 +223,8 @@ class AEMServer {
   }
 
   private void validateAuth(HTTPServerRequest req) {
-    if (!_service.config.requireAuthToken) {
+    AEMConfig cfg = cast(AEMConfig)_service.config;
+    if (!cfg.requireAuthToken) {
       return;
     }
 
@@ -229,7 +232,7 @@ class AEMServer {
       throw new AEMAuthorizationException("Missing Authorization header");
     }
 
-    auto expected = "Bearer " ~ _service.config.authToken;
+    auto expected = "Bearer " ~ cfg.authToken;
     if (req.headers["Authorization"] != expected) {
       throw new AEMAuthorizationException("Invalid token");
     }

@@ -22,18 +22,11 @@ class AEMService : SAPService {
     _store = new AEMStore;
   }
 
-  override Json health() {
-    Json healthInfo = super.health();
-    healthInfo["ok"] = true;
-    healthInfo["serviceName"] = _config.serviceName;
-    healthInfo["serviceVersion"] = _config.serviceVersion;
-    return healthInfo;
-  }
-
   Json createBrokerService(string tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
-
-    auto broker = brokerFromJson(tenantId, request, _config.defaultMeshRegion);
+    
+    AEMConfig cfg = cast(AEMConfig)_config;
+    auto broker = brokerFromJson(tenantId, request, cfg.defaultMeshRegion);
     if (broker.name.length == 0) {
       throw new AEMValidationException("Broker service name is required");
     }
@@ -71,7 +64,8 @@ class AEMService : SAPService {
       throw new AEMNotFoundException("Broker service", tenantId ~ "/" ~ brokerServiceId);
     }
 
-    auto mesh = meshFromJson(tenantId, brokerServiceId, request);
+    AEMConfig cfg = cast(AEMConfig)_config;
+    auto mesh = meshFromJson(tenantId, brokerServiceId, request, cfg.defaultMeshRegion);
     if (mesh.name.length == 0) {
       throw new AEMValidationException("Mesh name is required");
     }
@@ -167,10 +161,7 @@ class AEMService : SAPService {
     validateId(meshId, "Mesh ID");
     validateId(topic, "Topic");
 
-    Json resources = Json.emptyArray;
-    foreach (eventItem; _store.listTopicEvents(tenantId, meshId, topic)) {
-      resources ~= eventItem.toJson();
-    }
+    Json resources = _store.listTopicEvents(tenantId, meshId, topic).map!(event => event.toJson).array.toJson();
 
     Json result = Json.emptyObject;
     result["tenant_id"] = tenantId;

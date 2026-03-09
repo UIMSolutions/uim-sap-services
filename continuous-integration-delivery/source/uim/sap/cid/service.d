@@ -19,7 +19,6 @@ import uim.sap.cid.store;
 class CIDService : SAPService {
   mixin(SAPServiceTemplate!CIDService);
 
-  private CIDConfig _config;
   private CIDStore _store;
 
   this(CIDConfig config) {
@@ -28,22 +27,15 @@ class CIDService : SAPService {
     _store = new CIDStore;
   }
 
-  @property const(CIDConfig) config() const {
-    return _config;
-  }
-
   // -----------------------------------------------------------------------
   // Health / readiness
   // -----------------------------------------------------------------------
   Json health() const {
-    Json j = Json.emptyObject;
-    j["status"] = "UP";
-    j["service"] = _config.serviceName;
-    j["version"] = _config.serviceVersion;
-    j["runtime"] = _config.runtime;
-    j["multitenancy"] = true;
-    j["domain"] = "continuous-integration-delivery";
-    return j;
+    Json healthInfo = super.health();
+    healthInfo["runtime"] = _config.runtime;
+    healthInfo["multitenancy"] = true;
+    healthInfo["domain"] = "continuous-integration-delivery";
+    return healthInfo;
   }
 
   // -----------------------------------------------------------------------
@@ -57,10 +49,7 @@ class CIDService : SAPService {
   // REPOSITORIES
   // =======================================================================
   Json listRepositories(string tenantId) {
-    Json arr = Json.emptyArray;
-    foreach (r; _store.listRepos(tenantId))
-      arr ~= r.toJson();
-    return arr;
+    return _store.listRepos(tenantId).map!(r => r.toJson()).array.toJson();
   }
 
   Json createRepository(string tenantId, Json payload) {
@@ -120,10 +109,7 @@ class CIDService : SAPService {
   // CREDENTIALS
   // =======================================================================
   Json listCredentials(string tenantId) {
-    Json arr = Json.emptyArray;
-    foreach (c; _store.listCredentials(tenantId))
-      arr ~= c.toJson();
-    return arr;
+    return _store.listCredentials(tenantId).map!(c => c.toJson()).array.toJson();
   }
 
   Json createCredential(string tenantId, Json payload) {
@@ -165,10 +151,7 @@ class CIDService : SAPService {
   // PIPELINES
   // =======================================================================
   Json listPipelines(string tenantId) {
-    Json arr = Json.emptyArray;
-    foreach (p; _store.listPipelines(tenantId))
-      arr ~= p.toJson();
-    return arr;
+    return _store.listPipelines(tenantId).map!(p => p.toJson()).array.toJson();
   }
 
   Json createPipeline(string tenantId, Json payload) {
@@ -235,10 +218,7 @@ class CIDService : SAPService {
   // BUILDS  (pipeline runs)
   // =======================================================================
   Json listBuilds(string tenantId) {
-    Json arr = Json.emptyArray;
-    foreach (b; _store.listBuilds(tenantId))
-      arr ~= b.toJson();
-    return arr;
+    return _store.listBuilds(tenantId).map!(b => b.toJson()).array.toJson();
   }
 
   /// Trigger a new build for the given pipeline

@@ -9,29 +9,15 @@ mixin(ShowModule!());
 class EVMService : SAPService {
   mixin(SAPServiceTemplate!EVMService);
 
-  private EVMConfig _config;
   private EVMStore _store;
 
   this(EVMConfig config) {
+    super(config);
+
     config.validate();
     _config = config;
     _store = new EVMStore;
   }
-
-  @property const(EVMConfig) config() const {
-    return _config;
-  }
-
-  // --- Platform ---
-
-  override Json health() {
-    Json healthInfo = super.health();
-    healthInfo["ok"] = true;
-    healthInfo["serviceName"] = _config.serviceName;
-    healthInfo["serviceVersion"] = _config.serviceVersion;
-    return healthInfo;
-  }
-
 
   // --- Queue management ---
 

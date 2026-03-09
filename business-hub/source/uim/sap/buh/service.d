@@ -9,17 +9,12 @@ mixin(ShowModule!());
 class BUHService : SAPService {
   mixin(SAPServiceTemplate!BUHService);
 
-  private BUHConfig _config;
   private BUHStore _store;
 
   this(BUHConfig config) {
     config.validate();
     _config = config;
     _store = new BUHStore;
-  }
-
-  @property const(BUHConfig) config() const {
-    return _config;
   }
 
   override Json health() {
@@ -47,11 +42,9 @@ class BUHService : SAPService {
   }
 
   Json listApis() {
+    Json resources = _store.listApis().map!(api => api.toJson).array.toJson();
+
     Json payload = Json.emptyObject;
-    Json resources = Json.emptyArray;
-    foreach (api; _store.listApis()) {
-      resources ~= api.toJson();
-    }
     payload["resources"] = resources;
     payload["total_results"] = cast(long)_store.listApis().length;
     return payload;
@@ -82,11 +75,9 @@ class BUHService : SAPService {
   }
 
   Json listProducts() {
+    Json resources = _store.listProducts().map!(product => product.toJson).array.toJson();
+
     Json payload = Json.emptyObject;
-    Json resources = Json.emptyArray;
-    foreach (product; _store.listProducts()) {
-      resources ~= product.toJson();
-    }
     payload["resources"] = resources;
     payload["total_results"] = cast(long)_store.listProducts().length;
     return payload;
@@ -112,11 +103,9 @@ class BUHService : SAPService {
   }
 
   Json listSubscriptions() {
+    Json resources = _store.listSubscriptions().map!(subscription => subscription.toJson).array.toJson();
+
     Json payload = Json.emptyObject;
-    Json resources = Json.emptyArray;
-    foreach (subscription; _store.listSubscriptions()) {
-      resources ~= subscription.toJson();
-    }
     payload["resources"] = resources;
     payload["total_results"] = cast(long)_store.listSubscriptions().length;
     return payload;

@@ -33,7 +33,6 @@ import uim.sap.atp.store;
 class ATPService : SAPService {
   mixin(SAPServiceTemplate!ATPService);
 
-  private ATPConfig _config;
   private ATPStore _store;
 
   this(ATPConfig config) {
@@ -43,24 +42,17 @@ class ATPService : SAPService {
     seedPredefinedCatalogs();
   }
 
-  @property const(ATPConfig) config() const {
-    return _config;
-  }
-
   Json health() const {
-    Json payload = Json.emptyObject;
-    payload["status"] = "UP";
-    payload["service"] = _config.serviceName;
-    payload["version"] = _config.serviceVersion;
-    payload["ai_provider"] = _config.aiProvider;
-    return payload;
+    ATPConfig cfg = cast(ATPConfig)_config;
+
+    Json healthInfo = super.health();
+    healthInfo["ai_provider"] = cfg.aiProvider;
+    return healthInfo;
   }
 
   Json listCatalogs(string tenantId) {
     validateTenant(tenantId);
-    Json catalogs = Json.emptyArray;
-    foreach (catalog; _store.listCatalogs(tenantId))
-      catalogs ~= catalog.toJson();
+    Json catalogs = _store.listCatalogs(tenantId).map!(catalog => catalog.toJson()).array.toJson();
 
     Json payload = Json.emptyObject;
     payload["catalogs"] = catalogs;
@@ -91,9 +83,7 @@ class ATPService : SAPService {
 
   Json listCommands(string tenantId, string catalogId) {
     validateTenant(tenantId);
-    Json commands = Json.emptyArray;
-    foreach (command; _store.listCommands(tenantId, catalogId))
-      commands ~= command.toJson();
+    Json commands = _store.listCommands(tenantId, catalogId).map!(command => command.toJson()).array.toJson();
 
     Json payload = Json.emptyObject;
     payload["commands"] = commands;
