@@ -12,60 +12,60 @@ mixin(ShowModule!());
 @safe:
 
 struct INTTradingPartner {
-    string tenantId;
-    string partnerId;
-    string name;
-    string description;
-    string partnerType = "supplier";  // supplier | customer | logistics | bank
-    string identifierType = "DUNS";   // DUNS | GLN | VAT | custom
-    string identifier;
-    string contactEmail;
-    string contactPhone;
-    string status = "active";         // active | inactive | suspended
-    long agreementCount = 0;
-    string createdAt;
-    string updatedAt;
+  string tenantId;
+  string partnerId;
+  string name;
+  string description;
+  string partnerType = "supplier"; // supplier | customer | logistics | bank
+  string identifierType = "DUNS"; // DUNS | GLN | VAT | custom
+  string identifier;
+  string contactEmail;
+  string contactPhone;
+  string status = "active"; // active | inactive | suspended
+  long agreementCount = 0;
+  string createdAt;
+  string updatedAt;
 
-    Json toJson() const {
-        Json j = Json.emptyObject;
-        j["tenant_id"] = tenantId;
-        j["partner_id"] = partnerId;
-        j["name"] = name;
-        j["description"] = description;
-        j["partner_type"] = partnerType;
-        j["identifier_type"] = identifierType;
-        j["identifier"] = identifier;
-        j["contact_email"] = contactEmail;
-        j["contact_phone"] = contactPhone;
-        j["status"] = status;
-        j["agreement_count"] = agreementCount;
-        j["created_at"] = createdAt;
-        j["updated_at"] = updatedAt;
-        return j;
-    }
+  Json toJson() const {
+    Json j = Json.emptyObject;
+    j["tenant_id"] = tenantId;
+    j["partner_id"] = partnerId;
+    j["name"] = name;
+    j["description"] = description;
+    j["partner_type"] = partnerType;
+    j["identifier_type"] = identifierType;
+    j["identifier"] = identifier;
+    j["contact_email"] = contactEmail;
+    j["contact_phone"] = contactPhone;
+    j["status"] = status;
+    j["agreement_count"] = agreementCount;
+    j["created_at"] = createdAt;
+    j["updated_at"] = updatedAt;
+    return j;
+  }
 }
 
 INTTradingPartner tradingPartnerFromJson(string tenantId, Json request) {
-    INTTradingPartner tp;
-    tp.tenantId = tenantId;
-    tp.partnerId = randomUUID().toString();
+  INTTradingPartner tp;
+  tp.tenantId = tenantId;
+  tp.partnerId = randomUUID().toString();
 
-    if ("name" in request && request["name"].isString)
-        tp.name = request["name"].get!string;
-    if ("description" in request && request["description"].isString)
-        tp.description = request["description"].get!string;
-    if ("partner_type" in request && request["partner_type"].isString)
-        tp.partnerType = request["partner_type"].get!string;
-    if ("identifier_type" in request && request["identifier_type"].isString)
-        tp.identifierType = request["identifier_type"].get!string;
-    if ("identifier" in request && request["identifier"].isString)
-        tp.identifier = request["identifier"].get!string;
-    if ("contact_email" in request && request["contact_email"].isString)
-        tp.contactEmail = request["contact_email"].get!string;
-    if ("contact_phone" in request && request["contact_phone"].isString)
-        tp.contactPhone = request["contact_phone"].get!string;
+  if ("name" in request && request["name"].isString)
+    tp.name = request["name"].get!string;
+  if ("description" in request && request["description"].isString)
+    tp.description = request["description"].get!string;
+  if ("partner_type" in request && request["partner_type"].isString)
+    tp.partnerType = request["partner_type"].get!string;
+  if ("identifier_type" in request && request["identifier_type"].isString)
+    tp.identifierType = request["identifier_type"].get!string;
+  if ("identifier" in request && request["identifier"].isString)
+    tp.identifier = request["identifier"].get!string;
+  if ("contact_email" in request && request["contact_email"].isString)
+    tp.contactEmail = request["contact_email"].get!string;
+  if ("contact_phone" in request && request["contact_phone"].isString)
+    tp.contactPhone = request["contact_phone"].get!string;
 
-    tp.createdAt = Clock.currTime().toINTOExtString();
-    tp.updatedAt = tp.createdAt;
-    return tp;
+  tp.createdAt = Clock.currTime().toINTOExtString();
+  tp.updatedAt = tp.createdAt;
+  return tp;
 }
