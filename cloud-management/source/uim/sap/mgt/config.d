@@ -46,7 +46,7 @@ struct MGTConfig : SAPConfig {
   ushort port = 8088;
   string basePath = "/api/mgt";
 
-  string serviceName = "uim-sap-mgt";
+  string serviceName = "uim-mgt";
   string serviceVersion = "1.0.0";
 
   bool requireAuthToken = false;

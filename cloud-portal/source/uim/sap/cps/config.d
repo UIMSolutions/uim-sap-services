@@ -9,7 +9,7 @@ struct CPSConfig : SAPConfig {
     ushort port = 8089;
     string basePath = "/api/cps";
 
-    string serviceName = "uim-sap-cps";
+    string serviceName = "uim-cps";
     string serviceVersion = "1.0.0";
     string defaultTheme = "sap_fiori_3";
 

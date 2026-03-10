@@ -10,7 +10,7 @@ void main() {
   config.host = envOr("CTM_HOST", "0.0.0.0");
   config.port = readPort(envOr("CTM_PORT", "8100"), 8100);
   config.basePath = envOr("CTM_BASE_PATH", "/api/cloud-transport");
-  config.serviceName = envOr("CTM_SERVICE_NAME", "uim-sap-ctm");
+  config.serviceName = envOr("CTM_SERVICE_NAME", "uim-ctm");
   config.serviceVersion = envOr("CTM_SERVICE_VERSION", UIM_CTM_VERSION);
   config.runtime = envOr("CTM_RUNTIME", "cloud-foundry");
 

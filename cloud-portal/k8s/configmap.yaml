@@ -8,6 +8,6 @@ data:
   CPS_HOST: "0.0.0.0"
   CPS_PORT: "8089"
   CPS_BASE_PATH: "/api/cps"
-  CPS_SERVICE_NAME: "uim-sap-cps"
+  CPS_SERVICE_NAME: "uim-cps"
   CPS_SERVICE_VERSION: "1.0.0"
   CPS_DEFAULT_THEME: "sap_fiori_3"

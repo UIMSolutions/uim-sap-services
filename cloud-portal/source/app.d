@@ -14,7 +14,7 @@ void main() {
   config.host = envOr("CPS_HOST", "0.0.0.0");
   config.port = readPort(envOr("CPS_PORT", "8089"), 8089);
   config.basePath = envOr("CPS_BASE_PATH", "/api/cps");
-  config.serviceName = envOr("CPS_SERVICE_NAME", "uim-sap-cps");
+  config.serviceName = envOr("CPS_SERVICE_NAME", "uim-cps");
   config.serviceVersion = envOr("CPS_SERVICE_VERSION", UIM_CPS_VERSION);
   config.defaultTheme = envOr("CPS_DEFAULT_THEME", "sap_fiori_3");
 

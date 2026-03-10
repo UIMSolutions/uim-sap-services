@@ -18,7 +18,7 @@ struct CTMConfig : SAPConfig {
     ushort port = 8100;
     string basePath = "/api/cloud-transport";
 
-    string serviceName    = "uim-sap-ctm";
+    string serviceName    = "uim-ctm";
     string serviceVersion = "1.0.0";
     string runtime        = "cloud-foundry";
 
