@@ -12,15 +12,15 @@ struct CONConfig : SAPConfig {
       return false;
     }
 
+    basePath(initData.getString("basePath", "/api/con"));
     host(initData.getString("host", "0.0.0.0"));
+    serviceName(initData.getString("serviceName", "uim-con"));
+    serviceVersion(initData.getString("serviceVersion", "1.0.0"));
+
     return true;
   }
 
   ushort port = 8085;
-  string basePath = "/api/con";
-
-  string serviceName = "uim-con";
-  string serviceVersion = "1.0.0";
   string connectorLocationId = "default-location";
 
   bool requireAuthToken = false;

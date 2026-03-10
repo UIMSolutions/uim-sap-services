@@ -5,12 +5,22 @@ import std.string : startsWith;
 import uim.sap.cid.exceptions;
 
 struct CIDConfig : SAPConfig {
-  string host = "0.0.0.0";
-  ushort port = 8102;
-  string basePath = "/api/cicd";
+  mixin(SAPConfigTemplate!CIDConfig);
 
-  string serviceName = "uim-cid";
-  string serviceVersion = "1.0.0";
+  override bool initialize(Json[string] initData = null) {
+    if (!super.initialize(initData)) {
+      return false;
+    }
+
+    host(initData.getString("host", "0.0.0.0"));
+    basePath(initData.getString("basePath", "/api/cicd"));
+    serviceName(initData.getString("serviceName", "uim-cid"));
+    serviceVersion(initData.getString("serviceVersion", "1.0.0"));
+
+    return true;
+  }
+
+  ushort port = 8102;
   string runtime = "cloud-foundry";
 
   bool requireAuthToken = false;

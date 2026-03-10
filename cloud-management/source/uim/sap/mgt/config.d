@@ -41,14 +41,14 @@ struct MGTConfig : SAPConfig {
     }
 
     host(initData.getString("host", "0.0.0.0"));
+    basePath(initData.getString("basePath", "/api/mgt"));
+    serviceName(initData.getString("serviceName", "uim-mgt"));
+    serviceVersion(initData.getString("serviceVersion", "1.0.0"));
+
     return true;
   }
 
   ushort port = 8088;
-  string basePath = "/api/mgt";
-
-  string serviceName = "uim-mgt";
-  string serviceVersion = "1.0.0";
 
   bool requireAuthToken = false;
   string authToken;

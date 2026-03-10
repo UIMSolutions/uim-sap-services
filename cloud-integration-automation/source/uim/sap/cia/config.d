@@ -14,14 +14,14 @@ struct CIAConfig : SAPConfig {
     }
 
     host(initData.getString("host", "0.0.0.0"));
+    basePath(initData.getString("basePath", "/api/cloud-integration-automation"));
+    serviceName(initData.getString("serviceName", "uim-cloud-integration-automation"));
+    serviceVersion(initData.getString("serviceVersion", "1.0.0"));
+
     return true;
   }
 
   ushort port = 8098;
-  string basePath = "/api/cloud-integration-automation";
-
-  string serviceName = "uim-cloud-integration-automation";
-  string serviceVersion = "1.0.0";
   string runtime = "cloud-foundry";
 
   bool requireAuthToken = false;

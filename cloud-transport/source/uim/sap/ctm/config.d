@@ -12,15 +12,16 @@ struct CTMConfig : SAPConfig {
       return false;
     }
 
+    basePath(initData.getString("basePath", "/api/cloud-transport"));
     host(initData.getString("host", "0.0.0.0"));
+    serviceName(initData.getString("serviceName", "uim-ctm"));
+    serviceVersion(initData.getString("serviceVersion", "1.0.0"));
+
     return true;
   }
 
   ushort port = 8100;
-  string basePath = "/api/cloud-transport";
 
-  string serviceName = "uim-ctm";
-  string serviceVersion = "1.0.0";
   string runtime = "cloud-foundry";
 
   bool requireAuthToken = false;
