@@ -20,13 +20,15 @@ class CLFConfig : SAPConfig {
     }
 
     host(initData.getString("host", "0.0.0.0"));
+    serviceName(initData.getString("serviceName", "uim-clf"));
+    serviceVersion(initData.getString("serviceVersion", "1.0.0"));
+
+    return true;
   }
   
     ushort port = 8082;
     string basePath = "/api/cf";
 
-    string serviceName = "uim-clf";
-    string serviceVersion = "1.0.0";
 
     bool requireAuthToken = false;
     string authToken;

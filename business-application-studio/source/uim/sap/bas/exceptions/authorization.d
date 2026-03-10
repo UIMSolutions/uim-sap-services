@@ -7,7 +7,7 @@ mixin(ShowModule!());
 @safe:
 
 class BASAuthorizationException : BASException {
-    this(string message) {
-        super(message);
-    }
+  this(string message) {
+    super(message);
+  }
 }

@@ -3,7 +3,7 @@
 * License: Subject to the terms of the Apache 2.0 license, as written in the included LICENSE.txt file. 
 * Authors: Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*)
 *****************************************************************************************************************/
-module uim.sap.service.classes.configs.config;
+module uim.sap.service.classes.config;
 
 import core.sync.mutex : Mutex;
 import uim.sap.service;
@@ -47,6 +47,18 @@ class SAPConfig : ISAPConfig {
       serviceVersion(initData.getString("serviceVersion"));
     }
 
+    if (initData.hasKey("host") && initData.isString("host")) {
+      host(initData.getString("host"));
+    }
+
+    if (initData.hasKey("port") && initData.isNumber("port")) {
+      port(cast(ushort)initData.getNumber("port"));
+    }
+
+    if (initData.hasKey("basePath") && initData.isString("basePath")) {
+      basePath(initData.getString("basePath"));
+    }
+
     return true;
   }
 
@@ -77,15 +89,43 @@ class SAPConfig : ISAPConfig {
     _host = host_;
   }
 
+  protected ushort _port;
+  ushort port() const {
+    return _port;
+  }
+
+  void port(ushort port_) {
+    _port = port_;
+  }
+
+  protected string _basePath;
+  string basePath() const {
+    return _basePath;
+  }
+
+  void basePath(string path) {
+    _basePath = path;
+  }
+
   void validate() {
     if (serviceName.length == 0) {
       throw new Exception("Service name cannot be empty");
     }
+
     if (serviceVersion.length == 0) {
       throw new Exception("Service version cannot be empty");
     }
+
     if (host.length == 0) {
       throw new Exception("Host cannot be empty");
+    }
+
+    if (port == 0) {
+      throw new Exception("Port must be greater than zero");
+    }
+
+    if (basePath.length == 0 || !basePath.startsWith("/")) {
+      throw new Exception("Base path must start with '/'");
     }
   }
 }

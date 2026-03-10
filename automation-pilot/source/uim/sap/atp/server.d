@@ -1,14 +1,10 @@
 module uim.sap.atp.server;
 
-import std.array : split;
-import std.string : startsWith;
+import uim.sap.atp;
 
-import vibe.data.json : Json;
-import vibe.http.common : HTTPMethod;
-import vibe.http.server : HTTPServerRequest, HTTPServerResponse, HTTPServerSettings, listenHTTP;
+mixin(ShowModule!());
 
-import uim.sap.atp.exceptions;
-import uim.sap.atp.service;
+@safe:
 
 /**
  * ATPServer handles HTTP requests for the Automation Pilot service.
