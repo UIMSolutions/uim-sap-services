@@ -8,7 +8,7 @@ data:
   CLG_HOST: "0.0.0.0"
   CLG_PORT: "8081"
   CLG_BASE_PATH: "/sap/cloud/logging/v1"
-  CLG_SERVICE_NAME: "uim-sap-clg"
+  CLG_SERVICE_NAME: "uim-clg"
   CLG_SERVICE_VERSION: "1.0.0"
   CLG_MAX_ENTRIES: "20000"
   CLG_DEFAULT_QUERY_LIMIT: "200"

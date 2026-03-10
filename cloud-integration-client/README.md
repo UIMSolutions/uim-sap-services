@@ -16,7 +16,7 @@ Cloud Integration (CPI) client library for D language, built with uim-framework 
 For dub.sdl:
 
 ```sdl
-dependency "uim-sap-cpi" version="~>1.0.0"
+dependency "uim-cpi" version="~>1.0.0"
 ```
 
 For dub.json:
@@ -24,7 +24,7 @@ For dub.json:
 ```json
 {
   "dependencies": {
-    "uim-sap-cpi": "~>1.0.0"
+    "uim-cpi": "~>1.0.0"
   }
 }
 ```

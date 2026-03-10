@@ -19,7 +19,7 @@ struct CIAConfig : SAPConfig {
     ushort port = 8098;
     string basePath = "/api/cloud-integration-automation";
 
-    string serviceName    = "uim-sap-cloud-integration-automation";
+    string serviceName    = "uim-cloud-integration-automation";
     string serviceVersion = "1.0.0";
     string runtime        = "cloud-foundry";
 

@@ -14,7 +14,7 @@ struct CLGConfig : SAPConfig {
     ushort port = 8081;
     string basePath = "/sap/cloud/logging/v1";
 
-    string serviceName = "uim-sap-clg";
+    string serviceName = "uim-clg";
     string serviceVersion = "1.0.0";
 
     size_t maxEntries = 10000;

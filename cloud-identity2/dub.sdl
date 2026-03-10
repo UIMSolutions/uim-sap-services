@@ -1,4 +1,4 @@
-name "uim-sap-identity"
+name "uim-identity"
 description "D language library for Cloud Identity Services (IAS/IPS) using uim-framework and vibe.d"
 homepage "https://www.sueel.de/uim/framework"
 authors "Ozan Nurettin Süel" "UI Manufaktur"
@@ -7,7 +7,7 @@ license "Apache-2.0"
 
 // Target
 targetType "library"
-targetName "uim-sap-identity"
+targetName "uim-identity"
 
 
 // Dependency on the core framework

@@ -12,7 +12,7 @@ void main()
     config.host           = envOr("CIA_HOST",            "0.0.0.0");
     config.port           = readPort(envOr("CIA_PORT",   "8098"), 8098);
     config.basePath       = envOr("CIA_BASE_PATH",       "/api/cloud-integration-automation");
-    config.serviceName    = envOr("CIA_SERVICE_NAME",    "uim-sap-cloud-integration-automation");
+    config.serviceName    = envOr("CIA_SERVICE_NAME",    "uim-cloud-integration-automation");
     config.serviceVersion = envOr("CIA_SERVICE_VERSION", UIM_CIA_VERSION);
     config.runtime        = envOr("CIA_RUNTIME",         "cloud-foundry");
 
