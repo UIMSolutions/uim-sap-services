@@ -11,7 +11,7 @@ struct MDIConfig : SAPConfig {
   ushort port = 8092;
   string basePath = "/api/mdi";
 
-  string serviceName = "uim-sap-mdi";
+  string serviceName = "uim-mdi";
   string serviceVersion = "1.0.0";
   string defaultObjectType = "business_partner";
 

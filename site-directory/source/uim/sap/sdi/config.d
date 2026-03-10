@@ -11,7 +11,7 @@ class SDIConfig : SAPConfig {
   ushort port = 8096;
   string basePath = "/api/sitedirectory";
 
-  string serviceName = "uim-sap-sdi";
+  string serviceName = "uim-sdi";
   string serviceVersion = "1.0.0";
 
   bool requireAuthToken = false;

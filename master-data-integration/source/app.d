@@ -15,7 +15,7 @@ void main() {
   config.host = envOr("MDI_HOST", "0.0.0.0");
   config.port = readPort(envOr("MDI_PORT", "8092"), 8092);
   config.basePath = envOr("MDI_BASE_PATH", "/api/mdi");
-  config.serviceName = envOr("MDI_SERVICE_NAME", "uim-sap-mdi");
+  config.serviceName = envOr("MDI_SERVICE_NAME", "uim-mdi");
   config.serviceVersion = envOr("MDI_SERVICE_VERSION", UIM_MDI_VERSION);
   config.defaultObjectType = envOr("MDI_DEFAULT_OBJECT_TYPE", "business_partner");
 

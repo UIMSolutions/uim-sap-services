@@ -8,7 +8,7 @@ data:
   RMS_HOST: "0.0.0.0"
   RMS_PORT: "8095"
   RMS_BASE_PATH: "/api/rms"
-  RMS_SERVICE_NAME: "uim-sap-rms"
+  RMS_SERVICE_NAME: "uim-rms"
   RMS_SERVICE_VERSION: "1.0.0"
   RMS_DATA_DIR: "/var/lib/uim-rms"
   RMS_DEFAULT_TENANT: "provider"

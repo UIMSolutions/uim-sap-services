@@ -8,6 +8,6 @@ data:
   MDI_HOST: "0.0.0.0"
   MDI_PORT: "8092"
   MDI_BASE_PATH: "/api/mdi"
-  MDI_SERVICE_NAME: "uim-sap-mdi"
+  MDI_SERVICE_NAME: "uim-mdi"
   MDI_SERVICE_VERSION: "1.0.0"
   MDI_DEFAULT_OBJECT_TYPE: "business_partner"

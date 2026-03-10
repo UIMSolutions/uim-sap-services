@@ -17,7 +17,7 @@ struct RMSConfig : SAPConfig {
     ushort port = 8095;
     string basePath = "/api/rms";
 
-    string serviceName = "uim-sap-rms";
+    string serviceName = "uim-rms";
     string serviceVersion = "1.0.0";
 
     string dataDirectory = "/tmp/uim-rms-data";

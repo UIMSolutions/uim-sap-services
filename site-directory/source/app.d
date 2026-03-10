@@ -12,7 +12,7 @@ void main() {
   config.host = envOr("SDI_HOST", "0.0.0.0");
   config.port = readPort(envOr("SDI_PORT", "8096"), 8096);
   config.basePath = envOr("SDI_BASE_PATH", "/api/sitedirectory");
-  config.serviceName = envOr("SDI_SERVICE_NAME", "uim-sap-sdi");
+  config.serviceName = envOr("SDI_SERVICE_NAME", "uim-sdi");
   config.serviceVersion = envOr("SDI_SERVICE_VERSION", UIM_SDI_VERSION);
 
   auto token = envOr("SDI_AUTH_TOKEN", "");
