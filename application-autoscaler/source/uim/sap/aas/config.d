@@ -14,7 +14,7 @@ class AASConfig : SAPConfig {
     ushort port = 8086;
     string basePath = "/api/autoscaler";
 
-    string serviceName = "uim-sap-aas";
+    string serviceName = "uim-aas";
     string serviceVersion = "1.0.0";
 
     string cfApi;

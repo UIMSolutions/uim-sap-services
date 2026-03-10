@@ -5,7 +5,7 @@ title UIM Application Autoscaler (AAS) - Deployment Component View
 
 node "Developer Workstation" as DevHost {
   component "Podman" as Podman
-  artifact "uim-sap-aas image" as Image
+  artifact "uim-aas image" as Image
 }
 
 cloud "Container Registry" as Registry

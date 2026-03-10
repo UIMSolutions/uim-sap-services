@@ -13,11 +13,11 @@ void main() {
     config.host = envOr("ATM_HOST", "0.0.0.0");
     config.port = readPort(envOr("ATM_PORT", "8088"), 8088);
     config.basePath = envOr("ATM_BASE_PATH", "/api/atm");
-    config.serviceName = envOr("ATM_SERVICE_NAME", "uim-sap-atm");
+    config.serviceName = envOr("ATM_SERVICE_NAME", "uim-atm");
     config.serviceVersion = envOr("ATM_SERVICE_VERSION", UIM_ATM_VERSION);
     config.defaultIdpName = envOr("ATM_DEFAULT_IDP_NAME", "sap-id-service");
     config.defaultIdpIssuer = envOr("ATM_DEFAULT_IDP_ISSUER", "https://accounts.sap.com");
-    config.defaultIdpAudience = envOr("ATM_DEFAULT_IDP_AUDIENCE", "uim-sap-app");
+    config.defaultIdpAudience = envOr("ATM_DEFAULT_IDP_AUDIENCE", "uim-app");
     config.allowUnsignedTokens = readBool(envOr("ATM_ALLOW_UNSIGNED_TOKENS", "true"), true);
     config.enforceTokenExpiry = readBool(envOr("ATM_ENFORCE_TOKEN_EXPIRY", "true"), true);
     config.bootstrapToken = envOr("ATM_BOOTSTRAP_TOKEN", "");

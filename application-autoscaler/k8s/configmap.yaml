@@ -8,7 +8,7 @@ data:
   AAS_HOST: "0.0.0.0"
   AAS_PORT: "8086"
   AAS_BASE_PATH: "/api/autoscaler"
-  AAS_SERVICE_NAME: "uim-sap-aas"
+  AAS_SERVICE_NAME: "uim-aas"
   AAS_SERVICE_VERSION: "1.0.0"
   AAS_CF_API: "https://api.cf.example"
   AAS_CF_ORG: "production-org"
