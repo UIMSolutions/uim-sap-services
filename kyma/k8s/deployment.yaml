@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uim-sap-kym
+  labels:
+    app: uim-sap-kym
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: uim-sap-kym
+  template:
+    metadata:
+      labels:
+        app: uim-sap-kym
+    spec:
+      containers:
+      - name: uim-sap-kym
+        image: ghcr.io/uimsolutions/uim-sap-kym:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 8088
+        envFrom:
+        - configMapRef:
+            name: uim-sap-kym-config
+        env:
+        - name: KYM_AUTH_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: uim-sap-kym-secret
+              key: auth-token
+              optional: true
+        readinessProbe:
+          httpGet:
+            path: /api/kym/ready
+            port: http
+          initialDelaySeconds: 3
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /api/kym/health
+            port: http
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
