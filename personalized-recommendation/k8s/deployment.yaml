@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uim-sap-pre
+  labels:
+    app: uim-sap-pre
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: uim-sap-pre
+  template:
+    metadata:
+      labels:
+        app: uim-sap-pre
+    spec:
+      containers:
+      - name: uim-sap-pre
+        image: ghcr.io/uimsolutions/uim-sap-pre:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 8093
+        envFrom:
+        - configMapRef:
+            name: uim-sap-pre-config
+        env:
+        - name: PRE_AUTH_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: uim-sap-pre-secret
+              key: auth-token
+              optional: true
+        readinessProbe:
+          httpGet:
+            path: /api/pre/ready
+            port: http
+          initialDelaySeconds: 3
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /api/pre/health
+            port: http
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
