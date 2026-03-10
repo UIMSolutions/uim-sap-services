@@ -7,6 +7,10 @@ module app;
 
 import uim.sap.pdm;
 
+mixin(ShowModule!());
+
+@safe:
+
 void main() {
     PDMConfig config;
     config.host = envOr("PDM_HOST", "0.0.0.0");

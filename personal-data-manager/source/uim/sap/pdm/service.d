@@ -1,15 +1,10 @@
 module uim.sap.pdm.service;
 
-import std.datetime : Clock;
+import uim.sap.pdm;
 
-import vibe.data.json : Json;
+mixin(ShowModule!());
 
-import uim.sap.pdm.config;
-import uim.sap.pdm.enumerations;
-import uim.sap.pdm.exceptions;
-import uim.sap.pdm.helpers;
-import uim.sap.pdm.models;
-import uim.sap.pdm.store;
+@safe:
 
 /**
  * Main service class for SAP Personal Data Manager.

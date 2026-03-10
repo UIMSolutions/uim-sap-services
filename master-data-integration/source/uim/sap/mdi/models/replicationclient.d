@@ -5,6 +5,29 @@ import uim.sap.mdi;
 mixin(ShowModule!());
 
 @safe:
+
+/**
+ * Model representing a replication client in the Master Data Integration service.
+ *
+  * This model is used to store and manage information about replication clients, including their tenant ID, client ID, name, system type, and the last update timestamp.
+  *
+  * Example usage:
+  * ```
+  * MDIReplicationClient client;
+  * client.tenantId = "tenant123";
+  * client.clientId = "client456";
+  * client.name = "Client Name";
+  * client.systemType = "sap";
+  * client.updatedAt = Clock.currTime();
+  * ```
+  * 
+  * Fields:
+  * - `tenantId`: The ID of the tenant to which this replication client belongs.
+  * - `clientId`: A unique identifier for the replication client.
+  * - `name`: A human-readable name for the replication client.
+  * - `systemType`: The type of system the replication client is associated with (e.g., "sap").
+  * - `updatedAt`: A timestamp indicating when the replication client was last updated.
+ */
 struct MDIReplicationClient {
   string tenantId;
   string clientId;

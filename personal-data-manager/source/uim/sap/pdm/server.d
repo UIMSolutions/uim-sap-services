@@ -1,14 +1,10 @@
 module uim.sap.pdm.server;
 
-import std.array : split;
-import std.string : startsWith;
+import uim.sap.pdm;
 
-import vibe.data.json : Json;
-import vibe.http.common : HTTPMethod;
-import vibe.http.server : HTTPServerRequest, HTTPServerResponse, HTTPServerSettings, listenHTTP;
+mixin(ShowModule!());
 
-import uim.sap.pdm.exceptions;
-import uim.sap.pdm.service;
+@safe:
 
 /**
  * HTTP server for SAP Personal Data Manager.

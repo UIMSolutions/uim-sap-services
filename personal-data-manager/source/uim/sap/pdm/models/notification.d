@@ -5,11 +5,9 @@
 *****************************************************************************************************************/
 module uim.sap.pdm.models.notification;
 
-import std.datetime : Clock, SysTime;
+import uim.sap.pdm;
 
-import vibe.data.json : Json;
-
-import uim.sap.pdm.enumerations;
+mixin(ShowModule!());
 
 @safe:
 
