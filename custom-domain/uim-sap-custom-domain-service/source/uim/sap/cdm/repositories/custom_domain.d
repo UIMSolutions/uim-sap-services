@@ -6,62 +6,62 @@ import std.file;
 import std.stdio;
 
 class CustomDomainRepository {
-    private string dataFilePath;
+  private string dataFilePath;
 
-    this(string filePath) {
-        dataFilePath = filePath;
+  this(string filePath) {
+    dataFilePath = filePath;
+  }
+
+  // Function to load custom domains from a JSON file
+  public CustomDomain[] loadCustomDomains() {
+    if (!exists(dataFilePath)) {
+      return [];
     }
 
-    // Function to load custom domains from a JSON file
-    public CustomDomain[] loadCustomDomains() {
-        if (!exists(dataFilePath)) {
-            return [];
-        }
+    auto jsonData = readText(dataFilePath);
+    auto jsonArray = parseJSON(jsonData).array;
+    CustomDomain[] customDomains;
 
-        auto jsonData = readText(dataFilePath);
-        auto jsonArray = parseJSON(jsonData).array;
-        CustomDomain[] customDomains;
-
-        foreach (jsonDomain; jsonArray) {
-            customDomains ~= CustomDomain(jsonDomain);
-        }
-
-        return customDomains;
+    foreach (jsonDomain; jsonArray) {
+      customDomains ~= CustomDomain(jsonDomain);
     }
 
-    // Function to save custom domains to a JSON file
-    public void saveCustomDomains(CustomDomain[] customDomains) {
-        auto jsonArray = JsonArray();
+    return customDomains;
+  }
 
-        foreach (domain; customDomains) {
-            jsonArray ~= domain.toJson();
-        }
+  // Function to save custom domains to a JSON file
+  public void saveCustomDomains(CustomDomain[] customDomains) {
+    auto jsonArray = JsonArray();
 
-        writeText(dataFilePath, jsonArray.toString());
+    foreach (domain; customDomains) {
+      jsonArray ~= domain.toJson();
     }
 
-    // Function to find a custom domain by its name
-    public CustomDomain findByName(string name) {
-        auto domains = loadCustomDomains();
-        foreach (domain; domains) {
-            if (domain.name == name) {
-                return domain;
-            }
-        }
-        return null;
-    }
+    writeText(dataFilePath, jsonArray.toString());
+  }
 
-    // Function to add a new custom domain
-    public void addCustomDomain(CustomDomain newDomain) {
-        auto domains = loadCustomDomains();
-        domains ~= newDomain;
-        saveCustomDomains(domains);
+  // Function to find a custom domain by its name
+  public CustomDomain findByName(string name) {
+    auto domains = loadCustomDomains();
+    foreach (domain; domains) {
+      if (domain.name == name) {
+        return domain;
+      }
     }
+    return null;
+  }
 
-    // Function to remove a custom domain by its name
-    public void removeCustomDomain(string name) {
-        auto domains = loadCustomDomains();
-        domains = domains.filter!(d => d.name != name);
-        saveCustomDomains(domains);
-    }
+  // Function to add a new custom domain
+  public void addCustomDomain(CustomDomain newDomain) {
+    auto domains = loadCustomDomains();
+    domains ~= newDomain;
+    saveCustomDomains(domains);
+  }
+
+  // Function to remove a custom domain by its name
+  public void removeCustomDomain(string name) {
+    auto domains = loadCustomDomains();
+    domains = domains.filter!(d => d.name != name);
+    saveCustomDomains(domains);
+  }
 }
