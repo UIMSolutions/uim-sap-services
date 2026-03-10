@@ -8,5 +8,5 @@ data:
   IPV_HOST: "0.0.0.0"
   IPV_PORT: "8095"
   IPV_BASE_PATH: "/api/ip"
-  IPV_SERVICE_NAME: "uim-sap-ip"
+  IPV_SERVICE_NAME: "uim-ip"
   IPV_SERVICE_VERSION: "1.0.0"

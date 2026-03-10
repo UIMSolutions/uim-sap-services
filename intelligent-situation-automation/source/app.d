@@ -11,7 +11,7 @@ void main() {
   config.host = envOr("ISA_HOST", "0.0.0.0");
   config.port = readPort(envOr("ISA_PORT", "8088"), 8088);
   config.basePath = envOr("ISA_BASE_PATH", "/api/situation-automation");
-  config.serviceName = envOr("ISA_SERVICE_NAME", "uim-sap-isa");
+  config.serviceName = envOr("ISA_SERVICE_NAME", "uim-isa");
   config.serviceVersion = envOr("ISA_SERVICE_VERSION", UIM_ISA_VERSION);
 
   config.defaultTenant = envOr("ISA_DEFAULT_TENANT", "default");

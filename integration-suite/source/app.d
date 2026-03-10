@@ -13,7 +13,7 @@ version (unittest) {
     config.host = envOr("INT_HOST", "0.0.0.0");
     config.port = readPort(envOr("INT_PORT", "8100"), 8100);
     config.basePath = envOr("INT_BASE_PATH", "/api/is");
-    config.serviceName = envOr("INT_SERVICE_NAME", "uim-sap-is");
+    config.serviceName = envOr("INT_SERVICE_NAME", "uim-is");
     config.serviceVersion = envOr("INT_SERVICE_VERSION", UIM_INT_VERSION);
 
     auto token = envOr("INT_AUTH_TOKEN", "");

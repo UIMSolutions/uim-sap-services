@@ -8,5 +8,5 @@ data:
   INT_HOST: "0.0.0.0"
   INT_PORT: "8100"
   INT_BASE_PATH: "/api/is"
-  INT_SERVICE_NAME: "uim-sap-is"
+  INT_SERVICE_NAME: "uim-is"
   INT_SERVICE_VERSION: "1.0.0"

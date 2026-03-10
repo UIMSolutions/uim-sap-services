@@ -8,6 +8,6 @@ data:
   ISA_HOST: "0.0.0.0"
   ISA_PORT: "8088"
   ISA_BASE_PATH: "/api/situation-automation"
-  ISA_SERVICE_NAME: "uim-sap-isa"
+  ISA_SERVICE_NAME: "uim-isa"
   ISA_SERVICE_VERSION: "1.0.0"
   ISA_DEFAULT_TENANT: "default"

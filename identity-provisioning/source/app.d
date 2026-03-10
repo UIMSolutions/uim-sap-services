@@ -23,7 +23,7 @@ version (unittest) {
     config.host = envOr("IPV_HOST", "0.0.0.0");
     config.port = readPort(envOr("IPV_PORT", "8095"), 8095);
     config.basePath = envOr("IPV_BASE_PATH", "/api/ip");
-    config.serviceName = envOr("IPV_SERVICE_NAME", "uim-sap-ip");
+    config.serviceName = envOr("IPV_SERVICE_NAME", "uim-ip");
     config.serviceVersion = envOr("IPV_SERVICE_VERSION", UIM_IPV_VERSION);
 
     auto token = envOr("IPV_AUTH_TOKEN", "");

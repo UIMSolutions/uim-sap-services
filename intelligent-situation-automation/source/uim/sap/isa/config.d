@@ -17,7 +17,7 @@ class ISAConfig : SAPConfig {
   ushort port = 8088;
   string basePath = "/api/situation-automation";
 
-  string serviceName = "uim-sap-isa";
+  string serviceName = "uim-isa";
   string serviceVersion = "1.0.0";
 
   string defaultTenant = "default";

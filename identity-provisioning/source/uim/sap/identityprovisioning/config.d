@@ -15,7 +15,7 @@ class IPVConfig : SAPConfig {
     string host = "0.0.0.0";
     ushort port = 8095;
     string basePath = "/api/ip";
-    string serviceName = "uim-sap-ip";
+    string serviceName = "uim-ip";
     string serviceVersion = "1.0.0";
     bool requireAuthToken = false;
     string authToken;

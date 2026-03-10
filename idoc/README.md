@@ -17,7 +17,7 @@ This package provides a typed adapter for IDOC submission and status retrieval a
 `dub.sdl`:
 
 ```sdl
-dependency "uim-sap-idoc" version="~>1.0.0"
+dependency "uim-idoc" version="~>1.0.0"
 ```
 
 `dub.json`:
@@ -25,7 +25,7 @@ dependency "uim-sap-idoc" version="~>1.0.0"
 ```json
 {
   "dependencies": {
-    "uim-sap-idoc": "~>1.0.0"
+    "uim-idoc": "~>1.0.0"
   }
 }
 ```

@@ -10,7 +10,7 @@ class INTConfig : SAPConfig {
     string host = "0.0.0.0";
     ushort port = 8100;
     string basePath = "/api/is";
-    string serviceName = "uim-sap-is";
+    string serviceName = "uim-is";
     string serviceVersion = "1.0.0";
     bool requireAuthToken = false;
     string authToken;
