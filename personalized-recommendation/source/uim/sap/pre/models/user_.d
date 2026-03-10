@@ -1,0 +1,58 @@
+module uim.sap.pre.models.user_;
+
+import uim.sap.pre;
+
+mixin(ShowModule!());
+
+@safe:
+
+/// A user whose interactions are tracked for personalisation.
+struct PREUser {
+    string userId;
+    string tenantId;
+    string displayName;
+    PREUserSegment segment = PREUserSegment.new_user;
+    string[] preferences;
+    string[string] context;
+    string createdAt;
+    string updatedAt;
+}
+
+Json userToJson(const ref PREUser u) {
+    Json j = Json.emptyObject;
+    j["userId"] = u.userId;
+    j["tenantId"] = u.tenantId;
+    j["displayName"] = u.displayName;
+    j["segment"] = u.segment.to!string;
+    {
+        Json arr = Json.emptyArray;
+        foreach (p; u.preferences)
+            arr ~= Json(p);
+        j["preferences"] = arr;
+    }
+    {
+        Json obj = Json.emptyObject;
+        foreach (k, v; u.context)
+            obj[k] = v;
+        j["context"] = obj;
+    }
+    j["createdAt"] = u.createdAt;
+    j["updatedAt"] = u.updatedAt;
+    return j;
+}
+
+PREUser userFromJson(Json j) {
+    PREUser u;
+    u.userId = j["userId"].get!string;
+    u.tenantId = j.getOrDefault!string("tenantId", "");
+    u.displayName = j.getOrDefault!string("displayName", "");
+    if ("preferences" in j) {
+        foreach (p; j["preferences"])
+            u.preferences ~= p.get!string;
+    }
+    if ("context" in j) {
+        foreach (string k, v; j["context"])
+            u.context[k] = v.get!string;
+    }
+    return u;
+}

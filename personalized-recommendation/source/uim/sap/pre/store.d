@@ -1,0 +1,299 @@
+module uim.sap.pre.store;
+
+import uim.sap.pre;
+
+mixin(ShowModule!());
+
+class PREStore : SAPStore {
+    private {
+        // Keyed by tenantKey(tenantId, resourceId)
+        PREItem[string] _items;
+        PREUser[string] _users;
+        PREInteraction[string] _interactions;
+        PREModel[string] _models;
+        PREScenario[string] _scenarios;
+        PRETrainingJob[string] _trainingJobs;
+
+        import core.sync.mutex : Mutex;
+        Mutex _mutex;
+    }
+
+    this() {
+        _mutex = new Mutex();
+    }
+
+    // ──────── Items ────────
+
+    void addItem(string tenantId, ref PREItem item) {
+        synchronized (_mutex) {
+            auto key = tenantKey(tenantId, item.itemId);
+            _items[key] = item;
+        }
+    }
+
+    PREItem* getItem(string tenantId, string itemId) {
+        synchronized (_mutex) {
+            auto key = tenantKey(tenantId, itemId);
+            if (auto p = key in _items)
+                return p;
+            return null;
+        }
+    }
+
+    PREItem[] listItems(string tenantId) {
+        synchronized (_mutex) {
+            PREItem[] result;
+            auto prefix = tenantId ~ "/";
+            foreach (k, v; _items)
+                if (k.length >= prefix.length && k[0 .. prefix.length] == prefix)
+                    result ~= v;
+            return result;
+        }
+    }
+
+    bool removeItem(string tenantId, string itemId) {
+        synchronized (_mutex) {
+            auto key = tenantKey(tenantId, itemId);
+            if (key in _items) {
+                _items.remove(key);
+                return true;
+            }
+            return false;
+        }
+    }
+
+    size_t countItems(string tenantId) {
+        synchronized (_mutex) {
+            size_t n;
+            auto prefix = tenantId ~ "/";
+            foreach (k, _; _items)
+                if (k.length >= prefix.length && k[0 .. prefix.length] == prefix)
+                    n++;
+            return n;
+        }
+    }
+
+    // ──────── Users ────────
+
+    void addUser(string tenantId, ref PREUser user) {
+        synchronized (_mutex) {
+            auto key = tenantKey(tenantId, user.userId);
+            _users[key] = user;
+        }
+    }
+
+    PREUser* getUser(string tenantId, string userId) {
+        synchronized (_mutex) {
+            auto key = tenantKey(tenantId, userId);
+            if (auto p = key in _users)
+                return p;
+            return null;
+        }
+    }
+
+    PREUser[] listUsers(string tenantId) {
+        synchronized (_mutex) {
+            PREUser[] result;
+            auto prefix = tenantId ~ "/";
+            foreach (k, v; _users)
+                if (k.length >= prefix.length && k[0 .. prefix.length] == prefix)
+                    result ~= v;
+            return result;
+        }
+    }
+
+    bool removeUser(string tenantId, string userId) {
+        synchronized (_mutex) {
+            auto key = tenantKey(tenantId, userId);
+            if (key in _users) {
+                _users.remove(key);
+                return true;
+            }
+            return false;
+        }
+    }
+
+    size_t countUsers(string tenantId) {
+        synchronized (_mutex) {
+            size_t n;
+            auto prefix = tenantId ~ "/";
+            foreach (k, _; _users)
+                if (k.length >= prefix.length && k[0 .. prefix.length] == prefix)
+                    n++;
+            return n;
+        }
+    }
+
+    // ──────── Interactions ────────
+
+    void addInteraction(string tenantId, ref PREInteraction interaction) {
+        synchronized (_mutex) {
+            auto key = tenantKey(tenantId, interaction.interactionId);
+            _interactions[key] = interaction;
+        }
+    }
+
+    PREInteraction[] listInteractionsByUser(string tenantId, string userId) {
+        synchronized (_mutex) {
+            PREInteraction[] result;
+            auto prefix = tenantId ~ "/";
+            foreach (k, v; _interactions)
+                if (k.length >= prefix.length && k[0 .. prefix.length] == prefix && v.userId == userId)
+                    result ~= v;
+            return result;
+        }
+    }
+
+    PREInteraction[] listInteractionsByItem(string tenantId, string itemId) {
+        synchronized (_mutex) {
+            PREInteraction[] result;
+            auto prefix = tenantId ~ "/";
+            foreach (k, v; _interactions)
+                if (k.length >= prefix.length && k[0 .. prefix.length] == prefix && v.itemId == itemId)
+                    result ~= v;
+            return result;
+        }
+    }
+
+    PREInteraction[] listInteractions(string tenantId) {
+        synchronized (_mutex) {
+            PREInteraction[] result;
+            auto prefix = tenantId ~ "/";
+            foreach (k, v; _interactions)
+                if (k.length >= prefix.length && k[0 .. prefix.length] == prefix)
+                    result ~= v;
+            return result;
+        }
+    }
+
+    size_t countInteractionsByUser(string tenantId, string userId) {
+        synchronized (_mutex) {
+            size_t n;
+            auto prefix = tenantId ~ "/";
+            foreach (k, v; _interactions)
+                if (k.length >= prefix.length && k[0 .. prefix.length] == prefix && v.userId == userId)
+                    n++;
+            return n;
+        }
+    }
+
+    // ──────── Models ────────
+
+    void addModel(string tenantId, ref PREModel model) {
+        synchronized (_mutex) {
+            auto key = tenantKey(tenantId, model.modelId);
+            _models[key] = model;
+        }
+    }
+
+    PREModel* getModel(string tenantId, string modelId) {
+        synchronized (_mutex) {
+            auto key = tenantKey(tenantId, modelId);
+            if (auto p = key in _models)
+                return p;
+            return null;
+        }
+    }
+
+    PREModel[] listModels(string tenantId) {
+        synchronized (_mutex) {
+            PREModel[] result;
+            auto prefix = tenantId ~ "/";
+            foreach (k, v; _models)
+                if (k.length >= prefix.length && k[0 .. prefix.length] == prefix)
+                    result ~= v;
+            return result;
+        }
+    }
+
+    bool removeModel(string tenantId, string modelId) {
+        synchronized (_mutex) {
+            auto key = tenantKey(tenantId, modelId);
+            if (key in _models) {
+                _models.remove(key);
+                return true;
+            }
+            return false;
+        }
+    }
+
+    size_t countModels(string tenantId) {
+        synchronized (_mutex) {
+            size_t n;
+            auto prefix = tenantId ~ "/";
+            foreach (k, _; _models)
+                if (k.length >= prefix.length && k[0 .. prefix.length] == prefix)
+                    n++;
+            return n;
+        }
+    }
+
+    // ──────── Scenarios ────────
+
+    void addScenario(string tenantId, ref PREScenario scenario) {
+        synchronized (_mutex) {
+            auto key = tenantKey(tenantId, scenario.scenarioId);
+            _scenarios[key] = scenario;
+        }
+    }
+
+    PREScenario* getScenario(string tenantId, string scenarioId) {
+        synchronized (_mutex) {
+            auto key = tenantKey(tenantId, scenarioId);
+            if (auto p = key in _scenarios)
+                return p;
+            return null;
+        }
+    }
+
+    PREScenario[] listScenarios(string tenantId) {
+        synchronized (_mutex) {
+            PREScenario[] result;
+            auto prefix = tenantId ~ "/";
+            foreach (k, v; _scenarios)
+                if (k.length >= prefix.length && k[0 .. prefix.length] == prefix)
+                    result ~= v;
+            return result;
+        }
+    }
+
+    bool removeScenario(string tenantId, string scenarioId) {
+        synchronized (_mutex) {
+            auto key = tenantKey(tenantId, scenarioId);
+            if (key in _scenarios) {
+                _scenarios.remove(key);
+                return true;
+            }
+            return false;
+        }
+    }
+
+    // ──────── Training Jobs ────────
+
+    void addTrainingJob(string tenantId, ref PRETrainingJob job) {
+        synchronized (_mutex) {
+            auto key = tenantKey(tenantId, job.jobId);
+            _trainingJobs[key] = job;
+        }
+    }
+
+    PRETrainingJob* getTrainingJob(string tenantId, string jobId) {
+        synchronized (_mutex) {
+            auto key = tenantKey(tenantId, jobId);
+            if (auto p = key in _trainingJobs)
+                return p;
+            return null;
+        }
+    }
+
+    PRETrainingJob[] listTrainingJobs(string tenantId, string modelId) {
+        synchronized (_mutex) {
+            PRETrainingJob[] result;
+            auto prefix = tenantId ~ "/";
+            foreach (k, v; _trainingJobs)
+                if (k.length >= prefix.length && k[0 .. prefix.length] == prefix && v.modelId == modelId)
+                    result ~= v;
+            return result;
+        }
+    }
+}
