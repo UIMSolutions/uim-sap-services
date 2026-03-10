@@ -4,7 +4,7 @@ import std.string : startsWith;
 
 import uim.sap.atp.exceptions;
 
-class ATPConfig : SAPHostConfig {
+class ATPConfig : SAPConfig {
   mixin(SAPConfigTemplate!AgentryConfig);
 
   override bool initialize(Json[string] initData = null) {

@@ -4,7 +4,7 @@ import std.string : startsWith;
 
 import uim.sap.con.exceptions;
 
-struct CONConfig : SAPHostConfig {
+struct CONConfig : SAPConfig {
   mixin(SAPConfigTemplate!CONConfig);
 
   override bool initialize(Json[string] initData = null) {

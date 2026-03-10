@@ -10,7 +10,7 @@ import uim.sap.art;
 mixin(ShowModule!());
 
 @safe:
-class ARTRuntimeConfig : SAPHostConfig {
+class ARTRuntimeConfig : SAPConfig {
   mixin(SAPConfigTemplate!ARTRuntimeConfig);
 
   override bool initialize(Json[string] initData = null) {

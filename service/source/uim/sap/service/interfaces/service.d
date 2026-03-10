@@ -10,4 +10,5 @@ interface ISAPService {
 
   Json health();
   Json ready();
+  void validate();
 }

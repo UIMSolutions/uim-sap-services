@@ -4,7 +4,7 @@ import std.string : startsWith, toLower;
 
 import uim.sap.documentmanagement.exceptions;
 
-class DMAConfig : SAPHostConfig {
+class DMAConfig : SAPConfig {
   mixin(SAPConfigTemplate!HTMRepoConfig);
 
   override bool initialize(Json[string] initData = null) {

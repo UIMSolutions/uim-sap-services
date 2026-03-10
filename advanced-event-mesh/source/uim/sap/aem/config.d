@@ -10,7 +10,7 @@ import uim.sap.aem;
 mixin(ShowModule!());
 
 @safe:
-class AEMConfig : SAPHostConfig {
+class AEMConfig : SAPConfig {
   mixin(SAPConfigTemplate!AEMConfig);
 
   override bool initialize(Json[string] initData = null) {

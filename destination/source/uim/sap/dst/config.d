@@ -6,7 +6,7 @@ mixin(ShowModule!());
 
 @safe:
 
-struct DSTConfig : SAPHostConfig {
+struct DSTConfig : SAPConfig {
   mixin(SAPConfigTemplate!HTMRepoConfig);
 
   override bool initialize(Json[string] initData = null) {

@@ -29,7 +29,7 @@ mixin(ShowModule!());
   *   }
   * }
   */
-class SAPConfig : ISAPConfig {  
+class SAPConfig : ISAPConfig {
   this() {
     initialize();
   }
@@ -75,5 +75,17 @@ class SAPConfig : ISAPConfig {
 
   void host(string host_) {
     _host = host_;
+  }
+
+  void validate() {
+    if (serviceName.length == 0) {
+      throw new Exception("Service name cannot be empty");
+    }
+    if (serviceVersion.length == 0) {
+      throw new Exception("Service version cannot be empty");
+    }
+    if (host.length == 0) {
+      throw new Exception("Host cannot be empty");
+    }
   }
 }

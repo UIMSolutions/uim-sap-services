@@ -32,7 +32,7 @@ mixin(ShowModule!());
   *     basePath: "/api/mgt"
   * );
   */
-struct MGTConfig : SAPHostConfig {
+struct MGTConfig : SAPConfig {
   mixin(SAPConfigTemplate!HTMRepoConfig);
 
   override bool initialize(Json[string] initData = null) {

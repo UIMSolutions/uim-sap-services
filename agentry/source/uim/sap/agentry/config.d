@@ -6,7 +6,7 @@ mixin(ShowModule!());
 
 @safe:
 
-class AgentryConfig : SAPHostConfig {
+class AgentryConfig : SAPConfig {
   mixin(SAPConfigTemplate!AgentryConfig);
 
   override bool initialize(Json[string] initData = null) {

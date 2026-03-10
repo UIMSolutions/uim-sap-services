@@ -5,7 +5,7 @@ import std.string : startsWith;
 import uim.sap.cia.exceptions;
 
 /// Configuration for the Cloud Integration Automation service
-struct CIAConfig : SAPHostConfig {
+struct CIAConfig : SAPConfig {
   mixin(SAPConfigTemplate!CIAConfig);
 
   override bool initialize(Json[string] initData = null) {

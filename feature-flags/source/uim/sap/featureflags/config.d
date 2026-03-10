@@ -6,7 +6,7 @@ mixin(ShowModule!());
 
 @safe:
 
-class FFLConfig : SAPHostConfig {
+class FFLConfig : SAPConfig {
   mixin(SAPConfigTemplate!HTMRepoConfig);
 
   override bool initialize(Json[string] initData = null) {

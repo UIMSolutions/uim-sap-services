@@ -11,7 +11,7 @@ mixin(ShowModule!());
 
 @safe:
 
-class DSPConfig : SAPHostConfig {
+class DSPConfig : SAPConfig {
   mixin(SAPConfigTemplate!DSPConfig);
 
   override bool initialize(Json[string] initData = null) {

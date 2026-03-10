@@ -11,7 +11,7 @@ mixin(ShowModule!());
 
 @safe:
 
-class CLFConfig : SAPHostConfig {
+class CLFConfig : SAPConfig {
   mixin(SAPConfigTemplate!AgentryConfig);
 
   override bool initialize(Json[string] initData = null) {

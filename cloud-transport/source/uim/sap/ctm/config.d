@@ -4,7 +4,7 @@ import std.string : startsWith;
 
 import uim.sap.ctm.exceptions;
 
-struct CTMConfig : SAPHostConfig {
+struct CTMConfig : SAPConfig {
   mixin(SAPConfigTemplate!HTMRepoConfig);
 
   override bool initialize(Json[string] initData = null) {

@@ -7,7 +7,7 @@ module uim.sap.har.config;
 
 import uim.sap.har;
 
-struct HARConfig : SAPHostConfig {
+struct HARConfig : SAPConfig {
   mixin(SAPConfigTemplate!HARConfig);
 
   override bool initialize(Json[string] initData = null) {

@@ -4,7 +4,7 @@ import std.string : startsWith, toLower;
 
 import uim.sap.auditlog.exceptions;
 
-class AuditLogConfig : SAPHostConfig {
+class AuditLogConfig : SAPConfig {
   mixin(SAPConfigTemplate!AgentryConfig);
 
   override bool initialize(Json[string] initData = null) {

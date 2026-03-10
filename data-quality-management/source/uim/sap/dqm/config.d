@@ -6,7 +6,7 @@ mixin(ShowModule!());
 
 @safe:
 
-struct DQMConfig : SAPHostConfig {
+struct DQMConfig : SAPConfig {
   mixin(SAPConfigTemplate!DQMConfig);
 
   override bool initialize(Json[string] initData = null) {
