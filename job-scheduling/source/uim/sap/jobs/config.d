@@ -14,7 +14,7 @@ struct JobSchedulingConfig : SAPConfig {
     ushort port = 8101;
     string basePath = "/api/job-scheduling";
 
-    string serviceName = "uim-sap-job-scheduling";
+    string serviceName = "uim-job-scheduling";
     string serviceVersion = "1.0.0";
 
     int schedulerTickMs = 1000;

@@ -15,7 +15,7 @@ void main() {
   config.host = envOr("MDG_HOST", "0.0.0.0");
   config.port = readPort(envOr("MDG_PORT", "8087"), 8087);
   config.basePath = envOr("MDG_BASE_PATH", "/api/mdg");
-  config.serviceName = envOr("MDG_SERVICE_NAME", "uim-sap-mdg");
+  config.serviceName = envOr("MDG_SERVICE_NAME", "uim-mdg");
   config.serviceVersion = envOr("MDG_SERVICE_VERSION", UIM_MDG_VERSION);
   config.defaultApprover = envOr("MDG_DEFAULT_APPROVER", "mdg-approver");
 

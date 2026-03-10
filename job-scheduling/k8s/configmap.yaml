@@ -8,6 +8,6 @@ data:
   JOBS_HOST: "0.0.0.0"
   JOBS_PORT: "8101"
   JOBS_BASE_PATH: "/api/job-scheduling"
-  JOBS_SERVICE_NAME: "uim-sap-job-scheduling"
+  JOBS_SERVICE_NAME: "uim-job-scheduling"
   JOBS_SERVICE_VERSION: "1.0.0"
   JOBS_SCHEDULER_TICK_MS: "1000"

@@ -11,7 +11,7 @@ struct MDGConfig : SAPConfig {
   ushort port = 8087;
   string basePath = "/api/mdg";
 
-  string serviceName = "uim-sap-mdg";
+  string serviceName = "uim-mdg";
   string serviceVersion = "1.0.0";
   string defaultApprover = "mdg-approver";
 
