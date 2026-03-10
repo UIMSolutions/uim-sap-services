@@ -8,7 +8,7 @@ data:
   DMSI_HOST: "0.0.0.0"
   DMSI_PORT: "8091"
   DMSI_BASE_PATH: "/api/docmgmt-integration"
-  DMSI_SERVICE_NAME: "uim-sap-docmgmt-integration"
+  DMSI_SERVICE_NAME: "uim-docmgmt-integration"
   DMSI_SERVICE_VERSION: "1.0.0"
   DMSI_MAX_UPLOAD_SIZE_MB: "100"
   DMSI_DEFAULT_REPOSITORY: "internal"

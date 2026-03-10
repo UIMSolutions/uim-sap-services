@@ -21,7 +21,7 @@ struct DSTConfig : SAPConfig {
     ushort port = 8104;
     string basePath = "/api/destination";
 
-    string serviceName    = "uim-sap-dst";
+    string serviceName    = "uim-dst";
     string serviceVersion = "1.0.0";
     string runtime        = "cloud-foundry";
 

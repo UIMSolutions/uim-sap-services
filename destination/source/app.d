@@ -11,7 +11,7 @@ void main() {
   config.host = envOr("DST_HOST", "0.0.0.0");
   config.port = readPort(envOr("DST_PORT", "8104"), 8104);
   config.basePath = envOr("DST_BASE_PATH", "/api/destination");
-  config.serviceName = envOr("DST_SERVICE_NAME", "uim-sap-dst");
+  config.serviceName = envOr("DST_SERVICE_NAME", "uim-dst");
   config.serviceVersion = envOr("DST_SERVICE_VERSION", UIM_DST_VERSION);
   config.runtime = envOr("DST_RUNTIME", "cloud-foundry");
 

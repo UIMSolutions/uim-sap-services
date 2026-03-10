@@ -19,7 +19,7 @@ class DocMgmtIntegrationConfig : SAPConfig {
     string basePath = "/api/docmgmt-integration";
 
     /// Service metadata
-    string serviceName = "uim-sap-docmgmt-integration";
+    string serviceName = "uim-docmgmt-integration";
     string serviceVersion = "1.0.0";
 
     /// Upload limits

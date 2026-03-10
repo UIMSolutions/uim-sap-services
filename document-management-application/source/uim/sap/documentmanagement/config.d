@@ -20,7 +20,7 @@ class DMAConfig : SAPConfig {
     string basePath = "/api/docmgmt";
 
     /// Service metadata
-    string serviceName = "uim-sap-document-management";
+    string serviceName = "uim-document-management";
     string serviceVersion = "1.0.0";
 
     /// Upload limits

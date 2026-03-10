@@ -14,7 +14,7 @@ version (unittest) {
     config.host = envOr("DMS_HOST", "0.0.0.0");
     config.port = readPort(envOr("DMS_PORT", "8090"), 8090);
     config.basePath = envOr("DMS_BASE_PATH", "/api/docmgmt");
-    config.serviceName = envOr("DMS_SERVICE_NAME", "uim-sap-document-management");
+    config.serviceName = envOr("DMS_SERVICE_NAME", "uim-document-management");
     config.serviceVersion = envOr("DMS_SERVICE_VERSION", UIM_DMAUMENT_MANAGEMENT_VERSION);
     config.maxUploadSizeMB = readInt(envOr("DMS_MAX_UPLOAD_SIZE_MB", "100"), 100);
     config.defaultRepository = envOr("DMS_DEFAULT_REPOSITORY", "internal");

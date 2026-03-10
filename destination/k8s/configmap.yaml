@@ -6,6 +6,6 @@ data:
   DST_HOST: "0.0.0.0"
   DST_PORT: "8104"
   DST_BASE_PATH: "/api/destination"
-  DST_SERVICE_NAME: "uim-sap-dst"
+  DST_SERVICE_NAME: "uim-dst"
   DST_SERVICE_VERSION: "1.0.0"
   DST_RUNTIME: "cloud-foundry"

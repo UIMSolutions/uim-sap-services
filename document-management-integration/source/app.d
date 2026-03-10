@@ -14,7 +14,7 @@ version (unittest) {
     config.host = envOr("DMSI_HOST", "0.0.0.0");
     config.port = readPort(envOr("DMSI_PORT", "8091"), 8091);
     config.basePath = envOr("DMSI_BASE_PATH", "/api/docmgmt-integration");
-    config.serviceName = envOr("DMSI_SERVICE_NAME", "uim-sap-docmgmt-integration");
+    config.serviceName = envOr("DMSI_SERVICE_NAME", "uim-docmgmt-integration");
     config.serviceVersion = envOr("DMSI_SERVICE_VERSION", UIM_DOCMGMT_INTEGRATION_VERSION);
     config.maxUploadSizeMB = readInt(envOr("DMSI_MAX_UPLOAD_SIZE_MB", "100"), 100);
     config.defaultRepository = envOr("DMSI_DEFAULT_REPOSITORY", "internal");
