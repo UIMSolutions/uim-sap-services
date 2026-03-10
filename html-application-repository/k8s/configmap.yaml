@@ -8,7 +8,7 @@ data:
   HTM_REPO_HOST: "0.0.0.0"
   HTM_REPO_PORT: "8094"
   HTM_REPO_BASE_PATH: "/api/html5-repo"
-  HTM_REPO_SERVICE_NAME: "uim-sap-html5-app-repo"
+  HTM_REPO_SERVICE_NAME: "uim-html5-app-repo"
   HTM_REPO_SERVICE_VERSION: "1.0.0"
   HTM_REPO_DATA_DIR: "/var/lib/uim-html5-repo"
   HTM_REPO_CACHE_TTL_SECONDS: "120"

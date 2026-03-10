@@ -16,7 +16,7 @@ HANA database client library for D language, built with uim-framework and vibe.d
 For dub.sdl:
 
 ```sdl
-dependency "uim-sap-hanadb" version="~>1.0.0"
+dependency "uim-hanadb" version="~>1.0.0"
 ```
 
 For dub.json:
@@ -24,7 +24,7 @@ For dub.json:
 ```json
 {
   "dependencies": {
-    "uim-sap-hanadb": "~>1.0.0"
+    "uim-hanadb": "~>1.0.0"
   }
 }
 ```

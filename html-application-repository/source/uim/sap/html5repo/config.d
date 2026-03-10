@@ -22,7 +22,7 @@ struct HARConfig : SAPConfig {
     ushort port = 8094;
     string basePath = "/api/html5-repo";
 
-    string serviceName = "uim-sap-html5-app-repo";
+    string serviceName = "uim-html5-app-repo";
     string serviceVersion = "1.0.0";
 
     string dataDirectory = "/tmp/uim-html5-repo-data";

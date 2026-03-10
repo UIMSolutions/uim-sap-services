@@ -8,5 +8,5 @@ data:
   EVM_HOST: "0.0.0.0"
   EVM_PORT: "8092"
   EVM_BASE_PATH: "/api/em"
-  EVM_SERVICE_NAME: "uim-sap-em"
+  EVM_SERVICE_NAME: "uim-em"
   EVM_SERVICE_VERSION: "1.0.0"

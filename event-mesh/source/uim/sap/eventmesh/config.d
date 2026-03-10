@@ -10,7 +10,7 @@ class EVMConfig : SAPConfig {
     string host = "0.0.0.0";
     ushort port = 8092;
     string basePath = "/api/em";
-    string serviceName = "uim-sap-em";
+    string serviceName = "uim-em";
     string serviceVersion = "1.0.0";
     bool requireAuthToken = false;
     string authToken;

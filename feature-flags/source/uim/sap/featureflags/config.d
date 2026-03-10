@@ -19,7 +19,7 @@ class FFLConfig : SAPConfig {
   }
     ushort port = 8094;
     string basePath = "/api/ff";
-    string serviceName = "uim-sap-ff";
+    string serviceName = "uim-ff";
     string serviceVersion = "1.0.0";
     bool requireAuthToken = false;
     string authToken;

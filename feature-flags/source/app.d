@@ -13,7 +13,7 @@ version (unittest) {
     config.host = envOr("FFL_HOST", "0.0.0.0");
     config.port = readPort(envOr("FFL_PORT", "8094"), 8094);
     config.basePath = envOr("FFL_BASE_PATH", "/api/ff");
-    config.serviceName = envOr("FFL_SERVICE_NAME", "uim-sap-ff");
+    config.serviceName = envOr("FFL_SERVICE_NAME", "uim-ff");
     config.serviceVersion = envOr("FFL_SERVICE_VERSION", UIM_FFL_VERSION);
 
     auto token = envOr("FFL_AUTH_TOKEN", "");

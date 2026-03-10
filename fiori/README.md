@@ -36,14 +36,14 @@ Add to your `dub.json`:
 ```json
 {
     "dependencies": {
-        "uim-sap-fiori": "~>1.0.0"
+        "uim-fiori": "~>1.0.0"
     }
 }
 ```
 
 Or to your `dub.sdl`:
 ```sdl
-dependency "uim-sap-fiori" version="~>1.0.0"
+dependency "uim-fiori" version="~>1.0.0"
 ```
 
 ## Quick Start

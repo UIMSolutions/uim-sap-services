@@ -16,7 +16,7 @@ void main() {
   config.host = envOr("HTM_REPO_HOST", "0.0.0.0");
   config.port = readPort(envOr("HTM_REPO_PORT", "8094"), 8094);
   config.basePath = envOr("HTM_REPO_BASE_PATH", "/api/html5-repo");
-  config.serviceName = envOr("HTM_REPO_SERVICE_NAME", "uim-sap-html5-app-repo");
+  config.serviceName = envOr("HTM_REPO_SERVICE_NAME", "uim-html5-app-repo");
   config.serviceVersion = envOr("HTM_REPO_SERVICE_VERSION", UIM_HTM_REPO_VERSION);
   config.dataDirectory = envOr("HTM_REPO_DATA_DIR", "/tmp/uim-html5-repo-data");
   config.defaultTenant = envOr("HTM_REPO_DEFAULT_TENANT", "provider");
