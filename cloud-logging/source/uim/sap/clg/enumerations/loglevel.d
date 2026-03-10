@@ -1,3 +1,8 @@
+/****************************************************************************************************************
+* Copyright: © 2018-2026 Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*) 
+* License: Subject to the terms of the Apache 2.0 license, as written in the included LICENSE.txt file. 
+* Authors: Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*)
+*****************************************************************************************************************/
 module uim.sap.clg.enumerations.loglevel;
 
 import uim.sap.clg;
@@ -8,10 +13,10 @@ mixin(ShowModule!());
 
 // Enumeration for log levels
 enum CLGLogLevel {
-    TRACE,
-    DEBUG,
-    INFO,
-    WARN,
-    ERROR,
-    FATAL
+  TRACE,
+  DEBUG,
+  INFO,
+  WARN,
+  ERROR,
+  FATAL
 }
