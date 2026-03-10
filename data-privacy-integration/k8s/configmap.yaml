@@ -8,6 +8,6 @@ data:
   DPI_HOST: "0.0.0.0"
   DPI_PORT: "8093"
   DPI_BASE_PATH: "/api/dpi"
-  DPI_SERVICE_NAME: "uim-sap-dpi"
+  DPI_SERVICE_NAME: "uim-dpi"
   DPI_SERVICE_VERSION: "1.0.0"
   DPI_DEFAULT_RETENTION_DAYS: "365"

@@ -7,7 +7,7 @@ void main() {
   config.host = envOr("DQM_HOST", "0.0.0.0");
   config.port = readPort(envOr("DQM_PORT", "8091"), 8091);
   config.basePath = envOr("DQM_BASE_PATH", "/api/dqm");
-  config.serviceName = envOr("DQM_SERVICE_NAME", "uim-sap-dqm");
+  config.serviceName = envOr("DQM_SERVICE_NAME", "uim-dqm");
   config.serviceVersion = envOr("DQM_SERVICE_VERSION", UIM_DQM_VERSION);
   config.defaultCountry = envOr("DQM_DEFAULT_COUNTRY", "DE");
 

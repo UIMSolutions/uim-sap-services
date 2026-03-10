@@ -26,7 +26,7 @@ class DSPConfig : SAPConfig {
   ushort port = 8098;
   string basePath = "/api/datasphere";
 
-  string serviceName = "uim-sap-datasphere";
+  string serviceName = "uim-datasphere";
   string serviceVersion = "1.0.0";
   int defaultSpaceDiskGb = 50;
   int defaultSpaceMemoryGb = 16;

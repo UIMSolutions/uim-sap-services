@@ -21,7 +21,7 @@ struct DQMConfig : SAPConfig {
     ushort port = 8091;
     string basePath = "/api/dqm";
 
-    string serviceName = "uim-sap-dqm";
+    string serviceName = "uim-dqm";
     string serviceVersion = "1.0.0";
     string defaultCountry = "DE";
 

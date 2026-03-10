@@ -9,7 +9,7 @@ struct DPIConfig : SAPConfig {
     ushort port = 8093;
     string basePath = "/api/dpi";
 
-    string serviceName = "uim-sap-dpi";
+    string serviceName = "uim-dpi";
     string serviceVersion = "1.0.0";
     int defaultRetentionDays = 365;
 
