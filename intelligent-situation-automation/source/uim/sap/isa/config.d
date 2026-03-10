@@ -12,7 +12,7 @@ mixin(ShowModule!());
 
 class ISAConfig : SAPConfig {
   mixin(SAPConfigTemplate!ISAConfig);
-  
+
   string host = "0.0.0.0";
   ushort port = 8088;
   string basePath = "/api/situation-automation";
@@ -28,6 +28,8 @@ class ISAConfig : SAPConfig {
   string[string] customHeaders;
 
   void validate() const {
+    super.validate();
+
     if (host.length == 0) {
       throw new ISAConfigurationException("Host cannot be empty");
     }

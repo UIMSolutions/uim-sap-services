@@ -21,6 +21,8 @@ struct MDGConfig : SAPConfig {
   string[string] customHeaders;
 
   void validate() const {
+    super.validate();
+
     if (host.length == 0) {
       throw new MDGConfigurationException("Host cannot be empty");
     }

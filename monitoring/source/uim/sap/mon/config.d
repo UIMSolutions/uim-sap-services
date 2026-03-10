@@ -25,6 +25,8 @@ class MONConfig : SAPConfig {
   string[string] customHeaders;
 
   void validate() const {
+    super.validate();
+
     if (host.length == 0) {
       throw new MONConfigurationException("Host cannot be empty");
     }

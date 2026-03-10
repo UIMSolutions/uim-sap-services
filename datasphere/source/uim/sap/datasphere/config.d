@@ -37,6 +37,8 @@ class DSPConfig : SAPConfig {
   string[string] customHeaders;
 
   void validate() const {
+    super.validate();
+
     if (host.length == 0)
       throw new DSPConfigurationException("Host cannot be empty");
     if (port == 0)

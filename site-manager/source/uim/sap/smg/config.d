@@ -33,41 +33,88 @@ struct SMGConfig : SAPConfig {
   }
 
   protected string _host;
-  string host() const { return _host; }
-  void host(string value) { _host = value; }
+  string host() const {
+    return _host;
+  }
+
+  void host(string value) {
+    _host = value;
+  }
 
   protected ushort _port;
-  ushort port() const { return _port; }
-  void port(ushort value) { _port = value; }
+  ushort port() const {
+    return _port;
+  }
+
+  void port(ushort value) {
+    _port = value;
+  }
 
   protected string _basePath;
-  string basePath() const { return _basePath; }
-  void basePath(string value) { _basePath = value; }
+  string basePath() const {
+    return _basePath;
+  }
+
+  void basePath(string value) {
+    _basePath = value;
+  }
 
   protected string _serviceName = "uim-smg";
-  string serviceName() const { return _serviceName; }
-  void serviceName(string value) { _serviceName = value; }
+  string serviceName() const {
+    return _serviceName;
+  }
+
+  void serviceName(string value) {
+    _serviceName = value;
+  }
 
   protected string _serviceVersion = "1.0.0";
-  string serviceVersion() const { return _serviceVersion; }
-  void serviceVersion(string value) { _serviceVersion = value; }
+  string serviceVersion() const {
+    return _serviceVersion;
+  }
+
+  void serviceVersion(string value) {
+    _serviceVersion = value;
+  }
 
   protected bool _requireAuthToken = false;
-  bool requireAuthToken() const { return _requireAuthToken; }
-  void requireAuthToken(bool value) { _requireAuthToken = value; }
+  bool requireAuthToken() const {
+    return _requireAuthToken;
+  }
+
+  void requireAuthToken(bool value) {
+    _requireAuthToken = value;
+  }
 
   protected string _authToken;
-  string authToken() const { return _authToken; }
-  void authToken(string value) { _authToken = value; }
+  string authToken() const {
+    return _authToken;
+  }
+
+  void authToken(string value) {
+    _authToken = value;
+  }
 
   protected string[string] _customHeaders;
-  string[string] customHeaders() const { return _customHeaders; }
-  void customHeaders(string[string] value) { _customHeaders = value; }
+  string[string] customHeaders() const {
+    return _customHeaders;
+  }
 
-  string customHeader(string key) const { return _customHeaders[key]; }
-  void customHeader(string key, string value) { _customHeaders[key] = value; }
+  void customHeaders(string[string] value) {
+    _customHeaders = value;
+  }
+
+  string customHeader(string key) const {
+    return _customHeaders[key];
+  }
+
+  void customHeader(string key, string value) {
+    _customHeaders[key] = value;
+  }
 
   void validate() const {
+    super.validate();
+
     if (host.length == 0)
       throw new SMGConfigurationException("Host cannot be empty");
     if (port == 0)

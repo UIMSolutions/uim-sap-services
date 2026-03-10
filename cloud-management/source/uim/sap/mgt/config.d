@@ -43,6 +43,7 @@ struct MGTConfig : SAPConfig {
     host(initData.getString("host", "0.0.0.0"));
     return true;
   }
+
   ushort port = 8088;
   string basePath = "/api/mgt";
 
@@ -65,6 +66,8 @@ struct MGTConfig : SAPConfig {
   string[string] customHeaders;
 
   void validate() const {
+    super.validate();
+
     if (host.length == 0) {
       throw new MGTConfigurationException("Host cannot be empty");
     }

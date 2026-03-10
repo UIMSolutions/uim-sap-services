@@ -6,7 +6,7 @@ import uim.sap.sdi.exceptions;
 
 class SDIConfig : SAPConfig {
   mixin(SAPConfigTemplate!SDIConfig);
-  
+
   string host = "0.0.0.0";
   ushort port = 8096;
   string basePath = "/api/sitedirectory";
@@ -20,6 +20,8 @@ class SDIConfig : SAPConfig {
   string[string] customHeaders;
 
   void validate() const {
+    super.validate();
+
     if (host.length == 0)
       throw new SDIConfigurationException("Host cannot be empty");
     if (port == 0)

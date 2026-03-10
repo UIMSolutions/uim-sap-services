@@ -17,6 +17,7 @@ class AuditLogConfig : SAPConfig {
     host(initData.getString("host", "0.0.0.0"));
     return true;
   }
+
   ushort port = 8090;
   string basePath = "/api/auditlog";
 
@@ -33,6 +34,8 @@ class AuditLogConfig : SAPConfig {
   string[string] customHeaders;
 
   void validate() const {
+    super.validate();
+
     if (host.length == 0) {
       throw new AuditLogConfigurationException("Host cannot be empty");
     }

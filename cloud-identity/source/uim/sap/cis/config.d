@@ -52,6 +52,8 @@ struct CISConfig : SAPConfig {
   string[string] customHeaders;
 
   void validate() const {
+    super.validate();
+
     if (host.length == 0) {
       throw new CISConfigurationException("Host cannot be empty");
     }

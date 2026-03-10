@@ -25,28 +25,29 @@ class CLFConfig : SAPConfig {
 
     return true;
   }
-  
-    ushort port = 8082;
-    string basePath = "/api/cf";
 
+  ushort port = 8082;
+  string basePath = "/api/cf";
 
-    bool requireAuthToken = false;
-    string authToken;
+  bool requireAuthToken = false;
+  string authToken;
 
-    string[string] customHeaders;
+  string[string] customHeaders;
 
-    void validate() const {
-        if (host.length == 0) {
-            throw new CLFConfigurationException("Host cannot be empty");
-        }
-        if (port == 0) {
-            throw new CLFConfigurationException("Port must be greater than zero");
-        }
-        if (basePath.length == 0 || !basePath.startsWith("/")) {
-            throw new CLFConfigurationException("Base path must start with '/'");
-        }
-        if (requireAuthToken && authToken.length == 0) {
-            throw new CLFConfigurationException("Auth token required when token auth is enabled");
-        }
+  void validate() const {
+    super.validate();
+
+    if (host.length == 0) {
+      throw new CLFConfigurationException("Host cannot be empty");
     }
+    if (port == 0) {
+      throw new CLFConfigurationException("Port must be greater than zero");
+    }
+    if (basePath.length == 0 || !basePath.startsWith("/")) {
+      throw new CLFConfigurationException("Base path must start with '/'");
+    }
+    if (requireAuthToken && authToken.length == 0) {
+      throw new CLFConfigurationException("Auth token required when token auth is enabled");
+    }
+  }
 }

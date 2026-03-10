@@ -13,7 +13,7 @@ mixin(ShowModule!());
 
 class TKCConfig : SAPConfig {
   mixin(SAPConfigTemplate!TKCConfig);
-  
+
   string host = "0.0.0.0";
   ushort port = 8096;
   string basePath = "/api/task-center";
@@ -34,6 +34,8 @@ class TKCConfig : SAPConfig {
   }
 
   void validate() const {
+    super.validate();
+
     if (host.length == 0)
       throw new TKCConfigurationException("Host cannot be empty");
     if (port == 0)

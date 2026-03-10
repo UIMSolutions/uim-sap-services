@@ -5,25 +5,33 @@ import std.string : startsWith;
 import uim.sap.dpi.exceptions;
 
 struct DPIConfig : SAPConfig {
-    string host = "0.0.0.0";
-    ushort port = 8093;
-    string basePath = "/api/dpi";
+  string host = "0.0.0.0";
+  ushort port = 8093;
+  string basePath = "/api/dpi";
 
-    string serviceName = "uim-dpi";
-    string serviceVersion = "1.0.0";
-    int defaultRetentionDays = 365;
+  string serviceName = "uim-dpi";
+  string serviceVersion = "1.0.0";
+  int defaultRetentionDays = 365;
 
-    bool requireAuthToken = false;
-    string authToken;
+  bool requireAuthToken = false;
+  string authToken;
 
-    string[string] customHeaders;
+  string[string] customHeaders;
 
-    void validate() const {
-        if (host.length == 0) throw new DPIConfigurationException("Host cannot be empty");
-        if (port == 0) throw new DPIConfigurationException("Port must be greater than zero");
-        if (basePath.length == 0 || !basePath.startsWith("/")) throw new DPIConfigurationException("Base path must start with '/'");
-        if (serviceName.length == 0) throw new DPIConfigurationException("Service name cannot be empty");
-        if (defaultRetentionDays <= 0) throw new DPIConfigurationException("Default retention days must be greater than zero");
-        if (requireAuthToken && authToken.length == 0) throw new DPIConfigurationException("Auth token required when token auth is enabled");
-    }
+  void validate() const {
+    super.validate();
+
+    if (host.length == 0)
+      throw new DPIConfigurationException("Host cannot be empty");
+    if (port == 0)
+      throw new DPIConfigurationException("Port must be greater than zero");
+    if (basePath.length == 0 || !basePath.startsWith("/"))
+      throw new DPIConfigurationException("Base path must start with '/'");
+    if (serviceName.length == 0)
+      throw new DPIConfigurationException("Service name cannot be empty");
+    if (defaultRetentionDays <= 0)
+      throw new DPIConfigurationException("Default retention days must be greater than zero");
+    if (requireAuthToken && authToken.length == 0)
+      throw new DPIConfigurationException("Auth token required when token auth is enabled");
+  }
 }

@@ -25,15 +25,23 @@ struct CDCConfig : SAPConfig {
   }
 
   void validate() const {
-    if (host.length == 0) throw new CDCConfigurationException("Host cannot be empty");
-    if (port == 0) throw new CDCConfigurationException("Port must be greater than zero");
+    super.validate();
+
+    if (host.length == 0)
+      throw new CDCConfigurationException("Host cannot be empty");
+    if (port == 0)
+      throw new CDCConfigurationException("Port must be greater than zero");
     if (basePath.length == 0 || !basePath.startsWith("/")) {
       throw new CDCConfigurationException("Base path must start with '/'");
     }
-    if (serviceName.length == 0) throw new CDCConfigurationException("Service name cannot be empty");
-    if (dataDirectory.length == 0) throw new CDCConfigurationException("Data directory cannot be empty");
-    if (cacheFileName.length == 0) throw new CDCConfigurationException("Cache file name cannot be empty");
-    if (defaultRegion.length == 0) throw new CDCConfigurationException("Default region cannot be empty");
+    if (serviceName.length == 0)
+      throw new CDCConfigurationException("Service name cannot be empty");
+    if (dataDirectory.length == 0)
+      throw new CDCConfigurationException("Data directory cannot be empty");
+    if (cacheFileName.length == 0)
+      throw new CDCConfigurationException("Cache file name cannot be empty");
+    if (defaultRegion.length == 0)
+      throw new CDCConfigurationException("Default region cannot be empty");
     if (requireAuthToken && authToken.length == 0) {
       throw new CDCConfigurationException("Auth token required when token auth is enabled");
     }

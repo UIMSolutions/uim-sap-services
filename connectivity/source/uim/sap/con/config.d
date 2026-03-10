@@ -16,36 +16,38 @@ struct CONConfig : SAPConfig {
     return true;
   }
 
-    ushort port = 8085;
-    string basePath = "/api/con";
+  ushort port = 8085;
+  string basePath = "/api/con";
 
-    string serviceName = "uim-con";
-    string serviceVersion = "1.0.0";
-    string connectorLocationId = "default-location";
+  string serviceName = "uim-con";
+  string serviceVersion = "1.0.0";
+  string connectorLocationId = "default-location";
 
-    bool requireAuthToken = false;
-    string authToken;
+  bool requireAuthToken = false;
+  string authToken;
 
-    string[string] customHeaders;
+  string[string] customHeaders;
 
-    void validate() const {
-        if (host.length == 0) {
-            throw new CONConfigurationException("Host cannot be empty");
-        }
-        if (port == 0) {
-            throw new CONConfigurationException("Port must be greater than zero");
-        }
-        if (basePath.length == 0 || !basePath.startsWith("/")) {
-            throw new CONConfigurationException("Base path must start with '/'");
-        }
-        if (serviceName.length == 0) {
-            throw new CONConfigurationException("Service name cannot be empty");
-        }
-        if (connectorLocationId.length == 0) {
-            throw new CONConfigurationException("Connector location ID cannot be empty");
-        }
-        if (requireAuthToken && authToken.length == 0) {
-            throw new CONConfigurationException("Auth token required when token auth is enabled");
-        }
+  void validate() const {
+    super.validate();
+
+    if (host.length == 0) {
+      throw new CONConfigurationException("Host cannot be empty");
     }
+    if (port == 0) {
+      throw new CONConfigurationException("Port must be greater than zero");
+    }
+    if (basePath.length == 0 || !basePath.startsWith("/")) {
+      throw new CONConfigurationException("Base path must start with '/'");
+    }
+    if (serviceName.length == 0) {
+      throw new CONConfigurationException("Service name cannot be empty");
+    }
+    if (connectorLocationId.length == 0) {
+      throw new CONConfigurationException("Connector location ID cannot be empty");
+    }
+    if (requireAuthToken && authToken.length == 0) {
+      throw new CONConfigurationException("Auth token required when token auth is enabled");
+    }
+  }
 }

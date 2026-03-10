@@ -35,6 +35,8 @@ class ARTRuntimeConfig : SAPConfig {
   string[string] customHeaders;
 
   void validate() const {
+    super.validate();
+
     if (host.length == 0) {
       throw new ARTRuntimeConfigurationException("Host cannot be empty");
     }
