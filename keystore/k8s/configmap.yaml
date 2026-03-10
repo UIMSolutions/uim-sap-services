@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: uim-sap-kst-config
+  labels:
+    app: uim-sap-kst
+data:
+  KST_HOST: "0.0.0.0"
+  KST_PORT: "8087"
+  KST_BASE_PATH: "/api/kst"
+  KST_SERVICE_NAME: "uim-kst"
+  KST_SERVICE_VERSION: "1.0.0"
+  KST_MAX_KEYSTORES: "0"
+  KST_ENABLE_CLIENT_CERT_AUTH: "true"
