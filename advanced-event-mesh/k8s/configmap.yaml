@@ -8,6 +8,6 @@ data:
   AEM_HOST: "0.0.0.0"
   AEM_PORT: "8088"
   AEM_BASE_PATH: "/api/aem"
-  AEM_SERVICE_NAME: "uim-sap-aem"
+  AEM_SERVICE_NAME: "uim-aem"
   AEM_SERVICE_VERSION: "1.0.0"
   AEM_DEFAULT_REGION: "eu10"

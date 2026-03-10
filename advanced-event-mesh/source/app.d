@@ -23,7 +23,7 @@ void main() {
     config.host = envOr("AEM_HOST", "0.0.0.0");
     config.port = readPort(envOr("AEM_PORT", "8088"), 8088);
     config.basePath = envOr("AEM_BASE_PATH", "/api/aem");
-    config.serviceName = envOr("AEM_SERVICE_NAME", "uim-sap-aem");
+    config.serviceName = envOr("AEM_SERVICE_NAME", "uim-aem");
     config.serviceVersion = envOr("AEM_SERVICE_VERSION", UIM_AEM_VERSION);
     config.defaultMeshRegion = envOr("AEM_DEFAULT_REGION", "eu10");
 

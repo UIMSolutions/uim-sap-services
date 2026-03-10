@@ -14,14 +14,16 @@ class AgentryConfig : SAPConfig {
       return false;
     }
 
+    serviceName(initData.getString("serviceName", "uim-agentry"));
+    serviceVersion(initData.getString("serviceVersion", "1.0.0"));
     host(initData.getString("host", "0.0.0.0"));
+
+    return true;
   }
 
     ushort port = 8089;
     string basePath = "/api/agentry";
 
-    string serviceName = "uim-sap-agentry";
-    string serviceVersion = "1.0.0";
     string defaultBackendSystem = "s4-primary";
 
     bool requireAuthToken = false;

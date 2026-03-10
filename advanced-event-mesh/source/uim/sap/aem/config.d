@@ -19,14 +19,13 @@ class AEMConfig : SAPConfig {
     }
 
     host(initData.getString("host", "0.0.0.0"));
+    serviceName(initData.getString("serviceName", "uim-aem"));
+    serviceVersion(initData.getString("serviceVersion", "1.0.0"));
     return true;
   }
 
   ushort port = 8088;
   string basePath = "/api/aem";
-
-  string serviceName = "uim-sap-aem";
-  string serviceVersion = "1.0.0";
   string defaultMeshRegion = "eu10";
 
   bool requireAuthToken = false;
@@ -35,6 +34,8 @@ class AEMConfig : SAPConfig {
   string[string] customHeaders;
 
   void validate() const {
+    super.validate();
+
     if (host.length == 0) {
       throw new AEMConfigurationException("Host cannot be empty");
     }
@@ -47,6 +48,9 @@ class AEMConfig : SAPConfig {
     if (serviceName.length == 0) {
       throw new AEMConfigurationException("Service name cannot be empty");
     }
+    if (serviceVersion.length == 0) {
+      throw new AEMConfigurationException("Service version cannot be empty");
+    } 
     if (defaultMeshRegion.length == 0) {
       throw new AEMConfigurationException("Default mesh region cannot be empty");
     }

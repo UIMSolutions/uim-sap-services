@@ -8,6 +8,6 @@ data:
   AGENTRY_HOST: "0.0.0.0"
   AGENTRY_PORT: "8089"
   AGENTRY_BASE_PATH: "/api/agentry"
-  AGENTRY_SERVICE_NAME: "uim-sap-agentry"
+  AGENTRY_SERVICE_NAME: "uim-agentry"
   AGENTRY_SERVICE_VERSION: "1.0.0"
   AGENTRY_DEFAULT_BACKEND: "s4-primary"

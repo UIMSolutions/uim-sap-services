@@ -23,7 +23,7 @@ This package provides a lightweight ABAP-like runtime host where you can:
 Add this to your `dub.sdl`:
 
 ```sdl
-dependency "uim-sap-art" version="~>1.0.0"
+dependency "uim-art" version="~>1.0.0"
 ```
 
 ## Quick Start

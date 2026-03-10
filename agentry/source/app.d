@@ -18,7 +18,7 @@ version (unittest) {
     config.host = envOr("AGENTRY_HOST", "0.0.0.0");
     config.port = readPort(envOr("AGENTRY_PORT", "8089"), 8089);
     config.basePath = envOr("AGENTRY_BASE_PATH", "/api/agentry");
-    config.serviceName = envOr("AGENTRY_SERVICE_NAME", "uim-sap-agentry");
+    config.serviceName = envOr("AGENTRY_SERVICE_NAME", "uim-agentry");
     config.serviceVersion = envOr("AGENTRY_SERVICE_VERSION", UIM_AGENTRY_VERSION);
     config.defaultBackendSystem = envOr("AGENTRY_DEFAULT_BACKEND", "s4-primary");
 
