@@ -13,12 +13,14 @@ class ATPConfig : SAPConfig {
     }
 
     host(initData.getString("host", "0.0.0.0"));
+    serviceName(initData.getString("serviceName", "uim-atp"));
+    serviceVersion(initData.getString("serviceVersion", "1.0.0"));
+
+    return true;
   }
     ushort port = 8097;
     string basePath = "/api/automation-pilot";
 
-    string serviceName = "uim-sap-atp";
-    string serviceVersion = "1.0.0";
     string aiProvider = "mock-genai";
 
     bool requireAuthToken = false;

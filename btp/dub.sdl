@@ -6,7 +6,7 @@ license "Apache-2.0"
 // Target
 
 targetType "library"
-targetName "uim-sap-btp"
+targetName "uim-btp"
 
 // Dependencies
 

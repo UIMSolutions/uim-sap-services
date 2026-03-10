@@ -12,13 +12,13 @@ class AuditLogConfig : SAPConfig {
       return false;
     }
 
+    serviceName(initData.getString("serviceName", "uim-audit-log"));
+    serviceVersion(initData.getString("serviceVersion", "1.0.0"));
     host(initData.getString("host", "0.0.0.0"));
+    return true;
   }
   ushort port = 8090;
   string basePath = "/api/auditlog";
-
-  string serviceName = "uim-sap-audit-log";
-  string serviceVersion = "1.0.0";
 
   int defaultRetentionDays = 90;
   string defaultPlan = "default";

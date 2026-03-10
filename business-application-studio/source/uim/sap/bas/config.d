@@ -11,7 +11,7 @@ struct BASConfig : SAPConfig {
     ushort port = 8088;
     string basePath = "/api/business-application-studio";
 
-    string serviceName = "uim-sap-bas";
+    string serviceName = "uim-bas";
     string serviceVersion = "1.0.0";
     string defaultRegion = "eu10";
 

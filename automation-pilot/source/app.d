@@ -15,7 +15,7 @@ void main() {
   config.host = envOr("ATP_HOST", "0.0.0.0");
   config.port = readPort(envOr("ATP_PORT", "8097"), 8097);
   config.basePath = envOr("ATP_BASE_PATH", "/api/automation-pilot");
-  config.serviceName = envOr("ATP_SERVICE_NAME", "uim-sap-atp");
+  config.serviceName = envOr("ATP_SERVICE_NAME", "uim-atp");
   config.serviceVersion = envOr("ATP_SERVICE_VERSION", UIM_ATP_VERSION);
   config.aiProvider = envOr("ATP_AI_PROVIDER", "mock-genai");
 
