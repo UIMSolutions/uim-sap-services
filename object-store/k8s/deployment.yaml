@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uim-sap-obs
+  labels:
+    app: uim-sap-obs
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: uim-sap-obs
+  template:
+    metadata:
+      labels:
+        app: uim-sap-obs
+    spec:
+      containers:
+      - name: uim-sap-obs
+        image: ghcr.io/uimsolutions/uim-sap-obs:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 8091
+        envFrom:
+        - configMapRef:
+            name: uim-sap-obs-config
+        env:
+        - name: OBS_AUTH_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: uim-sap-obs-secret
+              key: auth-token
+              optional: true
+        readinessProbe:
+          httpGet:
+            path: /api/obs/ready
+            port: http
+          initialDelaySeconds: 3
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /api/obs/health
+            port: http
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
