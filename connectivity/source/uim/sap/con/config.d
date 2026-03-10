@@ -19,7 +19,7 @@ struct CONConfig : SAPConfig {
     ushort port = 8085;
     string basePath = "/api/con";
 
-    string serviceName = "uim-sap-con";
+    string serviceName = "uim-con";
     string serviceVersion = "1.0.0";
     string connectorLocationId = "default-location";
 

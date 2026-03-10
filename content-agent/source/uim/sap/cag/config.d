@@ -9,7 +9,7 @@ struct CAGConfig : SAPConfig {
     ushort port = 8096;
     string basePath = "/api/content-agent";
 
-    string serviceName = "uim-sap-content-agent";
+    string serviceName = "uim-content-agent";
     string serviceVersion = "1.0.0";
     string runtime = "cloud-foundry";
 

@@ -10,7 +10,7 @@ struct CMGConfig : SAPConfig {
     ushort port = 8095;
     string basePath = "/api/cmg";
 
-    string serviceName = "uim-sap-cmg";
+    string serviceName = "uim-cmg";
     string serviceVersion = "1.0.0";
 
     bool requireAuthToken = false;
