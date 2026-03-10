@@ -30,7 +30,7 @@ struct DSTConfig : SAPConfig {
 
     string[string] customHeaders;
 
-    void validate() const {
+    override void validate() const {
         if (host.length == 0)
             throw new DSTConfigurationException("Host cannot be empty");
         if (port == 0)

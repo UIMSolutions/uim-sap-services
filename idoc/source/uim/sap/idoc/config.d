@@ -39,7 +39,7 @@ struct IDocConfig : SAPConfig {
 
   string[string] customHeaders;
 
-  void validate() const {
+  override void validate() const {
     super.validate();
 
     if (baseUrl.length == 0) {

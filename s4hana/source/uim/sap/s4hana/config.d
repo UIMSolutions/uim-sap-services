@@ -38,7 +38,7 @@ class S4HANAConfig : SAPConfig {
 
     string[string] customHeaders;
 
-    void validate() const {
+    override void validate() const {
         if (baseUrl.length == 0) {
             throw new S4HANAConfigurationException("Base URL cannot be empty");
         }

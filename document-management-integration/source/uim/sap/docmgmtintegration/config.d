@@ -44,7 +44,7 @@ class DocMgmtIntegrationConfig : SAPConfig {
 
   string[string] customHeaders;
 
-  void validate() const {
+  override void validate() const {
     super.validate();
 
     if (host.length == 0) {

@@ -112,7 +112,7 @@ struct SMGConfig : SAPConfig {
     _customHeaders[key] = value;
   }
 
-  void validate() const {
+  override void validate() const {
     super.validate();
 
     if (host.length == 0)

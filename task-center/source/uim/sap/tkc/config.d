@@ -33,7 +33,7 @@ class TKCConfig : SAPConfig {
     return buildPath(dataDirectory, cacheFileName);
   }
 
-  void validate() const {
+  override void validate() const {
     super.validate();
 
     if (host.length == 0)

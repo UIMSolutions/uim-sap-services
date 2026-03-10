@@ -20,7 +20,7 @@ struct MDIConfig : SAPConfig {
 
   string[string] customHeaders;
 
-  void validate() const {
+  override void validate() const {
     if (host.length == 0)
       throw new MDIConfigurationException("Host cannot be empty");
     if (port == 0)

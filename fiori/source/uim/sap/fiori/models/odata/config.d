@@ -26,7 +26,7 @@ struct ODataConfig : SAPConfig {
   string[string] customHeaders;
   Duration timeout = 30.seconds;
 
-  void validate() const {
+  override void validate() const {
     super.validate();
 
     if (serviceUrl.length == 0) {
