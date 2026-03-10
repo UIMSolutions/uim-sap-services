@@ -21,16 +21,16 @@ struct OBSConfig : SAPConfig {
     size_t maxBuckets = 500;
 
     /// Maximum objects per bucket
-    size_t maxObjectsPerBucket = 100_000;
+    size_t maxObjectsPerBucket = 50_000;
 
-    /// Maximum single object size in bytes (100 MB)
+    /// Maximum object size in bytes (default 100 MB)
     size_t maxObjectSizeBytes = 104_857_600;
 
-    /// Maximum bucket storage size in bytes (10 GB)
-    size_t maxBucketStorageBytes = 10_737_418_240;
+    /// Maximum bucket size in bytes (default 10 GB)
+    size_t maxBucketSizeBytes = 10_737_418_240;
 
     /// Default storage provider
-    string defaultProvider = "aws";
+    string defaultProvider = "aws-s3";
 
     /// Default region
     string defaultRegion = "eu-central-1";
@@ -53,7 +53,7 @@ struct OBSConfig : SAPConfig {
             throw new OBSConfigurationException("Auth token required when token auth is enabled");
         if (maxBuckets == 0)
             throw new OBSConfigurationException("maxBuckets must be greater than zero");
-        if (maxObjectsPerBucket == 0)
-            throw new OBSConfigurationException("maxObjectsPerBucket must be greater than zero");
+        if (maxObjectSizeBytes == 0)
+            throw new OBSConfigurationException("maxObjectSizeBytes must be greater than zero");
     }
 }

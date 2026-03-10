@@ -6,11 +6,11 @@ mixin(ShowModule!());
 
 @safe:
 
-/// Supported IaaS storage providers
+/// Cloud storage provider
 enum OBSProvider : string {
-    aws = "aws",
-    azure = "azure",
-    gcp = "gcp",
+    awsS3 = "aws-s3",
+    azureBlob = "azure-blob",
+    gcpStorage = "gcp-storage",
 }
 
 /// Bucket status
@@ -23,23 +23,31 @@ enum OBSBucketStatus : string {
 /// Object status
 enum OBSObjectStatus : string {
     active = "active",
-    deleted = "deleted",
     archived = "archived",
+    deleted = "deleted",
 }
 
-/// Storage class / tier
-enum OBSStorageClass : string {
-    standard = "STANDARD",
-    nearline = "NEARLINE",
-    coldline = "COLDLINE",
-    archive = "ARCHIVE",
-}
-
-/// Access level for buckets
+/// Bucket access level
 enum OBSAccessLevel : string {
     private_ = "private",
     readOnly = "read-only",
     readWrite = "read-write",
+}
+
+/// Storage class / tier
+enum OBSStorageClass : string {
+    standard = "standard",
+    infrequentAccess = "infrequent-access",
+    archive = "archive",
+    coldline = "coldline",
+}
+
+/// Object encryption type
+enum OBSEncryption : string {
+    none = "none",
+    sseS3 = "sse-s3",
+    sseKms = "sse-kms",
+    sseC = "sse-c",
 }
 
 /// Credential status
@@ -49,9 +57,16 @@ enum OBSCredentialStatus : string {
     revoked = "revoked",
 }
 
-/// Replication mode
-enum OBSReplicationMode : string {
-    none = "none",
-    singleRegion = "single-region",
-    multiRegion = "multi-region",
+/// Replication status
+enum OBSReplicationStatus : string {
+    enabled = "enabled",
+    disabled = "disabled",
+    pending = "pending",
+}
+
+/// Lifecycle action
+enum OBSLifecycleAction : string {
+    transition = "transition",
+    expiration = "expiration",
+    abortMultipart = "abort-multipart",
 }

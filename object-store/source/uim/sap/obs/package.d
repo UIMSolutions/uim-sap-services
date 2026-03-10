@@ -1,3 +1,10 @@
+/**
+ * UIM Object Store Service (OBS)
+ *
+ * Object Store service on SAP BTP lets you store and manage objects,
+ * which involves creation, upload, download, and deletion.
+ * Supports AWS S3, Azure Blob Storage, and Google Cloud Storage.
+ */
 module uim.sap.obs;
 
 public import uim.sap.obs.config;
@@ -9,7 +16,4 @@ public import uim.sap.obs.store;
 public import uim.sap.obs.service;
 public import uim.sap.obs.server;
 
-public import uim.sap.service;
-
-/// Object Store on SAP BTP — service version
 enum UIM_OBS_VERSION = "1.0.0";
