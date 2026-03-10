@@ -8,5 +8,5 @@ data:
   CRE_HOST: "0.0.0.0"
   CRE_PORT: "8086"
   CRE_BASE_PATH: "/api/cre"
-  CRE_SERVICE_NAME: "uim-sap-cre"
+  CRE_SERVICE_NAME: "uim-cre"
   CRE_SERVICE_VERSION: "1.0.0"

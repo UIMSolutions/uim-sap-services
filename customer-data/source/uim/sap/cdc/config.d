@@ -10,7 +10,7 @@ struct CDCConfig : SAPConfig {
   ushort port = 8097;
   string basePath = "/api/customer-data";
 
-  string serviceName = "uim-sap-customer-data";
+  string serviceName = "uim-customer-data";
   string serviceVersion = "1.0.0";
 
   string dataDirectory = "/tmp/uim-customer-data";

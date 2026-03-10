@@ -1,4 +1,4 @@
-name "uim-sap-custom-domain-service"
+name "uim-custom-domain-service"
 description "A service for managing custom domains with features like TLS/SSL certificate upload, security hardening, and multitenancy support."
 authors "Your Name"
 license "MIT"

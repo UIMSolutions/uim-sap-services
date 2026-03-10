@@ -9,7 +9,7 @@ struct CIDConfig : SAPConfig {
     ushort port = 8102;
     string basePath = "/api/cicd";
 
-    string serviceName    = "uim-sap-cid";
+    string serviceName    = "uim-cid";
     string serviceVersion = "1.0.0";
     string runtime        = "cloud-foundry";
 

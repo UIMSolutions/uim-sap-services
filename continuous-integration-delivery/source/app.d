@@ -7,7 +7,7 @@ void main() {
   config.host = envOr("CID_HOST", "0.0.0.0");
   config.port = readPort(envOr("CID_PORT", "8102"), 8102);
   config.basePath = envOr("CID_BASE_PATH", "/api/cicd");
-  config.serviceName = envOr("CID_SERVICE_NAME", "uim-sap-cid");
+  config.serviceName = envOr("CID_SERVICE_NAME", "uim-cid");
   config.serviceVersion = envOr("CID_SERVICE_VERSION", UIM_CID_VERSION);
   config.runtime = envOr("CID_RUNTIME", "cloud-foundry");
 

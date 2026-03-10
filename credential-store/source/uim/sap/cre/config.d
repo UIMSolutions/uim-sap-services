@@ -12,13 +12,13 @@ struct CREConfig : SAPConfig {
     ushort port = 8086;
     string basePath = "/api/cre";
 
-    string serviceName = "uim-sap-cre";
+    string serviceName = "uim-cre";
     string serviceVersion = "1.0.0";
 
     bool requireAuthToken = false;
     string authToken;
 
-    string masterKey = "uim-sap-cre-dev-master-key";
+    string masterKey = "uim-cre-dev-master-key";
 
     string[string] customHeaders;
 
