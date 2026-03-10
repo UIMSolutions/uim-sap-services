@@ -31,7 +31,7 @@ struct CPIConfig : SAPConfig {
 
   string[string] customHeaders;
 
-  void validate() const {
+  override void validate() const {
     if (baseUrl.length == 0) {
       throw new CPIConfigurationException("Base URL cannot be empty");
     }

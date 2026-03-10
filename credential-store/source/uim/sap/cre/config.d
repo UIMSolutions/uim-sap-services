@@ -7,12 +7,22 @@ mixin(ShowModule!());
 @safe:
 
 struct CREConfig : SAPConfig {
-  string host = "0.0.0.0";
-  ushort port = 8086;
-  string basePath = "/api/cre";
+  mixin(SAPConfigTemplate!(CREConfig));
 
-  string serviceName = "uim-cre";
-  string serviceVersion = "1.0.0";
+  override bool initialize(Json[string] initData) {
+    if (!super.initialize(initData)) {
+      return false;
+    }
+
+    host(initData.getString("host", "0.0.0.0"));
+    basePath(initData.getString("basePath", "/api/cre"));
+    serviceName(initData.getString("serviceName", "uim-cre"));
+    serviceVersion(initData.getString("serviceVersion", "1.0.0"));
+
+    return true;
+  }
+
+  ushort port = 8086;
 
   bool requireAuthToken = false;
   string authToken;
@@ -21,7 +31,7 @@ struct CREConfig : SAPConfig {
 
   string[string] customHeaders;
 
-  void validate() const {
+  override void validate() const {
     super.validate();
 
     if (host.length == 0) {
