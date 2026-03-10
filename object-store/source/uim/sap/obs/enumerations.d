@@ -6,11 +6,11 @@ mixin(ShowModule!());
 
 @safe:
 
-/// Cloud storage provider
+/// Cloud provider / IaaS layer
 enum OBSProvider : string {
-    awsS3 = "aws-s3",
-    azureBlob = "azure-blob",
-    gcpStorage = "gcp-storage",
+    awsS3 = "aws_s3",
+    azureBlob = "azure_blob",
+    gcpStorage = "gcp_storage",
 }
 
 /// Bucket status
@@ -20,53 +20,52 @@ enum OBSBucketStatus : string {
     deleted = "deleted",
 }
 
-/// Object status
-enum OBSObjectStatus : string {
-    active = "active",
-    archived = "archived",
-    deleted = "deleted",
-}
-
 /// Bucket access level
 enum OBSAccessLevel : string {
     private_ = "private",
-    readOnly = "read-only",
-    readWrite = "read-write",
+    publicRead = "public_read",
+    publicReadWrite = "public_read_write",
 }
 
-/// Storage class / tier
+/// Storage class
 enum OBSStorageClass : string {
     standard = "standard",
-    infrequentAccess = "infrequent-access",
-    archive = "archive",
-    coldline = "coldline",
+    nearline = "nearline",       // infrequent access
+    coldline = "coldline",       // archival
+    archive = "archive",         // deep archive
 }
 
-/// Object encryption type
-enum OBSEncryption : string {
-    none = "none",
-    sseS3 = "sse-s3",
-    sseKms = "sse-kms",
-    sseC = "sse-c",
-}
-
-/// Credential status
-enum OBSCredentialStatus : string {
+/// Object status
+enum OBSObjectStatus : string {
     active = "active",
-    expired = "expired",
-    revoked = "revoked",
+    deleted = "deleted",
+    archived = "archived",
 }
 
 /// Replication status
 enum OBSReplicationStatus : string {
-    enabled = "enabled",
-    disabled = "disabled",
+    complete = "complete",
     pending = "pending",
+    failed = "failed",
+}
+
+/// Credential type
+enum OBSCredentialType : string {
+    accessKey = "access_key",
+    sasToken = "sas_token",
+    signedUrl = "signed_url",
+}
+
+/// Multipart upload status
+enum OBSUploadStatus : string {
+    initiated = "initiated",
+    inProgress = "in_progress",
+    completed = "completed",
+    aborted = "aborted",
 }
 
 /// Lifecycle action
 enum OBSLifecycleAction : string {
     transition = "transition",
     expiration = "expiration",
-    abortMultipart = "abort-multipart",
 }
