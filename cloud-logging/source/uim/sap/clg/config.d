@@ -1,6 +1,8 @@
-/**
- * Configuration for CLG Cloud Logging service
- */
+/****************************************************************************************************************
+* Copyright: © 2018-2026 Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*) 
+* License: Subject to the terms of the Apache 2.0 license, as written in the included LICENSE.txt file. 
+* Authors: Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*)
+*****************************************************************************************************************/
 module uim.sap.clg.config;
 
 import uim.sap.clg;
@@ -10,12 +12,22 @@ mixin(ShowModule!());
 @safe:
 
 struct CLGConfig : SAPConfig {
-  string host = "0.0.0.0";
-  ushort port = 8081;
-  string basePath = "/sap/cloud/logging/v1";
+  mixin(SAPConfigTemplate!CLGConfig);
 
-  string serviceName = "uim-clg";
-  string serviceVersion = "1.0.0";
+  override bool initialize(Json[string] initData = null) {
+    if (!super.initialize(initData)) {
+      return false;
+    }
+
+    host(initData.getString("host", "0.0.0.0"));
+    basePath(initData.getString("basePath", "/sap/cloud/logging/v1"));
+    serviceName(initData.getString("serviceName", "uim-clg"));
+    serviceVersion(initData.getString("serviceVersion", "1.0.0"));
+
+    return true;
+  }
+
+  ushort port = 8081;
 
   size_t maxEntries = 10000;
   size_t defaultQueryLimit = 100;
@@ -25,7 +37,7 @@ struct CLGConfig : SAPConfig {
 
   string[string] customHeaders;
 
-  void validate() const {
+  override void validate() const {
     super.validate();
 
     if (host.length == 0) {

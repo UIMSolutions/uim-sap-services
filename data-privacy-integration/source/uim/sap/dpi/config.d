@@ -1,3 +1,8 @@
+/****************************************************************************************************************
+* Copyright: © 2018-2026 Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*) 
+* License: Subject to the terms of the Apache 2.0 license, as written in the included LICENSE.txt file. 
+* Authors: Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*)
+*****************************************************************************************************************/
 module uim.sap.dpi.config;
 
 import std.string : startsWith;
@@ -5,12 +10,22 @@ import std.string : startsWith;
 import uim.sap.dpi.exceptions;
 
 struct DPIConfig : SAPConfig {
-  string host = "0.0.0.0";
-  ushort port = 8093;
-  string basePath = "/api/dpi";
+  mixin(SAPConfigTemplate!DPIConfig);
 
-  string serviceName = "uim-dpi";
-  string serviceVersion = "1.0.0";
+  override bool initialize(Json[string] initData = null) {
+    if (!super.initialize(initData)) {
+      return false;
+    }
+
+    host(initData.getString("host", "0.0.0.0"));
+    basePath(initData.getString("basePath", "/api/dpi"));
+    serviceName(initData.getString("serviceName", "uim-dpi"));
+    serviceVersion(initData.getString("serviceVersion", "1.0.0"));
+
+    return true;
+  }
+
+  ushort port = 8093;
   int defaultRetentionDays = 365;
 
   bool requireAuthToken = false;

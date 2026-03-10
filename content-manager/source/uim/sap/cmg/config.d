@@ -1,3 +1,8 @@
+/****************************************************************************************************************
+* Copyright: © 2018-2026 Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*) 
+* License: Subject to the terms of the Apache 2.0 license, as written in the included LICENSE.txt file. 
+* Authors: Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*)
+*****************************************************************************************************************/
 module uim.sap.cmg.config;
 
 import uim.sap.cmg;
@@ -6,12 +11,22 @@ mixin(ShowModule!());
 
 @safe:
 struct CMGConfig : SAPConfig {
-  string host = "0.0.0.0";
-  ushort port = 8095;
-  string basePath = "/api/cmg";
+  mixin(SAPConfigTemplate!CMGConfig);
 
-  string serviceName = "uim-cmg";
-  string serviceVersion = "1.0.0";
+  override bool initialize(Json[string] initData = null) {
+    if (!super.initialize(initData)) {
+      return false;
+    }
+
+    host(initData.getString("host", "0.0.0.0"));
+    basePath(initData.getString("basePath", "/api/cmg"));
+    serviceName(initData.getString("serviceName", "uim-cmg"));
+    serviceVersion(initData.getString("serviceVersion", "1.0.0"));
+
+    return true;
+  }
+
+  ushort port = 8095;
 
   bool requireAuthToken = false;
   string authToken;

@@ -5,14 +5,11 @@
 *****************************************************************************************************************/
 module uim.sap.art.server;
 
-
 import uim.sap.art;
 
 mixin(ShowModule!());
 
 @safe:
-
-
 
 class ARTRuntimeServer {
   private ARTRuntime _runtime;

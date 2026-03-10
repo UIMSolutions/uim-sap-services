@@ -19,18 +19,19 @@ class ARTRuntimeConfig : SAPConfig {
     }
 
     host(initData.getString("host", "127.0.0.1"));
+    basePath(initData.getString("basePath", "/sap/abap/runtime"));
+
     return true;
   }
 
   ushort port = 8080;
-  string basePath = "/sap/abap/runtime";
 
   string runtimeName = "uim-art";
   string runtimeVersion = "1.0.0";
+  string authToken;
 
   Duration requestTimeout = 30.seconds;
   bool requireAuthToken = false;
-  string authToken;
 
   string[string] customHeaders;
 
