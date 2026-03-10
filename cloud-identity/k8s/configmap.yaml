@@ -8,6 +8,6 @@ data:
   CIS_HOST: "0.0.0.0"
   CIS_PORT: "8088"
   CIS_BASE_PATH: "/api/cis"
-  CIS_SERVICE_NAME: "uim-sap-cis"
+  CIS_SERVICE_NAME: "uim-cis"
   CIS_SERVICE_VERSION: "1.0.0"
   CIS_DEFAULT_AUTH_METHOD: "form"

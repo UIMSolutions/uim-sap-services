@@ -9,7 +9,7 @@ struct BUHConfig : SAPConfig {
   ushort port = 8083;
   string basePath = "/api/hub";
 
-  string serviceName = "uim-sap-buh";
+  string serviceName = "uim-buh";
   string serviceVersion = "1.0.0";
 
   bool requireAuthToken = false;

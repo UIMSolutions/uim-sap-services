@@ -25,7 +25,7 @@ class CLFConfig : SAPConfig {
     ushort port = 8082;
     string basePath = "/api/cf";
 
-    string serviceName = "uim-sap-clf";
+    string serviceName = "uim-clf";
     string serviceVersion = "1.0.0";
 
     bool requireAuthToken = false;

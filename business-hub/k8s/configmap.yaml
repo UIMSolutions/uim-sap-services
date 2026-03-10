@@ -8,5 +8,5 @@ data:
   BUH_HOST: "0.0.0.0"
   BUH_PORT: "8083"
   BUH_BASE_PATH: "/api/hub"
-  BUH_SERVICE_NAME: "uim-sap-buh"
+  BUH_SERVICE_NAME: "uim-buh"
   BUH_SERVICE_VERSION: "1.0.0"

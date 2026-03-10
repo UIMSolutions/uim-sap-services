@@ -16,7 +16,7 @@ void main() {
   config.host = envOr("BUH_HOST", "0.0.0.0");
   config.port = readPort(envOr("BUH_PORT", "8083"), 8083);
   config.basePath = envOr("BUH_BASE_PATH", "/api/hub");
-  config.serviceName = envOr("BUH_SERVICE_NAME", "uim-sap-buh");
+  config.serviceName = envOr("BUH_SERVICE_NAME", "uim-buh");
   config.serviceVersion = envOr("BUH_SERVICE_VERSION", UIM_BUH_VERSION);
 
   auto token = envOr("BUH_AUTH_TOKEN", "");

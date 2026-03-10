@@ -8,5 +8,5 @@ data:
   CLF_HOST: "0.0.0.0"
   CLF_PORT: "8082"
   CLF_BASE_PATH: "/api/cf"
-  CLF_SERVICE_NAME: "uim-sap-clf"
+  CLF_SERVICE_NAME: "uim-clf"
   CLF_SERVICE_VERSION: "1.0.0"

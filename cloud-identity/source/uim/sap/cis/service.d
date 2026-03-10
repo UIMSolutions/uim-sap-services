@@ -19,7 +19,7 @@ mixin(ShowModule!());
   * config.host = "https://example.com";
   * config.port = 8088;
   * config.basePath = "/api/cis";
-  * config.serviceName = "uim-sap-cis";
+  * config.serviceName = "uim-cis";
   * config.serviceVersion = "1.0.0";
   * config.defaultAuthMethod = "form";
   * config.requireAuthToken = true;

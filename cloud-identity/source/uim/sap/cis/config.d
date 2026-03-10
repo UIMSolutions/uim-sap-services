@@ -14,7 +14,7 @@ mixin(ShowModule!());
   * - `host`: The IP address or hostname to bind the server to (default: "0.0.0.0")
   * - `port`: The port number to bind the server to (default: 8088)
   * - `basePath`: The base path for the CIS API (default: "/api/cis")
-  * - `serviceName`: The name of the CIS service (default: "uim-sap-cis")
+  * - `serviceName`: The name of the CIS service (default: "uim-cis")
   * - `serviceVersion`: The version of the CIS service (default: "1.0.0")
   * - `defaultAuthMethod`: The default authentication method (default: "form")
   * - `requireAuthToken`: Whether an auth token is required (default: false)
@@ -29,7 +29,7 @@ mixin(ShowModule!());
   * config.host = "0.0.0.0";
   * config.port = 8088;
   * config.basePath = "/api/cis";
-  * config.serviceName = "uim-sap-cis";
+  * config.serviceName = "uim-cis";
   * config.serviceVersion = "1.0.0";
   * config.defaultAuthMethod = "form";
   * config.requireAuthToken = true;
@@ -42,7 +42,7 @@ struct CISConfig : SAPConfig {
   ushort port = 8088;
   string basePath = "/api/cis";
 
-  string serviceName = "uim-sap-cis";
+  string serviceName = "uim-cis";
   string serviceVersion = "1.0.0";
   string defaultAuthMethod = "form";
 
@@ -84,7 +84,7 @@ unittest {
   config.host = "0.0.0.0";
   config.port = 8088;
   config.basePath = "/api/cis";
-  config.serviceName = "uim-sap-cis";
+  config.serviceName = "uim-cis";
   config.defaultAuthMethod = "form";
   config.requireAuthToken = true;
   config.authToken = "my-secret-token";
@@ -93,7 +93,7 @@ unittest {
   assert(config.host == "0.0.0.0");
   assert(config.port == 8088);
   assert(config.basePath == "/api/cis");
-  assert(config.serviceName == "uim-sap-cis");
+  assert(config.serviceName == "uim-cis");
   assert(config.defaultAuthMethod == "form");
   assert(config.requireAuthToken == true);
   assert(config.authToken == "my-secret-token");

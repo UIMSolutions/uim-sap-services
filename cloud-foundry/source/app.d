@@ -16,7 +16,7 @@ void main() {
     config.host = envOr("CLF_HOST", "0.0.0.0");
     config.port = readPort(envOr("CLF_PORT", "8082"), 8082);
     config.basePath = envOr("CLF_BASE_PATH", "/api/cf");
-    config.serviceName = envOr("CLF_SERVICE_NAME", "uim-sap-clf");
+    config.serviceName = envOr("CLF_SERVICE_NAME", "uim-clf");
     config.serviceVersion = envOr("CLF_SERVICE_VERSION", UIM_CLF_VERSION);
 
     auto token = envOr("CLF_AUTH_TOKEN", "");
