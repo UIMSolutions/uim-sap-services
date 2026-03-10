@@ -23,7 +23,7 @@ struct SMGConfig : SAPConfig {
     port = initData.hasKey("port") ? initData["port"].to!ushort : 8094;
     basePath = initData.hasKey("basePath") ? initData["basePath"] : "/api/sitemanager";
 
-    serviceName = initData.hasKey("serviceName") ? initData["serviceName"] : "uim-sap-smg";
+    serviceName = initData.hasKey("serviceName") ? initData["serviceName"] : "uim-smg";
     serviceVersion = initData.hasKey("serviceVersion") ? initData["serviceVersion"] : "1.0.0";
 
     bool requireAuthToken = false;
@@ -44,7 +44,7 @@ struct SMGConfig : SAPConfig {
   string basePath() const { return _basePath; }
   void basePath(string value) { _basePath = value; }
 
-  protected string _serviceName = "uim-sap-smg";
+  protected string _serviceName = "uim-smg";
   string serviceName() const { return _serviceName; }
   void serviceName(string value) { _serviceName = value; }
 

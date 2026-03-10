@@ -15,7 +15,7 @@ void main() {
   config.host = envOr("TKC_HOST", "0.0.0.0");
   config.port = readPort(envOr("TKC_PORT", "8096"), 8096);
   config.basePath = envOr("TKC_BASE_PATH", "/api/task-center");
-  config.serviceName = envOr("TKC_SERVICE_NAME", "uim-sap-task-center");
+  config.serviceName = envOr("TKC_SERVICE_NAME", "uim-task-center");
   config.serviceVersion = envOr("TKC_SERVICE_VERSION", UIM_TKC_VERSION);
   config.dataDirectory = envOr("TKC_DATA_DIR", "/tmp/uim-task-center-data");
   config.cacheFileName = envOr("TKC_CACHE_FILE", "task-cache.json");

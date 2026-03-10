@@ -7,7 +7,7 @@ copyright "Copyright © 2018 - 2026, ONS"
 license "Apache-2.0"
 
 // Target
-targetName "uim-sap-service"
+targetName "uim-service"
 targetType "library"
 
 // Dependencies

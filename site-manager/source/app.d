@@ -14,7 +14,7 @@ void main() {
   config.host = envOr("SMG_HOST", "0.0.0.0");
   config.port = readPort(envOr("SMG_PORT", "8094"), 8094);
   config.basePath = envOr("SMG_BASE_PATH", "/api/sitemanager");
-  config.serviceName = envOr("SMG_SERVICE_NAME", "uim-sap-smg");
+  config.serviceName = envOr("SMG_SERVICE_NAME", "uim-smg");
   config.serviceVersion = envOr("SMG_SERVICE_VERSION", UIM_SMG_VERSION);
 
   auto token = envOr("SMG_AUTH_TOKEN", "");

@@ -18,7 +18,7 @@ class TKCConfig : SAPConfig {
   ushort port = 8096;
   string basePath = "/api/task-center";
 
-  string serviceName = "uim-sap-task-center";
+  string serviceName = "uim-task-center";
   string serviceVersion = "1.0.0";
 
   string dataDirectory = "/tmp/uim-task-center-data";

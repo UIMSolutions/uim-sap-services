@@ -17,7 +17,7 @@ This package targets RFC access through HTTP/JSON adapter endpoints (for example
 Add to your `dub.sdl`:
 
 ```sdl
-dependency "uim-sap-rfc" version="~>1.0.0"
+dependency "uim-rfc" version="~>1.0.0"
 ```
 
 Or to your `dub.json`:
@@ -25,7 +25,7 @@ Or to your `dub.json`:
 ```json
 {
   "dependencies": {
-    "uim-sap-rfc": "~>1.0.0"
+    "uim-rfc": "~>1.0.0"
   }
 }
 ```

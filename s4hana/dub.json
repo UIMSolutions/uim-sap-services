@@ -1,5 +1,5 @@
 {
-    "name": "uim-sap-s4hana",
+    "name": "uim-s4hana",
     "description": "S/4HANA client library for D language using uim-framework and vibe.d",
     "license": "Apache-2.0",
     "authors": [

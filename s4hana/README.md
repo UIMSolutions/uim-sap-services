@@ -15,7 +15,7 @@ S/4HANA client library for D language, built with uim-framework and vibe.d.
 For `dub.sdl`:
 
 ```sdl
-dependency "uim-sap-s4hana" version="~>1.0.0"
+dependency "uim-s4hana" version="~>1.0.0"
 ```
 
 For `dub.json`:
@@ -23,7 +23,7 @@ For `dub.json`:
 ```json
 {
   "dependencies": {
-    "uim-sap-s4hana": "~>1.0.0"
+    "uim-s4hana": "~>1.0.0"
   }
 }
 ```

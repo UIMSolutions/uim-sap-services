@@ -16,7 +16,7 @@ class MONConfig : SAPConfig {
   ushort port = 8090;
   string basePath = "/api/mon";
 
-  string serviceName = "uim-sap-mon";
+  string serviceName = "uim-mon";
   string serviceVersion = "1.0.0";
 
   bool requireAuthToken = false;

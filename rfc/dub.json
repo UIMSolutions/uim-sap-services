@@ -1,5 +1,5 @@
 {
-    "name": "uim-sap-rfc",
+    "name": "uim-rfc",
     "description": "RFC adapter library for D language using uim-framework and vibe.d",
     "license": "Apache-2.0",
     "authors": [

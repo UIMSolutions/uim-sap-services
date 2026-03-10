@@ -6,5 +6,5 @@ data:
   SMG_HOST: "0.0.0.0"
   SMG_PORT: "8094"
   SMG_BASE_PATH: "/api/sitemanager"
-  SMG_SERVICE_NAME: "uim-sap-smg"
+  SMG_SERVICE_NAME: "uim-smg"
   SMG_SERVICE_VERSION: "1.0.0"
