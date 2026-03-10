@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: uim-sap-pdm
+  labels:
+    app: uim-sap-pdm
+spec:
+  selector:
+    app: uim-sap-pdm
+  ports:
+  - name: http
+    protocol: TCP
+    port: 80
+    targetPort: 8092
+  type: ClusterIP
