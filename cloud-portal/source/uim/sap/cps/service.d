@@ -1,13 +1,17 @@
+/****************************************************************************************************************
+* Copyright: © 2018-2026 Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*) 
+* License: Subject to the terms of the Apache 2.0 license, as written in the included LICENSE.txt file. 
+* Authors: Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*)
+*****************************************************************************************************************/
 module uim.sap.cps.service;
 
-import std.datetime : Clock;
 
-import vibe.data.json : Json;
+import uim.sap.cps;
 
-import uim.sap.cps.config;
-import uim.sap.cps.exceptions;
-import uim.sap.cps.models;
-import uim.sap.cps.store;
+mixin(ShowModule!());
+
+@safe:
+
 
 class CPSService : SAPService {
   mixin(SAPServiceTemplate!CPSService);

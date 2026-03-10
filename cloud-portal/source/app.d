@@ -6,9 +6,11 @@
 module app;
 
 import uim.sap.cps;
+
 mixin(ShowModule!());
 
 @safe:
+
 void main() {
   CPSConfig config;
   config.host = envOr("CPS_HOST", "0.0.0.0");
