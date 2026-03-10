@@ -1,0 +1,63 @@
+module uim.sap.mob.models.userconnection;
+
+import std.datetime : Clock, SysTime;
+
+import vibe.data.json : Json;
+
+import uim.sap.mob.enumerations;
+
+@safe:
+
+/// User connection to a mobile application
+struct MOBUserConnection {
+    string userId;
+    string appId;
+    MOBConnectionStatus status = MOBConnectionStatus.ACTIVE;
+    string deviceId;
+    string deviceModel;
+    string osVersion;
+    string appVersion;
+    MOBPlatform platform = MOBPlatform.IOS;
+    string pushToken;           // device push token
+    SysTime lastAccessAt;
+    SysTime registeredAt;
+    size_t sessionCount;
+
+    Json toJson() const {
+        Json j = Json.emptyObject;
+        j["user_id"] = userId;
+        j["app_id"] = appId;
+        j["status"] = cast(string) status;
+        j["device_id"] = deviceId;
+        j["device_model"] = deviceModel;
+        j["os_version"] = osVersion;
+        j["app_version"] = appVersion;
+        j["platform"] = cast(string) platform;
+        j["last_access_at"] = lastAccessAt.toISOExtString();
+        j["registered_at"] = registeredAt.toISOExtString();
+        j["session_count"] = cast(long) sessionCount;
+        return j;
+    }
+}
+
+MOBUserConnection userConnectionFromJson(string appId, string userId, Json req) {
+    MOBUserConnection uc;
+    uc.userId = userId;
+    uc.appId = appId;
+    uc.registeredAt = Clock.currTime();
+    uc.lastAccessAt = uc.registeredAt;
+
+    if ("device_id" in req && req["device_id"].isString)
+        uc.deviceId = req["device_id"].get!string;
+    if ("device_model" in req && req["device_model"].isString)
+        uc.deviceModel = req["device_model"].get!string;
+    if ("os_version" in req && req["os_version"].isString)
+        uc.osVersion = req["os_version"].get!string;
+    if ("app_version" in req && req["app_version"].isString)
+        uc.appVersion = req["app_version"].get!string;
+    if ("platform" in req && req["platform"].isString)
+        uc.platform = parsePlatform(req["platform"].get!string);
+    if ("push_token" in req && req["push_token"].isString)
+        uc.pushToken = req["push_token"].get!string;
+    return uc;
+}

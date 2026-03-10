@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uim-sap-mob
+  labels:
+    app: uim-sap-mob
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: uim-sap-mob
+  template:
+    metadata:
+      labels:
+        app: uim-sap-mob
+    spec:
+      containers:
+      - name: uim-sap-mob
+        image: ghcr.io/uimsolutions/uim-sap-mob:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 8089
+        envFrom:
+        - configMapRef:
+            name: uim-sap-mob-config
+        env:
+        - name: MOB_AUTH_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: uim-sap-mob-secret
+              key: auth-token
+              optional: true
+        readinessProbe:
+          httpGet:
+            path: /api/mob/ready
+            port: http
+          initialDelaySeconds: 3
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /api/mob/health
+            port: http
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
