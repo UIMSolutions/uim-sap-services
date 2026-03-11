@@ -37,13 +37,23 @@ mixin(ShowModule!());
   * config.validate();
   * ``` 
   */
-struct CISConfig : SAPConfig {
-  string host = "0.0.0.0";
-  ushort port = 8088;
-  string basePath = "/api/cis";
+class CISConfig : SAPConfig {
+  mixin(SAPConfigTemplate!CISConfig);
 
-  string serviceName = "uim-cis";
-  string serviceVersion = "1.0.0";
+  override bool initialize(Json[string] initdata) {
+    if (!super.initialize(config)) {
+      return false;
+    }
+
+    basePath(initdata.getString("basePath", "/api/cis"));
+    host(initdata.getString("host", "0.0.0.0"));
+    port(cast(ushort)initData.getInteger("port", 8088));
+    serviceName(initdata.getString("serviceName", "uim-cis"));
+    serviceVersion(initdata.getString("serviceVersion", "1.0.0"));
+
+    return true;
+  }
+
   string defaultAuthMethod = "form";
 
   bool requireAuthToken = false;

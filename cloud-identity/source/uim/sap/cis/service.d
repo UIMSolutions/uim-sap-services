@@ -45,7 +45,6 @@ class CISService : SAPService {
 
   this(CISConfig config) {
     config.validate();
-    _config = config;
     _store = new CISStore;
   }
 

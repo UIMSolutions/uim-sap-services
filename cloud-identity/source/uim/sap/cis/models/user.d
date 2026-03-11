@@ -85,7 +85,7 @@ unittest {
   user.userType = "employee";
   user.active = true;
   user.groups = ["group1", "group2"].toJson;
-  user.attributes = ["department" : "sales", "location" : "NY" ].toJson;
+  user.attributes = ["department": "sales", "location": "NY"].toJson;
   user.createdAt = Clock.currTime();
   user.updatedAt = Clock.currTime();
   Json userJson = user.toJson();

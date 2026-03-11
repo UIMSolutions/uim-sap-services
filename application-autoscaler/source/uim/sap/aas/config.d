@@ -10,12 +10,42 @@ import uim.sap.aas;
 @safe:
 
 class AASConfig : SAPConfig {
-  string host = "0.0.0.0";
-  ushort port = 8086;
-  string basePath = "/api/autoscaler";
+  mixin(SAPConfigTemplate!AASConfig);
 
-  string serviceName = "uim-aas";
-  string serviceVersion = "1.0.0";
+  override bool initialize(Json[string] initdata) {
+    if (!super.initialize(config)) {
+      return false;
+    }
+
+    host(initdata.getString("host", "0.0.0.0"));
+    basePath(initdata.getString("basePath", "/api/autoscaler"));
+    serviceName(initdata.getString("serviceName", "uim-aas"));
+    serviceVersion(initdata.getString("serviceVersion", "1.0.0"));
+
+    // Load AAS-specific configuration
+    if (config.canFind("port")) {
+      port = cast(ushort)config["port"].to!int;
+    }
+    if (config.canFind("cfApi")) {
+      cfApi = config["cfApi"];
+    }
+    if (config.canFind("cfOrganization")) {
+      cfOrganization = config["cfOrganization"];
+    }
+    if (config.canFind("cfSpace")) {
+      cfSpace = config["cfSpace"];
+    }
+    if (config.canFind("requireAuthToken")) {
+      requireAuthToken = config["requireAuthToken"].to!bool;
+    }
+    if (config.canFind("authToken")) {
+      authToken = config["authToken"];
+    }
+
+    return true;
+  }
+
+  ushort port = 8086;
 
   string cfApi;
   string cfOrganization;
