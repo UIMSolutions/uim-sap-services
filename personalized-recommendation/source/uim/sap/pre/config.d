@@ -7,6 +7,14 @@ mixin(ShowModule!());
 @safe:
 
 struct PREConfig : SAPConfig {
+
+    override bool initialize(Json[string] initdata) {
+    if (!super.initialize(initdata)) {
+       return false;
+    }
+
+    return true;
+  }
     string host = "0.0.0.0";
     ushort port = 8093;
     string basePath = "/api/pre";

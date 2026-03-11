@@ -13,6 +13,14 @@ mixin(ShowModule!());
 class ISAConfig : SAPConfig {
   mixin(SAPConfigTemplate!ISAConfig);
 
+  override bool initialize(Json[string] initdata) {
+    if (!super.initialize(initdata)) {
+       return false;
+    }
+
+    return true;
+  }
+
   string host = "0.0.0.0";
   ushort port = 8088;
   string basePath = "/api/situation-automation";

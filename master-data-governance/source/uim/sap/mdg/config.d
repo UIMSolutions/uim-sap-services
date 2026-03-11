@@ -7,7 +7,16 @@ mixin(ShowModule!());
 @safe:
 
 struct MDGConfig : SAPConfig {
-  string host = "0.0.0.0";
+
+  override bool initialize(Json[string] initdata) {
+    if (!super.initialize(initdata)) {
+       return false;
+    }
+
+    return true;
+  }
+  
+    string host = "0.0.0.0";
   ushort port = 8087;
   string basePath = "/api/mdg";
 

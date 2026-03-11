@@ -12,6 +12,13 @@ import uim.sap.sdi.exceptions;
 class SDIConfig : SAPConfig {
   mixin(SAPConfigTemplate!SDIConfig);
 
+  override bool initialize(Json[string] initdata) {
+    if (!super.initialize(initdata)) {
+       return false;
+    }
+
+    return true;
+  }
   string host = "0.0.0.0";
   ushort port = 8096;
   string basePath = "/api/sitedirectory";

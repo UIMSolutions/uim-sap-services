@@ -9,13 +9,42 @@ import std.string : startsWith;
 
 import uim.sap.jobs.exceptions;
 
-struct JobSchedulingConfig : SAPConfig {
-  string host = "0.0.0.0";
-  ushort port = 8101;
-  string basePath = "/api/job-scheduling";
+  /**
+  * Configuration class for the Job Scheduling service.
+  * This class holds all the configuration parameters required to run the Job Scheduling service, such as:
+  * - Host and port settings
+  * - Service metadata (name, version)
+  * - Scheduler settings (tick interval)
+  * - Alerting and monitoring configurations
+  * - Authentication settings
+  * It also includes a `validate()` method to ensure that the configuration is correct before starting the service. 
+  * Example usage:
+  * ```d
+  * JobSchedulingConfig config = new JobSchedulingConfig();
+  * config.host = "localhost";
+  * config.port = 8080;
+  * config.basePath = "/api/job-scheduling";
+  * config.serviceName = "uim-job-scheduling";
+  * config.schedulerTickMs = 1000;
+  * config.validate();
+  * ```
+  */
+class JobSchedulingConfig : SAPConfig {
+  mixin(SAPConfigTemplate!JobSchedulingConfig);
 
-  string serviceName = "uim-job-scheduling";
-  string serviceVersion = "1.0.0";
+  override bool initialize(Json[string] initdata) {
+    if (!super.initialize(initdata)) {
+       return false;
+    }
+
+    port(cast(ushort)initdata.getInteger("port", 8101));
+    host(initdata.getString("host", "0.0.0.0"));
+    basePath(initdata.getString("basePath", "/api/job-scheduling"));
+    serviceName(initdata.getString("serviceName", "uim-job-scheduling"));
+    serviceVersion(initdata.getString("serviceVersion", "1.0.0"));
+
+    return true;
+  }
 
   int schedulerTickMs = 1000;
 

@@ -12,6 +12,14 @@ mixin(ShowModule!());
 @safe:
 
 struct PDMConfig : SAPConfig {
+
+    override bool initialize(Json[string] initdata) {
+    if (!super.initialize(initdata)) {
+       return false;
+    }
+
+    return true;
+  }
     string host = "0.0.0.0";
     ushort port = 8092;
     string basePath = "/api/pdm";

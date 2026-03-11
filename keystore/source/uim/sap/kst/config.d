@@ -6,13 +6,22 @@ mixin(ShowModule!());
 
 @safe:
 
-struct KSTConfig : SAPConfig {
-  string host = "0.0.0.0";
-  ushort port = 8087;
-  string basePath = "/api/kst";
+class KSTConfig : SAPConfig {
+  mixin(SAPConfigTemplate!KSTConfig);
 
-  string serviceName = "uim-kst";
-  string serviceVersion = "1.0.0";
+  override bool initialize(Json[string] initdata) {
+    if (!super.initialize(initdata)) {
+      return false;
+    }
+
+    port(cast(ushort)initdata.getInteger("port", 8087));
+    host(initdata.getString("host", "0.0.0.0"));
+    basePath(initdata.getString("basePath", "/api/kst"));
+    serviceName(initdata.getString("serviceName", "uim-kst"));
+    serviceVersion(initdata.getString("serviceVersion", "1.0.0"));
+
+    return true;
+  }
 
   bool requireAuthToken = false;
   string authToken;
