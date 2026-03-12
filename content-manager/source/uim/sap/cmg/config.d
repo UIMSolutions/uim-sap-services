@@ -10,7 +10,7 @@ import uim.sap.cmg;
 mixin(ShowModule!());
 
 @safe:
-struct CMGConfig : SAPConfig {
+class CMGConfig : SAPConfig {
   mixin(SAPConfigTemplate!CMGConfig);
 
   override bool initialize(Json[string] initData = null) {
@@ -18,6 +18,7 @@ struct CMGConfig : SAPConfig {
       return false;
     }
 
+    port(cast(ushort)initData.getInteger("port", 8095));
     host(initData.getString("host", "0.0.0.0"));
     basePath(initData.getString("basePath", "/api/cmg"));
     serviceName(initData.getString("serviceName", "uim-cmg"));
@@ -25,8 +26,6 @@ struct CMGConfig : SAPConfig {
 
     return true;
   }
-
-  ushort port = 8095;
 
   bool requireAuthToken = false;
   string authToken;
@@ -36,14 +35,6 @@ struct CMGConfig : SAPConfig {
   override void validate() const {
     super.validate();
 
-    if (host.length == 0)
-      throw new CMGConfigurationException("Host cannot be empty");
-    if (port == 0)
-      throw new CMGConfigurationException("Port must be greater than zero");
-    if (basePath.length == 0 || !basePath.startsWith("/"))
-      throw new CMGConfigurationException("Base path must start with '/'");
-    if (serviceName.length == 0)
-      throw new CMGConfigurationException("Service name cannot be empty");
     if (requireAuthToken && authToken.length == 0)
       throw new CMGConfigurationException("Auth token required when token auth is enabled");
   }

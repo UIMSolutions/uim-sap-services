@@ -17,14 +17,14 @@ class MONConfig : SAPConfig {
        return false;
     }
 
+    port(cast(ushort)initdata.getInteger("port", 8090));
+    host(initdata.getString("host", "0.0.0.0"));
+    basePath(initdata.getString("basePath", "/api/mon"));
+    serviceName(initdata.getString("serviceName", "uim-mon"));
+    serviceVersion(initdata.getString("serviceVersion", "1.0.0"));
+
     return true;
   }
-  string host = "0.0.0.0";
-  ushort port = 8090;
-  string basePath = "/api/mon";
-
-  string serviceName = "uim-mon";
-  string serviceVersion = "1.0.0";
 
   bool requireAuthToken = false;
   string authToken;
@@ -34,15 +34,6 @@ class MONConfig : SAPConfig {
   override void validate() const {
     super.validate();
 
-    if (host.length == 0) {
-      throw new MONConfigurationException("Host cannot be empty");
-    }
-    if (port == 0) {
-      throw new MONConfigurationException("Port must be greater than zero");
-    }
-    if (basePath.length == 0 || !basePath.startsWith("/")) {
-      throw new MONConfigurationException("Base path must start with '/'");
-    }
     if (requireAuthToken && authToken.length == 0) {
       throw new MONConfigurationException("Auth token required when token auth is enabled");
     }

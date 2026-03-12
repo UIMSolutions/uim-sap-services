@@ -15,18 +15,17 @@ class ISAConfig : SAPConfig {
 
   override bool initialize(Json[string] initdata) {
     if (!super.initialize(initdata)) {
-       return false;
+      return false;
     }
+
+    port(cast(ushort)initdata.getInteger("port", 8088));
+    host(initdata.getString("host", "0.0.0.0"));
+    basePath(initdata.getString("basePath", "/api/situation-automation"));
+    serviceName(initdata.getString("serviceName", "uim-isa"));
+    serviceVersion(initdata.getString("serviceVersion", "1.0.0"));
 
     return true;
   }
-
-  string host = "0.0.0.0";
-  ushort port = 8088;
-  string basePath = "/api/situation-automation";
-
-  string serviceName = "uim-isa";
-  string serviceVersion = "1.0.0";
 
   string defaultTenant = "default";
 
@@ -38,15 +37,6 @@ class ISAConfig : SAPConfig {
   override void validate() const {
     super.validate();
 
-    if (host.length == 0) {
-      throw new ISAConfigurationException("Host cannot be empty");
-    }
-    if (port == 0) {
-      throw new ISAConfigurationException("Port must be greater than zero");
-    }
-    if (basePath.length == 0 || !basePath.startsWith("/")) {
-      throw new ISAConfigurationException("Base path must start with '/'");
-    }
     if (defaultTenant.length == 0) {
       throw new ISAConfigurationException("Default tenant cannot be empty");
     }

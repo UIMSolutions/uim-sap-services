@@ -16,6 +16,14 @@ import core.time : Duration, seconds;
  * Connection configuration for HANA Cloud
  */
 struct ConnectionConfig : SAPConfig {
+  mixin(SAPConfigTemplate!ConnectionConfig);
+
+  override bool initialize(Json[string] initData) {
+    if (!super.initialize(initData)) {
+      return false;
+    }
+
+  }
     /// Host address (e.g., "myaccount.hanacloud.ondemand.com")
     string host;
     
@@ -50,14 +58,6 @@ struct ConnectionConfig : SAPConfig {
      * Validate the configuration
      */
     void validate() const @safe {
-        if (host.length == 0) {
-            throw new SAPConfigurationException("Host cannot be empty");
-        }
-        
-        if (port == 0) {
-            throw new SAPConfigurationException("Invalid port number");
-        }
-        
         if (database.length == 0) {
             throw new SAPConfigurationException("Database name cannot be empty");
         }

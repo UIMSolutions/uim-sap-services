@@ -7,22 +7,24 @@ mixin(ShowModule!());
 @safe:
 
 class KYMConfig : SAPConfig {
-mixin(SAPConfigTemplate!KYMConfig);
+  mixin(SAPConfigTemplate!KYMConfig);
 
   override bool initialize(Json[string] initdata) {
     if (!super.initialize(initdata)) {
       return false;
     }
 
-    port(cast(ushort)initdata.getInteger("port", 8088));
-    host(initdata.getString("host", "0.0.0.0"));
+    // Network
     basePath(initdata.getString("basePath", "/api/kym"));
+    host(initdata.getString("host", "0.0.0.0"));
+    port(cast(ushort)initdata.getInteger("port", 8088));
+
+    // Service metadata
     serviceName(initdata.getString("serviceName", "uim-kym"));
     serviceVersion(initdata.getString("serviceVersion", "1.0.0"));
 
     return true;
   }
-
 
   bool requireAuthToken = false;
   string authToken;
@@ -50,12 +52,6 @@ mixin(SAPConfigTemplate!KYMConfig);
   override void validate() const {
     super.validate();
 
-    if (host.length == 0)
-      throw new KYMConfigurationException("Host cannot be empty");
-    if (port == 0)
-      throw new KYMConfigurationException("Port must be greater than zero");
-    if (basePath.length == 0 || !basePath.startsWith("/"))
-      throw new KYMConfigurationException("Base path must start with '/'");
     if (requireAuthToken && authToken.length == 0)
       throw new KYMConfigurationException("Auth token required when token auth is enabled");
     if (maxNamespaces == 0)

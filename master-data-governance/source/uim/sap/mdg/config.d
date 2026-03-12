@@ -6,22 +6,22 @@ mixin(ShowModule!());
 
 @safe:
 
-struct MDGConfig : SAPConfig {
+class MDGConfig : SAPConfig {
 
   override bool initialize(Json[string] initdata) {
     if (!super.initialize(initdata)) {
-       return false;
+      return false;
     }
+
+    port(cast(ushort)initdata.getInteger("port", 8087));
+    host(initdata.getString("host", "0.0.0.0"));
+    basePath(initdata.getString("basePath", "/api/mdg"));
+    serviceName(initdata.getString("serviceName", "uim-mdg"));
+    serviceVersion(initdata.getString("serviceVersion", "1.0.0"));
 
     return true;
   }
-  
-    string host = "0.0.0.0";
-  ushort port = 8087;
-  string basePath = "/api/mdg";
 
-  string serviceName = "uim-mdg";
-  string serviceVersion = "1.0.0";
   string defaultApprover = "mdg-approver";
 
   bool requireAuthToken = false;
@@ -32,18 +32,6 @@ struct MDGConfig : SAPConfig {
   override void validate() const {
     super.validate();
 
-    if (host.length == 0) {
-      throw new MDGConfigurationException("Host cannot be empty");
-    }
-    if (port == 0) {
-      throw new MDGConfigurationException("Port must be greater than zero");
-    }
-    if (basePath.length == 0 || !basePath.startsWith("/")) {
-      throw new MDGConfigurationException("Base path must start with '/'");
-    }
-    if (serviceName.length == 0) {
-      throw new MDGConfigurationException("Service name cannot be empty");
-    }
     if (defaultApprover.length == 0) {
       throw new MDGConfigurationException("Default approver cannot be empty");
     }

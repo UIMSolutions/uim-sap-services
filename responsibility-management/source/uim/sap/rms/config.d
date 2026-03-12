@@ -12,20 +12,21 @@ mixin(ShowModule!());
 @safe:
 
 struct RMSConfig : SAPConfig {
+  mixin(SAPConfigTemplate!RMSConfig);
 
-    override bool initialize(Json[string] initdata) {
+  override bool initialize(Json[string] initdata) {
     if (!super.initialize(initdata)) {
-       return false;
+      return false;
     }
+
+    port(cast(ushort)initdata.getInteger("port", 8095));
+    host(initdata.getString("host", "0.0.0.0"));
+    basePath(initdata.getString("basePath", "/api/rms"));
+    serviceName(initdata.getString("serviceName", "uim-rms"));
+    serviceVersion(initdata.getString("serviceVersion", "1.0.0"));
 
     return true;
   }
-  string host = "0.0.0.0";
-  ushort port = 8095;
-  string basePath = "/api/rms";
-
-  string serviceName = "uim-rms";
-  string serviceVersion = "1.0.0";
 
   string dataDirectory = "/tmp/uim-rms-data";
   string defaultTenant = "provider";
@@ -41,18 +42,6 @@ struct RMSConfig : SAPConfig {
   override void validate() const {
     super.validate();
 
-    if (host.length == 0) {
-      throw new RMSConfigurationException("Host cannot be empty");
-    }
-    if (port == 0) {
-      throw new RMSConfigurationException("Port must be greater than zero");
-    }
-    if (basePath.length == 0 || !basePath.startsWith("/")) {
-      throw new RMSConfigurationException("Base path must start with '/'");
-    }
-    if (serviceName.length == 0) {
-      throw new RMSConfigurationException("Service name cannot be empty");
-    }
     if (dataDirectory.length == 0) {
       throw new RMSConfigurationException("Data directory cannot be empty");
     }

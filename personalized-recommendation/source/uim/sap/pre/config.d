@@ -6,21 +6,25 @@ mixin(ShowModule!());
 
 @safe:
 
-struct PREConfig : SAPConfig {
+
+class PREConfig : SAPConfig {
 
     override bool initialize(Json[string] initdata) {
     if (!super.initialize(initdata)) {
        return false;
     }
 
+    /// Network
+    basePath(initdata.getString("basePath", "/api/pre"));
+    host(initdata.getString("host", "0.0.0.0"));
+    port(cast(ushort)initdata.getInteger("port", 8093));
+    
+    /// Service metadata
+    serviceName(initdata.getString("serviceName", "uim-pre"));
+    serviceVersion(initdata.getString("serviceVersion", "1.0.0"));
+
     return true;
   }
-    string host = "0.0.0.0";
-    ushort port = 8093;
-    string basePath = "/api/pre";
-
-    string serviceName = "uim-pre";
-    string serviceVersion = "1.0.0";
 
     bool requireAuthToken = false;
     string authToken;
@@ -57,12 +61,6 @@ struct PREConfig : SAPConfig {
     override void validate() const {
         super.validate();
 
-        if (host.length == 0)
-            throw new PREConfigurationException("Host cannot be empty");
-        if (port == 0)
-            throw new PREConfigurationException("Port must be greater than zero");
-        if (basePath.length == 0 || !basePath.startsWith("/"))
-            throw new PREConfigurationException("Base path must start with '/'");
         if (requireAuthToken && authToken.length == 0)
             throw new PREConfigurationException("Auth token required when token auth is enabled");
         if (maxItemsPerTenant == 0)

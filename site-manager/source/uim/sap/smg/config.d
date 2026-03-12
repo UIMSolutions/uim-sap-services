@@ -11,7 +11,7 @@ mixin(ShowModule!());
 
 @safe:
 
-struct SMGConfig : SAPConfig {
+class SMGConfig : SAPConfig {
   mixin(SAPConfigTemplate!SMGConfig);
 
   override bool initialize(Json[string] initData = null) {
@@ -19,63 +19,22 @@ struct SMGConfig : SAPConfig {
       return false;
     }
 
-    host = initData.hasKey("host") ? initData["host"] : "0.0.0.0";
-    port = initData.hasKey("port") ? initData["port"].to!ushort : 8094;
-    basePath = initData.hasKey("basePath") ? initData["basePath"] : "/api/sitemanager";
+    /// Netwerk
+    host(initData.getString("host", "0.0.0.0"));
+    port(cast(ushort)initData.getInteger("port", 8094));
+    basePath(initData.getString("basePath", "/api/sitemanager"));
 
-    serviceName = initData.hasKey("serviceName") ? initData["serviceName"] : "uim-smg";
-    serviceVersion = initData.hasKey("serviceVersion") ? initData["serviceVersion"] : "1.0.0";
+    /// Service metadata
+    serviceName(initData.getString("serviceName", "uim-smg"));
+    serviceVersion(initData.getString("serviceVersion", "1.0.0"));
 
-    bool requireAuthToken = false;
-    string authToken;
-
-    string[string] customHeaders;
+    return true;
   }
 
-  protected string _host;
-  string host() const {
-    return _host;
-  }
+  bool requireAuthToken = false;
+  string authToken;
 
-  void host(string value) {
-    _host = value;
-  }
-
-  protected ushort _port;
-  ushort port() const {
-    return _port;
-  }
-
-  void port(ushort value) {
-    _port = value;
-  }
-
-  protected string _basePath;
-  string basePath() const {
-    return _basePath;
-  }
-
-  void basePath(string value) {
-    _basePath = value;
-  }
-
-  protected string _serviceName = "uim-smg";
-  string serviceName() const {
-    return _serviceName;
-  }
-
-  void serviceName(string value) {
-    _serviceName = value;
-  }
-
-  protected string _serviceVersion = "1.0.0";
-  string serviceVersion() const {
-    return _serviceVersion;
-  }
-
-  void serviceVersion(string value) {
-    _serviceVersion = value;
-  }
+  string[string] customHeaders;
 
   protected bool _requireAuthToken = false;
   bool requireAuthToken() const {
@@ -115,14 +74,6 @@ struct SMGConfig : SAPConfig {
   override void validate() const {
     super.validate();
 
-    if (host.length == 0)
-      throw new SMGConfigurationException("Host cannot be empty");
-    if (port == 0)
-      throw new SMGConfigurationException("Port must be greater than zero");
-    if (basePath.length == 0 || !basePath.startsWith("/"))
-      throw new SMGConfigurationException("Base path must start with '/'");
-    if (serviceName.length == 0)
-      throw new SMGConfigurationException("Service name cannot be empty");
     if (requireAuthToken && authToken.length == 0)
       throw new SMGConfigurationException("Auth token required when token auth is enabled");
   }
