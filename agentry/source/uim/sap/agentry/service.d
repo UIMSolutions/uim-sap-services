@@ -17,19 +17,10 @@ class AgentryService : SAPService {
   private AgentryStore _store;
 
   this(AgentryConfig config) {
-    config.validate();
-    _config = config;
+    super(config);
+
     _store = new AgentryStore;
   }
-
-  override Json health() {
-    Json readyInfo = super.health();
-    readyInfo["ok"] = true;
-    readyInfo["serviceName"] = _config.serviceName;
-    readyInfo["serviceVersion"] = _config.serviceVersion;
-    return readyInfo;
-  }
-
 
   Json upsertMobileApp(string tenantId, Json request) {
     validateId(tenantId, "Tenant ID");

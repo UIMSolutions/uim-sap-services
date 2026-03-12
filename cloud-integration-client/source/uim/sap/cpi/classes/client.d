@@ -8,10 +8,7 @@ mixin(ShowModule!());
 
 class CPIClient {
   this(CPIConfig config) {
-    super(config);
-    
-    config.validate();
-    _config = config;
+    super(config);    
   }
 
   bool testConnection() {

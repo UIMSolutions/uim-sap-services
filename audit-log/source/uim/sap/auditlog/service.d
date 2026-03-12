@@ -11,21 +11,9 @@ class AuditLogService : SAPService {
   private AuditLogStore _store;
 
   this(AuditLogConfig config) {
-    config.validate();
-    _config = config;
+    super(config);
+
     _store = new AuditLogStore;
-  }
-
-  @property const(AuditLogConfig) config() const {
-    return _config;
-  }
-
-  override Json health() {
-    Json healthInfo = super.health();
-    healthInfo["ok"] = true;
-    healthInfo["serviceName"] = _config.serviceName;
-    healthInfo["serviceVersion"] = _config.serviceVersion;
-    return healthInfo;
   }
 
   Json listRecommendedEventTypes() {

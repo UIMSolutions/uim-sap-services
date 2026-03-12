@@ -85,7 +85,7 @@ struct ConnectionConfig : SAPConfig {
      * Create a default HANA Cloud configuration
      */
     static ConnectionConfig create(string host, string database, Credential credential) pure nothrow @safe {
-        ConnectionConfig config;
+        ConnectionConfig config = new ConnectionConfig;
         config.host = host;
         config.database = database;
         config.credential = credential;

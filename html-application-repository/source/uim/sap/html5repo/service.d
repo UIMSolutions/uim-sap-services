@@ -19,8 +19,7 @@ class HARService : SAPService {
     private RuntimeAssetCache _cache;
 
     this(HARConfig config) {
-        config.validate();
-        _config = config;
+        super(config);
         _store = new HARsitoryStore(_config.dataDirectory);
         _cache = new RuntimeAssetCache(_config.cacheTtlSeconds);
     }
@@ -31,9 +30,6 @@ class HARService : SAPService {
 
     override Json health() {
         Json healthInfo = super.health();
-        healthInfo["ok"] = true;
-        healthInfo["service_name"] = _config.serviceName;
-        healthInfo["service_version"] = _config.serviceVersion;
         healthInfo["cache_entries"] = cast(long)_cache.size();
         return healthInfo;
     }

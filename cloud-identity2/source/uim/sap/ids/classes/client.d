@@ -33,8 +33,7 @@ class IdentityClient {
      * Constructor
      */
   this(IdentityConfig config) {
-    this.config = config;
-    config.validate();
+    super(config);
 
     OAuth2Credentials creds;
     creds.clientId = config.clientId;

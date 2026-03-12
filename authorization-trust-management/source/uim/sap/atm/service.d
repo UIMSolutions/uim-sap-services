@@ -12,17 +12,9 @@ class ATMService : SAPService {
   private ATMStore _store;
 
   this(ATMConfig config) {
-    config.validate();
-    _config = config;
-    _store = new ATMStore;
-  }
+    super(config);
 
-  override Json health() {
-    Json healthInfo = super.health();
-    healthInfo["ok"] = true;
-    healthInfo["serviceName"] = _config.serviceName;
-    healthInfo["serviceVersion"] = _config.serviceVersion;
-    return healthInfo;
+    _store = new ATMStore;
   }
 
   Json upsertIdentityProvider(string tenantId, string idpId, Json request) {

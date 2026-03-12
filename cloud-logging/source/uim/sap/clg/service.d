@@ -19,8 +19,6 @@ class CLGService : SAPService {
   this(CLGConfig config) {
     super(config);
 
-    config.validate();
-    _config = config;
     _store = new CLGLogStore(config.maxEntries);
   }
 

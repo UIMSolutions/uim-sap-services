@@ -13,13 +13,9 @@ class INTService : SAPService {
     private INTStore _store;
 
     this(INTConfig config) {
-        config.validate();
-        _config = config;
+        super(config);
         _store = new INTStore;
     }
-
-    @property const(INTConfig) config() const { return _config; }
-
 
     // =================================================================
     //  Cloud Integration — IFlows

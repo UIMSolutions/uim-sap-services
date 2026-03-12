@@ -8,8 +8,7 @@ class CAGService : SAPService {
   private CAGStore _store;
 
   this(CAGConfig config) {
-    config.validate();
-    _config = config;
+    super(config);
     _store = new CAGStore;
   }
 
@@ -17,7 +16,6 @@ class CAGService : SAPService {
     CAGConfig cfg = cast(CAGConfig)_config; 
 
     Json healthInfo = super.health();
-    healthInfo["status"] = "UP";
     healthInfo["runtime"] = cfg.runtime;
     healthInfo["multitenancy"] = true;
     healthInfo["domain"] = "content-agent";

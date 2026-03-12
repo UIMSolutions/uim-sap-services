@@ -17,8 +17,6 @@ class AASService : SAPService {
   this(AASConfig config) {
     super(config);
 
-    config.validate();
-    _config = config;
     _store = new AASStore;
   }
 
@@ -29,15 +27,16 @@ class AASService : SAPService {
   }
 
   Json registerApp(Json request) {
+    AASConfig cfg = cast(AASConfig)config;
     auto app = appFromJson(request);
     if (app.name.length == 0) {
       throw new AASValidationException("name is required");
     }
     if (app.organization.length == 0) {
-      app.organization = _config.cfOrganization.length > 0 ? _config.cfOrganization : "default-org";
+      app.organization = cfg.cfOrganization.length > 0 ? cfg.cfOrganization : "default-org";
     }
     if (app.space.length == 0) {
-      app.space = _config.cfSpace.length > 0 ? _config.cfSpace : "default-space";
+      app.space = cfg.cfSpace.length > 0 ? cfg.cfSpace : "default-space";
     }
     if (app.minInstances > app.maxInstances) {
       throw new AASValidationException("min_instances cannot be greater than max_instances");

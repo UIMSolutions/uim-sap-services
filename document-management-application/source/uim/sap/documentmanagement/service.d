@@ -37,8 +37,6 @@ class DMAService : SAPService {
   this(DMAConfig config) {
     super(config);
     
-    config.validate();
-    _config = config;
     _store = new DMAStore;
     _encryption = new EncryptionManager(config.encryptionEnabled, config.encryptionKey);
     _registry = new RepositoryRegistry;

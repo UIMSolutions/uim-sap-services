@@ -17,8 +17,7 @@ class AEMService : SAPService {
   private AEMStore _store;
 
   this(AEMConfig config) {
-    config.validate();
-    _config = config;
+    super(config);
     _store = new AEMStore;
   }
 
@@ -43,10 +42,7 @@ class AEMService : SAPService {
   Json listBrokerServices(string tenantId) {
     validateId(tenantId, "Tenant ID");
 
-    Json resources = Json.emptyArray;
-    foreach (broker; _store.listBrokers(tenantId)) {
-      resources ~= broker.toJson();
-    }
+    Json resources = _store.listBrokers(tenantId).map!(resource => broker.toJson()).array.toJson;
 
     Json result = Json.emptyObject;
     result["tenant_id"] = tenantId;

@@ -15,28 +15,23 @@ class BASService : SAPService {
   private BASTemplate[] _templates;
 
   this(BASConfig config) {
-    config.validate();
-    _config = config;
+    super(config);
+
     _store = new BASStore;
     seedReferenceContent();
   }
 
   Json health() const {
-    Json payload = Json.emptyObject;
-    payload["status"] = "UP";
-    payload["service"] = _config.serviceName;
-    payload["version"] = _config.serviceVersion;
-    payload["default_region"] = _config.defaultRegion;
-    payload["scenarios"] = cast(long)_scenarios.length;
-    return payload;
+    Json healthInfo = super.health();
+    healthInfo["default_region"] = _config.defaultRegion;
+    healthInfo["scenarios"] = cast(long)_scenarios.length;
+    return healthInfo;
   }
 
   Json listScenarios(string tenantId) {
     validateTenant(tenantId);
-    Json scenarios = Json.emptyArray;
-    foreach (scenario; _scenarios)
-      scenarios ~= scenario.toJson();
 
+    Json scenarios = _scenarios.map!(scenario => scenario.toJson()).array.toJson;
     Json payload = Json.emptyObject;
     payload["scenarios"] = scenarios;
     payload["count"] = cast(long)scenarios.length;
@@ -45,8 +40,8 @@ class BASService : SAPService {
 
   Json listTemplates(string tenantId, string scenarioId = "") {
     validateTenant(tenantId);
-    Json templates = Json.emptyArray;
 
+    Json templates = Json.emptyArray;
     foreach (templateValue; _templates) {
       if (scenarioId.length > 0 && templateValue.scenarioId != scenarioId)
         continue;

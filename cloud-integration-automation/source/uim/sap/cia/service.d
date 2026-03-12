@@ -21,8 +21,8 @@ class CIAService : SAPService {
   private CIAStore _store;
 
   this(CIAConfig config) {
-    config.validate();
-    _config = config;
+    super(config);
+
     _store = new CIAStore;
     _seedDefaultData();
   }
