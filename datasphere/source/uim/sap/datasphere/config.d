@@ -11,6 +11,12 @@ mixin(ShowModule!());
 
 @safe:
 
+/**
+  * Configuration class for the DataSphere service.
+  * This class extends the base SAPConfig and adds specific settings for DataSphere.
+  * It includes properties for default space resources, authentication, and custom headers.
+  * The initialize method populates the configuration from a JSON object, and the validate method checks for required fields and logical consistency.
+  */
 class DSPConfig : SAPConfig {
   mixin(SAPConfigTemplate!DSPConfig);
 
@@ -20,14 +26,14 @@ class DSPConfig : SAPConfig {
     }
 
     host(initData.getString("host", "0.0.0.0"));
+    port(cast(ushort)initData.getInteger("port", 8098));
+    basePath(initData.getString("basePath", "/api/datasphere"));
+    serviceName(initData.getString("serviceName", "uim-datasphere"));
+    serviceVersion(initData.getString("serviceVersion", "1.0.0"));
+
     return true;
   }
 
-  ushort port = 8098;
-  string basePath = "/api/datasphere";
-
-  string serviceName = "uim-datasphere";
-  string serviceVersion = "1.0.0";
   int defaultSpaceDiskGb = 50;
   int defaultSpaceMemoryGb = 16;
 

@@ -17,13 +17,14 @@ class IPVConfig : SAPConfig {
        return false;
     }
 
+    basePath(initdata.getString("basePath", "/api/ip"));
+    host(initdata.getString("host", "0.0.0.0"));
+    port(initdata.get("port", 8095));
+    serviceName(initdata.getString("serviceName", "uim-ip"));
+    serviceVersion(initdata.getString("serviceVersion", "1.0.0"));
+
     return true;
   } 
-    string host = "0.0.0.0";
-    ushort port = 8095;
-    string basePath = "/api/ip";
-    string serviceName = "uim-ip";
-    string serviceVersion = "1.0.0";
     bool requireAuthToken = false;
     string authToken;
     string[string] customHeaders;

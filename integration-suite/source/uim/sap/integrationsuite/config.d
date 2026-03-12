@@ -7,23 +7,25 @@ mixin(ShowModule!());
 @safe:
 
 class INTConfig : SAPConfig {
-    override bool initialize(Json[string] initdata) {
+  override bool initialize(Json[string] initdata) {
     if (!super.initialize(initdata)) {
-       return false;
+      return false;
     }
+
+    port(cast(ushort)initdata.getInteger("port", 8100));
+    host(initdata.getString("host", "0.0.0.0"));
+    basePath(initdata.getString("basePath", "/api/is"));
+    serviceName(initdata.getString("serviceName", "uim-is"));
+    serviceVersion(initdata.getString("serviceVersion", "1.0.0"));
 
     return true;
   }
-  string host = "0.0.0.0";
-  ushort port = 8100;
-  string basePath = "/api/is";
-  string serviceName = "uim-is";
-  string serviceVersion = "1.0.0";
+
   bool requireAuthToken = false;
   string authToken;
   string[string] customHeaders;
 
-  void validate() {
+  override void validate() {
     super.validate();
 
     if (port == 0) {

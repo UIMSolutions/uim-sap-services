@@ -25,17 +25,13 @@ mixin(ShowModule!());
   */
 
 class DSPService : SAPService {
-  private DSPConfig _config;
+  mixin(SAPServiceTemplate!DSPService);
+
   private DSPStore _store;
 
   this(DSPConfig config) {
-    config.validate();
-    _config = config;
+    super(config);
     _store = new DSPStore;
-  }
-
-  @property const(DSPConfig) config() const {
-    return _config;
   }
 
   override Json health() {
@@ -46,9 +42,6 @@ class DSPService : SAPService {
     ].toJson;
 
     Json healthInfo = super.health();
-    healthInfo["ok"] = true;
-    healthInfo["serviceName"] = _config.serviceName;
-    healthInfo["serviceVersion"] = _config.serviceVersion;
     healthInfo["capabilities"] = capabilities;
     return healthInfo;
   }

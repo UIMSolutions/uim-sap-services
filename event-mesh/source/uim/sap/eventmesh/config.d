@@ -12,24 +12,37 @@ mixin(ShowModule!());
 @safe:
 
 class EVMConfig : SAPConfig {
-    string host = "0.0.0.0";
-    ushort port = 8092;
-    string basePath = "/api/em";
-    string serviceName = "uim-em";
-    string serviceVersion = "1.0.0";
-    bool requireAuthToken = false;
-    string authToken;
-    string[string] customHeaders;
+  mixin(SAPConfigTemplate!EVMConfig);
 
-    void validate() {
-        if (port == 0) {
-            throw new EVMConfigurationException("Port must be greater than zero");
-        }
-        if (basePath.length == 0) {
-            throw new EVMConfigurationException("Base path cannot be empty");
-        }
-        if (requireAuthToken && authToken.length == 0) {
-            throw new EVMConfigurationException("Auth token required but not set");
-        }
+  override bool initialize(Json[string] initdata) {
+    if (!super.initialize(initdata)) {
+      return false;
     }
+
+    basePath(initdata.getString("basePath", "/api/em"));
+    host(initdata.getString("host", "0.0.0.0"));
+    port(cast(ushort)initdata.getInteger("port", 8092));
+    serviceName(initdata.getString("serviceName", "uim-em"));
+    serviceVersion(initdata.getString("serviceVersion", "1.0.0"));
+
+    return true;
+  }
+
+  bool requireAuthToken = false;
+  string authToken;
+  string[string] customHeaders;
+
+  override void validate() {
+    super.validate();
+
+    if (port == 0) {
+      throw new EVMConfigurationException("Port must be greater than zero");
+    }
+    if (basePath.length == 0) {
+      throw new EVMConfigurationException("Base path cannot be empty");
+    }
+    if (requireAuthToken && authToken.length == 0) {
+      throw new EVMConfigurationException("Auth token required but not set");
+    }
+  }
 }

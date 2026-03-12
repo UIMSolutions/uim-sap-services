@@ -124,7 +124,11 @@ class SAPConfig : ISAPConfig {
       throw new Exception("Port must be greater than zero");
     }
 
-    if (basePath.length == 0 || !basePath.startsWith("/")) {
+    if (basePath.length == 0) {
+      throw new Exception("Base path cannot be empty");
+    }
+
+    if (!basePath.startsWith("/")) {
       throw new Exception("Base path must start with '/'");
     }
   }

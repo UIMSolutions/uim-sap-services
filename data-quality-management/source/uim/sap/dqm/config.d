@@ -6,7 +6,7 @@ mixin(ShowModule!());
 
 @safe:
 
-struct DQMConfig : SAPConfig {
+class DQMConfig : SAPConfig {
   mixin(SAPConfigTemplate!DQMConfig);
 
   override bool initialize(Json[string] initData = null) {
@@ -15,15 +15,14 @@ struct DQMConfig : SAPConfig {
     }
 
     host(initData.getString("host", "0.0.0.0"));
+    port(cast(ushort)initData.getInteger("port", 8091));
+    basePath(initData.getString("basePath", "/api/dqm"));
+    serviceName(initData.getString("serviceName", "uim-dqm"));
+    serviceVersion(initData.getString("serviceVersion", "1.0.0"));
+    defaultCountry(initData.getString("defaultCountry", "DE"));
+
     return true;
   }
-
-  ushort port = 8091;
-  string basePath = "/api/dqm";
-
-  string serviceName = "uim-dqm";
-  string serviceVersion = "1.0.0";
-  string defaultCountry = "DE";
 
   bool requireAuthToken = false;
   string authToken;
@@ -31,6 +30,8 @@ struct DQMConfig : SAPConfig {
   string[string] customHeaders;
 
   override void validate() const {
+    super.validate();
+    
     if (host.length == 0)
       throw new DQMConfigurationException("Host cannot be empty");
     if (port == 0)

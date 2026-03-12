@@ -7,7 +7,7 @@ module uim.sap.har.config;
 
 import uim.sap.har;
 
-struct HARConfig : SAPConfig {
+class HARConfig : SAPConfig {
   mixin(SAPConfigTemplate!HARConfig);
 
   override bool initialize(Json[string] initData = null) {
@@ -15,15 +15,14 @@ struct HARConfig : SAPConfig {
       return false;
     }
 
+    port(cast(ushort)initData.getInteger("port", 8094));
     host(initData.getString("host", "0.0.0.0"));
+    basePath(initData.getString("basePath", "/api/html5-repo"));
+    serviceName(initData.getString("serviceName", "uim-html5-app-repo"));
+    serviceVersion(initData.getString("serviceVersion", "1.0.0"));
+
     return true;
   }
-
-  ushort port = 8094;
-  string basePath = "/api/html5-repo";
-
-  string serviceName = "uim-html5-app-repo";
-  string serviceVersion = "1.0.0";
 
   string dataDirectory = "/tmp/uim-html5-repo-data";
   string defaultTenant = "provider";

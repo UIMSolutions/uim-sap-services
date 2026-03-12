@@ -1,17 +1,28 @@
 module uim.sap.cag.config;
 
-import std.string : startsWith;
+import uim.sap.cag;
 
-import uim.sap.cag.exceptions;
+mixin(ShowModule!());
 
-struct CAGConfig : SAPConfig {
-  mixin()
-  string host = "0.0.0.0";
-  ushort port = 8096;
-  string basePath = "/api/content-agent";
+@safe:
 
-  string serviceName = "uim-content-agent";
-  string serviceVersion = "1.0.0";
+class CAGConfig : SAPConfig {
+  mixin(SAPConfigTemplate!CAGConfig);
+
+  override bool initialize(Json[string] initData = null) {
+    if (!super.initialize(initData)) {
+      return false;
+    }
+
+    port(cast(ushort)initData.getInteger("port", 8096));
+    host(initData.getString("host", "0.0.0.0"));
+    basePath(initData.getString("basePath", "/api/content-agent"));
+    serviceName(initData.getString("serviceName", "uim-content-agent"));
+    serviceVersion(initData.getString("serviceVersion", "1.0.0"));
+
+    return true;
+  }
+
   string runtime = "cloud-foundry";
 
   bool requireAuthToken = false;

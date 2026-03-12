@@ -10,13 +10,22 @@ import std.string : startsWith;
 
 import uim.sap.cdc.exceptions;
 
-struct CDCConfig : SAPConfig {
-  string host = "0.0.0.0";
-  ushort port = 8097;
-  string basePath = "/api/customer-data";
+class CDCConfig : SAPConfig {
+  mixin(SAPConfigTemplate!CDCConfig);
 
-  string serviceName = "uim-customer-data";
-  string serviceVersion = "1.0.0";
+  override bool initialize(Json[string] initData) {
+    if (!super.initialize(initData)) {
+      return false;
+    }
+
+    port(cast(ushort)initData.getInteger("port", 8097));
+    host(initData.getString("host", "0.0.0.0"));
+    basePath(initData.getString("basePath", "/api/customer-data"));
+    serviceName(initData.getString("serviceName", "uim-customer-data"));
+    serviceVersion(initData.getString("serviceVersion", "1.0.0"));
+
+    return true;
+  }
 
   string dataDirectory = "/tmp/uim-customer-data";
   string cacheFileName = "customer-data-cache.json";

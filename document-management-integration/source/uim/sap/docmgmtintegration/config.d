@@ -5,27 +5,41 @@
 *****************************************************************************************************************/
 module uim.sap.docmgmtintegration.config;
 
-import std.string : startsWith, toLower;
+import uim.sap.docmgmtintegration;
 
-import uim.sap.docmgmtintegration.exceptions;
+mixin(ShowModule!());
 
+@safe:
+
+/** 
+  * Configuration class for the Document Management Integration service.
+  * This class extends the base SAPConfig and adds specific settings for document management.
+  * It includes properties for upload limits, encryption, versioning, multitenancy, and authentication.
+  * The initialize method populates the configuration from a JSON object, and the validate method checks for required fields and logical consistency.
+  */
 class DocMgmtIntegrationConfig : SAPConfig {
-  this() {
-    super();
-  }
+  mixin(SAPConfigTemplate!DocMgmtIntegrationConfig);
 
   this(Json[string] initData = null) {
     super(initData);
   }
 
-  /// Network
-  string host = "0.0.0.0";
-  ushort port = 8091;
-  string basePath = "/api/docmgmt-integration";
+  override bool initialize(Json[string] initdata) {
+    if (!super.initialize(initdata)) {
+      return false;
+    }
 
-  /// Service metadata
-  string serviceName = "uim-docmgmt-integration";
-  string serviceVersion = "1.0.0";
+    /// Network
+    basePath(initdata.getString("basePath", "/api/docmgmt-integration"));
+    host(initdata.getString("host", "0.0.0.0"));
+    port(cast(ushort)initdata.getInteger("port", 8091));
+
+    /// Service metadata
+    serviceName(initdata.getString("serviceName", "uim-docmgmt-integration"));
+    serviceVersion(initdata.getString("serviceVersion", "1.0.0"));
+
+    return true;
+  }
 
   /// Upload limits
   int maxUploadSizeMB = 100;

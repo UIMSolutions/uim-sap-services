@@ -19,24 +19,21 @@ class FFLConfig : SAPConfig {
       return false;
     }
 
+    port(cast(ushort)initData.getInteger("port", 8094));
+    basePath(initData.getString("basePath", "/api/ff"));
+    serviceName(initData.getString("serviceName", "uim-ff"));
+    serviceVersion(initData.getString("serviceVersion", "1.0.0"));
+
     host(initData.getString("host", "0.0.0.0"));
     return true;
   }
-    ushort port = 8094;
-    string basePath = "/api/ff";
-    string serviceName = "uim-ff";
-    string serviceVersion = "1.0.0";
     bool requireAuthToken = false;
     string authToken;
     string[string] customHeaders;
 
-    void validate() {
-        if (port == 0) {
-            throw new FFLConfigurationException("Port must be greater than zero");
-        }
-        if (basePath.length == 0) {
-            throw new FFLConfigurationException("Base path cannot be empty");
-        }
+    override void validate() {
+        super.validate();
+        
         if (requireAuthToken && authToken.length == 0) {
             throw new FFLConfigurationException("Auth token required but not set");
         }

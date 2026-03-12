@@ -6,6 +6,19 @@ mixin(ShowModule!());
 
 @safe:
 
+/**
+  * DSPServer is the main HTTP server for the DataSphere service. It listens for incoming requests and routes them to the appropriate service methods based on the URL path and HTTP method.
+  * The server also handles authentication if enabled in the configuration, and adds any custom headers specified in the configuration to each response.
+  * It defines endpoints for health checks, tenant administration, data modeling, business modeling, integration, spaces, security, governance, and consumption.
+  *
+  * The handleRequest method parses the incoming request, validates authentication, and dispatches to the correct service method based on the URL path segments. It also handles errors and returns appropriate HTTP status codes and messages.
+  *
+  * The validateAuth method checks for the presence of an Authorization header and validates the token if token-based authentication is enabled in the configuration.
+  * The normalizedSegments method cleans and splits the URL path into segments for easier routing.
+  * The respondError method is a helper for sending JSON error responses with a consistent structure.
+  *
+  * Note: This server implementation is basic and may not be suitable for production use without additional features such as logging, metrics, CORS handling, rate limiting, etc.
+  */
 class DSPServer {
   private DSPService _service;
 
