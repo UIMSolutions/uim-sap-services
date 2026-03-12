@@ -11,7 +11,7 @@ mixin(ShowModule!());
 
 @safe:
 void main() {
-  MDGConfig config;
+  MDGConfig config = new MDGConfig();
   config.host = envOr("MDG_HOST", "0.0.0.0");
   config.port = readPort(envOr("MDG_PORT", "8087"), 8087);
   config.basePath = envOr("MDG_BASE_PATH", "/api/mdg");

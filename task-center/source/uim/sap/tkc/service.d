@@ -16,27 +16,19 @@ class TKCService : SAPService {
     private TKCStore _store;
 
     this(TKCConfig config) {
-        config.validate();
-        _config = config;
+        super(config);
+
         _store = new TKCStore(config.cacheFilePath);
     }
 
-    @property inout(TKCConfig) config() inout {
-        return _config;
-    }
-
     Json health() const {
-        Json payload = Json.emptyObject;
-        payload["status"] = "UP";
-        payload["service"] = _config.serviceName;
-        payload["version"] = _config.serviceVersion;
+        Json payload = super.health();
         payload["domain"] = "task-center";
         return payload;
     }
 
     Json listProviders() {
-        Json providers = Json.emptyArray;
-        foreach (provider; _store.listProviders()) providers ~= provider.toJson();
+        Json providers = _store.listProviders().map!(provider => provider.toJson).array.toJson;
 
         Json payload = Json.emptyObject;
         payload["providers"] = providers;

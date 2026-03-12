@@ -10,8 +10,8 @@ class MDGService : SAPService {
   private MDGStore _store;
 
   this(MDGConfig config) {
-    config.validate();
-    _config = config;
+    super(config);
+
     _store = new MDGStore;
   }
 

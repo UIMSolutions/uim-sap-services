@@ -21,15 +21,12 @@ class OAUService : SAPService {
     mixin(SAPServiceTemplate!OAUService);
 
     private OAUStore _store;
-    private OAUConfig _config;
 
     this(OAUConfig config) {
         super(config);
-        _config = config;
+
         _store = new OAUStore;
     }
-
-    @property OAUConfig config() { return _config; }
 
     override Json health() {
         Json info = super.health();

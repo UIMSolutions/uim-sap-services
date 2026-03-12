@@ -32,20 +32,13 @@ class SDIService : SAPService {
   private SDIStore _store;
 
   this(SDIConfig config) {
-    config.validate();
-    _config = config;
-    _store = new SDIStore;
-  }
+    super(config);
 
-  @property const(SDIConfig) config() const {
-    return _config;
+    _store = new SDIStore;
   }
 
   Json health() const {
     Json payload = Json.emptyObject;
-    payload["status"] = "UP";
-    payload["service"] = _config.serviceName;
-    payload["version"] = _config.serviceVersion;
     payload["domain"] = "site-directory";
     return payload;
   }

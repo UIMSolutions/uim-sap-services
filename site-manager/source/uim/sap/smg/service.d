@@ -16,20 +16,13 @@ class SMGService : SAPService {
   private SMGStore _store;
 
   this(SMGConfig config) {
-    config.validate();
-    _config = config;
-    _store = new SMGStore;
-  }
+    super(config.validate);
 
-  @property const(SMGConfig) config() const {
-    return _config;
+    _store = new SMGStore;
   }
 
   Json health() const {
     Json payload = Json.emptyObject;
-    payload["status"] = "UP";
-    payload["service"] = _config.serviceName;
-    payload["version"] = _config.serviceVersion;
     payload["category"] = "site-manager";
     return payload;
   }

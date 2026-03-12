@@ -10,7 +10,7 @@ mixin(ShowModule!());
 
 @safe:
 void main() {
-  SMGConfig config;
+  SMGConfig config = new SMGConfig;
   config.host = envOr("SMG_HOST", "0.0.0.0");
   config.port = readPort(envOr("SMG_PORT", "8094"), 8094);
   config.basePath = envOr("SMG_BASE_PATH", "/api/sitemanager");
