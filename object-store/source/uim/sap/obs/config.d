@@ -43,15 +43,18 @@ class OBSConfig : SAPConfig {
       return false;
     }
 
-    host(initData.getString("host", "0.0.0.0"));
+    /// Network
     basePath(initData.getString("basePath", "/api/obs"));
+    host(initData.getString("host", "0.0.0.0"));
+    port(cast(ushort)inidata.getInteger("port", 8091));
+
+    /// Service metadata
     serviceName(initData.getString("serviceName", "uim-obs"));
     serviceVersion(initData.getString("serviceVersion", "1.0.0"));
 
     return true;
   }
 
-  ushort port = 8091;
   bool requireAuthToken = false;
   string authToken;
 
@@ -78,12 +81,6 @@ class OBSConfig : SAPConfig {
   override void validate() const {
     super.validate();
 
-    if (host.length == 0)
-      throw new OBSConfigurationException("Host cannot be empty");
-    if (port == 0)
-      throw new OBSConfigurationException("Port must be greater than zero");
-    if (basePath.length == 0 || !basePath.startsWith("/"))
-      throw new OBSConfigurationException("Base path must start with '/'");
     if (requireAuthToken && authToken.length == 0)
       throw new OBSConfigurationException("Auth token required when token auth is enabled");
     if (maxBucketsPerTenant == 0)

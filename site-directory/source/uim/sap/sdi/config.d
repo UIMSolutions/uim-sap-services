@@ -5,9 +5,11 @@
 *****************************************************************************************************************/
 module uim.sap.sdi.config;
 
-import std.string : startsWith;
+import uim.sap.sdi;
 
-import uim.sap.sdi.exceptions;
+mixin(ShowModule!());
+
+@safe:
 
 class SDIConfig : SAPConfig {
   mixin(SAPConfigTemplate!SDIConfig);
@@ -17,14 +19,14 @@ class SDIConfig : SAPConfig {
        return false;
     }
 
+    port(cast(ushort)initdata.getInteger("port", 8096));
+    host(initdata.getString("host", "0.0.0.0"));
+    basePath(initdata.getString("basePath", "/api/sitedirectory"));
+    serviceName(initdata.getString("serviceName", "uim-sdi"));
+    serviceVersion(initdata.getString("serviceVersion", "1.0.0"));
+
     return true;
   }
-  string host = "0.0.0.0";
-  ushort port = 8096;
-  string basePath = "/api/sitedirectory";
-
-  string serviceName = "uim-sdi";
-  string serviceVersion = "1.0.0";
 
   bool requireAuthToken = false;
   string authToken;
@@ -34,14 +36,6 @@ class SDIConfig : SAPConfig {
   override void validate() const {
     super.validate();
 
-    if (host.length == 0)
-      throw new SDIConfigurationException("Host cannot be empty");
-    if (port == 0)
-      throw new SDIConfigurationException("Port must be greater than zero");
-    if (basePath.length == 0 || !basePath.startsWith("/"))
-      throw new SDIConfigurationException("Base path must start with '/'");
-    if (serviceName.length == 0)
-      throw new SDIConfigurationException("Service name cannot be empty");
     if (requireAuthToken && authToken.length == 0)
       throw new SDIConfigurationException("Auth token required when token auth is enabled");
   }

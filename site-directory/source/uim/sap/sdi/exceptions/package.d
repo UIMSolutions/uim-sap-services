@@ -5,3 +5,11 @@
 *****************************************************************************************************************/
 module uim.sap.sdi.exceptions;
 
+public {
+    import uim.sap.sdi.exceptions.exception;
+
+    import uim.sap.sdi.exceptions.authorization;
+    import uim.sap.sdi.exceptions.validation;
+    import uim.sap.sdi.exceptions.configuration;
+    import uim.sap.sdi.exceptions.notfound;
+}

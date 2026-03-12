@@ -19,14 +19,14 @@ class TKCConfig : SAPConfig {
        return false;
     }
 
+  port(cast(ushort)initdata.getInteger("port", 8096));
+  host(initdata.getString("host", "0.0.0.0"));
+  basePath(initdata.getString("basePath", "/api/task-center"));
+  serviceName(initdata.getString("serviceName", "uim-task-center"));
+  serviceVersion(initdata.getString("serviceVersion", "1.0.0"));
+
     return true;
   }
-  string host = "0.0.0.0";
-  ushort port = 8096;
-  string basePath = "/api/task-center";
-
-  string serviceName = "uim-task-center";
-  string serviceVersion = "1.0.0";
 
   string dataDirectory = "/tmp/uim-task-center-data";
   string cacheFileName = "task-cache.json";
@@ -43,15 +43,6 @@ class TKCConfig : SAPConfig {
   override void validate() const {
     super.validate();
 
-    if (host.length == 0)
-      throw new TKCConfigurationException("Host cannot be empty");
-    if (port == 0)
-      throw new TKCConfigurationException("Port must be greater than zero");
-    if (basePath.length == 0 || !basePath.startsWith("/")) {
-      throw new TKCConfigurationException("Base path must start with '/'");
-    }
-    if (serviceName.length == 0)
-      throw new TKCConfigurationException("Service name cannot be empty");
     if (dataDirectory.length == 0)
       throw new TKCConfigurationException("Data directory cannot be empty");
     if (cacheFileName.length == 0)
