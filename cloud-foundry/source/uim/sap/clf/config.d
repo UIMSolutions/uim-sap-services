@@ -19,15 +19,14 @@ class CLFConfig : SAPConfig {
       return false;
     }
 
+    port(cast(ushort)initData.getInteger("port", 8082));
+    basePath(initData.getString("basePath", "/api/cf"));
     host(initData.getString("host", "0.0.0.0"));
     serviceName(initData.getString("serviceName", "uim-clf"));
     serviceVersion(initData.getString("serviceVersion", "1.0.0"));
 
     return true;
   }
-
-  ushort port = 8082;
-  string basePath = "/api/cf";
 
   bool requireAuthToken = false;
   string authToken;
@@ -37,15 +36,6 @@ class CLFConfig : SAPConfig {
   override void validate() const {
     super.validate();
 
-    if (host.length == 0) {
-      throw new CLFConfigurationException("Host cannot be empty");
-    }
-    if (port == 0) {
-      throw new CLFConfigurationException("Port must be greater than zero");
-    }
-    if (basePath.length == 0 || !basePath.startsWith("/")) {
-      throw new CLFConfigurationException("Base path must start with '/'");
-    }
     if (requireAuthToken && authToken.length == 0) {
       throw new CLFConfigurationException("Auth token required when token auth is enabled");
     }

@@ -4,7 +4,7 @@ import std.string : startsWith;
 
 import uim.sap.cid.exceptions;
 
-struct CIDConfig : SAPConfig {
+class CIDConfig : SAPConfig {
   mixin(SAPConfigTemplate!CIDConfig);
 
   override bool initialize(Json[string] initData = null) {
@@ -12,6 +12,7 @@ struct CIDConfig : SAPConfig {
       return false;
     }
 
+    port(cast(ushort)initData.getInteger("port", 8102));
     host(initData.getString("host", "0.0.0.0"));
     basePath(initData.getString("basePath", "/api/cicd"));
     serviceName(initData.getString("serviceName", "uim-cid"));
@@ -20,7 +21,6 @@ struct CIDConfig : SAPConfig {
     return true;
   }
 
-  ushort port = 8102;
   string runtime = "cloud-foundry";
 
   bool requireAuthToken = false;
@@ -31,14 +31,6 @@ struct CIDConfig : SAPConfig {
   override void validate() const {
     super.validate();
 
-    if (host.length == 0)
-      throw new CIDConfigurationException("Host cannot be empty");
-    if (port == 0)
-      throw new CIDConfigurationException("Port must be greater than zero");
-    if (basePath.length == 0 || !basePath.startsWith("/"))
-      throw new CIDConfigurationException("Base path must start with '/'");
-    if (serviceName.length == 0)
-      throw new CIDConfigurationException("Service name cannot be empty");
     if (runtime.length == 0)
       throw new CIDConfigurationException("Runtime cannot be empty");
     if (requireAuthToken && authToken.length == 0)

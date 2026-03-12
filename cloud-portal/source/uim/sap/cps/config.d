@@ -5,11 +5,13 @@
 *****************************************************************************************************************/
 module uim.sap.cps.config;
 
-import std.string : startsWith;
+import uim.sap.cps;
 
-import uim.sap.cps.exceptions;
+mixin(ShowModule!());
 
-struct CPSConfig : SAPConfig {
+@safe:
+
+class CPSConfig : SAPConfig {
   mixin(SAPConfigTemplate!CPSConfig);
 
   override bool initialize(Json[string] initData = null) {
@@ -17,6 +19,7 @@ struct CPSConfig : SAPConfig {
       return false;
     }
 
+    port(cast(ushort)initData.getInteger("port", 8089));
     host(initData.getString("host", "0.0.0.0"));
     basePath(initData.getString("basePath", "/api/cps"));
     serviceName(initData.getString("serviceName", "uim-cps"));
@@ -25,8 +28,6 @@ struct CPSConfig : SAPConfig {
     return true;
   }
 
-  ushort port = 8089;
-
   string defaultTheme = "sap_fiori_3";
 
   bool requireAuthToken = false;
@@ -34,20 +35,14 @@ struct CPSConfig : SAPConfig {
 
   string[string] customHeaders;
 
-  void validate() const {
+  override void validate() const {
     super.validate();
 
-    if (host.length == 0)
-      throw new CPSConfigurationException("Host cannot be empty");
-    if (port == 0)
-      throw new CPSConfigurationException("Port must be greater than zero");
-    if (basePath.length == 0 || !basePath.startsWith("/"))
-      throw new CPSConfigurationException("Base path must start with '/'");
-    if (serviceName.length == 0)
-      throw new CPSConfigurationException("Service name cannot be empty");
-    if (defaultTheme.length == 0)
+    if (defaultTheme.length == 0) {
       throw new CPSConfigurationException("Default theme cannot be empty");
-    if (requireAuthToken && authToken.length == 0)
+    }
+    if (requireAuthToken && authToken.length == 0) {
       throw new CPSConfigurationException("Auth token required when token auth is enabled");
+    }
   }
 }

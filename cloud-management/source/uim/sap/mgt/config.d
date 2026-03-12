@@ -32,7 +32,7 @@ mixin(ShowModule!());
   *     basePath: "/api/mgt"
   * );
   */
-struct MGTConfig : SAPConfig {
+class MGTConfig : SAPConfig {
   mixin(SAPConfigTemplate!HTMRepoConfig);
 
   override bool initialize(Json[string] initData = null) {
@@ -40,6 +40,7 @@ struct MGTConfig : SAPConfig {
       return false;
     }
 
+    port(cast(ushort)initData.getInteger("port", 8088));
     host(initData.getString("host", "0.0.0.0"));
     basePath(initData.getString("basePath", "/api/mgt"));
     serviceName(initData.getString("serviceName", "uim-mgt"));
@@ -48,7 +49,6 @@ struct MGTConfig : SAPConfig {
     return true;
   }
 
-  ushort port = 8088;
 
   bool requireAuthToken = false;
   string authToken;
@@ -65,18 +65,9 @@ struct MGTConfig : SAPConfig {
 
   string[string] customHeaders;
 
-  void validate() const {
+  override void validate() const {
     super.validate();
 
-    if (host.length == 0) {
-      throw new MGTConfigurationException("Host cannot be empty");
-    }
-    if (port == 0) {
-      throw new MGTConfigurationException("Port must be greater than zero");
-    }
-    if (basePath.length == 0 || !basePath.startsWith("/")) {
-      throw new MGTConfigurationException("Base path must start with '/'");
-    }
     if (requireAuthToken && authToken.length == 0) {
       throw new MGTConfigurationException("Auth token required when token auth is enabled");
     }

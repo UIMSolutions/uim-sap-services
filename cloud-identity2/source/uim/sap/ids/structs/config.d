@@ -14,7 +14,7 @@ import uim.sap.ids;
 /**
  * Configuration for Cloud Identity Services
  */
-struct IdentityConfig : SAPConfig {
+class IdentityConfig : SAPConfig {
   /// Service type
   IdentityServiceType serviceType = IdentityServiceType.IAS;
 
@@ -57,15 +57,11 @@ struct IdentityConfig : SAPConfig {
   /**
      * Validate the configuration
      */
-  void validate() const @safe {
+  override void validate() const @safe {
     super.validate();
 
     if (tenantHost.length == 0) {
       throw new IdentityConfigurationException("Tenant host cannot be empty");
-    }
-
-    if (port == 0) {
-      throw new IdentityConfigurationException("Invalid port number");
     }
 
     if (clientId.length == 0) {

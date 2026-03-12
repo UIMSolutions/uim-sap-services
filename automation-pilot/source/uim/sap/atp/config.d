@@ -61,16 +61,6 @@ class ATPConfig : SAPConfig {
   override void validate() const {
     super.validate();
 
-    if (host.length == 0)
-      throw new ATPConfigurationException("Host cannot be empty");
-    if (port == 0)
-      throw new ATPConfigurationException("Port must be greater than zero");
-    if (basePath.length == 0 || !basePath.startsWith("/"))
-      throw new ATPConfigurationException("Base path must start with '/'");
-    if (serviceName.length == 0)
-      throw new ATPConfigurationException("Service name cannot be empty");
-    if (aiProvider.length == 0)
-      throw new ATPConfigurationException("AI provider cannot be empty");
     if (requireAuthToken && authToken.length == 0)
       throw new ATPConfigurationException("Auth token required when token auth is enabled");
   }
