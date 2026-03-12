@@ -33,24 +33,9 @@ class AEMConfig : SAPConfig {
 
   string[string] customHeaders;
 
-  void validate() const {
+  override void validate() const {
     super.validate();
 
-    if (host.length == 0) {
-      throw new AEMConfigurationException("Host cannot be empty");
-    }
-    if (port == 0) {
-      throw new AEMConfigurationException("Port must be greater than zero");
-    }
-    if (basePath.length == 0 || !basePath.startsWith("/")) {
-      throw new AEMConfigurationException("Base path must start with '/'");
-    }
-    if (serviceName.length == 0) {
-      throw new AEMConfigurationException("Service name cannot be empty");
-    }
-    if (serviceVersion.length == 0) {
-      throw new AEMConfigurationException("Service version cannot be empty");
-    } 
     if (defaultMeshRegion.length == 0) {
       throw new AEMConfigurationException("Default mesh region cannot be empty");
     }

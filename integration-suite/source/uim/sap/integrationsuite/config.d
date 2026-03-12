@@ -28,12 +28,6 @@ class INTConfig : SAPConfig {
   override void validate() {
     super.validate();
 
-    if (port == 0) {
-      throw new INTConfigurationException("Port must be greater than zero");
-    }
-    if (basePath.length == 0) {
-      throw new INTConfigurationException("Base path cannot be empty");
-    }
     if (requireAuthToken && authToken.length == 0) {
       throw new INTConfigurationException("Auth token required but not set");
     }

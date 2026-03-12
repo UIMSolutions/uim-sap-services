@@ -32,22 +32,21 @@ mixin(ShowModule!());
   * Note: The serviceName and serviceVersion properties are inherited from SAPConfig and can be set via the initialize method.
   */
 class ATMConfig : SAPConfig {
-  mixin(SAPConfigTemplate!AgentryConfig);
+  mixin(SAPConfigTemplate!ATMConfig);
 
   override bool initialize(Json[string] initData = null) {
     if (!super.initialize(initData)) {
       return false;
     }
 
+    port(cast(ushort)initData.getInteger("port", 8088));
+    basePath(initData.getString("basePath", "/api/atm"));
     serviceName(initData.getString("serviceName", "uim-atm"));
     serviceVersion(initData.getString("serviceVersion", "1.0.0"));
     host(initData.getString("host", "0.0.0.0"));
 
     return true;
   }
-
-  ushort port = 8088;
-  string basePath = "/api/atm";
 
   string defaultIdpName = "sap-id-service";
   string defaultIdpIssuer = "https://accounts.sap.com";
@@ -62,18 +61,6 @@ class ATMConfig : SAPConfig {
   override void validate() const {
     super.validate();
 
-    if (host.length == 0) {
-      throw new ATMConfigurationException("Host cannot be empty");
-    }
-    if (port == 0) {
-      throw new ATMConfigurationException("Port must be greater than zero");
-    }
-    if (basePath.length == 0 || !basePath.startsWith("/")) {
-      throw new ATMConfigurationException("Base path must start with '/'");
-    }
-    if (serviceName.length == 0) {
-      throw new ATMConfigurationException("Service name cannot be empty");
-    }
     if (defaultIdpName.length == 0) {
       throw new ATMConfigurationException("Default IdP name cannot be empty");
     }

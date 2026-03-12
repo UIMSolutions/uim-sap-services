@@ -59,15 +59,6 @@ class AASConfig : SAPConfig {
   override void validate() const {
     super.validate();
 
-    if (host.length == 0) {
-      throw new AASConfigurationException("Host cannot be empty");
-    }
-    if (port == 0) {
-      throw new AASConfigurationException("Port must be greater than zero");
-    }
-    if (basePath.length == 0 || !basePath.startsWith("/")) {
-      throw new AASConfigurationException("Base path must start with '/'");
-    }
     if (requireAuthToken && authToken.length == 0) {
       throw new AASConfigurationException("Auth token required when token auth is enabled");
     }

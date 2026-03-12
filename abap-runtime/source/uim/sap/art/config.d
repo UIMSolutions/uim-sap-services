@@ -38,22 +38,6 @@ class ARTRuntimeConfig : SAPConfig {
   override void validate() const {
     super.validate();
 
-    if (host.length == 0) {
-      throw new ARTRuntimeConfigurationException("Host cannot be empty");
-    }
-
-    if (port == 0) {
-      throw new ARTRuntimeConfigurationException("Port must be greater than zero");
-    }
-
-    if (basePath.length == 0) {
-      throw new ARTRuntimeConfigurationException("Base path cannot be empty");
-    }
-
-    if (!basePath.startsWith("/")) {
-      throw new ARTRuntimeConfigurationException("Base path must start with '/'");
-    }
-
     if (requireAuthToken && authToken.length == 0) {
       throw new ARTRuntimeConfigurationException(
         "Auth token is required when requireAuthToken is enabled"

@@ -64,18 +64,6 @@ class CISConfig : SAPConfig {
   override void validate() const {
     super.validate();
 
-    if (host.length == 0) {
-      throw new CISConfigurationException("Host cannot be empty");
-    }
-    if (port == 0) {
-      throw new CISConfigurationException("Port must be greater than zero");
-    }
-    if (basePath.length == 0 || !basePath.startsWith("/")) {
-      throw new CISConfigurationException("Base path must start with '/'");
-    }
-    if (serviceName.length == 0) {
-      throw new CISConfigurationException("Service name cannot be empty");
-    }
     if (defaultAuthMethod.length == 0) {
       throw new CISConfigurationException("Default auth method cannot be empty");
     }

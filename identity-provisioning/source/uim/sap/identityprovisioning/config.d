@@ -12,9 +12,9 @@ mixin(ShowModule!());
 @safe:
 
 class IPVConfig : SAPConfig {
-    override bool initialize(Json[string] initdata) {
+  override bool initialize(Json[string] initdata) {
     if (!super.initialize(initdata)) {
-       return false;
+      return false;
     }
 
     basePath(initdata.getString("basePath", "/api/ip"));
@@ -24,20 +24,17 @@ class IPVConfig : SAPConfig {
     serviceVersion(initdata.getString("serviceVersion", "1.0.0"));
 
     return true;
-  } 
-    bool requireAuthToken = false;
-    string authToken;
-    string[string] customHeaders;
+  }
 
-    void validate() {
-        if (port == 0) {
-            throw new IPVConfigurationException("Port must be greater than zero");
-        }
-        if (basePath.length == 0) {
-            throw new IPVConfigurationException("Base path cannot be empty");
-        }
-        if (requireAuthToken && authToken.length == 0) {
-            throw new IPVConfigurationException("Auth token required but not set");
-        }
+  bool requireAuthToken = false;
+  string authToken;
+  string[string] customHeaders;
+
+  override void validate() {
+    super.validate();
+
+    if (requireAuthToken && authToken.length == 0) {
+      throw new IPVConfigurationException("Auth token required but not set");
     }
+  }
 }

@@ -11,7 +11,7 @@ mixin(ShowModule!());
 
 @safe:
 
-struct CLGConfig : SAPConfig {
+class CLGConfig : SAPConfig {
   mixin(SAPConfigTemplate!CLGConfig);
 
   override bool initialize(Json[string] initData = null) {
@@ -19,6 +19,7 @@ struct CLGConfig : SAPConfig {
       return false;
     }
 
+    port(cast(ushort)initData.getInteger("port", 8081));
     host(initData.getString("host", "0.0.0.0"));
     basePath(initData.getString("basePath", "/sap/cloud/logging/v1"));
     serviceName(initData.getString("serviceName", "uim-clg"));
@@ -26,8 +27,6 @@ struct CLGConfig : SAPConfig {
 
     return true;
   }
-
-  ushort port = 8081;
 
   size_t maxEntries = 10000;
   size_t defaultQueryLimit = 100;
@@ -39,18 +38,6 @@ struct CLGConfig : SAPConfig {
 
   override void validate() const {
     super.validate();
-
-    if (host.length == 0) {
-      throw new CLGConfigurationException("Host cannot be empty");
-    }
-
-    if (port == 0) {
-      throw new CLGConfigurationException("Port must be greater than zero");
-    }
-
-    if (basePath.length == 0 || !basePath.startsWith("/")) {
-      throw new CLGConfigurationException("Base path must start with '/'");
-    }
 
     if (maxEntries == 0) {
       throw new CLGConfigurationException("maxEntries must be greater than zero");

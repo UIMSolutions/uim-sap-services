@@ -35,12 +35,6 @@ class EVMConfig : SAPConfig {
   override void validate() {
     super.validate();
 
-    if (port == 0) {
-      throw new EVMConfigurationException("Port must be greater than zero");
-    }
-    if (basePath.length == 0) {
-      throw new EVMConfigurationException("Base path cannot be empty");
-    }
     if (requireAuthToken && authToken.length == 0) {
       throw new EVMConfigurationException("Auth token required but not set");
     }
