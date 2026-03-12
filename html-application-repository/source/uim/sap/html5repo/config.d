@@ -40,15 +40,6 @@ class HARConfig : SAPConfig {
   override void validate() const {
     super.validate();
 
-    if (host.length == 0)
-      throw new HARConfigurationException("Host cannot be empty");
-    if (port == 0)
-      throw new HARConfigurationException("Port must be greater than zero");
-    if (basePath.length == 0 || !basePath.startsWith("/")) {
-      throw new HARConfigurationException("Base path must start with '/'");
-    }
-    if (serviceName.length == 0)
-      throw new HARConfigurationException("Service name cannot be empty");
     if (dataDirectory.length == 0)
       throw new HARConfigurationException("Data directory cannot be empty");
     if (defaultTenant.length == 0)

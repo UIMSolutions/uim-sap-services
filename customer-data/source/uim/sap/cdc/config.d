@@ -18,9 +18,12 @@ class CDCConfig : SAPConfig {
       return false;
     }
 
-    port(cast(ushort)initData.getInteger("port", 8097));
-    host(initData.getString("host", "0.0.0.0"));
+    /// Network
     basePath(initData.getString("basePath", "/api/customer-data"));
+    host(initData.getString("host", "0.0.0.0"));
+    port(cast(ushort)initData.getInteger("port", 8097));
+
+    /// Service metadata
     serviceName(initData.getString("serviceName", "uim-customer-data"));
     serviceVersion(initData.getString("serviceVersion", "1.0.0"));
 
@@ -41,15 +44,6 @@ class CDCConfig : SAPConfig {
   override void validate() const {
     super.validate();
 
-    if (host.length == 0)
-      throw new CDCConfigurationException("Host cannot be empty");
-    if (port == 0)
-      throw new CDCConfigurationException("Port must be greater than zero");
-    if (basePath.length == 0 || !basePath.startsWith("/")) {
-      throw new CDCConfigurationException("Base path must start with '/'");
-    }
-    if (serviceName.length == 0)
-      throw new CDCConfigurationException("Service name cannot be empty");
     if (dataDirectory.length == 0)
       throw new CDCConfigurationException("Data directory cannot be empty");
     if (cacheFileName.length == 0)

@@ -33,15 +33,6 @@ class CAGConfig : SAPConfig {
   override void validate() const {
     super.validate();
 
-    if (host.length == 0)
-      throw new CAGConfigurationException("Host cannot be empty");
-    if (port == 0)
-      throw new CAGConfigurationException("Port must be greater than zero");
-    if (basePath.length == 0 || !basePath.startsWith("/")) {
-      throw new CAGConfigurationException("Base path must start with '/'");
-    }
-    if (serviceName.length == 0)
-      throw new CAGConfigurationException("Service name cannot be empty");
     if (runtime.length == 0)
       throw new CAGConfigurationException("Runtime cannot be empty");
     if (requireAuthToken && authToken.length == 0) {

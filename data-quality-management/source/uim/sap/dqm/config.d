@@ -14,11 +14,16 @@ class DQMConfig : SAPConfig {
       return false;
     }
 
+    /// Network
+    basePath(initData.getString("basePath", "/api/dqm"));
     host(initData.getString("host", "0.0.0.0"));
     port(cast(ushort)initData.getInteger("port", 8091));
-    basePath(initData.getString("basePath", "/api/dqm"));
+
+    /// Service metadata
     serviceName(initData.getString("serviceName", "uim-dqm"));
     serviceVersion(initData.getString("serviceVersion", "1.0.0"));
+
+    /// Default country
     defaultCountry(initData.getString("defaultCountry", "DE"));
 
     return true;
@@ -29,17 +34,14 @@ class DQMConfig : SAPConfig {
 
   string[string] customHeaders;
 
+  /** 
+    * Default country code to use for data quality checks when country is not specified in the input data.
+    * Should be a valid ISO 3166-1 alpha-2 country code (e.g. "DE", "US", "FR").
+    * This is used to provide better data quality results by applying country-specific rules and reference data.
+    */
   override void validate() const {
     super.validate();
     
-    if (host.length == 0)
-      throw new DQMConfigurationException("Host cannot be empty");
-    if (port == 0)
-      throw new DQMConfigurationException("Port must be greater than zero");
-    if (basePath.length == 0 || !basePath.startsWith("/"))
-      throw new DQMConfigurationException("Base path must start with '/'");
-    if (serviceName.length == 0)
-      throw new DQMConfigurationException("Service name cannot be empty");
     if (defaultCountry.length == 0)
       throw new DQMConfigurationException("Default country cannot be empty");
     if (requireAuthToken && authToken.length == 0)

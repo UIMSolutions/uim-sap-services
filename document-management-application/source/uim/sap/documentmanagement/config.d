@@ -10,23 +10,24 @@ import std.string : startsWith, toLower;
 import uim.sap.documentmanagement.exceptions;
 
 class DMAConfig : SAPConfig {
-  mixin(SAPConfigTemplate!HTMRepoConfig);
+  mixin(SAPConfigTemplate!DMAConfig);
 
   override bool initialize(Json[string] initData = null) {
     if (!super.initialize(initData)) {
       return false;
     }
 
+    /// Network
+    port(cast(ushort)initData.getInteger("port", 8090));
+    basePath(initData.getString("basePath", "/api/docmgmt"));
     host(initData.getString("host", "0.0.0.0"));
+
+    /// Service metadata
+    serviceName(initData.getString("serviceName", "uim-document-management"));
+    serviceVersion(initData.getString("serviceVersion", "1.0.0"));
+    
     return true;
   }
-  /// Network
-  ushort port = 8090;
-  string basePath = "/api/docmgmt";
-
-  /// Service metadata
-  string serviceName = "uim-document-management";
-  string serviceVersion = "1.0.0";
 
   /// Upload limits
   int maxUploadSizeMB = 100;
@@ -50,18 +51,6 @@ class DMAConfig : SAPConfig {
   override void validate() const {
     super.validate();
 
-    if (host.length == 0) {
-      throw new DMAConfigurationException("Host cannot be empty");
-    }
-    if (port == 0) {
-      throw new DMAConfigurationException("Port must be greater than zero");
-    }
-    if (basePath.length == 0 || !basePath.startsWith("/")) {
-      throw new DMAConfigurationException("Base path must start with '/'");
-    }
-    if (serviceName.length == 0) {
-      throw new DMAConfigurationException("Service name cannot be empty");
-    }
     if (maxUploadSizeMB <= 0) {
       throw new DMAConfigurationException("Max upload size must be greater than zero");
     }

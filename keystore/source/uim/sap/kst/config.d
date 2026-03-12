@@ -40,15 +40,6 @@ class KSTConfig : SAPConfig {
   override void validate() const {
     super.validate();
 
-    if (host.length == 0) {
-      throw new KSTConfigurationException("Host cannot be empty");
-    }
-    if (port == 0) {
-      throw new KSTConfigurationException("Port must be greater than zero");
-    }
-    if (basePath.length == 0 || !basePath.startsWith("/")) {
-      throw new KSTConfigurationException("Base path must start with '/'");
-    }
     if (requireAuthToken && authToken.length == 0) {
       throw new KSTConfigurationException("Auth token required when token auth is enabled");
     }

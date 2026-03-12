@@ -66,18 +66,6 @@ class DocMgmtIntegrationConfig : SAPConfig {
   override void validate() const {
     super.validate();
 
-    if (host.length == 0) {
-      throw new DocMgmtIntegrationConfigurationException("Host cannot be empty");
-    }
-    if (port == 0) {
-      throw new DocMgmtIntegrationConfigurationException("Port must be greater than zero");
-    }
-    if (basePath.length == 0 || !basePath.startsWith("/")) {
-      throw new DocMgmtIntegrationConfigurationException("Base path must start with '/'");
-    }
-    if (serviceName.length == 0) {
-      throw new DocMgmtIntegrationConfigurationException("Service name cannot be empty");
-    }
     if (maxUploadSizeMB <= 0) {
       throw new DocMgmtIntegrationConfigurationException(
         "Max upload size must be greater than zero");

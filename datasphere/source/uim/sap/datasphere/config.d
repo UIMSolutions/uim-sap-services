@@ -20,14 +20,23 @@ mixin(ShowModule!());
 class DSPConfig : SAPConfig {
   mixin(SAPConfigTemplate!DSPConfig);
 
+  /** 
+    * Initializes the configuration properties from a JSON object.
+    * This method calls the base class initialize method and then populates additional properties specific to DataSphere.
+    * It sets default values for network settings and service metadata if they are not provided in the input JSON.
+    * If the base initialization fails, it returns false to indicate unsuccessful initialization.
+    */
   override bool initialize(Json[string] initData = null) {
     if (!super.initialize(initData)) {
       return false;
     }
 
+    /// Network
+    basePath(initData.getString("basePath", "/api/datasphere"));
     host(initData.getString("host", "0.0.0.0"));
     port(cast(ushort)initData.getInteger("port", 8098));
-    basePath(initData.getString("basePath", "/api/datasphere"));
+    
+    /// Service metadata
     serviceName(initData.getString("serviceName", "uim-datasphere"));
     serviceVersion(initData.getString("serviceVersion", "1.0.0"));
 
@@ -42,18 +51,14 @@ class DSPConfig : SAPConfig {
 
   string[string] customHeaders;
 
+  /**
+    * Validates the configuration properties to ensure they meet required criteria.
+    * This method checks for non-empty values, positive integers, and logical consistency between related properties.
+    * If any validation check fails, a DSPConfigurationException is thrown with a descriptive error message.
+    */
   override void validate() const {
     super.validate();
 
-    if (host.length == 0)
-      throw new DSPConfigurationException("Host cannot be empty");
-    if (port == 0)
-      throw new DSPConfigurationException("Port must be greater than zero");
-    if (basePath.length == 0 || !basePath.startsWith("/")) {
-      throw new DSPConfigurationException("Base path must start with '/'");
-    }
-    if (serviceName.length == 0)
-      throw new DSPConfigurationException("Service name cannot be empty");
     if (defaultSpaceDiskGb <= 0)
       throw new DSPConfigurationException("Default space disk must be > 0");
     if (defaultSpaceMemoryGb <= 0)

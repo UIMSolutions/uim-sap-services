@@ -60,21 +60,9 @@ class JobSchedulingConfig : SAPConfig {
 
   string[string] customHeaders;
 
-  void validate() const {
+  override void validate() const {
     super.validate();
 
-    if (host.length == 0) {
-      throw new JobSchedulingConfigurationException("Host cannot be empty");
-    }
-    if (port == 0) {
-      throw new JobSchedulingConfigurationException("Port must be greater than zero");
-    }
-    if (basePath.length == 0 || !basePath.startsWith("/")) {
-      throw new JobSchedulingConfigurationException("Base path must start with '/'");
-    }
-    if (serviceName.length == 0) {
-      throw new JobSchedulingConfigurationException("Service name cannot be empty");
-    }
     if (schedulerTickMs < 200) {
       throw new JobSchedulingConfigurationException("Scheduler tick must be >= 200 ms");
     }

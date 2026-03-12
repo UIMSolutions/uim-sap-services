@@ -6,7 +6,7 @@ mixin(ShowModule!());
 
 @safe:
 
-struct CREConfig : SAPConfig {
+class CREConfig : SAPConfig {
   mixin(SAPConfigTemplate!(CREConfig));
 
   override bool initialize(Json[string] initData) {
@@ -14,6 +14,7 @@ struct CREConfig : SAPConfig {
       return false;
     }
 
+    port(cast(ushort)initData.getInteger("port", 8086));
     host(initData.getString("host", "0.0.0.0"));
     basePath(initData.getString("basePath", "/api/cre"));
     serviceName(initData.getString("serviceName", "uim-cre"));
@@ -22,7 +23,6 @@ struct CREConfig : SAPConfig {
     return true;
   }
 
-  ushort port = 8086;
 
   bool requireAuthToken = false;
   string authToken;
@@ -34,15 +34,6 @@ struct CREConfig : SAPConfig {
   override void validate() const {
     super.validate();
 
-    if (host.length == 0) {
-      throw new CREConfigurationException("Host cannot be empty");
-    }
-    if (port == 0) {
-      throw new CREConfigurationException("Port must be greater than zero");
-    }
-    if (basePath.length == 0 || !basePath.startsWith("/")) {
-      throw new CREConfigurationException("Base path must start with '/'");
-    }
     if (requireAuthToken && authToken.length == 0) {
       throw new CREConfigurationException("Auth token required when token auth is enabled");
     }
