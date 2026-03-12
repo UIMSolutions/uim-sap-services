@@ -1,5 +1,11 @@
 module uim.sap.sdi.models.site;
 
+import uim.sap.sdi;
+
+mixin(ShowModule!());
+
+@safe:
+
 struct SDISite {
   string tenantId;
   string siteId;

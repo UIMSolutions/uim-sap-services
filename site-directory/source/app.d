@@ -7,6 +7,10 @@ module app;
 
 import uim.sap.sdi;
 
+mixin(ShowModule!());
+
+@safe:
+
 void main() {
   SDIConfig config;
   config.host = envOr("SDI_HOST", "0.0.0.0");

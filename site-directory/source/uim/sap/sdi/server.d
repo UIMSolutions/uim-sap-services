@@ -6,6 +6,9 @@
 module uim.sap.sdi.server;
 
 import uim.sap.sdi;
+
+mixin(ShowModule!());
+
 @safe:
 
 class SDIServer {

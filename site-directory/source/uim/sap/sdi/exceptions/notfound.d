@@ -5,7 +5,11 @@
 *****************************************************************************************************************/
 module uim.sap.sdi.exceptions.notfound;
 
+import uim.sap.sdi;
 
+mixin(ShowModule!());
+
+@safe:
 
 class SDINotFoundException : SDIException {
     this(string msg) { super(msg); }

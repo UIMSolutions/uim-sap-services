@@ -4,3 +4,8 @@
 * Authors: Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*)
 *****************************************************************************************************************/
 module uim.sap.sdi.models;
+
+public {
+  import uim.sap.sdi.models.site;
+  import uim.sap.sdi.models.sitesettings;
+}

@@ -9,6 +9,8 @@ import core.sync.mutex : Mutex;
 
 import uim.sap.sdi;
 
+mixin(ShowModule!());
+
 @safe:
 
 class SDIStore : SAPStore {

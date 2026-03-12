@@ -6,6 +6,9 @@
 module uim.sap.sdi.service;
 
 import uim.sap.sdi;
+
+mixin(ShowModule!());
+
 @safe:
 
 /**
