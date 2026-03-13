@@ -21,8 +21,8 @@ version (unittest) {
       config.authToken(token);
     }
 
-    config.customHeaders("X-Service", config.serviceName);
-    config.customHeaders("X-Version", config.serviceVersion);
+    config.customHeader("X-Service", config.serviceName);
+    config.customHeader("X-Version", config.serviceVersion);
 
     auto service = new EVMService(config);
     auto server = new EVMServer(service);

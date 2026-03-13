@@ -37,8 +37,8 @@ version (unittest) {
       config.authToken = authToken;
     }
 
-    config.customHeaders("X-Service", config.serviceName);
-    config.customHeaders("X-Version", config.serviceVersion);
+    config.customHeader("X-Service", config.serviceName);
+    config.customHeader("X-Version", config.serviceVersion);
     config.customHeaders["X-Multitenancy"] = config.multitenancyEnabled ? "enabled" : "disabled";
 
     auto service = new DocMgmtIntegrationService(config);

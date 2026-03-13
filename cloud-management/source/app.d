@@ -26,8 +26,8 @@ void main() {
   config.accessToken = envOr("MGT_BTP_ACCESS_TOKEN", "");
   config.useOAuth2 = readBool(envOr("MGT_BTP_USE_OAUTH2", "false"), false);
 
-  config.customHeaders("X-Service", config.serviceName);
-  config.customHeaders("X-Version", config.serviceVersion);
+  config.customHeader("X-Service", config.serviceName);
+  config.customHeader("X-Version", config.serviceVersion);
 
   auto service = new MGTService(config);
   auto server = new MGTServer(service);
