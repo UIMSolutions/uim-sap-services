@@ -18,29 +18,13 @@ mixin(ShowModule!());
  *  - Full multitenancy: every operation is scoped to a tenantId
  */
 class FFLService : SAPService {
-  private FFLConfig _config;
   private FFLStore _store;
 
   this(FFLConfig config) {
-    config.validate();
-    _config = config;
+    super(config);
+
     _store = new FFLStore;
   }
-
-  @property const(FFLConfig) config() const {
-    return _config;
-  }
-
-  // ─── Platform endpoints ───────────────────────────────────
-
-  override Json health() {
-    Json healthInfo = Json.emptyObject;
-    healthInfo["ok"] = true;
-    healthInfo["serviceName"] = _config.serviceName;
-    healthInfo["serviceVersion"] = _config.serviceVersion;
-    return healthInfo;
-  }
-
 
   // ─── Flag CRUD ────────────────────────────────────────────
 

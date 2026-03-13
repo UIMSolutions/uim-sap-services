@@ -37,8 +37,8 @@ void main() {
         config.authToken(token);
     }
 
-    config.customHeaders["X-Service"] = config.serviceName;
-    config.customHeaders["X-Version"] = config.serviceVersion;
+    config.customHeaders("X-Service", config.serviceName);
+    config.customHeaders("X-Version", config.serviceVersion);
 
     logInfo("Starting MON service on ", config.host, ":", config.port);
     logInfo("Base path: ", config.basePath);

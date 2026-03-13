@@ -22,8 +22,8 @@ version (unittest) {
       config.authToken(token);
     }
 
-    config.customHeaders["X-Service"] = config.serviceName;
-    config.customHeaders["X-Version"] = config.serviceVersion;
+    config.customHeaders("X-Service", config.serviceName);
+    config.customHeaders("X-Version", config.serviceVersion);
 
     auto service = new FFLService(config);
     auto server = new FFLServer(service);

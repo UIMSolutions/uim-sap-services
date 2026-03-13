@@ -27,8 +27,8 @@ void main() {
         config.authToken(token);
     }
 
-    config.customHeaders["X-Service"] = config.serviceName;
-    config.customHeaders["X-Version"] = config.serviceVersion;
+    config.customHeaders("X-Service", config.serviceName);
+    config.customHeaders("X-Version", config.serviceVersion);
 
     auto service = new DatasphereService(config);
     auto server = new DatasphereServer(service);

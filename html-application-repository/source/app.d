@@ -31,8 +31,8 @@ void main() {
     config.managementAuthToken = token;
   }
 
-  config.customHeaders["X-Service"] = config.serviceName;
-  config.customHeaders["X-Version"] = config.serviceVersion;
+  config.customHeaders("X-Service", config.serviceName);
+  config.customHeaders("X-Version", config.serviceVersion);
 
   auto service = new HARService(config);
   auto server = new HARServer(service);

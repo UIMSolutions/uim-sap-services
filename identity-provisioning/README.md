@@ -1,4 +1,4 @@
-# UIM SAP Identity Provisioning Service
+# UIM Identity Provisioning Service
 
 A **SAP Cloud Identity Services – Identity Provisioning**-compatible service
 built with **D**, **vibe.d**, and the **UIM Framework**.  It automates the
@@ -8,19 +8,19 @@ subscriptions.
 
 ## Features
 
-| Capability | Description |
-|---|---|
-| **System registry** | Register source, target, and proxy systems (SAP IAS, SAP SF, SCIM, LDAP, custom) |
-| **User provisioning** | CRUD for user entities with status tracking |
-| **Group provisioning** | CRUD for group entities with membership |
-| **Transformation rules** | Map, filter, skip, and default-value rules per system and entity type |
-| **Full read** | Read all users/groups from a source system and provision to targets |
-| **Delta read** | Read only entities modified since the last sync (delta token) |
-| **Job execution** | Create and run provisioning jobs with counters and status tracking |
-| **Job logging** | Per-job log entries with info/warning/error levels and export |
-| **Notifications** | Subscribe to job lifecycle events (started/completed/failed/cancelled) |
-| **Multitenancy** | Every operation is scoped to a `tenantId` path segment |
-| **Dashboard** | Aggregated metrics per tenant |
+| Capability                     | Description                                                                      |
+| ------------------------------ | -------------------------------------------------------------------------------- |
+| **System registry**      | Register source, target, and proxy systems (SAP IAS, SAP SF, SCIM, LDAP, custom) |
+| **User provisioning**    | CRUD for user entities with status tracking                                      |
+| **Group provisioning**   | CRUD for group entities with membership                                          |
+| **Transformation rules** | Map, filter, skip, and default-value rules per system and entity type            |
+| **Full read**            | Read all users/groups from a source system and provision to targets              |
+| **Delta read**           | Read only entities modified since the last sync (delta token)                    |
+| **Job execution**        | Create and run provisioning jobs with counters and status tracking               |
+| **Job logging**          | Per-job log entries with info/warning/error levels and export                    |
+| **Notifications**        | Subscribe to job lifecycle events (started/completed/failed/cancelled)           |
+| **Multitenancy**         | Every operation is scoped to a `tenantId` path segment                         |
+| **Dashboard**            | Aggregated metrics per tenant                                                    |
 
 ## Quick Start
 
@@ -51,14 +51,14 @@ kubectl apply -f k8s/service.yaml
 
 ## Environment Variables
 
-| Variable | Default | Description |
-|---|---|---|
-| `IPV_HOST` | `0.0.0.0` | Listen address |
-| `IPV_PORT` | `8095` | Listen port |
-| `IPV_BASE_PATH` | `/api/ip` | URL prefix for all endpoints |
-| `IPV_SERVICE_NAME` | `uim-sap-ip` | Reported in `/health` |
-| `IPV_SERVICE_VERSION` | `1.0.0` | Reported in `/health` |
-| `IPV_AUTH_TOKEN` | *(empty)* | If set, every request must carry `Authorization: Bearer <token>` |
+| Variable                | Default        | Description                                                        |
+| ----------------------- | -------------- | ------------------------------------------------------------------ |
+| `IPV_HOST`            | `0.0.0.0`    | Listen address                                                     |
+| `IPV_PORT`            | `8095`       | Listen port                                                        |
+| `IPV_BASE_PATH`       | `/api/ip`    | URL prefix for all endpoints                                       |
+| `IPV_SERVICE_NAME`    | `uim-sap-ip` | Reported in `/health`                                            |
+| `IPV_SERVICE_VERSION` | `1.0.0`      | Reported in `/health`                                            |
+| `IPV_AUTH_TOKEN`      | *(empty)*    | If set, every request must carry `Authorization: Bearer <token>` |
 
 ## API Reference
 
@@ -67,72 +67,72 @@ All business endpoints are prefixed with
 
 ### Platform
 
-| Method | Path | Description |
-|---|---|---|
-| `GET` | `/health` | Health check |
-| `GET` | `/ready` | Readiness probe |
+| Method  | Path        | Description     |
+| ------- | ----------- | --------------- |
+| `GET` | `/health` | Health check    |
+| `GET` | `/ready`  | Readiness probe |
 
 ### Systems
 
-| Method | Path | Description |
-|---|---|---|
-| `POST` | `/v1/tenants/{tenantId}/systems` | Register a system |
-| `GET` | `/v1/tenants/{tenantId}/systems` | List systems (`?type=source\|target\|proxy`) |
-| `GET` | `/v1/tenants/{tenantId}/systems/{systemName}` | Get system details |
-| `PUT` | `/v1/tenants/{tenantId}/systems/{systemName}` | Update system |
-| `DELETE` | `/v1/tenants/{tenantId}/systems/{systemName}` | Delete system |
+| Method     | Path                                            | Description                                  |
+| ---------- | ----------------------------------------------- | -------------------------------------------- |
+| `POST`   | `/v1/tenants/{tenantId}/systems`              | Register a system                            |
+| `GET`    | `/v1/tenants/{tenantId}/systems`              | List systems (`?type=source\|target\|proxy`) |
+| `GET`    | `/v1/tenants/{tenantId}/systems/{systemName}` | Get system details                           |
+| `PUT`    | `/v1/tenants/{tenantId}/systems/{systemName}` | Update system                                |
+| `DELETE` | `/v1/tenants/{tenantId}/systems/{systemName}` | Delete system                                |
 
 ### Users
 
-| Method | Path | Description |
-|---|---|---|
-| `POST` | `/v1/tenants/{tenantId}/users` | Create user |
-| `GET` | `/v1/tenants/{tenantId}/users` | List users |
-| `GET` | `/v1/tenants/{tenantId}/users/{userId}` | Get user |
-| `PUT` | `/v1/tenants/{tenantId}/users/{userId}` | Update user |
+| Method     | Path                                      | Description |
+| ---------- | ----------------------------------------- | ----------- |
+| `POST`   | `/v1/tenants/{tenantId}/users`          | Create user |
+| `GET`    | `/v1/tenants/{tenantId}/users`          | List users  |
+| `GET`    | `/v1/tenants/{tenantId}/users/{userId}` | Get user    |
+| `PUT`    | `/v1/tenants/{tenantId}/users/{userId}` | Update user |
 | `DELETE` | `/v1/tenants/{tenantId}/users/{userId}` | Delete user |
 
 ### Groups
 
-| Method | Path | Description |
-|---|---|---|
-| `POST` | `/v1/tenants/{tenantId}/groups` | Create group |
-| `GET` | `/v1/tenants/{tenantId}/groups` | List groups |
-| `GET` | `/v1/tenants/{tenantId}/groups/{groupId}` | Get group |
+| Method     | Path                                        | Description  |
+| ---------- | ------------------------------------------- | ------------ |
+| `POST`   | `/v1/tenants/{tenantId}/groups`           | Create group |
+| `GET`    | `/v1/tenants/{tenantId}/groups`           | List groups  |
+| `GET`    | `/v1/tenants/{tenantId}/groups/{groupId}` | Get group    |
 | `DELETE` | `/v1/tenants/{tenantId}/groups/{groupId}` | Delete group |
 
 ### Transformations
 
-| Method | Path | Description |
-|---|---|---|
-| `POST` | `/v1/tenants/{tenantId}/transformations` | Create transformation rule |
-| `GET` | `/v1/tenants/{tenantId}/transformations` | List rules (`?system_id=…`) |
-| `GET` | `/v1/tenants/{tenantId}/transformations/{id}` | Get transformation |
-| `DELETE` | `/v1/tenants/{tenantId}/transformations/{id}` | Delete transformation |
+| Method     | Path                                            | Description                    |
+| ---------- | ----------------------------------------------- | ------------------------------ |
+| `POST`   | `/v1/tenants/{tenantId}/transformations`      | Create transformation rule     |
+| `GET`    | `/v1/tenants/{tenantId}/transformations`      | List rules (`?system_id=…`) |
+| `GET`    | `/v1/tenants/{tenantId}/transformations/{id}` | Get transformation             |
+| `DELETE` | `/v1/tenants/{tenantId}/transformations/{id}` | Delete transformation          |
 
 ### Provisioning Jobs
 
-| Method | Path | Description |
-|---|---|---|
-| `POST` | `/v1/tenants/{tenantId}/jobs` | Run provisioning job |
-| `GET` | `/v1/tenants/{tenantId}/jobs` | List jobs |
-| `GET` | `/v1/tenants/{tenantId}/jobs/{jobId}` | Get job details |
-| `POST` | `/v1/tenants/{tenantId}/jobs/{jobId}/cancel` | Cancel a running job |
-| `GET` | `/v1/tenants/{tenantId}/jobs/{jobId}/logs` | List job logs (`?level=…`) |
-| `GET` | `/v1/tenants/{tenantId}/jobs/{jobId}/logs/export` | Export logs as JSON |
+| Method   | Path                                                | Description                   |
+| -------- | --------------------------------------------------- | ----------------------------- |
+| `POST` | `/v1/tenants/{tenantId}/jobs`                     | Run provisioning job          |
+| `GET`  | `/v1/tenants/{tenantId}/jobs`                     | List jobs                     |
+| `GET`  | `/v1/tenants/{tenantId}/jobs/{jobId}`             | Get job details               |
+| `POST` | `/v1/tenants/{tenantId}/jobs/{jobId}/cancel`      | Cancel a running job          |
+| `GET`  | `/v1/tenants/{tenantId}/jobs/{jobId}/logs`        | List job logs (`?level=…`) |
+| `GET`  | `/v1/tenants/{tenantId}/jobs/{jobId}/logs/export` | Export logs as JSON           |
 
 ### Notifications
 
-| Method | Path | Description |
-|---|---|---|
-| `POST` | `/v1/tenants/{tenantId}/notifications` | Subscribe to events |
-| `GET` | `/v1/tenants/{tenantId}/notifications` | List subscriptions |
+| Method     | Path                                          | Description         |
+| ---------- | --------------------------------------------- | ------------------- |
+| `POST`   | `/v1/tenants/{tenantId}/notifications`      | Subscribe to events |
+| `GET`    | `/v1/tenants/{tenantId}/notifications`      | List subscriptions  |
 | `DELETE` | `/v1/tenants/{tenantId}/notifications/{id}` | Delete subscription |
 
 ### Dashboard
 
-| Method | Path | Description |
-|---|---|---|
+| Method  | Path                                 | Description                     |
+| ------- | ------------------------------------ | ------------------------------- |
 | `GET` | `/v1/tenants/{tenantId}/dashboard` | Aggregated provisioning metrics |
 
 ## Usage Examples
@@ -243,6 +243,46 @@ curl http://localhost:8095/api/ip/v1/tenants/myorg/dashboard
 3. **Target systems** receive the provisioned entities
 4. **Job counters** track read/written/skipped/failed for users and groups
 5. **Notification subscribers** are notified of job lifecycle events
+
+## UML Description
+
+PlantUML diagrams for this service are maintained in `docs/uml/`:
+
+- `docs/uml/component-architecture.puml` - runtime components and external system context
+- `docs/uml/class-model.puml` - key service/store/models structure
+- `docs/uml/sequence-provisioning-job.puml` - end-to-end provisioning job lifecycle
+
+Render diagrams locally:
+
+```bash
+make uml-check
+make uml      # render PNG
+make uml-svg  # render SVG
+make uml-clean
+```
+
+Requirements: `plantuml` must be available in `PATH`.
+
+## NAFv4 Description
+
+This service can be read through a lightweight NAFv4 lens for architecture
+traceability.
+
+| NAFv4 Viewpoint                        | Identity Provisioning Mapping                                                                                                                              |
+| -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Capability View (NCV)**        | Identity lifecycle management, transformation governance, provisioning observability, and tenant-scoped operations                                         |
+| **Operational View (NOV)**       | Actors (`Administrators`, `Scheduler/CI`) initiate system registration, transformation setup, and full/delta provisioning jobs                         |
+| **Service-Oriented View (NSOV)** | Exposed REST services under `{basePath}/v1/tenants/{tenantId}/...` for systems, users, groups, transformations, jobs, logs, notifications, and dashboard |
+| **System View (NSV)**            | Internal composition of `IPVServer` (API), `IPVService` (domain/provisioning engine), and `IPVStore` (in-memory persistence + locking)               |
+| **Information View (NIV)**       | Core data entities:`IPVSystem`, `IPVUser`, `IPVGroup`, `IPVTransformation`, `IPVJob`, `IPVJobLog`, `IPVNotification`                         |
+| **Standards View (NTV)**         | REST/HTTP + JSON payloads, SCIM-style identity concepts, and deployment alignment for local DUB, Podman, and Kubernetes                                    |
+
+NAFv4-oriented concerns covered by this implementation:
+
+- Multi-tenant boundary: all business operations are scoped by `tenantId`.
+- Operational auditability: per-job logging and export endpoints.
+- Integration governance: explicit source/target system registration and rule-based transformations.
+- Execution resilience: full and delta read modes with job status and counters.
 
 ## Architecture
 

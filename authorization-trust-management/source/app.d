@@ -22,8 +22,8 @@ void main() {
     config.enforceTokenExpiry = readBool(envOr("ATM_ENFORCE_TOKEN_EXPIRY", "true"), true);
     config.bootstrapToken = envOr("ATM_BOOTSTRAP_TOKEN", "");
 
-    config.customHeaders["X-Service"] = config.serviceName;
-    config.customHeaders["X-Version"] = config.serviceVersion;
+    config.customHeaders("X-Service", config.serviceName);
+    config.customHeaders("X-Version", config.serviceVersion);
 
     auto service = new ATMService(config);
     auto server = new ATMServer(service);

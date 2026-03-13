@@ -27,8 +27,8 @@ version (unittest) {
       config.oauthToken = oauthToken;
     }
 
-    config.customHeaders["X-Service"] = config.serviceName;
-    config.customHeaders["X-Version"] = config.serviceVersion;
+    config.customHeaders("X-Service", config.serviceName);
+    config.customHeaders("X-Version", config.serviceVersion);
 
     auto service = new AuditLogService(config);
     auto server = new AuditLogServer(service);
