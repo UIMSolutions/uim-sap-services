@@ -17,8 +17,7 @@ class CLFService : SAPService {
   private CLFStore _store;
 
   this(CLFConfig config) {
-    config.validate();
-    _config = config;
+    super(config);
     _store = new CLFStore;
     _store.seedServiceOfferings();
   }
@@ -33,11 +32,9 @@ class CLFService : SAPService {
   }
 
   Json listOrganizations() {
+    Json resources = _store.listOrgs().map!(org => org.toJson()).array.toJson;
+
     Json payload = Json.emptyObject;
-    Json resources = Json.emptyArray;
-    foreach (org; _store.listOrgs()) {
-      resources ~= org.toJson();
-    }
     payload["resources"] = resources;
     payload["total_results"] = cast(long)_store.listOrgs().length;
     return payload;
@@ -87,7 +84,7 @@ class CLFService : SAPService {
 
   Json listApps() {
     Json resources = _store.listApps().map!(app => app.toJson()).array.toJson;
-    
+
     Json payload = Json.emptyObject;
     payload["resources"] = resources;
     payload["total_results"] = cast(long)_store.listApps().length;
@@ -103,11 +100,9 @@ class CLFService : SAPService {
   }
 
   Json listServiceOfferings() {
+    Json resources = _store.listServiceOfferings().map!(offering => offering.toJson()).array.toJson;
+
     Json payload = Json.emptyObject;
-    Json resources = Json.emptyArray;
-    foreach (offering; _store.listServiceOfferings()) {
-      resources ~= offering.toJson();
-    }
     payload["resources"] = resources;
     payload["total_results"] = cast(long)_store.listServiceOfferings().length;
     return payload;
@@ -136,11 +131,9 @@ class CLFService : SAPService {
   }
 
   Json listServiceInstances() {
+    Json resources = _store.listServiceInstances().map!(instance => instance.toJson()).array.toJson;
+
     Json payload = Json.emptyObject;
-    Json resources = Json.emptyArray;
-    foreach (instance; _store.listServiceInstances()) {
-      resources ~= instance.toJson();
-    }
     payload["resources"] = resources;
     payload["total_results"] = cast(long)_store.listServiceInstances().length;
     return payload;

@@ -14,8 +14,6 @@ class EVMService : SAPService {
   this(EVMConfig config) {
     super(config);
 
-    config.validate();
-    _config = config;
     _store = new EVMStore;
   }
 

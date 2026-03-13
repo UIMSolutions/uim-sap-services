@@ -22,8 +22,8 @@ class CTMService : SAPService {
   private CTMStore _store;
 
   this(CTMConfig config) {
-    config.validate();
-    _config = config;
+    super(config);
+
     _store = new CTMStore;
   }
 
@@ -31,14 +31,11 @@ class CTMService : SAPService {
   // Health / readiness
   // -----------------------------------------------------------------------
   Json health() const {
-    Json j = Json.emptyObject;
-    j["status"] = "UP";
-    j["service"] = _config.serviceName;
-    j["version"] = _config.serviceVersion;
-    j["runtime"] = _config.runtime;
-    j["multitenancy"] = true;
-    j["domain"] = "cloud-transport";
-    return j;
+    Json healthInfo = super.health();
+    healthInfo["runtime"] = _config.runtime;
+    healthInfo["multitenancy"] = true;
+    healthInfo["domain"] = "cloud-transport";
+    return healthInfo;
   }
 
   // -----------------------------------------------------------------------
@@ -52,10 +49,7 @@ class CTMService : SAPService {
   // NODES
   // -----------------------------------------------------------------------
   Json listNodes(string tenantId) {
-    Json arr = Json.emptyArray;
-    foreach (n; _store.listNodes(tenantId))
-      arr ~= n.toJson();
-    return arr;
+    return _store.listNodes(tenantId).map!(n => n.toJson()).array.toJson;
   }
 
   Json createNode(string tenantId, Json payload) {
@@ -80,13 +74,12 @@ class CTMService : SAPService {
     CTMNode n;
     if (!_store.tryGetNode(tenantId, nodeId, n))
       throw new CTMNotFoundException("Node", nodeId);
+
     auto j = n.toJson();
     // Embed the import queue
     j["import_queue"] = _queueJson(tenantId, nodeId);
     // Embed outgoing routes
-    Json routes = Json.emptyArray;
-    foreach (r; _store.routesFromNode(tenantId, nodeId))
-      routes ~= r.toJson();
+    Json routes = _store.routesFromNode(tenantId, nodeId).map!(r => r.toJson()).array.toJson;
     j["outgoing_routes"] = routes;
     return j;
   }
@@ -95,10 +88,7 @@ class CTMService : SAPService {
   // ROUTES
   // -----------------------------------------------------------------------
   Json listRoutes(string tenantId) {
-    Json arr = Json.emptyArray;
-    foreach (r; _store.listRoutes(tenantId))
-      arr ~= r.toJson();
-    return arr;
+    return _store.listRoutes(tenantId).map!(r => r.toJson()).array.toJson;
   }
 
   Json createRoute(string tenantId, Json payload) {
@@ -124,10 +114,7 @@ class CTMService : SAPService {
   // TRANSPORT REQUESTS
   // -----------------------------------------------------------------------
   Json listRequests(string tenantId) {
-    Json arr = Json.emptyArray;
-    foreach (r; _store.listRequests(tenantId))
-      arr ~= r.toJson();
-    return arr;
+    return _store.listRequests(tenantId).map!(r => r.toJson()).array.toJson;
   }
 
   /// Create a new transport request (can be triggered from CI/CD)

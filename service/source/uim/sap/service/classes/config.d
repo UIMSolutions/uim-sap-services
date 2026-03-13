@@ -51,20 +51,12 @@ class SAPConfig : ISAPConfig {
       host(initData.getString("host"));
     }
 
-    if (initData.hasKey("port") && initData.isNumber("port")) {
-      port(cast(ushort)initData.getNumber("port"));
-    }
+    port(cast(ushort)initData.getInteger("port", 0));
+    basePath(initData.getString("basePath", ""));
 
-    if (initData.hasKey("basePath") && initData.isString("basePath")) {
-      basePath(initData.getString("basePath"));
-    }
-
-    if (initData.hasKey("requireAuthToken") && initData.isBoolean("requireAuthToken")) {
-      requireAuthToken(initData.getBoolean("requireAuthToken"));
-    }
-
-    if (initData.hasKey("authToken") && initData.isString("authToken")) {
-      authToken(initData.getString("authToken"));
+    requireAuthToken(initData.getBoolean("requireAuthToken", false));
+    if (requireAuthToken) {
+      authToken(initData.getString("authToken", ""));
     }
 
     if (initData.hasKey("customHeaders") && initData["customHeaders"].isObject) {

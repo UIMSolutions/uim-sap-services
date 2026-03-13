@@ -3,7 +3,7 @@ module app;
 import uim.sap.mgt;
 
 void main() {
-  MGTConfig config;
+  MGTConfig config = new MGTConfig;
   config.host = envOr("MGT_HOST", "0.0.0.0");
   config.port = readPort(envOr("MGT_PORT", "8088"), 8088);
   config.basePath = envOr("MGT_BASE_PATH", "/api/mgt");

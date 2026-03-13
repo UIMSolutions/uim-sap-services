@@ -26,11 +26,9 @@ class MOBService : SAPService {
 
     this(MOBConfig config) {
         super(config);
-        _config = config;
         _store = new MOBStore;
     }
 
-    @property MOBConfig config() { return _config; }
 
     override Json health() {
         Json info = super.health();

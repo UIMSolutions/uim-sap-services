@@ -16,22 +16,17 @@ class ISAService : SAPService {
   private ISAStore _store;
 
   this(ISAConfig config) {
-    config.validate();
-    _config = config;
-    _store = new ISAStore;
-    _store.seed(_config.defaultTenant);
-  }
+    super(config);
 
-  @property const(ISAConfig) config() const {
-    return _config;
+    _store = new ISAStore;
+    _store.seed(config.defaultTenant);
   }
 
   override Json health() {
+    auto cfg = cast(ISAConfig)config;
+
     Json healthInfo = super.health();
-    healthInfo["ok"] = true;
-    healthInfo["service_name"] = _config.serviceName;
-    healthInfo["service_version"] = _config.serviceVersion;
-    healthInfo["default_tenant"] = _config.defaultTenant;
+    healthInfo["default_tenant"] = cfg.defaultTenant;
     return healthInfo;
   }
 
@@ -81,6 +76,7 @@ class ISAService : SAPService {
     if (cfg.id.length == 0 || cfg.tenantId != tenantId) {
       throw new ISANotFoundException("configuration", configId);
     }
+
     return cfg.toJson();
   }
 

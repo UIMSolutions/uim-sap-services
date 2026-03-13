@@ -17,8 +17,8 @@ class CMGService : SAPService {
     _store = new CMGStore;
   }
 
-  Json health() const {
-    Json healthInfo = Json.emptyObject;
+  override Json health() {
+    Json healthInfo = super.health();
     healthInfo["domain"] = "content-manager";
     return healthInfo;
   }
@@ -27,7 +27,8 @@ class CMGService : SAPService {
     validateTenant(tenantId);
     auto normalizedType = normalizeContentType(contentType);
 
-    Json items = _store.listItems(tenantId, normalizedType).map!(item => item.toJson()).array.toJson();
+    Json items = _store.listItems(tenantId, normalizedType)
+      .map!(item => item.toJson()).array.toJson();
 
     Json payload = Json.emptyObject;
     payload["tenant_id"] = tenantId;
@@ -68,7 +69,8 @@ class CMGService : SAPService {
   Json listProviders(string tenantId) {
     validateTenant(tenantId);
 
-    Json providers = _store.listProviders(tenantId).map!(provider => provider.toJson()).array.toJson();
+    Json providers = _store.listProviders(tenantId)
+      .map!(provider => provider.toJson()).array.toJson();
 
     Json payload = Json.emptyObject;
     payload["tenant_id"] = tenantId;
@@ -203,26 +205,32 @@ class CMGService : SAPService {
     body[key].get!bool;
   }
 
-  private string[] readStringArray(Json body, string key) const {
+  private string[] readStringArray(Json data, string key) const {
     string[] values;
-    if (!(key in body) || body[key].isNull)
+    if (!(key in data) || data[key].isNull)
       return values;
-    if (!body[key].isArray)
+      
+    if (!data[key].isArray)
       throw new CMGValidationException(key ~ " must be an array");
-    foreach (item; body[key]) {
+
+    foreach (item; data[key]) {
       if (!item.isString)
         throw new CMGValidationException(key ~ " must contain strings");
+
       values ~= item.get!string;
     }
     return values;
   }
 
-  private Json readObject(Json body, string key) const {
-    if (!(key in body) || body[key].isNull)
+  private Json readObject(Json data, string key) const {
+    if (!(key in data) || data[key].isNull) {
       return Json.emptyObject;
-    if (!body[key].isObject)
+    }
+
+    if (!data[key].isObject) {
       throw new CMGValidationException(key ~ " must be an object");
-    return
-    body[key];
+    }
+
+    return data[key];
   }
 }

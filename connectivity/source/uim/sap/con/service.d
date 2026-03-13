@@ -11,29 +11,20 @@ import uim.sap.con;
 class CONService : SAPService {
   mixin(SAPServiceTemplate!CONService);
 
-  private CONConfig _config;
   private CONStore _store;
 
   this(CONConfig config) {
-    config.validate();
-    _config = config;
-    _store = new CONStore;
-  }
+    super(config);
 
-  @property const(CONConfig) config() const {
-    return _config;
+    _store = new CONStore;
   }
 
   override Json health() {
     Json healthInfo = super.health();
-    healthInfo["ok"] = true;
-    healthInfo["serviceName"] = _config.serviceName;
-    healthInfo["serviceVersion"] = _config.serviceVersion;
     healthInfo["connector_location_id"] = _config.connectorLocationId;
     healthInfo["destinations"] = cast(long)_store.countDestinations();
     return healthInfo;
   }
-
 
   Json supportedProtocols() {
     Json protocols = CON_SUPPORTED_PROTOCOLS.toJson;
@@ -67,13 +58,9 @@ class CONService : SAPService {
   Json listDestinations(string tenantId) {
     validateTenant(tenantId);
 
+    Json resources = _store.listDestinations(tenantId).map!(dest => destination.toJson()).array.toJson; 
+
     Json payload = Json.emptyObject;
-    Json resources = Json.emptyArray;
-
-    foreach (destination; _store.listDestinations(tenantId)) {
-      resources ~= destination.toJson();
-    }
-
     payload["tenant_id"] = tenantId;
     payload["resources"] = resources;
     payload["total_results"] = cast(long)_store.countDestinations(tenantId);
@@ -113,13 +100,9 @@ class CONService : SAPService {
   Json listCloudDatabases(string tenantId) {
     validateTenant(tenantId);
 
+    Json resources = _store.listCloudDatabases(tenantId).map!(database => database.toJson()).array.toJson;
+
     Json payload = Json.emptyObject;
-    Json resources = Json.emptyArray;
-
-    foreach (database; _store.listCloudDatabases(tenantId)) {
-      resources ~= database.toJson();
-    }
-
     payload["tenant_id"] = tenantId;
     payload["resources"] = resources;
     payload["total_results"] = cast(long)resources.length;

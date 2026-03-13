@@ -16,24 +16,16 @@ import uim.sap.cdc.store;
 class CDCService : SAPService {
   mixin(SAPServiceTemplate!CDCService);
 
-  private CDCConfig _config;
   private CDCStore _store;
 
   this(CDCConfig config) {
-    config.validate();
-    _config = config;
+    super(config);
+
     _store = new CDCStore(config.cacheFilePath);
   }
 
-  @property inout(CDCConfig) config() inout {
-    return _config;
-  }
-
   Json health() const {
-    Json payload = Json.emptyObject;
-    payload["status"] = "UP";
-    payload["service"] = _config.serviceName;
-    payload["version"] = _config.serviceVersion;
+    Json payload = super.health();
     payload["domain"] = "customer-data";
     return payload;
   }

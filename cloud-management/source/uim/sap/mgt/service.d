@@ -32,16 +32,13 @@ class MGTService : SAPService {
   private BTPClient _client;
 
   this(MGTConfig config) {
-    config.validate();
-    _config = config;
+    super(config);
+
     _client = new BTPClient(config.toBTPConfig());
   }
 
   override Json health() {
     Json healthInfo = super.health();
-    healthInfo["ok"] = true;
-    healthInfo["serviceName"] = _config.serviceName;
-    healthInfo["serviceVersion"] = _config.serviceVersion;
     healthInfo["subdomain"] = _config.subdomain;
     healthInfo["region"] = _config.region;
     return healthInfo;
