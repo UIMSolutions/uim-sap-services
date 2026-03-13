@@ -11,15 +11,13 @@ mixin(ShowModule!());
 
 @safe:
 
-struct PDMConfig : SAPConfig {
+class PDMConfig : SAPConfig {
 
     override bool initialize(Json[string] initdata) {
     if (!super.initialize(initdata)) {
        return false;
     }
 
-    return true;
-  }
     string host = "0.0.0.0";
     ushort port = 8092;
     string basePath = "/api/pdm";
@@ -27,8 +25,11 @@ struct PDMConfig : SAPConfig {
     string serviceName = "uim-pdm";
     string serviceVersion = "1.0.0";
 
-    bool requireAuthToken = false;
-    string authToken;
+    return true;
+  }
+
+
+
 
     /// Maximum data subjects per tenant
     size_t maxSubjectsPerTenant = 100_000;

@@ -59,6 +59,22 @@ class SAPConfig : ISAPConfig {
       basePath(initData.getString("basePath"));
     }
 
+    if (initData.hasKey("requireAuthToken") && initData.isBoolean("requireAuthToken")) {
+      requireAuthToken(initData.getBoolean("requireAuthToken"));
+    }
+
+    if (initData.hasKey("authToken") && initData.isString("authToken")) {
+      authToken(initData.getString("authToken"));
+    }
+
+    if (initData.hasKey("customHeaders") && initData["customHeaders"].isObject) {
+      Json[string] headers = initData["customHeaders"].toMap;
+      string[string] custHeaders;
+      foreach (key, value; headers) {
+        custHeaders[key] = headers.getString(key);
+      }
+      customHeaders(custHeaders);
+    }
     return true;
   }
 
@@ -107,6 +123,72 @@ class SAPConfig : ISAPConfig {
     _basePath = path;
   }
 
+  // #region requireAuthToken 
+  protected bool _requireAuthToken;
+  bool requireAuthToken() const {
+    return _requireAuthToken;
+  }
+
+  void requireAuthToken(bool required) {
+    _requireAuthToken = required;
+  }
+  // #endregion requireAuthToken 
+
+  // #region authToken
+  /** 
+   * Authentication token required for accessing the service when token authentication is enabled.
+   * Can be set programmatically or via configuration initialization.
+   * Should be kept secure and not exposed in logs or error messages.
+   * Validation of the token should be implemented in the service logic, not in the configuration class
+   *
+   * Example usage:
+  * config.requireAuthToken(true);
+  * config.authToken("my-secure-token");
+   */
+  protected string _authToken;
+  string authToken() const {
+    return _authToken;
+  }
+
+  void authToken(string token) {
+    _authToken = token;
+  }
+  // #endregion authToken
+
+  // #region customHeaders
+  /** 
+    * Custom headers to be included in all requests made by the service.
+    * Can be set programmatically or via configuration initialization.
+    * Useful for adding service-specific headers or for passing additional metadata.
+    * Should be a key-value pair where the key is the header name and the value is the header value.
+    * 
+    * Example: customHeaders["X-Custom-Header"] = "CustomValue";
+    * These headers can then be included in the HTTP responses or requests as needed in the service implementation.
+    * The configuration class does not enforce any specific headers, allowing flexibility for different services.
+    */
+  protected string[string] _customHeaders;
+  string[string] customHeaders() {
+    return _customHeaders.dup;
+  }
+
+  void customHeaders(string[string] value) {
+    _customHeaders = value;
+  }
+
+  string customHeader(string key) const {
+    return _customHeaders[key];
+  }
+
+  void customHeader(string key, string value) {
+    _customHeaders[key] = value;
+  }
+  // #endregion customHeaders
+
+  /**
+    * Validates the configuration properties.
+    * Should be overridden by derived classes to add specific validation logic.
+    * Throws an exception if validation fails.
+    */
   void validate() {
     if (serviceName.length == 0) {
       throw new Exception("Service name cannot be empty");
@@ -131,5 +213,11 @@ class SAPConfig : ISAPConfig {
     if (!basePath.startsWith("/")) {
       throw new Exception("Base path must start with '/'");
     }
+
+    if (requireAuthToken && authToken.length == 0) {
+      throw new Exception("Auth token is required when token authentication is enabled");
+    }
+
+    // Additional validation can be added here as needed
   }
 }

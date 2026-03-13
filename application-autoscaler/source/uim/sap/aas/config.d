@@ -21,11 +21,9 @@ class AASConfig : SAPConfig {
     basePath(initdata.getString("basePath", "/api/autoscaler"));
     serviceName(initdata.getString("serviceName", "uim-aas"));
     serviceVersion(initdata.getString("serviceVersion", "1.0.0"));
+    port(cast(ushort)initdata.getInteger("port", 8086));
 
     // Load AAS-specific configuration
-    if (config.canFind("port")) {
-      port = cast(ushort)config["port"].to!int;
-    }
     if (config.canFind("cfApi")) {
       cfApi = config["cfApi"];
     }
@@ -35,32 +33,17 @@ class AASConfig : SAPConfig {
     if (config.canFind("cfSpace")) {
       cfSpace = config["cfSpace"];
     }
-    if (config.canFind("requireAuthToken")) {
-      requireAuthToken = config["requireAuthToken"].to!bool;
-    }
-    if (config.canFind("authToken")) {
-      authToken = config["authToken"];
+
+    requireAuthToken(initData.getBool("requireAuthToken", false));
+    if (requireAuthToken) {
+      authToken(initData.getString("authToken", ""));
     }
 
     return true;
   }
 
-  ushort port = 8086;
 
   string cfApi;
   string cfOrganization;
   string cfSpace;
-
-  bool requireAuthToken = false;
-  string authToken;
-
-  string[string] customHeaders;
-
-  override void validate() const {
-    super.validate();
-
-    if (requireAuthToken && authToken.length == 0) {
-      throw new AASConfigurationException("Auth token required when token auth is enabled");
-    }
-  }
 }

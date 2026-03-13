@@ -12,7 +12,40 @@ enum CPIAuthType {
   ApiKey
 }
 
-struct CPIConfig : SAPConfig {
+class CPIConfig : SAPConfig {
+  mixin(SAPConfigTemplate!CPIConfig);
+
+  override bool initialize(Json[string] initData = null) {
+    if (!super.initialize(initData)) {
+      return false;
+    }
+
+    baseUrl(initData.getString("baseUrl", ""));
+    port(cast(ushort)initData.getInteger("port", 443));
+    useSSL(initData.getBool("useSSL", true));
+    verifySSL(initData.getBool("verifySSL", true));
+
+    auto authTypeStr = initData.getString("authType", "Basic");
+    if (authTypeStr == "Basic") {
+      authType(CPIAuthType.Basic);
+      username(initData.getString("username", ""));
+      password(initData.getString("password", ""));
+    } else if (authTypeStr == "OAuth2") {
+      authType(CPIAuthType.OAuth2);
+      accessToken(initData.getString("accessToken", ""));
+    } else if (authTypeStr == "ApiKey") {
+      authType(CPIAuthType.ApiKey);
+      apiKey(initData.getString("apiKey", ""));
+      apiKeyHeader(initData.getString("apiKeyHeader", "X-API-Key"));
+    } else {
+      throw new CPIConfigurationException("Invalid authType: " ~ authTypeStr);
+    }   
+    apiBasePath(initData.getString("apiBasePath", "/api/v1"));
+    timeout(initData.getDuration("timeout", 30.seconds));
+    maxRetries(initData.getInteger("maxRetries", 2));
+    customHeaders(initData.getObject("customHeaders", new JsonObject).toStringMap());
+  }
+  
   string baseUrl;
   ushort port = 443;
   bool useSSL = true;

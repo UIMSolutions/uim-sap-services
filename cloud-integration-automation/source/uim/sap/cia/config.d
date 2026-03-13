@@ -19,24 +19,21 @@ class CIAConfig : SAPConfig {
     serviceName(initData.getString("serviceName", "uim-cloud-integration-automation"));
     serviceVersion(initData.getString("serviceVersion", "1.0.0"));
 
+    requireAuthToken(initData.getBool("requireAuthToken", false));
+    if (requireAuthToken) {
+      authToken(initData.getString("authToken", ""));
+    }
+
     return true;
   }
 
   string runtime = "cloud-foundry";
-
-  bool requireAuthToken = false;
-  string authToken;
-
-  string[string] customHeaders;
 
   override void validate() const {
     super.validate();
 
     if (runtime.length == 0) {
       throw new CIAConfigurationException("Runtime cannot be empty");
-    }
-    if (requireAuthToken && authToken.length == 0) {
-      throw new CIAConfigurationException("Auth token required when token auth is enabled");
     }
   }
 }

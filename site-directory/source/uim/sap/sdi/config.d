@@ -25,18 +25,14 @@ class SDIConfig : SAPConfig {
     serviceName(initdata.getString("serviceName", "uim-sdi"));
     serviceVersion(initdata.getString("serviceVersion", "1.0.0"));
 
+    requireAuthToken(initdata.getBool("requireAuthToken", false));
+    if (requireAuthToken()) {
+      authToken(initdata.getString("authToken", ""));
+    }   
+
     return true;
   }
 
-  bool requireAuthToken = false;
-  string authToken;
 
   string[string] customHeaders;
-
-  override void validate() const {
-    super.validate();
-
-    if (requireAuthToken && authToken.length == 0)
-      throw new SDIConfigurationException("Auth token required when token auth is enabled");
-  }
 }

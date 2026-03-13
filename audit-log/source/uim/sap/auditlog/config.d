@@ -12,21 +12,27 @@ class AuditLogConfig : SAPConfig {
       return false;
     }
 
-    port(cast(ushort)initData.getInteger("port", 8090));
+    // Network configuration
     basePath(initData.getString("basePath", "/api/auditlog"));
+    host(initData.getString("host", "0.0.0.0"));
+    port(cast(ushort)initData.getInteger("port", 8090));
+
+    // Service metadata
     serviceName(initData.getString("serviceName", "uim-audit-log"));
     serviceVersion(initData.getString("serviceVersion", "1.0.0"));
-    host(initData.getString("host", "0.0.0.0"));
-    
+
+    // Authentication configuration
+    requireAuthToken(initData.getBool("requireAuthToken", false));
+    if (requireAuthToken) {
+      authToken(initData.getString("authToken", ""));
+    }
+
     return true;
   }
 
   int defaultRetentionDays = 90;
   string defaultPlan = "default";
   double premiumCostPerThousandEvents = 0.75;
-
-  bool requireAuthToken = false;
-  string authToken;
 
   bool requireOAuthToken = false;
   string oauthToken;
@@ -47,10 +53,6 @@ class AuditLogConfig : SAPConfig {
 
     if (premiumCostPerThousandEvents < 0) {
       throw new AuditLogConfigurationException("Premium cost cannot be negative");
-    }
-
-    if (requireAuthToken && authToken.length == 0) {
-      throw new AuditLogConfigurationException("Auth token required when auth is enabled");
     }
 
     if (requireOAuthToken && oauthToken.length == 0) {

@@ -20,5 +20,14 @@ interface ISAPConfig {
   string basePath();
   void basePath(string basePath);
 
+  bool requireAuthToken();
+  void requireAuthToken(bool required);
+
+  string authToken();
+  void authToken(string token);
+
+  string[string] customHeaders();
+  void customHeaders(string[string] headers);
+
   void validate();
 }

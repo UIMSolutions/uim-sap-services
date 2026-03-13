@@ -25,6 +25,11 @@ struct RMSConfig : SAPConfig {
     serviceName(initdata.getString("serviceName", "uim-rms"));
     serviceVersion(initdata.getString("serviceVersion", "1.0.0"));
 
+    requireAuthToken(initdata.getBool("requireAuthToken", false));
+    if (requireAuthToken()) {
+      authToken(initdata.getString("authToken", ""));
+    }   
+
     return true;
   }
 
@@ -32,8 +37,6 @@ struct RMSConfig : SAPConfig {
   string defaultTenant = "provider";
   string defaultSpace = "dev";
 
-  bool requireManagementAuth = false;
-  string managementAuthToken;
 
   int logRetention = 500;
 
@@ -50,9 +53,6 @@ struct RMSConfig : SAPConfig {
     }
     if (logRetention < 50) {
       throw new RMSConfigurationException("Log retention must be at least 50");
-    }
-    if (requireManagementAuth && managementAuthToken.length == 0) {
-      throw new RMSConfigurationException("Management auth token is required");
     }
   }
 }

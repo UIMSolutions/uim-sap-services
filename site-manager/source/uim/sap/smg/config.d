@@ -28,53 +28,12 @@ class SMGConfig : SAPConfig {
     serviceName(initData.getString("serviceName", "uim-smg"));
     serviceVersion(initData.getString("serviceVersion", "1.0.0"));
 
+    // Authentication
+    requireAuthToken(initData.getBool("requireAuthToken", false));
+    if (requireAuthToken()) {
+      authToken(initData.getString("authToken", ""));
+    }
+
     return true;
-  }
-
-  bool requireAuthToken = false;
-  string authToken;
-
-  string[string] customHeaders;
-
-  protected bool _requireAuthToken = false;
-  bool requireAuthToken() const {
-    return _requireAuthToken;
-  }
-
-  void requireAuthToken(bool value) {
-    _requireAuthToken = value;
-  }
-
-  protected string _authToken;
-  string authToken() const {
-    return _authToken;
-  }
-
-  void authToken(string value) {
-    _authToken = value;
-  }
-
-  protected string[string] _customHeaders;
-  string[string] customHeaders() const {
-    return _customHeaders;
-  }
-
-  void customHeaders(string[string] value) {
-    _customHeaders = value;
-  }
-
-  string customHeader(string key) const {
-    return _customHeaders[key];
-  }
-
-  void customHeader(string key, string value) {
-    _customHeaders[key] = value;
-  }
-
-  override void validate() const {
-    super.validate();
-
-    if (requireAuthToken && authToken.length == 0)
-      throw new SMGConfigurationException("Auth token required when token auth is enabled");
   }
 }

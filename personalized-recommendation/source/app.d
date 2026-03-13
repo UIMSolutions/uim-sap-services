@@ -3,7 +3,7 @@ module app;
 import uim.sap.pre;
 
 void main() {
-    PREConfig config;
+    PREConfig config = new PREConfig();
     config.host = envOr("PRE_HOST", "0.0.0.0");
     config.port = readPort(envOr("PRE_PORT", "8093"), 8093);
     config.basePath = envOr("PRE_BASE_PATH", "/api/pre");
@@ -22,8 +22,8 @@ void main() {
 
     auto token = envOr("PRE_AUTH_TOKEN", "");
     if (token.length > 0) {
-        config.requireAuthToken = true;
-        config.authToken = token;
+        config.requireAuthToken(true);
+        config.authToken(token);
     }
 
     config.customHeaders["X-Service"] = config.serviceName;
