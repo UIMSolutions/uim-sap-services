@@ -26,13 +26,14 @@ class DQMConfig : SAPConfig {
     /// Default country
     defaultCountry(initData.getString("defaultCountry", "DE"));
 
+    // Authentication configuration
+    requireAuthToken(initData.getBool("requireAuthToken", false));
+    if (requireAuthToken) {
+      authToken(initData.getString("authToken", ""));
+    }
+
     return true;
   }
-
-  bool requireAuthToken = false;
-  string authToken;
-
-  string[string] customHeaders;
 
   /** 
     * Default country code to use for data quality checks when country is not specified in the input data.

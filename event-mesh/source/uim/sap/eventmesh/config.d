@@ -19,24 +19,21 @@ class EVMConfig : SAPConfig {
       return false;
     }
 
+    // Network configuration
     basePath(initdata.getString("basePath", "/api/em"));
     host(initdata.getString("host", "0.0.0.0"));
     port(cast(ushort)initdata.getInteger("port", 8092));
+    
+    // Service metadata
     serviceName(initdata.getString("serviceName", "uim-em"));
     serviceVersion(initdata.getString("serviceVersion", "1.0.0"));
 
-    return true;
-  }
-
-  bool requireAuthToken = false;
-  string authToken;
-  string[string] customHeaders;
-
-  override void validate() {
-    super.validate();
-
-    if (requireAuthToken && authToken.length == 0) {
-      throw new EVMConfigurationException("Auth token required but not set");
+    // Authentication configuration
+    requireAuthToken(initData.getBool("requireAuthToken", false));
+    if (requireAuthToken) {
+      authToken(initData.getString("authToken", ""));
     }
+
+    return true;
   }
 }

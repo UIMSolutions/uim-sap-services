@@ -12,30 +12,29 @@ mixin(ShowModule!());
 @safe:
 
 class FFLConfig : SAPConfig {
-  mixin(SAPConfigTemplate!HTMRepoConfig);
+  mixin(SAPConfigTemplate!FFLConfig);
 
   override bool initialize(Json[string] initData = null) {
     if (!super.initialize(initData)) {
       return false;
     }
 
-    port(cast(ushort)initData.getInteger("port", 8094));
+    // Network configuration
     basePath(initData.getString("basePath", "/api/ff"));
+    host(initData.getString("host", "0.0.0.0"));
+    port(cast(ushort)initData.getInteger("port", 8094));
+    
+    // Service metadata
     serviceName(initData.getString("serviceName", "uim-ff"));
     serviceVersion(initData.getString("serviceVersion", "1.0.0"));
 
-    host(initData.getString("host", "0.0.0.0"));
+
+        // Authentication configuration
+    requireAuthToken(initData.getBool("requireAuthToken", false));
+    if (requireAuthToken) {
+      authToken(initData.getString("authToken", ""));
+    }
+
     return true;
   }
-    bool requireAuthToken = false;
-    string authToken;
-    string[string] customHeaders;
-
-    override void validate() {
-        super.validate();
-        
-        if (requireAuthToken && authToken.length == 0) {
-            throw new FFLConfigurationException("Auth token required but not set");
-        }
-    }
 }

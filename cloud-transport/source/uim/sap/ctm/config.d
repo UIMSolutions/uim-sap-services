@@ -6,7 +6,7 @@ mixin(ShowModule!());
 
 @safe:
 
-struct CTMConfig : SAPConfig {
+class CTMConfig : SAPConfig {
   mixin(SAPConfigTemplate!HTMRepoConfig);
 
   override bool initialize(Json[string] initData = null) {
@@ -14,28 +14,31 @@ struct CTMConfig : SAPConfig {
       return false;
     }
 
-    port(cast(ushort)initData.getInteger("port", 8100));
+    // Network configuration
     basePath(initData.getString("basePath", "/api/cloud-transport"));
     host(initData.getString("host", "0.0.0.0"));
+    port(cast(ushort)initData.getInteger("port", 8100));
+
+    // Service metadata
     serviceName(initData.getString("serviceName", "uim-ctm"));
     serviceVersion(initData.getString("serviceVersion", "1.0.0"));
+
+    // Authentication configuration
+    requireAuthToken(initData.getBool("requireAuthToken", false));
+    if (requireAuthToken) {
+      authToken(initData.getString("authToken", ""));
+    }
 
     return true;
   }
 
   string runtime = "cloud-foundry";
 
-  bool requireAuthToken = false;
-  string authToken;
-
-  string[string] customHeaders;
-
   override void validate() const {
     super.validate();
 
-    if (runtime.length == 0)
+    if (runtime.length == 0) {
       throw new CTMConfigurationException("Runtime cannot be empty");
-    if (requireAuthToken && authToken.length == 0)
-      throw new CTMConfigurationException("Auth token required when token auth is enabled");
+    }
   }
 }

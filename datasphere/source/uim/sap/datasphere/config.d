@@ -35,21 +35,22 @@ class DSPConfig : SAPConfig {
     basePath(initData.getString("basePath", "/api/datasphere"));
     host(initData.getString("host", "0.0.0.0"));
     port(cast(ushort)initData.getInteger("port", 8098));
-    
+
     // Service metadata
     serviceName(initData.getString("serviceName", "uim-datasphere"));
     serviceVersion(initData.getString("serviceVersion", "1.0.0"));
+
+    // Authentication configuration
+    requireAuthToken(initData.getBool("requireAuthToken", false));
+    if (requireAuthToken) {
+      authToken(initData.getString("authToken", ""));
+    }
 
     return true;
   }
 
   int defaultSpaceDiskGb = 50;
   int defaultSpaceMemoryGb = 16;
-
-  bool requireAuthToken = false;
-  string authToken;
-
-  string[string] customHeaders;
 
   /**
     * Validates the configuration properties to ensure they meet required criteria.
@@ -60,11 +61,8 @@ class DSPConfig : SAPConfig {
     super.validate();
 
     if (defaultSpaceDiskGb <= 0)
-      throw new DSPConfigurationException("Default space disk must be > 0");
+      {throw new DSPConfigurationException("Default space disk must be > 0");}
     if (defaultSpaceMemoryGb <= 0)
-      throw new DSPConfigurationException("Default space memory must be > 0");
-    if (requireAuthToken && authToken.length == 0) {
-      throw new DSPConfigurationException("Auth token required when token auth is enabled");
-    }
+      {throw new DSPConfigurationException("Default space memory must be > 0");}
   }
 }

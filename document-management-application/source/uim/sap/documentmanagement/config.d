@@ -17,7 +17,7 @@ class DMAConfig : SAPConfig {
       return false;
     }
 
-    // Network
+    // Network configuration
     port(cast(ushort)initData.getInteger("port", 8090));
     basePath(initData.getString("basePath", "/api/docmgmt"));
     host(initData.getString("host", "0.0.0.0"));
@@ -25,7 +25,13 @@ class DMAConfig : SAPConfig {
     // Service metadata
     serviceName(initData.getString("serviceName", "uim-document-management"));
     serviceVersion(initData.getString("serviceVersion", "1.0.0"));
-    
+
+    // Authentication configuration
+    requireAuthToken(initData.getBool("requireAuthToken", false));
+    if (requireAuthToken) {
+      authToken(initData.getString("authToken", ""));
+    }
+
     return true;
   }
 
@@ -42,12 +48,6 @@ class DMAConfig : SAPConfig {
   /// Versioning
   bool versioningEnabled = true;
 
-  /// Authentication
-  bool requireAuthToken = false;
-  string authToken;
-
-  string[string] customHeaders;
-
   override void validate() const {
     super.validate();
 
@@ -57,10 +57,6 @@ class DMAConfig : SAPConfig {
     if (encryptionEnabled && encryptionKey.length == 0) {
       throw new DMAConfigurationException(
         "Encryption key is required when encryption is enabled");
-    }
-    if (requireAuthToken && authToken.length == 0) {
-      throw new DMAConfigurationException(
-        "Auth token is required when authentication is enabled");
     }
   }
 }

@@ -20,11 +20,14 @@ class KSTConfig : SAPConfig {
     serviceName(initdata.getString("serviceName", "uim-kst"));
     serviceVersion(initdata.getString("serviceVersion", "1.0.0"));
 
+    // Authentication configuration
+    requireAuthToken(initData.getBool("requireAuthToken", false));
+    if (requireAuthToken) {
+      authToken(initData.getString("authToken", ""));
+    }
+
     return true;
   }
-
-  bool requireAuthToken = false;
-  string authToken;
 
   /// Master key used to encrypt private keys at rest
   string masterKey = "uim-kst-dev-master-key";
@@ -35,14 +38,9 @@ class KSTConfig : SAPConfig {
   /// Maximum number of keystores that may be stored (0 = unlimited)
   size_t maxKeystores = 0;
 
-  string[string] customHeaders;
-
   override void validate() const {
     super.validate();
 
-    if (requireAuthToken && authToken.length == 0) {
-      throw new KSTConfigurationException("Auth token required when token auth is enabled");
-    }
     if (masterKey.length == 0) {
       throw new KSTConfigurationException("Master key cannot be empty");
     }

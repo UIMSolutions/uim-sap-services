@@ -17,24 +17,21 @@ class IPVConfig : SAPConfig {
       return false;
     }
 
+    // Network configuration
     basePath(initdata.getString("basePath", "/api/ip"));
     host(initdata.getString("host", "0.0.0.0"));
     port(initdata.get("port", 8095));
+
+    // Service metadata
     serviceName(initdata.getString("serviceName", "uim-ip"));
     serviceVersion(initdata.getString("serviceVersion", "1.0.0"));
 
-    return true;
-  }
-
-  bool requireAuthToken = false;
-  string authToken;
-  string[string] customHeaders;
-
-  override void validate() {
-    super.validate();
-
-    if (requireAuthToken && authToken.length == 0) {
-      throw new IPVConfigurationException("Auth token required but not set");
+    // Authentication configuration
+    requireAuthToken(initData.getBool("requireAuthToken", false));
+    if (requireAuthToken) {
+      authToken(initData.getString("authToken", ""));
     }
+
+    return true;
   }
 }
