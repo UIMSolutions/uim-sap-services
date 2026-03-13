@@ -1,7 +1,7 @@
 /**
  * Data models for HANA DB client
  */
-module uim.sap.hanadb.models.models;
+module uim.sap.hanadb.models.queryrequest;
 
 import vibe.data.json : Json;
 import std.datetime : SysTime;
@@ -18,21 +18,6 @@ struct HanaDBQueryRequest {
     }
 }
 
-struct HanaDBResultSet {
-    string[] columns;
-    Json[] rows;
-    long rowCount;
-}
 
-struct HDBResponse {
-    bool success;
-    int statusCode;
-    string errorMessage;
-    Json raw = Json.emptyObject;
-    HanaDBResultSet resultSet;
-    SysTime timestamp;
 
-    bool isSuccess() const pure nothrow @safe @nogc {
-        return success;
-    }
-}
+
