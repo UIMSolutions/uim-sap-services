@@ -12,16 +12,16 @@ import uim.sap.aas;
 class AASConfig : SAPConfig {
   mixin(SAPConfigTemplate!AASConfig);
 
-  override bool initialize(Json[string] initdata) {
+  override bool initialize(Json[string] initData) {
     if (!super.initialize(config)) {
       return false;
     }
 
-    host(initdata.getString("host", "0.0.0.0"));
-    basePath(initdata.getString("basePath", "/api/autoscaler"));
-    serviceName(initdata.getString("serviceName", "uim-aas"));
-    serviceVersion(initdata.getString("serviceVersion", "1.0.0"));
-    port(cast(ushort)initdata.getInteger("port", 8086));
+    host(initData.getString("host", "0.0.0.0"));
+    basePath(initData.getString("basePath", "/api/autoscaler"));
+    serviceName(initData.getString("serviceName", "uim-aas"));
+    serviceVersion(initData.getString("serviceVersion", "1.0.0"));
+    port(cast(ushort)initData.getInteger("port", 8086));
 
     // Load AAS-specific configuration
     if (config.canFind("cfApi")) {

@@ -7,19 +7,19 @@ mixin(ShowModule!());
 @safe:
 
 class MOBConfig : SAPConfig {
-  override bool initialize(Json[string] initdata) {
-    if (!super.initialize(initdata)) {
+  override bool initialize(Json[string] initData) {
+    if (!super.initialize(initData)) {
       return false;
     }
 
     // Network
-    basePath(initdata.getString("basePath", "/api/mob"));
-    host(initdata.getString("host", "0.0.0.0"));
-    port(cast(ushort)initdata.getInteger("port", 8089));
+    basePath(initData.getString("basePath", "/api/mob"));
+    host(initData.getString("host", "0.0.0.0"));
+    port(cast(ushort)initData.getInteger("port", 8089));
 
     // Service metadata
-    serviceName(initdata.getString("serviceName", "uim-mob"));
-    serviceVersion(initdata.getString("serviceVersion", "1.0.0"));
+    serviceName(initData.getString("serviceName", "uim-mob"));
+    serviceVersion(initData.getString("serviceVersion", "1.0.0"));
 
     return true;
   }

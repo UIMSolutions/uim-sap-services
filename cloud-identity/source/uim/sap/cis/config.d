@@ -40,16 +40,16 @@ mixin(ShowModule!());
 class CISConfig : SAPConfig {
   mixin(SAPConfigTemplate!CISConfig);
 
-  override bool initialize(Json[string] initdata) {
+  override bool initialize(Json[string] initData) {
     if (!super.initialize(config)) {
       return false;
     }
 
-    basePath(initdata.getString("basePath", "/api/cis"));
-    host(initdata.getString("host", "0.0.0.0"));
+    basePath(initData.getString("basePath", "/api/cis"));
+    host(initData.getString("host", "0.0.0.0"));
     port(cast(ushort)initData.getInteger("port", 8088));
-    serviceName(initdata.getString("serviceName", "uim-cis"));
-    serviceVersion(initdata.getString("serviceVersion", "1.0.0"));
+    serviceName(initData.getString("serviceName", "uim-cis"));
+    serviceVersion(initData.getString("serviceVersion", "1.0.0"));
 
     // Authentication configuration
     requireAuthToken(initData.getBool("requireAuthToken", false));

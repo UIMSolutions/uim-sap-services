@@ -9,19 +9,19 @@ mixin(ShowModule!());
 class MDIConfig : SAPConfig {
   mixin(SAPConfigTemplate!MDIConfig);
 
-  override bool initialize(Json[string] initdata) {
-    if (!super.initialize(initdata)) {
+  override bool initialize(Json[string] initData) {
+    if (!super.initialize(initData)) {
       return false;
     }
 
     // Network configuration
-    basePath(initdata.getString("basePath", "/api/mdi"));
-    host(initdata.getString("host", "0.0.0.0"));
-    port(cast(ushort)initdata.getInteger("port", 8092));
+    basePath(initData.getString("basePath", "/api/mdi"));
+    host(initData.getString("host", "0.0.0.0"));
+    port(cast(ushort)initData.getInteger("port", 8092));
 
     // Service metadata
-    serviceName(initdata.getString("serviceName", "uim-mdi"));
-    serviceVersion(initdata.getString("serviceVersion", "1.0.0"));
+    serviceName(initData.getString("serviceName", "uim-mdi"));
+    serviceVersion(initData.getString("serviceVersion", "1.0.0"));
 
     // Authentication configuration
     requireAuthToken(initData.getBool("requireAuthToken", false));

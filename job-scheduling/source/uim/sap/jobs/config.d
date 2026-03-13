@@ -32,16 +32,16 @@ import uim.sap.jobs.exceptions;
 class JobSchedulingConfig : SAPConfig {
   mixin(SAPConfigTemplate!JobSchedulingConfig);
 
-  override bool initialize(Json[string] initdata) {
-    if (!super.initialize(initdata)) {
+  override bool initialize(Json[string] initData) {
+    if (!super.initialize(initData)) {
        return false;
     }
 
-    port(cast(ushort)initdata.getInteger("port", 8101));
-    host(initdata.getString("host", "0.0.0.0"));
-    basePath(initdata.getString("basePath", "/api/job-scheduling"));
-    serviceName(initdata.getString("serviceName", "uim-job-scheduling"));
-    serviceVersion(initdata.getString("serviceVersion", "1.0.0"));
+    port(cast(ushort)initData.getInteger("port", 8101));
+    host(initData.getString("host", "0.0.0.0"));
+    basePath(initData.getString("basePath", "/api/job-scheduling"));
+    serviceName(initData.getString("serviceName", "uim-job-scheduling"));
+    serviceVersion(initData.getString("serviceVersion", "1.0.0"));
 
     return true;
   }

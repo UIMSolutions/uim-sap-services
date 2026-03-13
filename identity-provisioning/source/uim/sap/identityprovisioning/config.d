@@ -12,19 +12,19 @@ mixin(ShowModule!());
 @safe:
 
 class IPVConfig : SAPConfig {
-  override bool initialize(Json[string] initdata) {
-    if (!super.initialize(initdata)) {
+  override bool initialize(Json[string] initData) {
+    if (!super.initialize(initData)) {
       return false;
     }
 
     // Network configuration
-    basePath(initdata.getString("basePath", "/api/ip"));
-    host(initdata.getString("host", "0.0.0.0"));
-    port(initdata.get("port", 8095));
+    basePath(initData.getString("basePath", "/api/ip"));
+    host(initData.getString("host", "0.0.0.0"));
+    port(cast(ushort)initData.getInteger("port", 8095));
 
     // Service metadata
-    serviceName(initdata.getString("serviceName", "uim-ip"));
-    serviceVersion(initdata.getString("serviceVersion", "1.0.0"));
+    serviceName(initData.getString("serviceName", "uim-ip"));
+    serviceVersion(initData.getString("serviceVersion", "1.0.0"));
 
     // Authentication configuration
     requireAuthToken(initData.getBool("requireAuthToken", false));

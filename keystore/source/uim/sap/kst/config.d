@@ -9,16 +9,16 @@ mixin(ShowModule!());
 class KSTConfig : SAPConfig {
   mixin(SAPConfigTemplate!KSTConfig);
 
-  override bool initialize(Json[string] initdata) {
-    if (!super.initialize(initdata)) {
+  override bool initialize(Json[string] initData) {
+    if (!super.initialize(initData)) {
       return false;
     }
 
-    port(cast(ushort)initdata.getInteger("port", 8087));
-    host(initdata.getString("host", "0.0.0.0"));
-    basePath(initdata.getString("basePath", "/api/kst"));
-    serviceName(initdata.getString("serviceName", "uim-kst"));
-    serviceVersion(initdata.getString("serviceVersion", "1.0.0"));
+    port(cast(ushort)initData.getInteger("port", 8087));
+    host(initData.getString("host", "0.0.0.0"));
+    basePath(initData.getString("basePath", "/api/kst"));
+    serviceName(initData.getString("serviceName", "uim-kst"));
+    serviceVersion(initData.getString("serviceVersion", "1.0.0"));
 
     // Authentication configuration
     requireAuthToken(initData.getBool("requireAuthToken", false));

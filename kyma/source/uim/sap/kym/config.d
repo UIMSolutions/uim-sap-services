@@ -9,19 +9,19 @@ mixin(ShowModule!());
 class KYMConfig : SAPConfig {
   mixin(SAPConfigTemplate!KYMConfig);
 
-  override bool initialize(Json[string] initdata) {
-    if (!super.initialize(initdata)) {
+  override bool initialize(Json[string] initData) {
+    if (!super.initialize(initData)) {
       return false;
     }
 
     // Network
-    basePath(initdata.getString("basePath", "/api/kym"));
-    host(initdata.getString("host", "0.0.0.0"));
-    port(cast(ushort)initdata.getInteger("port", 8088));
+    basePath(initData.getString("basePath", "/api/kym"));
+    host(initData.getString("host", "0.0.0.0"));
+    port(cast(ushort)initData.getInteger("port", 8088));
 
     // Service metadata
-    serviceName(initdata.getString("serviceName", "uim-kym"));
-    serviceVersion(initdata.getString("serviceVersion", "1.0.0"));
+    serviceName(initData.getString("serviceName", "uim-kym"));
+    serviceVersion(initData.getString("serviceVersion", "1.0.0"));
 
     return true;
   }

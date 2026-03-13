@@ -13,8 +13,8 @@ mixin(ShowModule!());
 
 struct OAUConfig : SAPConfig {
 
-  override bool initialize(Json[string] initdata) {
-    if (!super.initialize(initdata)) {
+  override bool initialize(Json[string] initData) {
+    if (!super.initialize(initData)) {
       return false;
     }
 

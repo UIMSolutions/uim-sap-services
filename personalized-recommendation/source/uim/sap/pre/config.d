@@ -9,19 +9,19 @@ mixin(ShowModule!());
 
 class PREConfig : SAPConfig {
 
-    override bool initialize(Json[string] initdata) {
-    if (!super.initialize(initdata)) {
+    override bool initialize(Json[string] initData) {
+    if (!super.initialize(initData)) {
        return false;
     }
 
     // Network
-    basePath(initdata.getString("basePath", "/api/pre"));
-    host(initdata.getString("host", "0.0.0.0"));
-    port(cast(ushort)initdata.getInteger("port", 8093));
+    basePath(initData.getString("basePath", "/api/pre"));
+    host(initData.getString("host", "0.0.0.0"));
+    port(cast(ushort)initData.getInteger("port", 8093));
     
     // Service metadata
-    serviceName(initdata.getString("serviceName", "uim-pre"));
-    serviceVersion(initdata.getString("serviceVersion", "1.0.0"));
+    serviceName(initData.getString("serviceName", "uim-pre"));
+    serviceVersion(initData.getString("serviceVersion", "1.0.0"));
 
     return true;
   }
