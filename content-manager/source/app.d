@@ -11,8 +11,10 @@ mixin(ShowModule!());
 
 @safe:
 
-void main() {
-  CMGConfig config;
+version (unittest) {
+} else 
+  void main() {
+  CMGConfig config = new CMGConfig();
   config.host = envOr("CMG_HOST", "0.0.0.0");
   config.port = readPort(envOr("CMG_PORT", "8095"), 8095);
   config.basePath = envOr("CMG_BASE_PATH", "/api/cmg");

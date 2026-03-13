@@ -7,7 +7,9 @@ module app;
 
 import uim.sap.cid;
 
-void main() {
+version (unittest) {
+} else 
+  void main() {
   CIDConfig config = new CIDConfig();
   config.host = envOr("CID_HOST", "0.0.0.0");
   config.port = readPort(envOr("CID_PORT", "8102"), 8102);
