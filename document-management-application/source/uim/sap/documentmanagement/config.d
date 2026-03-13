@@ -17,12 +17,12 @@ class DMAConfig : SAPConfig {
       return false;
     }
 
-    /// Network
+    // Network
     port(cast(ushort)initData.getInteger("port", 8090));
     basePath(initData.getString("basePath", "/api/docmgmt"));
     host(initData.getString("host", "0.0.0.0"));
 
-    /// Service metadata
+    // Service metadata
     serviceName(initData.getString("serviceName", "uim-document-management"));
     serviceVersion(initData.getString("serviceVersion", "1.0.0"));
     

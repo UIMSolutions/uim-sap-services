@@ -14,12 +14,12 @@ class PREConfig : SAPConfig {
        return false;
     }
 
-    /// Network
+    // Network
     basePath(initdata.getString("basePath", "/api/pre"));
     host(initdata.getString("host", "0.0.0.0"));
     port(cast(ushort)initdata.getInteger("port", 8093));
     
-    /// Service metadata
+    // Service metadata
     serviceName(initdata.getString("serviceName", "uim-pre"));
     serviceVersion(initdata.getString("serviceVersion", "1.0.0"));
 

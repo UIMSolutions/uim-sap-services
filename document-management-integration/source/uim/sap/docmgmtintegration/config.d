@@ -29,12 +29,12 @@ class DocMgmtIntegrationConfig : SAPConfig {
       return false;
     }
 
-    /// Network
+    // Network
     basePath(initdata.getString("basePath", "/api/docmgmt-integration"));
     host(initdata.getString("host", "0.0.0.0"));
     port(cast(ushort)initdata.getInteger("port", 8091));
 
-    /// Service metadata
+    // Service metadata
     serviceName(initdata.getString("serviceName", "uim-docmgmt-integration"));
     serviceVersion(initdata.getString("serviceVersion", "1.0.0"));
 

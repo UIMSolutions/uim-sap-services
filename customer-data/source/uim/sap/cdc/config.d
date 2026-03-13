@@ -18,12 +18,12 @@ class CDCConfig : SAPConfig {
       return false;
     }
 
-    /// Network
+    // Network
     basePath(initData.getString("basePath", "/api/customer-data"));
     host(initData.getString("host", "0.0.0.0"));
     port(cast(ushort)initData.getInteger("port", 8097));
 
-    /// Service metadata
+    // Service metadata
     serviceName(initData.getString("serviceName", "uim-customer-data"));
     serviceVersion(initData.getString("serviceVersion", "1.0.0"));
 

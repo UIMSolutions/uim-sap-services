@@ -19,12 +19,12 @@ class DPIConfig : SAPConfig {
       return false;
     }
 
-    /// Network configuration
+    // Network configuration
     basePath(initData.getString("basePath", "/api/dpi"));
     host(initData.getString("host", "0.0.0.0"));
     port(cast(ushort)initData.getInteger("port", 8093));
 
-    /// Service metadata
+    // Service metadata
     serviceName(initData.getString("serviceName", "uim-dpi"));
     serviceVersion(initData.getString("serviceVersion", "1.0.0"));
 

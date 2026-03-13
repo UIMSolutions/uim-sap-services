@@ -14,12 +14,12 @@ class DQMConfig : SAPConfig {
       return false;
     }
 
-    /// Network
+    // Network
     basePath(initData.getString("basePath", "/api/dqm"));
     host(initData.getString("host", "0.0.0.0"));
     port(cast(ushort)initData.getInteger("port", 8091));
 
-    /// Service metadata
+    // Service metadata
     serviceName(initData.getString("serviceName", "uim-dqm"));
     serviceVersion(initData.getString("serviceVersion", "1.0.0"));
 

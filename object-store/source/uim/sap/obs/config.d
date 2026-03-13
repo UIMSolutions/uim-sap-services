@@ -43,12 +43,12 @@ class OBSConfig : SAPConfig {
       return false;
     }
 
-    /// Network configuration
+    // Network configuration
     basePath(initData.getString("basePath", "/api/obs"));
     host(initData.getString("host", "0.0.0.0"));
     port(cast(ushort)inidata.getInteger("port", 8091));
 
-    /// Service metadata
+    // Service metadata
     serviceName(initData.getString("serviceName", "uim-obs"));
     serviceVersion(initData.getString("serviceVersion", "1.0.0"));
 

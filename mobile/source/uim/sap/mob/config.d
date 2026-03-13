@@ -12,12 +12,12 @@ class MOBConfig : SAPConfig {
       return false;
     }
 
-    /// Network
+    // Network
     basePath(initdata.getString("basePath", "/api/mob"));
     host(initdata.getString("host", "0.0.0.0"));
     port(cast(ushort)initdata.getInteger("port", 8089));
 
-    /// Service metadata
+    // Service metadata
     serviceName(initdata.getString("serviceName", "uim-mob"));
     serviceVersion(initdata.getString("serviceVersion", "1.0.0"));
 

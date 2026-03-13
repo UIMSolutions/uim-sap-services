@@ -15,7 +15,7 @@ import uim.sap.ids;
  * Configuration for Cloud Identity Services
  */
 class IdentityConfig : SAPConfig {
-  /// Service type
+  // Service type
   IdentityServiceType serviceType = IdentityServiceType.IAS;
 
   /// Tenant host (e.g., "myaccount.accounts.ondemand.com")

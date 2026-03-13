@@ -31,12 +31,12 @@ class DSPConfig : SAPConfig {
       return false;
     }
 
-    /// Network
+    // Network
     basePath(initData.getString("basePath", "/api/datasphere"));
     host(initData.getString("host", "0.0.0.0"));
     port(cast(ushort)initData.getInteger("port", 8098));
     
-    /// Service metadata
+    // Service metadata
     serviceName(initData.getString("serviceName", "uim-datasphere"));
     serviceVersion(initData.getString("serviceVersion", "1.0.0"));
 

@@ -24,7 +24,7 @@ class SMGConfig : SAPConfig {
     port(cast(ushort)initData.getInteger("port", 8094));
     basePath(initData.getString("basePath", "/api/sitemanager"));
 
-    /// Service metadata
+    // Service metadata
     serviceName(initData.getString("serviceName", "uim-smg"));
     serviceVersion(initData.getString("serviceVersion", "1.0.0"));
 
