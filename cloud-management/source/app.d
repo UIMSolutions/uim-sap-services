@@ -13,7 +13,7 @@ void main() {
   auto token = envOr("MGT_AUTH_TOKEN", "");
   if (token.length > 0) {
     config.requireAuthToken(true;)
-    config.authToken = token;
+    config.authToken(token);
   }
 
   config.tenant = envOr("MGT_BTP_TENANT", "");

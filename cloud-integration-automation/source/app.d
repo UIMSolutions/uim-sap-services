@@ -7,7 +7,7 @@ import std.stdio : writeln;
 import uim.sap.cia;
 
 void main() {
-  CIAConfig config = new ;
+  CIAConfig config = new CIAConfig;
   config.host = envOr("CIA_HOST", "0.0.0.0");
   config.port = readPort(envOr("CIA_PORT", "8098"), 8098);
   config.basePath = envOr("CIA_BASE_PATH", "/api/cloud-integration-automation");
@@ -18,7 +18,7 @@ void main() {
   auto token = envOr("CIA_AUTH_TOKEN", "");
   if (token.length > 0) {
     config.requireAuthToken(true;)
-    config.authToken = token;
+    config.authToken(token);
   }
 
   config.customHeaders["X-Service"] = config.serviceName;

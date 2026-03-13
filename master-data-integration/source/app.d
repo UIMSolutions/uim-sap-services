@@ -22,7 +22,7 @@ void main() {
   auto token = envOr("MDI_AUTH_TOKEN", "");
   if (token.length > 0) {
     config.requireAuthToken(true;)
-    config.authToken = token;
+    config.authToken(token);
   }
 
   config.customHeaders["X-Service"] = config.serviceName;
