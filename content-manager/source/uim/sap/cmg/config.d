@@ -10,6 +10,7 @@ import uim.sap.cmg;
 mixin(ShowModule!());
 
 @safe:
+
 class CMGConfig : SAPConfig {
   mixin(SAPConfigTemplate!CMGConfig);
 
@@ -18,24 +19,21 @@ class CMGConfig : SAPConfig {
       return false;
     }
 
+    // Network configuration
     port(cast(ushort)initData.getInteger("port", 8095));
     host(initData.getString("host", "0.0.0.0"));
     basePath(initData.getString("basePath", "/api/cmg"));
+    
+    // Service metadata
     serviceName(initData.getString("serviceName", "uim-cmg"));
     serviceVersion(initData.getString("serviceVersion", "1.0.0"));
 
+    // Authentication configuration
+    requireAuthToken(initData.getBool("requireAuthToken", false));
+    if (requireAuthToken) {
+      authToken(initData.getString("authToken", ""));
+    }
+
     return true;
-  }
-
-  bool requireAuthToken = false;
-  string authToken;
-
-  string[string] customHeaders;
-
-  override void validate() const {
-    super.validate();
-
-    if (requireAuthToken && authToken.length == 0)
-      throw new CMGConfigurationException("Auth token required when token auth is enabled");
   }
 }

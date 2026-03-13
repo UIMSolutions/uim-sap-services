@@ -20,22 +20,22 @@ class DSTConfig : SAPConfig {
     serviceVersion(initData.getString("serviceVersion", "1.0.0"));
     host(initData.getString("host", "0.0.0.0"));
 
+    // Authentication configuration
+    requireAuthToken(initData.getBool("requireAuthToken", false));
+    if (requireAuthToken) {
+      authToken(initData.getString("authToken", ""));
+    }
+
     return true;
   }
 
   string runtime = "cloud-foundry";
 
-  bool requireAuthToken = false;
-  string authToken;
-
-  string[string] customHeaders;
-
   override void validate() const {
     super.validate();
 
-    if (runtime.length == 0)
+    if (runtime.length == 0) {
       throw new DSTConfigurationException("Runtime cannot be empty");
-    if (requireAuthToken && authToken.length == 0)
-      throw new DSTConfigurationException("Auth token required when token auth is enabled");
+    }
   }
 }

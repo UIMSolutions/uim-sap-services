@@ -20,6 +20,12 @@ class BASConfig : SAPConfig {
     serviceName(initData.getString("serviceName", "uim-bas"));
     serviceVersion(initData.getString("serviceVersion", "1.0.0"));
 
+    // Authentication configuration
+    requireAuthToken(initData.getBool("requireAuthToken", false));
+    if (requireAuthToken) {
+      authToken(initData.getString("authToken", ""));
+    }
+
     return true;
   }
 
@@ -28,17 +34,11 @@ class BASConfig : SAPConfig {
   string[] regions = ["eu10", "us10", "ap10"];
   string[] hyperscalers = ["aws", "azure", "gcp"];
 
-  bool requireAuthToken = false;
-  string authToken;
-
-  string[string] customHeaders;
-
   override void validate() const {
     super.validate();
 
-    if (defaultRegion.length == 0)
+    if (defaultRegion.length == 0) {
       throw new BASConfigurationException("Default region cannot be empty");
-    if (requireAuthToken && authToken.length == 0)
-      throw new BASConfigurationException("Auth token required when token auth is enabled");
+    }
   }
 }

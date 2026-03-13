@@ -43,7 +43,7 @@ class OBSConfig : SAPConfig {
       return false;
     }
 
-    /// Network
+    /// Network configuration
     basePath(initData.getString("basePath", "/api/obs"));
     host(initData.getString("host", "0.0.0.0"));
     port(cast(ushort)inidata.getInteger("port", 8091));
@@ -52,11 +52,14 @@ class OBSConfig : SAPConfig {
     serviceName(initData.getString("serviceName", "uim-obs"));
     serviceVersion(initData.getString("serviceVersion", "1.0.0"));
 
+    // Authentication configuration
+    requireAuthToken(initData.getBool("requireAuthToken", false));
+    if (requireAuthToken) {
+      authToken(initData.getString("authToken", ""));
+    }
+
     return true;
   }
-
-  bool requireAuthToken = false;
-  string authToken;
 
   /// Maximum buckets per tenant
   size_t maxBucketsPerTenant = 100;
@@ -76,13 +79,9 @@ class OBSConfig : SAPConfig {
   /// Credential expiry in seconds
   size_t credentialExpirySecs = 3600;
 
-  string[string] customHeaders;
-
   override void validate() const {
     super.validate();
 
-    if (requireAuthToken && authToken.length == 0)
-      throw new OBSConfigurationException("Auth token required when token auth is enabled");
     if (maxBucketsPerTenant == 0)
       throw new OBSConfigurationException("maxBucketsPerTenant must be greater than zero");
   }

@@ -39,11 +39,20 @@ class ATMConfig : SAPConfig {
       return false;
     }
 
+    // Network configuration
     port(cast(ushort)initData.getInteger("port", 8088));
     basePath(initData.getString("basePath", "/api/atm"));
+    host(initData.getString("host", "0.0.0.0"));
+
+    // Service metadata
     serviceName(initData.getString("serviceName", "uim-atm"));
     serviceVersion(initData.getString("serviceVersion", "1.0.0"));
-    host(initData.getString("host", "0.0.0.0"));
+
+    // Authentication configuration
+    requireAuthToken(initData.getBool("requireAuthToken", false));
+    if (requireAuthToken) {
+      authToken(initData.getString("authToken", ""));
+    }
 
     return true;
   }
@@ -55,8 +64,6 @@ class ATMConfig : SAPConfig {
   bool allowUnsignedTokens = true;
   bool enforceTokenExpiry = true;
   string bootstrapToken;
-
-  string[string] customHeaders;
 
   override void validate() const {
     super.validate();

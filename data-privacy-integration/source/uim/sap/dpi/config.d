@@ -11,7 +11,7 @@ mixin(ShowModule!());
 
 @safe:
 
-struct DPIConfig : SAPConfig {
+class DPIConfig : SAPConfig {
   mixin(SAPConfigTemplate!DPIConfig);
 
   override bool initialize(Json[string] initData = null) {
@@ -19,7 +19,7 @@ struct DPIConfig : SAPConfig {
       return false;
     }
 
-    /// Network
+    /// Network configuration
     basePath(initData.getString("basePath", "/api/dpi"));
     host(initData.getString("host", "0.0.0.0"));
     port(cast(ushort)initData.getInteger("port", 8093));
@@ -28,22 +28,22 @@ struct DPIConfig : SAPConfig {
     serviceName(initData.getString("serviceName", "uim-dpi"));
     serviceVersion(initData.getString("serviceVersion", "1.0.0"));
 
+    // Authentication configuration
+    requireAuthToken(initData.getBool("requireAuthToken", false));
+    if (requireAuthToken) {
+      authToken(initData.getString("authToken", ""));
+    }
+
     return true;
   }
 
   int defaultRetentionDays = 365;
 
-  bool requireAuthToken = false;
-  string authToken;
-
-  string[string] customHeaders;
-
   override void validate() const {
     super.validate();
 
-    if (defaultRetentionDays <= 0)
+    if (defaultRetentionDays <= 0) {
       throw new DPIConfigurationException("Default retention days must be greater than zero");
-    if (requireAuthToken && authToken.length == 0)
-      throw new DPIConfigurationException("Auth token required when token auth is enabled");
+    }
   }
 }

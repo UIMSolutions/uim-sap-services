@@ -11,7 +11,7 @@ mixin(ShowModule!());
 
 @safe:
 
-struct RMSConfig : SAPConfig {
+class RMSConfig : SAPConfig {
   mixin(SAPConfigTemplate!RMSConfig);
 
   override bool initialize(Json[string] initdata) {
@@ -19,16 +19,20 @@ struct RMSConfig : SAPConfig {
       return false;
     }
 
-    port(cast(ushort)initdata.getInteger("port", 8095));
-    host(initdata.getString("host", "0.0.0.0"));
+    // Network configuration
     basePath(initdata.getString("basePath", "/api/rms"));
+    host(initdata.getString("host", "0.0.0.0"));
+    port(cast(ushort)initdata.getInteger("port", 8095));
+    
+    // Service metadata
     serviceName(initdata.getString("serviceName", "uim-rms"));
     serviceVersion(initdata.getString("serviceVersion", "1.0.0"));
 
-    requireAuthToken(initdata.getBool("requireAuthToken", false));
-    if (requireAuthToken()) {
-      authToken(initdata.getString("authToken", ""));
-    }   
+    // Authentication configuration
+    requireAuthToken(initData.getBool("requireAuthToken", false));
+    if (requireAuthToken) {
+      authToken(initData.getString("authToken", ""));
+    }
 
     return true;
   }
@@ -37,10 +41,7 @@ struct RMSConfig : SAPConfig {
   string defaultTenant = "provider";
   string defaultSpace = "dev";
 
-
   int logRetention = 500;
-
-  string[string] customHeaders;
 
   override void validate() const {
     super.validate();
