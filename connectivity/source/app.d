@@ -32,6 +32,7 @@ void main() {
 
   writeln("Starting Connectivity service on ", config.host, ":", config.port);
   writeln("Base path: ", config.basePath);
+  
   server.run();
 }
 

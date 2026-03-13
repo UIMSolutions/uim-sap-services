@@ -1,4 +1,4 @@
-module uim.sap.ctm.models;
+module uim.sap.ctm.models.models;
 
 import uim.sap.ctm;
 
