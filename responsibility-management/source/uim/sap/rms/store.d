@@ -566,8 +566,8 @@ class RMSStore : SAPStore {
       TeamMember member;
       member.userId = getString(item, "user_id", "");
       member.displayName = getString(item, "display_name", member.userId);
-      member.isOwner = getBool(item, "is_owner", false);
-      member.notificationsEnabled = getBool(item, "notifications_enabled", true);
+      member.isOwner = getBoolean(item, "is_owner", false);
+      member.notificationsEnabled = getBoolean(item, "notifications_enabled", true);
 
       if ("functions" in item && item["functions"].isArray) {
         foreach (fn; item["functions"]) {
@@ -613,7 +613,7 @@ class RMSStore : SAPStore {
       rule.functionCode = getString(request, "function_code", rule.functionCode);
     }
     if (full || "enabled" in request) {
-      rule.enabled = getBool(request, "enabled", true);
+      rule.enabled = getBoolean(request, "enabled", true);
     }
     if (full || "priority" in request) {
       rule.priority = getInt(request, "priority", 100);
@@ -732,7 +732,7 @@ class RMSStore : SAPStore {
           rule.externalApiRef = getString(item, "external_api_ref", "");
           rule.teamId = getString(item, "team_id", "");
           rule.functionCode = getString(item, "function_code", "");
-          rule.enabled = getBool(item, "enabled", true);
+          rule.enabled = getBoolean(item, "enabled", true);
           rule.priority = getInt(item, "priority", 100);
           rule.createdAt = getString(item, "created_at", nowIso());
           rule.updatedAt = getString(item, "updated_at", nowIso());
@@ -826,7 +826,7 @@ class RMSStore : SAPStore {
     return fallback;
   }
 
-  private bool getBool(Json payload, string key, bool fallback) {
+  private bool getBoolean(Json payload, string key, bool fallback) {
     if (key in payload && payload[key].isBoolean) {
       return payload[key].get!bool;
     }

@@ -62,7 +62,7 @@ struct AppVersionInfo {
         item.appId = getString(payload, "app_id", "");
         item.versionId = getString(payload, "version", "");
         item.visibility = visibilityFromString(getString(payload, "visibility", "private"));
-        item.active = getBool(payload, "active", false);
+        item.active = getBoolean(payload, "active", false);
         item.createdAt = getString(payload, "created_at", "");
         item.updatedAt = getString(payload, "updated_at", "");
         item.sizeBytes = getLong(payload, "size_bytes", 0L);
@@ -98,7 +98,7 @@ private string getString(Json payload, string key, string fallback) {
     return fallback;
 }
 
-private bool getBool(Json payload, string key, bool fallback) {
+private bool getBoolean(Json payload, string key, bool fallback) {
     if (key in payload && payload[key].isBoolean) {
         return payload[key].get!bool;
     }
