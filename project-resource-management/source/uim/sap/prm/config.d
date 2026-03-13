@@ -31,7 +31,7 @@ class PRMConfig : SAPConfig {
 
   double defaultCapacityHours = 8;
 
-  override void validate() const {
+  override void validate() {
     super.validate();
     if (defaultCapacityHours <= 0) {
       throw new PRMConfigurationException("defaultCapacityHours must be greater than 0");

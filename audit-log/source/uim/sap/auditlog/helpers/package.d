@@ -5,3 +5,6 @@
 *****************************************************************************************************************/
 module uim.sap.auditlog.helpers;
 
+public {
+  import uim.sap.auditlog.helpers.helper;;
+}

@@ -121,19 +121,28 @@ class PRMServer {
           }
         }
 
-        if (segments.length == 6 && segments[3] == "projects" && segments[5] == "board" && req.method == HTTPMethod.GET) {
+        if (segments.length == 6
+            && segments[3] == "projects"
+            && segments[5] == "board"
+            && req.method == HTTPMethod.GET) {
           auto projectId = segments[4];
           res.writeJsonBody(_service.listBoardItems(tenantId, projectId), 200);
           return;
         }
 
-        if (segments.length == 6 && segments[3] == "projects" && segments[5] == "partner-invitations" && req.method == HTTPMethod.POST) {
+        if (segments.length == 6
+            && segments[3] == "projects"
+            && segments[5] == "partner-invitations"
+            && req.method == HTTPMethod.POST) {
           auto projectId = segments[4];
           res.writeJsonBody(_service.invitePartner(tenantId, projectId, req.json), 200);
           return;
         }
 
-        if (segments.length == 6 && segments[3] == "projects" && segments[5] == "resource-match" && req.method == HTTPMethod.POST) {
+        if (segments.length == 6
+            && segments[3] == "projects"
+            && segments[5] == "resource-match"
+            && req.method == HTTPMethod.POST) {
           auto projectId = segments[4];
           res.writeJsonBody(_service.matchResourcesForProject(tenantId, projectId, req.json), 200);
           return;
@@ -172,12 +181,18 @@ class PRMServer {
           }
         }
 
-        if (segments.length == 5 && segments[3] == "resources" && segments[4] == "search" && req.method == HTTPMethod.POST) {
+        if (segments.length == 5
+            && segments[3] == "resources"
+            && segments[4] == "search"
+            && req.method == HTTPMethod.POST) {
           res.writeJsonBody(_service.searchResourcesBySkills(tenantId, req.json), 200);
           return;
         }
 
-        if (segments.length == 5 && segments[3] == "resources" && segments[4] == "capacity" && req.method == HTTPMethod.GET) {
+        if (segments.length == 5
+            && segments[3] == "resources"
+            && segments[4] == "capacity"
+            && req.method == HTTPMethod.GET) {
           res.writeJsonBody(_service.resourceCapacity(tenantId), 200);
           return;
         }

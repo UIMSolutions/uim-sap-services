@@ -2,8 +2,8 @@ module uim.sap.prm.service;
 
 import std.array : array;
 import std.algorithm.searching : canFind;
-import std.ascii : toLower;
 import std.datetime : Clock;
+import std.string : toLower;
 
 import uim.sap.prm;
 
@@ -479,13 +479,15 @@ class PRMService : SAPService {
     if (!(key in request)) {
       return fallback;
     }
-    if (request[key].isInteger) {
-      return cast(double)request[key].get!long;
-    }
-    if (request[key].isFloat) {
+
+    try {
+      if (request[key].isInteger) {
+        return cast(double)request[key].get!long;
+      }
       return request[key].get!double;
+    } catch (Exception) {
+      return fallback;
     }
-    return fallback;
   }
 
   private string normalizeItemType(string rawItemType) {

@@ -7,9 +7,10 @@ module uim.sap.auditlog;
 
 public {
   import uim.sap.service;
-  
+
   import uim.sap.auditlog.config;
   import uim.sap.auditlog.exceptions;
+  import uim.sap.auditlog.helpers;
   import uim.sap.auditlog.models;
   import uim.sap.auditlog.store;
   import uim.sap.auditlog.service;
