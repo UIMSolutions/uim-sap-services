@@ -20,7 +20,11 @@ configuration "library" {
 }
 
 // Configurations
-configuration "default" {
+configuration "defaultRun" {
+	targetType "executable"
+}
+
+configuration "defaultTest" {
 	targetType "library"
 }
 

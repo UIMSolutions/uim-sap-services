@@ -15,7 +15,11 @@ importPaths "source"
 dependency "uim-sap:service" path=".."
 
 // Configurations
-configuration "default" {
+configuration "defaultRun" {
+	targetType "executable"
+}
+
+configuration "defaultTest" {
 	targetType "library"
 }
 

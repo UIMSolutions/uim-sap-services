@@ -16,7 +16,11 @@ dependency "uim-sap:service" path=".."
 buildRequirements "allowWarnings" "silenceDeprecations"
 buildOptions "ignoreDeprecations" "debugInfo"
 
-configuration "default" {
+configuration "defaultRun" {
+	targetType "executable"
+}
+
+configuration "defaultTest" {
 	targetType "library"
 }
 
