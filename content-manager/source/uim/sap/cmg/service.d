@@ -1,3 +1,8 @@
+/****************************************************************************************************************
+* Copyright: © 2018-2026 Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*) 
+* License: Subject to the terms of the Apache 2.0 license, as written in the included LICENSE.txt file. 
+* Authors: Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*)
+*****************************************************************************************************************/
 module uim.sap.cmg.service;
 
 import uim.sap.cmg;
@@ -179,41 +184,39 @@ class CMGService : SAPService {
     return normalized;
   }
 
-  private string readRequired(Json body, string key) const {
-    if (!(key in body) || !body[key].isString || body[key].get!string.length == 0) {
+  private string readRequired(Json data, string key) const {
+    if (!(key in data) || !data[key].isString || data[key].get!string.length == 0) {
       throw new CMGValidationException(key ~ " is required");
     }
-    return
-    body[key].get!string;
+    return     data[key].get!string;
   }
 
-  private string readOptional(Json body, string key, string fallback) const {
-    if (!(key in body) || body[key].isNull)
+  private string readOptional(Json data, string key, string fallback) const {
+    if (!(key in data) || data[key].isNull)
       return fallback;
-    if (!body[key].isString)
+    if (!data[key].isString)
       throw new CMGValidationException(key ~ " must be a string");
-    return
-    body[key].get!string;
+    return     data[key].get!string;
   }
 
-  private bool readOptionalBool(Json body, string key, bool fallback) const {
-    if (!(key in body) || body[key].isNull)
+  private bool readOptionalBool(Json data, string key, bool fallback) const {
+    if (!(key in data) || data[key].isNull)
       return fallback;
-    if (!body[key].isBoolean)
+    if (!data[key].isBoolean)
       throw new CMGValidationException(key ~ " must be a boolean");
-    return
-    body[key].get!bool;
+      
+    return data[key].get!bool;
   }
 
   private string[] readStringArray(Json data, string key) const {
     string[] values;
     if (!(key in data) || data[key].isNull)
       return values;
-      
+
     if (!data[key].isArray)
       throw new CMGValidationException(key ~ " must be an array");
 
-    foreach (item; data[key]) {
+    foreach (item; data[key].toArray) {
       if (!item.isString)
         throw new CMGValidationException(key ~ " must contain strings");
 
