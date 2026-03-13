@@ -12,27 +12,13 @@ mixin(ShowModule!());
 @safe:
 
 class MONService : SAPService {
-    private MONConfig _config;
     private MONStore _store;
 
     this(MONConfig config) {
-        config.validate();
-        _config = config;
+        super(config);
+
         _store = new MONStore;
     }
-
-    @property const(MONConfig) config() const {
-        return _config;
-    }
-
-    override Json health() {
-        Json healthInfo = super.health();
-        healthInfo["ok"] = true;
-        healthInfo["serviceName"] = _config.serviceName;
-        healthInfo["serviceVersion"] = _config.serviceVersion;
-        return healthInfo;
-    }
-
 
     Json fetchApplicationMetrics(string appId) {
         auto metrics = buildApplicationMetrics(appId);

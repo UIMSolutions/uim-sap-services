@@ -3,11 +3,11 @@
  */
 module uim.sap.s4hana.models.response;
 
-import vibe.data.json : Json;
-import std.datetime : SysTime;
+import uim.sap.s4hana;
 
+mixin(ShowModule!());
 
-
+@safe:
 struct S4HANAResponse {
     bool success;
     int statusCode;

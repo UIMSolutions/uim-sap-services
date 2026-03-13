@@ -13,46 +13,28 @@ mixin(ShowModule!());
 
 
 class RMSService : SAPService {
-    private RMSConfig _config;
     private RMSStore _store;
 
     this(RMSConfig config) {
-        config.validate();
-        _config = config;
-        _store = new RMSStore(_config.dataDirectory, _config.logRetention);
-    }
-
-    @property const(RMSConfig) config() const {
-        return _config;
-    }
-
-    override Json health() {
-        Json healthInfo = super.health();
-        healthInfo["ok"] = true;
-        healthInfo["service_name"] = _config.serviceName;
-        healthInfo["service_version"] = _config.serviceVersion;
-        return healthInfo;
+        super(config);
+        _store = new RMSStore(config.dataDirectory, config.logRetention);
     }
 
     Json sapDeliveredCategories() {
-        Json list = Json.emptyArray;
-        foreach (item; _store.sapDeliveredTeamCategories()) {
-            list ~= item;
-        }
+        Json categories = _store.sapDeliveredTeamCategories().map!(item => item.toJson).array.toJson;
 
         Json payload = Json.emptyObject;
-        payload["categories"] = list;
-        payload["total"] = cast(long)list.length;
+        payload["categories"] = categories;
+        payload["total"] = cast(long)categories.length;
         return payload;
     }
 
     Json listTeamTypes(TenantContext tenant) {
-        Json list = Json.emptyArray;
-        foreach (item; _store.listTeamTypes(tenant)) list ~= item.toJson();
+        Json types = _store.listTeamTypes(tenant).map!(item => item.toJson).array.toJson;
 
         Json payload = Json.emptyObject;
-        payload["team_types"] = list;
-        payload["total"] = cast(long)list.length;
+        payload["team_types"] = types;
+        payload["total"] = cast(long)types.length;
         return payload;
     }
 
@@ -72,12 +54,11 @@ class RMSService : SAPService {
     }
 
     Json listFunctions(TenantContext tenant) {
-        Json list = Json.emptyArray;
-        foreach (item; _store.listFunctions(tenant)) list ~= item.toJson();
+        Json functions = _store.listFunctions(tenant).map!(item => item.toJson).array.toJson;
 
         Json payload = Json.emptyObject;
-        payload["functions"] = list;
-        payload["total"] = cast(long)list.length;
+        payload["functions"] = functions;
+        payload["total"] = cast(long)functions.length;
         return payload;
     }
 

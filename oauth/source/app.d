@@ -3,7 +3,7 @@ module app;
 import uim.sap.oau;
 
 void main() {
-    OAUConfig config;
+    OAUConfig config = new OAUConfig;
     config.host = envOr("OAU_HOST", "0.0.0.0");
     config.port = readPort(envOr("OAU_PORT", "8090"), 8090);
     config.basePath = envOr("OAU_BASE_PATH", "/api/oau");

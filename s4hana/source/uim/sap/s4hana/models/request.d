@@ -1,5 +1,9 @@
 module uim.sap.s4hana.models.request;
+import uim.sap.s4hana;
 
+mixin(ShowModule!());
+
+@safe:
 struct S4HANARequest {
     string servicePath;
     string entityPath;

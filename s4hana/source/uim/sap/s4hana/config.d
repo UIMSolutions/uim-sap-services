@@ -5,10 +5,11 @@
 *****************************************************************************************************************/
 module uim.sap.s4hana.config;
 
-import core.time : Duration, seconds;
-import std.string : format, startsWith;
+import uim.sap.s4hana;
 
-import uim.sap.s4hana.exceptions;
+mixin(ShowModule!());
+
+@safe:
 
 enum S4HANAAuthType {
     Basic,

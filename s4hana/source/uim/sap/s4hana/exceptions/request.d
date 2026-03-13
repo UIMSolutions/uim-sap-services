@@ -4,7 +4,11 @@
 * Authors: Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*)
 *****************************************************************************************************************/
 module uim.sap.s4hana.exceptions.request;
+import uim.sap.s4hana;
 
+mixin(ShowModule!());
+
+@safe:
 class S4HANARequestException : S4HANAException {
   int statusCode;
 

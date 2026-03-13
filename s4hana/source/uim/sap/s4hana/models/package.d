@@ -4,3 +4,8 @@
 * Authors: Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*)
 *****************************************************************************************************************/
 module uim.sap.s4hana.models;
+
+public {
+  import uim.sap.s4hana.models.request;
+  import uim.sap.s4hana.models.response;
+}

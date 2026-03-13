@@ -5,22 +5,13 @@
 *****************************************************************************************************************/
 module uim.sap.s4hana.client;
 
-import std.base64 : Base64;
-import std.datetime : Clock;
-import std.string : format;
+import uim.sap.s4hana;
 
-import vibe.data.json : Json;
-import vibe.http.client : requestHTTP, HTTPClientRequest;
-import vibe.http.common : HTTPMethod;
-import vibe.textfilter.urlencode : urlEncode;
+mixin(ShowModule!());
 
-import uim.sap.s4hana.config;
-import uim.sap.s4hana.exceptions;
-import uim.sap.s4hana.models;
+@safe:
 
 class S4HANAClient {
-  private S4HANAConfig _config;
-
   this(S4HANAConfig config) {
     super(config);
   }
