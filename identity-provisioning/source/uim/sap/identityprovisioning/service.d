@@ -62,7 +62,7 @@ class IPVService : SAPService {
       ? _store.listSystemsByType(tenantId, systemType)
       : _store.listSystems(tenantId);
 
-    Json resources = systems.map!(s => s.toJson()).toJson;
+    Json resources = systems.map!(s => s.toJson()).array.toJson;
 
     Json result = Json.emptyObject;
     result["tenant_id"] = tenantId;

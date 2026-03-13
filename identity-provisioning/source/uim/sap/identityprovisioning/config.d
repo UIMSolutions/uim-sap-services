@@ -12,6 +12,8 @@ mixin(ShowModule!());
 @safe:
 
 class IPVConfig : SAPConfig {
+  mixin(SAPConfigTemplate!IPVConfig);
+
   override bool initialize(Json[string] initData) {
     if (!super.initialize(initData)) {
       return false;

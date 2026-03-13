@@ -29,5 +29,8 @@ interface ISAPConfig {
   string[string] customHeaders();
   void customHeaders(string[string] headers);
 
+  string customHeader(string key);
+  void customHeader(string key, string value);
+
   void validate();
 }
