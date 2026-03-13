@@ -32,7 +32,7 @@ mixin(ShowModule!());
   * config.serviceName = "uim-cis";
   * config.serviceVersion = "1.0.0";
   * config.defaultAuthMethod = "form";
-  * config.requireAuthToken = true;
+  * config.requireAuthToken(true;)
   * config.authToken = "my-secret-token";       
   * config.validate();
   * ``` 
@@ -86,7 +86,7 @@ unittest {
   config.basePath = "/api/cis";
   config.serviceName = "uim-cis";
   config.defaultAuthMethod = "form";
-  config.requireAuthToken = true;
+  config.requireAuthToken(true;)
   config.authToken = "my-secret-token";
   config.validate();
 

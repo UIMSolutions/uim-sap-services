@@ -37,8 +37,6 @@ class AuditLogConfig : SAPConfig {
   bool requireOAuthToken = false;
   string oauthToken;
 
-  string[string] customHeaders;
-
   override void validate() const {
     super.validate();
 

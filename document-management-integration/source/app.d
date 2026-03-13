@@ -33,7 +33,7 @@ version (unittest) {
 
     auto authToken = envOr("DMSI_AUTH_TOKEN", "");
     if (authToken.length > 0) {
-      config.requireAuthToken = true;
+      config.requireAuthToken(true;)
       config.authToken = authToken;
     }
 
