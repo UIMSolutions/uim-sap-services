@@ -17,7 +17,7 @@ version (unittest) {
 
     auto mgmtToken = envOr("AUDITLOG_AUTH_TOKEN", "");
     if (mgmtToken.length > 0) {
-      config.requireAuthToken(true;)
+      config.requireAuthToken(true);
       config.authToken = mgmtToken;
     }
 

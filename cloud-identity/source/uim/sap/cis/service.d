@@ -22,7 +22,7 @@ mixin(ShowModule!());
   * config.serviceName = "uim-cis";
   * config.serviceVersion = "1.0.0";
   * config.defaultAuthMethod = "form";
-  * config.requireAuthToken(true;)
+  * config.requireAuthToken(true);
   * config.authToken = "my-secret-token";
   * config.validate();
   * CISService service = new CISService(config);

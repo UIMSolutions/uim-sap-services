@@ -21,7 +21,7 @@ void main() {
 
     auto token = envOr("CLF_AUTH_TOKEN", "");
     if (token.length > 0) {
-        config.requireAuthToken(true;)
+        config.requireAuthToken(true);
         config.authToken(token);
     }
 

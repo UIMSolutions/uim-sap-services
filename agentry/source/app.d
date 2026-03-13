@@ -24,7 +24,7 @@ version (unittest) {
 
     auto token = envOr("AGENTRY_AUTH_TOKEN", "");
     if (token.length > 0) {
-      config.requireAuthToken(true;)
+      config.requireAuthToken(true);
       config.authToken(token);
     }
 
