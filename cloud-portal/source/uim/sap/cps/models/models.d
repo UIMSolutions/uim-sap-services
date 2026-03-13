@@ -10,75 +10,10 @@ import uim.sap.cps;
 mixin(ShowModule!());
 
 @safe:
-struct CPSSite {
-  string tenantId;
-  string siteId;
-  string name;
-  string design;
-  Json pages;
-  Json apps;
-  Json widgets;
-  Json menu;
-  SysTime createdAt;
-  SysTime updatedAt;
 
-  Json toJson() const {
-    Json payload = Json.emptyObject;
-    payload["tenant_id"] = tenantId;
-    payload["site_id"] = siteId;
-    payload["name"] = name;
-    payload["design"] = design;
-    payload["pages"] = pages;
-    payload["apps"] = apps;
-    payload["widgets"] = widgets;
-    payload["menu"] = menu;
-    payload["created_at"] = createdAt.toISOExtString();
-    payload["updated_at"] = updatedAt.toISOExtString();
-    return payload;
-  }
-}
 
-struct CPSAdminSettings {
-  string tenantId;
-  Json themes;
-  Json transports;
-  Json translations;
-  Json templates;
-  Json extensions;
-  SysTime updatedAt;
 
-  Json toJson() const {
-    Json payload = Json.emptyObject;
-    payload["tenant_id"] = tenantId;
-    payload["themes"] = themes;
-    payload["transports"] = transports;
-    payload["translations"] = translations;
-    payload["templates"] = templates;
-    payload["extensions"] = extensions;
-    payload["updated_at"] = updatedAt.toISOExtString();
-    return payload;
-  }
-}
 
-struct CPSContentItem {
-  string tenantId;
-  string itemType;
-  string itemId;
-  string name;
-  Json configuration;
-  SysTime updatedAt;
-
-  Json toJson() const {
-    Json payload = Json.emptyObject;
-    payload["tenant_id"] = tenantId;
-    payload["item_type"] = itemType;
-    payload["item_id"] = itemId;
-    payload["name"] = name;
-    payload["configuration"] = configuration;
-    payload["updated_at"] = updatedAt.toISOExtString();
-    return payload;
-  }
-}
 
 struct CPSLaunchpadModule {
   string tenantId;
