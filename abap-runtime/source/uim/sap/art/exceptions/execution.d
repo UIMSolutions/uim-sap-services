@@ -11,7 +11,12 @@ mixin(ShowModule!());
 
 @safe:
 
-
+/**
+ * Exception thrown during execution of an ART runtime component.
+ *
+  * @since 1.0.0
+  * @author Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*)
+ */
 class ARTRuntimeExecutionException : ARTRuntimeException {
     this(string msg, string file = __FILE__, size_t line = __LINE__, Throwable next = null) {
         super(msg, file, line, next);

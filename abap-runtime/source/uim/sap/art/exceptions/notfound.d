@@ -11,7 +11,12 @@ mixin(ShowModule!());
 
 @safe:
 
-
+/** 
+  * Exception thrown when an ABAP program is not found in the ART runtime.
+  *
+  * @since 1.0.0
+  * @author Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*)
+  */
 class ARTRuntimeProgramNotFoundException : ARTRuntimeException {
     this(string programName, string file = __FILE__, size_t line = __LINE__, Throwable next = null) {
         super("ABAP program not found: " ~ programName, file, line, next);

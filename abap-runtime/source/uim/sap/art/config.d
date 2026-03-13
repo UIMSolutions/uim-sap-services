@@ -18,6 +18,7 @@ class ARTRuntimeConfig : SAPConfig {
       return false;
     }
 
+    // Network configuration
     port(cast(ushort)initData.getInteger("port", 8080));
     host(initData.getString("host", "127.0.0.1"));
     basePath(initData.getString("basePath", "/sap/abap/runtime"));

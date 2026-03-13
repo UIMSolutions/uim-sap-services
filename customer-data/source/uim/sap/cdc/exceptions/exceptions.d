@@ -1,16 +1,8 @@
 module uim.sap.cdc.exceptions.exceptions;
 
-class CDCException : SAPException {
-  this(string message, string file = __FILE__, size_t line = __LINE__) {
-    super(message, file, line);
-  }
-}
 
-class CDCValidationException : CDCException {
-  this(string message, string file = __FILE__, size_t line = __LINE__) {
-    super(message, file, line);
-  }
-}
+
+
 
 class CDCAuthorizationException : CDCException {
   this(string message, string file = __FILE__, size_t line = __LINE__) {
@@ -30,8 +22,4 @@ class CDCConfigurationException : CDCException {
   }
 }
 
-class CDCStoreException : CDCException {
-  this(string message, string file = __FILE__, size_t line = __LINE__) {
-    super(message, file, line);
-  }
-}
+

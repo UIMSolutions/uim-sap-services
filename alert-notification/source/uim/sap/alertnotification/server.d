@@ -53,12 +53,18 @@ class AlertNotificationServer {
       validateAuth(req);
 
       auto segments = normalizedSegments(subPath);
-      if (segments.length == 2 && segments[0] == "v1" && segments[1] == "built-in-events" && req.method == HTTPMethod.GET) {
+      if (segments.length == 2
+          && segments[0] == "v1"
+          && segments[1] == "built-in-events"
+          && req.method == HTTPMethod.GET) {
         res.writeJsonBody(_service.listBuiltInEvents(), 200);
         return;
       }
 
-      if (segments.length == 2 && segments[0] == "v1" && segments[1] == "delivery-options" && req.method == HTTPMethod.GET) {
+      if (segments.length == 2
+          && segments[0] == "v1"
+          && segments[1] == "delivery-options"
+          && req.method == HTTPMethod.GET) {
         res.writeJsonBody(_service.listDeliveryOptions(), 200);
         return;
       }
@@ -71,7 +77,10 @@ class AlertNotificationServer {
           return;
         }
 
-        if (segments.length == 5 && segments[3] == "providers" && segments[4] == "alerts" && req.method == HTTPMethod.POST) {
+        if (segments.length == 5
+            && segments[3] == "providers"
+            && segments[4] == "alerts"
+            && req.method == HTTPMethod.POST) {
           res.writeJsonBody(_service.publishAlert(tenantId, req.json), 200);
           return;
         }
@@ -81,7 +90,10 @@ class AlertNotificationServer {
           return;
         }
 
-        if (segments.length == 5 && segments[3] == "alerts" && segments[4] == "search" && req.method == HTTPMethod.POST) {
+        if (segments.length == 5
+            && segments[3] == "alerts"
+            && segments[4] == "search"
+            && req.method == HTTPMethod.POST) {
           res.writeJsonBody(_service.searchAlerts(tenantId, req.json), 200);
           return;
         }
