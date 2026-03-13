@@ -163,41 +163,51 @@ class SMGService : SAPService {
       throw new SMGValidationException("tenant_id is required");
   }
 
-  private string readRequired(Json body, string key) const {
-    if (!(key in body) || body[key].type != Json.Type.string || body[key].get!string.length == 0) {
+  private string readRequired(Json data, string key) const {
+    if (!(key in data) || data[key].type != Json.Type.string || data[key].get!string.length == 0) {
       throw new SMGValidationException(key ~ " is required");
     }
-    return
-    body[key].get!string;
+    return data[key].get!string;
   }
 
-  private string readOptional(Json body, string key, string fallback) const {
-    if (!(key in body) || body[key].type == Json.Type.null_)
+  private string readOptional(Json data, string key, string fallback) const {
+    if (!(key in data) || data[key].type == Json.Type.null_) {
       return fallback;
-    if (body[key].type != Json.Type.string)
+    }
+
+    if (data[key].type != Json.Type.string) {
       throw new SMGValidationException(key ~ " must be a string");
-    return
-    body[key].get!string;
+    }
+
+    return data[key].get!string;
   }
 
-  private bool readOptionalBool(Json body, string key, bool fallback) const {
-    if (!(key in body) || body[key].type == Json.Type.null_)
+  private bool readOptionalBool(Json data, string key, bool fallback) const {
+    if (!(key in data) || data[key].type == Json.Type.null_) {
       return fallback;
-    if (body[key].type != Json.Type.bool_)
+    }
+
+    if (data[key].type != Json.Type.bool_) {
       throw new SMGValidationException(key ~ " must be a boolean");
-    return
-    body[key].get!bool;
+    }
+
+    return data[key].get!bool;
   }
 
-  private string[] readStringArray(Json body, string key) const {
+  private string[] readStringArray(Json data, string key) const {
     string[] values;
-    if (!(key in body) || body[key].type == Json.Type.null_)
+    if (!(key in data) || data[key].type == Json.Type.null_) {
       return values;
-    if (body[key].type != Json.Type.array)
+    }
+
+    if (data[key].type != Json.Type.array) {
       throw new SMGValidationException(key ~ " must be an array");
-    foreach (item; body[key]) {
+    }
+
+    foreach (item; data[key]) {
       if (item.type != Json.Type.string)
         throw new SMGValidationException(key ~ " must contain strings");
+
       values ~= item.get!string;
     }
     return values;
@@ -216,6 +226,7 @@ class SMGService : SAPService {
     if (normalized != "standard" && normalized != "spaces" && normalized != "workpages") {
       throw new SMGValidationException("launchpad_mode must be one of standard|spaces|workpages");
     }
+
     return normalized;
   }
 }

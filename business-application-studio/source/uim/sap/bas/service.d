@@ -320,12 +320,11 @@ class BASService : SAPService {
       throw new BASValidationException("tenant_id is required");
   }
 
-  private string readRequired(Json body, string key) const {
-    if (!(key in body) || !body[key].isString || body[key].get!string.length == 0) {
+  private string readRequired(Json data, string key) const {
+    if (!(key in data) || !data[key].isString || data[key].get!string.length == 0) {
       throw new BASValidationException(key ~ " is required");
     }
-    return
-    body[key].get!string;
+    return data[key].get!string;
   }
 
   private string readOptional(Json data, string key, string fallback) const {

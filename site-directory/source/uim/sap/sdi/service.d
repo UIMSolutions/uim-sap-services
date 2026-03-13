@@ -234,21 +234,21 @@ class SDIService : SAPService {
       throw new SDIValidationException("tenant_id is required");
   }
 
-  private string readRequired(Json body, string key) const {
+  private string readRequired(Json data, string key) const {
     if (!(key in body) || body[key].type != Json.Type.string || body[key].get!string.length == 0) {
       throw new SDIValidationException(key ~ " is required");
     }
-    return
-    body[key].get!string;
+    return data[key].get!string;
   }
 
-  private string readOptional(Json body, string key, string fallback) const {
-    if (!(key in body) || body[key].type == Json.Type.null_)
+  private string readOptional(Json data, string key, string fallback) const {
+    if (!(key in data) || data[key].type == Json.Type.null_)
       return fallback;
-    if (body[key].type != Json.Type.string)
+
+    if (data[key].type != Json.Type.string)
       throw new SDIValidationException(key ~ " must be a string");
-    return
-    body[key].get!string;
+
+    return data[key].get!string;
   }
 
   private bool readOptionalBool(Json data, string key, bool fallback) const {
@@ -269,8 +269,10 @@ class SDIService : SAPService {
     foreach (item; data[key]) {
       if (item.type != Json.Type.string)
         throw new SDIValidationException(key ~ " must contain strings");
+
       values ~= item.get!string;
     }
+
     return values;
   }
 
@@ -309,9 +311,6 @@ class SDIService : SAPService {
   }
 
   private Json toJsonArray(string[] values) const {
-    Json result = Json.emptyArray;
-    foreach (value; values)
-      result ~= value;
-    return result;
+    return values.toJson;
   }
 }
