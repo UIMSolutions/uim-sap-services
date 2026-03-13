@@ -6,9 +6,9 @@
 module uim.sap.auditlog.exceptions;
 
 public {
-  import uim.sap.dpi.exceptions.authorization;
-  import uim.sap.dpi.exceptions.configuration;
-  import uim.sap.dpi.exceptions.exception;
-  import uim.sap.dpi.exceptions.notfound;
-  import uim.sap.dpi.exceptions.validation;
+  import uim.sap.auditlog.exceptions.authorization;
+  import uim.sap.auditlog.exceptions.configuration;
+  import uim.sap.auditlog.exceptions.exception;
+  import uim.sap.auditlog.exceptions.notfound;
+  import uim.sap.auditlog.exceptions.validation;
 }

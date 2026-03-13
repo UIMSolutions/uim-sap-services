@@ -146,7 +146,9 @@ class AuditLogServer {
   }
 
   private void validateOAuthForWrite(HTTPServerRequest req) {
-    if (!_service.config.requireOAuthToken) {
+    auto cfg = cast(AuditLogConfig)_service.config;
+
+    if (!cfg.requireOAuthToken) {
       return;
     }
 
@@ -154,7 +156,7 @@ class AuditLogServer {
       throw new AuditLogAuthorizationException("Missing OAuth Authorization header for write API");
     }
 
-    auto expected = "Bearer " ~ _service.config.oauthToken;
+    auto expected = "Bearer " ~ cfg.oauthToken;
     if (req.headers["Authorization"] != expected) {
       throw new AuditLogAuthorizationException("Invalid OAuth token for write API");
     }

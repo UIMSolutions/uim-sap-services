@@ -44,7 +44,7 @@ class AuditLogConfig : SAPConfig {
   bool requireOAuthToken = false;
   string oauthToken;
 
-  override void validate() const {
+  override void validate() {
     super.validate();
 
     if (defaultRetentionDays <= 0) {

@@ -14,7 +14,6 @@ mixin(ShowModule!());
 class AuditLogService : SAPService {
   mixin(SAPServiceTemplate!AuditLogService);
 
-  private AuditLogConfig _config;
   private AuditLogStore _store;
 
   this(AuditLogConfig config) {
@@ -258,12 +257,14 @@ class AuditLogService : SAPService {
   }
 
   private AuditLogRetentionPolicy ensurePolicy(string tenantId) {
+    auto cfg = cast(AuditLogConfig)config;
+
     auto policy = _store.getPolicy(tenantId);
     if (policy.tenantId.length == 0) {
       policy.tenantId = tenantId;
-      policy.retentionDays = _config.defaultRetentionDays;
-      policy.plan = toLower(_config.defaultPlan);
-      policy.premiumCostPerThousandEvents = _config.premiumCostPerThousandEvents;
+      policy.retentionDays = cfg.defaultRetentionDays;
+      policy.plan = toLower(cfg.defaultPlan);
+      policy.premiumCostPerThousandEvents = cfg.premiumCostPerThousandEvents;
       policy.updatedAt = Clock.currTime();
       policy = _store.upsertPolicy(policy);
     }
