@@ -49,7 +49,7 @@ class ATMConfig : SAPConfig {
     serviceVersion(initData.getString("serviceVersion", "1.0.0"));
 
     // Authentication configuration
-    requireAuthToken(initData.getBool("requireAuthToken", false));
+    requireAuthToken(initData.getBoolean("requireAuthToken", false));
     if (requireAuthToken) {
       authToken(initData.getString("authToken", ""));
     }

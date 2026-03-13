@@ -22,8 +22,8 @@ class CPIConfig : SAPConfig {
 
     baseUrl(initData.getString("baseUrl", ""));
     port(cast(ushort)initData.getInteger("port", 443));
-    useSSL(initData.getBool("useSSL", true));
-    verifySSL(initData.getBool("verifySSL", true));
+    useSSL(initData.getBoolean("useSSL", true));
+    verifySSL(initData.getBoolean("verifySSL", true));
 
     auto authTypeStr = initData.getString("authType", "Basic");
     if (authTypeStr == "Basic") {

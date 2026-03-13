@@ -34,7 +34,7 @@ class AASConfig : SAPConfig {
       cfSpace = config["cfSpace"];
     }
 
-    requireAuthToken(initData.getBool("requireAuthToken", false));
+    requireAuthToken(initData.getBoolean("requireAuthToken", false));
     if (requireAuthToken) {
       authToken(initData.getString("authToken", ""));
     }
