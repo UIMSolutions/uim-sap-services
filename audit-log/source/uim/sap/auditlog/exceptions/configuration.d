@@ -4,7 +4,11 @@
 * Authors: Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*)
 *****************************************************************************************************************/
 module uim.sap.auditlog.exceptions.configuration;
+import uim.sap.auditlog;
 
+mixin(ShowModule!());
+
+@safe:
 class AuditLogConfigurationException : AuditLogException {
     this(string message) {
         super("Configuration error: " ~ message);

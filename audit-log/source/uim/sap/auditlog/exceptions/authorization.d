@@ -4,7 +4,11 @@
 * Authors: Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*)
 *****************************************************************************************************************/
 module uim.sap.auditlog.exceptions.authorization;
+import uim.sap.auditlog;
 
+mixin(ShowModule!());
+
+@safe:
 class AuditLogAuthorizationException : AuditLogException {
     this(string message) {
         super("Unauthorized: " ~ message);

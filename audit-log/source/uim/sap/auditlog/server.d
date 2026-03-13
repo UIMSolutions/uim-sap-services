@@ -6,6 +6,9 @@
 module uim.sap.auditlog.server;
 
 import uim.sap.auditlog;
+
+mixin(ShowModule!());
+
 @safe:
 
 class AuditLogServer {

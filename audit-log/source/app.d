@@ -7,6 +7,10 @@ module app;
 
 import uim.sap.auditlog;
 
+mixin(ShowModule!());
+
+@safe:
+
 version (unittest) {
 } else {
   void main() {

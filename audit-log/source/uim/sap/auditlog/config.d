@@ -5,7 +5,11 @@
 *****************************************************************************************************************/
 module uim.sap.auditlog.config;
 
-import uim.sap.auditlog.exceptions;
+import uim.sap.auditlog;
+
+mixin(ShowModule!());
+
+@safe:
 
 class AuditLogConfig : SAPConfig {
   mixin(SAPConfigTemplate!AuditLogConfig);

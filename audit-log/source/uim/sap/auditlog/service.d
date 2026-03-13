@@ -7,6 +7,8 @@ module uim.sap.auditlog.service;
 
 import uim.sap.auditlog;
 
+mixin(ShowModule!());
+
 @safe:
 
 class AuditLogService : SAPService {

@@ -6,10 +6,11 @@
 module uim.sap.auditlog.store;
 
 import core.sync.mutex : Mutex;
-import std.datetime : Clock, dur;
+import uim.sap.auditlog;
 
-import uim.sap.auditlog.models;
+mixin(ShowModule!());
 
+@safe:
 class AuditLogStore : SAPStore {
     private AuditLogEvent[][string] _eventsByTenant;
     private AuditLogRetentionPolicy[string] _policies;

@@ -4,7 +4,11 @@
 * Authors: Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*)
 *****************************************************************************************************************/
 module uim.sap.auditlog.exceptions.exception;
+import uim.sap.auditlog;
 
+mixin(ShowModule!());
+
+@safe:
 class AuditLogException : SAPException {
     this(string message) {
         super(message);

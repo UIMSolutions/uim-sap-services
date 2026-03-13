@@ -1,12 +1,9 @@
 module uim.sap.auditlog.models;
+import uim.sap.auditlog;
 
-import std.algorithm.searching : canFind;
-import std.array : appender;
-import std.datetime : Clock, SysTime;
-import std.string : replace, toLower;
-import std.uuid : randomUUID;
+mixin(ShowModule!());
 
-import vibe.data.json : Json;
+@safe:
 
 enum string[] AUDIT_LOG_RECOMMENDED_EVENT_TYPES = [
     "data_access",
