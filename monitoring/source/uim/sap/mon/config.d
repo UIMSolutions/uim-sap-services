@@ -23,19 +23,11 @@ class MONConfig : SAPConfig {
     serviceName(initdata.getString("serviceName", "uim-mon"));
     serviceVersion(initdata.getString("serviceVersion", "1.0.0"));
 
-    return true;
-  }
-
-  bool requireAuthToken = false;
+ bool requireAuthToken = false;
   string authToken;
 
   string[string] customHeaders;
 
-  override void validate() const {
-    super.validate();
-
-    if (requireAuthToken && authToken.length == 0) {
-      throw new MONConfigurationException("Auth token required when token auth is enabled");
-    }
+    return true;
   }
 }

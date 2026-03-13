@@ -51,15 +51,16 @@ class CISConfig : SAPConfig {
     serviceName(initdata.getString("serviceName", "uim-cis"));
     serviceVersion(initdata.getString("serviceVersion", "1.0.0"));
 
+    // Authentication configuration
+    requireAuthToken(initData.getBool("requireAuthToken", false));
+    if (requireAuthToken) {
+      authToken(initData.getString("authToken", ""));
+    }
+
     return true;
   }
 
   string defaultAuthMethod = "form";
-
-  bool requireAuthToken = false;
-  string authToken;
-
-  string[string] customHeaders;
 
   override void validate() const {
     super.validate();
@@ -70,9 +71,6 @@ class CISConfig : SAPConfig {
     auto normalized = toLower(defaultAuthMethod);
     if (normalized != "form" && normalized != "spnego" && normalized != "social" && normalized != "2fa") {
       throw new CISConfigurationException("Unsupported default auth method");
-    }
-    if (requireAuthToken && authToken.length == 0) {
-      throw new CISConfigurationException("Auth token required when token auth is enabled");
     }
   }
 }

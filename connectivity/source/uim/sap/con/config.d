@@ -19,30 +19,31 @@ class CONConfig : SAPConfig {
       return false;
     }
 
-  port(cast(ushort)initData.getInteger("port", 8085));
+    // Network configuration
+    port(cast(ushort)initData.getInteger("port", 8085));
     basePath(initData.getString("basePath", "/api/con"));
     host(initData.getString("host", "0.0.0.0"));
+    
+    // Service metadata
     serviceName(initData.getString("serviceName", "uim-con"));
     serviceVersion(initData.getString("serviceVersion", "1.0.0"));
+
+    // Authentication configuration
+    requireAuthToken(initData.getBool("requireAuthToken", false));
+    if (requireAuthToken) {
+      authToken(initData.getString("authToken", ""));
+    }
 
     return true;
   }
 
   string connectorLocationId = "default-location";
 
-  bool requireAuthToken = false;
-  string authToken;
-
-  string[string] customHeaders;
-
   override void validate() const {
     super.validate();
 
     if (connectorLocationId.length == 0) {
       throw new CONConfigurationException("Connector location ID cannot be empty");
-    }
-    if (requireAuthToken && authToken.length == 0) {
-      throw new CONConfigurationException("Auth token required when token auth is enabled");
     }
   }
 }

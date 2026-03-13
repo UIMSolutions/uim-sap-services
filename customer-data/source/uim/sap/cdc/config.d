@@ -27,15 +27,18 @@ class CDCConfig : SAPConfig {
     serviceName(initData.getString("serviceName", "uim-customer-data"));
     serviceVersion(initData.getString("serviceVersion", "1.0.0"));
 
+    // Authentication configuration
+    requireAuthToken(initData.getBool("requireAuthToken", false));
+    if (requireAuthToken) {
+      authToken(initData.getString("authToken", ""));
+    }
+
     return true;
   }
 
   string dataDirectory = "/tmp/uim-customer-data";
   string cacheFileName = "customer-data-cache.json";
   string defaultRegion = "eu-central";
-
-  bool requireAuthToken = false;
-  string authToken;
 
   @property string cacheFilePath() const {
     return buildPath(dataDirectory, cacheFileName);
@@ -50,8 +53,5 @@ class CDCConfig : SAPConfig {
       throw new CDCConfigurationException("Cache file name cannot be empty");
     if (defaultRegion.length == 0)
       throw new CDCConfigurationException("Default region cannot be empty");
-    if (requireAuthToken && authToken.length == 0) {
-      throw new CDCConfigurationException("Auth token required when token auth is enabled");
-    }
   }
 }

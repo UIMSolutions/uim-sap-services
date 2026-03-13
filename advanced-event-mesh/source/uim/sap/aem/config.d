@@ -18,20 +18,25 @@ class AEMConfig : SAPConfig {
       return false;
     }
 
+    // Network configuration
     host(initData.getString("host", "0.0.0.0"));
+    port(cast(ushort)initData.getInteger("port", 8088));
+    basePath(initData.getString("basePath", "/api/aem"));
+
+    // Service metadata
     serviceName(initData.getString("serviceName", "uim-aem"));
     serviceVersion(initData.getString("serviceVersion", "1.0.0"));
+
+    // Authentication configuration
+    requireAuthToken(initData.getBool("requireAuthToken", false));
+    if (requireAuthToken) {
+      authToken(initData.getString("authToken", ""));
+    }
+
     return true;
   }
 
-  ushort port = 8088;
-  string basePath = "/api/aem";
   string defaultMeshRegion = "eu10";
-
-  bool requireAuthToken = false;
-  string authToken;
-
-  string[string] customHeaders;
 
   override void validate() const {
     super.validate();

@@ -18,30 +18,21 @@ class ARTRuntimeConfig : SAPConfig {
       return false;
     }
 
+    port(cast(ushort)initData.getInteger("port", 8080));
     host(initData.getString("host", "127.0.0.1"));
     basePath(initData.getString("basePath", "/sap/abap/runtime"));
+
+    // Authentication configuration
+    requireAuthToken(initData.getBool("requireAuthToken", false));
+    if (requireAuthToken) {
+      authToken(initData.getString("authToken", ""));
+    }
 
     return true;
   }
 
-  ushort port = 8080;
-
   string runtimeName = "uim-art";
   string runtimeVersion = "1.0.0";
-  string authToken;
 
   Duration requestTimeout = 30.seconds;
-  bool requireAuthToken = false;
-
-  string[string] customHeaders;
-
-  override void validate() const {
-    super.validate();
-
-    if (requireAuthToken && authToken.length == 0) {
-      throw new ARTRuntimeConfigurationException(
-        "Auth token is required when requireAuthToken is enabled"
-      );
-    }
-  }
 }

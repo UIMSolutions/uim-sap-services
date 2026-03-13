@@ -25,24 +25,22 @@ class CPSConfig : SAPConfig {
     serviceName(initData.getString("serviceName", "uim-cps"));
     serviceVersion(initData.getString("serviceVersion", "1.0.0"));
 
+    // Authentication configuration
+    requireAuthToken(initData.getBool("requireAuthToken", false));
+    if (requireAuthToken) {
+      authToken(initData.getString("authToken", ""));
+    }
+
     return true;
   }
 
   string defaultTheme = "sap_fiori_3";
-
-  bool requireAuthToken = false;
-  string authToken;
-
-  string[string] customHeaders;
 
   override void validate() const {
     super.validate();
 
     if (defaultTheme.length == 0) {
       throw new CPSConfigurationException("Default theme cannot be empty");
-    }
-    if (requireAuthToken && authToken.length == 0) {
-      throw new CPSConfigurationException("Auth token required when token auth is enabled");
     }
   }
 }

@@ -18,6 +18,12 @@ class AgentryConfig : SAPConfig {
     serviceVersion(initData.getString("serviceVersion", "1.0.0"));
     host(initData.getString("host", "0.0.0.0"));
 
+    // Authentication configuration
+    requireAuthToken(initData.getBool("requireAuthToken", false));
+    if (requireAuthToken) {
+      authToken(initData.getString("authToken", ""));
+    }
+    
     return true;
   }
 
