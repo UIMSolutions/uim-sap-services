@@ -1,0 +1,110 @@
+module uim.sap.alertnotification.store;
+
+import core.sync.mutex : Mutex;
+
+import uim.sap.alertnotification;
+
+mixin(ShowModule!());
+
+@safe:
+
+class AlertNotificationStore : SAPStore {
+  private AlertEvent[string] _alerts;
+  private AlertSubscription[string] _subscriptions;
+  private AlertDelivery[string] _deliveries;
+  private Mutex _lock;
+
+  this() {
+    _lock = new Mutex;
+  }
+
+  AlertEvent appendAlert(AlertEvent eventItem) {
+    synchronized (_lock) {
+      _alerts[scopedKey(eventItem.tenantId, "alert", eventItem.alertId)] = eventItem;
+      return eventItem;
+    }
+  }
+
+  AlertEvent[] listAlerts(string tenantId) {
+    AlertEvent[] values;
+    synchronized (_lock) {
+      foreach (key, value; _alerts) {
+        if (belongsTo(key, tenantId)) {
+          values ~= value;
+        }
+      }
+    }
+    return values;
+  }
+
+  AlertSubscription upsertSubscription(AlertSubscription subscription) {
+    synchronized (_lock) {
+      auto key = scopedKey(subscription.tenantId, "subscription", subscription.subscriptionId);
+      if (auto existing = key in _subscriptions) {
+        subscription.createdAt = existing.createdAt;
+      }
+      _subscriptions[key] = subscription;
+      return subscription;
+    }
+  }
+
+  AlertSubscription getSubscription(string tenantId, string subscriptionId) {
+    synchronized (_lock) {
+      auto key = scopedKey(tenantId, "subscription", subscriptionId);
+      if (auto value = key in _subscriptions) {
+        return *value;
+      }
+    }
+    return AlertSubscription.init;
+  }
+
+  bool deleteSubscription(string tenantId, string subscriptionId) {
+    synchronized (_lock) {
+      auto key = scopedKey(tenantId, "subscription", subscriptionId);
+      if ((key in _subscriptions) is null) {
+        return false;
+      }
+      _subscriptions.remove(key);
+      return true;
+    }
+  }
+
+  AlertSubscription[] listSubscriptions(string tenantId) {
+    AlertSubscription[] values;
+    synchronized (_lock) {
+      foreach (key, value; _subscriptions) {
+        if (belongsTo(key, tenantId)) {
+          values ~= value;
+        }
+      }
+    }
+    return values;
+  }
+
+  AlertDelivery appendDelivery(AlertDelivery delivery) {
+    synchronized (_lock) {
+      _deliveries[scopedKey(delivery.tenantId, "delivery", delivery.deliveryId)] = delivery;
+      return delivery;
+    }
+  }
+
+  AlertDelivery[] listDeliveries(string tenantId) {
+    AlertDelivery[] values;
+    synchronized (_lock) {
+      foreach (key, value; _deliveries) {
+        if (belongsTo(key, tenantId)) {
+          values ~= value;
+        }
+      }
+    }
+    return values;
+  }
+
+  private string scopedKey(string tenantId, string scopePart, string id) {
+    return tenantId ~ ":" ~ scopePart ~ ":" ~ id;
+  }
+
+  private bool belongsTo(string key, string tenantId) {
+    return key.length > tenantId.length + 1 && key[0 .. tenantId.length] == tenantId && key[tenantId.length] == ':';
+  }
+}
