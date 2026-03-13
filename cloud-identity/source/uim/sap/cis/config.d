@@ -52,7 +52,7 @@ class CISConfig : SAPConfig {
     serviceVersion(initData.getString("serviceVersion", "1.0.0"));
 
     // Authentication configuration
-    requireAuthToken(initData.getBoolean("requireAuthToken", false));
+    requireAuthToken(initData.getBool("requireAuthToken", false));
     if (requireAuthToken) {
       authToken(initData.getString("authToken", ""));
     }

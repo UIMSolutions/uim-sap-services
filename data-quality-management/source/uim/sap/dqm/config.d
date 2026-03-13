@@ -27,7 +27,7 @@ class DQMConfig : SAPConfig {
     defaultCountry(initData.getString("defaultCountry", "DE"));
 
     // Authentication configuration
-    requireAuthToken(initData.getBoolean("requireAuthToken", false));
+    requireAuthToken(initData.getBool("requireAuthToken", false));
     if (requireAuthToken) {
       authToken(initData.getString("authToken", ""));
     }

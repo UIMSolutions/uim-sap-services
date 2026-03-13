@@ -22,8 +22,8 @@ class CPIConfig : SAPConfig {
 
     baseUrl(initData.getString("baseUrl", ""));
     port(cast(ushort)initData.getInteger("port", 443));
-    useSSL(initData.getBoolean("useSSL", true));
-    verifySSL(initData.getBoolean("verifySSL", true));
+    useSSL(initData.getBool("useSSL", true));
+    verifySSL(initData.getBool("verifySSL", true));
 
     auto authTypeStr = initData.getString("authType", "Basic");
     if (authTypeStr == "Basic") {
@@ -45,7 +45,7 @@ class CPIConfig : SAPConfig {
     maxRetries(initData.getInteger("maxRetries", 2));
     customHeaders(initData.getObject("customHeaders", new JsonObject).toStringMap());
   }
-
+  
   string baseUrl;
   ushort port = 443;
   bool useSSL = true;

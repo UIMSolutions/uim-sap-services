@@ -25,11 +25,11 @@ class CLFConfig : SAPConfig {
     serviceName(initData.getString("serviceName", "uim-clf"));
     serviceVersion(initData.getString("serviceVersion", "1.0.0"));
 
-    requireAuthToken(initData.getBoolean("requireAuthToken", false));
+    requireAuthToken(initData.getBool("requireAuthToken", false));
     if (requireAuthToken) {
       authToken(initData.getString("authToken", ""));
     }
-
+    
     return true;
   }
 }

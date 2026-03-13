@@ -23,7 +23,7 @@ class ARTRuntimeConfig : SAPConfig {
     basePath(initData.getString("basePath", "/sap/abap/runtime"));
 
     // Authentication configuration
-    requireAuthToken(initData.getBoolean("requireAuthToken", false));
+    requireAuthToken(initData.getBool("requireAuthToken", false));
     if (requireAuthToken) {
       authToken(initData.getString("authToken", ""));
     }

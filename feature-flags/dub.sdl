@@ -20,8 +20,12 @@ buildRequirements "allowWarnings" "silenceDeprecations"
 buildOptions "ignoreDeprecations" "debugInfo"
 
 // Configurations 
-configuration "default" {
+configuration "defaultrun" {
 	targetType "executable"
+}
+
+configuration "defaulttest" {
+	targetType "library"
 }
 
 configuration "modules" {

@@ -19,48 +19,48 @@ mixin(ShowModule!());
  *  flag) instead of the default.
  */
 struct FFLDirectRule {
-    string ruleId;
-    string[] identifiers;     // targeted identifier values
-    string variationId;       // for String flags — which variation to serve
-    bool booleanValue = true; // for Boolean flags — override value
+  string ruleId;
+  string[] identifiers; // targeted identifier values
+  string variationId; // for String flags — which variation to serve
+  bool booleanValue = true; // for Boolean flags — override value
 
-    Json toJson() const {
-        Json j = Json.emptyObject;
-        j["rule_id"] = ruleId;
+  Json toJson() const {
+    Json j = Json.emptyObject;
+    j["rule_id"] = ruleId;
 
-        Json ids = Json.emptyArray;
-        foreach (id; identifiers) {
-            ids ~= Json(id);
-        }
-        j["identifiers"] = ids;
-        j["variation_id"] = variationId;
-        j["boolean_value"] = booleanValue;
-        return j;
+    Json ids = Json.emptyArray;
+    foreach (id; identifiers) {
+      ids ~= Json(id);
     }
+    j["identifiers"] = ids;
+    j["variation_id"] = variationId;
+    j["boolean_value"] = booleanValue;
+    return j;
+  }
 }
 
 FFLDirectRule directRuleFromJson(Json request) {
-    FFLDirectRule r;
-    r.ruleId = randomUUID().toString();
+  FFLDirectRule r;
+  r.ruleId = randomUUID().toString();
 
-    if ("identifiers" in request && request["identifiers"].isArray) {
-        () @trusted {
-            foreach (item; request["identifiers"]) {
-                if (item.isString) {
-                    r.identifiers ~= item.get!string;
-                }
-            }
-        }();
-    }
-    if ("variation_id" in request && request["variation_id"].isString) {
-        r.variationId = request["variation_id"].get!string;
-    }
-    if ("boolean_value" in request && request["boolean_value"].type == Json.Type.bool_) {
-        r.booleanValue = request["boolean_value"].get!bool;
-    }
-    if ("rule_id" in request && request["rule_id"].isString) {
-        r.ruleId = request["rule_id"].get!string;
-    }
+  if ("identifiers" in request && request["identifiers"].isArray) {
+    () @trusted {
+      foreach (item; request["identifiers"]) {
+        if (item.isString) {
+          r.identifiers ~= item.get!string;
+        }
+      }
+    }();
+  }
+  if ("variation_id" in request && request["variation_id"].isString) {
+    r.variationId = request["variation_id"].get!string;
+  }
+  if ("boolean_value" in request && request["boolean_value"].type == Json.Type.bool_) {
+    r.booleanValue = request["boolean_value"].get!bool;
+  }
+  if ("rule_id" in request && request["rule_id"].isString) {
+    r.ruleId = request["rule_id"].get!string;
+  }
 
-    return r;
+  return r;
 }
