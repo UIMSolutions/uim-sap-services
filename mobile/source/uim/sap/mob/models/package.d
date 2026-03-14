@@ -1,9 +1,10 @@
+module uim.sap.mob.models;
+
 import uim.sap.mob;
 
 mixin(ShowModule!());
 
 @safe:
-uim.sap.mob.models;
 
 public {
   import uim.sap.mob.models.application;

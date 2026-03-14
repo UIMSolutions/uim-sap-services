@@ -1,10 +1,7 @@
 module uim.sap.mob.models.userconnection;
+import uim.sap.mob;
 
-import std.datetime : Clock, SysTime;
-
-import vibe.data.json : Json;
-
-import uim.sap.mob.enumerations;
+mixin(ShowModule!());
 
 @safe:
 

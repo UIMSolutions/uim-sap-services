@@ -1,4 +1,4 @@
-name "authorization-and-trust-management"
+name "authorization-trust-management"
 description "Authorization and Trust Management-like service for identity provider trust and role-based access with D, vibe.d and uim-framework"
 homepage "https://github.com/UIMSolutions/uim-sap"
 authors "Ozan Nurettin Süel" "UI Manufaktur"

@@ -35,12 +35,57 @@ class SAPObject {
 
   bool initialize(Json[string] initData = null) {
     // Initialization logic for the object
+
+    if (initData.hasKey("created_at")) {
+      createdAt = SysTime.fromISOExtString(initData["created_at"].getString);
+    }   
+    if (initData.hasKey("updated_at")) {
+      updatedAt = SysTime.fromISOExtString(initData["updated_at"].getString);
+    }
     return true;
   }
+
+  // #region createdAt
+  protected SysTime _createdAt;
+  SysTime createdAt() {
+    return _createdAt;
+  }
+  void createdAt(SysTime time) {
+    _createdAt = time;
+  }
+  /// 
+  unittest {
+    auto obj = new SAPObject();
+    assert(obj.createdAt == SysTime.min);
+    auto now = SysTime.now;
+    obj.createdAt(now);
+    assert(obj.createdAt == now);
+  }
+  // #endregion createdAt
+
+  // #region updatedAt
+  protected SysTime _updatedAt;
+  SysTime updatedAt() {
+    return _updatedAt;
+  }
+  void updatedAt(SysTime time) {
+    _updatedAt = time;
+  }
+  /// 
+  unittest {
+    auto obj = new SAPObject();
+    assert(obj.updatedAt == SysTime.min);
+    auto now = SysTime.now;
+    obj.updatedAt(now);
+    assert(obj.updatedAt == now);
+  }
+  // #endregion updatedAt
 
   Json toJson() {
     Json info = Json.emptyObject;
     // Add tenant-specific fields to the JSON object
+    info["created_at"] = createdAt.toISOExtString();
+    info["updated_at"] = updatedAt.toISOExtString();
 
     return info;
   }

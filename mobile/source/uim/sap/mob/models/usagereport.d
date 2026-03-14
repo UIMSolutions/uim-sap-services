@@ -1,8 +1,8 @@
 module uim.sap.mob.models.usagereport;
 
-import std.datetime : SysTime;
+import uim.sap.mob;
 
-import vibe.data.json : Json;
+mixin(ShowModule!());
 
 @safe:
 
