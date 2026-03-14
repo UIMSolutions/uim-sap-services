@@ -16,7 +16,7 @@ struct Job {
     string description;
     string actionEndpoint;
     string httpMethod;
-    Json payload;
+    Json payload = Json.emptyObject;
     string runtime;
     string executionMode;
     bool longRunningTask;

@@ -350,7 +350,7 @@ class HanaClient {
         return payload;
     }
     
-    private SAPResponse makeRequest(HTTPMethod method, string url, Json payload = Json.emptyObject) {
+    private SAPResponse makeRequest(HTTPMethod method, string url, Json payload = Json.emptyObject;) {
         SAPResponse response;
         response.timestamp = Clock.currTime();
         

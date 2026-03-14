@@ -16,7 +16,7 @@ struct AlertEvent {
   string subject;
   string message;
   Json tags;
-  Json payload;
+  Json payload = Json.emptyObject;
   SysTime createdAt;
 
   Json toJson() const {

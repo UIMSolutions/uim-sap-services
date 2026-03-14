@@ -52,7 +52,7 @@ class CPIClient {
 
   CPIResponse triggerIntegrationFlow(
     string endpointPath,
-    Json payload = Json.emptyObject,
+    Json payload = Json.emptyObject;,
     string[string] query = null
   ) {
     if (endpointPath.length == 0) {

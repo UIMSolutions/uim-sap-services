@@ -55,7 +55,7 @@ class S4HANAClient {
   S4HANAResponse request(
     HTTPMethod method,
     string path,
-    Json payload = Json.emptyObject,
+    Json payload = Json.emptyObject;,
     string[string] query = null,
     bool isAbsolute = false
   ) {

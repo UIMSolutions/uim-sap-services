@@ -36,7 +36,7 @@ class PREService : SAPService {
     item.tenantId = tenantId;
     if (item.itemId.length == 0)
       item.itemId = generateItemId();
-    item.createdAt = nowTimestamp();
+    item.createdAt = now;
     item.updatedAt = item.createdAt;
 
     _store.addItem(tenantId, item);

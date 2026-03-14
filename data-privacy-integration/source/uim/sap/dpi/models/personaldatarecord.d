@@ -24,7 +24,7 @@ struct DPIPersonalDataRecord {
     string subjectId;
     string category;
     string source;
-    Json payload;
+    Json payload = Json.emptyObject;
     SysTime createdAt;
     SysTime updatedAt;
     bool deleted;

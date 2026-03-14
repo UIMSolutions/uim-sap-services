@@ -17,7 +17,7 @@ struct AEMTopicEvent {
   string eventId;
   string topic;
   string publisher;
-  Json payload;
+  Json payload = Json.emptyObject;
   SysTime publishedAt;
 
   Json toJson() const {

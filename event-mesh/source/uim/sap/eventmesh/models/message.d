@@ -13,7 +13,7 @@ struct EVMMessage {
     string queueName;
     string publisher;
     string source;
-    Json payload;
+    Json payload = Json.emptyObject;
     string status = "pending";
     long retryCount = 0;
     string publishedAt;

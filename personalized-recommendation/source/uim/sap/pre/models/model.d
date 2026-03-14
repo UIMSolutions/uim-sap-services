@@ -26,41 +26,41 @@ struct PREModel {
 }
 
 Json modelToJson(const ref PREModel m) {
-    Json j = Json.emptyObject;
-    j["modelId"] = m.modelId;
-    j["tenantId"] = m.tenantId;
-    j["name"] = m.name;
-    j["description"] = m.description;
-    j["modelType"] = m.modelType.to!string;
-    j["scenarioType"] = m.scenarioType.to!string;
-    j["status"] = m.status.to!string;
+    Json json = Json.emptyObject;
+    json["modelId"] = m.modelId;
+    json["tenantId"] = m.tenantId;
+    json["name"] = m.name;
+    json["description"] = m.description;
+    json["modelType"] = m.modelType.to!string;
+    json["scenarioType"] = m.scenarioType.to!string;
+    json["status"] = m.status.to!string;
     {
         Json obj = Json.emptyObject;
         foreach (k, v; m.hyperparameters)
             obj[k] = v;
-        j["hyperparameters"] = obj;
+        json["hyperparameters"] = obj;
     }
     {
         Json obj = Json.emptyObject;
         foreach (k, v; m.metrics)
             obj[k] = v;
-        j["metrics"] = obj;
+        json["metrics"] = obj;
     }
-    j["itemCount"] = cast(long) m.itemCount;
-    j["userCount"] = cast(long) m.userCount;
-    j["interactionCount"] = cast(long) m.interactionCount;
-    j["createdAt"] = m.createdAt;
-    j["updatedAt"] = m.updatedAt;
-    j["trainedAt"] = m.trainedAt;
-    return j;
+    json["itemCount"] = cast(long) m.itemCount;
+    json["userCount"] = cast(long) m.userCount;
+    json["interactionCount"] = cast(long) m.interactionCount;
+    json["createdAt"] = m.createdAt;
+    json["updatedAt"] = m.updatedAt;
+    json["trainedAt"] = m.trainedAt;
+    return json;
 }
 
 PREModel modelFromJson(Json j) {
     PREModel m;
-    m.modelId = j.getOrDefault!string("modelId", "");
-    m.tenantId = j.getOrDefault!string("tenantId", "");
+    m.modelId = j.getString("modelId", "");
+    m.tenantId = j.getString("tenantId", "");
     m.name = j["name"].get!string;
-    m.description = j.getOrDefault!string("description", "");
+    m.description = j.getString("description", "");
     if ("hyperparameters" in j) {
         foreach (string k, v; j["hyperparameters"])
             m.hyperparameters[k] = v.get!string;
