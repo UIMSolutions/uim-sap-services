@@ -40,8 +40,8 @@ private SoftwareTranslateRequest parseSoftwareRequest(JSONValue body) {
     SoftwareTranslateRequest req;
     req.sourceLanguage = body["sourceLanguage"].str;
     req.targetLanguage = body["targetLanguage"].str;
-    req.provider = body["provider"].type == JSON_TYPE.NULL ? "sap-nmt" : body["provider"].str;
-    req.domain = body["domain"].type == JSON_TYPE.NULL ? "sap" : body["domain"].str;
+    req.provider = body["provider"].type == JSONType.null_ ? "sap-nmt" : body["provider"].str;
+    req.domain = body["domain"].type == JSONType.null_ ? "sap" : body["domain"].str;
 
     foreach (item; body["texts"].array) {
         req.texts ~= item.str;
@@ -56,7 +56,7 @@ private DocumentTranslateSyncRequest parseDocumentSyncRequest(JSONValue body) {
         body["targetLanguage"].str,
         body["fileName"].str,
         body["content"].str,
-        body["provider"].type == JSON_TYPE.NULL ? "sap-nmt" : body["provider"].str
+        body["provider"].type == JSONType.null_ ? "sap-nmt" : body["provider"].str
     );
 }
 
@@ -66,7 +66,7 @@ private DocumentTranslateAsyncRequest parseDocumentAsyncRequest(JSONValue body) 
         body["targetLanguage"].str,
         body["fileName"].str,
         body["content"].str,
-        body["provider"].type == JSON_TYPE.NULL ? "sap-nmt" : body["provider"].str
+        body["provider"].type == JSONType.null_ ? "sap-nmt" : body["provider"].str
     );
 }
 
@@ -238,12 +238,12 @@ void main() {
 
     auto router = new URLRouter();
 
-    router.get("/", (req, res) {
+    router.get("/", (HTTPServerRequest req, HTTPServerResponse res) @trusted {
         res.contentType = "text/html; charset=utf-8";
         res.writeBody(landingPage());
     });
 
-    router.get("/health", (req, res) {
+    router.get("/health", (HTTPServerRequest req, HTTPServerResponse res) @trusted {
         JSONValue payload;
         payload["status"] = "ok";
         payload["service"] = cfg.serviceName;
@@ -251,7 +251,7 @@ void main() {
         writeJson(res, payload);
     });
 
-    router.get("/api/v1/providers", (req, res) {
+    router.get("/api/v1/providers", (HTTPServerRequest req, HTTPServerResponse res) @trusted {
         JSONValue payload;
         JSONValue[] names;
         foreach (n; providerRegistry.names()) names ~= JSONValue(n);
@@ -260,7 +260,7 @@ void main() {
         writeJson(res, payload);
     });
 
-    router.post("/api/v1/software/translate", (req, res) {
+    router.post("/api/v1/software/translate", (HTTPServerRequest req, HTTPServerResponse res) @trusted {
         try {
             auto body = parseBody(req);
             auto request = parseSoftwareRequest(body);
@@ -275,13 +275,13 @@ void main() {
         }
     });
 
-    router.post("/api/v1/quality/estimate", (req, res) {
+    router.post("/api/v1/quality/estimate", (HTTPServerRequest req, HTTPServerResponse res) @trusted {
         try {
             auto body = parseBody(req);
             string[] texts;
             foreach (item; body["texts"].array) texts ~= item.str;
-            auto provider = body["provider"].type == JSON_TYPE.NULL ? "sap-nmt" : body["provider"].str;
-            auto target = body["targetLanguage"].type == JSON_TYPE.NULL ? "de" : body["targetLanguage"].str;
+            auto provider = body["provider"].type == JSONType.null_ ? "sap-nmt" : body["provider"].str;
+            auto target = body["targetLanguage"].type == JSONType.null_ ? "de" : body["targetLanguage"].str;
 
             JSONValue payload;
             payload["qualityIndex"] = translationService.estimateQuality(texts, target, provider);
@@ -291,7 +291,7 @@ void main() {
         }
     });
 
-    router.post("/api/v1/document/translate/sync", (req, res) {
+    router.post("/api/v1/document/translate/sync", (HTTPServerRequest req, HTTPServerResponse res) @trusted {
         try {
             auto body = parseBody(req);
             auto request = parseDocumentSyncRequest(body);
@@ -302,7 +302,7 @@ void main() {
         }
     });
 
-    router.post("/api/v1/document/translate/async", (req, res) {
+    router.post("/api/v1/document/translate/async", (HTTPServerRequest req, HTTPServerResponse res) @trusted {
         try {
             auto body = parseBody(req);
             auto request = parseDocumentAsyncRequest(body);
@@ -316,7 +316,7 @@ void main() {
         }
     });
 
-    router.get("/api/v1/document/jobs/status", (req, res) {
+    router.get("/api/v1/document/jobs/status", (HTTPServerRequest req, HTTPServerResponse res) @trusted {
         auto jobId = req.query.get("jobId", "");
         if (!jobId.length) {
             writeJson(res, errorPayload("invalid_request", "jobId query parameter is required"), 400);
@@ -326,7 +326,7 @@ void main() {
         writeJson(res, asJson(job));
     });
 
-    router.post("/api/v1/projects", (req, res) {
+    router.post("/api/v1/projects", (HTTPServerRequest req, HTTPServerResponse res) @trusted {
         try {
             auto body = parseBody(req);
             auto name = body["name"].str;
@@ -342,7 +342,7 @@ void main() {
         }
     });
 
-    router.get("/api/v1/projects", (req, res) {
+    router.get("/api/v1/projects", (HTTPServerRequest req, HTTPServerResponse res) @trusted {
         JSONValue payload;
         JSONValue[] items;
         foreach (p; projects.list()) items ~= asJson(p);
@@ -350,7 +350,7 @@ void main() {
         writeJson(res, payload);
     });
 
-    router.post("/api/v1/language-data", (req, res) {
+    router.post("/api/v1/language-data", (HTTPServerRequest req, HTTPServerResponse res) @trusted {
         try {
             auto body = parseBody(req);
             auto name = body["name"].str;
@@ -367,7 +367,7 @@ void main() {
         }
     });
 
-    router.get("/api/v1/language-data", (req, res) {
+    router.get("/api/v1/language-data", (HTTPServerRequest req, HTTPServerResponse res) @trusted {
         JSONValue payload;
         JSONValue[] items;
         foreach (asset; languageAssets.list()) items ~= asJson(asset);

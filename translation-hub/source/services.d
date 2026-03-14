@@ -1,12 +1,12 @@
 module services;
 
 import core.sync.mutex : Mutex;
+import std.algorithm : map;
 import std.algorithm : min;
 import std.array : array;
 import std.conv : to;
 import std.datetime : Clock;
 import std.format : format;
-import std.parallelism : taskPool;
 import std.random : uniform;
 import std.string : join;
 import std.uuid : randomUUID;
@@ -96,9 +96,8 @@ class AsyncJobStore {
             now
         );
 
-        taskPool.put({
-            runJob(id, req);
-        });
+        // Keep async API shape while using immediate execution in this reference implementation.
+        runJob(id, req);
 
         return id;
     }

@@ -10,4 +10,6 @@ public {
   import uim.sap.service.classes.server;
   import uim.sap.service.classes.service;
   import uim.sap.service.classes.store;
+
+  import uim.sap.service.classes.objects;
 }

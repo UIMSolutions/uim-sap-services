@@ -1,6 +1,7 @@
 module config;
 
 import std.conv : to;
+import std.array : array;
 import std.process : environment;
 
 struct AppConfig {

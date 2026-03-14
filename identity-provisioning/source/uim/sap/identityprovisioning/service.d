@@ -11,17 +11,35 @@ mixin(ShowModule!());
 
 @safe:
 
-/** Business-logic layer for the Identity Provisioning service.
- *
- *  Capabilities:
- *  - Register source / target / proxy systems
- *  - CRUD for users and groups
- *  - Define transformation and filter rules
- *  - Run provisioning jobs in full or delta read mode
- *  - Job logging with level filtering and export
- *  - Notification subscriptions for job events
- *  - Tenant-scoped multitenancy
- */
+/**
+  * Main service class for the Identity Provisioning API.
+  * Implements all API endpoints and contains the core provisioning logic.
+  *
+  * The service uses an IPVStore for data persistence and retrieval.  In a production implementation, this would be backed by a database.  For this reference implementation, it is an in-memory store.
+  * The service also handles validation, error handling, and notification of provisioning events to subscribers.
+  *
+  * API Endpoints:
+  * - System CRUD: createSystem, listSystems, getSystem, updateSystem, deleteSystem 
+  * - User CRUD: createUser, listUsers, getUser, updateUser, deleteUser
+  * - Group CRUD: createGroup, listGroups, getGroup, deleteGroup
+  * - Transformation CRUD: createTransformation, listTransformations, getTransformation, deleteTransformation
+  * - Provisioning Jobs: runJob, listJobs, getJob, cancelJob
+  * - Job Logs: listJobLogs, exportJobLogs
+  * - Notification Subscriptions: createNotification, listNotifications, deleteNotification
+  * - Dashboard: dashboard
+  * The runJob endpoint implements the provisioning engine which reads users and groups from the source system, applies transformations and filters, and provisions them to target systems while tracking job status and statistics.
+  *
+  * Business-logic layer for the Identity Provisioning service.
+  *
+  *  Capabilities:
+  *  - Register source / target / proxy systems
+  *  - CRUD for users and groups
+  *  - Define transformation and filter rules
+  *  - Run provisioning jobs in full or delta read mode
+  *  - Job logging with level filtering and export
+  *  - Notification subscriptions for job events
+  *  - Tenant-scoped multitenancy
+  */
 class IPVService : SAPService {
   mixin(SAPServiceTemplate!IPVService);
 
@@ -29,6 +47,7 @@ class IPVService : SAPService {
 
   this(IPVConfig config) {
     super(config);
+
     _store = new IPVStore;
   }
 
