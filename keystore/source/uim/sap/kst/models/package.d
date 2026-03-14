@@ -1,9 +1,14 @@
+/****************************************************************************************************************
+* Copyright: © 2018-2026 Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*) 
+* License: Subject to the terms of the Apache 2.0 license, as written in the included LICENSE.txt file. 
+* Authors: Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*)
+*****************************************************************************************************************/
 module uim.sap.kst.models;
 
 public {
-    import uim.sap.kst.models.certificate;
-    import uim.sap.kst.models.encryptedpayload;
-    import uim.sap.kst.models.keyentry;
-    import uim.sap.kst.models.keystore;
-    import uim.sap.kst.models.signresult;
+  import uim.sap.kst.models.certificate;
+  import uim.sap.kst.models.encryptedpayload;
+  import uim.sap.kst.models.keyentry;
+  import uim.sap.kst.models.keystore;
+  import uim.sap.kst.models.signresult;
 }

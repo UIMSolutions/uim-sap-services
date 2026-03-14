@@ -1,11 +1,16 @@
+/****************************************************************************************************************
+* Copyright: © 2018-2026 Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*) 
+* License: Subject to the terms of the Apache 2.0 license, as written in the included LICENSE.txt file. 
+* Authors: Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*)
+*****************************************************************************************************************/
 module uim.sap.kst.exceptions;
 
 public {
-    import uim.sap.kst.exceptions.exception;
+  import uim.sap.kst.exceptions.exception;
 
-    import uim.sap.kst.exceptions.authorization;
-    import uim.sap.kst.exceptions.configuration;
-    import uim.sap.kst.exceptions.notfound;
-    import uim.sap.kst.exceptions.validation;
-    import uim.sap.kst.exceptions.crypto;
+  import uim.sap.kst.exceptions.authorization;
+  import uim.sap.kst.exceptions.configuration;
+  import uim.sap.kst.exceptions.notfound;
+  import uim.sap.kst.exceptions.validation;
+  import uim.sap.kst.exceptions.crypto;
 }
