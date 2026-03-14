@@ -1,9 +1,16 @@
+/****************************************************************************************************************
+* Copyright: © 2018-2026 Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*) 
+* License: Subject to the terms of the Apache 2.0 license, as written in the included LICENSE.txt file. 
+* Authors: Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*)
+*****************************************************************************************************************/
 module uim.sap.pre.models;
 
-public import uim.sap.pre.models.interaction;
-public import uim.sap.pre.models.item;
-public import uim.sap.pre.models.model;
-public import uim.sap.pre.models.recommendation;
-public import uim.sap.pre.models.scenario;
-public import uim.sap.pre.models.training_job;
-public import uim.sap.pre.models.user_;
+public {
+  import uim.sap.pre.models.interaction;
+  import uim.sap.pre.models.item;
+  import uim.sap.pre.models.model;
+  import uim.sap.pre.models.recommendation;
+  import uim.sap.pre.models.scenario;
+  import uim.sap.pre.models.training_job;
+  import uim.sap.pre.models.user_;
+}
