@@ -1,12 +1,12 @@
 module uim.sap.mob.models.application;
 
-import std.datetime : Clock, SysTime;
 
-import vibe.data.json : Json;
+import uim.sap.mob;
 
-import uim.sap.mob.enumerations;
+mixin(ShowModule!());
 
 @safe:
+
 
 /// Mobile application definition
 struct MOBApplication {

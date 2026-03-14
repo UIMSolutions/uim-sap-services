@@ -1,13 +1,12 @@
 module uim.sap.mob.models.notification;
 
-import std.datetime : Clock, SysTime;
 
-import vibe.data.json : Json;
+import uim.sap.mob;
 
-import uim.sap.mob.enumerations;
-import uim.sap.mob.helpers;
+mixin(ShowModule!());
 
 @safe:
+
 
 /// Individual push notification
 struct MOBNotification {

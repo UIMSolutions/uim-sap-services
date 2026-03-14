@@ -1,10 +1,17 @@
-module uim.sap.mob.models;
+import uim.sap.mob;
 
-public import uim.sap.mob.models.application;
-public import uim.sap.mob.models.appversion;
-public import uim.sap.mob.models.notification;
-public import uim.sap.mob.models.offlineconfig;
-public import uim.sap.mob.models.pushconfig;
-public import uim.sap.mob.models.securitypolicy;
-public import uim.sap.mob.models.userconnection;
-public import uim.sap.mob.models.usagereport;
+mixin(ShowModule!());
+
+@safe:
+uim.sap.mob.models;
+
+public {
+  import uim.sap.mob.models.application;
+  import uim.sap.mob.models.appversion;
+  import uim.sap.mob.models.notification;
+  import uim.sap.mob.models.offlineconfig;
+  import uim.sap.mob.models.pushconfig;
+  import uim.sap.mob.models.securitypolicy;
+  import uim.sap.mob.models.userconnection;
+  import uim.sap.mob.models.usagereport;
+}

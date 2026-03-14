@@ -1,12 +1,12 @@
 module uim.sap.mob.models.offlineconfig;
 
-import std.datetime : Clock, SysTime;
 
-import vibe.data.json : Json;
+import uim.sap.mob;
 
-import uim.sap.mob.enumerations;
+mixin(ShowModule!());
 
 @safe:
+
 
 /// Offline/OData synchronization configuration per application
 struct MOBOfflineConfig {
