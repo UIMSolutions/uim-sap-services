@@ -38,14 +38,11 @@ class AEMConfig : SAPConfig {
 
   string defaultMeshRegion = "eu10";
 
-  override void validate() const {
+  override void validate() {
     super.validate();
 
     if (defaultMeshRegion.length == 0) {
       throw new AEMConfigurationException("Default mesh region cannot be empty");
-    }
-    if (requireAuthToken && authToken.length == 0) {
-      throw new AEMConfigurationException("Auth token required when token auth is enabled");
     }
   }
 }

@@ -62,8 +62,18 @@ PREModel modelFromJson(Json j) {
     m.name = j["name"].get!string;
     m.description = j.getString("description", "");
     if ("hyperparameters" in j) {
-        foreach (string k, v; j["hyperparameters"])
+        foreach (string k, v; j["hyperparameters"].toMap)
             m.hyperparameters[k] = v.get!string;
     }
+    if ("metrics" in j) {
+        foreach (string k, v; j["metrics"].toMap)
+            m.metrics[k] = v.get!string;
+    }
+    // m.itemCount = j.getLong("itemCount", 0);
+    // m.userCount = j.getLong("userCount", 0);
+    // m.interactionCount = j.getLong("interactionCount", 0);
+    // m.createdAt = j.getString("createdAt", "");
+    // m.updatedAt = j.getString("updatedAt", "");
+    // m.trainedAt = j.getString("trainedAt", "");
     return m;
 }

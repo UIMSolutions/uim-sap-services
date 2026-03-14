@@ -11,38 +11,51 @@ mixin(ShowModule!());
 
 @safe:
 
-struct AEMSubscription {
-    string tenantId;
-    string subscriptionId;
-    string componentId;
-    string meshId;
-    string topic;
-    SysTime updatedAt;
+class AEMSubscription : SAPTenantObject {
+  UUID subscriptionId;
+  UUID componentId;
+  UUID meshId;
+  string topic;
 
-    Json toJson() const {
-        Json resultJson = Json.emptyObject;
-        resultJson["tenant_id"] = tenantId;
-        resultJson["subscription_id"] = subscriptionId;
-        resultJson["component_id"] = componentId;
-        resultJson["mesh_id"] = meshId;
-        resultJson["topic"] = topic;
-        resultJson["updated_at"] = updatedAt.toISOExtString();
-        return resultJson;
-    }
+  override Json toJson() {
+    Json resultJson = super.toJson();
+    resultJson["subscription_id"] = subscriptionId.toJson;
+    resultJson["component_id"] = componentId.toJson;
+    resultJson["mesh_id"] = meshId.toJson;
+    resultJson["topic"] = topic;
+    return resultJson;
+  }
+  ///
+  unittest {
+    AEMSubscription sub = new AEMSubscription();
+    sub.tenantId = randomUUID();
+    sub.subscriptionId = randomUUID();
+    sub.componentId = randomUUID();
+    sub.meshId = randomUUID();
+    sub.topic = "test-topic";
+
+    Json json = sub.toJson();
+    assert(json["tenant_id"].get!string == sub.tenantId.toString());
+    assert(json["subscription_id"].get!string == sub.subscriptionId.toString());
+    assert(json["component_id"].get!string == sub.componentId.toString());
+    assert(json["mesh_id"].get!string == sub.meshId.toString());
+    assert(json["topic"].get!string == sub.topic);
+  }
+
 }
 
-AEMSubscription subscriptionFromJson(string tenantId, string componentId, Json request) {
-  AEMSubscription subscription;
+AEMSubscription subscriptionFromJson(UUID tenantId, string componentId, Json request) {
+  AEMSubscription subscription = new AEMSubscription();
   subscription.tenantId = tenantId;
-  subscription.subscriptionId = randomUUID().toString();
-  subscription.componentId = componentId;
+  subscription.subscriptionId = randomUUID();
+  subscription.componentId = UUID(componentId);
   subscription.updatedAt = Clock.currTime();
 
   if ("subscription_id" in request && request["subscription_id"].isString) {
-    subscription.subscriptionId = request["subscription_id"].get!string;
+    subscription.subscriptionId = UUID(request["subscription_id"].get!string);
   }
   if ("mesh_id" in request && request["mesh_id"].isString) {
-    subscription.meshId = request["mesh_id"].get!string;
+    subscription.meshId = UUID(request["mesh_id"].get!string);
   }
   if ("topic" in request && request["topic"].isString) {
     subscription.topic = request["topic"].get!string;

@@ -78,19 +78,19 @@ class PREService : SAPService {
       p.imageUrl = body_["imageUrl"].get!string;
     if ("price" in body_) {
       auto pv = body_["price"];
-      if (pv.type == Json.Type.float_)
+      if (pv.isFloat)
         p.price = pv.get!double;
       else if (pv.type == Json.Type.int_)
         p.price = cast(double)pv.get!long;
     }
     if ("tags" in body_) {
       p.tags = [];
-      foreach (t; body_["tags"])
+      foreach (t; body_["tags"].toMap)
         p.tags ~= t.get!string;
     }
     if ("attributes" in body_) {
       string[string] attrs;
-      foreach (string k, v; body_["attributes"])
+      foreach (string k, v; body_["attributes"].toMap)
         attrs[k] = v.get!string;
       p.attributes = attrs;
     }
@@ -104,9 +104,9 @@ class PREService : SAPService {
       throw new PRENotFoundException("Item not found: " ~ itemId);
     }
     
-    Json j = Json.emptyObject;
-    j["deleted"] = itemId;
-    return j;
+    Json json = Json.emptyObject;
+    json["deleted"] = itemId;
+    return json;
   }
 
   // ──────────────────────────────────────
@@ -556,7 +556,7 @@ class PREService : SAPService {
       rec.recommendationType = PRERecommendationType.similar_item;
       rec.score = score;
       rec.explanation = "Similar to " ~ sourceP.title;
-      rec.createdAt = nowTimestamp();
+      rec.createdAt = now;
       recs ~= rec;
     }
 
