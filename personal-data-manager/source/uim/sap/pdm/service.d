@@ -1,3 +1,8 @@
+/****************************************************************************************************************
+* Copyright: © 2018-2026 Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*) 
+* License: Subject to the terms of the Apache 2.0 license, as written in the included LICENSE.txt file. 
+* Authors: Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*)
+*****************************************************************************************************************/
 module uim.sap.pdm.service;
 
 import uim.sap.pdm;
@@ -84,8 +89,10 @@ class PDMService : SAPService {
 
   Json registerSubject(string tenantId, Json req) {
     ensureTenant(tenantId);
-    if (_store.subjectCount(tenantId) >= _config.maxSubjectsPerTenant)
-      throw new PDMQuotaExceededException("subjects", _config.maxSubjectsPerTenant);
+    
+    PDMConfig cfg = cast(PDMConfig)_config;
+    if (_store.subjectCount(tenantId) >= cfg.maxSubjectsPerTenant)
+      throw new PDMQuotaExceededException("subjects", cfg.maxSubjectsPerTenant);
 
     string subjectId = generateSubjectId();
     PDMDataSubject s = subjectFromJson(subjectId, tenantId, req);
@@ -188,8 +195,10 @@ class PDMService : SAPService {
     ensureTenant(tenantId);
     if (!_store.hasSubject(tenantId, subjectId))
       throw new PDMNotFoundException("DataSubject", subjectId);
-    if (_store.recordCountBySubject(tenantId, subjectId) >= _config.maxRecordsPerSubject)
-      throw new PDMQuotaExceededException("records per subject", _config.maxRecordsPerSubject);
+
+    PDMConfig cfg = cast(PDMConfig)_config;
+    if (_store.recordCountBySubject(tenantId, subjectId) >= cfg.maxRecordsPerSubject)
+      throw new PDMQuotaExceededException("records per subject", cfg.maxRecordsPerSubject);
 
     string recordId = generateRecordId();
     PDMPersonalDataRecord r = recordFromJson(recordId, subjectId, tenantId, req);
@@ -261,8 +270,10 @@ class PDMService : SAPService {
     ensureTenant(tenantId);
     if (!_store.hasSubject(tenantId, subjectId))
       throw new PDMNotFoundException("DataSubject", subjectId);
-    if (_store.requestCount(tenantId) >= _config.maxRequestsPerTenant)
-      throw new PDMQuotaExceededException("requests", _config.maxRequestsPerTenant);
+
+    PDMConfig cfg = cast(PDMConfig)_config;
+    if (_store.requestCount(tenantId) >= cfg.maxRequestsPerTenant)
+      throw new PDMQuotaExceededException("requests", cfg.maxRequestsPerTenant);
 
     string requestId = generateRequestId();
     PDMDataRequest r = requestFromJson(requestId, subjectId, tenantId, req);
@@ -508,8 +519,10 @@ class PDMService : SAPService {
   // ══════════════════════════════════════
 
   private void ensureTenant(string tenantId) {
-    if (_config.multitenancy && !_store.hasTenant(tenantId))
+    PDMConfig cfg = cast(PDMConfig)_config;
+    if (cfg.multitenancy && !_store.hasTenant(tenantId)) {
       throw new PDMNotFoundException("Tenant", tenantId);
+    }
   }
 
   private static PDMSubjectType parseSubjectTypeStr(string s) {

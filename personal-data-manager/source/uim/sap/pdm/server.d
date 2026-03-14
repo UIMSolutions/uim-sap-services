@@ -1,3 +1,8 @@
+/****************************************************************************************************************
+* Copyright: © 2018-2026 Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*) 
+* License: Subject to the terms of the Apache 2.0 license, as written in the included LICENSE.txt file. 
+* Authors: Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*)
+*****************************************************************************************************************/
 module uim.sap.pdm.server;
 
 import uim.sap.pdm;
@@ -46,388 +51,389 @@ mixin(ShowModule!());
  *     GET|POST  /v1/tenants/{tid}/subjects/{sid}/usages
  */
 class PDMServer {
-    private PDMService _service;
+  private PDMService _service;
 
-    this(PDMService service) {
-        _service = service;
+  this(PDMService service) {
+    _service = service;
+  }
+
+  void run() {
+    auto settings = new HTTPServerSettings;
+    settings.port = _service.config.port;
+    settings.bindAddresses = [_service.config.host];
+    listenHTTP(settings, &handleRequest);
+    runApplication();
+  }
+
+  private void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {
+    foreach (key, value; _service.config.customHeaders)
+      res.headers[key] = value;
+
+    auto basePath = _service.config.basePath;
+    auto path = req.path;
+
+    if (!path.startsWith(basePath)) {
+      respondError(res, "Not found", 404);
+      return;
     }
 
-    void run() {
-        auto settings = new HTTPServerSettings;
-        settings.port = _service.config.port;
-        settings.bindAddresses = [_service.config.host];
-        listenHTTP(settings, &handleRequest);
-        runApplication();
+    auto subPath = path[basePath.length .. $];
+    if (subPath.length == 0)
+      subPath = "/";
+
+    // Health / ready (no auth)
+    if (subPath == "/health" && req.method == HTTPMethod.GET) {
+      res.writeJsonBody(_service.health(), 200);
+      return;
+    }
+    if (subPath == "/ready" && req.method == HTTPMethod.GET) {
+      res.writeJsonBody(_service.ready(), 200);
+      return;
     }
 
-    private void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {
-        foreach (key, value; _service.config.customHeaders)
-            res.headers[key] = value;
+    try {
+      validateAuth(req);
+      auto segments = normalizedSegments(subPath);
 
-        auto basePath = _service.config.basePath;
-        auto path = req.path;
+      // /v1/tenants...
+      if (segments.length >= 2 && segments[0] == "v1" && segments[1] == "tenants") {
+        routeTenants(req, res, segments[2 .. $]);
+        return;
+      }
 
-        if (!path.startsWith(basePath)) {
-            respondError(res, "Not found", 404);
-            return;
-        }
+      respondError(res, "Not found", 404);
+    } catch (PDMAuthorizationException e) {
+      respondError(res, e.msg, 401);
+    } catch (PDMConflictException e) {
+      respondError(res, e.msg, 409);
+    } catch (PDMNotFoundException e) {
+      respondError(res, e.msg, 404);
+    } catch (PDMValidationException e) {
+      respondError(res, e.msg, 400);
+    } catch (PDMQuotaExceededException e) {
+      respondError(res, e.msg, 429);
+    } catch (PDMConfigurationException e) {
+      respondError(res, e.msg, 500);
+    } catch (PDMException e) {
+      respondError(res, e.msg, 500);
+    } catch (Exception e) {
+      respondError(res, "Internal server error", 500);
+    }
+  }
 
-        auto subPath = path[basePath.length .. $];
-        if (subPath.length == 0)
-            subPath = "/";
+  // ──────────────────────────────────────
+  //  Tenant Routes
+  // ──────────────────────────────────────
 
-        // Health / ready (no auth)
-        if (subPath == "/health" && req.method == HTTPMethod.GET) {
-            res.writeJsonBody(_service.health(), 200);
-            return;
-        }
-        if (subPath == "/ready" && req.method == HTTPMethod.GET) {
-            res.writeJsonBody(_service.ready(), 200);
-            return;
-        }
-
-        try {
-            validateAuth(req);
-            auto segments = normalizedSegments(subPath);
-
-            // /v1/tenants...
-            if (segments.length >= 2 && segments[0] == "v1" && segments[1] == "tenants") {
-                routeTenants(req, res, segments[2 .. $]);
-                return;
-            }
-
-            respondError(res, "Not found", 404);
-        } catch (PDMAuthorizationException e) {
-            respondError(res, e.msg, 401);
-        } catch (PDMConflictException e) {
-            respondError(res, e.msg, 409);
-        } catch (PDMNotFoundException e) {
-            respondError(res, e.msg, 404);
-        } catch (PDMValidationException e) {
-            respondError(res, e.msg, 400);
-        } catch (PDMQuotaExceededException e) {
-            respondError(res, e.msg, 429);
-        } catch (PDMConfigurationException e) {
-            respondError(res, e.msg, 500);
-        } catch (PDMException e) {
-            respondError(res, e.msg, 500);
-        } catch (Exception e) {
-            respondError(res, "Internal server error", 500);
-        }
+  private void routeTenants(HTTPServerRequest req, HTTPServerResponse res, string[] rest) {
+    // GET|POST /v1/tenants
+    if (rest.length == 0) {
+      if (req.method == HTTPMethod.GET) {
+        res.writeJsonBody(_service.listTenants(), 200);
+        return;
+      }
+      if (req.method == HTTPMethod.POST) {
+        Json body_ = parseBody(req);
+        res.writeJsonBody(_service.createTenant(body_), 201);
+        return;
+      }
+      respondError(res, "Method not allowed", 405);
+      return;
     }
 
-    // ──────────────────────────────────────
-    //  Tenant Routes
-    // ──────────────────────────────────────
+    string tenantId = rest[0];
 
-    private void routeTenants(HTTPServerRequest req, HTTPServerResponse res, string[] rest) {
-        // GET|POST /v1/tenants
-        if (rest.length == 0) {
-            if (req.method == HTTPMethod.GET) {
-                res.writeJsonBody(_service.listTenants(), 200);
-                return;
-            }
-            if (req.method == HTTPMethod.POST) {
-                Json body_ = parseBody(req);
-                res.writeJsonBody(_service.createTenant(body_), 201);
-                return;
-            }
-            respondError(res, "Method not allowed", 405);
-            return;
-        }
-
-        string tenantId = rest[0];
-
-        // GET /v1/tenants/{tid}
-        if (rest.length == 1 && req.method == HTTPMethod.GET) {
-            res.writeJsonBody(_service.getTenant(tenantId), 200);
-            return;
-        }
-
-        // /v1/tenants/{tid}/subjects...
-        if (rest.length >= 2 && rest[1] == "subjects") {
-            routeSubjects(req, res, tenantId, rest[2 .. $]);
-            return;
-        }
-
-        // /v1/tenants/{tid}/requests...
-        if (rest.length >= 2 && rest[1] == "requests") {
-            routeRequests(req, res, tenantId, rest[2 .. $]);
-            return;
-        }
-
-        respondError(res, "Not found", 404);
+    // GET /v1/tenants/{tid}
+    if (rest.length == 1 && req.method == HTTPMethod.GET) {
+      res.writeJsonBody(_service.getTenant(tenantId), 200);
+      return;
     }
 
-    // ──────────────────────────────────────
-    //  Data Subject Routes
-    // ──────────────────────────────────────
-
-    private void routeSubjects(HTTPServerRequest req, HTTPServerResponse res,
-            string tenantId, string[] rest) {
-        // GET|POST /v1/tenants/{tid}/subjects
-        if (rest.length == 0) {
-            if (req.method == HTTPMethod.GET) {
-                res.writeJsonBody(_service.listSubjects(tenantId), 200);
-                return;
-            }
-            if (req.method == HTTPMethod.POST) {
-                Json body_ = parseBody(req);
-                res.writeJsonBody(_service.registerSubject(tenantId, body_), 201);
-                return;
-            }
-            respondError(res, "Method not allowed", 405);
-            return;
-        }
-
-        // GET /v1/tenants/{tid}/subjects/search?q=term&type=private
-        if (rest[0] == "search" && rest.length == 1 && req.method == HTTPMethod.GET) {
-            auto q = req.params.get("q", "");
-            auto type_ = req.params.get("type", "");
-            if (type_.length > 0)
-                res.writeJsonBody(_service.searchSubjectsByType(tenantId, type_), 200);
-            else if (q.length > 0)
-                res.writeJsonBody(_service.searchSubjects(tenantId, q), 200);
-            else
-                res.writeJsonBody(_service.listSubjects(tenantId), 200);
-            return;
-        }
-
-        string subjectId = rest[0];
-
-        // GET|PUT|DELETE /v1/tenants/{tid}/subjects/{sid}
-        if (rest.length == 1) {
-            if (req.method == HTTPMethod.GET) {
-                res.writeJsonBody(_service.getSubject(tenantId, subjectId), 200);
-                return;
-            }
-            if (req.method == HTTPMethod.PUT) {
-                Json body_ = parseBody(req);
-                res.writeJsonBody(_service.updateSubject(tenantId, subjectId, body_), 200);
-                return;
-            }
-            if (req.method == HTTPMethod.DELETE) {
-                res.writeJsonBody(_service.deleteSubject(tenantId, subjectId), 200);
-                return;
-            }
-            respondError(res, "Method not allowed", 405);
-            return;
-        }
-
-        // /v1/tenants/{tid}/subjects/{sid}/records...
-        if (rest.length >= 2 && rest[1] == "records") {
-            routeRecords(req, res, tenantId, subjectId, rest[2 .. $]);
-            return;
-        }
-
-        // GET /v1/tenants/{tid}/subjects/{sid}/report
-        if (rest.length == 2 && rest[1] == "report" && req.method == HTTPMethod.GET) {
-            res.writeJsonBody(_service.generateDataReport(tenantId, subjectId), 200);
-            return;
-        }
-
-        // /v1/tenants/{tid}/subjects/{sid}/requests...
-        if (rest.length >= 2 && rest[1] == "requests") {
-            routeSubjectRequests(req, res, tenantId, subjectId, rest[2 .. $]);
-            return;
-        }
-
-        // GET /v1/tenants/{tid}/subjects/{sid}/notifications
-        if (rest.length == 2 && rest[1] == "notifications" && req.method == HTTPMethod.GET) {
-            res.writeJsonBody(_service.listNotifications(tenantId, subjectId), 200);
-            return;
-        }
-
-        // POST /v1/tenants/{tid}/subjects/{sid}/notify
-        if (rest.length == 2 && rest[1] == "notify" && req.method == HTTPMethod.POST) {
-            Json body_ = parseBody(req);
-            res.writeJsonBody(_service.sendNotification(tenantId, subjectId, body_), 200);
-            return;
-        }
-
-        // POST /v1/tenants/{tid}/subjects/{sid}/send-report
-        if (rest.length == 2 && rest[1] == "send-report" && req.method == HTTPMethod.POST) {
-            res.writeJsonBody(_service.sendDataReport(tenantId, subjectId), 200);
-            return;
-        }
-
-        // /v1/tenants/{tid}/subjects/{sid}/usages...
-        if (rest.length >= 2 && rest[1] == "usages") {
-            routeUsages(req, res, tenantId, subjectId, rest[2 .. $]);
-            return;
-        }
-
-        respondError(res, "Not found", 404);
+    // /v1/tenants/{tid}/subjects...
+    if (rest.length >= 2 && rest[1] == "subjects") {
+      routeSubjects(req, res, tenantId, rest[2 .. $]);
+      return;
     }
 
-    // ──────────────────────────────────────
-    //  Personal Data Record Routes
-    // ──────────────────────────────────────
-
-    private void routeRecords(HTTPServerRequest req, HTTPServerResponse res,
-            string tenantId, string subjectId, string[] rest) {
-        // GET|POST /v1/tenants/{tid}/subjects/{sid}/records
-        if (rest.length == 0) {
-            if (req.method == HTTPMethod.GET) {
-                res.writeJsonBody(_service.getSubjectRecords(tenantId, subjectId), 200);
-                return;
-            }
-            if (req.method == HTTPMethod.POST) {
-                Json body_ = parseBody(req);
-                res.writeJsonBody(_service.addRecord(tenantId, subjectId, body_), 201);
-                return;
-            }
-            respondError(res, "Method not allowed", 405);
-            return;
-        }
-
-        // DELETE /v1/tenants/{tid}/subjects/{sid}/records/{rid}
-        if (rest.length == 1 && req.method == HTTPMethod.DELETE) {
-            res.writeJsonBody(_service.deleteRecord(tenantId, rest[0]), 200);
-            return;
-        }
-
-        respondError(res, "Not found", 404);
+    // /v1/tenants/{tid}/requests...
+    if (rest.length >= 2 && rest[1] == "requests") {
+      routeRequests(req, res, tenantId, rest[2 .. $]);
+      return;
     }
 
-    // ──────────────────────────────────────
-    //  Subject Request Routes
-    // ──────────────────────────────────────
+    respondError(res, "Not found", 404);
+  }
 
-    private void routeSubjectRequests(HTTPServerRequest req, HTTPServerResponse res,
-            string tenantId, string subjectId, string[] rest) {
-        // GET|POST /v1/tenants/{tid}/subjects/{sid}/requests
-        if (rest.length == 0) {
-            if (req.method == HTTPMethod.GET) {
-                res.writeJsonBody(_service.listRequestsBySubject(tenantId, subjectId), 200);
-                return;
-            }
-            if (req.method == HTTPMethod.POST) {
-                Json body_ = parseBody(req);
-                res.writeJsonBody(_service.createRequest(tenantId, subjectId, body_), 201);
-                return;
-            }
-            respondError(res, "Method not allowed", 405);
-            return;
-        }
+  // ──────────────────────────────────────
+  //  Data Subject Routes
+  // ──────────────────────────────────────
 
-        respondError(res, "Not found", 404);
+  private void routeSubjects(HTTPServerRequest req, HTTPServerResponse res,
+    string tenantId, string[] rest) {
+    // GET|POST /v1/tenants/{tid}/subjects
+    if (rest.length == 0) {
+      if (req.method == HTTPMethod.GET) {
+        res.writeJsonBody(_service.listSubjects(tenantId), 200);
+        return;
+      }
+      if (req.method == HTTPMethod.POST) {
+        Json body_ = parseBody(req);
+        res.writeJsonBody(_service.registerSubject(tenantId, body_), 201);
+        return;
+      }
+      respondError(res, "Method not allowed", 405);
+      return;
     }
 
-    // ──────────────────────────────────────
-    //  Top-level Request Routes
-    // ──────────────────────────────────────
-
-    private void routeRequests(HTTPServerRequest req, HTTPServerResponse res,
-            string tenantId, string[] rest) {
-        // GET /v1/tenants/{tid}/requests
-        if (rest.length == 0 && req.method == HTTPMethod.GET) {
-            auto statusFilter = req.params.get("status", "");
-            if (statusFilter.length > 0)
-                res.writeJsonBody(_service.listRequestsByStatus(tenantId, statusFilter), 200);
-            else
-                res.writeJsonBody(_service.listRequests(tenantId), 200);
-            return;
-        }
-
-        if (rest.length < 1) {
-            respondError(res, "Not found", 404);
-            return;
-        }
-
-        string requestId = rest[0];
-
-        // GET /v1/tenants/{tid}/requests/{rid}
-        if (rest.length == 1 && req.method == HTTPMethod.GET) {
-            res.writeJsonBody(_service.getRequest(tenantId, requestId), 200);
-            return;
-        }
-
-        // POST /v1/tenants/{tid}/requests/{rid}/submit|process|complete|reject|cancel
-        if (rest.length == 2 && req.method == HTTPMethod.POST) {
-            switch (rest[1]) {
-                case "submit":
-                    res.writeJsonBody(_service.submitRequest(tenantId, requestId), 200);
-                    return;
-                case "process":
-                    res.writeJsonBody(_service.processRequest(tenantId, requestId), 200);
-                    return;
-                case "complete":
-                    Json body_ = parseBody(req);
-                    res.writeJsonBody(_service.completeRequest(tenantId, requestId, body_), 200);
-                    return;
-                case "reject":
-                    Json body2 = parseBody(req);
-                    res.writeJsonBody(_service.rejectRequest(tenantId, requestId, body2), 200);
-                    return;
-                case "cancel":
-                    res.writeJsonBody(_service.cancelRequest(tenantId, requestId), 200);
-                    return;
-                default:
-                    break;
-            }
-        }
-
-        respondError(res, "Not found", 404);
+    // GET /v1/tenants/{tid}/subjects/search?q=term&type=private
+    if (rest[0] == "search" && rest.length == 1 && req.method == HTTPMethod.GET) {
+      auto q = req.params.get("q", "");
+      auto type_ = req.params.get("type", "");
+      if (type_.length > 0)
+        res.writeJsonBody(_service.searchSubjectsByType(tenantId, type_), 200);
+      else if (q.length > 0)
+        res.writeJsonBody(_service.searchSubjects(tenantId, q), 200);
+      else
+        res.writeJsonBody(_service.listSubjects(tenantId), 200);
+      return;
     }
 
-    // ──────────────────────────────────────
-    //  Data Usage Routes
-    // ──────────────────────────────────────
+    string subjectId = rest[0];
 
-    private void routeUsages(HTTPServerRequest req, HTTPServerResponse res,
-            string tenantId, string subjectId, string[] rest) {
-        // GET|POST /v1/tenants/{tid}/subjects/{sid}/usages
-        if (rest.length == 0) {
-            if (req.method == HTTPMethod.GET) {
-                res.writeJsonBody(_service.listUsages(tenantId, subjectId), 200);
-                return;
-            }
-            if (req.method == HTTPMethod.POST) {
-                Json body_ = parseBody(req);
-                res.writeJsonBody(_service.addUsage(tenantId, subjectId, body_), 201);
-                return;
-            }
-            respondError(res, "Method not allowed", 405);
-            return;
-        }
-
-        respondError(res, "Not found", 404);
+    // GET|PUT|DELETE /v1/tenants/{tid}/subjects/{sid}
+    if (rest.length == 1) {
+      if (req.method == HTTPMethod.GET) {
+        res.writeJsonBody(_service.getSubject(tenantId, subjectId), 200);
+        return;
+      }
+      if (req.method == HTTPMethod.PUT) {
+        Json body_ = parseBody(req);
+        res.writeJsonBody(_service.updateSubject(tenantId, subjectId, body_), 200);
+        return;
+      }
+      if (req.method == HTTPMethod.DELETE) {
+        res.writeJsonBody(_service.deleteSubject(tenantId, subjectId), 200);
+        return;
+      }
+      respondError(res, "Method not allowed", 405);
+      return;
     }
 
-    // ──────────────────────────────────────
-    //  Helpers
-    // ──────────────────────────────────────
-
-    private void validateAuth(HTTPServerRequest req) {
-        if (!_service.config.requireAuthToken)
-            return;
-        auto authHeader = req.headers.get("Authorization", "");
-        if (!authHeader.startsWith("Bearer "))
-            throw new PDMAuthorizationException("Missing bearer token");
-        auto token = authHeader[7 .. $];
-        if (token != _service.config.authToken)
-            throw new PDMAuthorizationException("Invalid bearer token");
+    // /v1/tenants/{tid}/subjects/{sid}/records...
+    if (rest.length >= 2 && rest[1] == "records") {
+      routeRecords(req, res, tenantId, subjectId, rest[2 .. $]);
+      return;
     }
 
-    private static string[] normalizedSegments(string path) {
-        import std.algorithm : filter;
-        import std.array : array;
-        return path.split("/").filter!(s => s.length > 0).array;
+    // GET /v1/tenants/{tid}/subjects/{sid}/report
+    if (rest.length == 2 && rest[1] == "report" && req.method == HTTPMethod.GET) {
+      res.writeJsonBody(_service.generateDataReport(tenantId, subjectId), 200);
+      return;
     }
 
-    private static Json parseBody(HTTPServerRequest req) {
-        try {
-            return req.readJson();
-        } catch (Exception) {
-            return Json.emptyObject;
-        }
+    // /v1/tenants/{tid}/subjects/{sid}/requests...
+    if (rest.length >= 2 && rest[1] == "requests") {
+      routeSubjectRequests(req, res, tenantId, subjectId, rest[2 .. $]);
+      return;
     }
 
-    private static void respondError(HTTPServerResponse res, string message, int code) {
-        Json j = Json.emptyObject;
-        j["error"] = message;
-        j["code"] = code;
-        res.writeJsonBody(j, code);
+    // GET /v1/tenants/{tid}/subjects/{sid}/notifications
+    if (rest.length == 2 && rest[1] == "notifications" && req.method == HTTPMethod.GET) {
+      res.writeJsonBody(_service.listNotifications(tenantId, subjectId), 200);
+      return;
     }
+
+    // POST /v1/tenants/{tid}/subjects/{sid}/notify
+    if (rest.length == 2 && rest[1] == "notify" && req.method == HTTPMethod.POST) {
+      Json body_ = parseBody(req);
+      res.writeJsonBody(_service.sendNotification(tenantId, subjectId, body_), 200);
+      return;
+    }
+
+    // POST /v1/tenants/{tid}/subjects/{sid}/send-report
+    if (rest.length == 2 && rest[1] == "send-report" && req.method == HTTPMethod.POST) {
+      res.writeJsonBody(_service.sendDataReport(tenantId, subjectId), 200);
+      return;
+    }
+
+    // /v1/tenants/{tid}/subjects/{sid}/usages...
+    if (rest.length >= 2 && rest[1] == "usages") {
+      routeUsages(req, res, tenantId, subjectId, rest[2 .. $]);
+      return;
+    }
+
+    respondError(res, "Not found", 404);
+  }
+
+  // ──────────────────────────────────────
+  //  Personal Data Record Routes
+  // ──────────────────────────────────────
+
+  private void routeRecords(HTTPServerRequest req, HTTPServerResponse res,
+    string tenantId, string subjectId, string[] rest) {
+    // GET|POST /v1/tenants/{tid}/subjects/{sid}/records
+    if (rest.length == 0) {
+      if (req.method == HTTPMethod.GET) {
+        res.writeJsonBody(_service.getSubjectRecords(tenantId, subjectId), 200);
+        return;
+      }
+      if (req.method == HTTPMethod.POST) {
+        Json body_ = parseBody(req);
+        res.writeJsonBody(_service.addRecord(tenantId, subjectId, body_), 201);
+        return;
+      }
+      respondError(res, "Method not allowed", 405);
+      return;
+    }
+
+    // DELETE /v1/tenants/{tid}/subjects/{sid}/records/{rid}
+    if (rest.length == 1 && req.method == HTTPMethod.DELETE) {
+      res.writeJsonBody(_service.deleteRecord(tenantId, rest[0]), 200);
+      return;
+    }
+
+    respondError(res, "Not found", 404);
+  }
+
+  // ──────────────────────────────────────
+  //  Subject Request Routes
+  // ──────────────────────────────────────
+
+  private void routeSubjectRequests(HTTPServerRequest req, HTTPServerResponse res,
+    string tenantId, string subjectId, string[] rest) {
+    // GET|POST /v1/tenants/{tid}/subjects/{sid}/requests
+    if (rest.length == 0) {
+      if (req.method == HTTPMethod.GET) {
+        res.writeJsonBody(_service.listRequestsBySubject(tenantId, subjectId), 200);
+        return;
+      }
+      if (req.method == HTTPMethod.POST) {
+        Json body_ = parseBody(req);
+        res.writeJsonBody(_service.createRequest(tenantId, subjectId, body_), 201);
+        return;
+      }
+      respondError(res, "Method not allowed", 405);
+      return;
+    }
+
+    respondError(res, "Not found", 404);
+  }
+
+  // ──────────────────────────────────────
+  //  Top-level Request Routes
+  // ──────────────────────────────────────
+
+  private void routeRequests(HTTPServerRequest req, HTTPServerResponse res,
+    string tenantId, string[] rest) {
+    // GET /v1/tenants/{tid}/requests
+    if (rest.length == 0 && req.method == HTTPMethod.GET) {
+      auto statusFilter = req.params.get("status", "");
+      if (statusFilter.length > 0)
+        res.writeJsonBody(_service.listRequestsByStatus(tenantId, statusFilter), 200);
+      else
+        res.writeJsonBody(_service.listRequests(tenantId), 200);
+      return;
+    }
+
+    if (rest.length < 1) {
+      respondError(res, "Not found", 404);
+      return;
+    }
+
+    string requestId = rest[0];
+
+    // GET /v1/tenants/{tid}/requests/{rid}
+    if (rest.length == 1 && req.method == HTTPMethod.GET) {
+      res.writeJsonBody(_service.getRequest(tenantId, requestId), 200);
+      return;
+    }
+
+    // POST /v1/tenants/{tid}/requests/{rid}/submit|process|complete|reject|cancel
+    if (rest.length == 2 && req.method == HTTPMethod.POST) {
+      switch (rest[1]) {
+      case "submit":
+        res.writeJsonBody(_service.submitRequest(tenantId, requestId), 200);
+        return;
+      case "process":
+        res.writeJsonBody(_service.processRequest(tenantId, requestId), 200);
+        return;
+      case "complete":
+        Json body_ = parseBody(req);
+        res.writeJsonBody(_service.completeRequest(tenantId, requestId, body_), 200);
+        return;
+      case "reject":
+        Json body2 = parseBody(req);
+        res.writeJsonBody(_service.rejectRequest(tenantId, requestId, body2), 200);
+        return;
+      case "cancel":
+        res.writeJsonBody(_service.cancelRequest(tenantId, requestId), 200);
+        return;
+      default:
+        break;
+      }
+    }
+
+    respondError(res, "Not found", 404);
+  }
+
+  // ──────────────────────────────────────
+  //  Data Usage Routes
+  // ──────────────────────────────────────
+
+  private void routeUsages(HTTPServerRequest req, HTTPServerResponse res,
+    string tenantId, string subjectId, string[] rest) {
+    // GET|POST /v1/tenants/{tid}/subjects/{sid}/usages
+    if (rest.length == 0) {
+      if (req.method == HTTPMethod.GET) {
+        res.writeJsonBody(_service.listUsages(tenantId, subjectId), 200);
+        return;
+      }
+      if (req.method == HTTPMethod.POST) {
+        Json body_ = parseBody(req);
+        res.writeJsonBody(_service.addUsage(tenantId, subjectId, body_), 201);
+        return;
+      }
+      respondError(res, "Method not allowed", 405);
+      return;
+    }
+
+    respondError(res, "Not found", 404);
+  }
+
+  // ──────────────────────────────────────
+  //  Helpers
+  // ──────────────────────────────────────
+
+  private void validateAuth(HTTPServerRequest req) {
+    if (!_service.config.requireAuthToken)
+      return;
+    auto authHeader = req.headers.get("Authorization", "");
+    if (!authHeader.startsWith("Bearer "))
+      throw new PDMAuthorizationException("Missing bearer token");
+    auto token = authHeader[7 .. $];
+    if (token != _service.config.authToken)
+      throw new PDMAuthorizationException("Invalid bearer token");
+  }
+
+  private static string[] normalizedSegments(string path) {
+    import std.algorithm : filter;
+    import std.array : array;
+
+    return path.split("/").filter!(s => s.length > 0).array;
+  }
+
+  private static Json parseBody(HTTPServerRequest req) {
+    try {
+      return req.readJson();
+    } catch (Exception) {
+      return Json.emptyObject;
+    }
+  }
+
+  private static void respondError(HTTPServerResponse res, string message, int code) {
+    Json j = Json.emptyObject;
+    j["error"] = message;
+    j["code"] = code;
+    res.writeJsonBody(j, code);
+  }
 }

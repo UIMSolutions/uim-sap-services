@@ -38,11 +38,3 @@ void main() {
   server.run();
 }
 
-private size_t readSize(string value, size_t fallback) {
-  try {
-    auto parsed = to!size_t(value);
-    return parsed > 0 ? parsed : fallback;
-  } catch (Exception) {
-    return fallback;
-  }
-}
