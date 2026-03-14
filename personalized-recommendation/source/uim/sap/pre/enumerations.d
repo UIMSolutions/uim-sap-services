@@ -34,7 +34,7 @@ enum PREModelStatus {
     training,
     ready,
     failed,
-    deprecated,
+    deprecated_,
 }
 
 /// Status of a catalog item
