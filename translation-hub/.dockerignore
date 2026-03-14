@@ -1,0 +1,11 @@
+build/
+.dub/
+*.o
+*.obj
+*.a
+*.so
+*.dll
+*.dylib
+*.exe
+.git
+.gitignore

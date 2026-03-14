@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: translation-hub
+  labels:
+    app: translation-hub
+spec:
+  type: ClusterIP
+  selector:
+    app: translation-hub
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080

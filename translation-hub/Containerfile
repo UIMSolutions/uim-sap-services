@@ -1,0 +1,25 @@
+# Podman-compatible build file
+# This mirrors Dockerfile so both docker and podman workflows are supported.
+FROM dlang2/dmd-ubuntu:2.109.1 AS build
+
+WORKDIR /app
+COPY dub.sdl dub.selections.json* ./
+COPY source ./source
+
+RUN dub build -b release
+
+FROM ubuntu:24.04
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends ca-certificates libssl3 \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /srv
+COPY --from=build /app/translation-hub /srv/translation-hub
+
+ENV PORT=8080 \
+    BIND_ADDRESS=0.0.0.0 \
+    SERVICE_NAME=translation-hub
+
+EXPOSE 8080
+USER nobody
+ENTRYPOINT ["/srv/translation-hub"]

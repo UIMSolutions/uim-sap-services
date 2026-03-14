@@ -1,0 +1,17 @@
+name "translation-hub"
+description "Kubernetes- and Podman-compatible Translation Hub service built with D and vibe.d"
+authors "UIMSolutions"
+license "Apache-2.0"
+
+targetType "executable"
+mainSourceFile "source/app.d"
+
+importPaths "source"
+
+dependency "vibe-d" version="~>0.10.2"
+
+lflags "-L-lssl" "-L-lcrypto"
+
+configuration "application" {
+  targetName "translation-hub"
+}

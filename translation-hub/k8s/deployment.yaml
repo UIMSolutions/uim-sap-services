@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: translation-hub
+  labels:
+    app: translation-hub
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: translation-hub
+  template:
+    metadata:
+      labels:
+        app: translation-hub
+    spec:
+      containers:
+      - name: translation-hub
+        image: translation-hub:local
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+          name: http
+        env:
+        - name: PORT
+          value: "8080"
+        - name: BIND_ADDRESS
+          value: "0.0.0.0"
+        - name: SERVICE_NAME
+          value: "translation-hub"
+        - name: SUPPORTED_LANGUAGES
+          value: "en,de,fr,es,it,pt,ja,ko,zh,ar,ru,pl,tr,nl"
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "1"
+            memory: "512Mi"
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: http
+          initialDelaySeconds: 3
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: http
+          initialDelaySeconds: 8
+          periodSeconds: 15
