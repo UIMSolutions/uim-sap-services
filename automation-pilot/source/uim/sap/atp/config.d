@@ -34,34 +34,40 @@ import uim.sap.atp.exceptions;
   * The validate() method checks for required fields and valid values, throwing an ATPConfigurationException if any issues are found.
   */
 class ATPConfig : SAPConfig {
-  mixin(SAPConfigTemplate!AgentryConfig);
+  mixin(SAPConfigTemplate!ATPConfig);
 
   override bool initialize(Json[string] initData = null) {
     if (!super.initialize(initData)) {
       return false;
     }
 
+    // Network configuration
+    basePath(initData.getString("basePath", "/api/automation-pilot"));
     host(initData.getString("host", "0.0.0.0"));
+    port(cast(ushort)initData.getInteger("port", 8097));
+
+    // Service metadata
     serviceName(initData.getString("serviceName", "uim-atp"));
     serviceVersion(initData.getString("serviceVersion", "1.0.0"));
+
+    // Authentication configuration
+    requireAuthToken(initData.getBoolean("requireAuthToken", false));
+    if (requireAuthToken) {
+      authToken(initData.getString("authToken", ""));
+    }
+
+    // Ai provider configuration
+    aiProvider(initData.getString("aiProvider", "mock-genai"));
 
     return true;
   }
 
-  ushort port = 8097;
-  string basePath = "/api/automation-pilot";
+  protected string _aiProvider;
+  string aiProvider() {
+    return _aiProvider;
+  }
 
-  string aiProvider = "mock-genai";
-
-  bool requireAuthToken = false;
-  string authToken;
-
-  string[string] customHeaders;
-
-  override void validate() const {
-    super.validate();
-
-    if (requireAuthToken && authToken.length == 0)
-      throw new ATPConfigurationException("Auth token required when token auth is enabled");
+  void aiProvider(string provider) {
+    _aiProvider = provider;
   }
 }
