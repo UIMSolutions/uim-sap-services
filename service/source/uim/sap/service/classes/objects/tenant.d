@@ -7,13 +7,7 @@ mixin(ShowModule!());
 @safe:
 
 class SAPTenant : SAPObject {
-  this() {
-    super();
-  }
-
-  this(Json[string] initData = null) {
-    super(initData);
-  }
+  mixin(SAPObjectTemplate!SAPTenant);
 
   override bool initialize(Json[string] initData = null) {
     if (!super.initialize(initData)) {

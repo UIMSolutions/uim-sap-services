@@ -1,14 +1,10 @@
 module uim.sap.mob.server;
 
-import std.array : split;
-import std.string : startsWith;
+import uim.sap.mob;
 
-import vibe.data.json : Json;
-import vibe.http.common : HTTPMethod;
-import vibe.http.server : HTTPServerRequest, HTTPServerResponse, HTTPServerSettings, listenHTTP;
+mixin(ShowModule!());
 
-import uim.sap.mob.exceptions;
-import uim.sap.mob.service;
+@safe:
 
 /**
  * HTTP server for SAP Mobile Services.
