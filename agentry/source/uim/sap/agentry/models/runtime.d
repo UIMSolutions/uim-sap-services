@@ -3,10 +3,10 @@ module uim.sap.agentry.models.runtime;
 class AgentryRuntimeInstance : SAPTenantObject {
   mixin(SAPObjectTemplate!AgentryRuntimeInstance);
 
-  string instanceId;
-  string appId;
+  UUID instanceId;
+  UUID appId;
   string targetEnvironment;
-  string deployedVersionId;
+  UUID deployedVersionId;
   string status = "running";
 
   override Json toJson() {

@@ -8,10 +8,10 @@ mixin(ShowModule!());
 
 
 struct BASWorkspace {
-  string tenantId;
-  string workspaceId;
+  UUID tenantId;
+  UUID workspaceId;
   string name;
-  string scenarioId;
+  UUID scenarioId;
   string region;
   string status;
   string accessUrl;

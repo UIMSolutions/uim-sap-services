@@ -1,9 +1,9 @@
 module uim.sap.atm.models.sessioncontext;
 
 struct ATMSessionContext {
-  string tenantId;
-  string userId;
-  string idpId;
+  UUID tenantId;
+  UUID userId;
+  UUID idpId;
   string issuer;
   string audience;
   string email;

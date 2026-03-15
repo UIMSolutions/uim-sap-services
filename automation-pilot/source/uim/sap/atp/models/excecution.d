@@ -7,9 +7,9 @@ mixin(ShowModule!());
 @safe:
 
 struct ATPExecution {
-    string tenantId;
-    string executionId;
-    string commandId;
+    UUID tenantId;
+    UUID executionId;
+    UUID commandId;
     string triggerType;
     string status;
     Json input;

@@ -7,8 +7,8 @@ mixin(ShowModule!());
 @safe:
 
 struct ATPBackup {
-    string tenantId;
-    string backupId;
+    UUID tenantId;
+    UUID backupId;
     string mode;
     Json content;
     SysTime createdAt;

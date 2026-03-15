@@ -44,11 +44,11 @@ mixin(ShowModule!());
   * The `name` field provides a human-readable identifier for the policy, which can be useful for administrators when managing multiple policies. The combination of `resourceType` and `instanceId` allows for fine-grained control over which resources the policy applies to, enabling scenarios such as allowing access to a specific application or database instance. The `allowedGroups` and `allowedUserTypes` fields enable targeting specific user segments for access control, enhancing the security and manageability of the authorization policies within the CIS module. 
   */
 struct CISAuthorizationPolicy {
-  string tenantId;
-  string policyId;
+  UUID tenantId;
+  UUID policyId;
   string name;
   string resourceType;
-  string instanceId;
+  UUID instanceId;
   Json allowedGroups;
   Json allowedUserTypes;
   SysTime updatedAt;

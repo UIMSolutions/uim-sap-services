@@ -1,10 +1,10 @@
 module uim.sap.alertnotification.models.subscription;
 
 struct AlertSubscription {
-  string tenantId;
-  string subscriptionId;
+  UUID tenantId;
+  UUID subscriptionId;
   string name;
-  string consumerId;
+  UUID consumerId;
   bool enabled;
   Json condition;
   Json actions;

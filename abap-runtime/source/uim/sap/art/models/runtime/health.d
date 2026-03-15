@@ -17,18 +17,21 @@ mixin(ShowModule!());
 
 
 
-struct ARTRuntimeHealth {
+struct ARTRuntimeHealth : SAPObject {
+  mixin(SAPObjectTemplate!ARTRuntimeHealth);
     bool ok;
     string runtimeName;
     string runtimeVersion;
     size_t registeredPrograms;
 
-    Json toJson() const {
-        Json payload = Json.emptyObject;
+    override Json toJson() const {
+        Json payload = super.toJson();
+
         payload["ok"] = ok;
         payload["runtimeName"] = runtimeName;
         payload["runtimeVersion"] = runtimeVersion;
         payload["registeredPrograms"] = cast(long)registeredPrograms;
+        
         return payload;
     }
 }

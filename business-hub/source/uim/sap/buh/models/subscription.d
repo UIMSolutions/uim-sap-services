@@ -5,8 +5,8 @@ mixin(ShowModule!());
 
 @safe:
 struct BUHSubscription {
-  string id;
-  string apiId;
+  UUID id;
+  UUID apiId;
   string applicationName;
   string plan;
   string status = "active";

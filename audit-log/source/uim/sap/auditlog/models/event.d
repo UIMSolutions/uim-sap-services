@@ -6,8 +6,8 @@ mixin(ShowModule!());
 @safe:
 
 struct AuditLogEvent {
-  string tenantId;
-  string eventId;
+  UUID tenantId;
+  UUID eventId;
   string eventType;
   string severity;
   string category;

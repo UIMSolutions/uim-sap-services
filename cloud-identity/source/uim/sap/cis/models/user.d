@@ -47,8 +47,8 @@ mixin(ShowModule!());
   * by the API consumers. The `groups` field allows for representing the user's group memberships, while the `attributes` field provides flexibility for storing additional custom information about the user that may be relevant for provisioning, notifications, or risk policies within the CIS module. The `createdAt` and `updatedAt` fields are essential for tracking the lifecycle of the user object and ensuring that the most current information is being used in any operations involving the user. 
  */
 struct CISUser {
-  string tenantId;
-  string userId;
+  UUID tenantId;
+  UUID userId;
   string userName;
   string email;
   string userType = "employee";

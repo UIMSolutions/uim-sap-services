@@ -7,12 +7,12 @@ mixin(ShowModule!());
 @safe:
 
 struct ATPCatalog {
-  string tenantId;
-  string catalogId;
+  UUID tenantId;
+  UUID catalogId;
   string name;
   string scenario;
   bool predefined;
-  string[] commandIds;
+  UUID[] commandIds;
   SysTime createdAt;
   SysTime updatedAt;
 

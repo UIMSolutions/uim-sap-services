@@ -1,8 +1,8 @@
 module uim.sap.alertnotification.models.event;
 
 struct AlertEvent {
-  string tenantId;
-  string alertId;
+  UUID tenantId;
+  UUID alertId;
   string eventType;
   string category;
   string severity;

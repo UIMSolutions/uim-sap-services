@@ -6,14 +6,11 @@ mixin(ShowModule!());
 
 @safe:
 
-
-
-
 struct AlertDelivery {
-  string tenantId;
-  string deliveryId;
-  string alertId;
-  string subscriptionId;
+  UUID tenantId;
+  UUID deliveryId;
+  UUID alertId;
+  UUID subscriptionId;
   string actionType;
   string target;
   string status;

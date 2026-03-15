@@ -1,8 +1,9 @@
 module uim.sap.agentry.models.backend;
 
-struct AgentryBackendSystem {
-  string tenantId;
-  string backendId;
+class AgentryBackendSystem : SAPTenantObject {
+  mixin(SAPObjectTemplate!AgentryBackendSystem);
+
+  UUID backendId;
   string systemType;
   string endpoint;
   string authMode;

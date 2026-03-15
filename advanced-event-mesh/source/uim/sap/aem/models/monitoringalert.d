@@ -50,7 +50,7 @@ mixin(ShowModule!());
 class AEMMonitoringAlert : SAPTenantObject {
   mixin(SAPObjectTemplate!AEMMonitoringAlert);
 
-  string alertId;
+  UUID alertId;
   string metric;
   double currentValue;
   double threshold;

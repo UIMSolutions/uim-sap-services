@@ -7,7 +7,7 @@ mixin(ShowModule!());
 @safe:
 
 struct ATPSecretInput {
-  string tenantId;
+  UUID tenantId;
   string key;
   string maskedValue;
   string purpose;

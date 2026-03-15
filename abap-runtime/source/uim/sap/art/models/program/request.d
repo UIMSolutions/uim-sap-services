@@ -18,7 +18,9 @@ mixin(ShowModule!());
   * @property parameters A JSON object containing any parameters to pass to the program.
   * @property correlationId An optional correlation ID for tracing the request across systems.
   */
-struct ARTProgramRequest {
+class ARTProgramRequest : SAPObject {
+  mixin(SAPObjectTemplate!ARTProgramRequest);
+
   string program;
   string user;
   string client;
@@ -58,12 +60,14 @@ struct ARTProgramRequest {
 
   override Json toJson()  {
     Json info = super.toJson;
+
     payload["program"] = program;
     payload["user"] = user;
     payload["client"] = client;
     payload["language"] = language;
     payload["parameters"] = parameters;
     payload["correlationId"] = correlationId;
+    
     return payload;
   }
 }

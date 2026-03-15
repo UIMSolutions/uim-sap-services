@@ -1,12 +1,12 @@
 module uim.sap.agentry.models.device;
 
 struct AgentryDevice {
-  string tenantId;
-  string deviceId;
-  string appId;
-  string userId;
+  UUID tenantId;
+  UUID deviceId;
+  UUID appId;
+  UUID userId;
   string platform;
-  string appVersionId;
+  UUID appVersionId;
   SysTime lastSyncAt;
 
   Json toJson() const {

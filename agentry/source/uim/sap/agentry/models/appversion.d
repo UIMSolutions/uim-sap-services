@@ -1,9 +1,9 @@
 module uim.sap.agentry.models.appversion;
 
 struct AgentryAppVersion {
-  string tenantId;
-  string appId;
-  string versionId;
+  UUID tenantId;
+  UUID appId;
+  UUID versionId;
   string versionLabel;
   string changeLog;
   string buildStatus = "built";
