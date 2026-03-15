@@ -6,8 +6,13 @@ mixin(ShowModule!());
 
 @safe:
 
-class ATPConfigurationException : ATPException {
-  this(string msg) {
-    super(msg);
+class ATPConfigurationException : SAPConfigurationException {
+  this(string message) {
+    super("(ATP) " ~ message);
   }
+}
+///
+unittest {
+  ATPConfigurationException ex = new ATPConfigurationException("Test message");
+  assert(ex.message == "Configuration error: (ATP) Test message");
 }

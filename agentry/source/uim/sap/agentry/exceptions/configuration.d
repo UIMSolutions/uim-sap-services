@@ -23,7 +23,7 @@ mixin(ShowModule!());
   * This exception should be used to indicate issues that prevent the Agentry server from starting or functioning correctly due to misconfiguration.  
   * It can be caught and handled to provide feedback to the user or to log configuration issues for troubleshooting.
   */  
-class AgentryConfigurationException : AgentryException {
+class AGTConfigurationException : AgentryException {
     this(string message) {
         super("Configuration error: " ~ message);
     }

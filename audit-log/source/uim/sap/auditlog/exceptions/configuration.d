@@ -9,8 +9,13 @@ import uim.sap.auditlog;
 mixin(ShowModule!());
 
 @safe:
-class AuditLogConfigurationException : AuditLogException {
-    this(string message) {
-        super("Configuration error: " ~ message);
-    }
+class AuditLogConfigurationException : SAPConfigurationException {
+  this(string message) {
+    super("(ADL) " ~ message);
+  }
+}
+///
+unittest {
+  AuditLogConfigurationException ex = new AuditLogConfigurationException("Test message");
+  assert(ex.message == "Configuration error: (ADL) Test message");
 }

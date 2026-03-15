@@ -26,7 +26,7 @@ mixin(ShowModule!());
   *
   * Note: This implementation is designed for demonstration purposes and may need further enhancements for production use, such as authentication, authorization, and more robust error handling.
   */
-class AgentryService : SAPService {
+class AGTService : SAPService {
   mixin(SAPServiceTemplate!AgentryService);
 
   private AgentryStore _store;

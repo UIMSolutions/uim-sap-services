@@ -1,6 +1,6 @@
 module uim.sap.agentry.models.runtime;
 
-class AgentryRuntimeInstance : SAPTenantObject {
+class AGTRuntimeInstance : SAPTenantObject {
   mixin(SAPObjectTemplate!AgentryRuntimeInstance);
 
   UUID instanceId;

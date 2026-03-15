@@ -33,7 +33,7 @@ mixin(ShowModule!());
   *
   * Note: The `resource` parameter in the constructor should be a descriptive name of the type of resource that was not found (e.g., "User", "Configuration", "Data Record"), while the `identifier` parameter should provide specific details about the missing resource (e.g., the ID or name that was used to search for it).
   */
-class AgentryNotFoundException : AgentryException {
+class AGTNotFoundException : AgentryException {
     this(string resource, string identifier) {
         super(resource ~ " not found: " ~ identifier);
     }

@@ -34,7 +34,7 @@ mixin(ShowModule!());
   * - POST /v1/tenants/{tenantId}/backend-systems: Create or update a backend system for a tenant
   * - GET /v1/tenants/{tenantId}/operations/dashboard: Get operations dashboard data for a tenant
  */
-class AgentryServer {
+class AGTServer {
   private AgentryService _service;
 
   this(AgentryService service) {

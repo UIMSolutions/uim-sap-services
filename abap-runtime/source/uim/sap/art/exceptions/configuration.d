@@ -12,8 +12,22 @@ mixin(ShowModule!());
 @safe:
 
 
-class ARTRuntimeConfigurationException : ARTRuntimeException {
-    this(string msg, string file = __FILE__, size_t line = __LINE__, Throwable next = null) {
-        super(msg, file, line, next);
-    }
+class ARTRuntimeConfigurationException : SAPConfigurationException {
+  this(string message) {
+    super("(ART) " ~ message);
+  }
+
+  this(string message, string file = __FILE__, size_t line = __LINE__, Throwable next = null) {
+    super("(ART) " ~ message, file, line, next);
+  }
+}
+///
+unittest {
+  ARTRuntimeConfigurationException ex1 = new ARTRuntimeConfigurationException("Test message");
+  assert(ex1.message == "Configuration error: (ART) Test message");
+
+  ARTRuntimeConfigurationException ex2 = new ARTRuntimeConfigurationException("Test message", "testfile.d", 123);
+  assert(ex2.message == "Configuration error: (ART) Test message");
+  assert(ex2.file == "testfile.d");
+  assert(ex2.line == 123);
 }

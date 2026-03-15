@@ -7,8 +7,13 @@ mixin(ShowModule!());
 @safe:
 
 
-class BASConfigurationException : BASException {
-    this(string message) {
-        super(message);
-    }
+class BASConfigurationException : SAPConfigurationException {
+  this(string message) {
+    super("(ADL) " ~ message);
+  }
+}
+///
+unittest {
+  BASConfigurationException ex = new BASConfigurationException("Test message");
+  assert(ex.message == "Configuration error: (BAS) Test message");
 }

@@ -12,7 +12,7 @@ import uim.sap.agentry;
 mixin(ShowModule!());
 
 @safe:
-class AgentryStore : SAPStore {
+class AGTStore : SAPStore {
     private AgentryMobileApp[string] _apps;
     private AgentryAppVersion[][string] _versionsByApp;
     private AgentryTestRun[][string] _testRunsByApp;

@@ -8,8 +8,13 @@ module uim.sap.aas.exceptions.configuration;
 import uim.sap.aas;
 @safe:
 
-class AASConfigurationException : AASException {
-    this(string msg, string file = __FILE__, size_t line = __LINE__, Throwable next = null) {
-        super(msg, file, line, next);
-    }
+class AASConfigurationException : SAPConfigurationException {
+  this(string message) {
+    super("(AAS) " ~ message);
+  }
+}
+///
+unittest {
+  AASConfigurationException ex = new AASConfigurationException("Test message");
+  assert(ex.message == "Configuration error: (AAS) Test message");
 }
