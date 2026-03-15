@@ -24,14 +24,14 @@ struct ARTRuntimeHealth : SAPObject {
     string runtimeVersion;
     size_t registeredPrograms;
 
-    override Json toJson() const {
+    override override Json toJson()  {
         Json payload = super.toJson();
 
         payload["ok"] = ok;
         payload["runtimeName"] = runtimeName;
         payload["runtimeVersion"] = runtimeVersion;
         payload["registeredPrograms"] = cast(long)registeredPrograms;
-        
+
         return payload;
     }
 }

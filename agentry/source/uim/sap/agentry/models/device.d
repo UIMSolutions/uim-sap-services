@@ -9,7 +9,7 @@ struct AgentryDevice {
   UUID appVersionId;
   SysTime lastSyncAt;
 
-  Json toJson() const {
+  override Json toJson()  {
     Json result = Json.emptyObject;
     result["tenant_id"] = tenantId;
     result["device_id"] = deviceId;

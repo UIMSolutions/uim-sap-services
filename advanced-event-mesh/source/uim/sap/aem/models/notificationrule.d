@@ -22,7 +22,7 @@ class AEMNotificationRule : SAPTenantObject {
     bool enabled = true;
     string channel = "email";
 
-    override Json toJson() const {
+    override override Json toJson()  {
         Json resultJson = super.toJson();
 
         resultJson["rule_id"] = ruleId;

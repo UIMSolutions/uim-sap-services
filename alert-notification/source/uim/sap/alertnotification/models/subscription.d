@@ -11,7 +11,7 @@ struct AlertSubscription {
   SysTime createdAt;
   SysTime updatedAt;
 
-  Json toJson() const {
+  override Json toJson()  {
     Json result = Json.emptyObject;
     result["tenant_id"] = tenantId;
     result["subscription_id"] = subscriptionId;

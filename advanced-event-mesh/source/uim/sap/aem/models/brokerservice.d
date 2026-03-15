@@ -23,7 +23,7 @@ class AEMBrokerService : SAPTenantObject {
   long connectedClients;
   long eventsPublished;
 
-  override Json toJson() const {
+  override override Json toJson()  {
     Json payload = super.toJson();
     payload["broker_service_id"] = brokerServiceId.toString();
     payload["name"] = name;

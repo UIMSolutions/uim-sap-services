@@ -48,7 +48,7 @@ class AEMEventMesh : SAPTenantObject {
     string name;
     string[] topics;
 
-    override Json toJson() const {
+    override override Json toJson()  {
         Json payload = super.toJson();
 
         Json topicsJson = Json.emptyArray;

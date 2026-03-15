@@ -13,7 +13,7 @@ class AlertEvent : SAPTenantObject {
   Json tags;
   Json payload = Json.emptyObject;
 
-  Json toJson() const {
+  override Json toJson()  {
     Json result = Json.emptyObject;
     result["tenant_id"] = tenantId;
     result["alert_id"] = alertId;

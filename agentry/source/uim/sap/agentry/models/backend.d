@@ -10,7 +10,7 @@ class AgentryBackendSystem : SAPTenantObject {
   bool enabled = true;
   SysTime updatedAt;
 
-  Json toJson() const {
+  override Json toJson()  {
     Json result = Json.emptyObject;
     result["tenant_id"] = tenantId;
     result["backend_id"] = backendId;

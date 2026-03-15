@@ -21,7 +21,7 @@ class AEMTopicEvent : SAPTenantObject {
   Json payload = Json.emptyObject;
   SysTime publishedAt;
 
-  override Json toJson() const {
+  override override Json toJson()  {
     Json resultJson = super.toJson();
 
     resultJson["mesh_id"] = meshId.toJson;

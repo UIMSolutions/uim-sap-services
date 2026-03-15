@@ -58,7 +58,7 @@ class AEMMonitoringAlert : SAPTenantObject {
   string message;
   bool acknowledged;
 
-  override Json toJson() const {
+  override override Json toJson()  {
     Json resultJson = super.toJson();
     resultJson["alert_id"] = alertId;
     resultJson["metric"] = metric;

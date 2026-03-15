@@ -22,7 +22,7 @@ struct AASScalingPolicy {
     uint cooldownSeconds = 60;
     SysTime createdAt;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json payload = Json.emptyObject;
         payload["id"] = id.toJson;
         payload["app_id"] = appId.toJson;

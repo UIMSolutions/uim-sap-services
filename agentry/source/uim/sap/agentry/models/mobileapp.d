@@ -15,7 +15,7 @@ class AgentryMobileApp : SAPTenantObject {
   string ownerTeam;
   string lifecycle = "development";
 
-  override Json toJson() const {
+  override override Json toJson()  {
     Json result = super.toJson();
     result["app_id"] = appId.toJson;
     result["name"] = name;

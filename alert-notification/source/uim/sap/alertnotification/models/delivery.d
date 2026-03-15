@@ -17,7 +17,7 @@ struct AlertDelivery {
   string reason;
   SysTime createdAt;
 
-  Json toJson() const {
+  override Json toJson()  {
     Json result = Json.emptyObject;
     result["tenant_id"] = tenantId;
     result["delivery_id"] = deliveryId;

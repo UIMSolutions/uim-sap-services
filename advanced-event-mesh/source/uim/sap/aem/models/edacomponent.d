@@ -55,7 +55,7 @@ FromJson` function ensures that the `tenantId` is set and that a unique `compone
   string owner;
   string lifecycle = "active";
 
-  override Json toJson() const {
+  override override Json toJson()  {
     Json resultJson = super.toJson();
     resultJson["component_id"] = componentId;
     resultJson["name"] = name;

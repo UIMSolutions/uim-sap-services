@@ -18,7 +18,7 @@ struct AASScaleDecision {
     double desiredHourlyCost;
     SysTime evaluatedAt;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json payload = Json.emptyObject;
         payload["app_id"] = appId;
         payload["current_instances"] = cast(long)currentInstances;

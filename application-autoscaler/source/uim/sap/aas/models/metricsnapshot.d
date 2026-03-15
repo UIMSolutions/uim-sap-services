@@ -14,7 +14,7 @@ struct AASMetricSnapshot {
     double throughputRps;
     double[string] custom;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json payload = Json.emptyObject;
         payload["cpu_percent"] = cpuPercent;
         payload["memory_percent"] = memoryPercent;

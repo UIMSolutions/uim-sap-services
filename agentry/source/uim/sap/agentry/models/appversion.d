@@ -9,7 +9,7 @@ struct AgentryAppVersion {
   string buildStatus = "built";
   SysTime createdAt;
 
-  Json toJson() const {
+  override Json toJson()  {
     Json result = Json.emptyObject;
     result["tenant_id"] = tenantId;
     result["app_id"] = appId;
