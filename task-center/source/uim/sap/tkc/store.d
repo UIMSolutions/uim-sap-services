@@ -184,7 +184,7 @@ class TKCStore : SAPStore {
 
     if ("action_history" in item && item["action_history"].isArray) {
       foreach (entry; item["action_history"]) {
-        if (entry.type != Json.Type.object)
+        if (!entry.isObject)
           continue;
         TKCTaskAction action;
         action.action = readString(entry, "action", false, "");
@@ -199,7 +199,7 @@ class TKCStore : SAPStore {
   }
 
   private string readString(Json item, string key, bool required, string fallback = "") {
-    if (!(key in item) || item[key].type == Json.Type.null_) {
+    if (!(key in item) || item[key].isNull) {
       if (required)
         throw new TKCStoreException(key ~ " is required in cache item");
       return fallback;
@@ -213,7 +213,7 @@ class TKCStore : SAPStore {
   }
 
   private bool readBool(Json item, string key, bool fallback) {
-    if (!(key in item) || item[key].type == Json.Type.null_)
+    if (!(key in item) || item[key].isNull)
       return fallback;
     if (!item[key].isBoolean)
       throw new TKCStoreException(key ~ " must be boolean in cache item");
@@ -229,7 +229,7 @@ class TKCStore : SAPStore {
 
   private string[] readStringArray(Json item, string key) {
     string[] values;
-    if (!(key in item) || item[key].type == Json.Type.null_)
+    if (!(key in item) || item[key].isNull)
       return values;
     if (!item[key].isArray)
       throw new TKCStoreException(key ~ " must be an array in cache item");
@@ -241,7 +241,7 @@ class TKCStore : SAPStore {
   }
 
   private Json readObject(Json item, string key) const {
-    if (!(key in item) || item[key].type == Json.Type.null_)
+    if (!(key in item) || item[key].isNull)
       return Json.emptyObject;
     if (!item[key].isObject)
       throw new TKCStoreException(key ~ " must be an object in cache item");

@@ -171,7 +171,7 @@ class SMGService : SAPService {
   }
 
   private string readOptional(Json data, string key, string fallback) const {
-    if (!(key in data) || data[key].type == Json.Type.null_) {
+    if (!(key in data) || data[key].isNull) {
       return fallback;
     }
 
@@ -183,7 +183,7 @@ class SMGService : SAPService {
   }
 
   private bool readrequest.getBoolean((Json data, string key, bool fallback) const {
-    if (!(key in data) || data[key].type == Json.Type.null_) {
+    if (!(key in data) || data[key].isNull) {
       return fallback;
     }
 
@@ -196,7 +196,7 @@ class SMGService : SAPService {
 
   private string[] readStringArray(Json data, string key) const {
     string[] values;
-    if (!(key in data) || data[key].type == Json.Type.null_) {
+    if (!(key in data) || data[key].isNull) {
       return values;
     }
 

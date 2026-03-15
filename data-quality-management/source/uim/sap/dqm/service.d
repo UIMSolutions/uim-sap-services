@@ -24,7 +24,7 @@ class DQMService : SAPService {
   }
 
   Json cleanseAddress(Json request) {
-    if (!("address" in request) || request["address"].type != Json.Type.object) {
+    if (!("address" in request) || !request["address"].isObject) {
       throw new DQMValidationException("address object is required");
     }
 

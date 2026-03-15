@@ -328,7 +328,7 @@ class BASService : SAPService {
   }
 
   private string readOptional(Json data, string key, string fallback) const {
-    if (!(key in data) || data[key].type == Json.Type.null_)
+    if (!(key in data) || data[key].isNull)
       return fallback;
     if (!data[key].isString)
       throw new BASValidationException(key ~ " must be a string");
@@ -336,7 +336,7 @@ class BASService : SAPService {
   }
 
   private bool readrequest.getBoolean((Json data, string key, bool fallback) const {
-    if (!(key in data) || data[key].type == Json.Type.null_)
+    if (!(key in data) || data[key].isNull)
       return fallback;
     if (!data[key].isBoolean)
       throw new BASValidationException(key ~ " must be a boolean");
@@ -344,7 +344,7 @@ class BASService : SAPService {
   }
 
   private Json readObject(Json data, string key) const {
-    if (!(key in data) || data[key].type == Json.Type.null_)
+    if (!(key in data) || data[key].isNull)
       return Json.emptyObject;
     if (!data[key].isObject)
       throw new BASValidationException(key ~ " must be an object");

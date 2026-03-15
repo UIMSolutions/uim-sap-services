@@ -233,7 +233,7 @@ class MONService : SAPService {
   }
 
   Json overrideDefaultThreshold(string checkName, Json request) {
-    if (!("thresholds" in request) || request["thresholds"].type != Json.Type.object) {
+    if (!("thresholds" in request) || !request["thresholds"].isObject) {
       throw new MONValidationException("thresholds (object) is required");
     }
 

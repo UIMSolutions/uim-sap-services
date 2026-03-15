@@ -560,7 +560,7 @@ class RMSStore : SAPStore {
     }
 
     foreach (item; request["members"]) {
-      if (item.type != Json.Type.object)
+      if (!item.isObject)
         continue;
 
       TeamMember member;
@@ -677,7 +677,7 @@ class RMSStore : SAPStore {
 
       if ("team_types" in payload && payload["team_types"].isArray) {
         foreach (item; payload["team_types"]) {
-          if (item.type != Json.Type.object)
+          if (!item.isObject)
             continue;
           TeamTypeDef def;
           def.code = getString(item, "code", "");
@@ -690,7 +690,7 @@ class RMSStore : SAPStore {
 
       if ("functions" in payload && payload["functions"].isArray) {
         foreach (item; payload["functions"]) {
-          if (item.type != Json.Type.object)
+          if (!item.isObject)
             continue;
           FunctionDef def;
           def.code = getString(item, "code", "");
@@ -703,7 +703,7 @@ class RMSStore : SAPStore {
 
       if ("teams" in payload && payload["teams"].isArray) {
         foreach (item; payload["teams"]) {
-          if (item.type != Json.Type.object)
+          if (!item.isObject)
             continue;
           Team team;
           team.id = getString(item, "id", "");

@@ -134,7 +134,7 @@ class SDIService : SAPService {
 
     Json payload = Json.emptyObject;
     payload["site"] = site.toJson();
-    payload["export_bundle"] = site.importBundle.type == Json.Type.null_ ? Json.emptyObject
+    payload["export_bundle"] = site.importBundle.isNull ? Json.emptyObject
       : site.importBundle;
     payload["exported_at"] = Clock.currTime().toISOExtString();
     return payload;
@@ -242,7 +242,7 @@ class SDIService : SAPService {
   }
 
   private string readOptional(Json data, string key, string fallback) const {
-    if (!(key in data) || data[key].type == Json.Type.null_)
+    if (!(key in data) || data[key].isNull)
       return fallback;
 
     if (data[key].type != Json.Type.string)
@@ -252,7 +252,7 @@ class SDIService : SAPService {
   }
 
   private bool readrequest.getBoolean((Json data, string key, bool fallback) const {
-    if (!(key in data) || data[key].type == Json.Type.null_)
+    if (!(key in data) || data[key].isNull)
       return fallback;
     if (data[key].type != Json.Type.bool_)
       throw new SDIValidationException(key ~ " must be a boolean");
@@ -262,7 +262,7 @@ class SDIService : SAPService {
 
   private string[] readStringArray(Json data, string key) const {
     string[] values;
-    if (!(key in data) || data[key].type == Json.Type.null_)
+    if (!(key in data) || data[key].isNull)
       return values;
     if (!data[key].isArray)
       throw new SDIValidationException(key ~ " must be an array");
@@ -277,11 +277,11 @@ class SDIService : SAPService {
   }
 
   private SDISiteSettings settingsFromJson(Json data) const {
-    if (!("settings" in data) || data["settings"].type == Json.Type.null_) {
+    if (!("settings" in data) || data["settings"].isNull) {
       SDISiteSettings defaults;
       return defaults;
     }
-    if (data["settings"].type != Json.Type.object)
+    if (!data["settings"].isObject)
       throw new SDIValidationException("settings must be an object");
     return settingsFromObject(data["settings"]);
   }

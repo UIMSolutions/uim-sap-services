@@ -87,7 +87,7 @@ class CPSService : SAPService {
     Json entries = Json.emptyArray;
     foreach (site; _store.listSites(tenantId)) {
       foreach (app; site.apps.toArray) {
-        if (app.type != Json.Type.object)
+        if (!app.isObject)
           continue;
         string requiredRole;
         if ("required_role" in app && app["required_role"].isString)

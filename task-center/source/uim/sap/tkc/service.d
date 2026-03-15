@@ -75,7 +75,7 @@ class TKCService : SAPService {
     Json savedTasks = Json.emptyArray;
 
     foreach (entry; data["tasks"]) {
-      if (entry.type != Json.Type.object)
+      if (!entry.isObject)
         throw new TKCValidationException("tasks must contain objects");
 
       TKCTask task;
@@ -382,7 +382,7 @@ class TKCService : SAPService {
   }
 
   private string readOptional(Json data, string key, string fallback) const {
-    if (!(key in data) || data[key].type == Json.Type.null_) {
+    if (!(key in data) || data[key].isNull) {
       return fallback;
     }
 
@@ -392,7 +392,7 @@ class TKCService : SAPService {
   }
 
   private bool readrequest.getBoolean((Json data, string key, bool fallback) const {
-    if (!(key in data) || data[key].type == Json.Type.null_)
+    if (!(key in data) || data[key].isNull)
       return fallback;
     if (data[key].type != Json.Type.bool_) {
       throw new TKCValidationException(key ~ " must be a boolean");
@@ -402,7 +402,7 @@ class TKCService : SAPService {
 
   private string[] readStringArray(Json data, string key) const {
     string[] values;
-    if (!(key in data) || data[key].type == Json.Type.null_)
+    if (!(key in data) || data[key].isNull)
       return values;
     if (!data[key].isArray) {
       throw new TKCValidationException(key ~ " must be an array");
@@ -416,9 +416,9 @@ class TKCService : SAPService {
   }
 
   private Json readObject(Json data, string key) const {
-    if (!(key in data) || data[key].type == Json.Type.null_)
+    if (!(key in data) || data[key].isNull)
       return Json.emptyObject;
-    if (data[key].type != Json.Type.object) {
+    if (!data[key].isObject) {
       throw new TKCValidationException(key ~ " must be an object");
     }
     return data[key];

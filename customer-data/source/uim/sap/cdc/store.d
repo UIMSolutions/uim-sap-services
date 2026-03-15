@@ -328,7 +328,7 @@ class CDCStore : SAPStore {
   }
 
   private string readString(Json item, string key, bool required, string fallback = "") {
-    if (!(key in item) || item[key].type == Json.Type.null_) {
+    if (!(key in item) || item[key].isNull) {
       if (required) throw new CDCStoreException(key ~ " is required in cache item");
       return fallback;
     }
@@ -343,7 +343,7 @@ class CDCStore : SAPStore {
   }
 
   private bool readBool(Json item, string key, bool fallback) {
-    if (!(key in item) || item[key].type == Json.Type.null_) return fallback;
+    if (!(key in item) || item[key].isNull) return fallback;
     if (item[key].type != Json.Type.bool_) {
       throw new CDCStoreException(key ~ " must be boolean in cache item");
     }
@@ -351,7 +351,7 @@ class CDCStore : SAPStore {
   }
 
   private long readLong(Json item, string key, long fallback) {
-    if (!(key in item) || item[key].type == Json.Type.null_) return fallback;
+    if (!(key in item) || item[key].isNull) return fallback;
     if (item[key].type != Json.Type.int_) {
       throw new CDCStoreException(key ~ " must be integer in cache item");
     }

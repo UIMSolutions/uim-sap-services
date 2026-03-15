@@ -259,7 +259,7 @@ class AlertNotificationService : SAPService {
       }
 
       foreach (actionJson; sub.actions.toArray) {
-        if (actionJson.type != Json.Type.object) {
+        if (!actionJson.isObject) {
           continue;
         }
 

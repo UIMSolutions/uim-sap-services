@@ -163,7 +163,7 @@ class DPIService : SAPService {
     if (!("record_id" in request) || request["record_id"].type != Json.Type.string) {
       throw new DPIValidationException("record_id is required");
     }
-    if (!("payload" in request) || request["payload"].type != Json.Type.object) {
+    if (!("payload" in request) || !request["payload"].isObject) {
       throw new DPIValidationException("payload object is required");
     }
 

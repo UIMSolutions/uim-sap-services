@@ -64,13 +64,14 @@ class ATPService : SAPService {
     validateTenant(tenantId);
     auto now = Clock.currTime();
 
-    ATPCatalog catalog;
+    ATPCatalog catalog = new ATPCatalog(data);
+
     catalog.tenantId = tenantId;
-    catalog.catalogId = readRequired(body, "catalog_id");
-    catalog.name = readRequired(body, "name");
-    catalog.scenario = readOptional(body, "scenario", "custom");
-    catalog.predefined = readrequest.getBoolean((body, "predefined", false);
-    catalog.commandIds = readStringArray(body, "command_ids");
+    catalog.catalogId = readRequired(data, "catalog_id");
+    catalog.name = readRequired(data, "name");
+    catalog.scenario = readOptional(data, "scenario", "custom");
+    catalog.predefined = data.getBoolean("predefined", false);
+    catalog.commandIds = readStringArray(data, "command_ids");
     catalog.createdAt = now;
     catalog.updatedAt = now;
 
@@ -97,16 +98,16 @@ class ATPService : SAPService {
       throw new ATPNotFoundException("Catalog not found");
 
     auto now = Clock.currTime();
-    ATPCommand command;
+    ATPCommand command = new ATPCommand(data);
     command.tenantId = tenantId;
-    command.commandId = readRequired(body, "command_id");
+    command.commandId = readRequired(data, "command_id");
     command.catalogId = catalogId;
-    command.name = readRequired(body, "name");
-    command.description = readOptional(body, "description", "");
-    command.commandType = readOptional(body, "command_type", "script");
-    command.steps = readStringArray(body, "steps");
-    command.allowPrivateEnvironment = readrequest.getBoolean((body, "allow_private_environment", false);
-    command.defaults = readObject(body, "defaults");
+    command.name = readRequired(data, "name");
+    command.description = readOptional(data, "description", "");
+    command.commandType = readOptional(data, "command_type", "script");
+    command.steps = readStringArray(data, "steps");
+    command.allowPrivateEnvironment = data.getBoolean("allow_private_environment", false);
+    command.defaults = readObject(data, "defaults");
     command.createdAt = now;
     command.updatedAt = now;
 
@@ -126,7 +127,7 @@ class ATPService : SAPService {
 
   Json runPredefinedCommand(string tenantId, Json data) {
     validateTenant(tenantId);
-    auto commandId = readRequired(body, "command_id");
+    auto commandId = readRequired(data, "command_id");
     auto command = requireCommand(tenantId, commandId);
 
     auto now = Clock.currTime();
@@ -134,9 +135,9 @@ class ATPService : SAPService {
     execution.tenantId = tenantId;
     execution.executionId = "exec-" ~ to!string(now.stdTime);
     execution.commandId = commandId;
-    execution.triggerType = readOptional(body, "trigger_type", "manual");
+    execution.triggerType = readOptional(data, "trigger_type", "manual");
     execution.status = "SUCCESS";
-    execution.input = readObject(body, "input");
+    execution.input = readObject(data, "input");
     execution.result = Json.emptyObject;
     execution.result["message"] = "Command executed";
     execution.result["steps_executed"] = toJsonArray(command.steps);
@@ -167,10 +168,10 @@ class ATPService : SAPService {
     validateTenant(tenantId);
     auto now = Clock.currTime();
 
-    ATPBackup backup;
+    ATPBackup backup = new ATPBackup(data);
     backup.tenantId = tenantId;
-    backup.backupId = readOptional(body, "backup_id", "backup-" ~ to!string(now.stdTime));
-    backup.mode = readOptional(body, "mode", "on-demand");
+    backup.backupId = readOptional(data, "backup_id", "backup-" ~ to!string(now.stdTime));
+    backup.mode = readOptional(data, "mode", "on-demand");
     backup.content = Json.emptyObject;
     backup.content["catalogs"] = toJsonArray(_store.listCatalogs(tenantId));
     backup.content["commands"] = toJsonArray(_store.listCommands(tenantId));
@@ -186,7 +187,7 @@ class ATPService : SAPService {
 
   Json restoreContent(string tenantId, Json data) {
     validateTenant(tenantId);
-    auto backupId = readRequired(body, "backup_id");
+    auto backupId = readRequired(data, "backup_id");
     auto backup = _store.getBackup(tenantId, backupId);
     if (backup.isNull)
       throw new ATPNotFoundException("Backup not found");
@@ -217,10 +218,10 @@ class ATPService : SAPService {
 
     ATPSecretInput input;
     input.tenantId = tenantId;
-    input.key = readRequired(body, "key");
-    auto value = readRequired(body, "value");
+    input.key = readRequired(data, "key");
+    auto value = readRequired(data, "value");
     input.maskedValue = maskValue(value);
-    input.purpose = readOptional(body, "purpose", "command-input");
+    input.purpose = readOptional(data, "purpose", "command-input");
     input.updatedAt = now;
 
     auto saved = _store.upsertSecretInput(input);
@@ -246,14 +247,14 @@ class ATPService : SAPService {
     validateTenant(tenantId);
     auto now = Clock.currTime();
 
-    ATPSchedule schedule;
+    ATPSchedule schedule = new ATPSchedule(data);
     schedule.tenantId = tenantId;
-    schedule.scheduleId = readRequired(body, "schedule_id");
-    schedule.targetType = readOptional(body, "target_type", "execution");
-    schedule.targetId = readRequired(body, "target_id");
-    schedule.mode = readOptional(body, "mode", "cron");
-    schedule.expression = readRequired(body, "expression");
-    schedule.active = readrequest.getBoolean((body, "active", true);
+    schedule.scheduleId = readRequired(data, "schedule_id");
+    schedule.targetType = readOptional(data, "target_type", "execution");
+    schedule.targetId = readRequired(data, "target_id");
+    schedule.mode = readOptional(data, "mode", "cron");
+    schedule.expression = readRequired(data, "expression");
+    schedule.active = data.getBoolean("active", true);
     schedule.createdAt = now;
     schedule.updatedAt = now;
 
@@ -279,15 +280,15 @@ class ATPService : SAPService {
     validateTenant(tenantId);
     auto now = Clock.currTime();
 
-    ATPEventTrigger trigger;
+    ATPEventTrigger trigger = new ATPEventTrigger(data);
     trigger.tenantId = tenantId;
-    trigger.triggerId = readRequired(body, "trigger_id");
-    trigger.eventSource = readRequired(body, "event_source");
-    trigger.eventType = readRequired(body, "event_type");
-    trigger.commandId = readRequired(body, "command_id");
-    trigger.active = readrequest.getBoolean((body, "active", true);
+    trigger.triggerId = readRequired(data, "trigger_id");
+    trigger.eventSource = readRequired(data, "event_source");
+    trigger.eventType = readRequired(data, "event_type");
+    trigger.commandId = readRequired(data, "command_id");
+    trigger.active = data.getBoolean("active", true);
     trigger.createdAt = now;
-
+    trigger.updatedAt = now;
     auto saved = _store.upsertEventTrigger(trigger);
     Json payload = Json.emptyObject;
     payload["message"] = "Event trigger saved";
@@ -297,9 +298,9 @@ class ATPService : SAPService {
 
   Json listEventTriggers(string tenantId) {
     validateTenant(tenantId);
-    Json triggers = Json.emptyArray;
-    foreach (trigger; _store.listEventTriggers(tenantId))
-      triggers ~= trigger.toJson();
+
+    Json triggers = _store.listEventTriggers(tenantId).map!(trigger => trigger.toJson()).array.toJson();
+
     Json payload = Json.emptyObject;
     payload["triggers"] = triggers;
     payload["count"] = cast(long)triggers.length;
@@ -308,8 +309,8 @@ class ATPService : SAPService {
 
   Json fireEvent(string tenantId, Json data) {
     validateTenant(tenantId);
-    auto source = readRequired(body, "event_source");
-    auto eventType = readRequired(body, "event_type");
+    auto source = readRequired(data, "event_source");
+    auto eventType = readRequired(data, "event_type");
 
     Json matched = Json.emptyArray;
     foreach (trigger; _store.listEventTriggers(tenantId)) {
@@ -321,7 +322,7 @@ class ATPService : SAPService {
       Json runBody = Json.emptyObject;
       runBody["command_id"] = trigger.commandId;
       runBody["trigger_type"] = "event";
-      runBody["input"] = readObject(body, "payload");
+      runBody["input"] = readObject(data, "payload");
       auto executed = runPredefinedCommand(tenantId, runBody);
       matched ~= executed["execution"];
     }
@@ -335,8 +336,8 @@ class ATPService : SAPService {
 
   Json generateAiContent(string tenantId, Json data) {
     validateTenant(tenantId);
-    auto prompt = readRequired(body, "prompt");
-    auto contentType = readOptional(body, "content_type", "runbook");
+    auto prompt = readRequired(data, "prompt");
+    auto contentType = readOptional(data, "content_type", "runbook");
 
     Json generated = Json.emptyObject;
     generated["title"] = "AI Generated " ~ contentType;
@@ -356,14 +357,14 @@ class ATPService : SAPService {
 
   Json executePrivateOperation(string tenantId, Json data) {
     validateTenant(tenantId);
-    auto operationType = readOptional(body, "operation_type", "http-request");
-    auto endpoint = readRequired(body, "endpoint");
+    auto operationType = readOptional(data, "operation_type", "http-request");
+    auto endpoint = readRequired(data, "endpoint");
 
     Json payload = Json.emptyObject;
     payload["message"] = "Private environment operation queued";
     payload["operation_type"] = operationType;
     payload["endpoint"] = endpoint;
-    payload["network_zone"] = readOptional(body, "network_zone", "private-onprem");
+    payload["network_zone"] = readOptional(data, "network_zone", "private-onprem");
     payload["status"] = "QUEUED";
     return payload;
   }
@@ -383,7 +384,7 @@ class ATPService : SAPService {
     catalog.updatedAt = now;
     _store.upsertCatalog(catalog);
 
-    ATPCommand health;
+    ATPCommand health = new ATPCommand;
     health.tenantId = tenantId;
     health.commandId = "cf-health-check";
     health.catalogId = catalog.catalogId;
@@ -397,7 +398,7 @@ class ATPService : SAPService {
     health.updatedAt = now;
     _store.upsertCommand(health);
 
-    ATPCommand restart;
+    ATPCommand restart = new ATPCommand;
     restart.tenantId = tenantId;
     restart.commandId = "restart-app";
     restart.catalogId = catalog.catalogId;
@@ -411,7 +412,7 @@ class ATPService : SAPService {
     restart.updatedAt = now;
     _store.upsertCommand(restart);
   }
-
+  
   private ATPCommand requireCommand(string tenantId, string commandId) {
     auto command = _store.getCommand(tenantId, commandId);
     if (!command.isNull)
@@ -438,7 +439,7 @@ class ATPService : SAPService {
   }
 
   private string readOptional(Json data, string key, string fallback) const {
-    if (!(key in data) || data[key].type == Json.Type.null_)
+    if (!(key in data) || !data[key].isNull)
       return fallback;
     if (!data[key].isString)
       throw new ATPValidationException(key ~ " must be a string");
@@ -446,7 +447,7 @@ class ATPService : SAPService {
   }
 
   private bool readrequest.getBoolean((Json data, string key, bool fallback) const {
-    if (!(key in data) || data[key].type == Json.Type.null_)
+    if (!(key in data) || data[key].isNull)
       return fallback;
     if (!data[key].isBoolean)
       throw new ATPValidationException(key ~ " must be a boolean");
@@ -455,7 +456,7 @@ class ATPService : SAPService {
 
   private string[] readStringArray(Json data, string key) const {
     string[] values;
-    if (!(key in data) || data[key].type == Json.Type.null_)
+    if (!(key in data) || data[key].isNull)
       return values;
     if (!data[key].isArray)
       throw new ATPValidationException(key ~ " must be an array");
@@ -469,7 +470,7 @@ class ATPService : SAPService {
   }
 
   private Json readObject(Json data, string key) const {
-    if (!(key in data) || data[key].type == Json.Type.null_)
+    if (!(key in data) || data[key].isNull)
       return Json.emptyObject;
     if (!data[key].isObject)
       throw new ATPValidationException(key ~ " must be an object");
@@ -483,15 +484,11 @@ class ATPService : SAPService {
   }
 
   private bool contains(string[] values, string value) const {
-    foreach (item; values)
-      if (toLower(item) == toLower(value))
-        return true;
-    return false;
+    return values.any!(v => toLower(v) == toLower(value));
   }
 
   private Json toJsonArray(string[] values) const {
-    Json result = Json.emptyArray;
-    foreach (value; values)
+    Json result = Jsonvalues)
       result ~= value;
     return result;
   }
