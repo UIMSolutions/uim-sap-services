@@ -16,10 +16,10 @@ enum Visibility {
 }
 
 struct TenantContext {
-    string tenantId;
-    string spaceId;
-    string consumerTenantId;
-    string consumerSpaceId;
+    UUID tenantId;
+    UUID spaceId;
+    UUID consumerTenantId;
+    UUID consumerSpaceId;
 }
 
 struct UploadedAsset {

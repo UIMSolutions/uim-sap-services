@@ -29,7 +29,7 @@ struct Credential {
     string password;
     string token;
     string apiKey;
-    string clientId;
+    UUID clientId;
     string clientSecret;
     string certificatePath;
     string keyPath;

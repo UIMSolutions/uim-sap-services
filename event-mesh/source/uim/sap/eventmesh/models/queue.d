@@ -7,7 +7,7 @@ mixin(ShowModule!());
 @safe:
 
 struct EVMQueue {
-    string tenantId;
+    UUID tenantId;
     string queueName;
     long maxDepth = 1000;
     long messageCount = 0;

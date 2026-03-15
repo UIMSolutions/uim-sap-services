@@ -375,9 +375,9 @@ struct Breadcrumb {
 
 /// Configuration for the embeddable UI5-based reusable document management component.
 struct UIComponentConfig {
-  string tenantId;
-  string repositoryId;
-  string rootFolderId;
+  UUID tenantId;
+  UUID repositoryId;
+  UUID rootFolderId;
   string componentName = "uim.sap.docmgmt.ReusableComponent";
   string componentVersion = "1.0.0";
   string theme = "sap_horizon";
@@ -456,12 +456,12 @@ UIComponentConfig uiConfigFromJson(string tenantId, Json request) {
 /// Links business objects from external applications to documents in the
 /// document management system, enabling embedded document scenarios.
 struct IntegrationLink {
-  string linkId;
-  string tenantId;
-  string externalObjectId; // ID of the business object in the calling app
+  UUID linkId;
+  UUID tenantId;
+  UUID externalObjectId; // ID of the business object in the calling app
   string externalObjectType; // e.g. "SalesOrder", "PurchaseOrder", etc.
-  string documentId; // linked document in this service
-  string repositoryId;
+  UUID documentId; // linked document in this service
+  UUID repositoryId;
   string description;
   SysTime createdAt;
   string createdBy;

@@ -12,7 +12,7 @@ import uim.sap.fiori;
  * OData entity metadata
  */
 struct ODataEntityMeta {
-    string id;
+    UUID id;
     string uri;
     string type;
     string etag;

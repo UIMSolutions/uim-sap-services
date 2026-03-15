@@ -42,8 +42,8 @@ mixin(ShowModule!());
   * For more information on API Proxies and their management, refer to the SAP Integration Suite documentation.
   */
 struct INTApiProxy {
-  string tenantId;
-  string proxyId;
+  UUID tenantId;
+  UUID proxyId;
   string name;
   string description;
   string basePath;

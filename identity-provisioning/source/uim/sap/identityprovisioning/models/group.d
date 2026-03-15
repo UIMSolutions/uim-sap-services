@@ -29,14 +29,14 @@ mixin(ShowModule!());
   * - updatedAt: The timestamp when the group was last updated.
   */
 struct IPVGroup {
-  string tenantId;
-  string groupId;
-  string externalId;
+  UUID tenantId;
+  UUID groupId;
+  UUID externalId;
   string groupName;
   string displayName;
   string description;
   string[] memberUserIds;
-  string sourceSystemId;
+  UUID sourceSystemId;
   string status = "synced"; // "synced" | "pending" | "error" | "skipped"
   string createdAt;
   string updatedAt;

@@ -28,9 +28,9 @@ mixin(ShowModule!());
   * - updatedAt: The timestamp when the subscription was last updated.
  */
 struct IPVNotification {
-  string tenantId;
-  string subscriptionId;
-  string sourceSystemId;
+  UUID tenantId;
+  UUID subscriptionId;
+  UUID sourceSystemId;
   string callbackUrl;
   string[] eventTypes; // e.g., ["job.started", "job.completed", "job.failed"]
   bool active = true;

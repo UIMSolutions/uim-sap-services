@@ -5,12 +5,12 @@ mixin(ShowModule!());
 
 @safe:
 struct SituationInstance {
-  string id;
-  string tenantId;
+  UUID id;
+  UUID tenantId;
   string situationType;
-  string templateId;
+  UUID templateId;
   string entityType;
-  string entityId;
+  UUID entityId;
   SituationStatus status;
   string resolutionFlow;
   Json dataContext;

@@ -17,12 +17,12 @@ mixin(ShowModule!());
  *  `entityType` values: "user", "group", "system", "job"
  */
 struct IPVJobLog {
-  string tenantId;
-  string logId;
-  string jobId;
+  UUID tenantId;
+  UUID logId;
+  UUID jobId;
   string level = "info"; // "info" | "warning" | "error"
   string entityType; // "user" | "group" | "system" | "job"
-  string entityId; // affected entity identifier
+  UUID entityId; // affected entity identifier
   string message;
   string details;
   string timestamp;

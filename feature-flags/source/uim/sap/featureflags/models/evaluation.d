@@ -13,7 +13,7 @@ mixin(ShowModule!());
 
 /** Result returned by the flag-evaluation endpoint. */
 struct FFLEvaluation {
-    string flagId;
+    UUID flagId;
     string flagName;
     string flagType;
 
@@ -21,7 +21,7 @@ struct FFLEvaluation {
     bool booleanValue = false;
 
     // String result
-    string variationId;
+    UUID variationId;
     string variationValue;
 
     // Metadata

@@ -33,8 +33,8 @@ mixin(ShowModule!());
   * For more information on event subscriptions and their management, refer to the SAP Integration Suite documentation.
   */
 struct INTEventSubscription {
-  string tenantId;
-  string subscriptionId;
+  UUID tenantId;
+  UUID subscriptionId;
   string topicName;
   string callbackUrl;
   string deliveryMode = "push"; // push | pull

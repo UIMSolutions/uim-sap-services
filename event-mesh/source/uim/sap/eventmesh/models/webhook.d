@@ -7,8 +7,8 @@ mixin(ShowModule!());
 @safe:
 
 struct EVMWebhook {
-    string tenantId;
-    string webhookId;
+    UUID tenantId;
+    UUID webhookId;
     string queueName;
     string callbackUrl;
     string method = "POST";

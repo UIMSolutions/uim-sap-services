@@ -46,7 +46,7 @@ struct LaunchpadTile {
  * Fiori Launchpad Group
  */
 struct LaunchpadGroup {
-    string id;
+    UUID id;
     string title;
     bool isPreset;
     bool isVisible;

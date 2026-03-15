@@ -29,10 +29,10 @@ mixin(ShowModule!());
   * - logId: A unique identifier for the message log entry.
   * - iflowId: The ID of the integration flow that processed the message.
   * - correlationId: A unique identifier that correlates related messages across different systems and processes
-
+*/
 struct INTMessageLog {
-  string tenantId;
-  string logId;
+  UUID tenantId;
+  UUID logId;
   string iflowId;
   string correlationId;
   string status = "processing"; // processing | completed | failed | retry
