@@ -57,7 +57,7 @@ struct PDMDataUsage {
   SysTime lastAccessedAt;
   SysTime createdAt;
 
-  Json toJson() const {
+  override Json toJson()  {
     Json j = Json.emptyObject;
     j["usage_id"] = usageId;
     j["subject_id"] = subjectId;

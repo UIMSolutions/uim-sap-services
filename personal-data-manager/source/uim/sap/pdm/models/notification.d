@@ -29,7 +29,7 @@ struct PDMNotification {
     SysTime createdAt;
     SysTime sentAt;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json j = Json.emptyObject;
         j["notification_id"] = notificationId;
         j["subject_id"] = subjectId;

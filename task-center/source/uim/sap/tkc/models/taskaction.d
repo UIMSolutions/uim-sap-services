@@ -17,7 +17,7 @@ struct TKCTaskAction {
     string comment;
     SysTime performedAt;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json payload = Json.emptyObject;
         payload["action"] = action;
         payload["performed_by"] = performedBy;

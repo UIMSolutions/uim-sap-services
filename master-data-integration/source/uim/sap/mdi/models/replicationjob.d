@@ -48,7 +48,7 @@ struct MDIReplicationJob {
     SysTime createdAt;
     SysTime updatedAt;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json payload = Json.emptyObject;
         payload["tenant_id"] = tenantId;
         payload["job_id"] = jobId;

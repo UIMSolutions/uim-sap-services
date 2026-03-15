@@ -33,7 +33,7 @@ struct PDMPersonalDataRecord {
     SysTime createdAt;
     SysTime updatedAt;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json j = Json.emptyObject;
         j["record_id"] = recordId;
         j["subject_id"] = subjectId;

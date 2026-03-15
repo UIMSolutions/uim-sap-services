@@ -26,7 +26,7 @@ struct PDMTenant {
     SysTime createdAt;
     SysTime updatedAt;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json j = Json.emptyObject;
         j["tenant_id"] = tenantId;
         j["name"] = name;

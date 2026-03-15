@@ -31,7 +31,7 @@ struct TeamMember {
     bool notificationsEnabled;
     string[] functions;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json payload = Json.emptyObject;
         payload["user_id"] = userId;
         payload["display_name"] = displayName;

@@ -38,7 +38,7 @@ struct PDMDataSubject {
     SysTime createdAt;
     SysTime updatedAt;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json j = Json.emptyObject;
         j["subject_id"] = subjectId;
         j["tenant_id"] = tenantId;

@@ -25,7 +25,7 @@ struct DeterminationLog {
     string[] notifications;
     long durationMs;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json payload = Json.emptyObject;
         payload["id"] = id;
         payload["timestamp"] = timestamp;

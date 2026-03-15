@@ -32,7 +32,7 @@ struct PDMDataRequest {
     SysTime deadline;        // regulatory deadline for completion
     SysTime completedAt;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json j = Json.emptyObject;
         j["request_id"] = requestId;
         j["subject_id"] = subjectId;

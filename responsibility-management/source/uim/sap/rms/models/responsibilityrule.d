@@ -27,7 +27,7 @@ struct ResponsibilityRule {
     string createdAt;
     string updatedAt;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json payload = Json.emptyObject;
         payload["id"] = id;
         payload["name"] = name;

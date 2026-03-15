@@ -10,7 +10,7 @@ struct FunctionDef {
     string name;
     string description;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json payload = Json.emptyObject;
         payload["code"] = code;
         payload["name"] = name;
