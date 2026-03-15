@@ -58,7 +58,7 @@ struct IPVSystem {
 
 IPVSystem systemFromJson(string tenantId, Json request) {
   IPVSystem s;
-  s.tenantId = tenantId;
+  s.tenantId = UUID(tenantId);
   s.systemId = randomUUID().toString();
 
   if ("system_name" in request && request["system_name"].isString)

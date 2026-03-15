@@ -61,7 +61,7 @@ PDMDataRequest requestFromJson(string requestId, string subjectId, string tenant
     PDMDataRequest r;
     r.requestId = requestId;
     r.subjectId = subjectId;
-    r.tenantId = tenantId;
+    r.tenantId = UUID(tenantId);
     r.createdAt = Clock.currTime();
     r.updatedAt = r.createdAt;
 

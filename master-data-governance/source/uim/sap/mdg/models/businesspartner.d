@@ -48,7 +48,7 @@ struct MDGBusinessPartner {
 
 MDGBusinessPartner businessPartnerFromJson(string tenantId, Json request, string defaultApprover) {
   MDGBusinessPartner bp;
-  bp.tenantId = tenantId;
+  bp.tenantId = UUID(tenantId);
   bp.bpId = randomUUID().toString();
   bp.createdAt = Clock.currTime();
   bp.updatedAt = bp.createdAt;

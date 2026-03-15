@@ -52,7 +52,7 @@ PDMNotification notificationFromJson(string notificationId, string subjectId, st
     PDMNotification n;
     n.notificationId = notificationId;
     n.subjectId = subjectId;
-    n.tenantId = tenantId;
+    n.tenantId = UUID(tenantId);
     n.createdAt = Clock.currTime();
 
     if ("request_id" in req && req["request_id"].isString)

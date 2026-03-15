@@ -93,7 +93,7 @@ struct IPVJob {
 
 IPVJob jobFromJson(string tenantId, Json request) {
   IPVJob j;
-  j.tenantId = tenantId;
+  j.tenantId = UUID(tenantId);
   j.jobId = randomUUID().toString();
 
   if ("job_name" in request && request["job_name"].isString)

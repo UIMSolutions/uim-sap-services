@@ -65,7 +65,7 @@ PDMPersonalDataRecord recordFromJson(string recordId, string subjectId, string t
     PDMPersonalDataRecord r;
     r.recordId = recordId;
     r.subjectId = subjectId;
-    r.tenantId = tenantId;
+    r.tenantId = UUID(tenantId);
     r.createdAt = Clock.currTime();
     r.updatedAt = r.createdAt;
 

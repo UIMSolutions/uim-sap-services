@@ -51,7 +51,7 @@ struct PDMTenant {
 
 PDMTenant tenantFromJson(string tenantId, Json req) {
     PDMTenant t;
-    t.tenantId = tenantId;
+    t.tenantId = UUID(tenantId);
     t.createdAt = Clock.currTime();
     t.updatedAt = t.createdAt;
 

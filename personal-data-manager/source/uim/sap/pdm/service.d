@@ -459,7 +459,7 @@ class PDMService : SAPService {
     PDMNotification n;
     n.notificationId = notificationId;
     n.subjectId = subjectId;
-    n.tenantId = tenantId;
+    n.tenantId = UUID(tenantId);
     n.channel = PDMNotificationChannel.email;
     n.recipient = subject.email;
     n.subject = "Your Personal Data Report";

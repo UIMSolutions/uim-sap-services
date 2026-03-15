@@ -68,7 +68,7 @@ struct PDMDataSubject {
 PDMDataSubject subjectFromJson(string subjectId, string tenantId, Json req) {
     PDMDataSubject s;
     s.subjectId = subjectId;
-    s.tenantId = tenantId;
+    s.tenantId = UUID(tenantId);
     s.createdAt = Clock.currTime();
     s.updatedAt = s.createdAt;
 

@@ -81,7 +81,7 @@ PDMDataUsage usageFromJson(string usageId, string subjectId, string tenantId, Js
   PDMDataUsage u;
   u.usageId = usageId;
   u.subjectId = subjectId;
-  u.tenantId = tenantId;
+  u.tenantId = UUID(tenantId);
   u.createdAt = Clock.currTime();
   u.firstUsedAt = u.createdAt;
   u.lastAccessedAt = u.createdAt;
