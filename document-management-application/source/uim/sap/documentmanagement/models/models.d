@@ -49,7 +49,7 @@ struct Repository {
   bool encryptionEnabled = false;
   SysTime connectedAt;
 
-  Json toJson() const {
+  override Json toJson()  {
     Json r = Json.emptyObject;
     r["repository_id"] = repositoryId;
     r["name"] = name;
@@ -105,7 +105,7 @@ struct Folder {
   SysTime modifiedAt;
   Json properties; // custom metadata / properties
 
-  Json toJson() const {
+  override Json toJson()  {
     Json r = Json.emptyObject;
     r["folder_id"] = folderId;
     r["repository_id"] = repositoryId;
@@ -174,7 +174,7 @@ struct Document {
   int currentVersion = 1;
   string latestVersionId;
 
-  Json toJson() const {
+  override Json toJson()  {
     Json r = Json.emptyObject;
     r["document_id"] = documentId;
     r["repository_id"] = repositoryId;
@@ -247,7 +247,7 @@ struct DocumentVersion {
   bool isMajor; // major vs minor version
   bool encrypted = false;
 
-  Json toJson() const {
+  override Json toJson()  {
     Json r = Json.emptyObject;
     r["version_id"] = versionId;
     r["document_id"] = documentId;
@@ -311,7 +311,7 @@ struct Breadcrumb {
   string folderId;
   string name;
 
-  Json toJson() const {
+  override Json toJson()  {
     Json r = Json.emptyObject;
     r["folder_id"] = folderId;
     r["name"] = name;

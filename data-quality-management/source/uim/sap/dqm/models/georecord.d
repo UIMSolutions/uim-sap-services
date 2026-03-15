@@ -5,7 +5,7 @@ struct DQMGeoRecord {
     DQMGeoPoint point;
     SysTime updatedAt;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json payload = Json.emptyObject;
         payload["address"] = address.toJson();
         payload["point"] = point.toJson();

@@ -5,7 +5,7 @@ struct DQMGeoPoint {
     double longitude;
     string accuracy = "rooftop";
 
-    Json toJson() const {
+    override Json toJson()  {
         Json payload = Json.emptyObject;
         payload["latitude"] = latitude;
         payload["longitude"] = longitude;

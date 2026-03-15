@@ -22,7 +22,7 @@ struct DPIExport {
   Json records;
   SysTime createdAt;
 
-  Json toJson() const {
+  override Json toJson()  {
     Json result = Json.emptyObject;
     result["tenant_id"] = tenantId;
     result["export_id"] = exportId;

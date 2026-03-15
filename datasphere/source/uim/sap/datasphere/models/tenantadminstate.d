@@ -46,7 +46,7 @@ struct DATTenantAdminState {
     string[] users;
     Json custom;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json payload = Json.emptyObject;
         Json usersPayload = Json.emptyArray;
         foreach (user; users) usersPayload ~= user;

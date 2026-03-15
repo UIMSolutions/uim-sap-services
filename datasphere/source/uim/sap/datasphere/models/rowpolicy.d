@@ -33,7 +33,7 @@ struct DATRowPolicy {
     string expression;
     SysTime updatedAt;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json payload = Json.emptyObject;
         payload["tenant_id"] = tenantId;
         payload["policy_id"] = policyId;

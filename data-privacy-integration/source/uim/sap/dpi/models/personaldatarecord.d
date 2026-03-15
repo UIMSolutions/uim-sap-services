@@ -29,7 +29,7 @@ struct DPIPersonalDataRecord {
     SysTime updatedAt;
     bool deleted;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json result = Json.emptyObject;
         result["tenant_id"] = tenantId;
         result["record_id"] = recordId;

@@ -18,7 +18,7 @@ struct DSTAuditLog {
     string level;      // "info" | "warning" | "error"
     SysTime timestamp;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json j = Json.emptyObject;
         j["tenant_id"]        = tenantId;
         j["log_id"]           = logId;

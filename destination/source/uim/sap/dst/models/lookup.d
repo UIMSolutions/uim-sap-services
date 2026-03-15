@@ -22,7 +22,7 @@ struct DSTLookupResult {
   string[string] properties;
   SysTime resolvedAt;
 
-  Json toJson() const {
+  override Json toJson()  {
     Json j = Json.emptyObject;
     j["destination_name"] = destinationName;
     j["url"] = url;

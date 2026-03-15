@@ -14,7 +14,7 @@ struct DQMAddress {
     string region;
     string country;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json payload = Json.emptyObject;
         payload["line1"] = line1;
         payload["line2"] = line2;
