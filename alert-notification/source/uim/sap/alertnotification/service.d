@@ -258,7 +258,7 @@ class AlertNotificationService : SAPService {
         continue;
       }
 
-      foreach (actionJson; sub.actions.get!(Json[])) {
+      foreach (actionJson; sub.actions.toArray) {
         if (actionJson.type != Json.Type.object) {
           continue;
         }
@@ -330,7 +330,7 @@ class AlertNotificationService : SAPService {
     }
 
     auto haystack = toLoweredStringArray(available);
-    foreach (item; requested.get!(Json[])) {
+    foreach (item; requested.toArray) {
       if (!item.isString) {
         continue;
       }
@@ -386,10 +386,10 @@ class AlertNotificationService : SAPService {
 
   private string[] toLoweredStringArray(Json values) {
     string[] result;
-    if (values.type != Json.Type.array) {
+    if (!(values.isArray)) {
       return result;
     }
-    foreach (item; values.get!(Json[])) {
+    foreach (item; values.toArray) {
       if (item.isString) {
         result ~= toLower(item.get!string);
       }

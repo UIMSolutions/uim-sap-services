@@ -486,13 +486,9 @@ class CISService : SAPService {
   }
 
   private bool arrayContains(Json arrayValue, string needle) {
-    if (needle.length == 0 || arrayValue.type != Json.Type.array)
-      return false;
-    foreach (item; arrayValue.get!(Json[])) {
-      if (item.isString && item.get!string == needle)
-        return true;
-    }
-    return false;
+    return needle.length == 0 || !arrayValue.isArray
+    ? false
+    : arrayValue.toArray.any!(item => item.isString && item.get!string == needle);
   }
 
   private void validateId(string value, string fieldName) {

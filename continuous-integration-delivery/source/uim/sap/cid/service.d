@@ -180,7 +180,7 @@ class CIDService : SAPService {
 
     // Parse stages from payload or use defaults based on pipeline type
     if ("stages" in payload && payload["stages"].isArray) {
-      foreach (s; payload["stages"].get!(Json[]))
+      foreach (s; payload["stages"].toArray)
         p.stages ~= s.get!string;
     } else {
       p.stages = defaultStages(p.pipelineType);

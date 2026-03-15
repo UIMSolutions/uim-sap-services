@@ -306,7 +306,7 @@ HTML";
     // Collect system ids
     string[] sysIds;
     if ("system_ids" in payload && payload["system_ids"].isArray)
-      foreach (s; payload["system_ids"].get!(Json[]))
+      foreach (s; payload["system_ids"].toArray)
         sysIds ~= s.get!string;
 
     auto wfId = _store.nextId("wf");

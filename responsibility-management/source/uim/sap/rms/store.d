@@ -555,7 +555,7 @@ class RMSStore : SAPStore {
 
   private TeamMember[] parseMembers(Json request) {
     TeamMember[] members;
-    if (!("members" in request) || request["members"].type != Json.Type.array) {
+    if (!("members" in request) || !(request["members"].isArray)) {
       return members;
     }
 
@@ -849,7 +849,7 @@ class RMSStore : SAPStore {
 
   private string[] getStringArray(Json payload, string key) {
     string[] values;
-    if (!(key in payload) || payload[key].type != Json.Type.array) {
+    if (!(key in payload) || !payload[key].isArray) {
       return values;
     }
     foreach (item; payload[key]) {

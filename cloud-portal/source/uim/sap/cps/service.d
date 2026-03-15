@@ -86,7 +86,7 @@ class CPSService : SAPService {
 
     Json entries = Json.emptyArray;
     foreach (site; _store.listSites(tenantId)) {
-      foreach (app; site.apps.get!(Json[])) {
+      foreach (app; site.apps.toArray) {
         if (app.type != Json.Type.object)
           continue;
         string requiredRole;
@@ -339,7 +339,7 @@ class CPSService : SAPService {
   private bool containsString(Json values, string needle) {
     if (!values.isArray || needle.length == 0)
       return false;
-    foreach (item; values.get!(Json[])) {
+    foreach (item; values.toArray) {
       if (item.isString && item.get!string == needle)
         return true;
     }

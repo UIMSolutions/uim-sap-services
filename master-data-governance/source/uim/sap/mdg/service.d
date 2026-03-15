@@ -32,14 +32,14 @@ class MDGService : SAPService {
 
   Json upsertBusinessPartnersBatch(string tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
-    if (!("business_partners" in request) || request["business_partners"].type != Json.Type.array) {
+    if (!("business_partners" in request) || !request["business_partners"].isArray) {
       throw new MDGValidationException("business_partners array is required");
     }
 
     Json resources = Json.emptyArray;
     long processed = 0;
 
-    foreach (item; request["business_partners"].get!(Json[])) {
+    foreach (item; request["business_partners"].toArray) {
       auto bp = businessPartnerFromJson(tenantId, item, _config.defaultApprover);
       validateBusinessPartner(bp);
       bp.updatedAt = Clock.currTime();
@@ -119,7 +119,7 @@ class MDGService : SAPService {
     }
 
     long ingested = 0;
-    foreach (item; items.get!(Json[])) {
+    foreach (item; items.toArray) {
       auto bp = businessPartnerFromJson(tenantId, item, _config.defaultApprover);
       bp.sourceSystem = source;
       validateBusinessPartner(bp);

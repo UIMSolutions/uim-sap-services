@@ -440,7 +440,7 @@ class ATMService : SAPService {
     }
 
     if (claims[key].isArray) {
-      foreach (item; claims[key].get!(Json[])) {
+      foreach (item; claims[key].toArray) {
         if (item.isString) {
           return item.get!string;
         }

@@ -209,7 +209,7 @@ class CTMService : SAPService {
     // Gather which request IDs to import
     string[] selectedIds;
     if ("request_ids" in payload && payload["request_ids"].isArray)
-      foreach (v; payload["request_ids"].get!(Json[]))
+      foreach (v; payload["request_ids"].toArray)
         selectedIds ~= v.get!string;
 
     auto queue = _store.listQueue(tenantId, nodeId);
