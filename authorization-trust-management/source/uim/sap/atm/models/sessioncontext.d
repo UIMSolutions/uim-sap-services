@@ -1,7 +1,8 @@
 module uim.sap.atm.models.sessioncontext;
 
-struct ATMSessionContext {
-  UUID tenantId;
+class ATMSessionContext : SAPTenantObject {
+  mixin(SAPObjectTemplate!ATMSessionContext);
+
   UUID userId;
   UUID idpId;
   string issuer;
@@ -17,19 +18,20 @@ struct ATMSessionContext {
 
   override Json toJson()  {
     Json info = super.toJson;
-    payload["tenant_id"] = tenantId;
-    payload["user_id"] = userId;
-    payload["idp_id"] = idpId;
-    payload["issuer"] = issuer;
-    payload["audience"] = audience;
-    payload["email"] = email;
-    payload["bootstrap"] = bootstrap;
-    payload["authenticated_at"] = authenticatedAt.toISOExtString();
+    
+    payload["user_id"] = userId.toJson;
+    payload["idp_id"] = idpId.toJson;
+    payload["issuer"] = issuer.toJson;
+    payload["audience"] = audience.toJson;
+    payload["email"] = email.toJson;
+    payload["bootstrap"] = bootstrap.toJson;
+    payload["authenticated_at"] = authenticatedAt.toISOExtString().toJson;
     payload["groups"] = groups.toJson;
     payload["scopes"] = scopes.toJson;
     payload["role_collections"] = roleCollections.toJson;
     payload["technical_roles"] = technicalRoles.toJson;
     payload["permissions"] = permissions.toJson;
+
     return payload;
   }
 }

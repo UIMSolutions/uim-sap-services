@@ -5,33 +5,28 @@
 *****************************************************************************************************************/
 module uim.sap.art.models.runtime.health;
 
-
 import uim.sap.art;
 
 mixin(ShowModule!());
 
 @safe:
 
-
-
-
-
-
-struct ARTRuntimeHealth : SAPObject {
+class ARTRuntimeHealth : SAPObject {
   mixin(SAPObjectTemplate!ARTRuntimeHealth);
-    bool ok;
-    string runtimeName;
-    string runtimeVersion;
-    size_t registeredPrograms;
 
-    override override Json toJson()  {
-        Json payload = super.toJson();
+  bool ok;
+  string runtimeName;
+  string runtimeVersion;
+  size_t registeredPrograms;
 
-        payload["ok"] = ok;
-        payload["runtimeName"] = runtimeName;
-        payload["runtimeVersion"] = runtimeVersion;
-        payload["registeredPrograms"] = cast(long)registeredPrograms;
+  override override Json toJson() {
+    Json payload = super.toJson();
 
-        return payload;
-    }
+    payload["ok"] = ok;
+    payload["runtimeName"] = runtimeName;
+    payload["runtimeVersion"] = runtimeVersion;
+    payload["registeredPrograms"] = cast(long)registeredPrograms;
+
+    return payload;
+  }
 }

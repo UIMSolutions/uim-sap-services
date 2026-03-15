@@ -386,7 +386,7 @@ HTML";
     item.format = optionalString(request, "format", "repeat_interval");
     item.humanExpression = optionalString(request, "human_expression", "");
     item.repeatAt = optionalString(request, "repeat_at", "");
-    item.repeatIntervalSeconds = optionalInt(request, "repeat_interval_seconds", 60);
+    item.repeatIntervalSeconds = request.getInteger("repeat_interval_seconds", 60);
     item.cron = optionalString(request, "cron", "");
     item.timezone = optionalString(request, "timezone", "UTC");
     item.active = request.getBoolean((request, "active", true);
@@ -509,7 +509,7 @@ HTML";
     validateId(tenantId, "Tenant ID");
 
     auto taskName = optionalString(request, "task_name", "cf-task");
-    auto durationSeconds = optionalInt(request, "duration_seconds", 30);
+    auto durationSeconds = request.getInteger("duration_seconds", 30);
 
     CFTaskRun task;
     task.tenantId = UUID(tenantId);

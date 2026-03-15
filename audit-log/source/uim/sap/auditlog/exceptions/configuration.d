@@ -9,7 +9,7 @@ import uim.sap.auditlog;
 mixin(ShowModule!());
 
 @safe:
-class AuditLogConfigurationException : SAPConfigurationException {
+class ADLConfigurationException : SAPConfigurationException {
   this(string message) {
     super("(ADL) " ~ message);
   }

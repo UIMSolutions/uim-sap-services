@@ -258,9 +258,9 @@ class DSPService : SAPService {
     item.tenantId = UUID(tenantId);
     item.spaceId = optionalString(request, "space_id", _store.nextId("space"));
     item.name = requiredString(request, "name");
-    item.diskGb = optionalInt(request, "disk_gb", _config.defaultSpaceDiskGb);
-    item.memoryGb = optionalInt(request, "memory_gb", _config.defaultSpaceMemoryGb);
-    item.priority = optionalInt(request, "priority", 5);
+    item.diskGb = request.getInteger("disk_gb", _config.defaultSpaceDiskGb);
+    item.memoryGb = request.getInteger("memory_gb", _config.defaultSpaceMemoryGb);
+    item.priority = request.getInteger("priority", 5);
     item.users = stringArray(request, "users");
     item.active = true;
     item.updatedAt = Clock.currTime();
@@ -295,9 +295,9 @@ class DSPService : SAPService {
     }
 
     item.name = optionalString(request, "name", item.name);
-    item.diskGb = optionalInt(request, "disk_gb", item.diskGb);
-    item.memoryGb = optionalInt(request, "memory_gb", item.memoryGb);
-    item.priority = optionalInt(request, "priority", item.priority);
+    item.diskGb = request.getInteger("disk_gb", item.diskGb);
+    item.memoryGb = request.getInteger("memory_gb", item.memoryGb);
+    item.priority = request.getInteger("priority", item.priority);
     if ("users" in request)
       item.users = stringArray(request, "users");
     if ("active" in request && request["active"].isBoolean)

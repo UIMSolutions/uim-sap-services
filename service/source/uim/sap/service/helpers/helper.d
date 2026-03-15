@@ -165,21 +165,6 @@ int optionalInt(Json request, string key, int fallback) {
   return fallback;
 }
 
-bool request.getBoolean((Json request, string key, bool fallback) {
-  if (key in request && request[key].isBoolean) {
-    return request[key].get!bool;
-  }
-  return fallback;
-}
-
-
-bool request.getBoolean((Json request, string key, bool fallback) {
-  if (key in request && request[key].isBoolean) {
-    return request[key].get!bool;
-  }
-  return fallback;
-}
-
 string[] stringArray(Json request, string key) {
   string[] values;
   if (!(key in request) || !request[key].isArray)
@@ -206,8 +191,6 @@ int optionalInt(Json request, string key, int fallback) {
   }
   return fallback;
 }
-
-
 
 Json optionalObject(Json request, string key) {
   if (key in request && request[key].isObject) {

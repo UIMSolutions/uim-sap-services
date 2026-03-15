@@ -1,7 +1,8 @@
 module uim.sap.atm.models.identityprovider;
 
-struct ATMIdentityProvider {
-  UUID tenantId;
+class ATMIdentityProvider : SAPTenantObject {
+  mixin(SAPObjectTemplate!ATMIdentityProvider);
+
   UUID idpId;
   string name;
   string providerType = "oidc";
@@ -11,32 +12,30 @@ struct ATMIdentityProvider {
   bool enabled = true;
   bool isDefault = false;
   string[] trustedAlgorithms;
-  SysTime updatedAt;
 
   override Json toJson()  {
     Json info = super.toJson;
-    Json trusted = Json.emptyArray;
-    foreach (algorithm; trustedAlgorithms) {
-      trusted ~= algorithm;
-    }
 
-    payload["tenant_id"] = tenantId;
-    payload["idp_id"] = idpId;
-    payload["name"] = name;
-    payload["provider_type"] = providerType;
-    payload["issuer"] = issuer;
-    payload["audience"] = audience;
-    payload["description"] = description;
-    payload["enabled"] = enabled;
-    payload["is_default"] = isDefault;
-    payload["trusted_algorithms"] = trusted;
-    payload["updated_at"] = updatedAt.toISOExtString();
+    Json trusted = trustedAlgorithms.map!(a => a.toJson).array.toJson; {
+
+    payload["tenant_id"] = tenantId.toJson;
+    payload["idp_id"] = idpId.toJson;
+    payload["name"] = name.toJson;
+    payload["provider_type"] = providerType.toJson;
+    payload["issuer"] = issuer.toJson;
+    payload["audience"] = audience.toJson;
+    payload["description"] = description.toJson;
+    payload["enabled"] = enabled.toJson;
+    payload["is_default"] = isDefault.toJson;
+    payload["trusted_algorithms"] = trusted.toJson;
+    payload["updated_at"] = updatedAt.toISOExtString().toJson;
+
     return payload;
   }
 }
 
 ATMIdentityProvider idpFromJson(string tenantId, string idpId, Json request) {
-  ATMIdentityProvider idp;
+  ATMIdentityProvider idp = new ATMIdentityProvider(request);
   idp.tenantId = UUID(tenantId);
   idp.idpId = idpId.length > 0 ? idpId : randomUUID().toString();
   idp.name = idp.idpId;
@@ -44,25 +43,25 @@ ATMIdentityProvider idpFromJson(string tenantId, string idpId, Json request) {
   idp.updatedAt = Clock.currTime();
 
   if ("name" in request && request["name"].isString) {
-    idp.name = request["name"].get!string;
+    idp.name = request.getString("name");
   }
   if ("provider_type" in request && request["provider_type"].isString) {
-    idp.providerType = request["provider_type"].get!string;
+    idp.providerType = request.getString("provider_type");
   }
   if ("issuer" in request && request["issuer"].isString) {
-    idp.issuer = request["issuer"].get!string;
+    idp.issuer = request.getString("issuer");
   }
   if ("audience" in request && request["audience"].isString) {
-    idp.audience = request["audience"].get!string;
+    idp.audience = request.getString("audience");
   }
   if ("description" in request && request["description"].isString) {
-    idp.description = request["description"].get!string;
+    idp.description = request.getString("description");
   }
   if ("enabled" in request && request["enabled"].isBoolean) {
-    idp.enabled = request["enabled"].get!bool;
+    idp.enabled = request.getBoolean("enabled");
   }
   if ("is_default" in request && request["is_default"].isBoolean) {
-    idp.isDefault = request["is_default"].get!bool;
+    idp.isDefault = request.getBoolean("is_default");
   }
   if ("trusted_algorithms" in request && request["trusted_algorithms"].isArray) {
     idp.trustedAlgorithms = stringArrayFromJson(request["trusted_algorithms"]);
