@@ -106,7 +106,7 @@ struct INTMapping {
 
 INTMapping mappingFromJson(string tenantId, Json request) {
   INTMapping m;
-  m.tenantId = tenantId;
+  m.tenantId = UUID(tenantId);
   m.mappingId = randomUUID().toString();
 
   if ("name" in request && request["name"].isString)

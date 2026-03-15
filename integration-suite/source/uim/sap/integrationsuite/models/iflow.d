@@ -78,7 +78,7 @@ struct INTIFlow {
 
 INTIFlow iflowFromJson(string tenantId, Json request) {
   INTIFlow f;
-  f.tenantId = tenantId;
+  f.tenantId = UUID(tenantId);
   f.iflowId = randomUUID().toString();
 
   if ("name" in request && request["name"].isString)

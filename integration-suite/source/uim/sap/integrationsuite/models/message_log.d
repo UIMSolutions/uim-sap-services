@@ -66,7 +66,7 @@ struct INTMessageLog {
 
 INTMessageLog messageLogFromJson(string tenantId, Json request) {
   INTMessageLog l;
-  l.tenantId = tenantId;
+  l.tenantId = UUID(tenantId);
   l.logId = randomUUID().toString();
 
   if ("iflow_id" in request && request["iflow_id"].isString)

@@ -47,7 +47,7 @@ struct INTTradingPartner {
 
 INTTradingPartner tradingPartnerFromJson(string tenantId, Json request) {
   INTTradingPartner tp;
-  tp.tenantId = tenantId;
+  tp.tenantId = UUID(tenantId);
   tp.partnerId = randomUUID().toString();
 
   if ("name" in request && request["name"].isString)

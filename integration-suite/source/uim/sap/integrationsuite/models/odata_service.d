@@ -50,7 +50,7 @@ struct INTODataService {
 
 INTODataService odataServiceFromJson(string tenantId, Json request) {
   INTODataService svc;
-  svc.tenantId = tenantId;
+  svc.tenantId = UUID(tenantId);
   svc.serviceId = randomUUID().toString();
 
   if ("name" in request && request["name"].isString)

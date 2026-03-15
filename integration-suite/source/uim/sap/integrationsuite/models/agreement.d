@@ -108,7 +108,7 @@ struct INTAgreement {
 
 INTAgreement agreementFromJson(string tenantId, Json request) {
   INTAgreement a;
-  a.tenantId = tenantId;
+  a.tenantId = UUID(tenantId);
   a.agreementId = randomUUID().toString();
 
   if ("partner_id" in request && request["partner_id"].isString)
