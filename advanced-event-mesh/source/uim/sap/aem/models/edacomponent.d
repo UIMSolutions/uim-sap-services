@@ -46,30 +46,28 @@ Json` function provides a way to create an instance of `AEMEDAComponent` from a 
   * Note: The example usage demonstrates how to create a new `AEMEDAComponent` instance from a JSON request and then convert it back to JSON for an API response. The `component
 FromJson` function ensures that the `tenantId` is set and that a unique `componentId` is generated if it is not included in the request. The `toJson` method provides a standardized way to serialize the component's data for use in various parts of the application, such as API responses or database storage.
   */
-  struct AEMEDAComponent {
-  string tenantId;
+  class AEMEDAComponent : SAPTenantObject {
+    mixin(SAPObjectTemplate!AEMEDAComponent);
+
   string componentId;
   string name;
   string componentType;
   string owner;
   string lifecycle = "active";
-  SysTime updatedAt;
 
-  Json toJson() const {
-    Json resultJson = Json.emptyObject;
-    resultJson["tenant_id"] = tenantId;
+  override Json toJson() const {
+    Json resultJson = super.toJson();
     resultJson["component_id"] = componentId;
     resultJson["name"] = name;
     resultJson["component_type"] = componentType;
     resultJson["owner"] = owner;
     resultJson["lifecycle"] = lifecycle;
-    resultJson["updated_at"] = updatedAt.toISOExtString();
     return resultJson;
   }
 }
 
 AEMEDAComponent componentFromJson(string tenantId, Json request) {
-  AEMEDAComponent component;
+  AEMEDAComponent component = new AEMEDAComponent();
   component.tenantId = tenantId;
   component.componentId = randomUUID().toString();
   component.updatedAt = Clock.currTime();

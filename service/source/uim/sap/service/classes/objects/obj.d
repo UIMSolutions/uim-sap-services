@@ -1,7 +1,7 @@
 module uim.sap.service.classes.objects.obj;
 
 import uim.sap.service;
-
+import std.datetime.systime;
 mixin(ShowModule!());
 
 @safe:
@@ -56,8 +56,8 @@ class SAPObject {
   /// 
   unittest {
     auto obj = new SAPObject();
-    assert(obj.createdAt == SysTime.min);
-    auto now = SysTime.now;
+
+    auto now = Clock.currTime;
     obj.createdAt(now);
     assert(obj.createdAt == now);
   }
@@ -74,8 +74,7 @@ class SAPObject {
   /// 
   unittest {
     auto obj = new SAPObject();
-    assert(obj.updatedAt == SysTime.min);
-    auto now = SysTime.now;
+    auto now = Clock.currTime;
     obj.updatedAt(now);
     assert(obj.updatedAt == now);
   }

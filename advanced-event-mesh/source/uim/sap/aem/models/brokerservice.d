@@ -11,10 +11,10 @@ mixin(ShowModule!());
 
 @safe:
 
+class AEMBrokerService : SAPTenantObject {
+  mixin(SAPObjectTemplate!AEMBrokerService);
 
-struct AEMBrokerService {
-  string tenantId;
-  string brokerServiceId;
+  UUID brokerServiceId;
   string name;
   string plan;
   string region;
@@ -23,27 +23,21 @@ struct AEMBrokerService {
   long connectedClients;
   long eventsPublished;
 
-  SysTime createdAt;
-  SysTime updatedAt;
-
-  Json toJson() const {
-    Json payload = Json.emptyObject;
-    payload["tenant_id"] = tenantId;
-    payload["broker_service_id"] = brokerServiceId;
+  override Json toJson() const {
+    Json payload = super.toJson();
+    payload["broker_service_id"] = brokerServiceId.toString();
     payload["name"] = name;
     payload["plan"] = plan;
     payload["region"] = region;
     payload["status"] = status;
     payload["connected_clients"] = connectedClients;
     payload["events_published"] = eventsPublished;
-    payload["created_at"] = createdAt.toISOExtString();
-    payload["updated_at"] = updatedAt.toISOExtString();
     return payload;
   }
 }
 
 AEMBrokerService brokerFromJson(string tenantId, Json request, string defaultRegion) {
-    AEMBrokerService broker;
+    AEMBrokerService broker = new AEMBrokerService();
     broker.tenantId = tenantId;
     broker.brokerServiceId = randomUUID().toString();
     broker.plan = "standard";

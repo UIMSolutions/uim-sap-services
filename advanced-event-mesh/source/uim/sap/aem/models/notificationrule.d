@@ -12,32 +12,32 @@ mixin(ShowModule!());
 @safe:
 
 
-struct AEMNotificationRule {
-    string tenantId;
+class AEMNotificationRule : SAPTenantObject {
+    mixin(SAPObjectTemplate!AEMNotificationRule);
+
     string ruleId;
     string metric;
     double threshold;
     string severity = "warning";
     bool enabled = true;
     string channel = "email";
-    SysTime updatedAt;
 
-    Json toJson() const {
-        Json resultJson = Json.emptyObject;
-        resultJson["tenant_id"] = tenantId;
+    override Json toJson() const {
+        Json resultJson = super.toJson();
+
         resultJson["rule_id"] = ruleId;
         resultJson["metric"] = metric;
         resultJson["threshold"] = threshold;
         resultJson["severity"] = severity;
         resultJson["enabled"] = enabled;
         resultJson["channel"] = channel;
-        resultJson["updated_at"] = updatedAt.toISOExtString();
+
         return resultJson;
     }
 }
 
 AEMNotificationRule notificationRuleFromJson(string tenantId, string ruleId, Json request) {
-  AEMNotificationRule rule;
+  AEMNotificationRule rule = new AEMNotificationRule();
   rule.tenantId = tenantId;
   rule.ruleId = ruleId;
   rule.metric = "queue_depth";

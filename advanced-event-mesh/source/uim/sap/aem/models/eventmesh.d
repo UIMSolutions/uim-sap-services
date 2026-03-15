@@ -40,35 +40,32 @@ mixin(ShowModule!());
   * Note: The example usage demonstrates how to create a new `AEMEventMesh` instance from a JSON request and then convert it back to JSON for an API response. The `mesh
 FromJson` function ensures that the `tenantId` and `brokerServiceId` are set and that a unique `meshId` is generated if it is not included in the request. The `toJson` method provides a standardized way to serialize the event mesh's data for use in various parts of the application, such as API responses or database storage.
   */
-struct AEMEventMesh {
-    string tenantId;
+class AEMEventMesh : SAPTenantObject {
+    mixin(SAPObjectTemplate!AEMEventMesh);
+
     string meshId;
     string brokerServiceId;
     string name;
     string[] topics;
-    SysTime createdAt;
-    SysTime updatedAt;
 
-    Json toJson() const {
-        Json payload = Json.emptyObject;
+    override Json toJson() const {
+        Json payload = super.toJson();
+
         Json topicsJson = Json.emptyArray;
         foreach (topic; topics) {
             topicsJson ~= topic;
         }
 
-        payload["tenant_id"] = tenantId;
         payload["mesh_id"] = meshId;
         payload["broker_service_id"] = brokerServiceId;
         payload["name"] = name;
         payload["topics"] = topicsJson;
-        payload["created_at"] = createdAt.toISOExtString();
-        payload["updated_at"] = updatedAt.toISOExtString();
         return payload;
     }
 }
 
 AEMEventMesh meshFromJson(string tenantId, string brokerServiceId, Json request) {
-    AEMEventMesh mesh;
+    AEMEventMesh mesh = new AEMEventMesh();
     mesh.tenantId = tenantId;
     mesh.meshId = randomUUID().toString();
     mesh.brokerServiceId = brokerServiceId;

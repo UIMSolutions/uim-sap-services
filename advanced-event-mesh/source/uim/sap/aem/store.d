@@ -49,7 +49,7 @@ class AEMStore : SAPStore {
         return *value;
       }
     }
-    return AEMBrokerService.init;
+    return new AEMBrokerService;
   }
 
   AEMBrokerService[] listBrokers(string tenantId) {
@@ -82,7 +82,7 @@ class AEMStore : SAPStore {
         return *value;
       }
     }
-    return AEMEventMesh.init;
+    return new AEMEventMesh;
   }
 
   AEMEventMesh[] listMeshes(string tenantId) {
@@ -112,7 +112,7 @@ class AEMStore : SAPStore {
         return *value;
       }
     }
-    return AEMEDAComponent.init;
+    return new AEMEDAComponent;
   }
 
   AEMEDAComponent[] listComponents(string tenantId) {

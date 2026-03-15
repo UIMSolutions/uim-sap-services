@@ -47,8 +47,9 @@ mixin(ShowModule!());
   * Note: The `toJson()` method is used to serialize the alert instance into a JSON format that can be returned in API responses or stored in a database. The actual implementation of the `toJson()` method may vary based on the specific requirements of the application and the structure of the
   * JSON payload expected by the API consumers. The fields included in the JSON output can be adjusted as needed to fit the use case, and additional fields can be added to the `AEMMonitoringAlert` struct if necessary to capture more information about the alert or its context.
   */
-struct AEMMonitoringAlert {
-  string tenantId;
+class AEMMonitoringAlert : SAPTenantObject {
+  mixin(SAPObjectTemplate!AEMMonitoringAlert);
+
   string alertId;
   string metric;
   double currentValue;
@@ -56,11 +57,9 @@ struct AEMMonitoringAlert {
   string severity;
   string message;
   bool acknowledged;
-  SysTime createdAt;
 
-  Json toJson() const {
-    Json resultJson = Json.emptyObject;
-    resultJson["tenant_id"] = tenantId;
+  override Json toJson() const {
+    Json resultJson = super.toJson();
     resultJson["alert_id"] = alertId;
     resultJson["metric"] = metric;
     resultJson["current_value"] = currentValue;
@@ -68,7 +67,6 @@ struct AEMMonitoringAlert {
     resultJson["severity"] = severity;
     resultJson["message"] = message;
     resultJson["acknowledged"] = acknowledged;
-    resultJson["created_at"] = createdAt.toISOExtString();
     return resultJson;
   }
 }

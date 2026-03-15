@@ -14,7 +14,10 @@ class SAPTenantObject : SAPObject {
       return false;
     }
 
-    // Initialization logic for the object
+    if (initData.hasKey("tenant_id")) {
+      _tenantId = UUID(initData["tenant_id"].getString);
+    }
+
     return true;
   }
 
