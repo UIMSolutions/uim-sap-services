@@ -6,21 +6,21 @@ mixin(ShowModule!());
 
 @safe:
 
+class BASTemplate : SAPObject {
+  mixin(SAPObjectTemplate!BASTemplate);
 
-struct BASTemplate {
-  string templateId;
-  string scenarioId;
+  UUID templateId;
+  UUID scenarioId;
   string name;
   string language;
   bool graphicalEditor;
 
   override Json toJson()  {
-    Json info = super.toJson;
-    payload["template_id"] = templateId;
-    payload["scenario_id"] = scenarioId;
-    payload["name"] = name;
-    payload["language"] = language;
-    payload["graphical_editor"] = graphicalEditor;
-    return payload;
+    return super.toJson
+      .set("template_id", templateId)
+      .set("scenario_id", scenarioId)
+      .set("name", name)
+      .set("language", language)
+      .set("graphical_editor", graphicalEditor);
   }
 }

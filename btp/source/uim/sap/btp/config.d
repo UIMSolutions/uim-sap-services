@@ -1,6 +1,8 @@
 module uim.sap.btp.config;
 
-struct BTPConfig : SAPConfig {
+class BTPConfig : SAPConfig {
+  mixin(SAPConfigTemplate!BTPConfig);
+  
   string tenant;
   string subdomain;
   string region;

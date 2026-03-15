@@ -6,28 +6,26 @@ mixin(ShowModule!());
 
 @safe:
 
-struct ATPSchedule {
-    UUID tenantId;
-    UUID scheduleId;
-    string targetType;
-    UUID targetId;
-    string mode;
-    string expression;
-    bool active;
-    SysTime createdAt;
-    SysTime updatedAt;
+class ATPSchedule : SAPTenantObject {
+  mixin(SAPObjectTemplate!ATPSchedule);
 
-    override Json toJson()  {
-        Json payload = Json.emptyObject;
-        payload["tenant_id"] = tenantId;
-        payload["schedule_id"] = scheduleId;
-        payload["target_type"] = targetType;
-        payload["target_id"] = targetId;
-        payload["mode"] = mode;
-        payload["expression"] = expression;
-        payload["active"] = active;
-        payload["created_at"] = createdAt.toISOExtString();
-        payload["updated_at"] = updatedAt.toISOExtString();
-        return payload;
-    }
+  UUID scheduleId;
+  string targetType;
+  UUID targetId;
+  string mode;
+  string expression;
+  bool active;
+
+  override Json toJson() {
+    Json payload = super.toJson;
+
+    payload["schedule_id"] = scheduleId;
+    payload["target_type"] = targetType;
+    payload["target_id"] = targetId;
+    payload["mode"] = mode;
+    payload["expression"] = expression;
+    payload["active"] = active;
+
+    return payload;
+  }
 }

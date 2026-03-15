@@ -6,24 +6,21 @@ mixin(ShowModule!());
 
 @safe:
 
-struct BASDeployment {
-  string tenantId;
-  string workspaceId;
-  string deploymentId;
+class BASDeployment : SAPTenantObject {
+  mixin(SAPObjectTemplate!BASDeployment);
+
+  UUID workspaceId;
+  UUID deploymentId;
   string target;
   string mode;
   string status;
-  SysTime createdAt;
 
   override Json toJson()  {
-    Json info = super.toJson;
-    payload["tenant_id"] = tenantId;
-    payload["workspace_id"] = workspaceId;
-    payload["deployment_id"] = deploymentId;
-    payload["target"] = target;
-    payload["mode"] = mode;
-    payload["status"] = status;
-    payload["created_at"] = createdAt.toISOExtString();
-    return payload;
+    return super.toJson
+      .set("workspace_id", workspaceId)
+      .set("deployment_id", deploymentId)
+      .set("target", target)
+      .set("mode", mode)
+      .set("status", status);
   }
 }

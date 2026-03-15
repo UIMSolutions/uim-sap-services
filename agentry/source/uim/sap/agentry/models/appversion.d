@@ -23,7 +23,7 @@ struct AgentryAppVersion {
 }
 
 AgentryAppVersion versionFromJson(string tenantId, string appId, Json request) {
-  AgentryAppVersion appVersion;
+  AgentryAppVersion appVersion = new AgentryAppVersion;
   appVersion.tenantId = UUID(tenantId);
   appVersion.appId = appId;
   appVersion.versionId = randomUUID().toString();

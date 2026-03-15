@@ -6,20 +6,20 @@ mixin(ShowModule!());
 
 @safe:
 
-struct ATPBackup {
-    UUID tenantId;
-    UUID backupId;
-    string mode;
-    Json content;
-    SysTime createdAt;
+class ATPBackup : SAPTenantObject {
+  mixin(SAPObjectTemplate!ATPBackup);
 
-    override Json toJson()  {
-        Json payload = Json.emptyObject;
-        payload["tenant_id"] = tenantId;
-        payload["backup_id"] = backupId;
-        payload["mode"] = mode;
-        payload["content"] = content;
-        payload["created_at"] = createdAt.toISOExtString();
-        return payload;
-    }
+  UUID backupId;
+  string mode;
+  Json content;
+
+  override Json toJson() {
+    Json payload = super.toJson;
+
+    payload["backup_id"] = backupId;
+    payload["mode"] = mode;
+    payload["content"] = content;
+
+    return payload;
+  }
 }

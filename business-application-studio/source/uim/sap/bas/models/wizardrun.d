@@ -7,11 +7,12 @@ mixin(ShowModule!());
 @safe:
 
 
-struct BASWizardRun {
-  string tenantId;
-  string runId;
-  string workspaceId;
-  string templateId;
+class BASWizardRun : SAPTenantObject {
+  mixin(SAPObjectTemplate!BASWizardRun);
+
+  UUID runId;
+  UUID workspaceId;
+  UUID templateId;
   string status;
   Json input;
   Json output;
@@ -19,16 +20,14 @@ struct BASWizardRun {
   SysTime finishedAt;
 
   override Json toJson()  {
-    Json info = super.toJson;
-    payload["tenant_id"] = tenantId;
-    payload["run_id"] = runId;
-    payload["workspace_id"] = workspaceId;
-    payload["template_id"] = templateId;
-    payload["status"] = status;
-    payload["input"] = input;
-    payload["output"] = output;
-    payload["started_at"] = startedAt.toISOExtString();
-    payload["finished_at"] = finishedAt.toISOExtString();
-    return payload;
+    return super.toJson()
+      .set("run_id", runId)
+      .set("workspace_id", workspaceId)
+      .set("template_id", templateId)
+      .set("status", status)
+      .set("input", input)
+      .set("output", output)
+      .set("started_at", startedAt.toISOExtString())
+      .set("finished_at", finishedAt.toISOExtString());
   }
 }

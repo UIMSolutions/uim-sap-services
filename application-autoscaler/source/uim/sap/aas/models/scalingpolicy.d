@@ -8,7 +8,9 @@ module uim.sap.aas.models.scalingpolicy;
 import uim.sap.aas;
 @safe:
 
-struct AASScalingPolicy {
+class AASScalingPolicy : SAPObject {
+    mixin(SAPObjectTemplate!AASScalingPolicy);
+
     UUID id;
     UUID appId;
     AASMetricType metricType;
@@ -20,10 +22,10 @@ struct AASScalingPolicy {
     uint minInstances;
     uint maxInstances;
     uint cooldownSeconds = 60;
-    SysTime createdAt;
 
     override Json toJson()  {
-        Json payload = Json.emptyObject;
+        Json payload = super.toJson;
+
         payload["id"] = id.toJson;
         payload["app_id"] = appId.toJson;
         payload["metric_type"] = metricTypeToString(metricType);
@@ -35,13 +37,13 @@ struct AASScalingPolicy {
         payload["min_instances"] = cast(long)minInstances;
         payload["max_instances"] = cast(long)maxInstances;
         payload["cooldown_seconds"] = cast(long)cooldownSeconds;
-        payload["created_at"] = createdAt.toISOExtString();
+
         return payload;
     }
 }
 
 AASScalingPolicy policyFromJson(Json payload, string appId) {
-    AASScalingPolicy policy;
+    AASScalingPolicy policy = new AASScalingPolicy(payload);
     policy.id = randomUUID();
     policy.appId = toUUID(appId);
     policy.createdAt = Clock.currTime();

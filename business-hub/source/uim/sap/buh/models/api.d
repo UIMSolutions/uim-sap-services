@@ -1,66 +1,82 @@
 module uim.sap.buh.models.api;
+
 import uim.sap.buh;
 
 mixin(ShowModule!());
 
 @safe:
-struct BUHApi {
-  string id;
+
+/**
+  * Represents an API in the Business Hub.
+  * This struct is used for both API definitions and instances, as the Business Hub does not differentiate between the two.
+  *
+  * The `id` field serves as a unique identifier for the API, while `name`, `provider`, and `version` provide descriptive information.
+  * The `visibility` field indicates whether the API is public or private, and `summary` offers a brief description of the API's functionality.
+  * The `tags` array allows for categorization and easier searching of APIs based on keywords.
+  * The `createdAt` field records the timestamp of when the API was created, which can be useful for tracking and auditing purposes.
+  */
+class BUHApi : SAPObject {
+  mixin(SAPObjectTemplate!BUHApi);
+
+  UUID id;
   string name;
   string provider;
   string apiVersion;
   string visibility = "public";
   string summary;
   string[] tags;
-  SysTime createdAt;
 
-  override Json toJson()  {
-    Json info = super.toJson;
-    Json tagsJson = Json.emptyArray;
-    foreach (tag; tags) {
-      tagsJson ~= Json(tag);
+  override bool initialize(Json[string] initData = null) {
+    if (!super.initialize(initData)) {
+      return false;
     }
 
-    payload["id"] = id;
-    payload["name"] = name;
-    payload["provider"] = provider;
-    payload["version"] = apiVersion;
-    payload["visibility"] = visibility;
-    payload["summary"] = summary;
-    payload["tags"] = tagsJson;
-    payload["created_at"] = createdAt.toISOExtString();
-    return payload;
+    if ("name" in initData && initData["name"].isString) {
+      api.name = initData["name"].get!string;
+    }
+    if ("provider" in initData && initData["provider"].isString) {
+      api.provider = initData["provider"].get!string;
+    }
+    if ("version" in initData && initData["version"].isString) {
+      api.apiVersion = initData["version"].get!string;
+    }
+    if ("visibility" in initData && initData["visibility"].isString) {
+      api.visibility = initData["visibility"].get!string;
+    }
+    if ("summary" in initData && initData["summary"].isString) {
+      api.summary = initData["summary"].get!string;
+    }
+
+    if ("tags" in initData && initData["tags"].isArray) {
+      foreach (entry; initData["tags"]) {
+        if (entry.isString) {
+          api.tags ~= entry.get!string;
+        }
+      }
+    }
+
+    return true;
+  }
+
+  override Json toJson() {
+    Json jsonTags = tags.map!(tag => Json(tag)).array.toJson;
+
+    return super.toJson
+      .set("id", id)
+      .set("name", name)
+      .set("provider", provider)
+      .set("version", apiVersion)
+      .set("visibility", visibility)
+      .set("summary", summary)
+      .set("tags", jsonTags)
+      .set("created_at", createdAt.toISOExtString());
   }
 }
 
-BUHApi apiFromJson(Json payload) {
-  BUHApi api;
-  api.id = randomUUID().toString();
+BUHApi apiFromJson(Json data) {
+  BUHApi api = new BUHApi(data);
+  api.id = randomUUID();
   api.createdAt = Clock.currTime();
-
-  if ("name" in payload && payload["name"].isString) {
-    api.name = payload["name"].get!string;
-  }
-  if ("provider" in payload && payload["provider"].isString) {
-    api.provider = payload["provider"].get!string;
-  }
-  if ("version" in payload && payload["version"].isString) {
-    api.apiVersion = payload["version"].get!string;
-  }
-  if ("visibility" in payload && payload["visibility"].isString) {
-    api.visibility = payload["visibility"].get!string;
-  }
-  if ("summary" in payload && payload["summary"].isString) {
-    api.summary = payload["summary"].get!string;
-  }
-
-  if ("tags" in payload && payload["tags"].isArray) {
-    foreach (entry; payload["tags"]) {
-      if (entry.isString) {
-        api.tags ~= entry.get!string;
-      }
-    }
-  }
 
   return api;
 }
