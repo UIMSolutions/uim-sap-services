@@ -1,22 +1,22 @@
 module uim.sap.agentry.models.testrun;
 
-struct AgentryTestRun {
-  string tenantId;
-  string appId;
-  string testRunId;
-  string versionId;
+class  AgentryTestRun : SAPTenantObject {
+  mixin(SAPObjectTemplate!AgentryTestRun);
+
+  UUID appId;
+  UUID testRunId;
+  UUID versionId;
   string environment;
   string resultStatus;
   long passedCases;
   long failedCases;
   SysTime executedAt;
 
-  Json toJson() const {
-    Json result = Json.emptyObject;
-    result["tenant_id"] = tenantId;
-    result["app_id"] = appId;
-    result["test_run_id"] = testRunId;
-    result["version_id"] = versionId;
+  override Json toJson() {
+    Json result = super.toJson();
+    result["app_id"] = appId.toString();
+    result["test_run_id"] = testRunId.toString();
+    result["version_id"] = versionId.toString();
     result["environment"] = environment;
     result["result_status"] = resultStatus;
     result["passed_cases"] = passedCases;
@@ -27,19 +27,19 @@ struct AgentryTestRun {
 }
 
 AgentryTestRun testRunFromJson(string tenantId, string appId, Json request) {
-  AgentryTestRun testRun;
+  AgentryTestRun testRun = new AgentryTestRun();
   testRun.tenantId = tenantId;
-  testRun.appId = appId;
-  testRun.testRunId = randomUUID().toString();
+  testRun.appId = toUUID(appId);
+  testRun.testRunId = randomUUID();
   testRun.environment = "qa";
   testRun.resultStatus = "passed";
   testRun.executedAt = Clock.currTime();
 
   if ("test_run_id" in request && request["test_run_id"].isString) {
-    testRun.testRunId = request["test_run_id"].get!string;
+    testRun.testRunId = toUUID(request["test_run_id"].get!string);
   }
   if ("version_id" in request && request["version_id"].isString) {
-    testRun.versionId = request["version_id"].get!string;
+    testRun.versionId = toUUID(request["version_id"].get!string);
   }
   if ("environment" in request && request["environment"].isString) {
     testRun.environment = request["environment"].get!string;

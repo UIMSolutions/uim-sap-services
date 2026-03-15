@@ -19,7 +19,7 @@ mixin(ShowModule!());
   * The `fromJson` method allows creating a `CLGLogEntry` instance from a JSON payload, while the `toJson` method converts an instance back to JSON format.
   */
 struct CLGLogEntry {
-    string id;
+    UUID id;
     SysTime timestamp;
     string tenant;
     string source;

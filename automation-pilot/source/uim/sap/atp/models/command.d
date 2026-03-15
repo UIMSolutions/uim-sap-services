@@ -7,9 +7,9 @@ mixin(ShowModule!());
 @safe:
 
 struct ATPCommand {
-  string tenantId;
-  string commandId;
-  string catalogId;
+  UUID tenantId;
+  UUID commandId;
+  UUID catalogId;
   string name;
   string description;
   string commandType;

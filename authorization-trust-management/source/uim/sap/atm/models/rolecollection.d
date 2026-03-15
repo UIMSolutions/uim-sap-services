@@ -1,8 +1,8 @@
 module uim.sap.atm.models.rolecollection;
 
 struct ATMRoleCollection {
-  string tenantId;
-  string collectionId;
+  UUID tenantId;
+  UUID collectionId;
   string name;
   string description;
   string[] technicalRoleIds;

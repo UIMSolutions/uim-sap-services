@@ -1,8 +1,8 @@
 module uim.sap.atm.models.identityprovider;
 
 struct ATMIdentityProvider {
-  string tenantId;
-  string idpId;
+  UUID tenantId;
+  UUID idpId;
   string name;
   string providerType = "oidc";
   string issuer;

@@ -11,15 +11,15 @@ mixin(ShowModule!());
 // CTMNode – a logical environment in the transport landscape
 // ---------------------------------------------------------------------------
 struct CTMNode {
-    string tenantId;
-    string nodeId;
+    UUID tenantId;
+    UUID nodeId;
     string name;
     string description;
     /// Runtime: "cloud-foundry" | "abap" | "neo"
     string runtime;
     /// Global account / subaccount identifiers
-    string globalAccountId;
-    string subaccountId;
+    UUID globalAccountId;
+    UUID subaccountId;
     /// Destination name for deployment (optional)
     string destination;
     /// Whether requests to this node are imported automatically
@@ -140,9 +140,9 @@ struct CTMTransportRequest {
 // CTMImportQueueEntry – an entry in a node's import queue
 // ---------------------------------------------------------------------------
 struct CTMImportQueueEntry {
-    string tenantId;
-    string nodeId;
-    string requestId;
+    UUID tenantId;
+    UUID nodeId;
+    UUID requestId;
     /// Position in the queue (lower = earlier)
     int    position;
     /// Status: "waiting" | "importing" | "imported" | "error"

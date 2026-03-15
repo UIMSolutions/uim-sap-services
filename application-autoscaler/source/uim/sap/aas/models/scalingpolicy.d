@@ -9,8 +9,8 @@ import uim.sap.aas;
 @safe:
 
 struct AASScalingPolicy {
-    string id;
-    string appId;
+    UUID id;
+    UUID appId;
     AASMetricType metricType;
     string customMetricName;
     double scaleOutThreshold;
@@ -24,8 +24,8 @@ struct AASScalingPolicy {
 
     Json toJson() const {
         Json payload = Json.emptyObject;
-        payload["id"] = id;
-        payload["app_id"] = appId;
+        payload["id"] = id.toJson;
+        payload["app_id"] = appId.toJson;
         payload["metric_type"] = metricTypeToString(metricType);
         payload["custom_metric_name"] = customMetricName;
         payload["scale_out_threshold"] = scaleOutThreshold;
@@ -42,8 +42,8 @@ struct AASScalingPolicy {
 
 AASScalingPolicy policyFromJson(Json payload, string appId) {
     AASScalingPolicy policy;
-    policy.id = randomUUID().toString();
-    policy.appId = appId;
+    policy.id = randomUUID();
+    policy.appId = toUUID(appId);
     policy.createdAt = Clock.currTime();
 
     string textValue;

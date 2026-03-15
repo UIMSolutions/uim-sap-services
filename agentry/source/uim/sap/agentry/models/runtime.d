@@ -1,29 +1,29 @@
 module uim.sap.agentry.models.runtime;
 
-struct AgentryRuntimeInstance {
-  string tenantId;
+class AgentryRuntimeInstance : SAPTenantObject {
+  mixin(SAPObjectTemplate!AgentryRuntimeInstance);
+
   string instanceId;
   string appId;
   string targetEnvironment;
   string deployedVersionId;
   string status = "running";
-  SysTime updatedAt;
 
-  Json toJson() const {
-    Json result = Json.emptyObject;
-    result["tenant_id"] = tenantId;
+  override Json toJson() {
+    Json result = super.toJson();
+
     result["instance_id"] = instanceId;
     result["app_id"] = appId;
     result["target_environment"] = targetEnvironment;
     result["deployed_version_id"] = deployedVersionId;
     result["status"] = status;
-    result["updated_at"] = updatedAt.toISOExtString();
+
     return result;
   }
 }
 
 AgentryRuntimeInstance instanceFromJson(string tenantId, Json request) {
-  AgentryRuntimeInstance instance;
+  AgentryRuntimeInstance instance = new AgentryRuntimeInstance();
   instance.tenantId = tenantId;
   instance.instanceId = randomUUID().toString();
   instance.targetEnvironment = "prod";

@@ -3,8 +3,8 @@ module uim.sap.cps.models.site;
 module sap.cps.models.site;
 
 struct CPSSite {
-  string tenantId;
-  string siteId;
+  UUID tenantId;
+  UUID siteId;
   string name;
   string design;
   Json pages;

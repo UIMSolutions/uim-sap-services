@@ -1,9 +1,9 @@
 module uim.sap.atm.models.userassignment;
 
 struct ATMUserAssignment {
-  string tenantId;
-  string userId;
-  string idpId;
+  UUID tenantId;
+  UUID userId;
+  UUID idpId;
   string[] roleCollectionIds;
   SysTime updatedAt;
 

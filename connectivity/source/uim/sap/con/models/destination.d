@@ -6,7 +6,7 @@
 module uim.sap.con.models.destination;
 
 struct CONDestination {
-  string tenantId;
+  UUID tenantId;
   string name;
   string protocol;
   string targetHost;

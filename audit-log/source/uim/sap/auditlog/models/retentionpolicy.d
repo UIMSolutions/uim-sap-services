@@ -6,7 +6,7 @@ mixin(ShowModule!());
 @safe:
 
 struct AuditLogRetentionPolicy {
-    string tenantId;
+    UUID tenantId;
     int retentionDays;
     string plan;
     double premiumCostPerThousandEvents;

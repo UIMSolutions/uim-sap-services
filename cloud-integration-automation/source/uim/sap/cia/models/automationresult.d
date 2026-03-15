@@ -4,11 +4,11 @@ module uim.sap.cia.models.automationresult;
 // AutomationResult – outcome of an automated technical configuration step
 // ---------------------------------------------------------------------------
 struct CIAAutomationResult {
-  string tenantId;
-  string workflowId;
-  string taskId;
-  string id;
-  string targetSystemId;
+  UUID tenantId;
+  UUID workflowId;
+  UUID taskId;
+  UUID id;
+  UUID targetSystemId;
   /// Status: "running" | "success" | "failure"
   string status;
   string output;

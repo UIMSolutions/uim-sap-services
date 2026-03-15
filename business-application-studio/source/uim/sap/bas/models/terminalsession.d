@@ -8,9 +8,9 @@ mixin(ShowModule!());
 
 
 struct BASTerminalSession {
-  string tenantId;
-  string workspaceId;
-  string sessionId;
+  UUID tenantId;
+  UUID workspaceId;
+  UUID sessionId;
   string shell;
   string status;
   SysTime createdAt;

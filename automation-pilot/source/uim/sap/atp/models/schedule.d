@@ -7,10 +7,10 @@ mixin(ShowModule!());
 @safe:
 
 struct ATPSchedule {
-    string tenantId;
-    string scheduleId;
+    UUID tenantId;
+    UUID scheduleId;
     string targetType;
-    string targetId;
+    UUID targetId;
     string mode;
     string expression;
     bool active;

@@ -20,7 +20,7 @@ bool isRecommendedAuditEventType(string eventType) {
 
 struct AuditLogWriteResult {
   bool success;
-  string eventId;
+  UUID eventId;
   bool recommendedType;
 
   Json toJson() const {

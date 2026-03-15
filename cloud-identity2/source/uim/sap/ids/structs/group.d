@@ -36,10 +36,10 @@ struct GroupMeta {
  */
 struct Group {
     /// Unique identifier
-    string id;
+    UUID id;
     
     /// External identifier
-    string externalId;
+    UUID externalId;
     
     /// Display name (required)
     string displayName;

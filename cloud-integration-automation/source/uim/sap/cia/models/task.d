@@ -4,16 +4,16 @@ module uim.sap.cia.models.task;
 // Task – a single guided step in a workflow
 // ---------------------------------------------------------------------------
 struct CIATask {
-  string tenantId;
-  string workflowId;
-  string id;
+  UUID tenantId;
+  UUID workflowId;
+  UUID id;
   int order;
   string name;
   string description;
   /// Full instructions rendered for the assignee (may include parameter values)
   string instructions;
-  string assignedRoleId;
-  string assignedUserId;
+  UUID assignedRoleId;
+  UUID assignedUserId;
   bool automated;
   /// Status: "pending" | "in-progress" | "done" | "skipped" | "failed"
   string status;
