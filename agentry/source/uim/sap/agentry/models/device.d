@@ -1,7 +1,8 @@
 module uim.sap.agentry.models.device;
 
-struct AgentryDevice {
-  UUID tenantId;
+class AGTDevice : SAPTenantObject {
+   mixin(SAPObjectTemplate!AgentryDevice);  
+
   UUID deviceId;
   UUID appId;
   UUID userId;
@@ -10,39 +11,40 @@ struct AgentryDevice {
   SysTime lastSyncAt;
 
   override Json toJson()  {
-    Json result = Json.emptyObject;
-    result["tenant_id"] = tenantId;
-    result["device_id"] = deviceId;
-    result["app_id"] = appId;
-    result["user_id"] = userId;
-    result["platform"] = platform;
-    result["app_version_id"] = appVersionId;
-    result["last_sync_at"] = lastSyncAt.toISOExtString();
+    Json result = super.toJson;
+
+    result["device_id"] = deviceId.toJson;
+    result["app_id"] = appId.toJson;
+    result["user_id"] = userId.toJson;
+    result["platform"] = platform.toJson;
+    result["app_version_id"] = appVersionId.toJson;
+    result["last_sync_at"] = lastSyncAt.toISOExtString().toJson;
+
     return result;
   }
 }
 
-AgentryDevice deviceFromJson(string tenantId, Json request) {
-  AgentryDevice device;
-  device.tenantId = tenantId;
-  device.deviceId = randomUUID().toString();
+AGTDevice deviceFromJson(string tenantId, Json request) {
+  AGTDevice device = new AGTDevice(request);
+  device.tenantId = UUID(tenantId);
+  device.deviceId = randomUUID();
   device.platform = "ios";
   device.lastSyncAt = Clock.currTime();
 
   if ("device_id" in request && request["device_id"].isString) {
-    device.deviceId = request["device_id"].get!string;
+    device.deviceId = UUID(request["device_id"].get!string);
   }
   if ("app_id" in request && request["app_id"].isString) {
-    device.appId = request["app_id"].get!string;
+    device.appId = UUID(request["app_id"].get!string);
   }
   if ("user_id" in request && request["user_id"].isString) {
-    device.userId = request["user_id"].get!string;
+    device.userId = UUID(request["user_id"].get!string);
   }
   if ("platform" in request && request["platform"].isString) {
     device.platform = toLower(request["platform"].get!string);
   }
   if ("app_version_id" in request && request["app_version_id"].isString) {
-    device.appVersionId = request["app_version_id"].get!string;
+    device.appVersionId = UUID(request["app_version_id"].get!string);
   }
 
   return device;

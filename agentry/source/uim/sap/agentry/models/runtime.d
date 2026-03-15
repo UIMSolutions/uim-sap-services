@@ -24,7 +24,7 @@ class AGTRuntimeInstance : SAPTenantObject {
 
 AgentryRuntimeInstance instanceFromJson(string tenantId, Json request) {
   AgentryRuntimeInstance instance = new AgentryRuntimeInstance();
-  instance.tenantId = tenantId;
+  instance.tenantId = UUID(tenantId);
   instance.instanceId = randomUUID().toString();
   instance.targetEnvironment = "prod";
   instance.updatedAt = Clock.currTime();

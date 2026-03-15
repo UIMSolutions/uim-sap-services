@@ -23,8 +23,22 @@ mixin(ShowModule!());
   * This exception should be used to indicate issues that prevent the Agentry server from starting or functioning correctly due to misconfiguration.  
   * It can be caught and handled to provide feedback to the user or to log configuration issues for troubleshooting.
   */  
-class AGTConfigurationException : AgentryException {
-    this(string message) {
-        super("Configuration error: " ~ message);
-    }
+class AGTConfigurationException : SAPConfigurationException {
+  this(string message) {
+    super("(AGT) " ~ message);
+  }
+
+  this(string message, string file = __FILE__, size_t line = __LINE__, Throwable next = null) {
+    super("(AGT) " ~ message, file, line, next);
+  }
+}
+///
+unittest {
+  AGTConfigurationException ex1 = new AGTConfigurationException("Test message");
+  assert(ex1.message == "Configuration error: (AGT) Test message");
+
+  AGTConfigurationException ex2 = new AGTConfigurationException("Test message", "testfile.d", 123);
+  assert(ex2.message == "Configuration error: (AGT) Test message");
+  assert(ex2.file == "testfile.d");
+  assert(ex2.line == 123);
 }

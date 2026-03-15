@@ -38,7 +38,7 @@ class AEMBrokerService : SAPTenantObject {
 
 AEMBrokerService brokerFromJson(string tenantId, Json request, string defaultRegion) {
     AEMBrokerService broker = new AEMBrokerService();
-    broker.tenantId = tenantId;
+    broker.tenantId = UUID(tenantId);
     broker.brokerServiceId = randomUUID().toString();
     broker.plan = "standard";
     broker.region = defaultRegion;

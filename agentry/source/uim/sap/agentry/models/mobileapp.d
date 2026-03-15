@@ -28,7 +28,7 @@ class AGTMobileApp : SAPTenantObject {
 
 AgentryMobileApp appFromJson(string tenantId, Json request, string defaultBackend) {
   AgentryMobileApp app;
-  app.tenantId = tenantId;
+  app.tenantId = UUID(tenantId);
   app.appId = randomUUID().toString();
   app.backendSystem = defaultBackend;
   app.createdAt = Clock.currTime();

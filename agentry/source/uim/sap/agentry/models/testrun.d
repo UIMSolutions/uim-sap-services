@@ -28,7 +28,7 @@ class  AgentryTestRun : SAPTenantObject {
 
 AgentryTestRun testRunFromJson(string tenantId, string appId, Json request) {
   AgentryTestRun testRun = new AgentryTestRun();
-  testRun.tenantId = tenantId;
+  testRun.tenantId = UUID(tenantId);
   testRun.appId = toUUID(appId);
   testRun.testRunId = randomUUID();
   testRun.environment = "qa";

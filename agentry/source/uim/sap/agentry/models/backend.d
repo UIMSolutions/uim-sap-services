@@ -25,7 +25,7 @@ class AGTBackendSystem : SAPTenantObject {
 
 AgentryBackendSystem backendFromJson(string tenantId, Json request) {
   AgentryBackendSystem backend;
-  backend.tenantId = tenantId;
+  backend.tenantId = UUID(tenantId);
   backend.backendId = randomUUID().toString();
   backend.systemType = "s4hana";
   backend.authMode = "oauth2";
