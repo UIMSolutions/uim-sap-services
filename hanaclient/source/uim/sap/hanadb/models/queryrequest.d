@@ -10,7 +10,7 @@ struct HanaDBQueryRequest {
     string statement;
     Json parameters = Json.emptyArray;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json payload = Json.emptyObject;
         payload["statement"] = Json(statement);
         payload["parameters"] = parameters;

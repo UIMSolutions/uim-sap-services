@@ -27,7 +27,7 @@ struct LaunchpadTile {
     /**
      * Convert to JSON
      */
-    Json toJson() const {
+    override Json toJson()  {
         Json json = Json.emptyObject;
         json["id"] = id;
         json["title"] = title;

@@ -23,7 +23,7 @@ struct Schedule {
     SysTime nextRunAt;
     SysTime updatedAt;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json data = Json.emptyObject;
         data["tenant_id"] = tenantId;
         data["schedule_id"] = scheduleId;

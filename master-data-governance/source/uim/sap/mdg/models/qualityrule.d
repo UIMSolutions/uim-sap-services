@@ -16,7 +16,7 @@ struct MDGQualityRule {
     Json options;
     SysTime updatedAt;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json payload = Json.emptyObject;
         payload["tenant_id"] = tenantId;
         payload["rule_id"] = ruleId;

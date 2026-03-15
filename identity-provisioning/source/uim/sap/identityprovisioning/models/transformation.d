@@ -34,7 +34,7 @@ struct IPVTransformation {
   string createdAt;
   string updatedAt;
 
-  Json toJson() const {
+  override Json toJson()  {
     Json j = Json.emptyObject;
     j["tenant_id"] = tenantId;
     j["transformation_id"] = transformationId;

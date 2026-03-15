@@ -20,7 +20,7 @@ struct AlertEvent {
     string message;
     SysTime createdAt;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json data = Json.emptyObject;
         data["tenant_id"] = tenantId;
         data["alert_id"] = alertId;

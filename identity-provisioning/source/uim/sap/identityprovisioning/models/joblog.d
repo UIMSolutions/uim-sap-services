@@ -27,7 +27,7 @@ struct IPVJobLog {
   string details;
   string timestamp;
 
-  Json toJson() const {
+  override Json toJson()  {
     Json j = Json.emptyObject;
     j["tenant_id"] = tenantId;
     j["log_id"] = logId;

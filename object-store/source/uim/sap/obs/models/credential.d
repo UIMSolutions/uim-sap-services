@@ -28,7 +28,7 @@ struct OBSCredential {
   SysTime issuedAt;
   SysTime expiresAt;
 
-  Json toJson() const {
+  override Json toJson()  {
     Json j = Json.emptyObject;
     j["credential_id"] = credentialId;
     j["bucket_id"] = bucketId;

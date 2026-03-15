@@ -59,7 +59,7 @@ struct IPVJob {
   string createdAt;
   string updatedAt;
 
-  Json toJson() const {
+  override Json toJson()  {
     Json j = Json.emptyObject;
     j["tenant_id"] = tenantId;
     j["job_id"] = jobId;

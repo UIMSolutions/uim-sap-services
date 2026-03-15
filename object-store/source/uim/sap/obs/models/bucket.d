@@ -31,7 +31,7 @@ struct OBSBucket {
   SysTime createdAt;
   SysTime updatedAt;
 
-  Json toJson() const {
+  override Json toJson()  {
     Json j = Json.emptyObject;
     j["bucket_id"] = bucketId;
     j["name"] = name;

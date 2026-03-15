@@ -25,7 +25,7 @@ struct OBSReplicationConfig {
     SysTime createdAt;
     SysTime updatedAt;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json j = Json.emptyObject;
         j["config_id"] = configId;
         j["source_bucket_id"] = sourceBucketId;

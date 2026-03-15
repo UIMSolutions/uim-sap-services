@@ -29,7 +29,7 @@ struct OBSObject {
     SysTime createdAt;
     SysTime updatedAt;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json j = Json.emptyObject;
         j["object_id"] = objectId;
         j["bucket_id"] = bucketId;

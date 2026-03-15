@@ -20,7 +20,7 @@ struct OBSUploadPart {
     string etag;
     SysTime uploadedAt;
 
-    Json toJson() const {
+    override Json toJson()  {
         import std.conv : to;
         Json j = Json.emptyObject;
         j["part_number"] = partNumber;
@@ -42,7 +42,7 @@ struct OBSMultipartUpload {
     string[string] userMetadata;
     SysTime initiatedAt;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json j = Json.emptyObject;
         j["upload_id"] = uploadId;
         j["bucket_id"] = bucketId;

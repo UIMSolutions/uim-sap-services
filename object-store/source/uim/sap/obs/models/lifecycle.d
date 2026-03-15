@@ -24,7 +24,7 @@ struct OBSLifecycleRule {
     size_t daysAfterCreation;    // trigger after N days
     SysTime createdAt;
 
-    Json toJson() const {
+    override Json toJson()  {
         import std.conv : to;
         Json j = Json.emptyObject;
         j["rule_id"] = ruleId;

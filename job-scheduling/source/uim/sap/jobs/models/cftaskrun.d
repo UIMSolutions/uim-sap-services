@@ -18,7 +18,7 @@ struct CFTaskRun {
     SysTime startedAt;
     SysTime finishedAt;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json data = Json.emptyObject;
         data["tenant_id"] = tenantId;
         data["task_run_id"] = taskRunId;

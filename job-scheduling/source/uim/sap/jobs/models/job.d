@@ -25,7 +25,7 @@ struct Job {
     SysTime createdAt;
     SysTime updatedAt;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json data = Json.emptyObject;
         data["tenant_id"] = tenantId;
         data["job_id"] = jobId;
