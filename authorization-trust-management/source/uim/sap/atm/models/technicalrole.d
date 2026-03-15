@@ -27,7 +27,7 @@ struct ATMTechnicalRole {
 
 ATMTechnicalRole technicalRoleFromJson(string tenantId, string roleId, Json request) {
   ATMTechnicalRole role;
-  role.tenantId = tenantId;
+  role.tenantId = UUID(tenantId);
   role.roleId = roleId.length > 0 ? roleId : randomUUID().toString();
   role.name = role.roleId;
   role.updatedAt = Clock.currTime();

@@ -27,7 +27,7 @@ struct ATMRoleCollection {
 
 ATMRoleCollection roleCollectionFromJson(string tenantId, string collectionId, Json request) {
   ATMRoleCollection collection;
-  collection.tenantId = tenantId;
+  collection.tenantId = UUID(tenantId);
   collection.collectionId = collectionId.length > 0 ? collectionId : randomUUID().toString();
   collection.name = collection.collectionId;
   collection.updatedAt = Clock.currTime();

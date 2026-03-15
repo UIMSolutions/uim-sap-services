@@ -36,7 +36,7 @@ struct AuditLogEvent {
 
 AuditLogEvent eventFromJson(string tenantId, Json request) {
   AuditLogEvent eventItem;
-  eventItem.tenantId = tenantId;
+  eventItem.tenantId = UUID(tenantId);
   eventItem.eventId = randomUUID().toString();
   eventItem.eventType = "system_event";
   eventItem.severity = "info";

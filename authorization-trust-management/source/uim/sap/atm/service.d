@@ -303,7 +303,7 @@ class ATMService : SAPService {
     }
 
     ATMSessionContext context;
-    context.tenantId = tenantId;
+    context.tenantId = UUID(tenantId);
     context.userId = userId;
     context.idpId = idp.idpId;
     context.issuer = issuer;
@@ -362,7 +362,7 @@ class ATMService : SAPService {
 
   ATMSessionContext bootstrapContext(string tenantId) {
     ATMSessionContext context;
-    context.tenantId = tenantId;
+    context.tenantId = UUID(tenantId);
     context.userId = "bootstrap";
     context.idpId = "bootstrap";
     context.issuer = "bootstrap";
@@ -382,7 +382,7 @@ class ATMService : SAPService {
     }
 
     ATMIdentityProvider idp;
-    idp.tenantId = tenantId;
+    idp.tenantId = UUID(tenantId);
     idp.idpId = "sap-id-service";
     idp.name = _config.defaultIdpName;
     idp.providerType = "oidc";
@@ -397,7 +397,7 @@ class ATMService : SAPService {
 
     if (_store.getTechnicalRole(tenantId, "AuthTrustAdmin").roleId.length == 0) {
       ATMTechnicalRole adminRole;
-      adminRole.tenantId = tenantId;
+      adminRole.tenantId = UUID(tenantId);
       adminRole.roleId = "AuthTrustAdmin";
       adminRole.name = "Authorization and Trust Administrator";
       adminRole.description = "Manages IdP trust and role assignments";
@@ -410,7 +410,7 @@ class ATMService : SAPService {
 
     if (_store.getRoleCollection(tenantId, "ATMAdmins").collectionId.length == 0) {
       ATMRoleCollection admins;
-      admins.tenantId = tenantId;
+      admins.tenantId = UUID(tenantId);
       admins.collectionId = "ATMAdmins";
       admins.name = "ATM Administrators";
       admins.description = "Business-level role collection for ATM operators";

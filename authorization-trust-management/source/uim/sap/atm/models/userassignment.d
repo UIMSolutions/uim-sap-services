@@ -25,7 +25,7 @@ struct ATMUserAssignment {
 
 ATMUserAssignment userAssignmentFromJson(string tenantId, string userId, Json request) {
   ATMUserAssignment assignment;
-  assignment.tenantId = tenantId;
+  assignment.tenantId = UUID(tenantId);
   assignment.userId = userId;
   assignment.updatedAt = Clock.currTime();
 

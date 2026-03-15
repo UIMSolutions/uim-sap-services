@@ -37,7 +37,7 @@ struct ATMIdentityProvider {
 
 ATMIdentityProvider idpFromJson(string tenantId, string idpId, Json request) {
   ATMIdentityProvider idp;
-  idp.tenantId = tenantId;
+  idp.tenantId = UUID(tenantId);
   idp.idpId = idpId.length > 0 ? idpId : randomUUID().toString();
   idp.name = idp.idpId;
   idp.trustedAlgorithms = ["RS256", "ES256", "HS256", "none"];
