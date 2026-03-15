@@ -24,7 +24,7 @@ struct MOBSecurityPolicy {
   SysTime createdAt;
   SysTime updatedAt;
 
-  Json toJson() const {
+  override Json toJson()  {
     Json j = Json.emptyObject;
     j["app_id"] = appId;
     j["auth_type"] = cast(string)authType;

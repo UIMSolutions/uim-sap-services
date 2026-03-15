@@ -20,7 +20,7 @@ struct MOBAppVersion {
   SysTime createdAt;
   SysTime activatedAt;
 
-  Json toJson() const {
+  override Json toJson()  {
     Json j = Json.emptyObject;
     j["version_id"] = versionId;
     j["app_id"] = appId;

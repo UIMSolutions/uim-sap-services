@@ -20,7 +20,7 @@ struct MOBUserConnection {
     SysTime registeredAt;
     size_t sessionCount;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json j = Json.emptyObject;
         j["user_id"] = userId;
         j["app_id"] = appId;

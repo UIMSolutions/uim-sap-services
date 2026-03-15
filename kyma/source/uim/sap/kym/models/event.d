@@ -15,7 +15,7 @@ struct KYMEvent {
     Json data;
     SysTime timestamp;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json payload = Json.emptyObject;
         payload["id"] = id;
         payload["event_type"] = eventType;

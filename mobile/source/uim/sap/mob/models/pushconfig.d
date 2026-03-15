@@ -20,7 +20,7 @@ struct MOBPushConfig {
   SysTime createdAt;
   SysTime updatedAt;
 
-  Json toJson() const {
+  override Json toJson()  {
     Json j = Json.emptyObject;
     j["app_id"] = appId;
     j["enabled"] = enabled;

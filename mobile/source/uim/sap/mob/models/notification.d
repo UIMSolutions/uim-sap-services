@@ -22,7 +22,7 @@ struct MOBNotification {
     size_t failedCount;
     SysTime sentAt;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json j = Json.emptyObject;
         j["id"] = id;
         j["app_id"] = appId;

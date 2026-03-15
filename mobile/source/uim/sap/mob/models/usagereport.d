@@ -21,7 +21,7 @@ struct MOBUsageReport {
     string activeVersion;
     size_t offlineSyncCount;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json j = Json.emptyObject;
         j["app_id"] = appId;
         j["total_users"] = cast(long) totalUsers;
@@ -47,7 +47,7 @@ struct MOBGlobalMetrics {
     size_t totalPushSent;
     size_t totalVersions;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json j = Json.emptyObject;
         j["total_applications"] = cast(long) totalApplications;
         j["active_applications"] = cast(long) activeApplications;

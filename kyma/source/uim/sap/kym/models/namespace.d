@@ -15,7 +15,7 @@ struct KYMNamespace {
     SysTime createdAt;
     SysTime updatedAt;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json payload = Json.emptyObject;
         payload["name"] = name;
         payload["description"] = description;

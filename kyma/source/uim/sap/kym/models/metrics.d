@@ -18,7 +18,7 @@ struct KYMMetrics {
     long totalEventsDelivered;
     long totalFunctionInvocations;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json payload = Json.emptyObject;
         payload["total_namespaces"] = totalNamespaces;
         payload["total_functions"] = totalFunctions;

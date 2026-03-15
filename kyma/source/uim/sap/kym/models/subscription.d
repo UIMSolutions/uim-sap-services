@@ -21,7 +21,7 @@ struct KYMSubscription {
     SysTime createdAt;
     SysTime updatedAt;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json payload = Json.emptyObject;
         payload["id"] = id;
         payload["namespace"] = namespace;
