@@ -30,7 +30,7 @@ class CDCService : SAPService {
     return payload;
   }
 
-  Json upsertProfile(string tenantId, Json body) {
+  Json upsertProfile(string tenantId, Json data) {
     validateTenant(tenantId);
 
     auto now = Clock.currTime();
@@ -148,7 +148,7 @@ class CDCService : SAPService {
     return payload;
   }
 
-  Json upsertConsent(string tenantId, string userId, Json body) {
+  Json upsertConsent(string tenantId, string userId, Json data) {
     validateTenant(tenantId);
     if (userId.length == 0)
       throw new CDCValidationException("user_id is required");
@@ -193,7 +193,7 @@ class CDCService : SAPService {
     return payload;
   }
 
-  Json upsertSiteGroup(string tenantId, Json body) {
+  Json upsertSiteGroup(string tenantId, Json data) {
     validateTenant(tenantId);
 
     auto now = Clock.currTime();
@@ -264,7 +264,7 @@ class CDCService : SAPService {
     return payload;
   }
 
-  Json upsertRiskProvider(string tenantId, Json body) {
+  Json upsertRiskProvider(string tenantId, Json data) {
     validateTenant(tenantId);
 
     auto now = Clock.currTime();
@@ -301,7 +301,7 @@ class CDCService : SAPService {
     return payload;
   }
 
-  Json authenticate(string tenantId, Json body) {
+  Json authenticate(string tenantId, Json data) {
     validateTenant(tenantId);
 
     auto userId = readRequired(body, "user_id");

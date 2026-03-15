@@ -214,7 +214,7 @@ class DSPService : SAPService {
     item.name = name;
     item.sourceType = sourceType;
     item.mode = mode;
-    item.secure = request.getBoolean((request, "secure", true);
+    item.secure = request.getBoolean("secure", true);
     item.status = "connected";
     item.updatedAt = Clock.currTime();
 

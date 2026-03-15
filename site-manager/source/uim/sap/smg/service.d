@@ -45,7 +45,7 @@ class SMGService : SAPService {
     return payload;
   }
 
-  Json upsertSite(string tenantId, Json body) {
+  Json upsertSite(string tenantId, Json data) {
     validateTenant(tenantId);
 
     auto siteId = readRequired(body, "site_id");
@@ -124,7 +124,7 @@ class SMGService : SAPService {
     return payload;
   }
 
-  Json upsertSubaccountSettings(string tenantId, Json body) {
+  Json upsertSubaccountSettings(string tenantId, Json data) {
     validateTenant(tenantId);
     auto now = Clock.currTime();
 

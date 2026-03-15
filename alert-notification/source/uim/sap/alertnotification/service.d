@@ -422,13 +422,6 @@ class AlertNotificationService : SAPService {
     return Json.emptyObject;
   }
 
-  private bool request.getBoolean((Json request, string key, bool fallback) {
-    if (key in request && request[key].isBoolean) {
-      return request[key].get!bool;
-    }
-    return fallback;
-  }
-
   private void validateId(string value, string fieldName) {
     if (value.length == 0) {
       throw new AlertNotificationValidationException(fieldName ~ " cannot be empty");

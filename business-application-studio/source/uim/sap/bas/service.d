@@ -54,7 +54,7 @@ class BASService : SAPService {
     return payload;
   }
 
-  Json createWorkspace(string tenantId, Json body) {
+  Json createWorkspace(string tenantId, Json data) {
     validateTenant(tenantId);
 
     auto scenarioId = readRequired(body, "scenario_id");
@@ -96,7 +96,7 @@ class BASService : SAPService {
     return payload;
   }
 
-  Json runWizard(string tenantId, string workspaceId, Json body) {
+  Json runWizard(string tenantId, string workspaceId, Json data) {
     auto workspace = requireWorkspace(tenantId, workspaceId);
     auto templateId = readRequired(body, "template_id");
     if (!hasTemplate(templateId, workspace.scenarioId)) {
@@ -139,7 +139,7 @@ class BASService : SAPService {
     return payload;
   }
 
-  Json createTerminalSession(string tenantId, string workspaceId, Json body) {
+  Json createTerminalSession(string tenantId, string workspaceId, Json data) {
     auto workspace = requireWorkspace(tenantId, workspaceId);
     if (!workspace.terminalEnabled)
       throw new BASValidationException("Terminal access is disabled for workspace");
@@ -174,7 +174,7 @@ class BASService : SAPService {
     return payload;
   }
 
-  Json runLocalTest(string tenantId, string workspaceId, Json body) {
+  Json runLocalTest(string tenantId, string workspaceId, Json data) {
     auto workspace = requireWorkspace(tenantId, workspaceId);
     if (!workspace.debugEnabled)
       throw new BASValidationException("Debug mode is disabled for workspace");
@@ -188,7 +188,7 @@ class BASService : SAPService {
     return payload;
   }
 
-  Json createDeployment(string tenantId, string workspaceId, Json body) {
+  Json createDeployment(string tenantId, string workspaceId, Json data) {
     requireWorkspace(tenantId, workspaceId);
 
     auto now = Clock.currTime();

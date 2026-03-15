@@ -43,7 +43,7 @@ class CMGService : SAPService {
     return payload;
   }
 
-  Json upsertManualContent(string tenantId, string contentType, Json body) {
+  Json upsertManualContent(string tenantId, string contentType, Json data) {
     validateTenant(tenantId);
     auto normalizedType = normalizeContentType(contentType);
 
@@ -84,7 +84,7 @@ class CMGService : SAPService {
     return payload;
   }
 
-  Json upsertProvider(string tenantId, Json body) {
+  Json upsertProvider(string tenantId, Json data) {
     validateTenant(tenantId);
 
     auto now = Clock.currTime();
@@ -107,7 +107,7 @@ class CMGService : SAPService {
     return payload;
   }
 
-  Json integrateProviderContent(string tenantId, string providerId, Json body) {
+  Json integrateProviderContent(string tenantId, string providerId, Json data) {
     validateTenant(tenantId);
     if (providerId.length == 0)
       throw new CMGValidationException("provider_id is required");

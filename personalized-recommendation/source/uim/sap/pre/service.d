@@ -26,7 +26,7 @@ class PREService : SAPService {
   //  Item Catalog
   // ──────────────────────────────────────
 
-  Json addItem(string tenantId, Json body_) {
+  Json addItem(string tenantId, Json data_) {
     ensureTenant(tenantId);
     if (_store.countItems(tenantId) >= config.maxItemsPerTenant) {
       throw new PREQuotaExceededException("Maximum items per tenant exceeded");
@@ -61,7 +61,7 @@ class PREService : SAPService {
     return arr;
   }
 
-  Json updateItem(string tenantId, string itemId, Json body_) {
+  Json updateItem(string tenantId, string itemId, Json data_) {
     ensureTenant(tenantId);
     auto p = _store.getItem(tenantId, itemId);
     if (p is null) {
@@ -113,7 +113,7 @@ class PREService : SAPService {
   //  User Management
   // ──────────────────────────────────────
 
-  Json registerUser(string tenantId, Json body_) {
+  Json registerUser(string tenantId, Json data_) {
     ensureTenant(tenantId);
     if (_store.countUsers(tenantId) >= config.maxUsersPerTenant) {
       throw new PREQuotaExceededException("Maximum users per tenant exceeded");
@@ -148,7 +148,7 @@ class PREService : SAPService {
     return arr;
   }
 
-  Json updateUser(string tenantId, string userId, Json body_) {
+  Json updateUser(string tenantId, string userId, Json data_) {
     ensureTenant(tenantId);
     auto p = _store.getUser(tenantId, userId);
     if (p is null) {
@@ -187,7 +187,7 @@ class PREService : SAPService {
   //  Interaction Tracking
   // ──────────────────────────────────────
 
-  Json recordInteraction(string tenantId, Json body_) {
+  Json recordInteraction(string tenantId, Json data_) {
     ensureTenant(tenantId);
     auto interaction = interactionFromJson(body_);
     interaction.tenantId = tenantId;
@@ -239,7 +239,7 @@ class PREService : SAPService {
   //  Model Management
   // ──────────────────────────────────────
 
-  Json createModel(string tenantId, Json body_) {
+  Json createModel(string tenantId, Json data_) {
     ensureTenant(tenantId);
     if (_store.countModels(tenantId) >= config.maxModelsPerTenant) {
       throw new PREQuotaExceededException("Maximum models per tenant exceeded");
@@ -350,7 +350,7 @@ class PREService : SAPService {
   //  Scenario Management
   // ──────────────────────────────────────
 
-  Json createScenario(string tenantId, Json body_) {
+  Json createScenario(string tenantId, Json data_) {
     ensureTenant(tenantId);
     auto scenario = scenarioFromJson(body_);
     scenario.tenantId = tenantId;

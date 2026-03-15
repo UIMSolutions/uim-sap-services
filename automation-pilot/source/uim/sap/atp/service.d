@@ -60,7 +60,7 @@ class ATPService : SAPService {
     return payload;
   }
 
-  Json upsertCatalog(string tenantId, Json body) {
+  Json upsertCatalog(string tenantId, Json data) {
     validateTenant(tenantId);
     auto now = Clock.currTime();
 
@@ -91,7 +91,7 @@ class ATPService : SAPService {
     return payload;
   }
 
-  Json upsertCommand(string tenantId, string catalogId, Json body) {
+  Json upsertCommand(string tenantId, string catalogId, Json data) {
     validateTenant(tenantId);
     if (_store.getCatalog(tenantId, catalogId).isNull)
       throw new ATPNotFoundException("Catalog not found");
@@ -124,7 +124,7 @@ class ATPService : SAPService {
     return payload;
   }
 
-  Json runPredefinedCommand(string tenantId, Json body) {
+  Json runPredefinedCommand(string tenantId, Json data) {
     validateTenant(tenantId);
     auto commandId = readRequired(body, "command_id");
     auto command = requireCommand(tenantId, commandId);
@@ -163,7 +163,7 @@ class ATPService : SAPService {
     return payload;
   }
 
-  Json backupContent(string tenantId, Json body) {
+  Json backupContent(string tenantId, Json data) {
     validateTenant(tenantId);
     auto now = Clock.currTime();
 
@@ -184,7 +184,7 @@ class ATPService : SAPService {
     return payload;
   }
 
-  Json restoreContent(string tenantId, Json body) {
+  Json restoreContent(string tenantId, Json data) {
     validateTenant(tenantId);
     auto backupId = readRequired(body, "backup_id");
     auto backup = _store.getBackup(tenantId, backupId);
@@ -211,7 +211,7 @@ class ATPService : SAPService {
     return payload;
   }
 
-  Json upsertSecretInput(string tenantId, Json body) {
+  Json upsertSecretInput(string tenantId, Json data) {
     validateTenant(tenantId);
     auto now = Clock.currTime();
 
@@ -242,7 +242,7 @@ class ATPService : SAPService {
     return payload;
   }
 
-  Json upsertSchedule(string tenantId, Json body) {
+  Json upsertSchedule(string tenantId, Json data) {
     validateTenant(tenantId);
     auto now = Clock.currTime();
 
@@ -275,7 +275,7 @@ class ATPService : SAPService {
     return payload;
   }
 
-  Json upsertEventTrigger(string tenantId, Json body) {
+  Json upsertEventTrigger(string tenantId, Json data) {
     validateTenant(tenantId);
     auto now = Clock.currTime();
 
@@ -306,7 +306,7 @@ class ATPService : SAPService {
     return payload;
   }
 
-  Json fireEvent(string tenantId, Json body) {
+  Json fireEvent(string tenantId, Json data) {
     validateTenant(tenantId);
     auto source = readRequired(body, "event_source");
     auto eventType = readRequired(body, "event_type");
@@ -333,7 +333,7 @@ class ATPService : SAPService {
     return payload;
   }
 
-  Json generateAiContent(string tenantId, Json body) {
+  Json generateAiContent(string tenantId, Json data) {
     validateTenant(tenantId);
     auto prompt = readRequired(body, "prompt");
     auto contentType = readOptional(body, "content_type", "runbook");
@@ -354,7 +354,7 @@ class ATPService : SAPService {
     return payload;
   }
 
-  Json executePrivateOperation(string tenantId, Json body) {
+  Json executePrivateOperation(string tenantId, Json data) {
     validateTenant(tenantId);
     auto operationType = readOptional(body, "operation_type", "http-request");
     auto endpoint = readRequired(body, "endpoint");
@@ -429,7 +429,7 @@ class ATPService : SAPService {
       throw new ATPValidationException("tenant_id is required");
   }
 
-  private string readRequired(Json body, string key) const {
+  private string readRequired(Json data, string key) const {
     if (!(key in body) || body[key].type != Json.Type.string || body[key].get!string.length == 0) {
       throw new ATPValidationException(key ~ " is required");
     }

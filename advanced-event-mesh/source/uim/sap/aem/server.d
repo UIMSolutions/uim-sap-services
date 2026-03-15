@@ -42,7 +42,7 @@ mixin(ShowModule!());
  * - handleRequest(HTTPServerRequest req, HTTPServerResponse res): Handles incoming HTTP requests, routes them to the appropriate service methods, and sends responses back to the client.
  * - validateAuth(HTTPServerRequest req): Validates the Authorization header of the request if token authentication is enabled in the configuration.
  * - normalizedSegments(string subPath): Utility method to normalize and split the request path into segments for routing.
- * - respondError(HTTPServerResponse res, string message, int statusCode): Utility method to send an error response with a JSON body containing the error message and status code.
+ * - respondError(HTTPServerResponse res, string message, int statusCode): Utility method to send an error response with a Json data containing the error message and status code.
  */
 class AEMServer : SAPServer {
   mixin(SAPServerTemplate!AEMServer);

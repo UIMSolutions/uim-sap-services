@@ -56,7 +56,7 @@ class SDIService : SAPService {
     return payload;
   }
 
-  Json createSite(string tenantId, Json body) {
+  Json createSite(string tenantId, Json data) {
     validateTenant(tenantId);
     auto now = Clock.currTime();
 
@@ -104,7 +104,7 @@ class SDIService : SAPService {
     return payload;
   }
 
-  Json importSite(string tenantId, string siteId, Json body) {
+  Json importSite(string tenantId, string siteId, Json data) {
     validateTenant(tenantId);
     auto existing = requireSite(tenantId, siteId);
     auto now = Clock.currTime();
@@ -140,7 +140,7 @@ class SDIService : SAPService {
     return payload;
   }
 
-  Json updateAlias(string tenantId, string siteId, Json body) {
+  Json updateAlias(string tenantId, string siteId, Json data) {
     validateTenant(tenantId);
     auto site = requireSite(tenantId, siteId);
 
@@ -191,7 +191,7 @@ class SDIService : SAPService {
     return payload;
   }
 
-  Json updateSiteSettings(string tenantId, string siteId, Json body) {
+  Json updateSiteSettings(string tenantId, string siteId, Json data) {
     validateTenant(tenantId);
     auto site = requireSite(tenantId, siteId);
 
@@ -205,7 +205,7 @@ class SDIService : SAPService {
     return payload;
   }
 
-  Json assignRoles(string tenantId, string siteId, Json body) {
+  Json assignRoles(string tenantId, string siteId, Json data) {
     validateTenant(tenantId);
     auto site = requireSite(tenantId, siteId);
 

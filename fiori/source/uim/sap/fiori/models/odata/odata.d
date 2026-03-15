@@ -91,7 +91,7 @@ struct ODataBatchRequest {
     string method;     // GET, POST, PUT, PATCH, DELETE
     string url;
     string[string] headers;
-    Json body;
+    Json data;
     string contentId;  // For referencing in batch
 }
 
@@ -101,7 +101,7 @@ struct ODataBatchRequest {
 struct ODataBatchResponse {
     int statusCode;
     string[string] headers;
-    Json body;
+    Json data;
     string contentId;
 }
 

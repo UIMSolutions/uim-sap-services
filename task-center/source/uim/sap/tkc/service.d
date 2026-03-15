@@ -36,7 +36,7 @@ class TKCService : SAPService {
     return payload;
   }
 
-  Json registerProvider(Json body) {
+  Json registerProvider(Json data) {
     auto now = Clock.currTime();
 
     TKCProvider provider;
@@ -198,7 +198,7 @@ class TKCService : SAPService {
     return payload;
   }
 
-  Json performTaskAction(string tenantId, string taskId, Json body) {
+  Json performTaskAction(string tenantId, string taskId, Json data) {
     validateTenant(tenantId);
     if (taskId.length == 0)
       throw new TKCValidationException("task_id is required");

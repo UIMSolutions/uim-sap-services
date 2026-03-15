@@ -217,7 +217,7 @@ HTML";
     return payload;
   }
 
-  Json upsertProvider(string tenantId, Json body) {
+  Json upsertProvider(string tenantId, Json data) {
     validateTenant(tenantId);
     auto providerId = readRequired(body, "provider_id");
     auto now = Clock.currTime();
@@ -262,7 +262,7 @@ HTML";
     return payload;
   }
 
-  Json upsertContent(string tenantId, Json body) {
+  Json upsertContent(string tenantId, Json data) {
     validateTenant(tenantId);
     auto contentId = readRequired(body, "content_id");
     auto now = Clock.currTime();
@@ -327,7 +327,7 @@ HTML";
     return payload;
   }
 
-  Json upsertQueue(string tenantId, Json body) {
+  Json upsertQueue(string tenantId, Json data) {
     validateTenant(tenantId);
     auto queueId = readRequired(body, "queue_id");
     auto now = Clock.currTime();
@@ -366,7 +366,7 @@ HTML";
     return payload;
   }
 
-  Json createAssembly(string tenantId, Json body) {
+  Json createAssembly(string tenantId, Json data) {
     validateTenant(tenantId);
 
     auto sourceSubaccount = readRequired(body, "source_subaccount");
@@ -471,7 +471,7 @@ HTML";
     return payload;
   }
 
-  Json exportAssembly(string tenantId, string assemblyId, Json body) {
+  Json exportAssembly(string tenantId, string assemblyId, Json data) {
     validateTenant(tenantId);
     validateId(assemblyId, "assembly_id");
 

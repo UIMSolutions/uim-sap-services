@@ -38,7 +38,7 @@ private Json errorPayload(string msg, string details = "") {
   return payload;
 }
 
-private SoftwareTranslateRequest parseSoftwareRequest(Json body) {
+private SoftwareTranslateRequest parseSoftwareRequest(Json data) {
   SoftwareTranslateRequest req;
   req.sourceLanguage = body["sourceLanguage"].str;
   req.targetLanguage = body["targetLanguage"].str;
