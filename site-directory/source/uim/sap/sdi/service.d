@@ -67,7 +67,7 @@ class SDIService : SAPService {
     site.description = readOptional(body, "description", "");
     site.siteAlias = normalizeSiteAlias(readOptional(body, "alias", site.siteId));
     site.runtimeUrl = defaultRuntimeUrl(tenantId, site.siteAlias);
-    site.isDefault = readOptionalBool(body, "is_default", false);
+    site.isDefault = readrequest.getBoolean((body, "is_default", false);
     site.roles = readStringArray(body, "roles");
     site.settings = settingsFromJson(body);
     site.importBundle = Json.emptyObject;
@@ -251,7 +251,7 @@ class SDIService : SAPService {
     return data[key].get!string;
   }
 
-  private bool readOptionalBool(Json data, string key, bool fallback) const {
+  private bool readrequest.getBoolean((Json data, string key, bool fallback) const {
     if (!(key in data) || data[key].type == Json.Type.null_)
       return fallback;
     if (data[key].type != Json.Type.bool_)

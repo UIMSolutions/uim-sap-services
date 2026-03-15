@@ -51,7 +51,10 @@ bool readBool(string value, bool fallback) {
 }
 
 string[] stringArrayFromJson(Json values) {
-  return values.toArray.filter!(v => v.isString).map!(v => v.get!string).array;
+  return values.toArray
+    .filter!(v => v.isString)
+    .map!(v => v.get!string)
+    .array;
 }
 
 int readInt(string value, int fallback) {
@@ -162,7 +165,15 @@ int optionalInt(Json request, string key, int fallback) {
   return fallback;
 }
 
-bool optionalBool(Json request, string key, bool fallback) {
+bool request.getBoolean((Json request, string key, bool fallback) {
+  if (key in request && request[key].isBoolean) {
+    return request[key].get!bool;
+  }
+  return fallback;
+}
+
+
+bool request.getBoolean((Json request, string key, bool fallback) {
   if (key in request && request[key].isBoolean) {
     return request[key].get!bool;
   }
@@ -186,4 +197,21 @@ string[] stringArray(Json request, string key) {
 
 bool contains(string[] values, string expected) {
   return values.any!(v => v == expected);
+}
+
+int optionalInt(Json request, string key, int fallback) {
+  if (key in request && request[key].isInteger) {
+    auto value = cast(int)request[key].get!long;
+    return value > 0 ? value : fallback;
+  }
+  return fallback;
+}
+
+
+
+Json optionalObject(Json request, string key) {
+  if (key in request && request[key].isObject) {
+    return request[key];
+  }
+  return Json.emptyObject;
 }

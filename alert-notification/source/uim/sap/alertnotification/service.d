@@ -157,7 +157,7 @@ class AlertNotificationService : SAPService {
     sub.subscriptionId = optionalString(request, "subscription_id", createId());
     sub.name = requiredString(request, "name");
     sub.consumerId = optionalString(request, "consumer_id", "default-consumer");
-    sub.enabled = optionalBool(request, "enabled", true);
+    sub.enabled = request.getBoolean("enabled", true);
     sub.condition = buildCondition(request);
     sub.actions = buildActions(request);
     sub.createdAt = Clock.currTime();
@@ -422,7 +422,7 @@ class AlertNotificationService : SAPService {
     return Json.emptyObject;
   }
 
-  private bool optionalBool(Json request, string key, bool fallback) {
+  private bool request.getBoolean((Json request, string key, bool fallback) {
     if (key in request && request[key].isBoolean) {
       return request[key].get!bool;
     }

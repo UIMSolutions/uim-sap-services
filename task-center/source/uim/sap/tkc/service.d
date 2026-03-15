@@ -44,7 +44,7 @@ class TKCService : SAPService {
     provider.name = readRequired(body, "name");
     provider.providerType = readOptional(body, "provider_type", "sap");
     provider.endpoint = readOptional(body, "endpoint", "");
-    provider.active = readOptionalBool(body, "active", true);
+    provider.active = readrequest.getBoolean((body, "active", true);
     provider.createdAt = now;
     provider.updatedAt = now;
 
@@ -391,7 +391,7 @@ class TKCService : SAPService {
     return data[key].get!string;
   }
 
-  private bool readOptionalBool(Json data, string key, bool fallback) const {
+  private bool readrequest.getBoolean((Json data, string key, bool fallback) const {
     if (!(key in data) || data[key].type == Json.Type.null_)
       return fallback;
     if (data[key].type != Json.Type.bool_) {

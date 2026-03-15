@@ -95,7 +95,7 @@ class CMGService : SAPService {
     provider.providerType = readOptional(body, "provider_type", "remote-content");
     provider.endpoint = readOptional(body, "endpoint", "");
     provider.exposedTypes = normalizeContentTypes(readStringArray(body, "exposed_types"));
-    provider.active = readOptionalBool(body, "active", true);
+    provider.active = readrequest.getBoolean((body, "active", true);
     provider.createdAt = now;
     provider.updatedAt = now;
 
@@ -199,7 +199,7 @@ class CMGService : SAPService {
     return     data[key].get!string;
   }
 
-  private bool readOptionalBool(Json data, string key, bool fallback) const {
+  private bool readrequest.getBoolean((Json data, string key, bool fallback) const {
     if (!(key in data) || data[key].isNull)
       return fallback;
     if (!data[key].isBoolean)

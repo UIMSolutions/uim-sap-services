@@ -137,11 +137,11 @@ class SMGService : SAPService {
         : existing.get.launchpadMode));
     settings.themeId = readOptional(body, "theme_id", existing.isNull ? "sap_horizon"
         : existing.get.themeId);
-    settings.enableContentApproval = readOptionalBool(body, "enable_content_approval", existing.isNull ? false
+    settings.enableContentApproval = readrequest.getBoolean((body, "enable_content_approval", existing.isNull ? false
         : existing.get.enableContentApproval);
-    settings.enableTransport = readOptionalBool(body, "enable_transport", existing.isNull ? false
+    settings.enableTransport = readrequest.getBoolean((body, "enable_transport", existing.isNull ? false
         : existing.get.enableTransport);
-    settings.enforceRoleBasedAccess = readOptionalBool(body, "enforce_role_based_access", existing.isNull ? true
+    settings.enforceRoleBasedAccess = readrequest.getBoolean((body, "enforce_role_based_access", existing.isNull ? true
         : existing.get.enforceRoleBasedAccess);
     settings.lastChangedBy = readOptional(body, "last_changed_by", "api-user");
     settings.updatedAt = now;
@@ -182,7 +182,7 @@ class SMGService : SAPService {
     return data[key].get!string;
   }
 
-  private bool readOptionalBool(Json data, string key, bool fallback) const {
+  private bool readrequest.getBoolean((Json data, string key, bool fallback) const {
     if (!(key in data) || data[key].type == Json.Type.null_) {
       return fallback;
     }

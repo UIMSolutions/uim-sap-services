@@ -56,8 +56,8 @@ class CDCService : SAPService {
       "password",
       existing.isNull ? "changeme" : existing.get.passwordSecret
     );
-    profile.active = readOptionalBool(body, "active", existing.isNull ? true : existing.get.active);
-    profile.emailVerified = readOptionalBool(
+    profile.active = readrequest.getBoolean((body, "active", existing.isNull ? true : existing.get.active);
+    profile.emailVerified = readrequest.getBoolean((
       body,
       "email_verified",
       existing.isNull ? false : existing.get.emailVerified
@@ -274,7 +274,7 @@ class CDCService : SAPService {
     provider.providerId = readRequired(body, "provider_id");
     provider.name = readRequired(body, "name");
     provider.providerKind = normalizeProviderKind(readRequired(body, "provider_kind"));
-    provider.enabled = readOptionalBool(body, "enabled", true);
+    provider.enabled = readrequest.getBoolean((body, "enabled", true);
     provider.config = readObject(body, "config", Json.emptyObject);
     provider.createdAt = now;
     provider.updatedAt = now;
@@ -571,7 +571,7 @@ class CDCService : SAPService {
     return data[key].get!string;
   }
 
-  private bool readOptionalBool(Json data, string key, bool fallback) const {
+  private bool readrequest.getBoolean((Json data, string key, bool fallback) const {
     if (!(key in data) || data[key].isNull)
       return fallback;
     if (!data[key].isBoolean)

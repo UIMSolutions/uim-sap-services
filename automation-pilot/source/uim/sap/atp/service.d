@@ -69,7 +69,7 @@ class ATPService : SAPService {
     catalog.catalogId = readRequired(body, "catalog_id");
     catalog.name = readRequired(body, "name");
     catalog.scenario = readOptional(body, "scenario", "custom");
-    catalog.predefined = readOptionalBool(body, "predefined", false);
+    catalog.predefined = readrequest.getBoolean((body, "predefined", false);
     catalog.commandIds = readStringArray(body, "command_ids");
     catalog.createdAt = now;
     catalog.updatedAt = now;
@@ -105,7 +105,7 @@ class ATPService : SAPService {
     command.description = readOptional(body, "description", "");
     command.commandType = readOptional(body, "command_type", "script");
     command.steps = readStringArray(body, "steps");
-    command.allowPrivateEnvironment = readOptionalBool(body, "allow_private_environment", false);
+    command.allowPrivateEnvironment = readrequest.getBoolean((body, "allow_private_environment", false);
     command.defaults = readObject(body, "defaults");
     command.createdAt = now;
     command.updatedAt = now;
@@ -253,7 +253,7 @@ class ATPService : SAPService {
     schedule.targetId = readRequired(body, "target_id");
     schedule.mode = readOptional(body, "mode", "cron");
     schedule.expression = readRequired(body, "expression");
-    schedule.active = readOptionalBool(body, "active", true);
+    schedule.active = readrequest.getBoolean((body, "active", true);
     schedule.createdAt = now;
     schedule.updatedAt = now;
 
@@ -285,7 +285,7 @@ class ATPService : SAPService {
     trigger.eventSource = readRequired(body, "event_source");
     trigger.eventType = readRequired(body, "event_type");
     trigger.commandId = readRequired(body, "command_id");
-    trigger.active = readOptionalBool(body, "active", true);
+    trigger.active = readrequest.getBoolean((body, "active", true);
     trigger.createdAt = now;
 
     auto saved = _store.upsertEventTrigger(trigger);
@@ -445,7 +445,7 @@ class ATPService : SAPService {
     return data[key].get!string;
   }
 
-  private bool readOptionalBool(Json data, string key, bool fallback) const {
+  private bool readrequest.getBoolean((Json data, string key, bool fallback) const {
     if (!(key in data) || data[key].type == Json.Type.null_)
       return fallback;
     if (!data[key].isBoolean)

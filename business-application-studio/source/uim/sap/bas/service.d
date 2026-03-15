@@ -71,8 +71,8 @@ class BASService : SAPService {
     workspace.status = "RUNNING";
     workspace.accessUrl = readOptional(body, "access_url", "https://bas.example.local/" ~ tenantId ~ "/" ~ workspace
         .workspaceId);
-    workspace.terminalEnabled = readOptionalBool(body, "terminal_enabled", true);
-    workspace.debugEnabled = readOptionalBool(body, "debug_enabled", true);
+    workspace.terminalEnabled = readrequest.getBoolean((body, "terminal_enabled", true);
+    workspace.debugEnabled = readrequest.getBoolean((body, "debug_enabled", true);
     workspace.createdAt = now;
     workspace.updatedAt = now;
 
@@ -335,7 +335,7 @@ class BASService : SAPService {
     return data[key].get!string;
   }
 
-  private bool readOptionalBool(Json data, string key, bool fallback) const {
+  private bool readrequest.getBoolean((Json data, string key, bool fallback) const {
     if (!(key in data) || data[key].type == Json.Type.null_)
       return fallback;
     if (!data[key].isBoolean)

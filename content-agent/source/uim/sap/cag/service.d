@@ -237,7 +237,7 @@ HTML";
         "application", "integration", "workflow", "destination", "role"
       ];
     }
-    provider.active = readOptionalBool(body, "active", true);
+    provider.active = readrequest.getBoolean((body, "active", true);
     provider.createdAt = hasExisting ? existing.createdAt : now;
     provider.updatedAt = now;
 
@@ -341,7 +341,7 @@ HTML";
     queue.name = readRequired(body, "name");
     queue.queueType = normalizeQueueType(readRequired(body, "queue_type"));
     queue.endpoint = readOptional(body, "endpoint", "");
-    queue.active = readOptionalBool(body, "active", true);
+    queue.active = readrequest.getBoolean((body, "active", true);
     queue.createdAt = hasExisting ? existing.createdAt : now;
     queue.updatedAt = now;
 
@@ -383,7 +383,7 @@ HTML";
       }
     }
 
-    auto includeDependencies = readOptionalBool(body, "include_dependencies", true);
+    auto includeDependencies = readrequest.getBoolean((body, "include_dependencies", true);
     auto resolvedIds = requestedIds.dup;
     if (includeDependencies) {
       auto additional = resolveDependencies(tenantId, requestedIds);
@@ -622,7 +622,7 @@ HTML";
     return data[key].get!string;
   }
 
-  private bool readOptionalBool(Json data, string key, bool fallback) const {
+  private bool readrequest.getBoolean((Json data, string key, bool fallback) const {
     if (!(key in data) || data[key].isNull)
       return fallback;
     if (!data[key].isBoolean)

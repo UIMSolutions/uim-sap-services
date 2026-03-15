@@ -214,7 +214,7 @@ class DSPService : SAPService {
     item.name = name;
     item.sourceType = sourceType;
     item.mode = mode;
-    item.secure = optionalBool(request, "secure", true);
+    item.secure = request.getBoolean((request, "secure", true);
     item.status = "connected";
     item.updatedAt = Clock.currTime();
 
@@ -337,9 +337,9 @@ class DSPService : SAPService {
   Json upsertTenantAdminState(Json request) {
     DATTenantAdminState state = _store.getTenantState();
     state.tenantName = optionalString(request, "tenant_name", state.tenantName);
-    state.connectivityPrepared = optionalBool(request, "connectivity_prepared", state
+    state.connectivityPrepared = request.getBoolean((request, "connectivity_prepared", state
         .connectivityPrepared);
-    state.maintenanceMode = optionalBool(request, "maintenance_mode", state.maintenanceMode);
+    state.maintenanceMode = request.getBoolean((request, "maintenance_mode", state.maintenanceMode);
     state.lastMaintenance = optionalString(request, "last_maintenance", state.lastMaintenance);
 
     if ("users" in request)
