@@ -16,7 +16,7 @@ struct CIAScenario {
   SysTime createdAt;
   SysTime updatedAt;
 
-  Json toJson() const {
+  override Json toJson()  {
     Json j = Json.emptyObject;
     j["id"] = id;
     j["name"] = name;

@@ -16,7 +16,7 @@ struct CIAScenarioTaskTemplate {
   /// Tags such as "pre-requisite", "config", "validation", "post-config"
   string[] tags;
 
-  Json toJson() const {
+  override Json toJson()  {
     Json j = Json.emptyObject;
     j["order"] = order;
     j["name"] = name;

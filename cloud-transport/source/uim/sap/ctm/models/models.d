@@ -30,7 +30,7 @@ struct CTMNode {
     SysTime createdAt;
     SysTime updatedAt;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json j = Json.emptyObject;
         j["tenant_id"]         = tenantId;
         j["node_id"]           = nodeId;
@@ -61,7 +61,7 @@ struct CTMRoute {
     bool   active;
     SysTime createdAt;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json j = Json.emptyObject;
         j["tenant_id"]      = tenantId;
         j["route_id"]       = routeId;
@@ -89,7 +89,7 @@ struct CTMContentItem {
     string reference;
     SysTime attachedAt;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json j = Json.emptyObject;
         j["content_id"]   = contentId;
         j["request_id"]   = requestId;
@@ -121,7 +121,7 @@ struct CTMTransportRequest {
     SysTime createdAt;
     SysTime updatedAt;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json j = Json.emptyObject;
         j["tenant_id"]       = tenantId;
         j["request_id"]      = requestId;
@@ -150,7 +150,7 @@ struct CTMImportQueueEntry {
     SysTime queuedAt;
     SysTime importedAt;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json j = Json.emptyObject;
         j["tenant_id"]   = tenantId;
         j["node_id"]     = nodeId;
@@ -178,7 +178,7 @@ struct CTMTransportLog {
     string level;
     SysTime timestamp;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json j = Json.emptyObject;
         j["tenant_id"]  = tenantId;
         j["log_id"]     = logId;

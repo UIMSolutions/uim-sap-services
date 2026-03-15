@@ -27,7 +27,7 @@ struct CIDRepository {
     SysTime createdAt;
     SysTime updatedAt;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json j = Json.emptyObject;
         j["tenant_id"]      = tenantId;
         j["repo_id"]        = repoId;
@@ -64,7 +64,7 @@ struct CIDCredential {
     SysTime createdAt;
     SysTime updatedAt;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json j = Json.emptyObject;
         j["tenant_id"]       = tenantId;
         j["credential_id"]   = credentialId;
@@ -110,7 +110,7 @@ struct CIDPipeline {
     SysTime createdAt;
     SysTime updatedAt;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json j = Json.emptyObject;
         j["tenant_id"]            = tenantId;
         j["pipeline_id"]          = pipelineId;
@@ -156,7 +156,7 @@ struct CIDBuild {
     SysTime finishedAt;
     SysTime createdAt;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json j = Json.emptyObject;
         j["tenant_id"]     = tenantId;
         j["build_id"]      = buildId;
@@ -190,7 +190,7 @@ struct CIDBuildStage {
     SysTime startedAt;
     SysTime finishedAt;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json j = Json.emptyObject;
         j["build_id"]      = buildId;
         j["stage_id"]      = stageId;
@@ -218,7 +218,7 @@ struct CIDBuildLog {
     string message;
     SysTime timestamp;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json j = Json.emptyObject;
         j["tenant_id"] = tenantId;
         j["log_id"]    = logId;

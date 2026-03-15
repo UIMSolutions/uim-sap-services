@@ -8,7 +8,7 @@ struct CIARole {
   string name; // e.g. "Basis Administrator", "Cloud Admin"
   string description;
 
-  Json toJson() const {
+  override Json toJson()  {
     Json j = Json.emptyObject;
     j["id"] = id;
     j["name"] = name;

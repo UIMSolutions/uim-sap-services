@@ -15,7 +15,7 @@ struct CIAAutomationResult {
   SysTime startedAt;
   SysTime finishedAt;
 
-  Json toJson() const {
+  override Json toJson()  {
     Json j = Json.emptyObject;
     j["tenant_id"] = tenantId;
     j["workflow_id"] = workflowId;

@@ -15,7 +15,7 @@ struct CAGContentProvider {
     SysTime createdAt;
     SysTime updatedAt;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json payload = Json.emptyObject;
         payload["tenant_id"] = tenantId;
         payload["provider_id"] = providerId;
@@ -47,7 +47,7 @@ struct CAGContentItem {
     SysTime createdAt;
     SysTime updatedAt;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json payload = Json.emptyObject;
         payload["tenant_id"] = tenantId;
         payload["content_id"] = contentId;
@@ -86,7 +86,7 @@ struct CAGAssembly {
     SysTime createdAt;
     SysTime updatedAt;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json payload = Json.emptyObject;
         payload["tenant_id"] = tenantId;
         payload["assembly_id"] = assemblyId;
@@ -122,7 +122,7 @@ struct CAGTransportQueue {
     SysTime createdAt;
     SysTime updatedAt;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json payload = Json.emptyObject;
         payload["tenant_id"] = tenantId;
         payload["queue_id"] = queueId;
@@ -147,7 +147,7 @@ struct CAGTransportActivity {
     Json exportPayload;
     SysTime createdAt;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json payload = Json.emptyObject;
         payload["tenant_id"] = tenantId;
         payload["activity_id"] = activityId;

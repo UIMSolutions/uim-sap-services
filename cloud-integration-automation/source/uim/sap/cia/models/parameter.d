@@ -10,7 +10,7 @@ struct CIAParameter {
   string description;
   bool sensitive; // mask in logs/UI if true
 
-  Json toJson() const {
+  override Json toJson()  {
     Json j = Json.emptyObject;
     j["workflow_id"] = workflowId;
     j["key"] = key;

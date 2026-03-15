@@ -50,7 +50,7 @@ struct CLGLogEntry {
         return entry;
     }
 
-    Json toJson() const {
+    override Json toJson()  {
         Json payload = Json.emptyObject;
         payload["id"] = id;
         payload["timestamp"] = timestamp.toISOExtString();
