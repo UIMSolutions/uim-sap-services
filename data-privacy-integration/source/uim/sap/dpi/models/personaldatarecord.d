@@ -46,7 +46,7 @@ struct DPIPersonalDataRecord {
 
 DPIPersonalDataRecord recordFromJson(string tenantId, Json request) {
     DPIPersonalDataRecord record;
-    record.tenantId = tenantId;
+    record.tenantId = UUID(tenantId);
     record.recordId = createId();
     record.createdAt = Clock.currTime();
     record.updatedAt = record.createdAt;

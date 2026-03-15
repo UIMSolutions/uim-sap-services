@@ -70,7 +70,7 @@ class DSTService : SAPService {
     _validateProxyType(proxyType);
 
     DSTDestination d;
-    d.tenantId = tenantId;
+    d.tenantId = UUID(tenantId);
     d.name = name;
     d.description = jstr(payload, "description");
     d.url = payload["url"].get!string;
@@ -284,7 +284,7 @@ class DSTService : SAPService {
       throw new DSTValidationException("Certificate already exists: " ~ name);
 
     DSTCertificate c;
-    c.tenantId = tenantId;
+    c.tenantId = UUID(tenantId);
     c.name = name;
     c.description = jstr(payload, "description");
     c.certType = jstr(payload, "cert_type", "PEM");
@@ -402,7 +402,7 @@ class DSTService : SAPService {
   private void _appendLog(string tenantId, string destName,
     string action, string level, string message) {
     DSTAuditLog log;
-    log.tenantId = tenantId;
+    log.tenantId = UUID(tenantId);
     log.logId = _store.nextId("log");
     log.destinationName = destName;
     log.action = action;

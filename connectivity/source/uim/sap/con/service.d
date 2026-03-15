@@ -116,7 +116,7 @@ class CONService : SAPService {
 
     foreach (tenantId; _store.listTenantIds()) {
       CONTenantSummary summary;
-      summary.tenantId = tenantId;
+      summary.tenantId = UUID(tenantId);
       summary.destinations = _store.countDestinations(tenantId);
       resources ~= summary.toJson();
     }

@@ -37,7 +37,7 @@ class CDCService : SAPService {
     auto existing = _store.getProfileByTenantUser(tenantId, readRequired(body, "user_id"));
 
     CDCProfile profile;
-    profile.tenantId = tenantId;
+    profile.tenantId = UUID(tenantId);
     profile.userId = readRequired(body, "user_id");
     profile.email = readOptional(body, "email", existing.isNull ? "" : existing.get.email);
     profile.phone = readOptional(body, "phone", existing.isNull ? "" : existing.get.phone);
@@ -157,7 +157,7 @@ class CDCService : SAPService {
     auto now = Clock.currTime();
 
     CDCConsent consent;
-    consent.tenantId = tenantId;
+    consent.tenantId = UUID(tenantId);
     consent.userId = userId;
     consent.consentId = readRequired(body, "consent_id");
     consent.purpose = readRequired(body, "purpose");
@@ -199,7 +199,7 @@ class CDCService : SAPService {
     auto now = Clock.currTime();
 
     CDCSiteGroup group;
-    group.tenantId = tenantId;
+    group.tenantId = UUID(tenantId);
     group.groupId = readRequired(body, "group_id");
     group.name = readRequired(body, "name");
     group.sites = readStringArray(body, "sites");
@@ -270,7 +270,7 @@ class CDCService : SAPService {
     auto now = Clock.currTime();
 
     CDCRiskProvider provider;
-    provider.tenantId = tenantId;
+    provider.tenantId = UUID(tenantId);
     provider.providerId = readRequired(body, "provider_id");
     provider.name = readRequired(body, "name");
     provider.providerKind = normalizeProviderKind(readRequired(body, "provider_kind"));
@@ -453,7 +453,7 @@ class CDCService : SAPService {
     SysTime now
   ) {
     CDCAuthEvent event;
-    event.tenantId = tenantId;
+    event.tenantId = UUID(tenantId);
     event.eventId = "evt-" ~ to!string(now.stdTime);
     event.userId = userId;
     event.providerId = providerId;

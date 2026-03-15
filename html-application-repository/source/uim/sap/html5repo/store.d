@@ -282,7 +282,7 @@ class HARsitoryStore : SAPStore {
         }
 
         RuntimeAsset asset;
-        asset.tenantId = tenantId;
+        asset.tenantId = UUID(tenantId);
         asset.spaceId = spaceId;
         asset.appId = appId;
         asset.versionId = versionId;

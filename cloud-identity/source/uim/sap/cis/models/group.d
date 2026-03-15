@@ -73,7 +73,7 @@ unittest {
 
 CISGroup groupFromJson(string tenantId, Json request) {
   CISGroup group;
-  group.tenantId = tenantId;
+  group.tenantId = UUID(tenantId);
   group.groupId = createId();
   group.updatedAt = Clock.currTime();
   group.members = Json.emptyArray;

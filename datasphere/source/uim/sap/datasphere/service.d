@@ -52,7 +52,7 @@ class DSPService : SAPService {
     auto modelName = requiredString(request, "name");
 
     DATDataModel item;
-    item.tenantId = tenantId;
+    item.tenantId = UUID(tenantId);
     item.modelId = optionalString(request, "model_id", _store.nextId("dmodel"));
     item.name = modelName;
     item.modelType = optionalString(request, "model_type", "graphical");
@@ -139,7 +139,7 @@ class DSPService : SAPService {
     auto modelName = requiredString(request, "name");
 
     DATBusinessModel item;
-    item.tenantId = tenantId;
+    item.tenantId = UUID(tenantId);
     item.modelId = optionalString(request, "model_id", _store.nextId("bmodel"));
     item.name = modelName;
     item.description = optionalString(request, "description", "");
@@ -209,7 +209,7 @@ class DSPService : SAPService {
     }
 
     DATIntegrationConnection item;
-    item.tenantId = tenantId;
+    item.tenantId = UUID(tenantId);
     item.connectionId = optionalString(request, "connection_id", _store.nextId("conn"));
     item.name = name;
     item.sourceType = sourceType;
@@ -255,7 +255,7 @@ class DSPService : SAPService {
     validateTenant(tenantId);
 
     DATSpace item;
-    item.tenantId = tenantId;
+    item.tenantId = UUID(tenantId);
     item.spaceId = optionalString(request, "space_id", _store.nextId("space"));
     item.name = requiredString(request, "name");
     item.diskGb = optionalInt(request, "disk_gb", _config.defaultSpaceDiskGb);
@@ -373,7 +373,7 @@ class DSPService : SAPService {
     validateId(policyId, "Policy ID");
 
     DATRowPolicy item;
-    item.tenantId = tenantId;
+    item.tenantId = UUID(tenantId);
     item.policyId = policyId;
     item.dataset = requiredString(request, "dataset");
     item.expression = requiredString(request, "expression");
@@ -427,7 +427,7 @@ class DSPService : SAPService {
     validateTenant(tenantId);
 
     DATAuditEvent item;
-    item.tenantId = tenantId;
+    item.tenantId = UUID(tenantId);
     item.eventId = optionalString(request, "event_id", _store.nextId("audit"));
     item.operation = requiredString(request, "operation");
     item.layer = optionalString(request, "layer", "data");
@@ -459,7 +459,7 @@ class DSPService : SAPService {
     validateTenant(tenantId);
 
     DATGovernanceAsset item;
-    item.tenantId = tenantId;
+    item.tenantId = UUID(tenantId);
     item.assetId = optionalString(request, "asset_id", _store.nextId("asset"));
     item.title = requiredString(request, "title");
     item.assetType = optionalString(request, "asset_type", "dataset");
@@ -491,7 +491,7 @@ class DSPService : SAPService {
     validateTenant(tenantId);
 
     DATGlossaryTerm item;
-    item.tenantId = tenantId;
+    item.tenantId = UUID(tenantId);
     item.termId = optionalString(request, "term_id", _store.nextId("term"));
     item.term = requiredString(request, "term");
     item.definition = requiredString(request, "definition");
@@ -521,7 +521,7 @@ class DSPService : SAPService {
     validateTenant(tenantId);
 
     DATKpi item;
-    item.tenantId = tenantId;
+    item.tenantId = UUID(tenantId);
     item.kpiId = optionalString(request, "kpi_id", _store.nextId("kpi"));
     item.name = requiredString(request, "name");
     item.formula = requiredString(request, "formula");

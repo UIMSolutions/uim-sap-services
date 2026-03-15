@@ -41,7 +41,7 @@ struct CONDestination {
 
 CONDestination destinationFromJson(string tenantId, string name, Json request) {
   CONDestination destination;
-  destination.tenantId = tenantId;
+  destination.tenantId = UUID(tenantId);
   destination.name = name;
   destination.createdAt = Clock.currTime();
   destination.updatedAt = destination.createdAt;

@@ -109,7 +109,7 @@ unittest {
 
 CISUser userFromJson(string tenantId, Json request) {
   CISUser user;
-  user.tenantId = tenantId;
+  user.tenantId = UUID(tenantId);
   user.userId = createId();
   user.createdAt = Clock.currTime();
   user.updatedAt = user.createdAt;

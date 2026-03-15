@@ -82,7 +82,7 @@ struct FFLFlag {
 
 FFLFlag flagFromJson(string tenantId, Json request) {
     FFLFlag f;
-    f.tenantId = tenantId;
+    f.tenantId = UUID(tenantId);
     f.flagId = randomUUID().toString();
 
     if ("flag_name" in request && request["flag_name"].isString) {

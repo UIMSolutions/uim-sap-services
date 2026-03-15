@@ -236,7 +236,7 @@ class FFLService : SAPService {
     validateId(tenantId, "Tenant ID");
 
     FFLExportData data;
-    data.tenantId = tenantId;
+    data.tenantId = UUID(tenantId);
     data.exportedAt = Clock.currTime().toISOExtString();
     data.serviceVersion = _config.serviceVersion;
     data.flags = _store.listFlags(tenantId);
@@ -262,7 +262,7 @@ class FFLService : SAPService {
           throw new FFLValidationException("Each flag must have a flag_name");
         }
         // Ensure tenant ownership
-        flag.tenantId = tenantId;
+        flag.tenantId = UUID(tenantId);
         flag.updatedAt = Clock.currTime().toISOExtString();
         flags ~= flag;
       }

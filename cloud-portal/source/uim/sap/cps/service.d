@@ -143,7 +143,7 @@ class CPSService : SAPService {
     validateId(tenantId, "Tenant ID");
 
     CPSAdminSettings admin;
-    admin.tenantId = tenantId;
+    admin.tenantId = UUID(tenantId);
     admin.themes = Json.emptyArray;
     admin.transports = Json.emptyArray;
     admin.translations = Json.emptyArray;
@@ -173,7 +173,7 @@ class CPSService : SAPService {
     validateId(tenantId, "Tenant ID");
     auto admin = _store.getAdmin(tenantId);
     if (admin.tenantId.length == 0) {
-      admin.tenantId = tenantId;
+      admin.tenantId = UUID(tenantId);
       admin.themes = Json.emptyArray;
       admin.transports = Json.emptyArray;
       admin.translations = Json.emptyArray;
@@ -192,7 +192,7 @@ class CPSService : SAPService {
     validateContentType(contentType);
 
     CPSContentItem item;
-    item.tenantId = tenantId;
+    item.tenantId = UUID(tenantId);
     item.itemType = contentType;
     item.itemId = createId();
     item.configuration = Json.emptyObject;
@@ -233,7 +233,7 @@ class CPSService : SAPService {
     validateId(tenantId, "Tenant ID");
 
     CPSLaunchpadModule launchpadModule;
-    launchpadModule.tenantId = tenantId;
+    launchpadModule.tenantId = UUID(tenantId);
     launchpadModule.moduleId = createId();
     launchpadModule.personalization = true;
     launchpadModule.translation = true;
@@ -277,7 +277,7 @@ class CPSService : SAPService {
   Json upsertProvider(string tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
     CPSContentProvider provider;
-    provider.tenantId = tenantId;
+    provider.tenantId = UUID(tenantId);
     provider.providerId = createId();
     provider.saasEnabled = true;
     provider.catalogs = Json.emptyArray;

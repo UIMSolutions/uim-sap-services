@@ -250,7 +250,7 @@ HTML";
     import std.datetime : Clock;
 
     CIASystem sys;
-    sys.tenantId = tenantId;
+    sys.tenantId = UUID(tenantId);
     sys.id = payload["id"].get!string;
     sys.name = payload["name"].get!string;
     sys.systemType = "system_type" in payload ? payload["system_type"].get!string : "other";
@@ -311,7 +311,7 @@ HTML";
 
     auto wfId = _store.nextId("wf");
     CIAWorkflow wf;
-    wf.tenantId = tenantId;
+    wf.tenantId = UUID(tenantId);
     wf.id = wfId;
     wf.scenarioId = scenarioId;
     wf.scenarioName = sc.name;
@@ -333,7 +333,7 @@ HTML";
       string instr = tmpl.instructions.replace("{{systemList}}", _buildSystemList(tenantId, sysIds));
 
       CIATask task;
-      task.tenantId = tenantId;
+      task.tenantId = UUID(tenantId);
       task.workflowId = wfId;
       task.id = taskId;
       task.order = tmpl.order;
@@ -466,7 +466,7 @@ HTML";
 
     auto resultId = _store.nextId("auto");
     CIAAutomationResult result;
-    result.tenantId = tenantId;
+    result.tenantId = UUID(tenantId);
     result.workflowId = workflowId;
     result.taskId = taskId;
     result.id = resultId;
@@ -562,7 +562,7 @@ HTML";
   private void _appendLog(string tenantId, string workflowId, string taskId,
     string level, string message) {
     CIATaskLog log;
-    log.tenantId = tenantId;
+    log.tenantId = UUID(tenantId);
     log.workflowId = workflowId;
     log.taskId = taskId;
     log.id = _store.nextId("log");

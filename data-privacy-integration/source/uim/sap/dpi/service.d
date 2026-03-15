@@ -47,7 +47,7 @@ class DPIService : SAPService {
     validateId(ruleId, "Rule ID");
 
     DPIRetentionRule rule;
-    rule.tenantId = tenantId;
+    rule.tenantId = UUID(tenantId);
     rule.ruleId = ruleId;
     rule.dataCategory = "default";
     rule.retentionDays = _config.defaultRetentionDays;
@@ -143,7 +143,7 @@ class DPIService : SAPService {
       entries ~= record.toJson();
 
     DPIExport exportItem;
-    exportItem.tenantId = tenantId;
+    exportItem.tenantId = UUID(tenantId);
     exportItem.exportId = createId();
     exportItem.subjectId = subjectId;
     exportItem.records = entries;

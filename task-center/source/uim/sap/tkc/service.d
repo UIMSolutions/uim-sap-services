@@ -79,7 +79,7 @@ class TKCService : SAPService {
         throw new TKCValidationException("tasks must contain objects");
 
       TKCTask task;
-      task.tenantId = tenantId;
+      task.tenantId = UUID(tenantId);
       task.providerId = providerId;
       task.taskId = readRequired(entry, "task_id");
       task.providerTaskId = readOptional(entry, "provider_task_id", task.taskId);

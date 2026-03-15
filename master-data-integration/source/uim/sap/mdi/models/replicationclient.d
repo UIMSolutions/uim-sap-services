@@ -48,7 +48,7 @@ struct MDIReplicationClient {
 
 MDIReplicationClient clientFromJson(string tenantId, Json request) {
   MDIReplicationClient client;
-  client.tenantId = tenantId;
+  client.tenantId = UUID(tenantId);
   client.clientId = createId();
   client.updatedAt = Clock.currTime();
   client.systemType = "sap";

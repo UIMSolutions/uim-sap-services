@@ -32,7 +32,7 @@ struct CPSSite {
 
 CPSSite siteFromJson(string tenantId, Json request, string defaultTheme) {
   CPSSite site;
-  site.tenantId = tenantId;
+  site.tenantId = UUID(tenantId);
   site.siteId = createId();
   site.design = defaultTheme;
   site.pages = Json.emptyArray;

@@ -175,7 +175,7 @@ class CISService : SAPService {
     validateId(ruleId, "Rule ID");
 
     CISDelegationRule rule;
-    rule.tenantId = tenantId;
+    rule.tenantId = UUID(tenantId);
     rule.ruleId = ruleId;
     rule.updatedAt = Clock.currTime();
 
@@ -218,7 +218,7 @@ class CISService : SAPService {
     validateId(policyId, "Policy ID");
 
     CISAuthorizationPolicy policy;
-    policy.tenantId = tenantId;
+    policy.tenantId = UUID(tenantId);
     policy.policyId = policyId;
     policy.updatedAt = Clock.currTime();
     policy.allowedGroups = Json.emptyArray;
@@ -293,7 +293,7 @@ class CISService : SAPService {
     validateId(policyId, "Policy ID");
 
     CISRiskPolicy policy;
-    policy.tenantId = tenantId;
+    policy.tenantId = UUID(tenantId);
     policy.policyId = policyId;
     policy.updatedAt = Clock.currTime();
     policy.ipRanges = Json.emptyArray;
@@ -371,7 +371,7 @@ class CISService : SAPService {
     validateId(tenantId, "Tenant ID");
 
     CISProvisioningJob job;
-    job.tenantId = tenantId;
+    job.tenantId = UUID(tenantId);
     job.jobId = createId();
     job.createdAt = Clock.currTime();
     job.updatedAt = job.createdAt;
@@ -397,7 +397,7 @@ class CISService : SAPService {
     auto saved = _store.upsertJob(job);
 
     CISJobLog startLog;
-    startLog.tenantId = tenantId;
+    startLog.tenantId = UUID(tenantId);
     startLog.logId = createId();
     startLog.jobId = saved.jobId;
     startLog.level = "INFO";
@@ -438,7 +438,7 @@ class CISService : SAPService {
   Json subscribeNotifications(string tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
     CISNotificationSubscription sub;
-    sub.tenantId = tenantId;
+    sub.tenantId = UUID(tenantId);
     sub.subscriptionId = createId();
     sub.updatedAt = Clock.currTime();
 
