@@ -85,7 +85,7 @@ struct INTMapping {
   string createdAt;
   string updatedAt;
 
-  Json toJson() const {
+  override Json toJson()  {
     Json j = Json.emptyObject;
     j["tenant_id"] = tenantId;
     j["mapping_id"] = mappingId;

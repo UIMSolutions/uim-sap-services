@@ -1,7 +1,8 @@
 module uim.sap.alertnotification.models.event;
 
-struct AlertEvent {
-  UUID tenantId;
+class AlertEvent : SAPTenantObject {
+  mixin(SAPObjectTemplate!AlertEvent);
+
   UUID alertId;
   string eventType;
   string category;
@@ -11,7 +12,6 @@ struct AlertEvent {
   string message;
   Json tags;
   Json payload = Json.emptyObject;
-  SysTime createdAt;
 
   Json toJson() const {
     Json result = Json.emptyObject;

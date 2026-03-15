@@ -26,7 +26,7 @@ struct INTTradingPartner {
   string createdAt;
   string updatedAt;
 
-  Json toJson() const {
+  override Json toJson()  {
     Json j = Json.emptyObject;
     j["tenant_id"] = tenantId;
     j["partner_id"] = partnerId;
