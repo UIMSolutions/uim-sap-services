@@ -16,22 +16,19 @@ class ATMSessionContext : SAPTenantObject {
   bool bootstrap;
   SysTime authenticatedAt;
 
-  override Json toJson()  {
-    Json info = super.toJson;
-    
-    payload["user_id"] = userId.toJson;
-    payload["idp_id"] = idpId.toJson;
-    payload["issuer"] = issuer.toJson;
-    payload["audience"] = audience.toJson;
-    payload["email"] = email.toJson;
-    payload["bootstrap"] = bootstrap.toJson;
-    payload["authenticated_at"] = authenticatedAt.toISOExtString().toJson;
-    payload["groups"] = groups.toJson;
-    payload["scopes"] = scopes.toJson;
-    payload["role_collections"] = roleCollections.toJson;
-    payload["technical_roles"] = technicalRoles.toJson;
-    payload["permissions"] = permissions.toJson;
-
-    return payload;
+  override Json toJson() {
+    return super.toJson
+      .set("user_id", userId.toJson)
+      .set("idp_id", idpId.toJson)
+      .set("issuer", issuer.toJson)
+      .set("audience", audience.toJson)
+      .set("email", email.toJson)
+      .set("bootstrap", bootstrap.toJson)
+      .set("authenticated_at", authenticatedAt.toISOExtString().toJson)
+      .set("groups", groups.toJson)
+      .set("scopes", scopes.toJson)
+      .set("role_collections", roleCollections.toJson)
+      .set("technical_roles", technicalRoles.toJson)
+      .set("permissions", permissions.toJson);
   }
 }
