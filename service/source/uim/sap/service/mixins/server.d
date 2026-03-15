@@ -5,15 +5,23 @@ mixin(ShowModule!());
 
 @safe:
 string sapServerTemplate() {
-  return "
-  this() {
-    super();
-  }
+  return q{
+    this() {
+      super();
+    }
 
-  this(Json[string] initData) {
-    super(initData);
-  }
-  ";
+    this(Json initData) {
+      super(initData);
+    }
+
+    this(Json[] initData) {
+      super(initData);
+    }
+
+    this(Json[string] initData) {
+      super(initData);
+    }
+  };
 }
 
 template SAPServerTemplate(alias Symbol) {

@@ -9,11 +9,24 @@ mixin(ShowModule!());
 
 class SAPService : ISAPService {
   this() {
-    this.initialize();
+    initialize();
   }
 
-  this(Json[string] initData = null) {
-    this.initialize(initData);
+  this(Json initData) {
+    if (initData.isArray) {
+      initialize(initData.toArray);
+    }
+    if (initData.isObject) {
+      initialize(initData.toMap);
+    }
+  }
+
+  this(Json[] initData) {
+    initialize(initData);
+  }
+
+  this(Json[string] initData) {
+    initialize(initData);
   }
 
   this(ISAPConfig config) {
@@ -22,6 +35,11 @@ class SAPService : ISAPService {
     this.initialize();
   }
 
+  bool initialize(Json[] initData) {
+    // Initialization logic for the object
+    return true;
+  }
+  
   bool initialize(Json[string] initData = null) {
     // Initialization logic for the store
 
@@ -55,5 +73,4 @@ class SAPService : ISAPService {
     return readyInfo;
   }
 
-  
 }

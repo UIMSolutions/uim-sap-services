@@ -6,6 +6,28 @@ mixin(ShowModule!());
 
 @safe:
 
+/**
+  * The AlertNotificationServer class is responsible for handling incoming HTTP requests and routing them to the appropriate service methods.
+  * It validates authentication, parses request paths, and constructs JSON responses based on the service's output.
+  *
+  * The server listens on the host and port specified in the service configuration and supports the following endpoints:
+  * - GET /health: Returns the health status of the service.
+  * - GET /ready: Returns the readiness status of the service.
+  * - GET /v1/built-in-events: Lists the built-in events supported by the service.
+  * - GET /v1/delivery-options: Lists the available delivery options for alerts.
+  * - POST /v1/tenants/{tenantId}/providers/alerts: Publishes a new alert for the specified tenant.
+  * - GET /v1/tenants/{tenantId}/alerts: Lists all alerts for the specified tenant.
+  * - POST /v1/tenants/{tenantId}/alerts/search: Searches for alerts based on criteria specified in the request body.
+  * - GET /v1/tenants/{tenantId}/subscriptions: Lists all subscriptions for the specified tenant.
+  * - POST /v1/tenants/{tenantId}/subscriptions: Creates or updates a subscription for the specified tenant.
+  * - GET /v1/tenants/{tenantId}/subscriptions/{subscriptionId}: Retrieves details of a specific subscription.
+  * - PUT /v1/tenants/{tenantId}/subscriptions/{subscriptionId}: Updates a specific subscription.
+  * - DELETE /v1/tenants/{tenantId}/subscriptions/{subscriptionId}: Deletes a specific subscription.
+  * - POST /v1/tenants/{tenantId}/subscriptions/{subscriptionId}/test: Tests a specific subscription with provided data.
+  * - GET /v1/tenants/{tenantId}/deliveries: Lists all deliveries for the specified tenant.
+  * The server also handles authentication by validating the Authorization header against a configured token, if required.
+  * Error handling is implemented to return appropriate HTTP status codes and messages for various exceptions that may occur during request processing.
+  */
 class AlertNotificationServer {
   private AlertNotificationService _service;
 
