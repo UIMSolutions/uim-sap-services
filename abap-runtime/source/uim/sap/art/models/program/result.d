@@ -14,7 +14,7 @@ struct ARTProgramResult {
   Json data = Json.emptyObject;
   string program;
   SysTime timestamp;
-  string correlationId;
+  UUID correlationId;
 
   Json toJson() const {
     Json payload = Json.emptyObject;
@@ -24,7 +24,7 @@ struct ARTProgramResult {
     payload["data"] = data;
     payload["program"] = program;
     payload["timestamp"] = timestamp.toISOExtString();
-    payload["correlationId"] = correlationId;
+    payload["correlationId"] = correlationId.toJson;
     return payload;
   }
 }

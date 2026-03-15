@@ -11,6 +11,21 @@ mixin(ShowModule!());
 
 @safe:
 
+/**
+  * AgentryService implements the core business logic for managing mobile applications, runtime instances, devices, and backend systems in the Agentry UIM service.
+  * It provides methods for creating, updating, and listing these resources, as well as triggering test runs and deploying app versions to runtime instances.
+  * The service uses an underlying AgentryStore for data persistence and ensures thread safety through synchronization.
+  *
+  * Each method validates input parameters, interacts with the store to perform the necessary operations, and constructs JSON responses to be returned to API clients.
+  *
+  * The service also includes an operationsDashboard method that aggregates key metrics about the tenant's resources for monitoring purposes.
+  *
+  * Error handling is implemented through custom exceptions such as AgentryValidationException and AgentryNotFoundException, which provide meaningful error messages for invalid input or missing resources.
+  *
+  * Overall, AgentryService serves as the main entry point for handling API requests related to mobile app management in the Agentry UIM service.
+  *
+  * Note: This implementation is designed for demonstration purposes and may need further enhancements for production use, such as authentication, authorization, and more robust error handling.
+  */
 class AgentryService : SAPService {
   mixin(SAPServiceTemplate!AgentryService);
 

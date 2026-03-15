@@ -43,8 +43,8 @@ FromJson` function ensures that the `tenantId` and `brokerServiceId` are set and
 class AEMEventMesh : SAPTenantObject {
     mixin(SAPObjectTemplate!AEMEventMesh);
 
-    string meshId;
-    string brokerServiceId;
+    UUID meshId;
+    UUID brokerServiceId;
     string name;
     string[] topics;
 
@@ -56,8 +56,8 @@ class AEMEventMesh : SAPTenantObject {
             topicsJson ~= topic;
         }
 
-        payload["mesh_id"] = meshId;
-        payload["broker_service_id"] = brokerServiceId;
+        payload["mesh_id"] = meshId.toJson;
+        payload["broker_service_id"] = brokerServiceId.toJson;
         payload["name"] = name;
         payload["topics"] = topicsJson;
         return payload;
@@ -66,14 +66,14 @@ class AEMEventMesh : SAPTenantObject {
 
 AEMEventMesh meshFromJson(string tenantId, string brokerServiceId, Json request) {
     AEMEventMesh mesh = new AEMEventMesh();
-    mesh.tenantId = tenantId;
-    mesh.meshId = randomUUID().toString();
-    mesh.brokerServiceId = brokerServiceId;
+    mesh.tenantId = UUID(tenantId);
+    mesh.meshId = randomUUID();
+    mesh.brokerServiceId = UUID(brokerServiceId);
     mesh.createdAt = Clock.currTime();
     mesh.updatedAt = mesh.createdAt;
 
     if ("mesh_id" in request && request["mesh_id"].isString) {
-        mesh.meshId = request["mesh_id"].get!string;
+        mesh.meshId = UUID(request["mesh_id"].get!string);
     }
     if ("name" in request && request["name"].isString) {
         mesh.name = request["name"].get!string;
