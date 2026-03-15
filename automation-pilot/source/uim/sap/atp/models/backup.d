@@ -13,7 +13,7 @@ struct ATPBackup {
     Json content;
     SysTime createdAt;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json payload = Json.emptyObject;
         payload["tenant_id"] = tenantId;
         payload["backup_id"] = backupId;

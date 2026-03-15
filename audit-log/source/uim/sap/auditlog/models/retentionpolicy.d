@@ -12,7 +12,7 @@ struct AuditLogRetentionPolicy {
     double premiumCostPerThousandEvents;
     SysTime updatedAt;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json result = Json.emptyObject;
         result["tenant_id"] = tenantId;
         result["retention_days"] = retentionDays;

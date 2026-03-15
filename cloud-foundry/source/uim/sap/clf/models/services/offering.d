@@ -12,7 +12,7 @@ struct CLFServiceOffering {
     string provider;
     string description;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json payload = Json.emptyObject;
         payload["guid"] = guid;
         payload["label"] = label;

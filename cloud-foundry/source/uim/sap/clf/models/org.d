@@ -3,7 +3,7 @@ struct CLFOrg {
     string name;
     SysTime createdAt;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json payload = Json.emptyObject;
         payload["guid"] = guid;
         payload["name"] = name;

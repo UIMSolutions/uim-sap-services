@@ -161,7 +161,7 @@ struct User {
     /**
      * Convert user to JSON for API requests
      */
-    Json toJson() const {
+    override Json toJson()  {
         Json json = Json.emptyObject;
         
         json["schemas"] = Json(["urn:ietf:params:scim:schemas:core:2.0:User"]);

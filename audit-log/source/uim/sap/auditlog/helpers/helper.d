@@ -23,7 +23,7 @@ struct AuditLogWriteResult {
   UUID eventId;
   bool recommendedType;
 
-  Json toJson() const {
+  override Json toJson()  {
     Json result = Json.emptyObject;
     result["success"] = success;
     result["event_id"] = eventId;

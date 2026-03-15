@@ -17,7 +17,7 @@ struct ATPSchedule {
     SysTime createdAt;
     SysTime updatedAt;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json payload = Json.emptyObject;
         payload["tenant_id"] = tenantId;
         payload["schedule_id"] = scheduleId;

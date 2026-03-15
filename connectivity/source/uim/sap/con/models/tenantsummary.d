@@ -9,7 +9,7 @@ struct CONTenantSummary {
     string tenantId;
     size_t destinations;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json payload = Json.emptyObject;
         payload["tenant_id"] = tenantId;
         payload["destinations"] = cast(long)destinations;

@@ -37,7 +37,7 @@ struct Role {
     /**
      * Convert to JSON
      */
-    Json toJson() const {
+    override Json toJson()  {
         Json json = Json.emptyObject;
         
         if (id.length > 0) {

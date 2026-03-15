@@ -15,7 +15,7 @@ struct ATPEventTrigger {
     bool active;
     SysTime createdAt;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json payload = Json.emptyObject;
         payload["tenant_id"] = tenantId;
         payload["trigger_id"] = triggerId;

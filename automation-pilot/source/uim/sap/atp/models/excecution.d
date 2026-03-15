@@ -17,7 +17,7 @@ struct ATPExecution {
     SysTime startedAt;
     SysTime finishedAt;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json payload = Json.emptyObject;
         payload["tenant_id"] = tenantId;
         payload["execution_id"] = executionId;
