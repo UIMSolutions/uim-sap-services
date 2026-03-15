@@ -22,7 +22,7 @@ struct FFLPercentageEntry {
     string variationId;
     uint weight = 0;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json j = Json.emptyObject;
         j["variation_id"] = variationId;
         j["weight"] = cast(long) weight;
@@ -34,7 +34,7 @@ struct FFLPercentageRule {
     string ruleId;
     FFLPercentageEntry[] entries;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json j = Json.emptyObject;
         j["rule_id"] = ruleId;
 

@@ -15,7 +15,7 @@ struct EVMDeadLetter {
     long attemptCount;
     string failedAt;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json j = Json.emptyObject;
         j["tenant_id"] = tenantId;
         j["dead_letter_id"] = deadLetterId;

@@ -23,7 +23,7 @@ struct FFLVariation {
     string value;
     uint weight = 0; // percentage weight (0-100) for percentage delivery
 
-    Json toJson() const {
+    override Json toJson()  {
         Json j = Json.emptyObject;
         j["variation_id"] = variationId;
         j["name"] = name;

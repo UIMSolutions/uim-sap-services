@@ -18,7 +18,7 @@ struct FFLExportData {
   string serviceVersion;
   FFLFlag[] flags;
 
-  Json toJson() const {
+  override Json toJson()  {
     Json j = Json.emptyObject;
     j["tenant_id"] = tenantId;
     j["exported_at"] = exportedAt;

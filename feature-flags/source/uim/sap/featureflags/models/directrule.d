@@ -24,7 +24,7 @@ struct FFLDirectRule {
   string variationId; // for String flags — which variation to serve
   bool booleanValue = true; // for Boolean flags — override value
 
-  Json toJson() const {
+  override Json toJson()  {
     Json j = Json.emptyObject;
     j["rule_id"] = ruleId;
 

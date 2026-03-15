@@ -16,7 +16,7 @@ struct EVMSubscription {
     string createdAt;
     string updatedAt;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json j = Json.emptyObject;
         j["tenant_id"] = tenantId;
         j["subscription_id"] = subscriptionId;

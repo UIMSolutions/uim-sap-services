@@ -28,7 +28,7 @@ struct FFLEvaluation {
     string strategy;    // "default" | "direct" | "percentage"
     string evaluatedAt;
 
-    Json toJson() const {
+    override Json toJson()  {
         Json j = Json.emptyObject;
         j["flag_id"] = flagId;
         j["flag_name"] = flagName;

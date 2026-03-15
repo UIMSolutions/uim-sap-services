@@ -46,7 +46,7 @@ struct Tenant {
   SysTime createdAt;
   SysTime modifiedAt;
 
-  Json toJson() const {
+  override Json toJson()  {
     Json r = Json.emptyObject;
     r["tenant_id"] = tenantId;
     r["name"] = name;
@@ -91,7 +91,7 @@ struct Repository {
   bool encryptionEnabled = false;
   SysTime connectedAt;
 
-  Json toJson() const {
+  override Json toJson()  {
     Json r = Json.emptyObject;
     r["repository_id"] = repositoryId;
     r["tenant_id"] = tenantId;
@@ -150,7 +150,7 @@ struct Folder {
   SysTime modifiedAt;
   Json properties; // custom metadata / properties
 
-  Json toJson() const {
+  override Json toJson()  {
     Json r = Json.emptyObject;
     r["folder_id"] = folderId;
     r["tenant_id"] = tenantId;
@@ -221,7 +221,7 @@ struct Document {
   int currentVersion = 1;
   string latestVersionId;
 
-  Json toJson() const {
+  override Json toJson()  {
     Json r = Json.emptyObject;
     r["document_id"] = documentId;
     r["tenant_id"] = tenantId;
@@ -297,7 +297,7 @@ struct DocumentVersion {
   bool isMajor;
   bool encrypted = false;
 
-  Json toJson() const {
+  override Json toJson()  {
     Json r = Json.emptyObject;
     r["version_id"] = versionId;
     r["document_id"] = documentId;
@@ -361,7 +361,7 @@ struct Breadcrumb {
   string folderId;
   string name;
 
-  Json toJson() const {
+  override Json toJson()  {
     Json r = Json.emptyObject;
     r["folder_id"] = folderId;
     r["name"] = name;
@@ -392,7 +392,7 @@ struct UIComponentConfig {
   int maxUploadSizeMB = 100;
   string locale = "en";
 
-  Json toJson() const {
+  override Json toJson()  {
     Json r = Json.emptyObject;
     r["tenant_id"] = tenantId;
     r["repository_id"] = repositoryId;
@@ -466,7 +466,7 @@ struct IntegrationLink {
   SysTime createdAt;
   string createdBy;
 
-  Json toJson() const {
+  override Json toJson()  {
     Json r = Json.emptyObject;
     r["link_id"] = linkId;
     r["tenant_id"] = tenantId;
