@@ -337,7 +337,7 @@ class CPSService : SAPService {
   }
 
   private bool containsString(Json values, string needle) {
-    if (values.type != Json.Type.array || needle.length == 0)
+    if (!values.isArray || needle.length == 0)
       return false;
     foreach (item; values.get!(Json[])) {
       if (item.isString && item.get!string == needle)

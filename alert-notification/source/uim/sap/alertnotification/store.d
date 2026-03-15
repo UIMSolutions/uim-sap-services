@@ -105,6 +105,7 @@ class AlertNotificationStore : SAPStore {
   }
 
   private bool belongsTo(string key, string tenantId) {
-    return key.length > tenantId.length + 1 && key[0 .. tenantId.length] == tenantId && key[tenantId.length] == ':';
+    return key.length > tenantId.length + 1 && key[0 .. tenantId.length] == tenantId && key[tenantId
+      .length] == ':';
   }
 }

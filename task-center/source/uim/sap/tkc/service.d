@@ -56,7 +56,7 @@ class TKCService : SAPService {
     return payload;
   }
 
-  Json federateTasks(string tenantId, string providerId, Json body) {
+  Json federateTasks(string tenantId, string providerId, Json data) {
     validateTenant(tenantId);
     if (providerId.length == 0)
       throw new TKCValidationException("provider_id is required");
@@ -67,14 +67,14 @@ class TKCService : SAPService {
     if (!provider.get.active)
       throw new TKCValidationException("Provider is inactive");
 
-    if (!("tasks" in body) || body["tasks"].type != Json.Type.array) {
+    if (!("tasks" in data) || !data["tasks"].isArray) {
       throw new TKCValidationException("tasks must be an array");
     }
 
     auto now = Clock.currTime();
     Json savedTasks = Json.emptyArray;
 
-    foreach (entry; body["tasks"]) {
+    foreach (entry; data["tasks"]) {
       if (entry.type != Json.Type.object)
         throw new TKCValidationException("tasks must contain objects");
 

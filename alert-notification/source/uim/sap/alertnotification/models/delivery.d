@@ -6,8 +6,9 @@ mixin(ShowModule!());
 
 @safe:
 
-struct AlertDelivery {
-  UUID tenantId;
+class AlertDelivery : SAPTenantObject {
+  mixin(SAPObjectTemplate!AlertDelivery);
+
   UUID deliveryId;
   UUID alertId;
   UUID subscriptionId;
@@ -15,19 +16,18 @@ struct AlertDelivery {
   string target;
   string status;
   string reason;
-  SysTime createdAt;
 
   override Json toJson()  {
-    Json result = Json.emptyObject;
-    result["tenant_id"] = tenantId;
-    result["delivery_id"] = deliveryId;
-    result["alert_id"] = alertId;
-    result["subscription_id"] = subscriptionId;
-    result["action_type"] = actionType;
-    result["target"] = target;
-    result["status"] = status;
-    result["reason"] = reason;
-    result["created_at"] = createdAt.toISOExtString();
+    Json result = super.toJson();
+
+    result["delivery_id"] = deliveryId.toJson();
+    result["alert_id"] = alertId.toJson();
+    result["subscription_id"] = subscriptionId.toJson();
+    result["action_type"] = actionType.toJson();
+    result["target"] = target.toJson();
+    result["status"] = status.toJson();
+    result["reason"] = reason.toJson();
+
     return result;
   }
 }

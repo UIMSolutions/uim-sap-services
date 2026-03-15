@@ -264,7 +264,7 @@ class SDIService : SAPService {
     string[] values;
     if (!(key in data) || data[key].type == Json.Type.null_)
       return values;
-    if (data[key].type != Json.Type.array)
+    if (!data[key].isArray)
       throw new SDIValidationException(key ~ " must be an array");
     foreach (item; data[key]) {
       if (item.type != Json.Type.string)

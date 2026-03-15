@@ -51,17 +51,7 @@ bool readBool(string value, bool fallback) {
 }
 
 string[] stringArrayFromJson(Json values) {
-  string[] result;
-  if (values.type != Json.Type.array) {
-    return result;
-  }
-
-  foreach (item; values.get!(Json[])) {
-    if (item.isString) {
-      result ~= item.get!string;
-    }
-  }
-  return result;
+  return values.toArray.filter!(v => v.isString).map!(v => v.get!string).array;
 }
 
 int readInt(string value, int fallback) {
@@ -91,47 +81,109 @@ size_t readSize(string value, size_t fallback) {
   }
 }
 
-
 /// Cosine-similarity between two attribute maps (simple text-match version).
 /// Returns a value between 0.0 and 1.0.
 double attributeSimilarity(const string[string] a, const string[string] b) {
-    if (a.length == 0 || b.length == 0)
-        return 0.0;
-    size_t matches = 0;
-    size_t total = 0;
-    foreach (k, v; a) {
-        if (auto bv = k in b) {
-            total++;
-            if (*bv == v)
-                matches++;
-        } else {
-            total++;
-        }
+  if (a.length == 0 || b.length == 0)
+    return 0.0;
+  size_t matches = 0;
+  size_t total = 0;
+  foreach (k, v; a) {
+    if (auto bv = k in b) {
+      total++;
+      if (*bv == v)
+        matches++;
+    } else {
+      total++;
     }
-    foreach (k, _; b) {
-        if (k !in a)
-            total++;
-    }
-    if (total == 0)
-        return 0.0;
-    return cast(double) matches / cast(double) total;
+  }
+  foreach (k, _; b) {
+    if (k !in a)
+      total++;
+  }
+  if (total == 0)
+    return 0.0;
+  return cast(double)matches / cast(double)total;
 }
 
 /// Simple text-relevance score (case-insensitive substring match).
 double textRelevance(string text, string query) {
-    import std.uni : toLower;
-    if (query.length == 0)
-        return 0.0;
-    auto lt = text.toLower;
-    auto lq = query.toLower;
-    if (lt == lq)
-        return 1.0;
-    import std.algorithm : canFind;
-    if (lt.canFind(lq))
-        return 0.6;
+  import std.uni : toLower;
+
+  if (query.length == 0)
     return 0.0;
+  auto lt = text.toLower;
+  auto lq = query.toLower;
+  if (lt == lq)
+    return 1.0;
+  import std.algorithm : canFind;
+
+  if (lt.canFind(lq))
+    return 0.6;
+  return 0.0;
 }
 
 string nowTimestamp() {
-    return "2026-03-10T00:00:00Z";
+  return "2026-03-10T00:00:00Z";
+}
+
+void validateTenant(string tenantId) {
+  validateId(tenantId, "Tenant ID");
+}
+
+void validateId(string value, string fieldName) {
+  if (value.length == 0)
+    throw new SAPValidationException(fieldName ~ " cannot be empty");
+}
+
+string requiredString(Json request, string key) {
+  if (!(key in request) || !request[key].isString) {
+    throw new SAPValidationException(key ~ " is required");
+  }
+  auto value = request[key].get!string;
+  if (value.length == 0)
+    throw new SAPValidationException(key ~ " cannot be empty");
+  return value;
+}
+
+string optionalString(Json request, string key, string fallback) {
+  if (key in request && request[key].isString) {
+    auto value = request[key].get!string;
+    return value.length > 0 ? value : fallback;
+  }
+  return fallback;
+}
+
+int optionalInt(Json request, string key, int fallback) {
+  if (key in request && request[key].isInteger) {
+    auto value = cast(int)request[key].get!long;
+    return value > 0 ? value : fallback;
+  }
+  return fallback;
+}
+
+bool optionalBool(Json request, string key, bool fallback) {
+  if (key in request && request[key].isBoolean) {
+    return request[key].get!bool;
+  }
+  return fallback;
+}
+
+string[] stringArray(Json request, string key) {
+  string[] values;
+  if (!(key in request) || !request[key].isArray)
+    return values;
+
+  foreach (item; request[key]) {
+    if (item.isString) {
+      auto value = item.get!string;
+      if (value.length > 0)
+        values ~= value;
+    }
+  }
+  return values;
+}
+
+bool contains(string[] values, string expected) {
+  return values.any!(v => v == expected);
 }

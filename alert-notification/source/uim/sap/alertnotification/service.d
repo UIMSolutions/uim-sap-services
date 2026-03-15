@@ -51,11 +51,11 @@ class AlertNotificationService : SAPService {
 
     AlertEvent eventItem;
     eventItem.tenantId = tenantId;
-    eventItem.alertId = optionalString(request, "alert_id", createId());
+    eventItem.alertId = request.getString("alert_id", createId());
     eventItem.eventType = requiredString(request, "event_type");
-    eventItem.category = optionalString(request, "category", "platform");
-    eventItem.severity = toLower(optionalString(request, "severity", "info"));
-    eventItem.source = optionalString(request, "source", "custom-application");
+    eventItem.category = request.getString("category", "platform");
+    eventItem.severity = toLower(request.getString("severity", "info"));
+    eventItem.source = request.getString("source", "custom-application");
     eventItem.subject = requiredString(request, "subject");
     eventItem.message = requiredString(request, "message");
     eventItem.tags = optionalArray(request, "tags");
@@ -325,7 +325,7 @@ class AlertNotificationService : SAPService {
   }
 
   private bool containsAllTags(Json available, Json requested) {
-    if (requested.type != Json.Type.array || requested.length == 0) {
+    if (!requested.isArray || requested.length == 0) {
       return true;
     }
 
@@ -406,13 +406,6 @@ class AlertNotificationService : SAPService {
       throw new AlertNotificationValidationException(key ~ " cannot be empty");
     }
     return value;
-  }
-
-  private string optionalString(Json request, string key, string fallback) {
-    if (key in request && request[key].isString) {
-      return request[key].get!string;
-    }
-    return fallback;
   }
 
   private Json optionalArray(Json request, string key) {

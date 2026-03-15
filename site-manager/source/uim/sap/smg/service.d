@@ -200,7 +200,7 @@ class SMGService : SAPService {
       return values;
     }
 
-    if (data[key].type != Json.Type.array) {
+    if (!data[key].isArray) {
       throw new SMGValidationException(key ~ " must be an array");
     }
 

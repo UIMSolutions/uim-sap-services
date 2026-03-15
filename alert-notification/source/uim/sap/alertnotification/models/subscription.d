@@ -1,27 +1,30 @@
 module uim.sap.alertnotification.models.subscription;
 
-struct AlertSubscription {
-  UUID tenantId;
+import uim.sap.alertnotification;
+
+mixin(ShowModule!());
+
+@safe:
+class AlertSubscription : SAPTenantObject {
+  mixin(SAPObjectTemplate!AlertSubscription);
+
   UUID subscriptionId;
   string name;
   UUID consumerId;
   bool enabled;
   Json condition;
   Json actions;
-  SysTime createdAt;
-  SysTime updatedAt;
 
   override Json toJson()  {
-    Json result = Json.emptyObject;
-    result["tenant_id"] = tenantId;
-    result["subscription_id"] = subscriptionId;
-    result["name"] = name;
-    result["consumer_id"] = consumerId;
-    result["enabled"] = enabled;
-    result["condition"] = condition;
-    result["actions"] = actions;
-    result["created_at"] = createdAt.toISOExtString();
-    result["updated_at"] = updatedAt.toISOExtString();
+    Json result = super.toJson();
+    
+    result["subscription_id"] = subscriptionId.toJson();
+    result["name"] = name.toJson();
+    result["consumer_id"] = consumerId.toJson();
+    result["enabled"] = enabled.toJson();
+    result["condition"] = condition.toJson();
+    result["actions"] = actions.toJson();
+
     return result;
   }
 }
