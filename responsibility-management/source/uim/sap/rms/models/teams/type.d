@@ -16,8 +16,8 @@ struct TeamTypeDef {
   string name;
   string description;
 
-  Json toJson() const {
-    Json payload = Json.emptyObject;
+  override Json toJson()  {
+    Json info = super.toJson;
     payload["code"] = code;
     payload["name"] = name;
     payload["description"] = description;

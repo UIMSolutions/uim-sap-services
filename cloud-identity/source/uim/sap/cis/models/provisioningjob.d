@@ -53,8 +53,8 @@ struct CISProvisioningJob {
   SysTime createdAt;
   SysTime updatedAt;
 
-  Json toJson() const {
-    Json payload = Json.emptyObject;
+  override Json toJson()  {
+    Json info = super.toJson;
     payload["job_id"] = jobId;
     payload["tenant_id"] = tenantId;
     payload["source_system"] = sourceSystem;

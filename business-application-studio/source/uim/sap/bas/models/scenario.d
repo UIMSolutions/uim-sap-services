@@ -13,8 +13,8 @@ struct BASScenario {
   string description;
   string[] supportedSolutions;
 
-  Json toJson() const {
-    Json payload = Json.emptyObject;
+  override Json toJson()  {
+    Json info = super.toJson;
     payload["scenario_id"] = scenarioId;
     payload["name"] = name;
     payload["description"] = description;

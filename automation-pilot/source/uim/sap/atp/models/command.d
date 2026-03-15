@@ -19,8 +19,8 @@ struct ATPCommand {
   SysTime createdAt;
   SysTime updatedAt;
 
-  Json toJson() const {
-    Json payload = Json.emptyObject;
+  override Json toJson()  {
+    Json info = super.toJson;
     payload["tenant_id"] = tenantId;
     payload["command_id"] = commandId;
     payload["catalog_id"] = catalogId;

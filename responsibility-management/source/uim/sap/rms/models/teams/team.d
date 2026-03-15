@@ -14,8 +14,8 @@ struct Team {
   string description;
   TeamMember[] members;
 
-  Json toJson() const {
-    Json payload = Json.emptyObject;
+  override Json toJson()  {
+    Json info = super.toJson;
     payload["id"] = id;
     payload["name"] = name;
     payload["type_code"] = typeCode;

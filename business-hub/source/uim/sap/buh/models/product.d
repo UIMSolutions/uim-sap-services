@@ -11,8 +11,8 @@ struct BUHProduct {
   string[] apiIds;
   SysTime createdAt;
 
-  Json toJson() const {
-    Json payload = Json.emptyObject;
+  override Json toJson()  {
+    Json info = super.toJson;
     Json apiIdsJson = Json.emptyArray;
     foreach (apiId; apiIds) {
       apiIdsJson ~= Json(apiId);

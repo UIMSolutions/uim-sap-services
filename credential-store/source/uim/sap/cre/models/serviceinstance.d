@@ -15,8 +15,8 @@ struct CREServiceInstance {
   SysTime createdAt;
   SysTime updatedAt;
 
-  Json toJson() const {
-    Json payload = Json.emptyObject;
+  override Json toJson()  {
+    Json info = super.toJson;
     payload["instance_id"] = instanceId;
     payload["service_id"] = serviceId;
     payload["plan_id"] = planId;

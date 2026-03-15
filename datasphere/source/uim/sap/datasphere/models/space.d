@@ -37,8 +37,8 @@ struct DATSpace {
   bool active;
   SysTime updatedAt;
 
-  Json toJson() const {
-    Json payload = Json.emptyObject;
+  override Json toJson()  {
+    Json info = super.toJson;
     Json usersPayload = Json.emptyArray;
     foreach (user; users)
       usersPayload ~= user;

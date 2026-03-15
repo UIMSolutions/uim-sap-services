@@ -55,8 +55,8 @@ struct CISRiskPolicy {
   bool requireTwoFactor = true;
   SysTime updatedAt;
 
-  Json toJson() const {
-    Json payload = Json.emptyObject;
+  override Json toJson()  {
+    Json info = super.toJson;
     payload["policy_id"] = policyId;
     payload["tenant_id"] = tenantId;
     payload["ip_ranges"] = ipRanges;

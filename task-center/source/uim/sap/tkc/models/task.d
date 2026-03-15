@@ -31,8 +31,8 @@ struct TKCTask {
   SysTime dueAt;
   TKCTaskAction[] actionHistory;
 
-  Json toJson() const {
-    Json payload = Json.emptyObject;
+  override Json toJson()  {
+    Json info = super.toJson;
     payload["tenant_id"] = tenantId;
     payload["task_id"] = taskId;
     payload["provider_id"] = providerId;

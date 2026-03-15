@@ -16,8 +16,8 @@ struct CDCRiskProvider {
   SysTime createdAt;
   SysTime updatedAt;
 
-  Json toJson() const {
-    Json payload = Json.emptyObject;
+  override Json toJson()  {
+    Json info = super.toJson;
     payload["tenant_id"] = tenantId;
     payload["provider_id"] = providerId;
     payload["name"] = name;

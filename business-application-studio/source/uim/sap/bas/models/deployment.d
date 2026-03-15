@@ -15,8 +15,8 @@ struct BASDeployment {
   string status;
   SysTime createdAt;
 
-  Json toJson() const {
-    Json payload = Json.emptyObject;
+  override Json toJson()  {
+    Json info = super.toJson;
     payload["tenant_id"] = tenantId;
     payload["workspace_id"] = workspaceId;
     payload["deployment_id"] = deploymentId;

@@ -58,8 +58,8 @@ struct CISUser {
   SysTime createdAt;
   SysTime updatedAt;
 
-  Json toJson() const {
-    Json payload = Json.emptyObject;
+  override Json toJson()  {
+    Json info = super.toJson;
     payload["id"] = userId;
     payload["tenant_id"] = tenantId;
     payload["userName"] = userName;

@@ -14,8 +14,8 @@ struct BASTemplate {
   string language;
   bool graphicalEditor;
 
-  Json toJson() const {
-    Json payload = Json.emptyObject;
+  override Json toJson()  {
+    Json info = super.toJson;
     payload["template_id"] = templateId;
     payload["scenario_id"] = scenarioId;
     payload["name"] = name;

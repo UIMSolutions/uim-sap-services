@@ -39,8 +39,8 @@ struct KSTKeystore {
   SysTime createdAt;
   SysTime updatedAt;
 
-  Json toJson() const {
-    Json payload = Json.emptyObject;
+  override Json toJson()  {
+    Json info = super.toJson;
     payload["name"] = name;
     payload["description"] = description;
     payload["key_count"] = cast(long)keys.length;

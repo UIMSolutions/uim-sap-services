@@ -13,8 +13,8 @@ struct ATPSecretInput {
   string purpose;
   SysTime updatedAt;
 
-  Json toJson() const {
-    Json payload = Json.emptyObject;
+  override Json toJson()  {
+    Json info = super.toJson;
     payload["tenant_id"] = tenantId;
     payload["key"] = key;
     payload["masked_value"] = maskedValue;

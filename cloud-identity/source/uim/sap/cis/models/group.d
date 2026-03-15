@@ -42,8 +42,8 @@ struct CISGroup {
   Json members;
   SysTime updatedAt;
 
-  Json toJson() const {
-    Json payload = Json.emptyObject;
+  override Json toJson()  {
+    Json info = super.toJson;
     payload["id"] = groupId;
     payload["tenant_id"] = tenantId;
     payload["displayName"] = displayName;

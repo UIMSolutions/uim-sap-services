@@ -39,8 +39,8 @@ struct DATIntegrationConnection {
   string status;
   SysTime updatedAt;
 
-  Json toJson() const {
-    Json payload = Json.emptyObject;
+  override Json toJson()  {
+    Json info = super.toJson;
     payload["tenant_id"] = tenantId;
     payload["connection_id"] = connectionId;
     payload["name"] = name;

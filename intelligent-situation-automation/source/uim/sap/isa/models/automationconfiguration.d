@@ -22,8 +22,8 @@ struct AutomationConfiguration {
   SysTime createdAt;
   SysTime updatedAt;
 
-  Json toJson() const {
-    Json payload = Json.emptyObject;
+  override Json toJson()  {
+    Json info = super.toJson;
     Json rules = Json.emptyArray;
     foreach (rule; businessRules) {
       rules ~= rule.toJson();

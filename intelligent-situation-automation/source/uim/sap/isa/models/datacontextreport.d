@@ -13,8 +13,8 @@ struct DataContextReport {
   string importedFrom;
   SysTime importedAt;
 
-  Json toJson() const {
-    Json payload = Json.emptyObject;
+  override Json toJson()  {
+    Json info = super.toJson;
     payload["id"] = id;
     payload["tenant_id"] = tenantId;
     payload["title"] = title;

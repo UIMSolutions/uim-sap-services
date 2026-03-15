@@ -17,8 +17,8 @@ struct SDISiteSettings {
   bool allowPersonalization = true;
   bool enableNotifications = true;
 
-  Json toJson() const {
-    Json payload = Json.emptyObject;
+  override Json toJson()  {
+    Json info = super.toJson;
     payload["theme"] = theme;
     payload["home_page"] = homePage;
     payload["allow_personalization"] = allowPersonalization;

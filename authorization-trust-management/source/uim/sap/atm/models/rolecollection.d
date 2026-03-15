@@ -8,8 +8,8 @@ struct ATMRoleCollection {
   string[] technicalRoleIds;
   SysTime updatedAt;
 
-  Json toJson() const {
-    Json payload = Json.emptyObject;
+  override Json toJson()  {
+    Json info = super.toJson;
     Json roleRefs = Json.emptyArray;
     foreach (roleId; technicalRoleIds) {
       roleRefs ~= roleId;

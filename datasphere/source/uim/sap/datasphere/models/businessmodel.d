@@ -36,8 +36,8 @@ struct DATBusinessModel {
   string[] measures;
   SysTime updatedAt;
 
-  Json toJson() const {
-    Json payload = Json.emptyObject;
+  override Json toJson()  {
+    Json info = super.toJson;
     Json dimPayload = Json.emptyArray;
     Json measurePayload = Json.emptyArray;
 

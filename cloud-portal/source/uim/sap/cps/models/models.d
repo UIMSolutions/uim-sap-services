@@ -24,8 +24,8 @@ struct CPSLaunchpadModule {
   bool customThemes;
   SysTime updatedAt;
 
-  Json toJson() const {
-    Json payload = Json.emptyObject;
+  override Json toJson()  {
+    Json info = super.toJson;
     payload["tenant_id"] = tenantId;
     payload["module_id"] = moduleId;
     payload["solution_name"] = solutionName;
@@ -45,8 +45,8 @@ struct CPSContentProvider {
   Json catalogs;
   SysTime updatedAt;
 
-  Json toJson() const {
-    Json payload = Json.emptyObject;
+  override Json toJson()  {
+    Json info = super.toJson;
     payload["tenant_id"] = tenantId;
     payload["provider_id"] = providerId;
     payload["solution_name"] = solutionName;

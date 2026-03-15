@@ -15,8 +15,8 @@ struct CLGMetrics {
   size_t totalEntries;
   long[CLGLogLevel] entriesByLevel;
 
-  Json toJson() const {
-    Json payload = Json.emptyObject;
+  override Json toJson()  {
+    Json info = super.toJson;
     payload["totalEntries"] = cast(long)totalEntries;
 
     Json levels = Json.emptyObject;

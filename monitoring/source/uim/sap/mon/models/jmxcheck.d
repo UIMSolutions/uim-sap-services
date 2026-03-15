@@ -50,8 +50,8 @@ struct MONJMXCheck {
   bool enabled;
   SysTime createdAt;
 
-  Json toJson() const {
-    Json payload = Json.emptyObject;
+  override Json toJson()  {
+    Json info = super.toJson;
     payload["check_id"] = checkId;
     payload["target_id"] = targetId;
     payload["mbean"] = mbean;

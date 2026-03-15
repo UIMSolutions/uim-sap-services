@@ -4,9 +4,10 @@ import uim.sap.isa;
 mixin(ShowModule!());
 
 @safe:
-struct SituationInstance {
+class SituationInstance : SAPTenantObject {
+  mixin(SAPObjectTemplate!SituationInstance);
+
   UUID id;
-  UUID tenantId;
   string situationType;
   UUID templateId;
   string entityType;
@@ -17,10 +18,9 @@ struct SituationInstance {
   SysTime occurredAt;
   SysTime resolvedAt;
 
-  Json toJson() const {
-    Json payload = Json.emptyObject;
+  override Json toJson()  {
+    Json info = super.toJson;
     payload["id"] = id;
-    payload["tenant_id"] = tenantId;
     payload["situation_type"] = situationType;
     payload["template_id"] = templateId;
     payload["entity_type"] = entityType;

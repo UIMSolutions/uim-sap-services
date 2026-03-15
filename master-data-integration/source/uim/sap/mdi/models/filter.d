@@ -38,8 +38,8 @@ struct MDIFilter {
   bool active;
   SysTime updatedAt;
 
-  Json toJson() const {
-    Json payload = Json.emptyObject;
+  override Json toJson()  {
+    Json info = super.toJson;
     payload["tenant_id"] = tenantId;
     payload["filter_id"] = filterId;
     payload["object_type"] = objectType;

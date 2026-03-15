@@ -21,8 +21,8 @@ struct MONCustomCheck {
   int expectedStatus;
   SysTime createdAt;
 
-  Json toJson() const {
-    Json payload = Json.emptyObject;
+  override Json toJson()  {
+    Json info = super.toJson;
     payload["check_id"] = checkId;
     payload["name"] = name;
     payload["target_type"] = targetType;

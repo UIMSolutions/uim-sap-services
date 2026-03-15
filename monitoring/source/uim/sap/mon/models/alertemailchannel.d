@@ -28,8 +28,8 @@ struct MONAlertEmailChannel {
   string subjectPrefix;
   SysTime updatedAt;
 
-  Json toJson() const {
-    Json payload = Json.emptyObject;
+  override Json toJson()  {
+    Json info = super.toJson;
     Json recipientList = Json.emptyArray;
     foreach (item; recipients) {
       recipientList ~= item;

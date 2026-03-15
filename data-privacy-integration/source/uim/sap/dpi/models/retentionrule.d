@@ -24,8 +24,8 @@ struct DPIRetentionRule {
   bool active;
   SysTime updatedAt;
 
-  Json toJson() const {
-    Json payload = Json.emptyObject;
+  override Json toJson()  {
+    Json info = super.toJson;
     payload["tenant_id"] = tenantId;
     payload["rule_id"] = ruleId;
     payload["data_category"] = dataCategory;

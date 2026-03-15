@@ -7,8 +7,8 @@ struct ATMUserAssignment {
   string[] roleCollectionIds;
   SysTime updatedAt;
 
-  Json toJson() const {
-    Json payload = Json.emptyObject;
+  override Json toJson()  {
+    Json info = super.toJson;
     Json refs = Json.emptyArray;
     foreach (roleCollectionId; roleCollectionIds) {
       refs ~= roleCollectionId;

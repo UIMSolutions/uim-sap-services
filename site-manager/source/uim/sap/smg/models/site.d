@@ -47,8 +47,8 @@ struct SMGSite {
   SysTime createdAt;
   SysTime updatedAt;
 
-  Json toJson() const {
-    Json payload = Json.emptyObject;
+  override Json toJson()  {
+    Json info = super.toJson;
     payload["tenant_id"] = tenantId;
     payload["site_id"] = siteId;
     payload["site_name"] = siteName;

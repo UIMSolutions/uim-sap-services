@@ -42,8 +42,8 @@ struct CISNotificationSubscription {
   string callbackUrl;
   SysTime updatedAt;
 
-  Json toJson() const {
-    Json payload = Json.emptyObject;
+  override Json toJson()  {
+    Json info = super.toJson;
     payload["subscription_id"] = subscriptionId;
     payload["tenant_id"] = tenantId;
     payload["source_system"] = sourceSystem;

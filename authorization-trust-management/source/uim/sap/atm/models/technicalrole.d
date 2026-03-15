@@ -8,8 +8,8 @@ struct ATMTechnicalRole {
   string[] permissions;
   SysTime updatedAt;
 
-  Json toJson() const {
-    Json payload = Json.emptyObject;
+  override Json toJson()  {
+    Json info = super.toJson;
     Json perms = Json.emptyArray;
     foreach (permission; permissions) {
       perms ~= permission;

@@ -16,8 +16,8 @@ struct ARTProgramResult {
   SysTime timestamp;
   UUID correlationId;
 
-  Json toJson() const {
-    Json payload = Json.emptyObject;
+  override Json toJson()  {
+    Json info = super.toJson;
     payload["success"] = success;
     payload["message"] = message;
     payload["statusCode"] = statusCode;

@@ -39,8 +39,8 @@ struct DATDataModel {
   string status;
   SysTime updatedAt;
 
-  Json toJson() const {
-    Json payload = Json.emptyObject;
+  override Json toJson()  {
+    Json info = super.toJson;
     Json sourcePayload = Json.emptyArray;
     foreach (source; sources)
       sourcePayload ~= source;

@@ -44,8 +44,8 @@ struct CISJobLog {
   string message;
   SysTime createdAt;
 
-  Json toJson() const {
-    Json payload = Json.emptyObject;
+  override Json toJson()  {
+    Json info = super.toJson;
     payload["log_id"] = logId;
     payload["tenant_id"] = tenantId;
     payload["job_id"] = jobId;

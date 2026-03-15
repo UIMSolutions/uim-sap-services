@@ -34,8 +34,8 @@ struct DATAuditEvent {
   string details;
   SysTime createdAt;
 
-  Json toJson() const {
-    Json payload = Json.emptyObject;
+  override Json toJson()  {
+    Json info = super.toJson;
     payload["tenant_id"] = tenantId;
     payload["event_id"] = eventId;
     payload["operation"] = operation;

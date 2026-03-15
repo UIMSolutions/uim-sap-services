@@ -20,8 +20,8 @@ struct KSTSignResult {
   bool verified;
   SysTime timestamp;
 
-  Json toJson() const {
-    Json payload = Json.emptyObject;
+  override Json toJson()  {
+    Json info = super.toJson;
     payload["keystore"] = keystoreName;
     payload["key_alias"] = keyAlias;
     payload["algorithm"] = algorithm;

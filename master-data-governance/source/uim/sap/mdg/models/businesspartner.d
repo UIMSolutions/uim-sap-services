@@ -25,8 +25,8 @@ struct MDGBusinessPartner {
   SysTime createdAt;
   SysTime updatedAt;
 
-  Json toJson() const {
-    Json payload = Json.emptyObject;
+  override Json toJson()  {
+    Json info = super.toJson;
     payload["tenant_id"] = tenantId;
     payload["bp_id"] = bpId;
     payload["external_id"] = externalId;

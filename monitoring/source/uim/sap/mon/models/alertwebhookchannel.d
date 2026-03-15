@@ -43,8 +43,8 @@ struct MONAlertWebhookChannel {
   string method = "POST";
   SysTime updatedAt;
 
-  Json toJson() const {
-    Json payload = Json.emptyObject;
+  override Json toJson()  {
+    Json info = super.toJson;
     payload["enabled"] = enabled;
     payload["url"] = url;
     payload["method"] = method;

@@ -4,8 +4,8 @@ struct CLFSpace {
   string organizationGuid;
   SysTime createdAt;
 
-  Json toJson() const {
-    Json payload = Json.emptyObject;
+  override Json toJson()  {
+    Json info = super.toJson;
     payload["guid"] = guid;
     payload["name"] = name;
     payload["organization_guid"] = organizationGuid;

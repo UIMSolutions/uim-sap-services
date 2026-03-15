@@ -14,8 +14,8 @@ struct BUHApi {
   string[] tags;
   SysTime createdAt;
 
-  Json toJson() const {
-    Json payload = Json.emptyObject;
+  override Json toJson()  {
+    Json info = super.toJson;
     Json tagsJson = Json.emptyArray;
     foreach (tag; tags) {
       tagsJson ~= Json(tag);

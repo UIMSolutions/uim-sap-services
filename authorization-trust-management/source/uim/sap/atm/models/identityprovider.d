@@ -13,8 +13,8 @@ struct ATMIdentityProvider {
   string[] trustedAlgorithms;
   SysTime updatedAt;
 
-  Json toJson() const {
-    Json payload = Json.emptyObject;
+  override Json toJson()  {
+    Json info = super.toJson;
     Json trusted = Json.emptyArray;
     foreach (algorithm; trustedAlgorithms) {
       trusted ~= algorithm;

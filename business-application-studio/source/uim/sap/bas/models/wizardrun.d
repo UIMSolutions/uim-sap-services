@@ -18,8 +18,8 @@ struct BASWizardRun {
   SysTime startedAt;
   SysTime finishedAt;
 
-  Json toJson() const {
-    Json payload = Json.emptyObject;
+  override Json toJson()  {
+    Json info = super.toJson;
     payload["tenant_id"] = tenantId;
     payload["run_id"] = runId;
     payload["workspace_id"] = workspaceId;

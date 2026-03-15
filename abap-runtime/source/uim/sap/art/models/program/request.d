@@ -56,8 +56,8 @@ struct ARTProgramRequest {
     return request;
   }
 
-  Json toJson() const {
-    Json payload = Json.emptyObject;
+  override Json toJson()  {
+    Json info = super.toJson;
     payload["program"] = program;
     payload["user"] = user;
     payload["client"] = client;

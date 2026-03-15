@@ -15,8 +15,8 @@ struct CDCSiteGroup {
   SysTime createdAt;
   SysTime updatedAt;
 
-  Json toJson() const {
-    Json payload = Json.emptyObject;
+  override Json toJson()  {
+    Json info = super.toJson;
     payload["tenant_id"] = tenantId;
     payload["group_id"] = groupId;
     payload["name"] = name;

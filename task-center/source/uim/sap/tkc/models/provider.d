@@ -22,8 +22,8 @@ struct TKCProvider {
   bool hasLastSync;
   SysTime lastSyncAt;
 
-  Json toJson() const {
-    Json payload = Json.emptyObject;
+  override Json toJson()  {
+    Json info = super.toJson;
     payload["provider_id"] = providerId;
     payload["name"] = name;
     payload["provider_type"] = providerType;

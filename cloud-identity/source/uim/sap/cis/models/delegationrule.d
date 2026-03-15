@@ -53,8 +53,8 @@ struct CISDelegationRule {
   string group;
   SysTime updatedAt;
 
-  Json toJson() const {
-    Json payload = Json.emptyObject;
+  override Json toJson()  {
+    Json info = super.toJson;
     payload["rule_id"] = ruleId;
     payload["tenant_id"] = tenantId;
     payload["target_idp"] = targetIdp;

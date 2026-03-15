@@ -31,8 +31,8 @@ struct MONMetricSample {
   string unit;
   SysTime collectedAt;
 
-  Json toJson() const {
-    Json payload = Json.emptyObject;
+  override Json toJson()  {
+    Json info = super.toJson;
     payload["target_type"] = targetType;
     payload["target_id"] = targetId;
     payload["metric_kind"] = metricKind;

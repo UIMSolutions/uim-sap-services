@@ -24,8 +24,8 @@ struct KSTCertificate {
   string content;
   SysTime createdAt;
 
-  Json toJson() const {
-    Json payload = Json.emptyObject;
+  override Json toJson()  {
+    Json info = super.toJson;
     payload["alias"] = alias_;
     payload["subject"] = subject;
     payload["issuer"] = issuer;
