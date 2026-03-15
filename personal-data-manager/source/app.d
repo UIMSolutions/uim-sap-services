@@ -12,7 +12,7 @@ mixin(ShowModule!());
 @safe:
 
 void main() {
-    PDMConfig config;
+    PDMConfig config = new PDMConfig();
     config.host = envOr("PDM_HOST", "0.0.0.0");
     config.port = readPort(envOr("PDM_PORT", "8092"), 8092);
     config.basePath = envOr("PDM_BASE_PATH", "/api/pdm");

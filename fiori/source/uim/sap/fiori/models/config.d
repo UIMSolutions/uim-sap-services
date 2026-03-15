@@ -123,7 +123,7 @@ struct FioriConfig : SAPConfig {
      * Create configuration with basic auth
      */
     static FioriConfig createBasic(string baseUrl, string username, string password, string sapClient = "") pure nothrow @safe {
-        FioriConfig config;
+        FioriConfig config = new FioriConfig();
         config.baseUrl = baseUrl;
         config.username = username;
         config.password = password;
@@ -136,7 +136,7 @@ struct FioriConfig : SAPConfig {
      * Create configuration with OAuth2
      */
     static FioriConfig createOAuth(string baseUrl, string token, string sapClient = "") pure nothrow @safe {
-        FioriConfig config;
+        FioriConfig config = new FioriConfig();
         config.baseUrl = baseUrl;
         config.oauthToken = token;
         config.sapClient = sapClient;

@@ -16,7 +16,7 @@ TenantConfig[] loadTenantConfigurations(string configFilePath) {
     TenantConfig[] tenantConfigs;
 
     foreach (key, value; jsonData) {
-        TenantConfig config;
+        TenantConfig config = new TenantConfig();
         config.tenantId = key;
         config.domain = value["domain"].str;
         config.databaseUrl = value["databaseUrl"].str;

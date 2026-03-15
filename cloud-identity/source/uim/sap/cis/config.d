@@ -25,7 +25,7 @@ mixin(ShowModule!());
   * - `validate()`: Validates the configuration and throws an exception if invalid  
   * Example usage:
   * ```
-  * CISConfig config;
+  * CISConfig config = new CISConfig();
   * config.host = "0.0.0.0";
   * config.port = 8088;
   * config.basePath = "/api/cis";

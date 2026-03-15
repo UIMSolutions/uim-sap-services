@@ -12,7 +12,7 @@ import std.stdio : writeln;
 import uim.sap.buh;
 
 void main() {
-  BUHConfig config;
+  BUHConfig config = new BUHConfig();
   config.host = envOr("BUH_HOST", "0.0.0.0");
   config.port = readPort(envOr("BUH_PORT", "8083"), 8083);
   config.basePath = envOr("BUH_BASE_PATH", "/api/hub");

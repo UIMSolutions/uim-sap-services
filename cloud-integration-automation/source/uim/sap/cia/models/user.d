@@ -4,11 +4,11 @@ module uim.sap.cia.models.user;
 // User – a person who can be assigned tasks
 // ---------------------------------------------------------------------------
 struct CIAUser {
-  string tenantId;
-  string id;
+  UUID tenantId;
+  UUID id;
   string name;
   string email;
-  string roleId;
+  UUID roleId;
 
   Json toJson() const {
     Json j = Json.emptyObject;

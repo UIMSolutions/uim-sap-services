@@ -15,7 +15,7 @@ import uim.sap.docmgmtintegration;
 version (unittest) {
 } else {
   void main() {
-    DocMgmtIntegrationConfig config;
+    DocMgmtIntegrationConfig config = new DocMgmtIntegrationConfig();
     config.host = envOr("DMSI_HOST", "0.0.0.0");
     config.port = readPort(envOr("DMSI_PORT", "8091"), 8091);
     config.basePath = envOr("DMSI_BASE_PATH", "/api/docmgmt-integration");

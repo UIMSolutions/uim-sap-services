@@ -15,7 +15,7 @@ mixin(ShowModule!());
   * The `CISService` class is the core service implementation for the UIM Cloud Identity Services (CIS) module. It provides methods to handle various operations related to identity management, such as user and group management, authentication, authorization, provisioning jobs, and notification subscriptions. The service interacts with a `CISStore` instance to persist and retrieve data related to users, groups, policies, and other entities. Each method in the `CISService` class is designed to validate input parameters, perform the necessary business logic, and return a JSON response that can be consumed by API clients. The service also includes helper methods for validating user input and ensuring that the provided data meets the required criteria before processing. 
   * Example usage:
   * ``` 
-  * CISConfig config;
+  * CISConfig config = new CISConfig();
   * config.host = "https://example.com";
   * config.port = 8088;
   * config.basePath = "/api/cis";

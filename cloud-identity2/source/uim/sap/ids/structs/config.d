@@ -28,7 +28,7 @@ class IdentityConfig : SAPConfig {
   bool useSSL = true;
 
   /// OAuth2 client ID
-  string clientId;
+  UUID clientId;
 
   /// OAuth2 client secret
   string clientSecret;
@@ -105,12 +105,13 @@ class IdentityConfig : SAPConfig {
      * Create a default IAS configuration
      */
   static IdentityConfig createIAS(string tenantHost, string clientId, string clientSecret) pure nothrow @safe {
-    IdentityConfig config;
+    IdentityConfig config = new IdentityConfig();
     config.serviceType = IdentityServiceType.IAS;
     config.tenantHost = tenantHost;
     config.clientId = clientId;
     config.clientSecret = clientSecret;
     config.apiBasePath = "/service/scim/v2";
+
     return config;
   }
 
@@ -118,7 +119,7 @@ class IdentityConfig : SAPConfig {
      * Create a default IPS configuration
      */
   static IdentityConfig createIPS(string tenantHost, string clientId, string clientSecret) pure nothrow @safe {
-    IdentityConfig config;
+    IdentityConfig config = new IdentityConfig();
     config.serviceType = IdentityServiceType.IPS;
     config.tenantHost = tenantHost;
     config.clientId = clientId;

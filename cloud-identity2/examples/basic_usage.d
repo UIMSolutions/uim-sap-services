@@ -298,7 +298,7 @@ void errorHandlingExample() {
         
         // Handle validation errors
         try {
-            IdentityConfig config;
+            IdentityConfig config = new IdentityConfig();
             config.validate(); // Missing required fields
         } catch (IdentityConfigurationException e) {
             writefln("✓ Caught ConfigurationException: %s", e.msg);

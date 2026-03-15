@@ -10,7 +10,7 @@ import vibe.data.json : Json;
 import uim.sap.cdc;
 
 void main() {
-  CDCConfig config;
+  CDCConfig config = new CDCConfig();
   config.host = envOr("CDC_HOST", "0.0.0.0");
   config.port = readPort(envOr("CDC_PORT", "8097"), 8097);
   config.basePath = envOr("CDC_BASE_PATH", "/api/customer-data");

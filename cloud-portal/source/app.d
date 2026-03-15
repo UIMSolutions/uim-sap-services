@@ -12,7 +12,7 @@ mixin(ShowModule!());
 @safe:
 
 void main() {
-  CPSConfig config;
+  CPSConfig config = new CPSConfig();
   config.host = envOr("CPS_HOST", "0.0.0.0");
   config.port = readPort(envOr("CPS_PORT", "8089"), 8089);
   config.basePath = envOr("CPS_BASE_PATH", "/api/cps");
