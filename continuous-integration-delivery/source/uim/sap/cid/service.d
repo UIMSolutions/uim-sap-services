@@ -57,7 +57,7 @@ class CIDService : SAPService {
       throw new CIDValidationException("clone_url is required");
 
     CIDRepository r;
-    r.tenantId = tenantId;
+    r.tenantId = UUID(tenantId);
     r.repoId = "repo_id" in payload ? payload["repo_id"].get!string : createId();
     r.name = jstr(payload, "name", r.repoId);
     r.description = jstr(payload, "description");
@@ -117,7 +117,7 @@ class CIDService : SAPService {
       throw new CIDValidationException("Credential name is required");
 
     CIDCredential c;
-    c.tenantId = tenantId;
+    c.tenantId = UUID(tenantId);
     c.credentialId = "credential_id" in payload ? payload["credential_id"].get!string : createId();
     c.name = payload["name"].get!string;
     c.description = jstr(payload, "description");
@@ -163,7 +163,7 @@ class CIDService : SAPService {
       _requireRepo(tenantId, repoId);
 
     CIDPipeline p;
-    p.tenantId = tenantId;
+    p.tenantId = UUID(tenantId);
     p.pipelineId = "pipeline_id" in payload ? payload["pipeline_id"].get!string : createId();
     p.name = payload["name"].get!string;
     p.description = jstr(payload, "description");
@@ -241,7 +241,7 @@ class CIDService : SAPService {
     int nextNumber = _store.maxBuildNumber(tenantId, pipelineId) + 1;
 
     CIDBuild build;
-    build.tenantId = tenantId;
+    build.tenantId = UUID(tenantId);
     build.buildId = _store.nextId("build");
     build.pipelineId = pipelineId;
     build.buildNumber = nextNumber;
@@ -422,7 +422,7 @@ class CIDService : SAPService {
   private void _appendLog(string tenantId, string buildId, string stageId,
     string level, string message) {
     CIDBuildLog log;
-    log.tenantId = tenantId;
+    log.tenantId = UUID(tenantId);
     log.logId = _store.nextId("log");
     log.buildId = buildId;
     log.stageId = stageId;

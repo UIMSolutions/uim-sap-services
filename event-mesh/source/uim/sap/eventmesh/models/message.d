@@ -38,7 +38,7 @@ struct EVMMessage {
 
 EVMMessage messageFromJson(string tenantId, string topicName, Json request) {
     EVMMessage m;
-    m.tenantId = tenantId;
+    m.tenantId = UUID(tenantId);
     m.messageId = randomUUID().toString();
     m.topicName = topicName;
 

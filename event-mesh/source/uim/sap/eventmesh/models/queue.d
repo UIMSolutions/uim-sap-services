@@ -36,7 +36,7 @@ struct EVMQueue {
 
 EVMQueue queueFromJson(string tenantId, Json request) {
     EVMQueue q;
-    q.tenantId = tenantId;
+    q.tenantId = UUID(tenantId);
 
     if ("queue_name" in request && request["queue_name"].isString) {
         q.queueName = request["queue_name"].get!string;

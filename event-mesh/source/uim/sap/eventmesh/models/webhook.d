@@ -36,7 +36,7 @@ struct EVMWebhook {
 
 EVMWebhook webhookFromJson(string tenantId, Json request) {
     EVMWebhook w;
-    w.tenantId = tenantId;
+    w.tenantId = UUID(tenantId);
     w.webhookId = randomUUID().toString();
 
     if ("queue_name" in request && request["queue_name"].isString) {

@@ -33,7 +33,7 @@ class PREService : SAPService {
     }
 
     auto item = itemFromJson(body_);
-    item.tenantId = tenantId;
+    item.tenantId = UUID(tenantId);
     if (item.itemId.length == 0)
       item.itemId = generateItemId();
     item.createdAt = now;
@@ -120,7 +120,7 @@ class PREService : SAPService {
     }
 
     auto user = userFromJson(body_);
-    user.tenantId = tenantId;
+    user.tenantId = UUID(tenantId);
     if (user.userId.length == 0)
       user.userId = generateUserId();
     user.createdAt = nowTimestamp();
@@ -190,7 +190,7 @@ class PREService : SAPService {
   Json recordInteraction(string tenantId, Json data_) {
     ensureTenant(tenantId);
     auto interaction = interactionFromJson(body_);
-    interaction.tenantId = tenantId;
+    interaction.tenantId = UUID(tenantId);
     if (interaction.interactionId.length == 0)
       interaction.interactionId = generateInteractionId();
 
@@ -246,7 +246,7 @@ class PREService : SAPService {
     }
 
     auto model = modelFromJson(body_);
-    model.tenantId = tenantId;
+    model.tenantId = UUID(tenantId);
     if (model.modelId.length == 0)
       model.modelId = generateModelId();
     model.status = PREModelStatus.created;
@@ -304,7 +304,7 @@ class PREService : SAPService {
     PRETrainingJob job;
     job.jobId = generateTrainingJobId();
     job.modelId = modelId;
-    job.tenantId = tenantId;
+    job.tenantId = UUID(tenantId);
     job.status = PRETrainingStatus.running;
     job.createdAt = nowTimestamp();
     job.startedAt = job.createdAt;
@@ -353,7 +353,7 @@ class PREService : SAPService {
   Json createScenario(string tenantId, Json data_) {
     ensureTenant(tenantId);
     auto scenario = scenarioFromJson(body_);
-    scenario.tenantId = tenantId;
+    scenario.tenantId = UUID(tenantId);
     if (scenario.scenarioId.length == 0)
       scenario.scenarioId = generateScenarioId();
     scenario.createdAt = nowTimestamp();
@@ -470,7 +470,7 @@ class PREService : SAPService {
       rec.recommendationId = generateRecommendationId();
       rec.userId = userId;
       rec.itemId = item.itemId;
-      rec.tenantId = tenantId;
+      rec.tenantId = UUID(tenantId);
       rec.modelId = modelId;
       rec.recommendationType = PRERecommendationType.next_item;
       rec.score = score;
@@ -551,7 +551,7 @@ class PREService : SAPService {
       PRERecommendation rec;
       rec.recommendationId = generateRecommendationId();
       rec.itemId = item.itemId;
-      rec.tenantId = tenantId;
+      rec.tenantId = UUID(tenantId);
       rec.modelId = modelId;
       rec.recommendationType = PRERecommendationType.similar_item;
       rec.score = score;
@@ -645,7 +645,7 @@ class PREService : SAPService {
       rec.recommendationId = generateRecommendationId();
       rec.userId = userId;
       rec.itemId = item.itemId;
-      rec.tenantId = tenantId;
+      rec.tenantId = UUID(tenantId);
       rec.modelId = modelId;
       rec.recommendationType = PRERecommendationType.smart_search;
       rec.score = score;

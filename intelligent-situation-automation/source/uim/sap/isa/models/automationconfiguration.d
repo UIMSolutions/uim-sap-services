@@ -47,7 +47,7 @@ struct AutomationConfiguration {
 AutomationConfiguration configFromJson(Json payload, string tenantId) {
   AutomationConfiguration config;
   config.id = randomUUID().toString();
-  config.tenantId = tenantId;
+  config.tenantId = UUID(tenantId);
   config.name = getString(payload, "name", "");
   config.description = getString(payload, "description", "");
   config.situationType = getString(payload, "situation_type", "");
