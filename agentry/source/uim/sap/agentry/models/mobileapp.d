@@ -26,19 +26,19 @@ class AGTMobileApp : SAPTenantObject {
     }
 
     if ("app_id" in initData && initData["app_id"].isString) {
-      app.appId = initData["app_id"].get!string;
+      appId = UUID(initData["app_id"].get!string);
     }
     if ("name" in initData && initData["name"].isString) {
-      app.name = initData["name"].get!string;
+      name = initData["name"].get!string;
     }
     if ("backend_system" in initData && initData["backend_system"].isString) {
-      app.backendSystem = initData["backend_system"].get!string;
+      backendSystem = initData["backend_system"].get!string;
     }
     if ("owner_team" in initData && initData["owner_team"].isString) {
-      app.ownerTeam = initData["owner_team"].get!string;
+      ownerTeam = initData["owner_team"].get!string;
     }
     if ("lifecycle" in initData && initData["lifecycle"].isString) {
-      app.lifecycle = toLower(initData["lifecycle"].get!string);
+      lifecycle = initData["lifecycle"].get!string.toLower;
     }
 
     return true;
@@ -56,7 +56,7 @@ class AGTMobileApp : SAPTenantObject {
   static AGTMobileApp opCall(string tenantId, Json request, string defaultBackend) {
     AGTMobileApp app = new AGTMobileApp(request);
     app.tenantId = UUID(tenantId);
-    app.appId = randomUUID().toString();
+    app.appId = randomUUID();
     app.backendSystem = defaultBackend;
     app.createdAt = Clock.currTime();
     app.updatedAt = app.createdAt;

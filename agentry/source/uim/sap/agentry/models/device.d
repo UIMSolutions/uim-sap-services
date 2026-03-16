@@ -12,6 +12,30 @@ mixin(ShowModule!());
 class AGTDevice : SAPTenantObject {
   mixin(SAPObjectTemplate!AGTDevice);
 
+  override bool initialize(Json[string] initData) {
+    if (!super.initialize(initData)) {
+      return false;
+    } 
+
+    if ("device_id" in initData && initData["device_id"].isString) {
+      deviceId = UUID(initData["device_id"].get!string);
+    }
+    if ("app_id" in initData && initData["app_id"].isString) {
+      appId = UUID(initData["app_id"].get!string);
+    }
+    if ("user_id" in initData && initData["user_id"].isString) {
+      userId = UUID(initData["user_id"].get!string);
+    }
+    if ("platform" in initData && initData["platform"].isString) {
+      platform = toLower(initData["platform"].get!string);
+    }
+    if ("app_version_id" in initData && initData["app_version_id"].isString) {
+      appVersionId = UUID(initData["app_version_id"].get!string);
+    }
+
+    return true;
+  }
+
   UUID deviceId;
   UUID appId;
   UUID userId;
@@ -20,43 +44,23 @@ class AGTDevice : SAPTenantObject {
   SysTime lastSyncAt;
 
   override Json toJson() {
-    Json result = super.toJson;
-
-    result["device_id"] = deviceId.toJson;
-    result["app_id"] = appId.toJson;
-    result["user_id"] = userId.toJson;
-    result["platform"] = platform.toJson;
-    result["app_version_id"] = appVersionId.toJson;
-    result["last_sync_at"] = lastSyncAt.toISOExtString().toJson;
-
-    return result;
+    return super.toJson
+      .set("device_id", deviceId.toJson)
+      .set("app_id", appId.toJson)
+      .set("user_id", userId.toJson)
+      .set("platform", platform.toJson)
+      .set("app_version_id", appVersionId.toJson)
+      .set("last_sync_at", lastSyncAt.toISOExtString().toJson);
   }
 
   static AGTDevice opCall(string tenantId, Json request) {
     AGTDevice device = new AGTDevice(request);
+    
     device.tenantId = UUID(tenantId);
     device.deviceId = randomUUID();
     device.platform = "ios";
     device.lastSyncAt = Clock.currTime();
 
-  if ("device_id" in request && request["device_id"].isString) {
-    device.deviceId = UUID(request["device_id"].get!string);
+    return device;
   }
-  if ("app_id" in request && request["app_id"].isString) {
-    device.appId = UUID(request["app_id"].get!string);
-  }
-  if ("user_id" in request && request["user_id"].isString) {
-    device.userId = UUID(request["user_id"].get!string);
-  }
-  if ("platform" in request && request["platform"].isString) {
-    device.platform = toLower(request["platform"].get!string);
-  }
-  if ("app_version_id" in request && request["app_version_id"].isString) {
-    device.appVersionId = UUID(request["app_version_id"].get!string);
-  }
-
-  return device;
 }
-}
-
-

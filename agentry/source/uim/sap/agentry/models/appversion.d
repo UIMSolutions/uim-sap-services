@@ -4,52 +4,78 @@
 * Authors: Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*)
 *****************************************************************************************************************/
 module uim.sap.agentry.models.appversion;
+
 import uim.sap.agentry;
 
 mixin(ShowModule!());
 
 @safe:
+
+/**
+  * Represents a specific version of a mobile application, including its version label, change log, and build status.
+  *
+  * This class is used to manage different versions of a mobile application within the Agentry platform, allowing for version tracking and deployment management.
+  *
+  * Properties:
+  * - `versionId`: A unique identifier for the app version.
+  * - `appId`: The identifier of the mobile application this version belongs to.
+  * - `versionLabel`: A human-readable label for the version (e.g., "1.0.0").
+  * - `changeLog`: A description of the changes included in this version.
+  * - `buildStatus`: The current build status of the version (e.g., "built", "failed").
+  * Methods:
+  * - `initialize`: Initializes the app version object from a JSON input.
+  * - `toJson`: Serializes the app version object to JSON format.
+  */
 class AGTAppVersion : SAPTenantObject {
   mixin(SAPObjectTemplate!AGTAppVersion);
 
-  UUID appId;
+  override bool initialize(Json[string] initData) {
+    if (!super.initialize(initData)) {
+      return false;
+    }
+
+    if ("app_id" in initData && initData["app_id"].isString) {
+      appId = toUUID(initData["app_id"].get!string);
+    }
+    if ("version_id" in initData && initData["version_id"].isString) {
+      versionId = toUUID(initData["version_id"].get!string);
+    }
+    if ("version_label" in initData && initData["version_label"].isString) {
+      versionLabel = initData["version_label"].get!string;
+    }
+    if ("change_log" in initData && initData["change_log"].isString) {
+      changeLog = initData["change_log"].get!string;
+    }
+    if ("build_status" in initData && initData["build_status"].isString) {
+      buildStatus = toLower(initData["build_status"].get!string);
+    }
+
+    return true;
+  }
+
   UUID versionId;
+  UUID appId;
   string versionLabel;
   string changeLog;
   string buildStatus = "built";
-  SysTime createdAt;
 
   override Json toJson() {
-    Json result = super.toJson;
-    result["app_id"] = appId;
-    result["version_id"] = versionId;
-    result["version_label"] = versionLabel;
-    result["change_log"] = changeLog;
-    result["build_status"] = buildStatus;
-    result["created_at"] = createdAt.toISOExtString();
-    return result;
+    return super.toJson()
+      .set("app_id", appId)
+      .set("version_id", versionId)
+      .set("version_label", versionLabel)
+      .set("change_log", changeLog)
+      .set("build_status", buildStatus);
   }
 
   static AGTAppVersion opCall(string tenantId, string appId, Json request) {
-    AGTAppVersion appVersion = new AGTAppVersion;
+    AGTAppVersion appVersion = new AGTAppVersion(request);
+    
     appVersion.tenantId = UUID(tenantId);
-    appVersion.appId = appId;
-    appVersion.versionId = randomUUID().toString();
+    appVersion.appId = UUID(appId);
+    appVersion.versionId = randomUUID();
     appVersion.versionLabel = "1.0.0";
     appVersion.createdAt = Clock.currTime();
-
-    if ("version_id" in request && request["version_id"].isString) {
-      appVersion.versionId = request["version_id"].get!string;
-    }
-    if ("version_label" in request && request["version_label"].isString) {
-      appVersion.versionLabel = request["version_label"].get!string;
-    }
-    if ("change_log" in request && request["change_log"].isString) {
-      appVersion.changeLog = request["change_log"].get!string;
-    }
-    if ("build_status" in request && request["build_status"].isString) {
-      appVersion.buildStatus = toLower(request["build_status"].get!string);
-    }
 
     return appVersion;
   }

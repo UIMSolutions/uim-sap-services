@@ -47,11 +47,11 @@ class AGTConfig : SAPConfig {
 
   string defaultBackendSystem = "s4-primary";
 
-  override void validate() const {
+  override void validate() {
     super.validate();
 
     if (defaultBackendSystem.length == 0) {
-      throw new AgentryConfigurationException("Default backend system cannot be empty");
+      throw new AGTConfigurationException("Default backend system cannot be empty");
     }
   }
 }

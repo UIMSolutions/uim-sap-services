@@ -9,8 +9,50 @@ import uim.sap.agentry;
 mixin(ShowModule!());
 
 @safe:
+
+/**
+ * Represents a backend system configuration for an Agentry mobile application.
+ * Contains details about the backend system such as its type, endpoint, and authentication mode.
+ *
+  * This class is used to manage and store backend system configurations associated with mobile applications in the Agentry platform.
+  *
+  * Example usage:
+  * ```
+  * Json requestData = Json.emptyObject
+  *   .set("backend_id", "123e4567-e89b-123e-4567-1234567890ab")
+  *   .set("system_type", "s4hana")
+  *   .set("endpoint", "https://mybackend.example.com")
+  *   .set("auth_mode", "oauth2")
+  *   .set("enabled", true);
+  * AGTBackendSystem backend = AGTBackendSystem("tenant-id-123", requestData);
+  * ```
+ */
 class AGTBackendSystem : SAPTenantObject {
   mixin(SAPObjectTemplate!AGTBackendSystem);
+
+  override bool initialize(Json[string] initData) {
+    if (!super.initialize(initData)) {
+      return false;
+    }
+
+    if ("backend_id" in initData && initData["backend_id"].isString) {
+      backendId = toUUID(initData["backend_id"].get!string);
+    }
+    if ("system_type" in initData && initData["system_type"].isString) {
+      systemType = toLower(initData["system_type"].get!string);
+    }
+    if ("endpoint" in initData && initData["endpoint"].isString) {
+      endpoint = initData["endpoint"].get!string;
+    }
+    if ("auth_mode" in initData && initData["auth_mode"].isString) {
+      authMode = toLower(initData["auth_mode"].get!string);
+    }
+    if ("enabled" in initData && initData["enabled"].isBoolean) {
+      enabled = initData["enabled"].get!bool;
+    }
+
+    return true;
+  }
 
   UUID backendId;
   string systemType;
@@ -20,7 +62,7 @@ class AGTBackendSystem : SAPTenantObject {
   SysTime updatedAt;
 
   override Json toJson() {
-    return supet.toJson
+    return super.toJson()
       .set("backend_id", backendId)
       .set("system_type", systemType)
       .set("endpoint", endpoint)
@@ -31,26 +73,10 @@ class AGTBackendSystem : SAPTenantObject {
   static AGTBackendSystem opCall(string tenantId, Json request) {
     AGTBackendSystem backend = new AGTBackendSystem(request);
     backend.tenantId = UUID(tenantId);
-    backend.backendId = randomUUID().toString();
+    backend.backendId = randomUUID();
     backend.systemType = "s4hana";
     backend.authMode = "oauth2";
     backend.updatedAt = Clock.currTime();
-
-    if ("backend_id" in request && request["backend_id"].isString) {
-      backend.backendId = request["backend_id"].get!string;
-    }
-    if ("system_type" in request && request["system_type"].isString) {
-      backend.systemType = toLower(request["system_type"].get!string);
-    }
-    if ("endpoint" in request && request["endpoint"].isString) {
-      backend.endpoint = request["endpoint"].get!string;
-    }
-    if ("auth_mode" in request && request["auth_mode"].isString) {
-      backend.authMode = toLower(request["auth_mode"].get!string);
-    }
-    if ("enabled" in request && request["enabled"].isBoolean) {
-      backend.enabled = request["enabled"].get!bool;
-    }
 
     return backend;
   }

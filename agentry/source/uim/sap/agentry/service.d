@@ -40,7 +40,8 @@ class AGTService : SAPService {
   Json upsertMobileApp(string tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
 
-    auto app = AGTMobileApp(tenantId, request, _config.defaultBackendSystem);
+    AGTConfig cfg = cast(AGTConfig)config;
+    auto app = AGTMobileApp(tenantId, request, cfg.defaultBackendSystem);
     if (app.name.length == 0) {
       throw new AGTValidationException("App name is required");
     }
@@ -57,10 +58,7 @@ class AGTService : SAPService {
   Json listMobileApps(string tenantId) {
     validateId(tenantId, "Tenant ID");
 
-    Json resources = Json.emptyArray;
-    foreach (app; _store.listApps(tenantId)) {
-      resources ~= app.toJson();
-    }
+    Json resources = _store.listApps(tenantId).map!(app => app.toJson()).array.toJson();
 
     Json result = Json.emptyObject;
     result["tenant_id"] = tenantId;
@@ -74,7 +72,7 @@ class AGTService : SAPService {
     validateId(appId, "App ID");
 
     auto app = _store.getApp(tenantId, appId);
-    if (app.appId.length == 0) {
+    if (app.appId.toString.length == 0) {
       throw new AGTNotFoundException("Mobile app", tenantId ~ "/" ~ appId);
     }
 
@@ -95,10 +93,8 @@ class AGTService : SAPService {
     validateId(tenantId, "Tenant ID");
     validateId(appId, "App ID");
 
-    Json resources = Json.emptyArray;
-    foreach (appVersion; _store.listVersions(tenantId, appId)) {
-      resources ~= appVersion.toJson();
-    }
+    Json resources = _store.listVersions(tenantId, appId)
+      .map!(appVersion => appVersion.toJson()).array.toJson();
 
     Json result = Json.emptyObject;
     result["tenant_id"] = tenantId;
@@ -113,12 +109,12 @@ class AGTService : SAPService {
     validateId(appId, "App ID");
 
     auto app = _store.getApp(tenantId, appId);
-    if (app.appId.length == 0) {
+    if (app.appId.toString.length == 0) {
       throw new AGTNotFoundException("Mobile app", tenantId ~ "/" ~ appId);
     }
 
     auto testRun = AGTTestRun(tenantId, appId, request);
-    if (testRun.versionId.length == 0) {
+    if (testRun.versionId.toString.length == 0) {
       auto versions = _store.listVersions(tenantId, appId);
       if (versions.length == 0) {
         throw new AGTValidationException("No version exists for test run; provide version_id");
@@ -138,7 +134,8 @@ class AGTService : SAPService {
     validateId(tenantId, "Tenant ID");
     validateId(appId, "App ID");
 
-    Json resources = _store.listTestRuns(tenantId, appId).map!(testRun => testRun.toJson()).array.toJson();
+    Json resources = _store.listTestRuns(tenantId, appId)
+      .map!(testRun => testRun.toJson()).array.toJson();
 
     Json result = Json.emptyObject;
     result["tenant_id"] = tenantId;
@@ -157,7 +154,7 @@ class AGTService : SAPService {
     }
 
     auto app = _store.getApp(tenantId, instance.appId);
-    if (app.appId.length == 0) {
+    if (app.appId.toString.length == 0) {
       throw new AGTNotFoundException("Mobile app", tenantId ~ "/" ~ instance.appId);
     }
 
@@ -198,7 +195,7 @@ class AGTService : SAPService {
       throw new AGTValidationException("version_id is required");
     }
 
-    auto versionId = request["version_id"].get!string;
+    auto versionId = UUID(request["version_id"].get!string);
     auto versions = _store.listVersions(tenantId, instance.appId);
     bool knownVersion = false;
     foreach (appVersion; versions) {
@@ -239,7 +236,7 @@ class AGTService : SAPService {
     }
 
     auto app = _store.getApp(tenantId, device.appId);
-    if (app.appId.length == 0) {
+    if (app.appId.toString.length == 0) {
       throw new AGTNotFoundException("Mobile app", tenantId ~ "/" ~ device.appId);
     }
 
@@ -255,10 +252,7 @@ class AGTService : SAPService {
   Json listDevices(string tenantId) {
     validateId(tenantId, "Tenant ID");
 
-    Json resources = Json.emptyArray;
-    foreach (device; _store.listDevices(tenantId)) {
-      resources ~= device.toJson();
-    }
+    Json resources = _store.listDevices(tenantId).map!(device => device.toJson()).array.toJson();
 
     Json result = Json.emptyObject;
     result["tenant_id"] = tenantId;
@@ -272,12 +266,12 @@ class AGTService : SAPService {
     validateId(deviceId, "Device ID");
 
     auto device = _store.getDevice(tenantId, deviceId);
-    if (device.deviceId.length == 0) {
+    if (device.deviceId.toString.length == 0) {
       throw new AGTNotFoundException("Device", tenantId ~ "/" ~ deviceId);
     }
 
     if ("app_version_id" in request && request["app_version_id"].isString) {
-      device.appVersionId = request["app_version_id"].get!string;
+      device.appVersionId = UUID(request["app_version_id"].get!string);
     }
     device.lastSyncAt = Clock.currTime();
     auto saved = _store.upsertDevice(device);
@@ -309,10 +303,7 @@ class AGTService : SAPService {
   Json listBackendSystems(string tenantId) {
     validateId(tenantId, "Tenant ID");
 
-    Json resources = Json.emptyArray;
-    foreach (backend; _store.listBackends(tenantId)) {
-      resources ~= backend.toJson();
-    }
+    Json resources = _store.listBackends(tenantId).map!(backend => backend.toJson()).array.toJson();
 
     Json result = Json.emptyObject;
     result["tenant_id"] = tenantId;

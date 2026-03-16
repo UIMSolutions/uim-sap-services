@@ -184,11 +184,11 @@ class AGTServer {
       }
 
       respondError(res, "Not found", 404);
-    } catch (AgentryAuthorizationException e) {
+    } catch (AGTAuthorizationException e) {
       respondError(res, e.msg, 401);
-    } catch (AgentryNotFoundException e) {
+    } catch (AGTNotFoundException e) {
       respondError(res, e.msg, 404);
-    } catch (AgentryValidationException e) {
+    } catch (AGTValidationException e) {
       respondError(res, e.msg, 422);
     } catch (AGTException e) {
       respondError(res, e.msg, 500);
@@ -203,12 +203,12 @@ class AGTServer {
     }
 
     if (!("Authorization" in req.headers)) {
-      throw new AgentryAuthorizationException("Missing Authorization header");
+      throw new AGTAuthorizationException("Missing Authorization header");
     }
 
     auto expected = "Bearer " ~ _service.config.authToken;
     if (req.headers["Authorization"] != expected) {
-      throw new AgentryAuthorizationException("Invalid token");
+      throw new AGTAuthorizationException("Invalid token");
     }
   }
 

@@ -19,19 +19,19 @@ class AGTRuntimeInstance : SAPTenantObject {
     }
 
     if ("instance_id" in initData && initData["instance_id"].isString) {
-      instance.instanceId = initData["instance_id"].get!string;
+      instanceId = UUID(initData["instance_id"].get!string);
     }
     if ("app_id" in initData && initData["app_id"].isString) {
-      instance.appId = initData["app_id"].get!string;
+      appId = UUID(initData["app_id"].get!string);
     }
     if ("target_environment" in initData && initData["target_environment"].isString) {
-      instance.targetEnvironment = initData["target_environment"].get!string;
+      targetEnvironment = initData["target_environment"].get!string;
     }
     if ("deployed_version_id" in initData && initData["deployed_version_id"].isString) {
-      instance.deployedVersionId = initData["deployed_version_id"].get!string;
+      deployedVersionId = UUID(initData["deployed_version_id"].get!string);
     }
     if ("status" in initData && initData["status"].isString) {
-      instance.status = toLower(initData["status"].get!string);
+      status = toLower(initData["status"].get!string);
     }
 
     return true;
@@ -39,17 +39,17 @@ class AGTRuntimeInstance : SAPTenantObject {
 
   override Json toJson() {
     return super.toJson()
-      .set("instance_id", instanceId)
-      .set("app_id", appId)
+      .set("instance_id", instanceId.toJson)
+      .set("app_id", appId.toJson)
       .set("target_environment", targetEnvironment)
-      .set("deployed_version_id", deployedVersionId)
+      .set("deployed_version_id", deployedVersionId.toJson)
       .set("status", status);
   }
 
   static AGTRuntimeInstance opCall(string tenantId, Json request) {
     AGTRuntimeInstance instance = new AGTRuntimeInstance(request);
     instance.tenantId = UUID(tenantId);
-    instance.instanceId = randomUUID().toString();
+    instance.instanceId = randomUUID();
     instance.targetEnvironment = "prod";
     instance.updatedAt = Clock.currTime();
 
