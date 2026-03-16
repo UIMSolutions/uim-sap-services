@@ -11,6 +11,13 @@ mixin(ShowModule!());
 
 @safe:
 
+/**
+  * Represents the encrypted payload stored in the keystore.
+  *
+  * The `KSTEncryptedPayload` struct contains the encrypted data along with necessary metadata for decryption and integrity verification.
+  * Fields:
+  * ...
+  */
 struct KSTEncryptedPayload {
   ubyte[] cipherBytes;
   ubyte[] nonceBytes;

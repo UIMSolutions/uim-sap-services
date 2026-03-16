@@ -1,20 +1,10 @@
 module uim.sap.jobs.service;
 
-import core.thread : Thread;
-import std.array : split;
-import std.conv : to;
-import std.datetime : Clock, SysTime, days, dur, hours, minutes, seconds;
-import std.format : format;
-import std.string : startsWith, toLower;
+import uim.sap.jobs;
 
-import vibe.data.json : Json;
-import vibe.http.client : requestHTTP;
-import vibe.http.common : HTTPMethod;
+mixin(ShowModule!());
 
-import uim.sap.jobs.config;
-import uim.sap.jobs.exceptions;
-import uim.sap.jobs.models;
-import uim.sap.jobs.store;
+@safe:
 
 class JobSchedulingService : SAPService {
   private JobSchedulingConfig _config;

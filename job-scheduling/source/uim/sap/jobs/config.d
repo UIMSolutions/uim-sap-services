@@ -5,9 +5,11 @@
 *****************************************************************************************************************/
 module uim.sap.jobs.config;
 
-import std.string : startsWith;
+import uim.sap.jobs;
 
-import uim.sap.jobs.exceptions;
+mixin(ShowModule!());
+
+@safe:
 
   /**
   * Configuration class for the Job Scheduling service.

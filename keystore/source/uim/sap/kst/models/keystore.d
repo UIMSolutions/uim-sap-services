@@ -30,7 +30,22 @@ mixin(ShowModule!());
   * // Now ks contains the keystore information initialized from the request
   * ```
   */
-struct KSTKeystore {
+class KSTKeystore : SAPStore {
+  mixin(SAPStoreTemplate!KSTKeystore);
+
+  override bool initialize(Json[string] initData) {
+    if (!super.initialize(initData)) {
+      return false;
+    }
+
+    if ("description" in request && initData["description"].isString) {
+      description = initData["description"].get!string;
+    }
+    metadata = initData.getObject("metadata", Json.emptyObject);
+
+    return true;
+  }
+
   string name;
   string description;
   KSTKeyEntry[string] keys;
@@ -39,48 +54,25 @@ struct KSTKeystore {
   SysTime createdAt;
   SysTime updatedAt;
 
-  override Json toJson()  {
-    Json info = super.toJson;
-    payload["name"] = name;
-    payload["description"] = description;
-    payload["key_count"] = cast(long)keys.length;
-    payload["certificate_count"] = cast(long)certificates.length;
-    payload["metadata"] = metadata;
-    payload["created_at"] = createdAt.toISOExtString();
-    payload["updated_at"] = updatedAt.toISOExtString();
-    return payload;
+  override Json toJson() {
+    return super.toJson
+      .set("name", name)
+      .set("description", description)
+      .set("key_count", cast(long)keys.length)
+      .set("certificate_count", cast(long)certificates.length)
+      .set("metadata", metadata)
+      .set("created_at", createdAt.toISOExtString())
+      .set("updated_at", updatedAt.toISOExtString());
   }
 
   Json toJsonDetailed() const {
-    Json payload = toJson();
-
-    Json keyList = Json.emptyArray;
-    foreach (ref k; keys.byValue) {
-      keyList.appendArrayElement(k.toJson());
-    }
-    payload["keys"] = keyList;
-
-    Json certList = Json.emptyArray;
-    foreach (ref c; certificates.byValue) {
-      certList.appendArrayElement(c.toJson());
-    }
-    payload["certificates"] = certList;
-
-    return payload;
+    Json keyList = keys.byValue.map!(key => keyList.appendArrayElement(key.toJson()).array.toJson;
+        Json certList = certificates.byValue.map!(
+          cert => certList.appendArrayElement(cert.toJson()).array.toJson; Json payload = toJson();
+          payload["keys"] = keyList; payload["certificates"] = certList; return payload;
   }
 }
 
 KSTKeystore keystoreFromJson(string name, Json request) {
-  KSTKeystore ks;
-  ks.name = name;
-  ks.createdAt = Clock.currTime();
-  ks.updatedAt = ks.createdAt;
-
-  if ("description" in request && request["description"].isString)
-    ks.description = request["description"].get!string;
-  if ("metadata" in request && request["metadata"].isObject)
-    ks.metadata = request["metadata"];
-  else
-    ks.metadata = Json.emptyObject;
-  return ks;
-}
+  KSTKeystore ks = new KSTKeystore(request); ks.name = name; ks.createdAt = Clock.currTime();
+    ks.updatedAt = ks.createdAt; return ks;}

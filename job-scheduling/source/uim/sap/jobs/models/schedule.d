@@ -5,9 +5,11 @@
 *****************************************************************************************************************/
 module uim.sap.jobs.models.schedule;
 
-import std.datetime : SysTime;
+import uim.sap.jobs;
 
-import vibe.data.json : Json;
+mixin(ShowModule!());
+
+@safe:
 
 struct Schedule {
     string tenantId;
