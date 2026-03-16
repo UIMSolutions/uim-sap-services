@@ -19,16 +19,11 @@ class ADLRetentionPolicy : SAPTenantObject {
   int retentionDays;
   string plan;
   double premiumCostPerThousandEvents;
-  SysTime updatedAt;
 
   override Json toJson() {
-    Json result = super.toJson;
-    
-    result["retention_days"] = retentionDays.toJson;
-    result["plan"] = plan.toJson;
-    result["premium_cost_per_1000_events"] = premiumCostPerThousandEvents.toJson;
-    result["updated_at"] = updatedAt.toISOExtString().toJson;
-
-    return result;
+    return super.toJson
+      .set("retention_days", retentionDays.toJson)
+      .set("plan", plan.toJson)
+      .set("premium_cost_per_1000_events", premiumCostPerThousandEvents.toJson);
   }
 }

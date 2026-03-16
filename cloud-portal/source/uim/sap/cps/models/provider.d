@@ -1,5 +1,9 @@
 module uim.sap.cps.models.provider;
+import uim.sap.cps;
 
+mixin(ShowModule!());
+
+@safe:
 struct CPSContentProvider {
   UUID tenantId;
   UUID providerId;

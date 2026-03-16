@@ -69,7 +69,7 @@ class AuditLogEvent : SAPTenantObject {
     AuditLogEvent eventItem = new AuditLogEvent(request);
 
     eventItem.tenantId = UUID(tenantId);
-    eventItem.eventId = randomUUID().toString();
+    eventItem.eventId = randomUUID();
     eventItem.eventType = "system_event";
     eventItem.severity = "info";
     eventItem.category = "audit";

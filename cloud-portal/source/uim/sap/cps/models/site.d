@@ -1,6 +1,10 @@
 module uim.sap.cps.models.site;
 
-module sap.cps.models.site;
+import uim.sap.cps;
+
+mixin(ShowModule!());
+
+@safe:
 
 struct CPSSite {
   UUID tenantId;

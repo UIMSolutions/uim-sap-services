@@ -5,15 +5,13 @@
 *****************************************************************************************************************/
 module uim.sap.cps.server;
 
-
 import uim.sap.cps;
 
 mixin(ShowModule!());
 
 @safe:
 
-
-class CPSServer {
+class CPSServer : SAPServer {
   private CPSService _service;
 
   this(CPSService service) {

@@ -1,5 +1,9 @@
 module uim.sap.cps.models.contentitem;
+import uim.sap.cps;
 
+mixin(ShowModule!());
+
+@safe:
 struct CPSContentItem {
   string tenantId;
   string itemType;

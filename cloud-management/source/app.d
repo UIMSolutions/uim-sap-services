@@ -2,6 +2,10 @@ module app;
 
 import uim.sap.mgt;
 
+mixin(ShowModule!());
+
+@safe:
+
 void main() {
   MGTConfig config = new MGTConfig;
   config.host = envOr("MGT_HOST", "0.0.0.0");

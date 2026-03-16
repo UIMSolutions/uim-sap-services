@@ -1,5 +1,9 @@
 module uim.sap.cps.models.launchpadmodule;
+import uim.sap.cps;
 
+mixin(ShowModule!());
+
+@safe:
 struct CPSLaunchpadModule {
   UUID tenantId;
   UUID moduleId;

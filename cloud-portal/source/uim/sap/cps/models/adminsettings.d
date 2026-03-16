@@ -1,5 +1,9 @@
 module uim.sap.cps.models.adminsettings;
+import uim.sap.cps;
 
+mixin(ShowModule!());
+
+@safe:
 struct CPSAdminSettings {
   string tenantId;
   Json themes;
