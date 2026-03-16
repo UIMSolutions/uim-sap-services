@@ -149,13 +149,13 @@ class AGTService : SAPService {
     validateId(tenantId, "Tenant ID");
 
     auto instance = AGTRuntimeInstance(tenantId, request);
-    if (instance.appId.length == 0) {
+    if (instance.appId.toString.length == 0) {
       throw new AGTValidationException("app_id is required");
     }
 
-    auto app = _store.getApp(tenantId, instance.appId);
+    auto app = _store.getApp(tenantId, instance.appId.toString);
     if (app.appId.toString.length == 0) {
-      throw new AGTNotFoundException("Mobile app", tenantId ~ "/" ~ instance.appId);
+      throw new AGTNotFoundException("Mobile app", tenantId ~ "/" ~ instance.appId.toString);
     }
 
     instance.updatedAt = Clock.currTime();
@@ -167,6 +167,10 @@ class AGTService : SAPService {
     return result;
   }
 
+  Json listRuntimeInstances(UUID tenantId) {
+    return listRuntimeInstances(tenantId.toString);
+  }
+  
   Json listRuntimeInstances(string tenantId) {
     validateId(tenantId, "Tenant ID");
 
@@ -182,12 +186,16 @@ class AGTService : SAPService {
     return result;
   }
 
+  Json deployVersion(UUID tenantId, UUID instanceId, Json request) {
+    return deployVersion(tenantId.toString, instanceId.toString, request);
+  }
+
   Json deployVersion(string tenantId, string instanceId, Json request) {
     validateId(tenantId, "Tenant ID");
     validateId(instanceId, "Instance ID");
 
     auto instance = _store.getInstance(tenantId, instanceId);
-    if (instance.instanceId.length == 0) {
+    if (instance.instanceId.toString.length == 0) {
       throw new AGTNotFoundException("Runtime instance", tenantId ~ "/" ~ instanceId);
     }
 
@@ -195,11 +203,11 @@ class AGTService : SAPService {
       throw new AGTValidationException("version_id is required");
     }
 
-    auto versionId = UUID(request["version_id"].get!string);
-    auto versions = _store.listVersions(tenantId, instance.appId);
+    auto versionId = request["version_id"].get!string;
+    auto versions = _store.listVersions(tenantId, instance.appId.toString);
     bool knownVersion = false;
     foreach (appVersion; versions) {
-      if (appVersion.versionId == versionId) {
+      if (appVersion.versionId == UUID(versionId)) {
         knownVersion = true;
         break;
       }
@@ -208,10 +216,10 @@ class AGTService : SAPService {
       throw new AGTNotFoundException("App version", tenantId ~ "/" ~ versionId);
     }
 
-    instance.deployedVersionId = versionId;
+    instance.deployedVersionId = UUID(versionId);
     instance.status = "running";
     if ("status" in request && request["status"].isString) {
-      instance.status = toLower(request["status"].get!string);
+      instance.status = request["status"].get!string.toLower;
     }
     instance.updatedAt = Clock.currTime();
 
@@ -224,20 +232,24 @@ class AGTService : SAPService {
     return result;
   }
 
+  Json upsertDevice(UUID tenantId, Json request) {
+    return upsertDevice(tenantId.toString, request);
+  }
+
   Json upsertDevice(string tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
 
     auto device = AGTDevice(tenantId, request);
-    if (device.appId.length == 0) {
+    if (device.appId.toString.length == 0) {
       throw new AGTValidationException("app_id is required");
     }
-    if (device.userId.length == 0) {
+    if (device.userId.toString.length == 0) {
       throw new AGTValidationException("user_id is required");
     }
 
-    auto app = _store.getApp(tenantId, device.appId);
+    auto app = _store.getApp(tenantId, device.appId.toString);
     if (app.appId.toString.length == 0) {
-      throw new AGTNotFoundException("Mobile app", tenantId ~ "/" ~ device.appId);
+      throw new AGTNotFoundException("Mobile app", tenantId ~ "/" ~ device.appId.toString);
     }
 
     device.lastSyncAt = Clock.currTime();
@@ -247,6 +259,10 @@ class AGTService : SAPService {
     result["success"] = true;
     result["device"] = saved.toJson();
     return result;
+  }
+
+  Json listDevices(UUID tenantId) {
+    return listDevices(tenantId.toString);
   }
 
   Json listDevices(string tenantId) {
@@ -259,6 +275,10 @@ class AGTService : SAPService {
     result["resources"] = resources;
     result["total_results"] = cast(long)resources.length;
     return result;
+  }
+
+  Json syncDevice(UUID tenantId, UUID deviceId, Json request) {
+    return syncDevice(tenantId.toString, deviceId.toString, request);
   }
 
   Json syncDevice(string tenantId, string deviceId, Json request) {
@@ -283,6 +303,10 @@ class AGTService : SAPService {
     return result;
   }
 
+  Json upsertBackendSystem(UUID tenantId, Json request) {
+    return upsertBackendSystem(tenantId.toString, request);
+  }
+
   Json upsertBackendSystem(string tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
 
@@ -300,6 +324,10 @@ class AGTService : SAPService {
     return result;
   }
 
+  Json listBackendSystems(UUID tenantId) {
+    return listBackendSystems(tenantId.toString);
+  }
+
   Json listBackendSystems(string tenantId) {
     validateId(tenantId, "Tenant ID");
 
@@ -310,6 +338,10 @@ class AGTService : SAPService {
     result["resources"] = resources;
     result["total_results"] = cast(long)resources.length;
     return result;
+  }
+
+  Json operationsDashboard(UUID tenantId) {
+    return operationsDashboard(tenantId.toString);
   }
 
   Json operationsDashboard(string tenantId) {
@@ -335,6 +367,10 @@ class AGTService : SAPService {
     result["registered_devices"] = cast(long)devices.length;
     result["backend_systems"] = cast(long)backends.length;
     return result;
+  }
+
+  private void validateId(UUID value, string fieldName) {
+    validateId(value.toString, fieldName);
   }
 
   private void validateId(string value, string fieldName) {

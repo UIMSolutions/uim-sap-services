@@ -14,7 +14,7 @@ mixin(ShowModule!());
 version (unittest) {
 } else {
   void main() {
-    AgentryConfig config = new AgentryConfig;
+    AGTConfig config = new AGTConfig;
     config.host = envOr("AGENTRY_HOST", "0.0.0.0");
     config.port = readPort(envOr("AGENTRY_PORT", "8089"), 8089);
     config.basePath = envOr("AGENTRY_BASE_PATH", "/api/agentry");
@@ -31,8 +31,8 @@ version (unittest) {
     config.customHeader("X-Service", config.serviceName);
     config.customHeader("X-Version", config.serviceVersion);
 
-    auto service = new AgentryService(config);
-    auto server = new AgentryServer(service);
+    auto service = new AGTService(config);
+    auto server = new AGTServer(service);
 
     writeln("Starting Agentry service on ", config.host, ":", config.port);
     writeln("Base path: ", config.basePath);

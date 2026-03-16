@@ -18,21 +18,21 @@ mixin(ShowModule!());
   * The server listens on the configured host and port, and exposes endpoints for managing mobile apps, runtime instances, devices, backend systems, and operations dashboard.
   *
   * Endpoints:
-  * - GET /v1/tenants/{tenantId}/mobile-apps: List mobile apps for a tenant
+  * - GET  /v1/tenants/{tenantId}/mobile-apps: List mobile apps for a tenant
   * - POST /v1/tenants/{tenantId}/mobile-apps: Create or update a mobile app for a tenant
-  * - GET /v1/tenants/{tenantId}/mobile-apps/{appId}/versions: List versions of a mobile app
+  * - GET  /v1/tenants/{tenantId}/mobile-apps/{appId}/versions: List versions of a mobile app
   * - POST /v1/tenants/{tenantId}/mobile-apps/{appId}/versions: Create a new version of a mobile app
-  * - GET /v1/tenants/{tenantId}/mobile-apps/{appId}/test-runs: List test runs for a mobile app version
+  * - GET  /v1/tenants/{tenantId}/mobile-apps/{appId}/test-runs: List test runs for a mobile app version
   * - POST /v1/tenants/{tenantId}/mobile-apps/{appId}/test-runs: Trigger a new test run for a mobile app version
-  * - GET /v1/tenants/{tenantId}/operations-instances: List runtime instances for a tenant
+  * - GET  /v1/tenants/{tenantId}/operations-instances: List runtime instances for a tenant
   * - POST /v1/tenants/{tenantId}/operations-instances: Create or update a runtime instance for a tenant
   * - POST /v1/tenants/{tenantId}/operations-instances/{instanceId}/deploy: Deploy a mobile app version to a runtime instance
-  * - GET /v1/tenants/{tenantId}/devices: List devices for a tenant
+  * - GET  /v1/tenants/{tenantId}/devices: List devices for a tenant
   * - POST /v1/tenants/{tenantId}/devices: Create or update a device for a tenant
   * - POST /v1/tenants/{tenantId}/devices/{deviceId}/sync: Sync a device for a tenant
-  * - GET /v1/tenants/{tenantId}/backend-systems: List backend systems for a tenant
+  * - GET  /v1/tenants/{tenantId}/backend-systems: List backend systems for a tenant
   * - POST /v1/tenants/{tenantId}/backend-systems: Create or update a backend system for a tenant
-  * - GET /v1/tenants/{tenantId}/operations/dashboard: Get operations dashboard data for a tenant
+  * - GET  /v1/tenants/{tenantId}/operations/dashboard: Get operations dashboard data for a tenant
  */
 class AGTServer {
   private AGTService _service;

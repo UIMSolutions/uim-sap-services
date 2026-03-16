@@ -37,6 +37,10 @@ class AGTStore : SAPStore {
     }
   }
 
+  AGTMobileApp getApp(UUID tenantId, UUID appId) {
+    return getApp(tenantId.toString, appId.toString);
+  }
+
   AGTMobileApp getApp(string tenantId, string appId) {
     synchronized (_lock) {
       auto key = appKey(tenantId, appId);
@@ -45,6 +49,10 @@ class AGTStore : SAPStore {
       }
     }
     return new AGTMobileApp;
+  }
+
+  AGTMobileApp[] listApps(UUID tenantId) {
+    return listApps(tenantId.toString);
   }
 
   AGTMobileApp[] listApps(string tenantId) {
@@ -67,6 +75,10 @@ class AGTStore : SAPStore {
     }
   }
 
+  AGTAppVersion[] listVersions(UUID tenantId, UUID appId) {
+    return listVersions(tenantId.toString, appId.toString);
+  }
+
   AGTAppVersion[] listVersions(string tenantId, string appId) {
     synchronized (_lock) {
       auto key = appKey(tenantId, appId);
@@ -85,6 +97,10 @@ class AGTStore : SAPStore {
     }
   }
 
+  AGTTestRun[] listTestRuns(UUID tenantId, UUID appId) {
+    return listTestRuns(tenantId.toString, appId.toString);
+  }
+  
   AGTTestRun[] listTestRuns(string tenantId, string appId) {
     synchronized (_lock) {
       auto key = appKey(tenantId, appId);
@@ -103,16 +119,24 @@ class AGTStore : SAPStore {
     }
   }
 
+  AGTRuntimeInstance getInstance(UUID tenantId, UUID instanceId) {
+    return getInstance(tenantId.toString, instanceId.toString);
+  }
+
   AGTRuntimeInstance getInstance(string tenantId, string instanceId) {
     synchronized (_lock) {
       auto key = instanceKey(tenantId, instanceId);
       if (auto value = key in _instances) {
-        return *value;
+        return _instances[key];
       }
     }
     return new AGTRuntimeInstance;
   }
 
+  AGTRuntimeInstance[] listInstances(UUID tenantId) {
+    return listInstances(tenantId.toString);
+  }
+  
   AGTRuntimeInstance[] listInstances(string tenantId) {
     AGTRuntimeInstance[] list;
     synchronized (_lock) {
@@ -133,14 +157,22 @@ class AGTStore : SAPStore {
     }
   }
 
+  AGTDevice getDevice(UUID tenantId, UUID deviceId) {
+    return getDevice(tenantId.toString, deviceId.toString);
+  }
+
   AGTDevice getDevice(string tenantId, string deviceId) {
     synchronized (_lock) {
       auto key = deviceKey(tenantId, deviceId);
       if (auto value = key in _devices) {
-        return *value;
+        return _devices[key];
       }
     }
     return new AGTDevice;
+  }
+
+  AGTDevice[] listDevices(UUID tenantId) {
+    return listDevices(tenantId.toString);
   }
 
   AGTDevice[] listDevices(string tenantId) {
@@ -163,6 +195,10 @@ class AGTStore : SAPStore {
     }
   }
 
+  AGTBackendSystem[] listBackends(UUID tenantId) {
+    return listBackends(tenantId.toString);
+  }
+
   AGTBackendSystem[] listBackends(string tenantId) {
     AGTBackendSystem[] list;
     synchronized (_lock) {
@@ -175,20 +211,40 @@ class AGTStore : SAPStore {
     return list;
   }
 
+  private string appKey(UUID tenantId, UUID appId) {
+    return appKey(tenantId.toString, appId.toString);
+  }
+
   private string appKey(string tenantId, string appId) {
     return tenantId ~ ":app:" ~ appId;
+  }
+
+  private string instanceKey(UUID tenantId, UUID instanceId) {
+    return instanceKey(tenantId.toString, instanceId.toString);
   }
 
   private string instanceKey(string tenantId, string instanceId) {
     return tenantId ~ ":instance:" ~ instanceId;
   }
 
+  private string deviceKey(UUID tenantId, UUID deviceId) {
+    return deviceKey(tenantId.toString, deviceId.toString);
+  }
+
   private string deviceKey(string tenantId, string deviceId) {
     return tenantId ~ ":device:" ~ deviceId;
   }
 
+  private string backendKey(UUID tenantId, UUID backendId) {
+    return backendKey(tenantId.toString, backendId.toString);
+  }
+
   private string backendKey(string tenantId, string backendId) {
     return tenantId ~ ":backend:" ~ backendId;
+  }
+
+  private bool belongsToTenant(string key, UUID tenantId) {
+    return belongsToTenant(key, tenantId.toString);
   }
 
   private bool belongsToTenant(string key, string tenantId) {
