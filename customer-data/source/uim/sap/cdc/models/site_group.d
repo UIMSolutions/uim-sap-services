@@ -1,36 +1,27 @@
 module uim.sap.cdc.models.site_group;
 
-import std.datetime : SysTime;
+import uim.sap.cdc;
 
-import vibe.data.json : Json;
+mixin(ShowModule!());
 
 @safe:
 
-struct CDCSiteGroup {
-  string tenantId;
+class CDCSiteGroup : SAPTenantObject {
+  mixin(SAPObjectTemplate!CDCSiteGroup);
+
   string groupId;
   string name;
   string[] sites;
   string[] regions;
-  SysTime createdAt;
-  SysTime updatedAt;
 
   override Json toJson()  {
-    Json info = super.toJson;
-    payload["tenant_id"] = tenantId;
-    payload["group_id"] = groupId;
-    payload["name"] = name;
+    Json siteValues = sites.map!(site => site).array.toJson;
+    Json regionValues = regions.map!(region => value).array.toJson;
 
-    Json siteValues = Json.emptyArray;
-    foreach (value; sites) siteValues ~= value;
-    payload["sites"] = siteValues;
-
-    Json regionValues = Json.emptyArray;
-    foreach (value; regions) regionValues ~= value;
-    payload["regions"] = regionValues;
-
-    payload["created_at"] = createdAt.toISOExtString();
-    payload["updated_at"] = updatedAt.toISOExtString();
-    return payload;
+    return super.toJson
+      .set("group_id", groupId)
+      .set("name", name)
+      .set("sites", siteValues)
+      .set("regions", regionValues);
   }
 }

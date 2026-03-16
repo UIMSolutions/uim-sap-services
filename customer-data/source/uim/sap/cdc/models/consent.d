@@ -6,28 +6,25 @@ mixin(ShowModule!());
 
 @safe:
 
-struct CDCConsent {
-  string tenantId;
-  string userId;
-  string consentId;
+class CDCConsent : SAPTenantObject {
+  mixin(SAPObjectTemplate!CDCConsent);
+
+  UUID userId;
+  UUID consentId;
   string purpose;
   string legalBasis;
   string status;
   string source;
   string language;
-  SysTime updatedAt;
 
   override Json toJson()  {
-    Json info = super.toJson;
-    payload["tenant_id"] = tenantId;
-    payload["user_id"] = userId;
-    payload["consent_id"] = consentId;
-    payload["purpose"] = purpose;
-    payload["legal_basis"] = legalBasis;
-    payload["status"] = status;
-    payload["source"] = source;
-    payload["language"] = language;
-    payload["updated_at"] = updatedAt.toISOExtString();
-    return payload;
+    Json info = super.toJson
+      .set("user_id", userId)
+      .set("consent_id", consentId)
+      .set("purpose", purpose)
+      .set("legal_basis", legalBasis)
+      .set("status", status)
+      .set("source", source)
+      .set("language", language);
   }
 }

@@ -6,8 +6,9 @@ mixin(ShowModule!());
 
 @safe:
 
-struct CDCAuthEvent {
-  string tenantId;
+class CDCAuthEvent : SAPTenantObject {
+  mixin(SAPObjectTemplate!CDCAuthEvent);
+
   string eventId;
   string userId;
   string providerId;
@@ -16,20 +17,16 @@ struct CDCAuthEvent {
   string riskLevel;
   long riskScore;
   Json providerSignals;
-  SysTime createdAt;
 
   override Json toJson()  {
-    Json info = super.toJson;
-    payload["tenant_id"] = tenantId;
-    payload["event_id"] = eventId;
-    payload["user_id"] = userId;
-    payload["provider_id"] = providerId;
-    payload["ip_address"] = ipAddress;
-    payload["decision"] = decision;
-    payload["risk_level"] = riskLevel;
-    payload["risk_score"] = riskScore;
-    payload["provider_signals"] = providerSignals;
-    payload["created_at"] = createdAt.toISOExtString();
-    return payload;
+    return super.toJson
+      .set("event_id", eventId)
+      .set("user_id", userId)
+      .set("provider_id", providerId)
+      .set("ip_address", ipAddress)
+      .set("decision", decision)
+      .set("risk_level", riskLevel)
+      .set("risk_score", riskScore)
+      .set("provider_signals", providerSignals);
   }
 }

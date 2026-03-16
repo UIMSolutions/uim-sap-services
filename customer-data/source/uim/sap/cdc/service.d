@@ -25,51 +25,34 @@ class CDCService : SAPService {
   }
 
   Json health() const {
-    Json payload = super.health();
-    payload["domain"] = "customer-data";
-    return payload;
+    return super.health()
+      .set("domain", "customer-data");
   }
 
   Json upsertProfile(string tenantId, Json data) {
     validateTenant(tenantId);
 
     auto now = Clock.currTime();
-    auto existing = _store.getProfileByTenantUser(tenantId, readRequired(body, "user_id"));
+    auto existing = _store.getProfileByTenantUser(tenantId, readRequired(data, "user_id"));
 
-    CDCProfile profile;
+    CDCProfile profile = new CDCProfile(data);
     profile.tenantId = UUID(tenantId);
-    profile.userId = readRequired(body, "user_id");
-    profile.email = readOptional(body, "email", existing.isNull ? "" : existing.get.email);
-    profile.phone = readOptional(body, "phone", existing.isNull ? "" : existing.get.phone);
-    profile.firstName = readOptional(body, "first_name", existing.isNull ? ""
+    profile.userId = UUID(data.requiredString("user_id"));
+    profile.email = data.getString("email", existing.isNull ? "" : existing.get.email);
+    profile.phone = readOptional(data, "phone", existing.isNull ? "" : existing.get.phone);
+    profile.firstName = readOptional(data, "first_name", existing.isNull ? ""
         : existing.get.firstName);
-    profile.lastName = readOptional(body, "last_name", existing.isNull ? "" : existing.get.lastName);
-    profile.region = readOptional(body, "region", existing.isNull ? _config.defaultRegion
+    profile.lastName = readOptional(data, "last_name", existing.isNull ? "" : existing.get.lastName);
+    profile.region = readOptional(data, "region", existing.isNull ? _config.defaultRegion
         : existing.get.region);
-    profile.siteGroupId = readOptional(
-      body,
-      "site_group_id",
-      existing.isNull ? "global-default" : existing.get.siteGroupId
-    );
-    profile.passwordSecret = readOptional(
-      body,
-      "password",
-      existing.isNull ? "changeme" : existing.get.passwordSecret
-    );
-    profile.active = readrequest.getBoolean((body, "active", existing.isNull ? true : existing.get.active);
-    profile.emailVerified = readrequest.getBoolean((
-      body,
-      "email_verified",
-      existing.isNull ? false : existing.get.emailVerified
-    );
-    profile.preferences = readObject(
-      body,
-      "preferences",
+    profile.siteGroupId = UUID(data.getString("site_group_id", existing.isNull ? "global-default" : existing.get.siteGroupId));
+    profile.passwordSecret = data.getString("password", existing.isNull ? "changeme" : existing.get.passwordSecret);
+    profile.active = data.getBoolean("active", existing.isNull ? true : existing.get.active);
+    profile.emailVerified = data.getBoolean("email_verified", existing.isNull ? false : existing.get.emailVerified);
+    profile.preferences = data.readObject("preferences",
       existing.isNull ? Json.emptyObject : existing.get.preferences
     );
-    profile.customAttributes = readObject(
-      body,
-      "custom_attributes",
+    profile.customAttributes = data.readObject("custom_attributes",
       existing.isNull ? Json.emptyObject : existing.get.customAttributes
     );
     profile.failedLoginAttempts = existing.isNull ? 0 : existing.get.failedLoginAttempts;
@@ -80,31 +63,29 @@ class CDCService : SAPService {
     profile.updatedAt = now;
 
     validateRegion(profile.region);
-
     auto saved = _store.upsertProfile(profile);
-
+    
     Json payload = Json.emptyObject;
-    payload["message"] = "Profile upserted";
-    payload["profile"] = saved.toJson();
-    return payload;
+    return payload
+      .set("message", "Profile upserted")
+      .set("profile", saved.toJson());
   }
 
   Json listProfiles(string tenantId, string region, string search, size_t limit, size_t offset) {
     validateTenant(tenantId);
-
     auto normalizedSearch = toLower(search);
-    auto normalizedRegion = toLower(region);
-
+    auto normalizedRegion = toLower(
+      region);
     CDCProfile[] filtered;
     foreach (profile; _store.listProfilesByTenant(tenantId)) {
       if (normalizedRegion.length > 0 && toLower(profile.region) != normalizedRegion)
         continue;
-
       if (normalizedSearch.length > 0) {
         auto inEmail = toLower(profile.email).indexOf(normalizedSearch) >= 0;
         auto inName = (toLower(profile.firstName) ~ " " ~ toLower(profile.lastName)).indexOf(
           normalizedSearch) >= 0;
-        auto inUser = toLower(profile.userId).indexOf(normalizedSearch) >= 0;
+        auto inUser = toLower(profile.userId).indexOf(
+          normalizedSearch) >= 0;
         if (!inEmail && !inName && !inUser)
           continue;
       }
@@ -113,36 +94,34 @@ class CDCService : SAPService {
     }
 
     sort!((left, right) => left.updatedAt > right.updatedAt)(filtered);
-
-    auto safeOffset = offset > filtered.length ? filtered.length : offset;
+    auto safeOffset = offset > filtered
+      .length ? filtered.length : offset;
     auto safeLimit = limit == 0 ? 100 : limit;
     auto end = safeOffset + safeLimit;
     if (end > filtered.length)
       end = filtered.length;
 
-    Json profiles = Json.emptyArray;
-    foreach (profile; filtered[safeOffset .. end])
-      profiles ~= profile.toJson();
+    Json profiles = filtered[safeOffset .. end].map!(profile => profile.toJson()).array.toJson;
 
     Json payload = Json.emptyObject;
-    payload["tenant_id"] = tenantId;
-    payload["total"] = cast(long)filtered.length;
-    payload["returned"] = cast(long)profiles.length;
-    payload["offset"] = cast(long)safeOffset;
-    payload["limit"] = cast(long)safeLimit;
-    payload["profiles"] = profiles;
-    return payload;
+    return payload
+      .set("tenant_id", tenantId)
+      .set("total", cast(long)filtered.length)
+      .set("returned", cast(long)profiles.length)
+      .set("offset", cast(long)safeOffset)
+      .set("limit", cast(long)safeLimit)
+      .set("profiles", profiles);
   }
 
   Json getProfile(string tenantId, string userId) {
     validateTenant(tenantId);
     if (userId.length == 0)
       throw new CDCValidationException("user_id is required");
-
-    auto profile = _store.getProfileByTenantUser(tenantId, userId);
+    auto profile = _store
+      .getProfileByTenantUser(tenantId, userId);
     if (profile.isNull)
-      throw new CDCNotFoundException("Profile", userId);
-
+      throw new CDCNotFoundException(
+        "Profile", userId);
     Json payload = Json.emptyObject;
     payload["profile"] = profile.get.toJson();
     return payload;
@@ -152,23 +131,22 @@ class CDCService : SAPService {
     validateTenant(tenantId);
     if (userId.length == 0)
       throw new CDCValidationException("user_id is required");
-
-    auto status = normalizeConsentStatus(readRequired(body, "status"));
+    auto status = normalizeConsentStatus(
+      readRequired(data, "status"));
     auto now = Clock.currTime();
 
     CDCConsent consent;
     consent.tenantId = UUID(tenantId);
     consent.userId = userId;
-    consent.consentId = readRequired(body, "consent_id");
-    consent.purpose = readRequired(body, "purpose");
-    consent.legalBasis = readOptional(body, "legal_basis", "consent");
+    consent.consentId = readRequired(data, "consent_id");
+    consent.purpose = readRequired(data, "purpose");
+    consent.legalBasis = readOptional(data, "legal_basis", "consent");
     consent.status = status;
-    consent.source = readOptional(body, "source", "preference-center");
-    consent.language = readOptional(body, "language", "en");
+    consent.source = readOptional(data, "source", "preference-center");
+    consent.language = readOptional(data, "language", "en");
     consent.updatedAt = now;
 
     auto saved = _store.upsertConsent(consent);
-
     Json payload = Json.emptyObject;
     payload["message"] = "Consent preference saved";
     payload["transparency_note"] = "Consent state is visible and auditable for the end user";
@@ -184,7 +162,6 @@ class CDCService : SAPService {
     Json consents = Json.emptyArray;
     foreach (consent; _store.listConsents(tenantId, userId))
       consents ~= consent.toJson();
-
     Json payload = Json.emptyObject;
     payload["tenant_id"] = tenantId;
     payload["user_id"] = userId;
@@ -195,24 +172,24 @@ class CDCService : SAPService {
 
   Json upsertSiteGroup(string tenantId, Json data) {
     validateTenant(tenantId);
-
     auto now = Clock.currTime();
 
     CDCSiteGroup group;
     group.tenantId = UUID(tenantId);
-    group.groupId = readRequired(body, "group_id");
-    group.name = readRequired(body, "name");
-    group.sites = readStringArray(body, "sites");
-    group.regions = readStringArray(body, "regions");
+    group.groupId = readRequired(data, "group_id");
+    group.name = readRequired(data, "name");
+    group.sites = readStringArray(data, "sites");
+    group.regions = readStringArray(data, "regions");
     if (group.regions.length == 0)
-      group.regions = [_config.defaultRegion];
+      group.regions = [
+        _config.defaultRegion
+      ];
     foreach (value; group.regions)
       validateRegion(value);
     group.createdAt = now;
     group.updatedAt = now;
-
-    auto saved = _store.upsertSiteGroup(group);
-
+    auto saved = _store.upsertSiteGroup(
+      group);
     Json payload = Json.emptyObject;
     payload["message"] = "Global access site group saved";
     payload["site_group"] = saved.toJson();
@@ -221,14 +198,13 @@ class CDCService : SAPService {
 
   Json listSiteGroups(string tenantId) {
     validateTenant(tenantId);
-
     Json groups = Json.emptyArray;
     foreach (group; _store.listSiteGroups(tenantId))
       groups ~= group.toJson();
-
     Json payload = Json.emptyObject;
     payload["tenant_id"] = tenantId;
-    payload["count"] = cast(long)groups.length;
+    payload["count"] = cast(long)groups
+      .length;
     payload["site_groups"] = groups;
     return payload;
   }
@@ -242,8 +218,8 @@ class CDCService : SAPService {
     if (profile.isNull)
       throw new CDCNotFoundException("Profile", userId);
 
-    auto siteGroup = _store.getSiteGroup(tenantId, profile.get.siteGroupId);
-
+    auto siteGroup = _store.getSiteGroup(tenantId, profile
+        .get.siteGroupId);
     Json payload = Json.emptyObject;
     payload["tenant_id"] = tenantId;
     payload["user_id"] = userId;
@@ -251,11 +227,12 @@ class CDCService : SAPService {
     payload["data_region"] = profile.get.region;
     payload["site_group_id"] = profile.get.siteGroupId;
     payload["route"] = "regional-data-center";
-
     if (!siteGroup.isNull) {
       payload["site_group"] = siteGroup.get.toJson();
-      payload["site_allowed"] = site.length == 0 || siteGroup.get.sites.canFind(site);
-      payload["region_allowed"] = siteGroup.get.regions.canFind(profile.get.region);
+      payload["site_allowed"] = site
+        .length == 0 || siteGroup.get.sites.canFind(site);
+      payload["region_allowed"] = siteGroup.get.regions.canFind(
+        profile.get.region);
     } else {
       payload["site_allowed"] = true;
       payload["region_allowed"] = true;
@@ -266,21 +243,22 @@ class CDCService : SAPService {
 
   Json upsertRiskProvider(string tenantId, Json data) {
     validateTenant(tenantId);
-
     auto now = Clock.currTime();
 
     CDCRiskProvider provider;
     provider.tenantId = UUID(tenantId);
-    provider.providerId = readRequired(body, "provider_id");
-    provider.name = readRequired(body, "name");
-    provider.providerKind = normalizeProviderKind(readRequired(body, "provider_kind"));
-    provider.enabled = readrequest.getBoolean((body, "enabled", true);
-    provider.config = readObject(body, "config", Json.emptyObject);
+    provider.providerId = readRequired(data, "provider_id");
+    provider.name = readRequired(data, "name");
+    provider.providerKind = normalizeProviderKind(
+      readRequired(data, "provider_kind"));
+    provider.enabled = data.getBoolean(
+      "enabled", true);
+    provider.config = readObject(data, "config", Json
+        .emptyObject);
     provider.createdAt = now;
     provider.updatedAt = now;
-
-    auto saved = _store.upsertRiskProvider(provider);
-
+    auto saved = _store.upsertRiskProvider(
+      provider);
     Json payload = Json.emptyObject;
     payload["message"] = "Risk provider configured";
     payload["provider"] = saved.toJson();
@@ -289,12 +267,11 @@ class CDCService : SAPService {
 
   Json listRiskProviders(string tenantId) {
     validateTenant(tenantId);
-
     Json providers = Json.emptyArray;
     foreach (provider; _store.listRiskProviders(tenantId))
       providers ~= provider.toJson();
-
-    Json payload = Json.emptyObject;
+    Json payload = Json
+      .emptyObject;
     payload["tenant_id"] = tenantId;
     payload["count"] = cast(long)providers.length;
     payload["providers"] = providers;
@@ -303,10 +280,9 @@ class CDCService : SAPService {
 
   Json authenticate(string tenantId, Json data) {
     validateTenant(tenantId);
-
-    auto userId = readRequired(body, "user_id");
-    auto password = readRequired(body, "password");
-    auto ipAddress = readOptional(body, "ip_address", "");
+    auto userId = readRequired(data, "user_id");
+    auto password = readRequired(data, "password");
+    auto ipAddress = readOptional(data, "ip_address", "");
 
     auto profileOpt = _store.getProfileByTenantUser(tenantId, userId);
     if (profileOpt.isNull)
@@ -320,8 +296,8 @@ class CDCService : SAPService {
           .emptyObject);
     }
 
-    auto providerSignals = readObject(body, "provider_signals", Json.emptyObject);
-
+    auto providerSignals = readObject(data, "provider_signals", Json
+        .emptyObject);
     auto riskScore = evaluateRiskScore(profile, ipAddress, providerSignals);
     auto riskLevel = riskLevelForScore(riskScore);
 
@@ -331,7 +307,8 @@ class CDCService : SAPService {
 
       if (profile.failedLoginAttempts >= 5) {
         profile.hasLockedUntil = true;
-        profile.lockedUntil = now + dur!"minutes"(30);
+        profile.lockedUntil = now + dur!"minutes"(
+          30);
       }
 
       _store.upsertProfile(profile);
@@ -348,8 +325,8 @@ class CDCService : SAPService {
 
     if (riskLevel == "high") {
       profile.updatedAt = now;
-      _store.upsertProfile(profile);
-
+      _store.upsertProfile(
+        profile);
       Json payload = deniedAuthPayload(
         tenantId,
         userId,
@@ -367,8 +344,8 @@ class CDCService : SAPService {
     profile.failedLoginAttempts = 0;
     profile.hasLockedUntil = false;
     profile.updatedAt = now;
-    _store.upsertProfile(profile);
-
+    _store.upsertProfile(
+      profile);
     auto event = appendAuthEvent(
       tenantId,
       userId,
@@ -380,13 +357,13 @@ class CDCService : SAPService {
       providerSignals,
       now
     );
-
     Json payload = Json.emptyObject;
     payload["decision"] = "allow";
     payload["risk_level"] = riskLevel;
     payload["risk_score"] = riskScore;
     payload["session"] = Json.emptyObject;
-    payload["session"]["token"] = "sess-" ~ userId ~ "-" ~ to!string(now.stdTime);
+    payload["session"]["token"] = "sess-" ~ userId ~ "-" ~ to!string(
+      now.stdTime);
     payload["session"]["expires_in_seconds"] = 3600;
     payload["profile"] = profile.toJson();
     payload["auth_event"] = event.toJson();
@@ -395,14 +372,12 @@ class CDCService : SAPService {
 
   Json listAuthEvents(string tenantId, size_t limit) {
     validateTenant(tenantId);
-
     auto safeLimit = limit == 0 ? 100 : limit;
-
     Json events = Json.emptyArray;
     foreach (event; _store.listAuthEvents(tenantId, safeLimit))
       events ~= event.toJson();
-
-    Json payload = Json.emptyObject;
+    Json payload = Json
+      .emptyObject;
     payload["tenant_id"] = tenantId;
     payload["count"] = cast(long)events.length;
     payload["events"] = events;
@@ -430,7 +405,6 @@ class CDCService : SAPService {
       providerSignals,
       now
     );
-
     Json payload = Json.emptyObject;
     payload["decision"] = decision;
     payload["risk_level"] = riskLevel;
@@ -453,8 +427,10 @@ class CDCService : SAPService {
     SysTime now
   ) {
     CDCAuthEvent event;
-    event.tenantId = UUID(tenantId);
-    event.eventId = "evt-" ~ to!string(now.stdTime);
+    event.tenantId = UUID(
+      tenantId);
+    event.eventId = "evt-" ~ to!string(
+      now.stdTime);
     event.userId = userId;
     event.providerId = providerId;
     event.ipAddress = ipAddress;
@@ -463,42 +439,56 @@ class CDCService : SAPService {
     event.riskScore = riskScore;
     event.providerSignals = signals;
     event.createdAt = now;
-    return _store.appendAuthEvent(event);
+    return _store.appendAuthEvent(
+      event);
   }
 
   private long evaluateRiskScore(CDCProfile profile, string ipAddress, Json providerSignals) {
     long score = 0;
-
-    if (profile.failedLoginAttempts >= 3)
+    if (
+      profile.failedLoginAttempts >= 3)
       score += 30;
-    if (profile.hasLockedUntil)
+    if (
+      profile.hasLockedUntil)
       score += 40;
 
     if (ipAddress.length == 0)
       score += 5;
 
-    if ("recaptcha_score" in providerSignals && providerSignals["recaptcha_score"].isFloat) {
-      if (providerSignals["recaptcha_score"].get!double < 0.5)
+    if ("recaptcha_score" in providerSignals && providerSignals["recaptcha_score"]
+      .isFloat) {
+      if (providerSignals["recaptcha_score"]
+        .get!double < 0.5)
         score += 40;
     }
 
-    if ("akamai_risk" in providerSignals && providerSignals["akamai_risk"].isBoolean) {
-      if (providerSignals["akamai_risk"].get!bool)
+    if ("akamai_risk" in providerSignals && providerSignals["akamai_risk"]
+      .isBoolean) {
+      if (
+        providerSignals["akamai_risk"]
+        .get!bool)
         score += 30;
     }
 
-    if ("arkose_result" in providerSignals && providerSignals["arkose_result"].isString) {
-      if (toLower(providerSignals["arkose_result"].get!string) == "suspicious")
+    if ("arkose_result" in providerSignals && providerSignals["arkose_result"]
+      .isString) {
+      if (toLower(
+          providerSignals["arkose_result"].get!string) == "suspicious")
         score += 35;
     }
 
-    if ("transunion_score" in providerSignals && providerSignals["transunion_score"].isInteger) {
-      if (providerSignals["transunion_score"].get!long > 700)
+    if ("transunion_score" in providerSignals && providerSignals["transunion_score"]
+      .isInteger) {
+      if (
+        providerSignals["transunion_score"].get!long > 700)
         score += 20;
     }
 
-    if ("impossible_travel" in providerSignals && providerSignals["impossible_travel"].isBoolean) {
-      if (providerSignals["impossible_travel"].get!bool)
+    if ("impossible_travel" in providerSignals && providerSignals["impossible_travel"]
+      .isBoolean) {
+      if (
+        providerSignals["impossible_travel"]
+        .get!bool)
         score += 25;
     }
 
@@ -507,7 +497,8 @@ class CDCService : SAPService {
     return score;
   }
 
-  private string riskLevelForScore(long score) {
+  private string riskLevelForScore(
+    long score) {
     if (score >= 70)
       return "high";
     if (score >= 30)
@@ -525,17 +516,22 @@ class CDCService : SAPService {
     return values;
   }
 
-  private void validateTenant(string tenantId) const {
+  private void validateTenant(
+    string tenantId) const {
     if (tenantId.length == 0)
-      throw new CDCValidationException("tenant_id is required");
+      throw new CDCValidationException(
+        "tenant_id is required");
   }
 
-  private void validateRegion(string value) const {
+  private void validateRegion(
+    string value) const {
     if (value.length == 0)
-      throw new CDCValidationException("region is required");
+      throw new CDCValidationException(
+        "region is required");
   }
 
-  private string normalizeConsentStatus(string value) const {
+  private string normalizeConsentStatus(
+    string value) const {
     auto normalized = toLower(value);
     if (normalized != "granted" && normalized != "withdrawn" && normalized != "pending") {
       throw new CDCValidationException("status must be one of granted|withdrawn|pending");
@@ -543,7 +539,8 @@ class CDCService : SAPService {
     return normalized;
   }
 
-  private string normalizeProviderKind(string value) const {
+  private string normalizeProviderKind(
+    string value) const {
     auto normalized = toLower(value);
     if (
       normalized != "google-recaptcha" && normalized != "akamai" && normalized != "arkose-labs" &&
@@ -557,47 +554,48 @@ class CDCService : SAPService {
   }
 
   private string readRequired(Json data, string key) const {
-    if (!(key in data) || !data[key].isString || data[key].get!string.length == 0) {
-      throw new CDCValidationException(key ~ " is required");
+    if (!(key in data) || !data[key].isString || data[key]
+      .get!string.length == 0) {
+      throw new CDCValidationException(
+        key ~ " is required");
     }
     return data[key].get!string;
   }
 
   private string readOptional(Json data, string key, string fallback) const {
-    if (!(key in data) || data[key].isNull)
+    if (!(key in data) || data[key]
+      .isNull)
       return fallback;
     if (!data[key].isString)
-      throw new CDCValidationException(key ~ " must be a string");
-    return data[key].get!string;
+      throw new CDCValidationException(
+        key ~ " must be a string");
+    return data[key]
+      .get!string;
   }
 
   private bool readrequest.getBoolean((Json data, string key, bool fallback) const {
-    if (!(key in data) || data[key].isNull)
-      return fallback;
-    if (!data[key].isBoolean)
-      throw new CDCValidationException(key ~ " must be a boolean");
-    return data[key].get!bool;
-  }
+    if (!(key in data) || data[key]
+    .isNull)
+      return fallback; if (!data[key].isBoolean)
+        throw new CDCValidationException(
+          key ~ " must be a boolean"); return data[key].get!bool;}
 
-  private string[] readStringArray(Json data, string key) const {
-    string[] values;
-    if (!(key in data) || data[key].isNull)
-      return values;
-    if (!data[key].isArray)
-      throw new CDCValidationException(key ~ " must be an array");
-    foreach (item; data[key]) {
-      if (!item.isString)
-        throw new CDCValidationException(key ~ " must contain strings");
-      values ~= item.get!string;
-    }
-    return values;
-  }
+    private string[] readStringArray(Json data, string key) const {
+      string[] values; if (!(key in data) || data[key]
+      .isNull)
+        return values; if (!data[key].isArray)
+          throw new CDCValidationException(
+            key ~ " must be an array"); foreach (item; data[key]) {
+            if (!item.isString)
+              throw new CDCValidationException(
+                key ~ " must contain strings"); values ~= item
+                .get!string;}
+            return values;}
 
-  private Json readObject(Json data, string key, Json fallback) const {
-    if (!(key in data) || data[key].isNull)
-      return fallback;
-    if (!data[key].isObject)
-      throw new CDCValidationException(key ~ " must be an object");
-    return data[key];
-  }
-}
+            private Json readObject(Json data, string key, Json fallback) const {
+              if (!(key in data) || data[key]
+              .isNull)
+                return fallback; if (!data[key].isObject)
+                  throw new CDCValidationException(
+                    key ~ " must be an object"); return data[key];}
+            }

@@ -18,56 +18,61 @@ mixin(ShowModule!());
  *  the identifier is hashed to a consistent bucket (0-99) and the
  *  bucket is matched against the cumulative weight ranges.
  */
-struct FFLPercentageEntry {
-    string variationId;
-    uint weight = 0;
+class FFLPercentageEntry : SAPObject {
+  mixin(SAPObjectTemplate!FFLPercentageEntry);
 
-    override Json toJson()  {
-        Json j = Json.emptyObject;
-        j["variation_id"] = variationId;
-        j["weight"] = cast(long) weight;
-        return j;
-    }
+  string variationId;
+  uint weight = 0;
+
+  override Json toJson() {
+    Json j = Json.emptyObject;
+    j["variation_id"] = variationId;
+    j["weight"] = cast(long)weight;
+    return j;
+  }
 }
+class FFLPercentageRule : SAPObject {
+  mixin(SAPObjectTemplate!FFLPercentageRule);
 
-struct FFLPercentageRule {
-    string ruleId;
-    FFLPercentageEntry[] entries;
+  string ruleId;
+  FFLPercentageEntry[] entries;
 
-    override Json toJson()  {
-        Json j = Json.emptyObject;
-        j["rule_id"] = ruleId;
+  override Json toJson() {
+    Json j = Json.emptyObject;
+    j["rule_id"] = ruleId;
 
-        Json arr = Json.emptyArray;
-        foreach (entry; entries) {
-            arr ~= entry.toJson();
+    Json arr = Json.emptyArray;
+    foreach (entry; entries) {
+      arr ~= entry.toJson();
+    }
+    j["entries"] = arr;
+    return j;
+  }
+
+  static FFLPercentageRule opCall(Json request) {
+  FFLPercentageRule r;
+  r.ruleId = randomUUID().toString();
+
+  if ("entries" in request && request["entries"].isArray) {
+    () @trusted {
+      foreach (item; request["entries"]) {
+        FFLPercentageEntry entry;
+        if ("variation_id" in item && item["variation_id"].isString) {
+          entry.variationId = item["variation_id"].get!string;
         }
-        j["entries"] = arr;
-        return j;
-    }
+        if ("weight" in item && item["weight"].type == Json.Type.int_) {
+          entry.weight = cast(uint)item["weight"].get!long;
+        }
+        r.entries ~= entry;
+      }
+    }();
+  }
+  if ("rule_id" in request && request["rule_id"].isString) {
+    r.ruleId = request["rule_id"].get!string;
+  }
+
+  return r;
+}
 }
 
-FFLPercentageRule percentageRuleFromJson(Json request) {
-    FFLPercentageRule r;
-    r.ruleId = randomUUID().toString();
 
-    if ("entries" in request && request["entries"].isArray) {
-        () @trusted {
-            foreach (item; request["entries"]) {
-                FFLPercentageEntry entry;
-                if ("variation_id" in item && item["variation_id"].isString) {
-                    entry.variationId = item["variation_id"].get!string;
-                }
-                if ("weight" in item && item["weight"].type == Json.Type.int_) {
-                    entry.weight = cast(uint) item["weight"].get!long;
-                }
-                r.entries ~= entry;
-            }
-        }();
-    }
-    if ("rule_id" in request && request["rule_id"].isString) {
-        r.ruleId = request["rule_id"].get!string;
-    }
-
-    return r;
-}

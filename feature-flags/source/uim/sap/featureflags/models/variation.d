@@ -17,23 +17,23 @@ mixin(ShowModule!());
  *  evaluates to this variation, plus a `weight` used by the
  *  percentage-delivery strategy to distribute traffic.
  */
-struct FFLVariation {
+class FFLVariation : SAPObject {
+  mixin(SAPObjectTemplate!FFLVariation);
+
     string variationId;
     string name;
     string value;
     uint weight = 0; // percentage weight (0-100) for percentage delivery
 
     override Json toJson()  {
-        Json j = Json.emptyObject;
-        j["variation_id"] = variationId;
-        j["name"] = name;
-        j["value"] = value;
-        j["weight"] = cast(long) weight;
-        return j;
+        return super.toJson
+        .set("variation_id", variationId)
+        .set("name", name)
+        .set("value", value)
+        .set("weight", cast(long) weight);
     }
-}
 
-FFLVariation variationFromJson(Json request) {
+    static FFLVariation opCall(Json request) {
     FFLVariation v;
     v.variationId = randomUUID().toString();
 
@@ -52,3 +52,6 @@ FFLVariation variationFromJson(Json request) {
 
     return v;
 }
+
+}
+

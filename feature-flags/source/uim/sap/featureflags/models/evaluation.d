@@ -12,32 +12,33 @@ mixin(ShowModule!());
 @safe:
 
 /** Result returned by the flag-evaluation endpoint. */
-struct FFLEvaluation {
-    UUID flagId;
-    string flagName;
-    string flagType;
+class FFLEvaluation : SAPObject {
+  mixin(SAPObjectTemplate!FFLEvalution);
 
-    // Boolean result
-    bool booleanValue = false;
+  UUID flagId;
+  string flagName;
+  string flagType;
 
-    // String result
-    UUID variationId;
-    string variationValue;
+  // Boolean result
+  bool booleanValue = false;
 
-    // Metadata
-    string strategy;    // "default" | "direct" | "percentage"
-    string evaluatedAt;
+  // String result
+  UUID variationId;
+  string variationValue;
 
-    override Json toJson()  {
-        Json j = Json.emptyObject;
-        j["flag_id"] = flagId;
-        j["flag_name"] = flagName;
-        j["flag_type"] = flagType;
-        j["boolean_value"] = booleanValue;
-        j["variation_id"] = variationId;
-        j["variation_value"] = variationValue;
-        j["strategy"] = strategy;
-        j["evaluated_at"] = evaluatedAt;
-        return j;
-    }
+  // Metadata
+  string strategy; // "default" | "direct" | "percentage"
+  string evaluatedAt;
+
+  override Json toJson() {
+    return super.toJson()
+      .set("flag_id", flagId)
+      .set("flag_name", flagName)
+      .set("flag_type", flagType)
+      .set("boolean_value", booleanValue)
+      .set("variation_id", variationId)
+      .set("variation_value", variationValue)
+      .set("strategy", strategy)
+      .set("evaluated_at", evaluatedAt);
+  }
 }

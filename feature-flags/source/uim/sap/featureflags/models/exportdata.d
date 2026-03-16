@@ -12,24 +12,21 @@ mixin(ShowModule!());
 @safe:
 
 /** Container used for export/import of all flags from a tenant. */
-struct FFLExportData {
-  string tenantId;
+class FFLExportData : SAPTenantObject {
+  mixin(SAPObjectTemplate!FFLExportData);
+
   string exportedAt;
   string serviceVersion;
   FFLFlag[] flags;
 
   override Json toJson()  {
-    Json j = Json.emptyObject;
-    j["tenant_id"] = tenantId;
-    j["exported_at"] = exportedAt;
-    j["service_version"] = serviceVersion;
+    Json arr = flags.map!(flag => flag.toJson()).array.toJson;
 
-    Json arr = Json.emptyArray;
-    foreach (flag; flags) {
-      arr ~= flag.toJson();
-    }
-    j["flags"] = arr;
-    j["total_flags"] = cast(long)flags.length;
-    return j;
+    return super.toJson()
+      .set("tenant_id", tenantId)
+      .set("exported_at", exportedAt)
+      .set("service_version", serviceVersion)
+      .set("flags", arr)
+      .set("total_flags", cast(long)flags.length);
   }
 }

@@ -40,36 +40,38 @@ class CDCStore : SAPStore {
     }
   }
 
-  Nullable!CDCProfile getProfileByTenantRegionUser(string tenantId, string region, string userId) {
+  CDCProfile getProfileByTenantRegionUser(string tenantId, string region, string userId) {
     synchronized (_lock) {
       auto key = scopedProfileKey(tenantId, region, userId);
-      if (auto value = key in _profiles) return Nullable!CDCProfile(*value);
-      return Nullable!CDCProfile.init;
+      if (auto value = key in _profiles)
+        return CDCProfile(*value);
+      return CDCProfile.init;
     }
   }
 
-  Nullable!CDCProfile getProfileByTenantUser(string tenantId, string userId) {
+  CDCProfile getProfileByTenantUser(string tenantId, string userId) {
     synchronized (_lock) {
       auto prefix = tenantId ~ ":profile:";
       auto suffix = ":" ~ userId;
       foreach (key, value; _profiles) {
         if (key.length >= prefix.length + suffix.length && key[0 .. prefix.length] == prefix) {
-          if (key[$ - suffix.length .. $] == suffix) return Nullable!CDCProfile(value);
+          if (key[$ - suffix.length .. $] == suffix) {
+            return CDCProfile(value);
+          }
         }
       }
-      return Nullable!CDCProfile.init;
+      return new CDCProfile();
     }
   }
 
   CDCProfile[] listProfilesByTenant(string tenantId) {
-    CDCProfile[] values;
     synchronized (_lock) {
       auto prefix = tenantId ~ ":profile:";
-      foreach (key, value; _profiles) {
-        if (key.length >= prefix.length && key[0 .. prefix.length] == prefix) values ~= value;
-      }
+      _profiles.byKeyValue
+          .filter!(kv => key.length >= prefix.length && key[0 .. prefix.length] == prefix)
+          .map(kv => kv.value).array;
     }
-    return values;
+    return null;
   }
 
   CDCConsent upsertConsent(CDCConsent consent) {
@@ -82,14 +84,13 @@ class CDCStore : SAPStore {
   }
 
   CDCConsent[] listConsents(string tenantId, string userId) {
-    CDCConsent[] values;
     synchronized (_lock) {
       auto prefix = scopedConsentPrefix(tenantId, userId);
-      foreach (key, value; _consents) {
-        if (key.length >= prefix.length && key[0 .. prefix.length] == prefix) values ~= value;
+      return _consents.byKeyValue
+        .filter!(kv => key.length >= prefix.length && key[0 .. prefix.length] == prefix)
+        .map!(kv => kv.value).array;
       }
     }
-    return values;
   }
 
   CDCSiteGroup upsertSiteGroup(CDCSiteGroup group) {
@@ -104,11 +105,12 @@ class CDCStore : SAPStore {
     }
   }
 
-  Nullable!CDCSiteGroup getSiteGroup(string tenantId, string groupId) {
+  CDCSiteGroup getSiteGroup(string tenantId, string groupId) {
     synchronized (_lock) {
       auto key = scopedSiteGroupKey(tenantId, groupId);
-      if (auto value = key in _siteGroups) return Nullable!CDCSiteGroup(*value);
-      return Nullable!CDCSiteGroup.init;
+      if (auto value = key in _siteGroups)
+        return CDCSiteGroup(value);
+      return CDCSiteGroup.init;
     }
   }
 
@@ -117,7 +119,8 @@ class CDCStore : SAPStore {
     synchronized (_lock) {
       auto prefix = tenantId ~ ":site-group:";
       foreach (key, value; _siteGroups) {
-        if (key.length >= prefix.length && key[0 .. prefix.length] == prefix) values ~= value;
+        if (key.length >= prefix.length && key[0 .. prefix.length] == prefix)
+          values ~= value;
       }
     }
     return values;
@@ -140,7 +143,8 @@ class CDCStore : SAPStore {
     synchronized (_lock) {
       auto prefix = tenantId ~ ":risk-provider:";
       foreach (key, value; _riskProviders) {
-        if (key.length >= prefix.length && key[0 .. prefix.length] == prefix) values ~= value;
+        if (key.length >= prefix.length && key[0 .. prefix.length] == prefix)
+          values ~= value;
       }
     }
     return values;
@@ -160,20 +164,24 @@ class CDCStore : SAPStore {
     synchronized (_lock) {
       auto prefix = tenantId ~ ":auth-event:";
       foreach (key, value; _authEvents) {
-        if (key.length >= prefix.length && key[0 .. prefix.length] == prefix) values ~= value;
+        if (key.length >= prefix.length && key[0 .. prefix.length] == prefix)
+          values ~= value;
       }
     }
 
-    if (values.length <= limit) return values;
+    if (values.length <= limit)
+      return values;
     return values[$ - limit .. $];
   }
 
   private void loadSnapshot() {
-    if (!exists(_cacheFilePath)) return;
+    if (!exists(_cacheFilePath))
+      return;
 
     try {
       auto raw = readText(_cacheFilePath);
-      if (raw.length == 0) return;
+      if (raw.length == 0)
+        return;
 
       auto snapshot = parseJsonString(raw);
       if ("profiles" in snapshot && snapshot["profiles"].isArray) {
@@ -218,28 +226,34 @@ class CDCStore : SAPStore {
   private void persistSnapshot() {
     try {
       auto parentDir = dirName(_cacheFilePath);
-      if (!exists(parentDir)) mkdirRecurse(parentDir);
+      if (!exists(parentDir))
+        mkdirRecurse(parentDir);
 
       Json snapshot = Json.emptyObject;
 
       Json profiles = Json.emptyArray;
-      foreach (_key, value; _profiles) profiles ~= value.toJson();
+      foreach (_key, value; _profiles)
+        profiles ~= value.toJson();
       snapshot["profiles"] = profiles;
 
       Json consents = Json.emptyArray;
-      foreach (_key, value; _consents) consents ~= value.toJson();
+      foreach (_key, value; _consents)
+        consents ~= value.toJson();
       snapshot["consents"] = consents;
 
       Json siteGroups = Json.emptyArray;
-      foreach (_key, value; _siteGroups) siteGroups ~= value.toJson();
+      foreach (_key, value; _siteGroups)
+        siteGroups ~= value.toJson();
       snapshot["site_groups"] = siteGroups;
 
       Json riskProviders = Json.emptyArray;
-      foreach (_key, value; _riskProviders) riskProviders ~= value.toJson();
+      foreach (_key, value; _riskProviders)
+        riskProviders ~= value.toJson();
       snapshot["risk_providers"] = riskProviders;
 
       Json authEvents = Json.emptyArray;
-      foreach (_key, value; _authEvents) authEvents ~= value.toJson();
+      foreach (_key, value; _authEvents)
+        authEvents ~= value.toJson();
       snapshot["auth_events"] = authEvents;
 
       write(_cacheFilePath, snapshot.toString());
@@ -329,7 +343,8 @@ class CDCStore : SAPStore {
 
   private string readString(Json item, string key, bool required, string fallback = "") {
     if (!(key in item) || item[key].isNull) {
-      if (required) throw new CDCStoreException(key ~ " is required in cache item");
+      if (required)
+        throw new CDCStoreException(key ~ " is required in cache item");
       return fallback;
     }
     if (item[key].type != Json.Type.string) {
@@ -343,7 +358,8 @@ class CDCStore : SAPStore {
   }
 
   private bool readBool(Json item, string key, bool fallback) {
-    if (!(key in item) || item[key].isNull) return fallback;
+    if (!(key in item) || item[key].isNull)
+      return fallback;
     if (item[key].type != Json.Type.bool_) {
       throw new CDCStoreException(key ~ " must be boolean in cache item");
     }
@@ -351,7 +367,8 @@ class CDCStore : SAPStore {
   }
 
   private long readLong(Json item, string key, long fallback) {
-    if (!(key in item) || item[key].isNull) return fallback;
+    if (!(key in item) || item[key].isNull)
+      return fallback;
     if (item[key].type != Json.Type.int_) {
       throw new CDCStoreException(key ~ " must be integer in cache item");
     }
@@ -360,18 +377,21 @@ class CDCStore : SAPStore {
 
   private string[] readStringArray(Json item, string key) {
     string[] values;
-    if (!(key in item) || item[key].isNull) return values;
+    if (!(key in item) || item[key].isNull)
+      return values;
     if (!item[key].isArray) {
       throw new CDCStoreException(key ~ " must be an array in cache item");
     }
     foreach (entry; item[key]) {
-      if (entry.isString) values ~= entry.get!string;
+      if (entry.isString)
+        values ~= entry.get!string;
     }
     return values;
   }
 
   private Json readObject(Json item, string key) {
-    if (!(key in item) || item[key].isNull) return Json.emptyObject;
+    if (!(key in item) || item[key].isNull)
+      return Json.emptyObject;
     if (!item[key].isObject) {
       throw new CDCStoreException(key ~ " must be an object in cache item");
     }

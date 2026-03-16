@@ -6,15 +6,17 @@ mixin(ShowModule!());
 
 @safe:
 
-struct CDCProfile {
-  string tenantId;
-  string userId;
+
+class CDCProfile : SAPTenantObject {
+  mixin(SAPObjectTemplate!CDCProfile);
+
+  UUID userId;
   string email;
   string phone;
   string firstName;
   string lastName;
   string region;
-  string siteGroupId;
+  UUID siteGroupId;
   string passwordSecret;
   bool active = true;
   bool emailVerified = false;
@@ -23,27 +25,21 @@ struct CDCProfile {
   size_t failedLoginAttempts;
   bool hasLockedUntil;
   SysTime lockedUntil;
-  SysTime createdAt;
-  SysTime updatedAt;
 
   override Json toJson()  {
-    Json info = super.toJson;
-    payload["tenant_id"] = tenantId;
-    payload["user_id"] = userId;
-    payload["email"] = email;
-    payload["phone"] = phone;
-    payload["first_name"] = firstName;
-    payload["last_name"] = lastName;
-    payload["region"] = region;
-    payload["site_group_id"] = siteGroupId;
-    payload["active"] = active;
-    payload["email_verified"] = emailVerified;
-    payload["preferences"] = preferences;
-    payload["custom_attributes"] = customAttributes;
-    payload["failed_login_attempts"] = cast(long)failedLoginAttempts;
-    payload["locked_until"] = hasLockedUntil ? lockedUntil.toISOExtString() : null;
-    payload["created_at"] = createdAt.toISOExtString();
-    payload["updated_at"] = updatedAt.toISOExtString();
-    return payload;
+    return super.toJson
+      .set("user_id", userId)
+      .set("email", email)
+      .set("phone", phone)
+      .set("first_name", firstName)
+      .set("last_name", lastName)
+      .set("region", region)
+      .set("site_group_id", siteGroupId)
+      .set("active", active)
+      .set("email_verified", emailVerified)
+      .set("preferences", preferences)
+      .set("custom_attributes", customAttributes)
+      .set("failed_login_attempts", cast(long)failedLoginAttempts)
+      .set("locked_until", hasLockedUntil ? lockedUntil.toISOExtString() : null);
   }
 }
