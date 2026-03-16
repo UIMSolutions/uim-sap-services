@@ -28,7 +28,7 @@ mixin(ShowModule!());
   * ```
   * This exception should be caught and handled to provide appropriate feedback to the user, such as prompting for login or displaying an access denied message. It can also be logged for security auditing purposes.
   */
-class AGTAuthorizationException : AgentryException {
+class AGTAuthorizationException : AGTException {
   this(string message) {
     super("Unauthorized: " ~ message);
   }

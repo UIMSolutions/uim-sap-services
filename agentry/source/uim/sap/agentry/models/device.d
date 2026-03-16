@@ -5,7 +5,7 @@ mixin(ShowModule!());
 
 @safe:
 class AGTDevice : SAPTenantObject {
-   mixin(SAPObjectTemplate!AgentryDevice);  
+  mixin(SAPObjectTemplate!AgentryDevice);
 
   UUID deviceId;
   UUID appId;
@@ -14,7 +14,7 @@ class AGTDevice : SAPTenantObject {
   UUID appVersionId;
   SysTime lastSyncAt;
 
-  override Json toJson()  {
+  override Json toJson() {
     Json result = super.toJson;
 
     result["device_id"] = deviceId.toJson;
@@ -26,14 +26,13 @@ class AGTDevice : SAPTenantObject {
 
     return result;
   }
-}
 
-AGTDevice deviceFromJson(string tenantId, Json request) {
-  AGTDevice device = new AGTDevice(request);
-  device.tenantId = UUID(tenantId);
-  device.deviceId = randomUUID();
-  device.platform = "ios";
-  device.lastSyncAt = Clock.currTime();
+  static AGTDevice opCall(string tenantId, Json request) {
+    AGTDevice device = new AGTDevice(request);
+    device.tenantId = UUID(tenantId);
+    device.deviceId = randomUUID();
+    device.platform = "ios";
+    device.lastSyncAt = Clock.currTime();
 
   if ("device_id" in request && request["device_id"].isString) {
     device.deviceId = UUID(request["device_id"].get!string);
@@ -53,3 +52,6 @@ AGTDevice deviceFromJson(string tenantId, Json request) {
 
   return device;
 }
+}
+
+

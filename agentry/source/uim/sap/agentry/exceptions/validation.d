@@ -32,7 +32,7 @@ mixin(ShowModule!());
   *
   * Note: The `message` parameter in the constructor should provide a clear and concise description of the validation error, ideally indicating which field or value caused the failure and what the expected criteria were.
   */
-class AGTValidationException : AgentryException {
+class AGTValidationException : AGTException {
     this(string message) {
         super("Validation failed: " ~ message);
     }

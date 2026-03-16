@@ -117,7 +117,7 @@ class AGTService : SAPService {
       throw new AgentryNotFoundException("Mobile app", tenantId ~ "/" ~ appId);
     }
 
-    auto testRun = testRunFromJson(tenantId, appId, request);
+    auto testRun = AGTTestRun(tenantId, appId, request);
     if (testRun.versionId.length == 0) {
       auto versions = _store.listVersions(tenantId, appId);
       if (versions.length == 0) {
@@ -230,7 +230,7 @@ class AGTService : SAPService {
   Json upsertDevice(string tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
 
-    auto device = deviceFromJson(tenantId, request);
+    auto device = AGTDevice(tenantId, request);
     if (device.appId.length == 0) {
       throw new AgentryValidationException("app_id is required");
     }
@@ -292,7 +292,7 @@ class AGTService : SAPService {
   Json upsertBackendSystem(string tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
 
-    auto backend = backendFromJson(tenantId, request);
+    auto backend = AGTBackendSystem(tenantId, request);
     if (backend.endpoint.length == 0) {
       throw new AgentryValidationException("endpoint is required");
     }

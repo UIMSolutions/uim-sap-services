@@ -7,7 +7,7 @@ mixin(ShowModule!());
 @safe:
 
 class AGTMobileApp : SAPTenantObject {
-  mixin(SAPObjectTemplate!AgentryMobileApp);
+  mixin(SAPObjectTemplate!AGTMobileApp);
 
   UUID appId;
   string name;

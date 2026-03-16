@@ -190,7 +190,7 @@ class AGTServer {
       respondError(res, e.msg, 404);
     } catch (AgentryValidationException e) {
       respondError(res, e.msg, 422);
-    } catch (AgentryException e) {
+    } catch (AGTException e) {
       respondError(res, e.msg, 500);
     } catch (Exception e) {
       respondError(res, e.msg, 500);

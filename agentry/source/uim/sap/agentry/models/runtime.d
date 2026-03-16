@@ -1,7 +1,7 @@
 module uim.sap.agentry.models.runtime;
 
 class AGTRuntimeInstance : SAPTenantObject {
-  mixin(SAPObjectTemplate!AgentryRuntimeInstance);
+  mixin(SAPObjectTemplate!AGTRuntimeInstance);
 
   UUID instanceId;
   UUID appId;
@@ -42,8 +42,8 @@ class AGTRuntimeInstance : SAPTenantObject {
       .set("status", status);
   }
 
-  static AgentryRuntimeInstance opCall(string tenantId, Json request) {
-    AgentryRuntimeInstance instance = new AgentryRuntimeInstance(request);
+  static AGTRuntimeInstance opCall(string tenantId, Json request) {
+    AGTRuntimeInstance instance = new AGTRuntimeInstance(request);
     instance.tenantId = UUID(tenantId);
     instance.instanceId = randomUUID().toString();
     instance.targetEnvironment = "prod";

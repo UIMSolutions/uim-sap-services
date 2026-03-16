@@ -21,7 +21,7 @@ mixin(ShowModule!());
   * - `AgentryConfigurationException`
   * etc.
   *
-  * By catching `AgentryException`, you can handle all Agentry-related errors in a single catch block, while still allowing for more specific handling of individual exception types if needed.
+  * By catching `AGTException`, you can handle all Agentry-related errors in a single catch block, while still allowing for more specific handling of individual exception types if needed.
   */
 class AGTException : SAPException {
   this(string message) {
