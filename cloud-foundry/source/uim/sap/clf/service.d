@@ -109,7 +109,7 @@ class CLFService : SAPService {
   }
 
   Json createServiceInstance(Json request) {
-    auto instance = serviceInstanceFromJson(request);
+    auto instance = CLFServiceInstance(request);
     if (instance.name.length == 0) {
       throw new CLFValidationException("Service instance name is required");
     }

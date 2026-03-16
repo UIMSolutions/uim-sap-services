@@ -1,5 +1,9 @@
 module uim.sap.cia.models.parameter;
+import uim.sap.cia;
 
+mixin(ShowModule!());
+
+@safe:
 // ---------------------------------------------------------------------------
 // Parameter – a key/value pair scoped to a workflow (reused across tasks)
 // ---------------------------------------------------------------------------

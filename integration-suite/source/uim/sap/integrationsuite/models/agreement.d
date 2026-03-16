@@ -72,10 +72,34 @@ mixin(ShowModule!());
   * - toJson: Converts the agreement instance to a JSON object for easy serialization.
   * - agreementFromJson: A helper function that creates an INTAgreement instance from a JSON request, typically used when creating a new agreement via an API endpoint.
   */
-struct INTAgreement {
-  string tenantId;
-  string agreementId;
-  string partnerId;
+class INTAgreement : SAPTenantObject {
+  mixin(SAPObjectTemplate!INTAgreement);
+
+  override bool initialize(Json[string] initData = null) {
+    if (!super.initialize(initData)) {
+      return false;
+    }
+
+if ("partner_id" in request && request["partner_id"].isString)
+    {partnerId = request["partner_id"].get!string;}
+  if ("name" in request && request["name"].isString)
+    {name = request["name"].get!string;}
+  if ("description" in request && request["description"].isString)
+    {description = request["description"].get!string;}
+  if ("document_standard" in request && request["document_standard"].isString)
+    {documentStandard = request["document_standard"].get!string;}
+  if ("direction" in request && request["direction"].isString)
+    {direction = request["direction"].get!string;}
+  if ("valid_from" in request && request["valid_from"].isString)
+    {validFrom = request["valid_from"].get!string;}
+  if ("valid_to" in request && request["valid_to"].isString)
+    {validTo = request["valid_to"].get!string;}
+
+    return true;
+  }
+
+  UUID agreementId;
+  UUID partnerId;
   string name;
   string description;
   string documentStandard = "EDIFACT"; // EDIFACT | X12 | cXML | SAP IDoc
@@ -84,49 +108,30 @@ struct INTAgreement {
   string validFrom;
   string validTo;
   long transactionCount = 0;
-  string createdAt;
-  string updatedAt;
-
+  
   override Json toJson()  {
-    Json j = Json.emptyObject;
-    j["tenant_id"] = tenantId;
-    j["agreement_id"] = agreementId;
-    j["partner_id"] = partnerId;
-    j["name"] = name;
-    j["description"] = description;
-    j["document_standard"] = documentStandard;
-    j["direction"] = direction;
-    j["status"] = status;
-    j["valid_from"] = validFrom;
-    j["valid_to"] = validTo;
-    j["transaction_count"] = transactionCount;
-    j["created_at"] = createdAt;
-    j["updated_at"] = updatedAt;
-    return j;
+    return super.toJson 
+      .set("agreement_id", agreementId)
+      .set("partner_id", partnerId)
+      .set("name", name)
+      .set("description", description)
+      .set("document_standard", documentStandard)
+      .set("direction", direction)
+      .set("status", status)
+      .set("valid_from", validFrom)
+      .set("valid_to", validTo)
+      .set("transaction_count", transactionCount);
   }
+
+  static INTAgreement opCall(string tenantId, Json request) {
+  INTAgreement agreement = new INTAgreement(request);
+  agreement.tenantId = UUID(tenantId);
+  agreement.agreementId = randomUUID().toString();
+
+  agreement.createdAt = Clock.currTime().toINTOExtString();
+  agreement.updatedAt = agreement.createdAt;
+  return agreement;
 }
 
-INTAgreement agreementFromJson(string tenantId, Json request) {
-  INTAgreement a;
-  a.tenantId = UUID(tenantId);
-  a.agreementId = randomUUID().toString();
-
-  if ("partner_id" in request && request["partner_id"].isString)
-    a.partnerId = request["partner_id"].get!string;
-  if ("name" in request && request["name"].isString)
-    a.name = request["name"].get!string;
-  if ("description" in request && request["description"].isString)
-    a.description = request["description"].get!string;
-  if ("document_standard" in request && request["document_standard"].isString)
-    a.documentStandard = request["document_standard"].get!string;
-  if ("direction" in request && request["direction"].isString)
-    a.direction = request["direction"].get!string;
-  if ("valid_from" in request && request["valid_from"].isString)
-    a.validFrom = request["valid_from"].get!string;
-  if ("valid_to" in request && request["valid_to"].isString)
-    a.validTo = request["valid_to"].get!string;
-
-  a.createdAt = Clock.currTime().toINTOExtString();
-  a.updatedAt = a.createdAt;
-  return a;
 }
+

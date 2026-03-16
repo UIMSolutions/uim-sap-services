@@ -1,5 +1,9 @@
 module uim.sap.cia.models.role;
+import uim.sap.cia;
 
+mixin(ShowModule!());
+
+@safe:
 // ---------------------------------------------------------------------------
 // Role – a named permission group that tasks can be assigned to
 // ---------------------------------------------------------------------------

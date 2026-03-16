@@ -1,5 +1,9 @@
 module uim.sap.cia.models.system;
+import uim.sap.cia;
 
+mixin(ShowModule!());
+
+@safe:
 // ---------------------------------------------------------------------------
 // System – an entry in the system landscape (SAP Cloud, On-Premises, …)
 // ---------------------------------------------------------------------------

@@ -39,14 +39,17 @@ class CDCService : SAPService {
     profile.tenantId = UUID(tenantId);
     profile.userId = UUID(data.requiredString("user_id"));
     profile.email = data.getString("email", existing.isNull ? "" : existing.get.email);
-    profile.phone = readOptional(data, "phone", existing.isNull ? "" : existing.get.phone);
-    profile.firstName = readOptional(data, "first_name", existing.isNull ? ""
-        : existing.get.firstName);
-    profile.lastName = readOptional(data, "last_name", existing.isNull ? "" : existing.get.lastName);
-    profile.region = readOptional(data, "region", existing.isNull ? _config.defaultRegion
-        : existing.get.region);
-    profile.siteGroupId = UUID(data.getString("site_group_id", existing.isNull ? "global-default" : existing.get.siteGroupId));
-    profile.passwordSecret = data.getString("password", existing.isNull ? "changeme" : existing.get.passwordSecret);
+    profile.phone = data.getString("phone", existing.isNull ? "" : existing.get.phone);
+    profile.firstName = data.getString("first_name", 
+      existing.isNull ? "" : existing.get.firstName);
+    profile.lastName = data.getString("last_name", 
+      existing.isNull ? "" : existing.get.lastName);
+    profile.region = data.getString("region", 
+      existing.isNull ? _config.defaultRegion : existing.get.region);
+    profile.siteGroupId = UUID(data.getString("site_group_id", 
+      existing.isNull ? "global-default" : existing.get.siteGroupId));
+    profile.passwordSecret = data.getString("password", existing.isNull ? 
+      "changeme" : existing.get.passwordSecret);
     profile.active = data.getBoolean("active", existing.isNull ? true : existing.get.active);
     profile.emailVerified = data.getBoolean("email_verified", existing.isNull ? false : existing.get.emailVerified);
     profile.preferences = data.readObject("preferences",

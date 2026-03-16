@@ -1,5 +1,9 @@
 module uim.sap.cia.models.scenario;
+import uim.sap.cia;
 
+mixin(ShowModule!());
+
+@safe:
 // ---------------------------------------------------------------------------
 // Scenario – an integration scenario template (e.g. S/4HANA → SuccessFactors)
 // ---------------------------------------------------------------------------
@@ -16,7 +20,8 @@ struct CIAScenario {
   SysTime createdAt;
   SysTime updatedAt;
 
-  override Json toJson()  {
+  override Json toJson() {
+    Json sysTypes = requiredSystemTypes.map!(st => st).array.toJson();
     Json j = Json.emptyObject;
     j["id"] = id;
     j["name"] = name;
@@ -27,10 +32,7 @@ struct CIAScenario {
       t ~= tag;
     j["tags"] = t;
 
-    Json r = Json.emptyArray;
-    foreach (st; requiredSystemTypes)
-      r ~= st;
-    j["required_system_types"] = r;
+    j["required_system_types"] = sysTypes;
 
     Json tmpl = Json.emptyArray;
     foreach (tt; taskTemplates)

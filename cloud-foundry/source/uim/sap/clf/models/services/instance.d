@@ -23,9 +23,8 @@ struct CLFServiceInstance {
     payload["created_at"] = createdAt.toISOExtString();
     return payload;
   }
-}
 
-CLFServiceInstance serviceInstanceFromJson(Json payload) {
+CLFServiceInstance opCall(Json payload) {
   CLFServiceInstance instance;
   instance.guid = randomUUID().toString();
   instance.createdAt = Clock.currTime();
@@ -39,4 +38,5 @@ CLFServiceInstance serviceInstanceFromJson(Json payload) {
     instance.spaceGuid = payload["space_guid"].get!string;
   }
   return instance;
+}
 }

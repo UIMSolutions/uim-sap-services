@@ -1,5 +1,9 @@
 module uim.sap.cia.models.user;
+import uim.sap.cia;
 
+mixin(ShowModule!());
+
+@safe:
 // ---------------------------------------------------------------------------
 // User – a person who can be assigned tasks
 // ---------------------------------------------------------------------------

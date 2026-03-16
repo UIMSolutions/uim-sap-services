@@ -1,5 +1,9 @@
 module uim.sap.cia.models.automationresult;
+import uim.sap.cia;
 
+mixin(ShowModule!());
+
+@safe:
 // ---------------------------------------------------------------------------
 // AutomationResult – outcome of an automated technical configuration step
 // ---------------------------------------------------------------------------

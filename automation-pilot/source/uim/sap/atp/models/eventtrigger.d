@@ -6,24 +6,21 @@ mixin(ShowModule!());
 
 @safe:
 
-struct ATPEventTrigger {
-    string tenantId;
-    string triggerId;
-    string eventSource;
-    string eventType;
-    string commandId;
-    bool active;
-    SysTime createdAt;
+class ATPEventTrigger : SAPTenantObject {
+  mixin(SAPObjectTemplate!ATPEventTrigger);
 
-    override Json toJson()  {
-        Json payload = Json.emptyObject;
-        payload["tenant_id"] = tenantId;
-        payload["trigger_id"] = triggerId;
-        payload["event_source"] = eventSource;
-        payload["event_type"] = eventType;
-        payload["command_id"] = commandId;
-        payload["active"] = active;
-        payload["created_at"] = createdAt.toISOExtString();
-        return payload;
-    }
+  string triggerId;
+  string eventSource;
+  string eventType;
+  string commandId;
+  bool active;
+
+  override Json toJson() {
+    return super.toJson
+      .set("trigger_id", triggerId)
+      .set("event_source", eventSource)
+      .set("event_type", eventType)
+      .set("command_id", commandId)
+      .set("active", active);
+  }
 }

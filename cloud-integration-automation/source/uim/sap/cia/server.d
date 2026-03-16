@@ -1,14 +1,10 @@
 module uim.sap.cia.server;
 
-import std.array  : split;
-import std.string : startsWith;
+import uim.sap.cia;
 
-import vibe.data.json  : Json;
-import vibe.http.common : HTTPMethod;
-import vibe.http.server : HTTPServerRequest, HTTPServerResponse, HTTPServerSettings, listenHTTP;
+mixin(ShowModule!());
 
-import uim.sap.cia.exceptions;
-import uim.sap.cia.service;
+@safe:
 
 // ---------------------------------------------------------------------------
 // CIAServer – Vibe.D HTTP server wiring all CIA API routes

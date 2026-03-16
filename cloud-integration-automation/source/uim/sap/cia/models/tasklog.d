@@ -1,5 +1,9 @@
 module uim.sap.cia.models.tasklog;
+import uim.sap.cia;
 
+mixin(ShowModule!());
+
+@safe:
 // ---------------------------------------------------------------------------
 // TaskLog – a monitoring log entry for a workflow or task
 // ---------------------------------------------------------------------------

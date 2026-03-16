@@ -1,5 +1,9 @@
 module uim.sap.cia.models.task;
+import uim.sap.cia;
 
+mixin(ShowModule!());
+
+@safe:
 // ---------------------------------------------------------------------------
 // Task – a single guided step in a workflow
 // ---------------------------------------------------------------------------

@@ -6,9 +6,26 @@ mixin(ShowModule!());
 
 @safe:
 
+class BASWorkspace : SAPTenantObject {
+  mixin(SAPObjectTemplate!BASWorkspace);
 
-struct BASWorkspace {
-  UUID tenantId;
+  override bool initialize(Json[string] initData = null) {
+    if (!super.initialize(initData)) {
+      return false;
+    }
+
+    // workspaceId = parseUUID(initData["workspace_id"]);
+    // name = initData["name"];
+    // scenarioId = parseUUID(initData["scenario_id"]);
+    // region = initData["region"];
+    // status = initData["status"];
+    // accessUrl = initData["access_url"];
+    // terminalEnabled = parseBool(initData["terminal_enabled"]);
+    // debugEnabled = parseBool(initData["debug_enabled"]);
+
+    return true;
+  }
+
   UUID workspaceId;
   string name;
   UUID scenarioId;
@@ -17,22 +34,16 @@ struct BASWorkspace {
   string accessUrl;
   bool terminalEnabled;
   bool debugEnabled;
-  SysTime createdAt;
-  SysTime updatedAt;
 
-  override Json toJson()  {
-    Json info = super.toJson;
-    payload["tenant_id"] = tenantId;
-    payload["workspace_id"] = workspaceId;
-    payload["name"] = name;
-    payload["scenario_id"] = scenarioId;
-    payload["region"] = region;
-    payload["status"] = status;
-    payload["access_url"] = accessUrl;
-    payload["terminal_enabled"] = terminalEnabled;
-    payload["debug_enabled"] = debugEnabled;
-    payload["created_at"] = createdAt.toISOExtString();
-    payload["updated_at"] = updatedAt.toISOExtString();
-    return payload;
+  override Json toJson() {
+    return super.toJson
+      .set("workspace_id", workspaceId)
+      .set("name", name)
+      .set("scenario_id", scenarioId)
+      .set("region", region)
+      .set("status", status)
+      .set("access_url", accessUrl)
+      .set("terminal_enabled", terminalEnabled)
+      .set("debug_enabled", debugEnabled);
   }
 }

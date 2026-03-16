@@ -1,5 +1,9 @@
 module uim.sap.cia.models.workflow;
+import uim.sap.cia;
 
+mixin(ShowModule!());
+
+@safe:
 // ---------------------------------------------------------------------------
 // Workflow – a running instance of a scenario for a tenant
 // ---------------------------------------------------------------------------

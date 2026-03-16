@@ -3,31 +3,31 @@ module uim.sap.cia.models.scenariotask;
 // ---------------------------------------------------------------------------
 // ScenarioTaskTemplate – a task template embedded in a scenario definition
 // ---------------------------------------------------------------------------
-struct CIAScenarioTaskTemplate {
+class CIAScenarioTaskTemplate : SAPObject {
+  mixin(SAPObjectTemplate!CIAScenarioTaskTemplate);
+
   int order;
   string name;
   string description;
   /// Step-by-step instructions shown to the assignee
   string instructions;
   /// Role that should execute this step
-  string defaultRoleId;
+  UUID defaultRoleId;
   /// Whether this step can be automated
   bool automated;
   /// Tags such as "pre-requisite", "config", "validation", "post-config"
   string[] tags;
 
-  override Json toJson()  {
-    Json j = Json.emptyObject;
-    j["order"] = order;
-    j["name"] = name;
-    j["description"] = description;
-    j["instructions"] = instructions;
-    j["default_role_id"] = defaultRoleId;
-    j["automated"] = automated;
-    Json t = Json.emptyArray;
-    foreach (tag; tags)
-      t ~= tag;
-    j["tags"] = t;
-    return j;
+  override Json toJson() {
+    Json jTags = tags.map!(t => t.toJson).array.toJson();
+
+    return super.toJson
+      .set("order", order)
+      .set("name", name)
+      .set("description", description)
+      .set("instructions", instructions)
+      .set("default_role_id", defaultRoleId.toString())
+      .set("automated", automated)
+      .set("tags", jTags);
   }
 }
