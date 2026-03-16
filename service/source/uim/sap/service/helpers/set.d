@@ -47,6 +47,24 @@ Json set(Json json, string key, UUID value) {
 }
 
 Json set(T)(Json json, string key, T[] values) {
-  return json.set(key, values.map!(v => v.toJson).array.toJson);
+  Json jArray = Json.emptyArray;
+  foreach (v; values) {
+    jArray ~= v.toJson;
+  }
+  json[key] = jArray;
+  return json;
 }
 
+unittest {
+  Json j = Json.emptyObject
+    .set("key1", "value1");
+
+  assert(j["key1"] == "value1");
+
+  Json j2 = Json.emptyObject
+    .set("key1", "value1")
+    .set("key2", "value2");
+
+  assert(j2["key1"] == "value1");
+  assert(j2["key2"] == "value2");
+}

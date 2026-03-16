@@ -49,10 +49,9 @@ class AGTService : SAPService {
     app.updatedAt = Clock.currTime();
     auto saved = _store.upsertApp(app);
 
-    Json result = Json.emptyObject;
-    result["success"] = true;
-    result["mobile_app"] = saved.toJson();
-    return result;
+    return Json.emptyObject
+      .set("success", true)
+      .set("mobile_app", saved.toJson());
   }
 
   Json listMobileApps(string tenantId) {
@@ -60,11 +59,10 @@ class AGTService : SAPService {
 
     Json resources = _store.listApps(tenantId).map!(app => app.toJson()).array.toJson();
 
-    Json result = Json.emptyObject;
-    result["tenant_id"] = tenantId;
-    result["resources"] = resources;
-    result["total_results"] = cast(long)resources.length;
-    return result;
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json createVersion(string tenantId, string appId, Json request) {
@@ -96,12 +94,11 @@ class AGTService : SAPService {
     Json resources = _store.listVersions(tenantId, appId)
       .map!(appVersion => appVersion.toJson()).array.toJson();
 
-    Json result = Json.emptyObject;
-    result["tenant_id"] = tenantId;
-    result["app_id"] = appId;
-    result["resources"] = resources;
-    result["total_results"] = cast(long)resources.length;
-    return result;
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("app_id", appId)
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json triggerTestRun(string tenantId, string appId, Json request) {
@@ -124,10 +121,9 @@ class AGTService : SAPService {
 
     auto saved = _store.addTestRun(testRun);
 
-    Json result = Json.emptyObject;
-    result["success"] = true;
-    result["test_run"] = saved.toJson();
-    return result;
+    return Json.emptyObject
+      .set("success", true)
+      .set("test_run", saved.toJson());
   }
 
   Json listTestRuns(string tenantId, string appId) {
@@ -137,12 +133,11 @@ class AGTService : SAPService {
     Json resources = _store.listTestRuns(tenantId, appId)
       .map!(testRun => testRun.toJson()).array.toJson();
 
-    Json result = Json.emptyObject;
-    result["tenant_id"] = tenantId;
-    result["app_id"] = appId;
-    result["resources"] = resources;
-    result["total_results"] = cast(long)resources.length;
-    return result;
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("app_id", appId)
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json upsertRuntimeInstance(string tenantId, Json request) {
@@ -161,16 +156,15 @@ class AGTService : SAPService {
     instance.updatedAt = Clock.currTime();
     auto saved = _store.upsertInstance(instance);
 
-    Json result = Json.emptyObject;
-    result["success"] = true;
-    result["runtime_instance"] = saved.toJson();
-    return result;
+    return Json.emptyObject
+      .set("success", true)
+      .set("runtime_instance", saved.toJson());
   }
 
   Json listRuntimeInstances(UUID tenantId) {
     return listRuntimeInstances(tenantId.toString);
   }
-  
+
   Json listRuntimeInstances(string tenantId) {
     validateId(tenantId, "Tenant ID");
 
@@ -179,11 +173,10 @@ class AGTService : SAPService {
       resources ~= instance.toJson();
     }
 
-    Json result = Json.emptyObject;
-    result["tenant_id"] = tenantId;
-    result["resources"] = resources;
-    result["total_results"] = cast(long)resources.length;
-    return result;
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json deployVersion(UUID tenantId, UUID instanceId, Json request) {
@@ -225,11 +218,10 @@ class AGTService : SAPService {
 
     auto saved = _store.upsertInstance(instance);
 
-    Json result = Json.emptyObject;
-    result["success"] = true;
-    result["runtime_instance"] = saved.toJson();
-    result["message"] = "Version deployed to runtime instance";
-    return result;
+    return Json.emptyObject
+      .set("success", true)
+      .set("runtime_instance", saved.toJson())
+      .set("message", "Version deployed to runtime instance");
   }
 
   Json upsertDevice(UUID tenantId, Json request) {
@@ -243,6 +235,7 @@ class AGTService : SAPService {
     if (device.appId.toString.length == 0) {
       throw new AGTValidationException("app_id is required");
     }
+    
     if (device.userId.toString.length == 0) {
       throw new AGTValidationException("user_id is required");
     }
@@ -255,10 +248,9 @@ class AGTService : SAPService {
     device.lastSyncAt = Clock.currTime();
     auto saved = _store.upsertDevice(device);
 
-    Json result = Json.emptyObject;
-    result["success"] = true;
-    result["device"] = saved.toJson();
-    return result;
+    return Json.emptyObject
+      .set("success", true)
+      .set("device", saved.toJson());
   }
 
   Json listDevices(UUID tenantId) {
@@ -270,11 +262,10 @@ class AGTService : SAPService {
 
     Json resources = _store.listDevices(tenantId).map!(device => device.toJson()).array.toJson();
 
-    Json result = Json.emptyObject;
-    result["tenant_id"] = tenantId;
-    result["resources"] = resources;
-    result["total_results"] = cast(long)resources.length;
-    return result;
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json syncDevice(UUID tenantId, UUID deviceId, Json request) {
@@ -296,11 +287,10 @@ class AGTService : SAPService {
     device.lastSyncAt = Clock.currTime();
     auto saved = _store.upsertDevice(device);
 
-    Json result = Json.emptyObject;
-    result["success"] = true;
-    result["device"] = saved.toJson();
-    result["message"] = "Synchronization completed";
-    return result;
+    return Json.emptyObject
+      .set("success", true)
+      .set("device", saved.toJson())
+      .set("message", "Synchronization completed");
   }
 
   Json upsertBackendSystem(UUID tenantId, Json request) {
@@ -318,10 +308,9 @@ class AGTService : SAPService {
     backend.updatedAt = Clock.currTime();
     auto saved = _store.upsertBackend(backend);
 
-    Json result = Json.emptyObject;
-    result["success"] = true;
-    result["backend_system"] = saved.toJson();
-    return result;
+    return Json.emptyObject
+      .set("success", true)
+      .set("backend_system", saved.toJson());
   }
 
   Json listBackendSystems(UUID tenantId) {
@@ -333,11 +322,10 @@ class AGTService : SAPService {
 
     Json resources = _store.listBackends(tenantId).map!(backend => backend.toJson()).array.toJson();
 
-    Json result = Json.emptyObject;
-    result["tenant_id"] = tenantId;
-    result["resources"] = resources;
-    result["total_results"] = cast(long)resources.length;
-    return result;
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json operationsDashboard(UUID tenantId) {
@@ -359,14 +347,13 @@ class AGTService : SAPService {
       }
     }
 
-    Json result = Json.emptyObject;
-    result["tenant_id"] = tenantId;
-    result["mobile_apps"] = cast(long)apps.length;
-    result["runtime_instances"] = cast(long)instances.length;
-    result["running_instances"] = runningInstances;
-    result["registered_devices"] = cast(long)devices.length;
-    result["backend_systems"] = cast(long)backends.length;
-    return result;
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("mobile_apps", cast(long)apps.length)
+      .set("runtime_instances", cast(long)instances.length)
+      .set("running_instances", runningInstances)
+      .set("registered_devices", cast(long)devices.length)
+      .set("backend_systems", cast(long)backends.length);
   }
 
   private void validateId(UUID value, string fieldName) {

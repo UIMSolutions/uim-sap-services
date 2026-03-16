@@ -40,9 +40,10 @@ class DSTService : SAPService {
   // DESTINATIONS
   // =======================================================================
   Json listDestinations(string tenantId, string protocolFilter, string proxyFilter) {
-    DSTDestination[] items = null;protocolFilter.length > 0 || proxyFilter.length > 0
-      ? _store.filterDestinations(tenantId, protocolFilter, proxyFilter)
-      : _store.listDestinations(tenantId);
+    DSTDestination[] items = null;
+    protocolFilter.length > 0 || proxyFilter.length > 0
+      ? _store.filterDestinations(tenantId, protocolFilter, proxyFilter) : _store.listDestinations(
+        tenantId);
 
     return items.map!(d => d.toJson()).array.toJson();
   }
@@ -69,7 +70,7 @@ class DSTService : SAPService {
     auto proxyType = jstr(payload, "proxy_type", "Internet");
     _validateProxyType(proxyType);
 
-    DSTDestination d;
+    DSTDestination d = new DSTDestination;
     d.tenantId = UUID(tenantId);
     d.name = name;
     d.description = jstr(payload, "description");
@@ -114,7 +115,7 @@ class DSTService : SAPService {
   }
 
   Json getDestination(string tenantId, string name) {
-    DSTDestination d;
+    DSTDestination d = new DSTDestination;
     if (!_store.tryGetDestination(tenantId, name, d))
       throw new DSTNotFoundException("Destination", name);
     auto j = d.toJson();
@@ -127,7 +128,7 @@ class DSTService : SAPService {
   }
 
   Json updateDestination(string tenantId, string name, Json payload) {
-    DSTDestination d;
+    DSTDestination d = new DSTDestination;
     if (!_store.tryGetDestination(tenantId, name, d))
       throw new DSTNotFoundException("Destination", name);
 
@@ -186,13 +187,17 @@ class DSTService : SAPService {
     return d.toJson();
   }
 
+  Json deleteDestination(UUID tenantId, string name) {
+    return deleteDestination(tenantId.toString(), name);
+  }
+
   Json deleteDestination(string tenantId, string name) {
     if (!_store.removeDestination(tenantId, name))
       throw new DSTNotFoundException("Destination", name);
     _appendLog(tenantId, name, "deleted", "info", "Destination deleted: " ~ name);
-    Json j = Json.emptyObject;
-    j["deleted"] = name;
-    return j;
+
+    return Json.emptyObject
+      .set("deleted", name);
   }
 
   // =======================================================================
@@ -321,10 +326,7 @@ class DSTService : SAPService {
   // AUDIT LOGS
   // =======================================================================
   Json listLogs(string tenantId) {
-    Json arr = Json.emptyArray;
-    foreach (l; _store.listLogs(tenantId))
-      arr ~= l.toJson();
-    return arr;
+    return _store.listLogs(tenantId).map!(log => log.toJson()).array.toJson;
   }
 
   // =======================================================================

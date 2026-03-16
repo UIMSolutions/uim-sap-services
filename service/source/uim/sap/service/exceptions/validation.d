@@ -14,3 +14,13 @@ class SAPValidationException : SAPException {
     super("Validation error: " ~ message, file, line, next);
   }
 }
+///
+unittest {
+  SAPValidationException ex1 = new SAPValidationException("Test message");
+  assert(ex1.message == "Validation error: Test message");
+
+  SAPValidationException ex2 = new SAPValidationException("Test message", "testfile.d", 123);
+  assert(ex2.message == "Validation error: Test message");
+  assert(ex2.file == "testfile.d");
+  assert(ex2.line == 123);
+}

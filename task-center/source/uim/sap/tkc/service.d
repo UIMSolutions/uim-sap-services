@@ -30,10 +30,9 @@ class TKCService : SAPService {
   Json listProviders() {
     Json providers = _store.listProviders().map!(provider => provider.toJson).array.toJson;
 
-    Json payload = Json.emptyObject;
-    payload["providers"] = providers;
-    payload["count"] = cast(long)providers.length;
-    return payload;
+    return Json.emptyObject
+      .set("providers", providers)
+      .set("count", cast(long)providers.length);
   }
 
   Json registerProvider(Json data) {
@@ -50,10 +49,9 @@ class TKCService : SAPService {
 
     auto saved = _store.upsertProvider(provider);
 
-    Json payload = Json.emptyObject;
-    payload["message"] = "Provider registered";
-    payload["provider"] = saved.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("message", "Provider registered")
+      .set("provider", saved.toJson());
   }
 
   Json federateTasks(string tenantId, string providerId, Json data) {
@@ -111,12 +109,12 @@ class TKCService : SAPService {
     providerToUpdate.updatedAt = now;
     _store.upsertProvider(providerToUpdate);
 
-    Json payload = Json.emptyObject;
-    payload["message"] = "Tasks federated and cached";
-    payload["tenant_id"] = tenantId;
-    payload["provider_id"] = providerId;
-    payload["count"] = cast(long)savedTasks.length;
-    payload["tasks"] = savedTasks;
+    return Json.emptyObject
+      .set("message", "Tasks federated and cached")
+      .set("tenant_id", tenantId)
+      .set("provider_id", providerId)
+      .set("count", cast(long)savedTasks.length)
+      .set("tasks", savedTasks);
     return payload;
   }
 
@@ -174,14 +172,13 @@ class TKCService : SAPService {
     foreach (task; filtered[safeOffset .. end])
       tasks ~= task.toJson();
 
-    Json payload = Json.emptyObject;
-    payload["tenant_id"] = tenantId;
-    payload["total"] = cast(long)filtered.length;
-    payload["returned"] = cast(long)tasks.length;
-    payload["offset"] = cast(long)safeOffset;
-    payload["limit"] = cast(long)safeLimit;
-    payload["tasks"] = tasks;
-    return payload;
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("total", cast(long)filtered.length)
+      .set("returned", cast(long)tasks.length)
+      .set("offset", cast(long)safeOffset)
+      .set("limit", cast(long)safeLimit)
+      .set("tasks", tasks);
   }
 
   Json getTask(string tenantId, string taskId) {
@@ -226,10 +223,9 @@ class TKCService : SAPService {
 
     auto saved = _store.upsertTask(task);
 
-    Json payload = Json.emptyObject;
-    payload["message"] = "Task action executed";
-    payload["task"] = saved.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("message", "Task action executed")
+      .set("task", saved.toJson());
   }
 
   Json navigateToTaskApp(string tenantId, string taskId) {
@@ -245,12 +241,12 @@ class TKCService : SAPService {
     if (task.nativeAppUrl.length == 0)
       throw new TKCValidationException("Task has no native_app_url");
 
-    Json payload = Json.emptyObject;
-    payload["task_id"] = task.taskId;
-    payload["native_app_url"] = task.nativeAppUrl;
-    payload["native_app_name"] = task.nativeAppName;
-    payload["message"] = "Open native task application using native_app_url";
-    return payload;
+    return Json.emptyObject
+      .set("task_id", task.taskId)
+      .set("native_app_url", task.nativeAppUrl)
+      .set("native_app_name", task.nativeAppName)
+      .set("message", "Open native task application using native_app_url");
+
   }
 
   private void validateTenant(string tenantId) const {

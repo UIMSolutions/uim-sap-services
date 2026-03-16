@@ -56,110 +56,98 @@ class RMSService : SAPService {
     Json listFunctions(TenantContext tenant) {
         Json functions = _store.listFunctions(tenant).map!(item => item.toJson).array.toJson;
 
-        Json payload = Json.emptyObject;
-        payload["functions"] = functions;
-        payload["total"] = cast(long)functions.length;
-        return payload;
+        return Json.emptyObject
+          .set("functions", functions)
+          .set("total", cast(long)functions.length);
     }
 
     Json upsertFunction(TenantContext tenant, string code, Json request) {
         auto item = _store.upsertFunction(tenant, code, request);
-        Json payload = Json.emptyObject;
-        payload["function"] = item.toJson();
-        return payload;
+        return Json.emptyObject
+          .set("function", item.toJson());
     }
 
     Json deleteFunction(TenantContext tenant, string code) {
         _store.deleteFunction(tenant, code);
-        Json payload = Json.emptyObject;
-        payload["deleted"] = true;
-        payload["code"] = code;
-        return payload;
+        return Json.emptyObject
+          .set("deleted", true)
+          .set("code", code);
     }
 
     Json listTeams(TenantContext tenant) {
         Json list = Json.emptyArray;
         foreach (item; _store.listTeams(tenant)) list ~= item.toJson();
 
-        Json payload = Json.emptyObject;
-        payload["teams"] = list;
-        payload["total"] = cast(long)list.length;
-        return payload;
+        return Json.emptyObject
+          .set("teams", list)
+          .set("total", cast(long)list.length);
     }
 
     Json createTeam(TenantContext tenant, Json request) {
         auto item = _store.createTeam(tenant, request);
-        Json payload = Json.emptyObject;
-        payload["team"] = item.toJson();
-        return payload;
+        
+        return Json.emptyObject
+          .set("team", item.toJson());
     }
 
     Json getTeam(TenantContext tenant, string teamId) {
         auto item = _store.getTeam(tenant, teamId);
-        Json payload = Json.emptyObject;
-        payload["team"] = item.toJson();
-        return payload;
+        
+        return Json.emptyObject
+          .set("team", item.toJson());
     }
 
     Json updateTeam(TenantContext tenant, string teamId, Json request) {
         auto item = _store.updateTeam(tenant, teamId, request);
-        Json payload = Json.emptyObject;
-        payload["team"] = item.toJson();
-        return payload;
+        return Json.emptyObject
+          .set("team", item.toJson());
     }
 
     Json deleteTeam(TenantContext tenant, string teamId) {
         _store.deleteTeam(tenant, teamId);
-        Json payload = Json.emptyObject;
-        payload["deleted"] = true;
-        payload["team_id"] = teamId;
-        return payload;
+        return Json.emptyObject
+          .set("deleted", true)
+          .set("team_id", teamId);
     }
 
     Json copyTeam(TenantContext tenant, string teamId, Json request) {
         auto copied = _store.copyTeam(tenant, teamId, getString(request, "name", ""));
-        Json payload = Json.emptyObject;
-        payload["team"] = copied.toJson();
-        return payload;
+        return Json.emptyObject
+          .set("team", copied.toJson());
     }
 
     Json listRules(TenantContext tenant) {
         Json list = Json.emptyArray;
         foreach (item; _store.listRules(tenant)) list ~= item.toJson();
 
-        Json payload = Json.emptyObject;
-        payload["rules"] = list;
-        payload["total"] = cast(long)list.length;
-        return payload;
+        return Json.emptyObject
+          .set("rules", list)
+          .set("total", cast(long)list.length);
     }
 
     Json createRule(TenantContext tenant, Json request) {
         auto item = _store.createRule(tenant, request);
-        Json payload = Json.emptyObject;
-        payload["rule"] = item.toJson();
-        return payload;
+        return Json.emptyObject
+          .set("rule", item.toJson());
     }
 
     Json getRule(TenantContext tenant, string ruleId) {
         auto item = _store.getRule(tenant, ruleId);
-        Json payload = Json.emptyObject;
-        payload["rule"] = item.toJson();
-        return payload;
+        return Json.emptyObject
+          .set("rule", item.toJson());
     }
 
     Json updateRule(TenantContext tenant, string ruleId, Json request) {
         auto item = _store.updateRule(tenant, ruleId, request);
-        Json payload = Json.emptyObject;
-        payload["rule"] = item.toJson();
-        return payload;
+        return Json.emptyObject
+          .set("rule", item.toJson());
     }
 
     Json deleteRule(TenantContext tenant, string ruleId) {
         _store.deleteRule(tenant, ruleId);
-        Json payload = Json.emptyObject;
-        payload["deleted"] = true;
-        payload["rule_id"] = ruleId;
-        return payload;
+        return Json.emptyObject
+          .set("deleted", true)
+          .set("rule_id", ruleId);
     }
 
     Json determine(TenantContext tenant, Json request) {
@@ -170,20 +158,12 @@ class RMSService : SAPService {
         Json list = Json.emptyArray;
         foreach (item; _store.listLogs(tenant, limit)) list ~= item.toJson();
 
-        Json payload = Json.emptyObject;
-        payload["logs"] = list;
-        payload["total"] = cast(long)list.length;
-        return payload;
+        return Json.emptyObject
+          .set("logs", list)
+          .set("total", cast(long)list.length);
     }
 
     Json exportData(TenantContext tenant) {
         return _store.exportData(tenant);
-    }
-
-    private string getString(Json payload, string key, string fallback) {
-        if (key in payload && payload[key].isString) {
-            return payload[key].get!string;
-        }
-        return fallback;
     }
 }

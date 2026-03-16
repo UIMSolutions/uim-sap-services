@@ -6,6 +6,7 @@
 module uim.sap.con.service;
 
 import uim.sap.con;
+
 @safe:
 
 class CONService : SAPService {
@@ -58,13 +59,13 @@ class CONService : SAPService {
   Json listDestinations(string tenantId) {
     validateTenant(tenantId);
 
-    Json resources = _store.listDestinations(tenantId).map!(dest => destination.toJson()).array.toJson; 
+    Json resources = _store.listDestinations(tenantId)
+      .map!(dest => dest.toJson()).array.toJson;
 
-    Json payload = Json.emptyObject;
-    payload["tenant_id"] = tenantId;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)_store.countDestinations(tenantId);
-    return payload;
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("resources", resources)
+      .set("total_results", cast(long)_store.countDestinations(tenantId));
   }
 
   Json getDestination(string tenantId, string destinationName) {
@@ -89,29 +90,28 @@ class CONService : SAPService {
       throw new CONNotFoundException("Destination", tenantId ~ "/" ~ destinationName);
     }
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["tenant_id"] = tenantId;
-    payload["destination_name"] = destinationName;
-    payload["message"] = "Destination deleted";
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("tenant_id", tenantId)
+      .set("destination_name", destinationName)
+      .set("message", "Destination deleted");
   }
 
   Json listCloudDatabases(string tenantId) {
     validateTenant(tenantId);
 
-    Json resources = _store.listCloudDatabases(tenantId).map!(database => database.toJson()).array.toJson;
+    Json resources = _store.listCloudDatabases(tenantId)
+      .map!(database => database.toJson()).array.toJson;
 
-    Json payload = Json.emptyObject;
-    payload["tenant_id"] = tenantId;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)resources.length;
-    payload["access_mode"] = "jdbc-odbc-local-like";
-    return payload;
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length)
+      .set("access_mode", "jdbc-odbc-local-like");
+
   }
 
   Json listTenants() {
-    Json payload = Json.emptyObject;
     Json resources = Json.emptyArray;
 
     foreach (tenantId; _store.listTenantIds()) {
@@ -121,10 +121,10 @@ class CONService : SAPService {
       resources ~= summary.toJson();
     }
 
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)resources.length;
-    payload["multitenant_mode"] = "shared-compute";
-    return payload;
+    return Json.emptyObject
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length)
+      .set("multitenant_mode", "shared-compute");
   }
 
   Json connect(string tenantId, string destinationName, Json request, string cloudIdentityHeader) {
@@ -162,16 +162,15 @@ class CONService : SAPService {
     route["network_path"] = destination.onPremise ? "cloud-connector-tunnel" : "direct";
     route["firewall_changes_required"] = false;
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["tenant_id"] = tenantId;
-    payload["destination_name"] = destinationName;
-    payload["destination"] = destination.toJson();
-    payload["route"] = route;
-    payload["identity"] = identity;
-    payload["cloud_database_access"] = destination.cloudDatabase;
-    payload["message"] = "Connectivity route prepared";
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("tenant_id", tenantId)
+      .set("destination_name", destinationName)
+      .set("destination", destination.toJson())
+      .set("route", route)
+      .set("identity", identity)
+      .set("cloud_database_access", destination.cloudDatabase)
+      .set("message", "Connectivity route prepared");
   }
 
   private void validateTenant(string tenantId) {
