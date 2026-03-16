@@ -40,7 +40,7 @@ class AGTService : SAPService {
   Json upsertMobileApp(string tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
 
-    auto app = appFromJson(tenantId, request, _config.defaultBackendSystem);
+    auto app = AgentryMobileApp(tenantId, request, _config.defaultBackendSystem);
     if (app.name.length == 0) {
       throw new AgentryValidationException("App name is required");
     }
@@ -78,7 +78,7 @@ class AGTService : SAPService {
       throw new AgentryNotFoundException("Mobile app", tenantId ~ "/" ~ appId);
     }
 
-    auto appVersion = versionFromJson(tenantId, appId, request);
+    auto appVersion = AgentryAppVersion(tenantId, appId, request);
     if (appVersion.versionLabel.length == 0) {
       throw new AgentryValidationException("version_label is required");
     }
@@ -138,10 +138,7 @@ class AGTService : SAPService {
     validateId(tenantId, "Tenant ID");
     validateId(appId, "App ID");
 
-    Json resources = Json.emptyArray;
-    foreach (testRun; _store.listTestRuns(tenantId, appId)) {
-      resources ~= testRun.toJson();
-    }
+    Json resources = _store.listTestRuns(tenantId, appId).map!(testRun => testRun.toJson()).array.toJson();
 
     Json result = Json.emptyObject;
     result["tenant_id"] = tenantId;
@@ -154,7 +151,7 @@ class AGTService : SAPService {
   Json upsertRuntimeInstance(string tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
 
-    auto instance = instanceFromJson(tenantId, request);
+    auto instance = AgentryRuntimeInstance(tenantId, request);
     if (instance.appId.length == 0) {
       throw new AgentryValidationException("app_id is required");
     }

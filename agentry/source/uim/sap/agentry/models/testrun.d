@@ -1,6 +1,10 @@
 module uim.sap.agentry.models.testrun;
+import uim.sap.agentry;
 
-class  AgentryTestRun : SAPTenantObject {
+mixin(ShowModule!());
+
+@safe:
+class AgentryTestRun : SAPTenantObject {
   mixin(SAPObjectTemplate!AgentryTestRun);
 
   UUID appId;

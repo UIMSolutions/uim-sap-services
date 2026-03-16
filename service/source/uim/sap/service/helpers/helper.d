@@ -157,20 +157,14 @@ string optionalString(Json request, string key, string fallback) {
   return fallback;
 }
 
-int optionalInt(Json request, string key, int fallback) {
-  if (key in request && request[key].isInteger) {
-    auto value = cast(int)request[key].get!long;
-    return value > 0 ? value : fallback;
-  }
-  return fallback;
-}
+
 
 string[] stringArray(Json request, string key) {
   string[] values;
   if (!(key in request) || !request[key].isArray)
     return values;
 
-  foreach (item; request[key]) {
+  foreach (item; request[key].toArray) {
     if (item.isString) {
       auto value = item.get!string;
       if (value.length > 0)

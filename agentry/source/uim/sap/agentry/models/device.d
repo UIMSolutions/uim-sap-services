@@ -1,5 +1,9 @@
 module uim.sap.agentry.models.device;
+import uim.sap.agentry;
 
+mixin(ShowModule!());
+
+@safe:
 class AGTDevice : SAPTenantObject {
    mixin(SAPObjectTemplate!AgentryDevice);  
 

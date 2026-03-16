@@ -9,41 +9,46 @@ class AGTRuntimeInstance : SAPTenantObject {
   UUID deployedVersionId;
   string status = "running";
 
+  override bool initialize(Json[string] initData = null) {
+    if (!super.initialize(initData)) {
+      return false;
+    }
+
+    if ("instance_id" in initData && initData["instance_id"].isString) {
+      instance.instanceId = initData["instance_id"].get!string;
+    }
+    if ("app_id" in initData && initData["app_id"].isString) {
+      instance.appId = initData["app_id"].get!string;
+    }
+    if ("target_environment" in initData && initData["target_environment"].isString) {
+      instance.targetEnvironment = initData["target_environment"].get!string;
+    }
+    if ("deployed_version_id" in initData && initData["deployed_version_id"].isString) {
+      instance.deployedVersionId = initData["deployed_version_id"].get!string;
+    }
+    if ("status" in initData && initData["status"].isString) {
+      instance.status = toLower(initData["status"].get!string);
+    }
+
+    return true;
+  }
+
   override Json toJson() {
-    Json result = super.toJson();
-
-    result["instance_id"] = instanceId;
-    result["app_id"] = appId;
-    result["target_environment"] = targetEnvironment;
-    result["deployed_version_id"] = deployedVersionId;
-    result["status"] = status;
-
-    return result;
-  }
-}
-
-AgentryRuntimeInstance instanceFromJson(string tenantId, Json request) {
-  AgentryRuntimeInstance instance = new AgentryRuntimeInstance();
-  instance.tenantId = UUID(tenantId);
-  instance.instanceId = randomUUID().toString();
-  instance.targetEnvironment = "prod";
-  instance.updatedAt = Clock.currTime();
-
-  if ("instance_id" in request && request["instance_id"].isString) {
-    instance.instanceId = request["instance_id"].get!string;
-  }
-  if ("app_id" in request && request["app_id"].isString) {
-    instance.appId = request["app_id"].get!string;
-  }
-  if ("target_environment" in request && request["target_environment"].isString) {
-    instance.targetEnvironment = request["target_environment"].get!string;
-  }
-  if ("deployed_version_id" in request && request["deployed_version_id"].isString) {
-    instance.deployedVersionId = request["deployed_version_id"].get!string;
-  }
-  if ("status" in request && request["status"].isString) {
-    instance.status = toLower(request["status"].get!string);
+    return super.toJson()
+      .set("instance_id", instanceId)
+      .set("app_id", appId)
+      .set("target_environment", targetEnvironment)
+      .set("deployed_version_id", deployedVersionId)
+      .set("status", status);
   }
 
-  return instance;
+  static AgentryRuntimeInstance opCall(string tenantId, Json request) {
+    AgentryRuntimeInstance instance = new AgentryRuntimeInstance(request);
+    instance.tenantId = UUID(tenantId);
+    instance.instanceId = randomUUID().toString();
+    instance.targetEnvironment = "prod";
+    instance.updatedAt = Clock.currTime();
+
+    return instance;
+  }
 }

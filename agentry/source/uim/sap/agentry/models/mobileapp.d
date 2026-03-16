@@ -15,49 +15,47 @@ class AGTMobileApp : SAPTenantObject {
   string ownerTeam;
   string lifecycle = "development";
 
-  override override Json toJson()  {
-    Json result = super.toJson();
-    result["app_id"] = appId.toJson;
-    result["name"] = name;
-    result["backend_system"] = backendSystem;
-    result["owner_team"] = ownerTeam;
-    result["lifecycle"] = lifecycle;
-    return result;
+  override bool initialize(Json[string] initData = null) {
+    if (!super.initialize(initData)) {
+      return false;
+    }
+
+    if ("app_id" in initData && initData["app_id"].isString) {
+      app.appId = initData["app_id"].get!string;
+    }
+    if ("name" in initData && initData["name"].isString) {
+      app.name = initData["name"].get!string;
+    }
+    if ("backend_system" in initData && initData["backend_system"].isString) {
+      app.backendSystem = initData["backend_system"].get!string;
+    }
+    if ("owner_team" in initData && initData["owner_team"].isString) {
+      app.ownerTeam = initData["owner_team"].get!string;
+    }
+    if ("lifecycle" in initData && initData["lifecycle"].isString) {
+      app.lifecycle = toLower(initData["lifecycle"].get!string);
+    }
+
+    return true;
+  }
+
+  override Json toJson() {
+    return super.toJson()
+      .set("app_id", appId.toJson)
+      .set("name", name)
+      .set("backend_system", backendSystem)
+      .set("owner_team", ownerTeam)
+      .set("lifecycle", lifecycle);
+  }
+
+  static AgentryMobileApp opCall(string tenantId, Json request, string defaultBackend) {
+    AgentryMobileApp app;
+    app.tenantId = UUID(tenantId);
+    app.appId = randomUUID().toString();
+    app.backendSystem = defaultBackend;
+    app.createdAt = Clock.currTime();
+    app.updatedAt = app.createdAt;
+
+    return app;
   }
 }
-
-AgentryMobileApp appFromJson(string tenantId, Json request, string defaultBackend) {
-  AgentryMobileApp app;
-  app.tenantId = UUID(tenantId);
-  app.appId = randomUUID().toString();
-  app.backendSystem = defaultBackend;
-  app.createdAt = Clock.currTime();
-  app.updatedAt = app.createdAt;
-
-  if ("app_id" in request && request["app_id"].isString) {
-    app.appId = request["app_id"].get!string;
-  }
-  if ("name" in request && request["name"].isString) {
-    app.name = request["name"].get!string;
-  }
-  if ("backend_system" in request && request["backend_system"].isString) {
-    app.backendSystem = request["backend_system"].get!string;
-  }
-  if ("owner_team" in request && request["owner_team"].isString) {
-    app.ownerTeam = request["owner_team"].get!string;
-  }
-  if ("lifecycle" in request && request["lifecycle"].isString) {
-    app.lifecycle = toLower(request["lifecycle"].get!string);
-  }
-
-  return app;
-}
-
-
-
-
-
-
-
-
-

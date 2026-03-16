@@ -1,6 +1,9 @@
 module uim.sap.agentry.models.backend;
+import uim.sap.agentry;
 
-class AGTBackendSystem : SAPTenantObject {
+mixin(ShowModule!());
+
+@safe:class AGTBackendSystem : SAPTenantObject {
   mixin(SAPObjectTemplate!AgentryBackendSystem);
 
   UUID backendId;
