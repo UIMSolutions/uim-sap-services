@@ -35,9 +35,9 @@ mixin(ShowModule!());
   * - GET /v1/tenants/{tenantId}/operations/dashboard: Get operations dashboard data for a tenant
  */
 class AGTServer {
-  private AgentryService _service;
+  private AGTService _service;
 
-  this(AgentryService service) {
+  this(AGTService service) {
     _service = service;
   }
 

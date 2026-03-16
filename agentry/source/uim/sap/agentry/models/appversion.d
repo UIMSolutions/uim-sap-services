@@ -1,7 +1,16 @@
+/****************************************************************************************************************
+* Copyright: © 2018-2026 Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*) 
+* License: Subject to the terms of the Apache 2.0 license, as written in the included LICENSE.txt file. 
+* Authors: Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*)
+*****************************************************************************************************************/
 module uim.sap.agentry.models.appversion;
+import uim.sap.agentry;
 
-class AgentryAppVersion : SAPTenantObject {
-  mixin(SAPObjectTemplate!AgentryAppVersion);
+mixin(ShowModule!());
+
+@safe:
+class AGTAppVersion : SAPTenantObject {
+  mixin(SAPObjectTemplate!AGTAppVersion);
 
   UUID appId;
   UUID versionId;
@@ -21,8 +30,8 @@ class AgentryAppVersion : SAPTenantObject {
     return result;
   }
 
-  static AgentryAppVersion opCall(string tenantId, string appId, Json request) {
-    AgentryAppVersion appVersion = new AgentryAppVersion;
+  static AGTAppVersion opCall(string tenantId, string appId, Json request) {
+    AGTAppVersion appVersion = new AGTAppVersion;
     appVersion.tenantId = UUID(tenantId);
     appVersion.appId = appId;
     appVersion.versionId = randomUUID().toString();

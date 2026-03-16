@@ -27,22 +27,22 @@ mixin(ShowModule!());
   * Note: This implementation is designed for demonstration purposes and may need further enhancements for production use, such as authentication, authorization, and more robust error handling.
   */
 class AGTService : SAPService {
-  mixin(SAPServiceTemplate!AgentryService);
+  mixin(SAPServiceTemplate!AGTService);
 
-  private AgentryStore _store;
+  private AGTStore _store;
 
-  this(AgentryConfig config) {
+  this(AGTConfig config) {
     super(config);
 
-    _store = new AgentryStore;
+    _store = new AGTStore;
   }
 
   Json upsertMobileApp(string tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
 
-    auto app = AgentryMobileApp(tenantId, request, _config.defaultBackendSystem);
+    auto app = AGTMobileApp(tenantId, request, _config.defaultBackendSystem);
     if (app.name.length == 0) {
-      throw new AgentryValidationException("App name is required");
+      throw new AGTValidationException("App name is required");
     }
 
     app.updatedAt = Clock.currTime();
@@ -75,12 +75,12 @@ class AGTService : SAPService {
 
     auto app = _store.getApp(tenantId, appId);
     if (app.appId.length == 0) {
-      throw new AgentryNotFoundException("Mobile app", tenantId ~ "/" ~ appId);
+      throw new AGTNotFoundException("Mobile app", tenantId ~ "/" ~ appId);
     }
 
-    auto appVersion = AgentryAppVersion(tenantId, appId, request);
+    auto appVersion = AGTAppVersion(tenantId, appId, request);
     if (appVersion.versionLabel.length == 0) {
-      throw new AgentryValidationException("version_label is required");
+      throw new AGTValidationException("version_label is required");
     }
 
     auto saved = _store.addVersion(appVersion);
@@ -114,14 +114,14 @@ class AGTService : SAPService {
 
     auto app = _store.getApp(tenantId, appId);
     if (app.appId.length == 0) {
-      throw new AgentryNotFoundException("Mobile app", tenantId ~ "/" ~ appId);
+      throw new AGTNotFoundException("Mobile app", tenantId ~ "/" ~ appId);
     }
 
     auto testRun = AGTTestRun(tenantId, appId, request);
     if (testRun.versionId.length == 0) {
       auto versions = _store.listVersions(tenantId, appId);
       if (versions.length == 0) {
-        throw new AgentryValidationException("No version exists for test run; provide version_id");
+        throw new AGTValidationException("No version exists for test run; provide version_id");
       }
       testRun.versionId = versions[$ - 1].versionId;
     }
@@ -151,14 +151,14 @@ class AGTService : SAPService {
   Json upsertRuntimeInstance(string tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
 
-    auto instance = AgentryRuntimeInstance(tenantId, request);
+    auto instance = AGTRuntimeInstance(tenantId, request);
     if (instance.appId.length == 0) {
-      throw new AgentryValidationException("app_id is required");
+      throw new AGTValidationException("app_id is required");
     }
 
     auto app = _store.getApp(tenantId, instance.appId);
     if (app.appId.length == 0) {
-      throw new AgentryNotFoundException("Mobile app", tenantId ~ "/" ~ instance.appId);
+      throw new AGTNotFoundException("Mobile app", tenantId ~ "/" ~ instance.appId);
     }
 
     instance.updatedAt = Clock.currTime();
@@ -191,11 +191,11 @@ class AGTService : SAPService {
 
     auto instance = _store.getInstance(tenantId, instanceId);
     if (instance.instanceId.length == 0) {
-      throw new AgentryNotFoundException("Runtime instance", tenantId ~ "/" ~ instanceId);
+      throw new AGTNotFoundException("Runtime instance", tenantId ~ "/" ~ instanceId);
     }
 
     if (!("version_id" in request) || request["version_id"].type != Json.Type.string) {
-      throw new AgentryValidationException("version_id is required");
+      throw new AGTValidationException("version_id is required");
     }
 
     auto versionId = request["version_id"].get!string;
@@ -208,7 +208,7 @@ class AGTService : SAPService {
       }
     }
     if (!knownVersion) {
-      throw new AgentryNotFoundException("App version", tenantId ~ "/" ~ versionId);
+      throw new AGTNotFoundException("App version", tenantId ~ "/" ~ versionId);
     }
 
     instance.deployedVersionId = versionId;
@@ -232,15 +232,15 @@ class AGTService : SAPService {
 
     auto device = AGTDevice(tenantId, request);
     if (device.appId.length == 0) {
-      throw new AgentryValidationException("app_id is required");
+      throw new AGTValidationException("app_id is required");
     }
     if (device.userId.length == 0) {
-      throw new AgentryValidationException("user_id is required");
+      throw new AGTValidationException("user_id is required");
     }
 
     auto app = _store.getApp(tenantId, device.appId);
     if (app.appId.length == 0) {
-      throw new AgentryNotFoundException("Mobile app", tenantId ~ "/" ~ device.appId);
+      throw new AGTNotFoundException("Mobile app", tenantId ~ "/" ~ device.appId);
     }
 
     device.lastSyncAt = Clock.currTime();
@@ -273,7 +273,7 @@ class AGTService : SAPService {
 
     auto device = _store.getDevice(tenantId, deviceId);
     if (device.deviceId.length == 0) {
-      throw new AgentryNotFoundException("Device", tenantId ~ "/" ~ deviceId);
+      throw new AGTNotFoundException("Device", tenantId ~ "/" ~ deviceId);
     }
 
     if ("app_version_id" in request && request["app_version_id"].isString) {
@@ -294,7 +294,7 @@ class AGTService : SAPService {
 
     auto backend = AGTBackendSystem(tenantId, request);
     if (backend.endpoint.length == 0) {
-      throw new AgentryValidationException("endpoint is required");
+      throw new AGTValidationException("endpoint is required");
     }
 
     backend.updatedAt = Clock.currTime();
@@ -348,7 +348,7 @@ class AGTService : SAPService {
 
   private void validateId(string value, string fieldName) {
     if (value.length == 0) {
-      throw new AgentryValidationException(fieldName ~ " cannot be empty");
+      throw new AGTValidationException(fieldName ~ " cannot be empty");
     }
   }
 }

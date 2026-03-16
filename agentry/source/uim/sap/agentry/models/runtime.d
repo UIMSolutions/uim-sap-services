@@ -1,5 +1,9 @@
 module uim.sap.agentry.models.runtime;
+import uim.sap.agentry;
 
+mixin(ShowModule!());
+
+@safe:
 class AGTRuntimeInstance : SAPTenantObject {
   mixin(SAPObjectTemplate!AGTRuntimeInstance);
 

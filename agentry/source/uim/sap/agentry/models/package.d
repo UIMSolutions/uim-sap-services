@@ -6,5 +6,10 @@
 module uim.sap.agentry.models;
 
 public {
+  import uim.sap.agentry.models.appversion;
+  import uim.sap.agentry.models.backend;
+  import uim.sap.agentry.models.device;
   import uim.sap.agentry.models.mobileapp;
+  import uim.sap.agentry.models.runtime; 
+  import uim.sap.agentry.models.testrun; 
 }

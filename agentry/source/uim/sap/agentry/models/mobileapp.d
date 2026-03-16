@@ -1,3 +1,8 @@
+/****************************************************************************************************************
+* Copyright: © 2018-2026 Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*) 
+* License: Subject to the terms of the Apache 2.0 license, as written in the included LICENSE.txt file. 
+* Authors: Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*)
+*****************************************************************************************************************/
 module uim.sap.agentry.models.mobileapp;
 
 import uim.sap.agentry;
@@ -48,8 +53,8 @@ class AGTMobileApp : SAPTenantObject {
       .set("lifecycle", lifecycle);
   }
 
-  static AgentryMobileApp opCall(string tenantId, Json request, string defaultBackend) {
-    AgentryMobileApp app;
+  static AGTMobileApp opCall(string tenantId, Json request, string defaultBackend) {
+    AGTMobileApp app = new AGTMobileApp(request);
     app.tenantId = UUID(tenantId);
     app.appId = randomUUID().toString();
     app.backendSystem = defaultBackend;

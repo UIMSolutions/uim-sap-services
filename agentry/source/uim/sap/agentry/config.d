@@ -20,7 +20,7 @@ mixin(ShowModule!());
   * It also includes validation logic to ensure that the configuration is correct before the service starts.
   */
 class AGTConfig : SAPConfig {
-  mixin(SAPConfigTemplate!AgentryConfig);
+  mixin(SAPConfigTemplate!AGTConfig);
 
   override bool initialize(Json[string] initData = null) {
     if (!super.initialize(initData)) {
