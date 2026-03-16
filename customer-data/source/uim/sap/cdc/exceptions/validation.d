@@ -4,7 +4,11 @@
 * Authors: Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*)
 *****************************************************************************************************************/
 module uim.sap.cdc.exceptions.validation;
+import uim.sap.cdc;
 
+mixin(ShowModule!());
+
+@safe:
 class CDCValidationException : CDCException {
   this(string message, string file = __FILE__, size_t line = __LINE__) {
     super(message, file, line);

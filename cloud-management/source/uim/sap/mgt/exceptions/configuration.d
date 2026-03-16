@@ -17,8 +17,22 @@ mixin(ShowModule!());
   *     // Handle configuration error
   * }
   */
-class MGTConfigurationException : MGTException {
-  this(string msg) {
-    super(msg);
+class MGTConfigurationException : SAPConfigurationException {
+  this(string message) {
+    super("(MGT) " ~ message);
   }
+
+  this(string message, string file = __FILE__, size_t line = __LINE__, Throwable next = null) {
+    super("(MGT) " ~ message, file, line, next);
+  }
+}
+///
+unittest {
+  MGTConfigurationException ex1 = new MGTConfigurationException("Test message");
+  assert(ex1.message == "Configuration error: (MGT) Test message");
+
+  MGTConfigurationException ex2 = new MGTConfigurationException("Test message", "testfile.d", 123);
+  assert(ex2.message == "Configuration error: (MGT) Test message");
+  assert(ex2.file == "testfile.d");
+  assert(ex2.line == 123);
 }

@@ -1,8 +1,8 @@
 module uim.sap.cdc.models.profile;
 
-import std.datetime : SysTime;
+import uim.sap.cdc;
 
-import vibe.data.json : Json;
+mixin(ShowModule!());
 
 @safe:
 

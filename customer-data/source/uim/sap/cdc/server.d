@@ -1,15 +1,10 @@
 module uim.sap.cdc.server;
 
-import std.array : split;
-import std.conv : to;
-import std.string : startsWith;
+import uim.sap.cdc;
 
-import vibe.data.json : Json;
-import vibe.http.common : HTTPMethod;
-import vibe.http.server : HTTPServerRequest, HTTPServerResponse, listenHTTP;
+mixin(ShowModule!());
 
-import uim.sap.cdc.exceptions;
-import uim.sap.cdc.service;
+@safe:
 
 void runCDCServer(
   CDCService service,
