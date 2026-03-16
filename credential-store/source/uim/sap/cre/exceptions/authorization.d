@@ -6,7 +6,7 @@ mixin(ShowModule!());
 
 @safe:
 class CREAuthorizationException : CREException {
-    this(string msg) {
-        super(msg);
-    }
+  this(string msg) {
+    super(msg);
+  }
 }

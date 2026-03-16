@@ -2,7 +2,11 @@ module uim.sap.cre.store;
 
 import core.sync.mutex : Mutex;
 
-import uim.sap.cre.models;
+import uim.sap.cre;
+
+mixin(ShowModule!());
+
+@safe:
 
 /** 
   * In-memory implementation of the credential store. This is not thread-safe and should only be used for testing or single-threaded applications.

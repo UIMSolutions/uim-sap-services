@@ -7,7 +7,7 @@ mixin(ShowModule!());
 @safe:
 
 class CRENotFoundException : CREException {
-    this(string kind, string id) {
-        super(kind ~ " not found: " ~ id);
-    }
+  this(string kind, string id) {
+    super(kind ~ " not found: " ~ id);
+  }
 }

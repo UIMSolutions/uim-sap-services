@@ -1,14 +1,10 @@
 module uim.sap.cre.server;
 
-import std.array : split;
-import std.string : startsWith;
+import uim.sap.cre;
 
-import vibe.data.json : Json;
-import vibe.http.common : HTTPMethod;
-import vibe.http.server : HTTPServerRequest, HTTPServerResponse, HTTPServerSettings, listenHTTP;
+mixin(ShowModule!());
 
-import uim.sap.cre.exceptions;
-import uim.sap.cre.service;
+@safe:
 
 class CREServer {
   private CREService _service;

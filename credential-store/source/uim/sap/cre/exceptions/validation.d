@@ -7,7 +7,7 @@ mixin(ShowModule!());
 @safe:
 
 class CREValidationException : CREException {
-    this(string msg) {
-        super(msg);
-    }
+  this(string msg) {
+    super(msg);
+  }
 }

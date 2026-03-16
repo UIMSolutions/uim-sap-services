@@ -1,4 +1,5 @@
 module uim.sap.cia.models.scenario;
+
 import uim.sap.cia;
 
 mixin(ShowModule!());
@@ -7,7 +8,9 @@ mixin(ShowModule!());
 // ---------------------------------------------------------------------------
 // Scenario – an integration scenario template (e.g. S/4HANA → SuccessFactors)
 // ---------------------------------------------------------------------------
-struct CIAScenario {
+class CIAScenario : SAPObject {
+  mixin(SAPObjectTemplate!CIAScenario);
+
   string id;
   string name;
   string description;
@@ -17,30 +20,22 @@ struct CIAScenario {
   string[] requiredSystemTypes;
   /// Ordered task templates generated when a workflow is planned
   CIAScenarioTaskTemplate[] taskTemplates;
-  SysTime createdAt;
-  SysTime updatedAt;
 
   override Json toJson() {
     Json sysTypes = requiredSystemTypes.map!(st => st).array.toJson();
-    Json j = Json.emptyObject;
-    j["id"] = id;
-    j["name"] = name;
-    j["description"] = description;
-
-    Json t = Json.emptyArray;
-    foreach (tag; tags)
-      t ~= tag;
-    j["tags"] = t;
-
-    j["required_system_types"] = sysTypes;
-
     Json tmpl = Json.emptyArray;
     foreach (tt; taskTemplates)
       tmpl ~= tt.toJson();
-    j["task_templates"] = tmpl;
+    Json t = Json.emptyArray;
+    foreach (tag; tags)
+      t ~= tag;
 
-    j["created_at"] = createdAt.toISOExtString();
-    j["updated_at"] = updatedAt.toISOExtString();
-    return j;
+    return super.toJson
+      .set("id", id)
+      .set("name", name)
+      .set("description", description)
+      .set("tags", t)
+      .set("required_system_types", sysTypes)
+      .set("task_templates", tmpl);
   }
 }

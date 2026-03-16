@@ -1,8 +1,10 @@
 module uim.sap.cre.crypto;
 
-import std.uuid : randomUUID;
+import uim.sap.cre;
 
-import uim.sap.cre.models;
+mixin(ShowModule!());
+
+@safe:
 
 CREEncryptedPayload encryptString(string plaintext, string key) {
     CREEncryptedPayload payload;
