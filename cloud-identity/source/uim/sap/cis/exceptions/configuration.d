@@ -11,8 +11,22 @@ mixin(ShowModule!());
 
 @safe:
 
-class CISConfigurationException : CISException {
-  this(string msg) {
-    super(msg);
+class CISConfigurationException : SAPConfigurationException {
+  this(string message) {
+    super("(CIS) " ~ message);
   }
+
+  this(string message, string file = __FILE__, size_t line = __LINE__, Throwable next = null) {
+    super("(CIS) " ~ message, file, line, next);
+  }
+}
+///
+unittest {
+  CISConfigurationException ex1 = new CISConfigurationException("Test message");
+  assert(ex1.message == "Configuration error: (CIS) Test message");
+
+  CISConfigurationException ex2 = new CISConfigurationException("Test message", "testfile.d", 123);
+  assert(ex2.message == "Configuration error: (CIS) Test message");
+  assert(ex2.file == "testfile.d");
+  assert(ex2.line == 123);
 }

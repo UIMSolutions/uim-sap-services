@@ -11,6 +11,22 @@ mixin(ShowModule!());
 
 @safe:
 
-class CPSConfigurationException : CPSException {
-    this(string msg) { super(msg); }
+class CPSConfigurationException : SAPConfigurationException {
+  this(string message) {
+    super("(CPS) " ~ message);
+  }
+
+  this(string message, string file = __FILE__, size_t line = __LINE__, Throwable next = null) {
+    super("(CPS) " ~ message, file, line, next);
+  }
+}
+///
+unittest {
+  CPSConfigurationException ex1 = new CPSConfigurationException("Test message");
+  assert(ex1.message == "Configuration error: (CPS) Test message");
+
+  CPSConfigurationException ex2 = new CPSConfigurationException("Test message", "testfile.d", 123);
+  assert(ex2.message == "Configuration error: (CPS) Test message");
+  assert(ex2.file == "testfile.d");
+  assert(ex2.line == 123);
 }

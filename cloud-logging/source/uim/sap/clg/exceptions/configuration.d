@@ -11,8 +11,22 @@ mixin(ShowModule!());
 
 @safe:
 
-class CLGConfigurationException : CLGException {
-    this(string msg, string file = __FILE__, size_t line = __LINE__, Throwable next = null) {
-        super(msg, file, line, next);
-    }
+class CLGConfigurationException : SAPConfigurationException {
+  this(string message) {
+    super("(CLG) " ~ message);
+  }
+
+  this(string message, string file = __FILE__, size_t line = __LINE__, Throwable next = null) {
+    super("(CLG) " ~ message, file, line, next);
+  }
+}
+///
+unittest {
+  CLGConfigurationException ex1 = new CLGConfigurationException("Test message");
+  assert(ex1.message == "Configuration error: (CLG) Test message");
+
+  CLGConfigurationException ex2 = new CLGConfigurationException("Test message", "testfile.d", 123);
+  assert(ex2.message == "Configuration error: (CLG) Test message");
+  assert(ex2.file == "testfile.d");
+  assert(ex2.line == 123);
 }
