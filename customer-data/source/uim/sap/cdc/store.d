@@ -1,16 +1,17 @@
+/****************************************************************************************************************
+* Copyright: © 2018-2026 Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*) 
+* License: Subject to the terms of the Apache 2.0 license, as written in the included LICENSE.txt file. 
+* Authors: Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*)
+*****************************************************************************************************************/
 module uim.sap.cdc.store;
 
 import core.sync.mutex : Mutex;
 
-import std.datetime : SysTime;
-import std.file : exists, mkdirRecurse, readText, write;
-import std.path : dirName;
-import std.typecons : Nullable;
+import uim.sap.cdc;
 
-import vibe.data.json : Json, parseJsonString;
+mixin(ShowModule!());
 
-import uim.sap.cdc.exceptions;
-import uim.sap.cdc.models;
+@safe:
 
 class CDCStore : SAPStore {
   private CDCProfile[string] _profiles;

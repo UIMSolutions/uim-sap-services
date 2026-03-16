@@ -1,17 +1,15 @@
+/****************************************************************************************************************
+* Copyright: © 2018-2026 Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*) 
+* License: Subject to the terms of the Apache 2.0 license, as written in the included LICENSE.txt file. 
+* Authors: Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*)
+*****************************************************************************************************************/
 module uim.sap.cdc.service;
 
-import std.algorithm.searching : canFind;
-import std.algorithm.sorting : sort;
-import std.conv : to;
-import std.datetime : Clock, SysTime, dur;
-import std.string : indexOf, toLower;
+import uim.sap.cdc;
 
-import vibe.data.json : Json;
+mixin(ShowModule!());
 
-import uim.sap.cdc.config;
-import uim.sap.cdc.exceptions;
-import uim.sap.cdc.models;
-import uim.sap.cdc.store;
+@safe:
 
 class CDCService : SAPService {
   mixin(SAPServiceTemplate!CDCService);

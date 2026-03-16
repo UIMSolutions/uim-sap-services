@@ -5,10 +5,11 @@
 *****************************************************************************************************************/
 module uim.sap.cdc.config;
 
-import std.path : buildPath;
-import std.string : startsWith;
+import uim.sap.cdc;
 
-import uim.sap.cdc.exceptions;
+mixin(ShowModule!());
+
+@safe:
 
 class CDCConfig : SAPConfig {
   mixin(SAPConfigTemplate!CDCConfig);
