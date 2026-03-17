@@ -48,7 +48,7 @@ class SMGService : SAPService {
   Json upsertSite(string tenantId, Json data) {
     validateTenant(tenantId);
 
-    auto siteId = readRequired(body, "site_id");
+    auto siteid = requiredUUID(body, "site_id");
     auto now = Clock.currTime();
     auto existing = _store.getSite(tenantId, siteId);
 

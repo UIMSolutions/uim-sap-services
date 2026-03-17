@@ -219,7 +219,7 @@ HTML";
 
   Json upsertProvider(string tenantId, Json data) {
     validateTenant(tenantId);
-    auto providerId = readRequired(body, "provider_id");
+    auto providerid = requiredUUID(body, "provider_id");
     auto now = Clock.currTime();
 
     CAGContentProvider existing;
@@ -264,7 +264,7 @@ HTML";
 
   Json upsertContent(string tenantId, Json data) {
     validateTenant(tenantId);
-    auto contentId = readRequired(body, "content_id");
+    auto contentid = requiredUUID(body, "content_id");
     auto now = Clock.currTime();
 
     CAGContentItem existing;
@@ -329,7 +329,7 @@ HTML";
 
   Json upsertQueue(string tenantId, Json data) {
     validateTenant(tenantId);
-    auto queueId = readRequired(body, "queue_id");
+    auto queueid = requiredUUID(body, "queue_id");
     auto now = Clock.currTime();
 
     CAGTransportQueue existing;
@@ -480,7 +480,7 @@ HTML";
       throw new CAGNotFoundException("assembly not found");
     }
 
-    auto queueId = readRequired(body, "queue_id");
+    auto queueid = requiredUUID(body, "queue_id");
     CAGTransportQueue queue;
     if (!_store.tryGetQueue(tenantId, queueId, queue)) {
       throw new CAGValidationException("queue_id not found");

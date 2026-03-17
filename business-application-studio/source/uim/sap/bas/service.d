@@ -57,7 +57,7 @@ class BASService : SAPService {
   Json createWorkspace(string tenantId, Json data) {
     validateTenant(tenantId);
 
-    auto scenarioId = readRequired(body, "scenario_id");
+    auto scenarioid = requiredUUID(body, "scenario_id");
     if (!hasScenario(scenarioId))
       throw new BASValidationException("Unsupported scenario_id");
 
@@ -98,7 +98,7 @@ class BASService : SAPService {
 
   Json runWizard(string tenantId, string workspaceId, Json data) {
     auto workspace = requireWorkspace(tenantId, workspaceId);
-    auto templateId = readRequired(body, "template_id");
+    auto templateid = requiredUUID(body, "template_id");
     if (!hasTemplate(templateId, workspace.scenarioId)) {
       throw new BASValidationException("Template is not compatible with workspace scenario");
     }

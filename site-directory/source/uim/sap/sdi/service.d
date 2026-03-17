@@ -62,7 +62,7 @@ class SDIService : SAPService {
 
     SDISite site;
     site.tenantId = UUID(tenantId);
-    site.siteId = readRequired(body, "site_id");
+    site.siteid = requiredUUID(body, "site_id");
     site.name = readRequired(body, "name");
     site.description = readOptional(body, "description", "");
     site.siteAlias = normalizeSiteAlias(readOptional(body, "alias", site.siteId));

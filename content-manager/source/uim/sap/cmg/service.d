@@ -47,7 +47,7 @@ class CMGService : SAPService {
     validateTenant(tenantId);
     auto normalizedType = normalizeContentType(contentType);
 
-    auto itemId = readRequired(body, "item_id");
+    auto itemid = requiredUUID(body, "item_id");
     auto now = Clock.currTime();
 
     CMGContentItem item;
@@ -90,7 +90,7 @@ class CMGService : SAPService {
     auto now = Clock.currTime();
     CMGContentProvider provider;
     provider.tenantId = UUID(tenantId);
-    provider.providerId = readRequired(body, "provider_id");
+    provider.providerid = requiredUUID(body, "provider_id");
     provider.name = readRequired(body, "name");
     provider.providerType = readOptional(body, "provider_type", "remote-content");
     provider.endpoint = readOptional(body, "endpoint", "");

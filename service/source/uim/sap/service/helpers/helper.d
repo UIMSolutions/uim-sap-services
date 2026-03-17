@@ -131,17 +131,6 @@ string nowTimestamp() {
 }
 
 
-
-string requiredString(Json request, string key) {
-  if (!(key in request) || !request[key].isString) {
-    throw new SAPValidationException(key ~ " is required");
-  }
-  auto value = request[key].get!string;
-  if (value.length == 0)
-    throw new SAPValidationException(key ~ " cannot be empty");
-  return value;
-}
-
 string optionalString(Json request, string key, string fallback) {
   if (key in request && request[key].isString) {
     auto value = request[key].get!string;

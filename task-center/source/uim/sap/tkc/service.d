@@ -39,7 +39,7 @@ class TKCService : SAPService {
     auto now = Clock.currTime();
 
     TKCProvider provider;
-    provider.providerId = readRequired(body, "provider_id");
+    provider.providerid = requiredUUID(body, "provider_id");
     provider.name = readRequired(body, "name");
     provider.providerType = readOptional(body, "provider_type", "sap");
     provider.endpoint = readOptional(body, "endpoint", "");
@@ -79,7 +79,7 @@ class TKCService : SAPService {
       TKCTask task;
       task.tenantId = UUID(tenantId);
       task.providerId = providerId;
-      task.taskId = readRequired(entry, "task_id");
+      task.taskid = requiredUUID(entry, "task_id");
       task.providerTaskId = readOptional(entry, "provider_task_id", task.taskId);
       task.title = readRequired(entry, "title");
       task.description = readOptional(entry, "description", "");

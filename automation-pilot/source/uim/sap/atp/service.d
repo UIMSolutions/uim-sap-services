@@ -67,8 +67,8 @@ class ATPService : SAPService {
     ATPCatalog catalog = new ATPCatalog(data);
 
     catalog.tenantId = UUID(tenantId);
-    catalog.catalogId = readRequired(data, "catalog_id");
-    catalog.name = readRequired(data, "name");
+    catalog.catalogid = requiredUUID(data, "catalog_id");
+    catalog.name = requiredString(data, "name");
     catalog.scenario = readOptional(data, "scenario", "custom");
     catalog.predefined = data.getBoolean("predefined", false);
     catalog.commandIds = readStringArray(data, "command_ids");
@@ -100,9 +100,9 @@ class ATPService : SAPService {
     auto now = Clock.currTime();
     ATPCommand command = new ATPCommand(data);
     command.tenantId = UUID(tenantId);
-    command.commandId = readRequired(data, "command_id");
+    command.commandid = requiredUUID(data, "command_id");
     command.catalogId = catalogId;
-    command.name = readRequired(data, "name");
+    command.name = requiredString(data, "name");
     command.description = readOptional(data, "description", "");
     command.commandType = readOptional(data, "command_type", "script");
     command.steps = readStringArray(data, "steps");
@@ -127,7 +127,7 @@ class ATPService : SAPService {
 
   Json runPredefinedCommand(string tenantId, Json data) {
     validateTenant(tenantId);
-    auto commandId = readRequired(data, "command_id");
+    auto commandid = requiredUUID(data, "command_id");
     auto command = requireCommand(tenantId, commandId);
 
     auto now = Clock.currTime();
@@ -187,7 +187,7 @@ class ATPService : SAPService {
 
   Json restoreContent(string tenantId, Json data) {
     validateTenant(tenantId);
-    auto backupId = readRequired(data, "backup_id");
+    auto backupid = requiredUUID(data, "backup_id");
     auto backup = _store.getBackup(tenantId, backupId);
     if (backup.isNull)
       throw new ATPNotFoundException("Backup not found");
@@ -249,9 +249,9 @@ class ATPService : SAPService {
 
     ATPSchedule schedule = new ATPSchedule(data);
     schedule.tenantId = UUID(tenantId);
-    schedule.scheduleId = readRequired(data, "schedule_id");
+    schedule.scheduleid = requiredUUID(data, "schedule_id");
     schedule.targetType = readOptional(data, "target_type", "execution");
-    schedule.targetId = readRequired(data, "target_id");
+    schedule.targetid = requiredUUID(data, "target_id");
     schedule.mode = readOptional(data, "mode", "cron");
     schedule.expression = readRequired(data, "expression");
     schedule.active = data.getBoolean("active", true);
@@ -282,10 +282,10 @@ class ATPService : SAPService {
 
     ATPEventTrigger trigger = new ATPEventTrigger(data);
     trigger.tenantId = UUID(tenantId);
-    trigger.triggerId = readRequired(data, "trigger_id");
+    trigger.triggerid = requiredUUID(data, "trigger_id");
     trigger.eventSource = readRequired(data, "event_source");
     trigger.eventType = readRequired(data, "event_type");
-    trigger.commandId = readRequired(data, "command_id");
+    trigger.commandid = requiredUUID(data, "command_id");
     trigger.active = data.getBoolean("active", true);
     trigger.createdAt = now;
     trigger.updatedAt = now;

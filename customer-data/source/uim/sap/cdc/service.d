@@ -139,7 +139,7 @@ class CDCService : SAPService {
     CDCConsent consent;
     consent.tenantId = UUID(tenantId);
     consent.userId = userId;
-    consent.consentId = readRequired(data, "consent_id");
+    consent.consentid = requiredUUID(data, "consent_id");
     consent.purpose = readRequired(data, "purpose");
     consent.legalBasis = readOptional(data, "legal_basis", "consent");
     consent.status = status;
@@ -177,8 +177,8 @@ class CDCService : SAPService {
 
     CDCSiteGroup group;
     group.tenantId = UUID(tenantId);
-    group.groupId = readRequired(data, "group_id");
-    group.name = readRequired(data, "name");
+    group.groupid = requiredUUID(data, "group_id");
+    group.name = requiredString(data, "name");
     group.sites = readStringArray(data, "sites");
     group.regions = readStringArray(data, "regions");
     if (group.regions.length == 0)
@@ -248,8 +248,8 @@ class CDCService : SAPService {
 
     CDCRiskProvider provider;
     provider.tenantId = UUID(tenantId);
-    provider.providerId = readRequired(data, "provider_id");
-    provider.name = readRequired(data, "name");
+    provider.providerid = requiredUUID(data, "provider_id");
+    provider.name = requiredString(data, "name");
     provider.providerKind = normalizeProviderKind(
       readRequired(data, "provider_kind"));
     provider.enabled = data.getBoolean(
@@ -281,7 +281,7 @@ class CDCService : SAPService {
 
   Json authenticate(string tenantId, Json data) {
     validateTenant(tenantId);
-    auto userId = readRequired(data, "user_id");
+    auto userid = requiredUUID(data, "user_id");
     auto password = readRequired(data, "password");
     auto ipAddress = readOptional(data, "ip_address", "");
 
