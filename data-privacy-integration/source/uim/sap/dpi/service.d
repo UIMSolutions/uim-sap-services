@@ -283,13 +283,4 @@ class DPIService : SAPService {
     }
     return result;
   }
-
-  private void validateTenant(string tenantId) {
-    validateId(tenantId, "Tenant ID");
-  }
-
-  private void validateId(string value, string fieldName) {
-    if (value.length == 0)
-      throw new DPIValidationException(fieldName ~ " cannot be empty");
-  }
 }

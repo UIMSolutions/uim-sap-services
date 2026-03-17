@@ -6,28 +6,51 @@
 module uim.sap.aas.models.scaledecision;
 
 import uim.sap.aas;
+
 @safe:
 
-struct AASScaleDecision {
-    string appId;
-    uint currentInstances;
-    uint desiredInstances;
-    string direction;
-    string reason;
-    double currentHourlyCost;
-    double desiredHourlyCost;
-    SysTime evaluatedAt;
+/**
+  * Represents a scaling decision for an application, including the current and desired number of instances, 
+  * the direction of scaling (up or down), the reason for the decision, and the associated costs.
+  *
+  * This class is used to encapsulate the details of a scaling decision made by the application autoscaler,
+  * allowing for easy serialization to JSON for API responses or logging purposes.
+  *
+  * Example usage:
+  * ```
+  * AASScaleDecision decision = new AASScaleDecision();
+  * decision.appId = "my-app";
+  * decision.currentInstances = 2;
+  * decision.desiredInstances = 3;
+  * decision.direction = "up";
+  * decision.reason = "CPU usage exceeded threshold";
+  * decision.currentHourlyCost = 0.10;
+  * decision.desiredHourlyCost = 0.15;
+  * decision.evaluatedAt = Clock.currTime();
+  * Json json = decision.toJson();
+  * ```
+  */
+class AASScaleDecision : SAPObject {
+  mixin(SAPObjectTemplate!AASScaleDecision);
 
-    override Json toJson()  {
-        Json payload = Json.emptyObject;
-        payload["app_id"] = appId;
-        payload["current_instances"] = cast(long)currentInstances;
-        payload["desired_instances"] = cast(long)desiredInstances;
-        payload["direction"] = direction;
-        payload["reason"] = reason;
-        payload["current_hourly_cost"] = currentHourlyCost;
-        payload["desired_hourly_cost"] = desiredHourlyCost;
-        payload["evaluated_at"] = evaluatedAt.toISOExtString();
-        return payload;
-    }
+  string appId;
+  uint currentInstances;
+  uint desiredInstances;
+  string direction;
+  string reason;
+  double currentHourlyCost;
+  double desiredHourlyCost;
+  SysTime evaluatedAt;
+
+  override Json toJson() { 
+    return super.toJson() 
+      .set("app_id", appId)
+      .set("current_instances", cast(long)currentInstances)
+      .set("desired_instances", cast(long)desiredInstances)
+      .set("direction", direction)
+      .set("reason", reason)
+      .set("current_hourly_cost", currentHourlyCost)
+      .set("desired_hourly_cost", desiredHourlyCost)
+      .set("evaluated_at", evaluatedAt.toISOExtString());
+  }
 }

@@ -1,40 +1,34 @@
 module uim.sap.atm.models.userassignment;
 
-struct ATMUserAssignment {
-  UUID tenantId;
+class ATMUserAssignment : SAPTenantObject {
+  mixin(SAPObjectTemplate!ATMUserAssignment);
+
   UUID userId;
   UUID idpId;
   string[] roleCollectionIds;
-  SysTime updatedAt;
 
-  override Json toJson()  {
-    Json info = super.toJson;
-    Json refs = Json.emptyArray;
-    foreach (roleCollectionId; roleCollectionIds) {
-      refs ~= roleCollectionId;
+  override Json toJson() {
+    Json refs = roleCollectionIds.map!(id => id).array.toJson;
+
+    return super.toJson()
+      .set("user_id", userId)
+      .set("idp_id", idpId)
+      .set("role_collection_ids", refs);
+  }
+
+  static ATMUserAssignment opCall(string tenantId, string userId, Json request) {
+    ATMUserAssignment assignment = new ATMUserAssignment(request);
+    assignment.tenantId = UUID(tenantId);
+    assignment.userId = userId;
+    assignment.updatedAt = Clock.currTime();
+
+    if ("idp_id" in request && request["idp_id"].isString) {
+      assignment.idpId = request["idp_id"].get!string;
+    }
+    if ("role_collection_ids" in request && request["role_collection_ids"].isArray) {
+      assignment.roleCollectionIds = stringArrayFromJson(request["role_collection_ids"]);
     }
 
-    payload["tenant_id"] = tenantId;
-    payload["user_id"] = userId;
-    payload["idp_id"] = idpId;
-    payload["role_collection_ids"] = refs;
-    payload["updated_at"] = updatedAt.toISOExtString();
-    return payload;
+    return assignment;
   }
-}
-
-ATMUserAssignment userAssignmentFromJson(string tenantId, string userId, Json request) {
-  ATMUserAssignment assignment;
-  assignment.tenantId = UUID(tenantId);
-  assignment.userId = userId;
-  assignment.updatedAt = Clock.currTime();
-
-  if ("idp_id" in request && request["idp_id"].isString) {
-    assignment.idpId = request["idp_id"].get!string;
-  }
-  if ("role_collection_ids" in request && request["role_collection_ids"].isArray) {
-    assignment.roleCollectionIds = stringArrayFromJson(request["role_collection_ids"]);
-  }
-
-  return assignment;
 }

@@ -355,14 +355,4 @@ class AGTService : SAPService {
       .set("registered_devices", cast(long)devices.length)
       .set("backend_systems", cast(long)backends.length);
   }
-
-  private void validateId(UUID value, string fieldName) {
-    validateId(value.toString, fieldName);
-  }
-
-  private void validateId(string value, string fieldName) {
-    if (value.length == 0) {
-      throw new AGTValidationException(fieldName ~ " cannot be empty");
-    }
-  }
 }

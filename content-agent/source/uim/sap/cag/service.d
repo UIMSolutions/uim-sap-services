@@ -574,11 +574,6 @@ HTML";
       throw new CAGValidationException("tenant_id is required");
   }
 
-  private void validateId(string value, string fieldName) const {
-    if (value.length == 0)
-      throw new CAGValidationException(fieldName ~ " is required");
-  }
-
   private string normalizeContentType(string value) const {
     auto normalized = toLower(value);
     if (normalized != "application"

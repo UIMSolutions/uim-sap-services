@@ -388,12 +388,4 @@ class EVMService : SAPService {
     result["dead_letters"] = totalDeadLetters;
     return result;
   }
-
-  // --- Helpers ---
-
-  private void validateId(string value, string fieldName) {
-    if (value.length == 0) {
-      throw new EVMValidationException(fieldName ~ " cannot be empty");
-    }
-  }
 }

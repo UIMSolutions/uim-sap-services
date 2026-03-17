@@ -419,11 +419,5 @@ class FFLService : SAPService {
     return eval;
   }
 
-  // ─── Validation ───────────────────────────────────────────
 
-  private void validateId(string value, string fieldName) {
-    if (value.length == 0) {
-      throw new FFLValidationException(fieldName ~ " cannot be empty");
-    }
-  }
 }

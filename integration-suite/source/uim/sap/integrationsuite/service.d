@@ -877,11 +877,6 @@ class INTService : SAPService {
   //  Helpers
   // =================================================================
 
-  private void validateId(string value, string fieldName) {
-    if (value.length == 0)
-      throw new INTValidationException(fieldName ~ " cannot be empty");
-  }
-
   private Json listResult(string tenantId, Json resources) {
     Json r = Json.emptyObject;
     r["tenant_id"] = tenantId;

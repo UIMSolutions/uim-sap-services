@@ -1089,11 +1089,6 @@ class DocMgmtIntegrationService : SAPService {
     // Private helpers
     // ===================================================================
 
-    private void validateId(string value, string fieldName) {
-        if (value.length == 0)
-            throw new DocMgmtIntegrationValidationException(fieldName ~ " cannot be empty");
-    }
-
     private void ensureTenant(string tenantId) {
         if (_config.multitenancyEnabled) {
             if (tenantId.length == 0)

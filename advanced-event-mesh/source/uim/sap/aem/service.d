@@ -405,10 +405,4 @@ class AEMService : SAPService {
       }
     }
   }
-
-  private void validateId(string value, string fieldName) {
-    if (value.length == 0) {
-      throw new AEMValidationException(fieldName ~ " cannot be empty");
-    }
-  }
 }

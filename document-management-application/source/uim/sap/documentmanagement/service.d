@@ -833,11 +833,6 @@ class DMAService : SAPService {
   // Private helpers
   // ===================================================================
 
-  private void validateId(string value, string fieldName) {
-    if (value.length == 0)
-      throw new DMAValidationException(fieldName ~ " cannot be empty");
-  }
-
   private void ensureRepository(string repositoryId) {
     auto repo = _store.getRepository(repositoryId);
     if (repo.repositoryId.length == 0)

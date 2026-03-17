@@ -34,10 +34,9 @@ class ATMService : SAPService {
     idp.updatedAt = Clock.currTime();
     auto saved = _store.upsertIdp(idp);
 
-    Json result = Json.emptyObject;
-    result["success"] = true;
-    result["identity_provider"] = saved.toJson();
-    return result;
+    return Json.emptyObject
+      .set("success", true)
+      .set("identity_provider", saved.toJson());
   }
 
   Json listIdentityProviders(string tenantId) {
@@ -49,11 +48,10 @@ class ATMService : SAPService {
       resources ~= idp.toJson();
     }
 
-    Json result = Json.emptyObject;
-    result["tenant_id"] = tenantId;
-    result["resources"] = resources;
-    result["total_results"] = cast(long)resources.length;
-    return result;
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json setDefaultIdentityProvider(string tenantId, string idpId) {
@@ -66,10 +64,9 @@ class ATMService : SAPService {
       throw new ATMNotFoundException("Identity provider", tenantId ~ "/" ~ idpId);
     }
 
-    Json result = Json.emptyObject;
-    result["success"] = true;
-    result["identity_provider"] = idp.toJson();
-    return result;
+    return Json.emptyObject
+      .set("success", true)
+      .set("identity_provider", idp.toJson());
   }
 
   Json upsertTechnicalRole(string tenantId, string roleId, Json request) {
@@ -88,10 +85,9 @@ class ATMService : SAPService {
     role.updatedAt = Clock.currTime();
     auto saved = _store.upsertTechnicalRole(role);
 
-    Json result = Json.emptyObject;
-    result["success"] = true;
-    result["technical_role"] = saved.toJson();
-    return result;
+    return Json.emptyObject
+      .set("success", true)
+      .set("technical_role", saved.toJson());
   }
 
   Json listTechnicalRoles(string tenantId) {
@@ -103,11 +99,10 @@ class ATMService : SAPService {
       resources ~= role.toJson();
     }
 
-    Json result = Json.emptyObject;
-    result["tenant_id"] = tenantId;
-    result["resources"] = resources;
-    result["total_results"] = cast(long)resources.length;
-    return result;
+    return super.toJson()
+      .set("tenant_id", tenantId)
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json upsertRoleCollection(string tenantId, string collectionId, Json request) {
@@ -130,26 +125,21 @@ class ATMService : SAPService {
     collection.updatedAt = Clock.currTime();
     auto saved = _store.upsertRoleCollection(collection);
 
-    Json result = Json.emptyObject;
-    result["success"] = true;
-    result["role_collection"] = saved.toJson();
-    return result;
+    return Json.emptyObject
+      .set("success", true)
+      .set("role_collection", saved.toJson());
   }
 
   Json listRoleCollections(string tenantId) {
     validateId(tenantId, "Tenant ID");
     ensureTenantBootstrapped(tenantId);
 
-    Json resources = Json.emptyArray;
-    foreach (collection; _store.listRoleCollections(tenantId)) {
-      resources ~= collection.toJson();
-    }
+    Json resources = _store.listRoleCollections(tenantId).map!(collection => collection.toJson).array.toJson;
 
-    Json result = Json.emptyObject;
-    result["tenant_id"] = tenantId;
-    result["resources"] = resources;
-    result["total_results"] = cast(long)resources.length;
-    return result;
+    return super.toJson()
+      .set("tenant_id", tenantId)
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json upsertUserAssignments(string tenantId, string userId, Json request) {
@@ -157,7 +147,7 @@ class ATMService : SAPService {
     validateId(userId, "User ID");
     ensureTenantBootstrapped(tenantId);
 
-    auto assignment = userAssignmentFromJson(tenantId, userId, request);
+    auto assignment = ATMUserAssignment(tenantId, userId, request);
     foreach (collectionId; assignment.roleCollectionIds) {
       auto collection = _store.getRoleCollection(tenantId, collectionId);
       if (collection.collectionId.length == 0) {
@@ -174,10 +164,9 @@ class ATMService : SAPService {
     assignment.updatedAt = Clock.currTime();
     auto saved = _store.upsertUserAssignment(assignment);
 
-    Json result = Json.emptyObject;
-    result["success"] = true;
-    result["assignment"] = saved.toJson();
-    return result;
+    return Json.emptyObject
+      .set("success", true)
+      .set("assignment", saved.toJson());
   }
 
   Json getUserAssignments(string tenantId, string userId) {
@@ -190,10 +179,9 @@ class ATMService : SAPService {
       throw new ATMNotFoundException("User assignment", tenantId ~ "/" ~ userId);
     }
 
-    Json result = Json.emptyObject;
-    result["tenant_id"] = tenantId;
-    result["assignment"] = assignment.toJson();
-    return result;
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("assignment", assignment.toJson());
   }
 
   ATMSessionContext authenticateBearer(string tenantId, string authorizationHeader) {
@@ -320,10 +308,9 @@ class ATMService : SAPService {
   }
 
   Json currentSession(ATMSessionContext context) {
-    Json result = Json.emptyObject;
-    result["success"] = true;
-    result["session"] = context.toJson();
-    return result;
+    return Json.emptyObject
+      .set("success", true)
+      .set("session", context.toJson());
   }
 
   Json authorizeApplication(string tenantId, ATMSessionContext context, string appId, Json request) {
@@ -344,16 +331,15 @@ class ATMService : SAPService {
       }
     }
 
-    Json result = Json.emptyObject;
-    result["success"] = true;
-    result["tenant_id"] = tenantId;
-    result["application_id"] = appId;
-    result["user_id"] = context.userId;
-    result["authorized"] = authorized;
-    result["required_permissions"] = requiredPermissions.toJson;
-    result["effective_permissions"] = context.permissions.toJson;
-    result["missing_permissions"] = missing;
-    return result;
+    return Json.emptyObject
+      .set("success", true)
+      .set("tenant_id", tenantId)
+      .set("application_id", appId)
+      .set("user_id", context.userId)
+      .set("authorized", authorized)
+      .set("required_permissions", requiredPermissions.toJson)
+      .set("effective_permissions", context.permissions.toJson)
+      .set("missing_permissions", missing);
   }
 
   bool hasPermission(ATMSessionContext context, string permission) {
@@ -523,9 +509,5 @@ class ATMService : SAPService {
     }
   }
 
-  private void validateId(string value, string fieldName) {
-    if (value.length == 0) {
-      throw new ATMValidationException(fieldName ~ " cannot be empty");
-    }
-  }
+
 }

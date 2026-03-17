@@ -130,14 +130,7 @@ string nowTimestamp() {
   return "2026-03-10T00:00:00Z";
 }
 
-void validateTenant(string tenantId) {
-  validateId(tenantId, "Tenant ID");
-}
 
-void validateId(string value, string fieldName) {
-  if (value.length == 0)
-    throw new SAPValidationException(fieldName ~ " cannot be empty");
-}
 
 string requiredString(Json request, string key) {
   if (!(key in request) || !request[key].isString) {

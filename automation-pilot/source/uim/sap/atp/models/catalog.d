@@ -6,29 +6,24 @@ mixin(ShowModule!());
 
 @safe:
 
-struct ATPCatalog {
-  UUID tenantId;
+class ATPCatalog : SAPTenantObject {
+  mixin(SAPObjectTemplate!ATPCatalog);
+  
   UUID catalogId;
   string name;
   string scenario;
   bool predefined;
   UUID[] commandIds;
-  SysTime createdAt;
-  SysTime updatedAt;
 
   override Json toJson()  {
-    Json info = super.toJson;
-    payload["tenant_id"] = tenantId;
-    payload["catalog_id"] = catalogId;
-    payload["name"] = name;
-    payload["scenario"] = scenario;
-    payload["predefined"] = predefined;
-    Json commands = Json.emptyArray;
-    foreach (id; commandIds)
-      commands ~= id;
-    payload["command_ids"] = commands;
-    payload["created_at"] = createdAt.toISOExtString();
-    payload["updated_at"] = updatedAt.toISOExtString();
-    return payload;
+    Json commands = commandIds.map!(id => id.toString()).array.toJson;
+
+    return super.toJson()
+      .set("tenant_id", tenantId)
+      .set("catalog_id", catalogId)
+      .set("name", name)
+      .set("scenario", scenario)
+      .set("predefined", predefined)
+      .set("command_ids", commands);
   }
 }

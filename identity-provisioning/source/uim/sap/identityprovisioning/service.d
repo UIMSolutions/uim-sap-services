@@ -891,9 +891,4 @@ class IPVService : SAPService {
 
     return to!string(val);
   }
-
-  private void validateId(string value, string fieldName) {
-    if (value.length == 0)
-      throw new IPVValidationException(fieldName ~ " cannot be empty");
-  }
 }
