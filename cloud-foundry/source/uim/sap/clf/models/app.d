@@ -8,20 +8,18 @@ struct CLFApp {
   SysTime createdAt;
 
   override Json toJson()  {
-    Json info = super.toJson;
-    payload["guid"] = guid;
-    payload["name"] = name;
-    payload["space_guid"] = spaceGuid;
-    payload["state"] = state;
-    payload["instances"] = cast(long)instances;
-    payload["memory_mb"] = cast(long)memoryMb;
-    payload["created_at"] = createdAt.toISOExtString();
-    return payload;
+    return super.toJson
+    .set("guid", guid)
+    .set("name", name)
+    .set("space_guid", spaceGuid)
+    .set("state", state)
+    .set("instances", cast(long)instances)
+    .set("memory_mb", cast(long)memoryMb)
   }
 }
 
 CLFApp appFromJson(Json payload) {
-  CLFApp app;
+  CLFApp app = new CLFApp(payload);
   app.guid = randomUUID().toString();
   app.createdAt = Clock.currTime();
   if ("name" in payload && payload["name"].isString) {

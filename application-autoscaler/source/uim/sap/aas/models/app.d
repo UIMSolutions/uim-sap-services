@@ -23,23 +23,19 @@ class AASApp : SAPObject {
   double instanceHourlyCost;
 
   override Json toJson() {
-    Json payload = super.toJson;
-
-    payload["id"] = id;
-    payload["name"] = name;
-    payload["organization"] = organization;
-    payload["space"] = space;
-    payload["current_instances"] = cast(long)currentInstances;
-    payload["min_instances"] = cast(long)minInstances;
-    payload["max_instances"] = cast(long)maxInstances;
-    payload["instance_hourly_cost"] = instanceHourlyCost;
-    payload["estimated_hourly_cost"] = instanceHourlyCost * currentInstances;
-
-    return payload;
+    return super.toJson
+    .set("id", id)
+    .set("name", name)
+    .set("organization", organization)
+    .set("space", space)
+    .set("current_instances", cast(long)currentInstances)
+    .set("min_instances", cast(long)minInstances)
+    .set("max_instances", cast(long)maxInstances)
+    .set("instance_hourly_cost", instanceHourlyCost)
+    .set("estimated_hourly_cost", instanceHourlyCost * currentInstances);
   }
-}
 
-AASApp appFromJson(Json payload) {
+  static AASApp appFromJson(Json payload) {
   AASApp app = new AASApp(payload);
   app.id = randomUUID();
   app.createdAt = Clock.currTime();
@@ -87,3 +83,6 @@ AASApp appFromJson(Json payload) {
 
   return app;
 }
+}
+
+

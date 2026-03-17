@@ -12,9 +12,18 @@ class AASConfigurationException : SAPConfigurationException {
   this(string message) {
     super("(AAS) " ~ message);
   }
+
+  this(string message, string file = __FILE__, size_t line = __LINE__, Throwable next = null) {
+    super("(AAS) " ~ message, file, line, next);
+  }
 }
 ///
 unittest {
-  AASConfigurationException ex = new AASConfigurationException("Test message");
-  assert(ex.message == "Configuration error: (AAS) Test message");
+  AASConfigurationException ex1 = new AASConfigurationException("Test message");
+  assert(ex1.message == "Configuration error: (AAS) Test message");
+
+  AASConfigurationException ex2 = new AASConfigurationException("Test message", "testfile.d", 123);
+  assert(ex2.message == "Configuration error: (AAS) Test message");
+  assert(ex2.file == "testfile.d");
+  assert(ex2.line == 123);
 }

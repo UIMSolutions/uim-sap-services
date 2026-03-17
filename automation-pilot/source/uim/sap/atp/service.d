@@ -232,10 +232,9 @@ class ATPService : SAPService {
     validateTenant(tenantId);
     Json secrets = _store.listSecretInputs(tenantId).map!(secret => secret.toJson()).array.toJson();
 
-    Json payload = Json.emptyObject;
-    payload["secrets"] = secrets;
-    payload["count"] = cast(long)secrets.length;
-    return payload;
+    return Json.emptyObject
+      .set("secrets", secrets)
+      .set("count", cast(long)secrets.length);
   }
 
   Json upsertSchedule(string tenantId, Json data) {
@@ -255,10 +254,9 @@ class ATPService : SAPService {
 
     auto saved = _store.upsertSchedule(schedule);
 
-    Json payload = Json.emptyObject;
-    payload["message"] = "Schedule saved";
-    payload["schedule"] = saved.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("message", "Schedule saved")
+      .set("schedule", saved.toJson());
   }
 
   Json listSchedules(string tenantId) {
@@ -416,19 +414,6 @@ class ATPService : SAPService {
     throw new ATPNotFoundException("Command not found");
   }
 
-  private void validateTenant(string tenantId) const {
-    if (tenantId.length == 0)
-      throw new ATPValidationException("tenant_id is required");
-  }
-
-  private string requiredString(Json data, string key) const {
-    if (!(key in body) || body[key].type != Json.Type.string || body[key].get!string.length == 0) {
-      throw new ATPValidationException(key ~ " is required");
-    }
-    return
-    body[key].get!string;
-  }
-
   private string[] readStringArray(Json data, string key) const {
     string[] values;
     if (!(key in data) || data[key].isNull)
@@ -443,14 +428,6 @@ class ATPService : SAPService {
     return values;
   }
 
-  private Json readObject(Json data, string key) const {
-    if (!(key in data) || data[key].isNull)
-      return Json.emptyObject;
-
-    requiredObjectType(data, key);
-    return data[key];
-  }
-
   private string maskValue(string value) const {
     if (value.length <= 4)
       return "****";
@@ -462,12 +439,10 @@ class ATPService : SAPService {
   }
 
   private Json toJsonArray(string[] values) const {
-    Json result = Jsonvalues)
-      result ~= value;
-    return result;
+    return values.map!(v => v.toJson()).array.toJson;
   }
 
   private Json toJsonArray(T)(T[] values) const {
-    return result = values.map!(v => v.toJson()).array;
+    return values.map!(v => v.toJson()).array.toJson;
   }
 }

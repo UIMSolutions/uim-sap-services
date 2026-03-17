@@ -14,6 +14,27 @@ mixin(ShowModule!());
 class AEMTopicEvent : SAPTenantObject {
   mixin(SAPObjectTemplate!AEMTopicEvent);
 
+  override bool initialize(Json[string] initData = null) {
+    if (!super.initialize(initData)) {
+      return false;
+    }
+
+      if ("event_id" in initData && initData["event_id"].isString) {
+    eventId = UUID(initData["event_id"].get!string);
+  }
+  if ("topic" in initData && initData["topic"].isString) {
+    topic = initData["topic"].get!string;
+  }
+  if ("publisher" in initData && initData["publisher"].isString) {
+    publisher = initData["publisher"].get!string;
+  }
+  if ("payload" in initData) {
+    payload = initData["payload"];
+  }
+
+  return true;
+  }
+
   UUID meshId;
   UUID eventId;
   string topic;
@@ -22,16 +43,13 @@ class AEMTopicEvent : SAPTenantObject {
   SysTime publishedAt;
 
   override override Json toJson()  {
-    Json resultJson = super.toJson();
-
-    resultJson["mesh_id"] = meshId.toJson;
-    resultJson["event_id"] = eventId.toJson;
-    resultJson["topic"] = topic;
-    resultJson["publisher"] = publisher;
-    resultJson["payload"] = payload;
-    resultJson["published_at"] = publishedAt.toISOExtString();
-    
-    return resultJson;
+    return super.toJson()
+      .set("mesh_id", meshId.toJson)
+      .set("event_id", eventId.toJson)
+      .set("topic", topic)
+      .set("publisher", publisher)
+      .set("payload", payload)
+      .set("published_at", publishedAt.toISOExtString());
   }
 }
 
@@ -43,19 +61,6 @@ AEMTopicEvent eventFromJson(string tenantId, string meshId, Json request) {
   e.publisher = "unknown";
   e.payload = Json.emptyObject;
   e.publishedAt = Clock.currTime();
-
-  if ("event_id" in request && request["event_id"].isString) {
-    e.eventId = UUID(request["event_id"].get!string);
-  }
-  if ("topic" in request && request["topic"].isString) {
-    e.topic = request["topic"].get!string;
-  }
-  if ("publisher" in request && request["publisher"].isString) {
-    e.publisher = request["publisher"].get!string;
-  }
-  if ("payload" in request) {
-    e.payload = request["payload"];
-  }
 
   return e;
 }

@@ -18,11 +18,10 @@ class BUHService : SAPService {
   }
 
   override Json health() {
-    Json payload = super.health();
-    payload["apis"] = cast(long)_store.listApis().length;
-    payload["products"] = cast(long)_store.listProducts().length;
-    payload["subscriptions"] = cast(long)_store.listSubscriptions().length;
-    return payload;
+    return super.health()
+      .set("apis", cast(long)_store.listApis().length)
+      .set("products", cast(long)_store.listProducts().length)
+      .set("subscriptions", cast(long)_store.listSubscriptions().length);
   }
 
   Json createApi(Json request) {
@@ -44,10 +43,9 @@ class BUHService : SAPService {
   Json listApis() {
     Json resources = _store.listApis().map!(api => api.toJson).array.toJson();
 
-    Json payload = Json.emptyObject;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)_store.listApis().length;
-    return payload;
+    return Json.emptyObject
+      .set("resources", resources)
+      .set("total_results", cast(long)_store.listApis().length);
   }
 
   Json getApi(string id) {
@@ -59,7 +57,7 @@ class BUHService : SAPService {
   }
 
   Json createProduct(Json request) {
-    auto product = productFromJson(request);
+    auto product = BUHProduct(request);
     if (product.name.length == 0) {
       throw new BUHValidationException("Product name is required");
     }
@@ -77,10 +75,9 @@ class BUHService : SAPService {
   Json listProducts() {
     Json resources = _store.listProducts().map!(product => product.toJson).array.toJson();
 
-    Json payload = Json.emptyObject;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)_store.listProducts().length;
-    return payload;
+    return Json.emptyObject
+      .set("resources", resources)
+      .set("total_results", cast(long)_store.listProducts().length);
   }
 
   Json createSubscription(Json request) {
@@ -105,9 +102,8 @@ class BUHService : SAPService {
   Json listSubscriptions() {
     Json resources = _store.listSubscriptions().map!(subscription => subscription.toJson).array.toJson();
 
-    Json payload = Json.emptyObject;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)_store.listSubscriptions().length;
-    return payload;
+    return Json.emptyObject
+      .set("resources", resources)
+      .set("total_results", cast(long)_store.listSubscriptions().length);
   }
 }

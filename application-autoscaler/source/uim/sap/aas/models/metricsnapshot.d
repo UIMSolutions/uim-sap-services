@@ -17,19 +17,17 @@ class AASMetricSnapshot : SAPObject {
   double[string] custom;
 
   override Json toJson() {
-    Json payload = super.tpJson;
-    
-    payload["cpu_percent"] = cpuPercent;
-    payload["memory_percent"] = memoryPercent;
-    payload["response_time_ms"] = responseTimeMs;
-    payload["throughput_rps"] = throughputRps;
-
     Json customJson = Json.emptyObject;
     foreach (key, value; custom) {
       customJson[key] = value;
     }
-    payload["custom"] = customJson;
-    return payload;
+
+    return super.toJson
+      .set("cpu_percent", cpuPercent)
+      .set("memory_percent", memoryPercent)
+      .set("response_time_ms", responseTimeMs)
+      .set("throughput_rps", throughputRps)
+      .set("custom", customJson);
   }
 }
 

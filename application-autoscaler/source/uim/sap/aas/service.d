@@ -28,6 +28,7 @@ class AASService : SAPService {
 
   Json registerApp(Json request) {
     AASConfig cfg = cast(AASConfig)config;
+
     auto app = appFromJson(request);
     if (app.name.length == 0) {
       throw new AASValidationException("name is required");
@@ -49,10 +50,9 @@ class AASService : SAPService {
   Json listApps() {
     Json resources = _store.listApps().map!(app => app.toJson()).array.toJson;
 
-    Json payload = Json.emptyObject;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)_store.listApps().length;
-    return payload;
+    return Json.emptyObject
+      .set("resources", resources)
+      .set("total_results", cast(long)_store.listApps().length);
   }
 
   Json getApp(string appId) {
@@ -89,10 +89,9 @@ class AASService : SAPService {
     ensureAppExists(appId);
     Json resources = _store.listPolicies(appId).map!(policy => policy.toJson()).array.toJson;
 
-    Json payload = Json.emptyObject;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)_store.listPolicies(appId).length;
-    return payload;
+    return Json.emptyObject
+      .set("resources", resources)
+      .set("total_results", cast(long)_store.listPolicies(appId).length);
   }
 
   Json evaluate(string appId, Json request, bool applyDecision) {
@@ -151,7 +150,7 @@ class AASService : SAPService {
       }
     }
 
-    AASScaleDecision decision;
+    AASScaleDecision decision = new AASScaleDecision;
     decision.appId = app.id;
     decision.currentInstances = app.currentInstances;
     decision.evaluatedAt = Clock.currTime();
@@ -182,12 +181,11 @@ class AASService : SAPService {
       }
     }
 
-    Json payload = Json.emptyObject;
-    payload["decision"] = decision.toJson();
-    payload["applied"] = applyDecision;
-    payload["metrics"] = snapshot.toJson();
-    payload["cost_savings_per_hour"] = decision.currentHourlyCost - decision.desiredHourlyCost;
-    return payload;
+    return Json.emptyObject
+      .set("decision", decision.toJson())
+      .set("applied", applyDecision)
+      .set("metrics", snapshot.toJson())
+      .set("cost_savings_per_hour", decision.currentHourlyCost - decision.desiredHourlyCost);
   }
 
   Json triggerCFScale(string appId, Json request) {
@@ -207,15 +205,14 @@ class AASService : SAPService {
     desired = min(max(desired, app.minInstances), app.maxInstances);
     auto updated = _store.updateAppInstances(appId, desired);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["provider"] = "cloud_foundry";
-    payload["cf_api"] = _config.cfApi;
-    payload["organization"] = app.organization;
-    payload["space"] = app.space;
-    payload["message"] = "Scale request accepted (CF adapter placeholder)";
-    payload["app"] = updated.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("provider", "cloud_foundry")
+      .set("cf_api", _config.cfApi)
+      .set("organization", app.organization)
+      .set("space", app.space)
+      .set("message", "Scale request accepted (CF adapter placeholder)")
+      .set("app", updated.toJson());
   }
 
   private void ensureAppExists(string appId) {
