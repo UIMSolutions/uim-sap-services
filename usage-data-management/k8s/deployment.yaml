@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uim-usage-data-management-service
+  labels:
+    app: uim-usage-data-management-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: uim-usage-data-management-service
+  template:
+    metadata:
+      labels:
+        app: uim-usage-data-management-service
+    spec:
+      containers:
+      - name: uim-usage-data-management-service
+        image: uimsolutions/uim-usage-data-management-service:latest
+        imagePullPolicy: IfNotPresent
+        envFrom:
+        - configMapRef:
+            name: uim-usage-data-management-config
+        ports:
+        - containerPort: 8109
+        readinessProbe:
+          httpGet:
+            path: /api/usage-data-management/ready
+            port: 8109
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /api/usage-data-management/health
+            port: 8109
+          initialDelaySeconds: 5
+          periodSeconds: 10

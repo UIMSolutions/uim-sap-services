@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: uim-usage-data-management-service
+  labels:
+    app: uim-usage-data-management-service
+spec:
+  selector:
+    app: uim-usage-data-management-service
+  ports:
+  - name: http
+    protocol: TCP
+    port: 8109
+    targetPort: 8109
+  type: ClusterIP
