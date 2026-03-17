@@ -30,6 +30,12 @@ string requiredString(Json request, string key) {
   return value;
 }
 
+void requiredBooleanType(Json request, string key) {
+  if (!request[key].isBoolean) {
+    throw new SAPValidationException(key ~ " must be a boolean");
+  }
+}
+
 void requiredStringType(Json request, string key) {
   if (!request[key].isString) {
     throw new SAPValidationException(key ~ " must be string");

@@ -64,8 +64,8 @@ class SDIService : SAPService {
     site.tenantId = UUID(tenantId);
     site.siteid = requiredUUID(body, "site_id");
     site.name = requiredString(body, "name");
-    site.description = readOptional(body, "description", "");
-    site.siteAlias = normalizeSiteAlias(readOptional(body, "alias", site.siteId));
+    site.description = optionalString(body, "description", "");
+    site.siteAlias = normalizeSiteAlias(optionalString(body, "alias", site.siteId));
     site.runtimeUrl = defaultRuntimeUrl(tenantId, site.siteAlias);
     site.isDefault = readrequest.getBoolean((body, "is_default", false);
     site.roles = readStringArray(body, "roles");
@@ -241,7 +241,7 @@ class SDIService : SAPService {
     return data[key].get!string;
   }
 
-  private string readOptional(Json data, string key, string fallback) const {
+  private string optionalString(Json data, string key, string fallback) const {
     if (!(key in data) || data[key].isNull)
       return fallback;
 

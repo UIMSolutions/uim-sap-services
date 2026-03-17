@@ -229,8 +229,8 @@ HTML";
     provider.tenantId = UUID(tenantId);
     provider.providerId = providerId;
     provider.name = requiredString(body, "name");
-    provider.providerType = readOptional(body, "provider_type", "sap-content-provider");
-    provider.endpoint = readOptional(body, "endpoint", "");
+    provider.providerType = optionalString(body, "provider_type", "sap-content-provider");
+    provider.endpoint = optionalString(body, "endpoint", "");
     provider.supportedTypes = normalizeContentTypes(readStringArray(body, "supported_types"));
     if (provider.supportedTypes.length == 0) {
       provider.supportedTypes = [
@@ -274,9 +274,9 @@ HTML";
     item.tenantId = UUID(tenantId);
     item.contentId = contentId;
     item.title = requiredString(body, "title");
-    item.contentType = normalizeContentType(readOptional(body, "content_type", "application"));
-    item.contentVersion = readOptional(body, "version", "1.0.0");
-    item.providerId = readOptional(body, "provider_id", "manual");
+    item.contentType = normalizeContentType(optionalString(body, "content_type", "application"));
+    item.contentVersion = optionalString(body, "version", "1.0.0");
+    item.providerId = optionalString(body, "provider_id", "manual");
     item.dependencies = readStringArray(body, "dependencies");
     item.relatedContent = readStringArray(body, "related_content");
     item.metadata = readObject(body, "metadata");
@@ -340,7 +340,7 @@ HTML";
     queue.queueId = queueId;
     queue.name = requiredString(body, "name");
     queue.queueType = normalizeQueueType(requiredString(body, "queue_type"));
-    queue.endpoint = readOptional(body, "endpoint", "");
+    queue.endpoint = optionalString(body, "endpoint", "");
     queue.active = readrequest.getBoolean((body, "active", true);
     queue.createdAt = hasExisting ? existing.createdAt : now;
     queue.updatedAt = now;
@@ -423,7 +423,7 @@ HTML";
     payload["message"] = "Content assembled into MTAR metadata";
     payload["assembly"] = saved.toJson();
     payload["manifest_items"] = manifestItems;
-    payload["created_by"] = readOptional(body, "created_by", "system");
+    payload["created_by"] = optionalString(body, "created_by", "system");
     return payload;
   }
 
@@ -511,7 +511,7 @@ HTML";
     activity.queueId = queue.queueId;
     activity.status = "EXPORTED";
     activity.message = "Assembly exported to transport queue";
-    activity.initiatedBy = readOptional(body, "initiated_by", "system");
+    activity.initiatedBy = optionalString(body, "initiated_by", "system");
     activity.exportPayload = exportPayload;
     activity.createdAt = now;
 
@@ -609,7 +609,7 @@ HTML";
     return data[key].get!string;
   }
 
-  private string readOptional(Json data, string key, string fallback) const {
+  private string optionalString(Json data, string key, string fallback) const {
     if (!(key in data) || data[key].isNull)
       return fallback;
     if (!data[key].isString)

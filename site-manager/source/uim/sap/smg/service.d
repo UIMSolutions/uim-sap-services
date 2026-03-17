@@ -56,8 +56,8 @@ class SMGService : SAPService {
     site.tenantId = UUID(tenantId);
     site.siteId = siteId;
     site.siteName = requiredString(body, "site_name");
-    site.description = readOptional(body, "description", "");
-    site.lifecycle = normalizeLifecycle(readOptional(body, "lifecycle", "draft"));
+    site.description = optionalString(body, "description", "");
+    site.lifecycle = normalizeLifecycle(optionalString(body, "lifecycle", "draft"));
     site.assignedRoles = readStringArray(body, "assigned_roles");
     site.pages = readStringArray(body, "pages");
     site.catalogs = readStringArray(body, "catalogs");
@@ -131,11 +131,11 @@ class SMGService : SAPService {
     auto existing = _store.getSubaccountSettings(tenantId);
     SMGSubaccountSettings settings;
     settings.tenantId = UUID(tenantId);
-    settings.defaultSiteId = readOptional(body, "default_site_id", existing.isNull ? ""
+    settings.defaultSiteId = optionalString(body, "default_site_id", existing.isNull ? ""
         : existing.get.defaultSiteId);
-    settings.launchpadMode = normalizeLaunchpadMode(readOptional(body, "launchpad_mode", existing.isNull ? "standard"
+    settings.launchpadMode = normalizeLaunchpadMode(optionalString(body, "launchpad_mode", existing.isNull ? "standard"
         : existing.get.launchpadMode));
-    settings.themeId = readOptional(body, "theme_id", existing.isNull ? "sap_horizon"
+    settings.themeId = optionalString(body, "theme_id", existing.isNull ? "sap_horizon"
         : existing.get.themeId);
     settings.enableContentApproval = readrequest.getBoolean((body, "enable_content_approval", existing.isNull ? false
         : existing.get.enableContentApproval);
@@ -143,7 +143,7 @@ class SMGService : SAPService {
         : existing.get.enableTransport);
     settings.enforceRoleBasedAccess = readrequest.getBoolean((body, "enforce_role_based_access", existing.isNull ? true
         : existing.get.enforceRoleBasedAccess);
-    settings.lastChangedBy = readOptional(body, "last_changed_by", "api-user");
+    settings.lastChangedBy = optionalString(body, "last_changed_by", "api-user");
     settings.updatedAt = now;
 
     if (settings.defaultSiteId.length > 0 && _store.getSite(tenantId, settings.defaultSiteId)
@@ -165,7 +165,7 @@ class SMGService : SAPService {
     return data[key].get!string;
   }
 
-  private string readOptional(Json data, string key, string fallback) const {
+  private string optionalString(Json data, string key, string fallback) const {
     if (!(key in data) || data[key].isNull) {
       return fallback;
     }

@@ -64,12 +64,12 @@ class BASService : SAPService {
     auto now = Clock.currTime();
     BASWorkspace workspace;
     workspace.tenantId = UUID(tenantId);
-    workspace.workspaceId = readOptional(body, "workspace_id", "ws-" ~ to!string(now.stdTime));
+    workspace.workspaceId = optionalString(body, "workspace_id", "ws-" ~ to!string(now.stdTime));
     workspace.name = requiredString(body, "name");
     workspace.scenarioId = scenarioId;
-    workspace.region = readOptional(body, "region", _config.defaultRegion);
+    workspace.region = optionalString(body, "region", _config.defaultRegion);
     workspace.status = "RUNNING";
-    workspace.accessUrl = readOptional(body, "access_url", "https://bas.example.local/" ~ tenantId ~ "/" ~ workspace
+    workspace.accessUrl = optionalString(body, "access_url", "https://bas.example.local/" ~ tenantId ~ "/" ~ workspace
         .workspaceId);
     workspace.terminalEnabled = readrequest.getBoolean((body, "terminal_enabled", true);
     workspace.debugEnabled = readrequest.getBoolean((body, "debug_enabled", true);
@@ -149,7 +149,7 @@ class BASService : SAPService {
     session.tenantId = UUID(tenantId);
     session.workspaceId = workspaceId;
     session.sessionId = "term-" ~ to!string(now.stdTime);
-    session.shell = readOptional(body, "shell", "bash");
+    session.shell = optionalString(body, "shell", "bash");
     session.status = "OPEN";
     session.createdAt = now;
 
@@ -182,7 +182,7 @@ class BASService : SAPService {
     Json payload = Json.emptyObject;
     payload["message"] = "Local test and debug run completed";
     payload["workspace_id"] = workspaceId;
-    payload["test_suite"] = readOptional(body, "test_suite", "default");
+    payload["test_suite"] = optionalString(body, "test_suite", "default");
     payload["result"] = "PASS";
     payload["duration_ms"] = 820;
     return payload;
@@ -195,9 +195,9 @@ class BASService : SAPService {
     BASDeployment deployment;
     deployment.tenantId = UUID(tenantId);
     deployment.workspaceId = workspaceId;
-    deployment.deploymentId = readOptional(body, "deployment_id", "dep-" ~ to!string(now.stdTime));
-    deployment.target = readOptional(body, "target", "sap-btp-cloud-foundry");
-    deployment.mode = readOptional(body, "mode", "quick-deploy");
+    deployment.deploymentId = optionalString(body, "deployment_id", "dep-" ~ to!string(now.stdTime));
+    deployment.target = optionalString(body, "target", "sap-btp-cloud-foundry");
+    deployment.mode = optionalString(body, "mode", "quick-deploy");
     deployment.status = "QUEUED";
     deployment.createdAt = now;
 
@@ -327,7 +327,7 @@ class BASService : SAPService {
     return data[key].get!string;
   }
 
-  private string readOptional(Json data, string key, string fallback) const {
+  private string optionalString(Json data, string key, string fallback) const {
     if (!(key in data) || data[key].isNull)
       return fallback;
     if (!data[key].isString)

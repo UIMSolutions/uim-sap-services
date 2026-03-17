@@ -41,8 +41,8 @@ class TKCService : SAPService {
     TKCProvider provider;
     provider.providerid = requiredUUID(body, "provider_id");
     provider.name = requiredString(body, "name");
-    provider.providerType = readOptional(body, "provider_type", "sap");
-    provider.endpoint = readOptional(body, "endpoint", "");
+    provider.providerType = optionalString(body, "provider_type", "sap");
+    provider.endpoint = optionalString(body, "endpoint", "");
     provider.active = readrequest.getBoolean((body, "active", true);
     provider.createdAt = now;
     provider.updatedAt = now;
@@ -80,20 +80,20 @@ class TKCService : SAPService {
       task.tenantId = UUID(tenantId);
       task.providerId = providerId;
       task.taskid = requiredUUID(entry, "task_id");
-      task.providerTaskId = readOptional(entry, "provider_task_id", task.taskId);
+      task.providerTaskId = optionalString(entry, "provider_task_id", task.taskId);
       task.title = requiredString(entry, "title");
-      task.description = readOptional(entry, "description", "");
-      task.assignee = readOptional(entry, "assignee", "");
-      task.status = normalizeStatus(readOptional(entry, "status", "open"));
-      task.priority = normalizePriority(readOptional(entry, "priority", "medium"));
-      task.nativeAppUrl = readOptional(entry, "native_app_url", provider.get.endpoint);
-      task.nativeAppName = readOptional(entry, "native_app_name", provider.get.name);
+      task.description = optionalString(entry, "description", "");
+      task.assignee = optionalString(entry, "assignee", "");
+      task.status = normalizeStatus(optionalString(entry, "status", "open"));
+      task.priority = normalizePriority(optionalString(entry, "priority", "medium"));
+      task.nativeAppUrl = optionalString(entry, "native_app_url", provider.get.endpoint);
+      task.nativeAppName = optionalString(entry, "native_app_name", provider.get.name);
       task.tags = readStringArray(entry, "tags");
       task.attributes = readObject(entry, "attributes");
       task.createdAt = now;
       task.updatedAt = now;
 
-      auto dueAtRaw = readOptional(entry, "due_at", "");
+      auto dueAtRaw = optionalString(entry, "due_at", "");
       if (dueAtRaw.length > 0) {
         task.hasDueAt = true;
         task.dueAt = parseIsoTime(dueAtRaw, "due_at");
@@ -206,7 +206,7 @@ class TKCService : SAPService {
 
     auto action = normalizeAction(requiredString(body, "action"));
     auto performedBy = requiredString(body, "performed_by");
-    auto comment = readOptional(body, "comment", "");
+    auto comment = optionalString(body, "comment", "");
 
     auto task = storedTask.get;
     auto now = Clock.currTime();
@@ -377,7 +377,7 @@ class TKCService : SAPService {
     return data[key].get!string;
   }
 
-  private string readOptional(Json data, string key, string fallback) const {
+  private string optionalString(Json data, string key, string fallback) const {
     if (!(key in data) || data[key].isNull) {
       return fallback;
     }

@@ -141,10 +141,10 @@ class CDCService : SAPService {
     consent.userId = userId;
     consent.consentid = requiredUUID(data, "consent_id");
     consent.purpose = requiredString(data, "purpose");
-    consent.legalBasis = readOptional(data, "legal_basis", "consent");
+    consent.legalBasis = optionalString(data, "legal_basis", "consent");
     consent.status = status;
-    consent.source = readOptional(data, "source", "preference-center");
-    consent.language = readOptional(data, "language", "en");
+    consent.source = optionalString(data, "source", "preference-center");
+    consent.language = optionalString(data, "language", "en");
     consent.updatedAt = now;
 
     auto saved = _store.upsertConsent(consent);
@@ -283,7 +283,7 @@ class CDCService : SAPService {
     validateTenant(tenantId);
     auto userid = requiredUUID(data, "user_id");
     auto password = requiredString(data, "password");
-    auto ipAddress = readOptional(data, "ip_address", "");
+    auto ipAddress = optionalString(data, "ip_address", "");
 
     auto profileOpt = _store.getProfileByTenantUser(tenantId, userId);
     if (profileOpt.isNull)
@@ -563,7 +563,7 @@ class CDCService : SAPService {
     return data[key].get!string;
   }
 
-  private string readOptional(Json data, string key, string fallback) const {
+  private string optionalString(Json data, string key, string fallback) const {
     if (!(key in data) || data[key]
       .isNull)
       return fallback;

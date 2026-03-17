@@ -55,9 +55,9 @@ class CMGService : SAPService {
     item.itemId = itemId;
     item.contentType = normalizedType;
     item.title = requiredString(body, "title");
-    item.description = readOptional(body, "description", "");
+    item.description = optionalString(body, "description", "");
     item.source = "manual";
-    item.sourceRef = readOptional(body, "source_ref", "content-editor");
+    item.sourceRef = optionalString(body, "source_ref", "content-editor");
     item.tags = readStringArray(body, "tags");
     item.config = readObject(body, "config");
     item.createdAt = now;
@@ -92,8 +92,8 @@ class CMGService : SAPService {
     provider.tenantId = UUID(tenantId);
     provider.providerid = requiredUUID(body, "provider_id");
     provider.name = requiredString(body, "name");
-    provider.providerType = readOptional(body, "provider_type", "remote-content");
-    provider.endpoint = readOptional(body, "endpoint", "");
+    provider.providerType = optionalString(body, "provider_type", "remote-content");
+    provider.endpoint = optionalString(body, "endpoint", "");
     provider.exposedTypes = normalizeContentTypes(readStringArray(body, "exposed_types"));
     provider.active = readrequest.getBoolean((body, "active", true);
     provider.createdAt = now;
@@ -191,7 +191,7 @@ class CMGService : SAPService {
     return     data[key].get!string;
   }
 
-  private string readOptional(Json data, string key, string fallback) const {
+  private string optionalString(Json data, string key, string fallback) const {
     if (!(key in data) || data[key].isNull)
       return fallback;
     if (!data[key].isString)

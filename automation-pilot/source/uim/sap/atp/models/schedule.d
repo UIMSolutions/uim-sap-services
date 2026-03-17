@@ -6,6 +6,20 @@ mixin(ShowModule!());
 
 @safe:
 
+/**
+  * Represents a schedule for executing ATP commands or event triggers.
+  *
+  * This class is used to define schedules that can automatically execute ATP commands or event triggers based on a specified timing expression (e.g., cron expression). It allows for automating the execution of ATP tasks at regular intervals or specific times.
+  * Fields:
+  * - scheduleId: Unique identifier for the schedule.
+  * - targetType: The type of target this schedule is for (e.g., "command", "event_trigger").
+  * - targetId: The ID of the command or event trigger that this schedule will execute.
+  * - mode: The scheduling mode (e.g., "cron", "interval").
+  * - expression: The scheduling expression (e.g., cron expression or interval duration).
+  * - active: A boolean indicating whether the schedule is active.
+  * Methods:
+  * - toJson(): Serializes the schedule object to JSON format for storage or transmission 
+  */
 class ATPSchedule : SAPTenantObject {
   mixin(SAPObjectTemplate!ATPSchedule);
 
@@ -17,15 +31,12 @@ class ATPSchedule : SAPTenantObject {
   bool active;
 
   override Json toJson() {
-    Json payload = super.toJson;
-
-    payload["schedule_id"] = scheduleId;
-    payload["target_type"] = targetType;
-    payload["target_id"] = targetId;
-    payload["mode"] = mode;
-    payload["expression"] = expression;
-    payload["active"] = active;
-
-    return payload;
+    return super.toJson
+      .set("schedule_id", scheduleId)
+      .set("target_type", targetType)
+      .set("target_id", targetId)
+      .set("mode", mode)
+      .set("expression", expression)
+      .set("active", active);
   }
 }
