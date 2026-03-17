@@ -11,8 +11,22 @@ mixin(ShowModule!());
 
 @safe:
 
-class OBSConfigurationException : OBSException {
-    this(string msg, string file = __FILE__, size_t line = __LINE__) {
-        super("Configuration error: " ~ msg, file, line);
-    }
+class OBSConfigurationException : SAPConfigurationException {
+  this(string message) {
+    super("(OBS) " ~ message);
+  }
+
+  this(string message, string file = __FILE__, size_t line = __LINE__, Throwable next = null) {
+    super("(OBS) " ~ message, file, line, next);
+  }
+}
+///
+unittest {
+  OBSConfigurationException ex1 = new OBSConfigurationException("Test message");
+  assert(ex1.message == "Configuration error: (OBS) Test message");
+
+  OBSConfigurationException ex2 = new OBSConfigurationException("Test message", "testfile.d", 123);
+  assert(ex2.message == "Configuration error: (OBS) Test message");
+  assert(ex2.file == "testfile.d");
+  assert(ex2.line == 123);
 }

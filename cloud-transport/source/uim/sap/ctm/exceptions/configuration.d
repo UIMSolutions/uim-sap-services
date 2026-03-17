@@ -1,5 +1,11 @@
 module uim.sap.ctm.exceptions.configuration;
 
+import uim.sap.ctm;
+
+module(ShowModule!());
+
+@safe:
+
 class CTMConfigurationException : SAPConfigurationException {
   this(string message) {
     super("(CTM) " ~ message);

@@ -5,6 +5,12 @@
 *****************************************************************************************************************/
 module uim.sap.con.exceptions.configuration;
 
+import uim.sap.con;
+
+module(ShowModule!());
+
+@safe:
+
 class CONConfigurationException : SAPConfigurationException {
   this(string message) {
     super("(CON) " ~ message);

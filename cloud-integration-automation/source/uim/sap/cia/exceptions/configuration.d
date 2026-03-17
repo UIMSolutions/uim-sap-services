@@ -1,5 +1,11 @@
 module uim.sap.cia.exceptions.configuration;
 
+import uim.sap.cia;
+
+mixin(ShowModule!());
+
+@safe:
+
 class CIAConfigurationException : SAPConfigurationException {
   this(string message) {
     super("(CIA) " ~ message);

@@ -11,8 +11,22 @@ mixin(ShowModule!());
 
 @safe:
 
-class PDMConfigurationException : PDMException {
-    this(string msg, string file = __FILE__, size_t line = __LINE__) {
-        super("Configuration error: " ~ msg, file, line);
-    }
+class PDMConfigurationException : SAPConfigurationException {
+  this(string message) {
+    super("(PDM) " ~ message);
+  }
+
+  this(string message, string file = __FILE__, size_t line = __LINE__, Throwable next = null) {
+    super("(PDM) " ~ message, file, line, next);
+  }
+}
+///
+unittest {
+  PDMConfigurationException ex1 = new PDMConfigurationException("Test message");
+  assert(ex1.message == "Configuration error: (PDM) Test message");
+
+  PDMConfigurationException ex2 = new PDMConfigurationException("Test message", "testfile.d", 123);
+  assert(ex2.message == "Configuration error: (PDM) Test message");
+  assert(ex2.file == "testfile.d");
+  assert(ex2.line == 123);
 }
