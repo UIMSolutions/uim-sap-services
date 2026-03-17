@@ -1,3 +1,8 @@
+/****************************************************************************************************************
+* Copyright: © 2018-2026 Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*) 
+* License: Subject to the terms of the Apache 2.0 license, as written in the included LICENSE.txt file. 
+* Authors: Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*)
+*****************************************************************************************************************/
 module uim.sap.alertnotification.models.subscription;
 
 import uim.sap.alertnotification;
@@ -16,15 +21,12 @@ class AlertSubscription : SAPTenantObject {
   Json actions;
 
   override Json toJson()  {
-    Json result = super.toJson();
-    
-    result["subscription_id"] = subscriptionId.toJson();
-    result["name"] = name.toJson();
-    result["consumer_id"] = consumerId.toJson();
-    result["enabled"] = enabled.toJson();
-    result["condition"] = condition.toJson();
-    result["actions"] = actions.toJson();
-
-    return result;
+    return super.toJson()    
+      .set("subscription_id", subscriptionId.toJson())
+      .set("name", name.toJson())
+      .set("consumer_id", consumerId.toJson())
+      .set("enabled", enabled.toJson())
+      .set("condition", condition.toJson())
+      .set("actions", actions.toJson());
   }
 }

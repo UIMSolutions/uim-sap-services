@@ -1,3 +1,8 @@
+/****************************************************************************************************************
+* Copyright: © 2018-2026 Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*) 
+* License: Subject to the terms of the Apache 2.0 license, as written in the included LICENSE.txt file. 
+* Authors: Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*)
+*****************************************************************************************************************/
 module uim.sap.alertnotification.models.delivery;
 
 import uim.sap.alertnotification;
@@ -17,17 +22,14 @@ class AlertDelivery : SAPTenantObject {
   string status;
   string reason;
 
-  override Json toJson()  {
-    Json result = super.toJson();
-
-    result["delivery_id"] = deliveryId.toJson();
-    result["alert_id"] = alertId.toJson();
-    result["subscription_id"] = subscriptionId.toJson();
-    result["action_type"] = actionType.toJson();
-    result["target"] = target.toJson();
-    result["status"] = status.toJson();
-    result["reason"] = reason.toJson();
-
-    return result;
+  override Json toJson() {
+    return super.toJson()
+      .set("delivery_id", deliveryId.toJson())
+      .set("alert_id", alertId.toJson())
+      .set("subscription_id", subscriptionId.toJson())
+      .set("action_type", actionType.toJson())
+      .set("target", target.toJson())
+      .set("status", status.toJson())
+      .set("reason", reason.toJson());
   }
 }
