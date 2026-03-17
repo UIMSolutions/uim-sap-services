@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: uim-data-retention-service
+  labels:
+    app: uim-data-retention-service
+spec:
+  selector:
+    app: uim-data-retention-service
+  ports:
+  - name: http
+    protocol: TCP
+    port: 8110
+    targetPort: 8110
+  type: ClusterIP

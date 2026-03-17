@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uim-data-retention-service
+  labels:
+    app: uim-data-retention-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: uim-data-retention-service
+  template:
+    metadata:
+      labels:
+        app: uim-data-retention-service
+    spec:
+      containers:
+      - name: uim-data-retention-service
+        image: uimsolutions/uim-data-retention-service:latest
+        imagePullPolicy: IfNotPresent
+        envFrom:
+        - configMapRef:
+            name: uim-data-retention-config
+        ports:
+        - containerPort: 8110
+        readinessProbe:
+          httpGet:
+            path: /api/data-retention/ready
+            port: 8110
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /api/data-retention/health
+            port: 8110
+          initialDelaySeconds: 5
+          periodSeconds: 10

@@ -25,7 +25,7 @@ class AEMService : SAPService {
     validateId(tenantId, "Tenant ID");
     
     AEMConfig cfg = cast(AEMConfig)_config;
-    auto broker = brokerFromJson(tenantId, request, cfg.defaultMeshRegion);
+    auto broker = AEMBrokerService(tenantId, request, cfg.defaultMeshRegion);
     if (broker.name.length == 0) {
       throw new AEMValidationException("Broker service name is required");
     }
@@ -78,16 +78,12 @@ class AEMService : SAPService {
   Json listEventMeshes(string tenantId) {
     validateId(tenantId, "Tenant ID");
 
-    Json resources = Json.emptyArray;
-    foreach (mesh; _store.listMeshes(tenantId)) {
-      resources ~= mesh.toJson();
-    }
+    Json resources = _store.listMeshes(tenantId).map!(mesh => mesh.toJson()).array.toJson;
 
-    Json result = Json.emptyObject;
-    result["tenant_id"] = tenantId;
-    result["resources"] = resources;
-    result["total_results"] = cast(long)resources.length;
-    return result;
+    return Json.emptyObject
+    .set("tenant_id", tenantId)
+    .set("resources", resources)
+    .set("total_results", cast(long)resources.length);
   }
 
   Json registerTopic(string tenantId, string meshId, Json request) {

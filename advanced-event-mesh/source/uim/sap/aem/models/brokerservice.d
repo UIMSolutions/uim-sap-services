@@ -24,19 +24,17 @@ class AEMBrokerService : SAPTenantObject {
   long eventsPublished;
 
   override override Json toJson()  {
-    Json payload = super.toJson();
-    payload["broker_service_id"] = brokerServiceId.toString();
-    payload["name"] = name;
-    payload["plan"] = plan;
-    payload["region"] = region;
-    payload["status"] = status;
-    payload["connected_clients"] = connectedClients;
-    payload["events_published"] = eventsPublished;
-    return payload;
+    return super.toJson()
+    .set("broker_service_id", brokerServiceId.toString())
+    .set("name", name)
+    .set("plan", plan)
+    .set("region", region)
+    .set("status", status)
+    .set("connected_clients", connectedClients)
+    .set("events_published", eventsPublished);
   }
-}
 
-AEMBrokerService brokerFromJson(string tenantId, Json request, string defaultRegion) {
+  static AEMBrokerService opCall(string tenantId, Json request, string defaultRegion) {
     AEMBrokerService broker = new AEMBrokerService();
     broker.tenantId = UUID(tenantId);
     broker.brokerServiceId = randomUUID().toString();
@@ -63,3 +61,5 @@ AEMBrokerService brokerFromJson(string tenantId, Json request, string defaultReg
 
     return broker;
 }
+}
+
