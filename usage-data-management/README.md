@@ -77,7 +77,7 @@ curl -X POST http://localhost:8109/api/usage-data-management/v1/tenants/tenant-a
   }'
 ```
 
-2. Monthly usage report:
+1. Monthly usage report:
 
 ```bash
 curl -X POST http://localhost:8109/api/usage-data-management/v1/tenants/tenant-a/reports/monthly-usage \
@@ -89,7 +89,7 @@ curl -X POST http://localhost:8109/api/usage-data-management/v1/tenants/tenant-a
   }'
 ```
 
-3. Daily subaccount usage report:
+1. Daily subaccount usage report:
 
 ```bash
 curl -X POST http://localhost:8109/api/usage-data-management/v1/tenants/tenant-a/reports/subaccount-usage \
@@ -101,7 +101,7 @@ curl -X POST http://localhost:8109/api/usage-data-management/v1/tenants/tenant-a
   }'
 ```
 
-4. Monthly subaccount costs report:
+1. Monthly subaccount costs report:
 
 ```bash
 curl -X POST http://localhost:8109/api/usage-data-management/v1/tenants/tenant-a/reports/monthly-subaccount-costs \

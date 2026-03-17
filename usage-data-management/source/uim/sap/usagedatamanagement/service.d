@@ -1,6 +1,6 @@
 module uim.sap.usagedatamanagement.service;
 
-import std.algorithm : sort;
+import std.algorithm.sorting : sort;
 import std.array : array;
 import std.datetime : Clock;
 import std.string : toLower;
@@ -334,7 +334,7 @@ class UDMService : SAPService {
   }
 
   private string entityValue(const UsageEvent eventItem, string entityType) {
-    final switch (entityType) {
+    switch (entityType) {
       case "account":
         return fallback(eventItem.accountId, "unknown-account");
       case "directory":
@@ -343,6 +343,8 @@ class UDMService : SAPService {
         return fallback(eventItem.region, "unknown-region");
       case "subaccount":
         return fallback(eventItem.subaccountId, "unknown-subaccount");
+      default:
+        throw new UDMValidationException("Unsupported entity_type: " ~ entityType);
     }
   }
 

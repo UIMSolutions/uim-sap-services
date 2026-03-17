@@ -16,7 +16,8 @@ class CONConfigurationException : SAPConfigurationException {
     super("(CON) " ~ message);
   }
 
-  this(string message, string file = __FILE__, size_t line = __LINE__, Throwable next = null) {
+  this(string message, string file = __FIL
+  E__, size_t line = __LINE__, Throwable next = null) {
     super("(CON) " ~ message, file, line, next);
   }
 }
