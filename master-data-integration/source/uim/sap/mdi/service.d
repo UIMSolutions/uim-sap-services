@@ -203,9 +203,4 @@ class MDIService : SAPService {
     payload["total_results"] = cast(long)resources.length;
     return payload;
   }
-
-  private void validateId(string value, string fieldName) {
-    if (value.length == 0)
-      throw new MDIValidationException(fieldName ~ " cannot be empty");
-  }
 }

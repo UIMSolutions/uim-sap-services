@@ -421,10 +421,4 @@ class AlertNotificationService : SAPService {
     }
     return Json.emptyObject;
   }
-
-  private void validateId(string value, string fieldName) {
-    if (value.length == 0) {
-      throw new AlertNotificationValidationException(fieldName ~ " cannot be empty");
-    }
-  }
 }

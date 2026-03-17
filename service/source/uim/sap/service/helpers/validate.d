@@ -7,7 +7,7 @@ mixin(ShowModule!());
 @safe:
 
 void validateTenant(UUID tenantId) {
-  validateId(tenantId.toString, "Tenant ID");
+  validateTenant(tenantId.toString);
 }
 
 void validateTenant(string tenantId) {

@@ -345,9 +345,4 @@ class CPSService : SAPService {
     }
     return false;
   }
-
-  private void validateId(string value, string fieldName) {
-    if (value.length == 0)
-      throw new CPSValidationException(fieldName ~ " cannot be empty");
-  }
 }

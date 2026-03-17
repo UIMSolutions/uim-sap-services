@@ -158,11 +158,6 @@ class SMGService : SAPService {
     return payload;
   }
 
-  private void validateTenant(string tenantId) const {
-    if (tenantId.length == 0)
-      throw new SMGValidationException("tenant_id is required");
-  }
-
   private string readRequired(Json data, string key) const {
     if (!(key in data) || data[key].type != Json.Type.string || data[key].get!string.length == 0) {
       throw new SMGValidationException(key ~ " is required");

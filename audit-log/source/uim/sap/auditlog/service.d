@@ -270,10 +270,4 @@ class AuditLogService : SAPService {
     }
     return policy;
   }
-
-  private void validateId(string value, string fieldName) {
-    if (value.length == 0) {
-      throw new AuditLogValidationException(fieldName ~ " cannot be empty");
-    }
-  }
 }

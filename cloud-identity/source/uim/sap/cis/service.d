@@ -490,9 +490,4 @@ class CISService : SAPService {
     ? false
     : arrayValue.toArray.any!(item => item.isString && item.get!string == needle);
   }
-
-  private void validateId(string value, string fieldName) {
-    if (value.length == 0)
-      throw new CISValidationException(fieldName ~ " cannot be empty");
-  }
 }

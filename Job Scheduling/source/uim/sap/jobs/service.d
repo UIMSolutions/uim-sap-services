@@ -998,12 +998,6 @@ HTML";
     return output;
   }
 
-  private void validateId(string value, string fieldName) {
-    if (value.length == 0) {
-      throw new JobSchedulingValidationException(fieldName ~ " cannot be empty");
-    }
-  }
-
   private void ensureRuntime(string runtime) {
     auto normalized = toLower(runtime);
     if (normalized != "cloud-foundry" && normalized != "kyma") {

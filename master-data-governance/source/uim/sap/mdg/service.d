@@ -325,10 +325,4 @@ class MDGService : SAPService {
       throw new MDGValidationException("Rule rule_type is required");
     }
   }
-
-  private void validateId(string value, string fieldName) {
-    if (value.length == 0) {
-      throw new MDGValidationException(fieldName ~ " cannot be empty");
-    }
-  }
 }
