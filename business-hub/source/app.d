@@ -5,11 +5,11 @@
 *****************************************************************************************************************/
 module app;
 
-import std.conv : to;
-import std.process : environment;
-import std.stdio : writeln;
-
 import uim.sap.buh;
+
+mixin(ShowModule!());
+
+@safe:
 
 void main() {
   BUHConfig config = new BUHConfig();

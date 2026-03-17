@@ -1,21 +1,30 @@
+/****************************************************************************************************************
+* Copyright: © 2018-2026 Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*) 
+* License: Subject to the terms of the Apache 2.0 license, as written in the included LICENSE.txt file. 
+* Authors: Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*)
+*****************************************************************************************************************/
+module uim.sap.clf.models.space;
+
+import uim.sap.clf;
+
+mixin(ShowModule!());
+
+@safe:
 struct CLFSpace {
   string guid;
   string name;
   string organizationGuid;
-  SysTime createdAt;
 
   override Json toJson()  {
-    Json info = super.toJson;
-    payload["guid"] = guid;
-    payload["name"] = name;
-    payload["organization_guid"] = organizationGuid;
-    payload["created_at"] = createdAt.toISOExtString();
-    return payload;
+    return super.toJson
+    .set"guid", guid)
+    .set"name", name)
+    .set"organization_guid", organizationGuid);
   }
 }
 
 CLFSpace spaceFromJson(Json payload) {
-  CLFSpace space;
+  CLFSpace space = new CLFSpace(payload);
   space.guid = randomUUID().toString();
   space.createdAt = Clock.currTime();
   if ("name" in payload && payload["name"].isString) {
