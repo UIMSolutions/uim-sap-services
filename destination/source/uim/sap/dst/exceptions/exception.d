@@ -11,7 +11,7 @@ mixin(ShowModule!());
 
 @safe:
 class DSTException : SAPException {
-    this(string msg) {
-        super(msg);
-    }
+  this(string msg) {
+    super(msg);
+  }
 }

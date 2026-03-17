@@ -28,24 +28,25 @@ struct DSTLookupResult {
   string[string] properties;
   SysTime resolvedAt;
 
-  override Json toJson()  {
-    Json j = Json.emptyObject;
-    j["destination_name"] = destinationName;
-    j["url"] = url;
-    j["protocol"] = protocol;
-    j["authentication_type"] = authenticationType;
-    j["proxy_type"] = proxyType;
-    j["environment"] = environment;
-    j["auth_token"] = authToken.length > 0 ? "***" : "";
-    Json hdr = Json.emptyObject;
-    foreach (k, v; headers)
-      hdr[k] = v;
-    j["headers"] = hdr;
+  Json toJson()  {
     Json props = Json.emptyObject;
     foreach (k, v; properties)
       props[k] = v;
-    j["properties"] = props;
-    j["resolved_at"] = resolvedAt.toISOExtString();
-    return j;
+
+    Json hdr = Json.emptyObject;
+    foreach (k, v; headers)
+      hdr[k] = v;
+
+    return Json.emptyObject
+      .set("destination_name", destinationName)
+      .set("url", url)
+      .set("protocol", protocol)
+      .set("authentication_type", authenticationType)
+      .set("proxy_type", proxyType)
+      .set("environment", environment)
+      .set("auth_token", authToken.length > 0 ? "***" : "")
+      .set("headers", hdr)
+      .set("properties", props)
+      .set("resolved_at", resolvedAt.toISOExtString());
   }
 }

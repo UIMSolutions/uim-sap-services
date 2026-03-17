@@ -14,24 +14,23 @@ mixin(ShowModule!());
 // ---------------------------------------------------------------------------
 // DSTAuditLog – audit trail for destination operations
 // ---------------------------------------------------------------------------
-struct DSTAuditLog {
-    string tenantId;
-    string logId;
-    string destinationName;
-    string action;     // "created", "updated", "deleted", "lookup", "cert-uploaded", …
-    string message;
-    string level;      // "info" | "warning" | "error"
-    SysTime timestamp;
+class DSTAuditLog : SAPTenantObject {
+  mixin(SAPObjectTemplate!DSTAuditLog);
 
-    override Json toJson()  {
-        Json j = Json.emptyObject;
-        j["tenant_id"]        = tenantId;
-        j["log_id"]           = logId;
-        j["destination_name"] = destinationName;
-        j["action"]           = action;
-        j["message"]          = message;
-        j["level"]            = level;
-        j["timestamp"]        = timestamp.toISOExtString();
-        return j;
-    }
+  string logId;
+  string destinationName;
+  string action;     // "created", "updated", "deleted", "lookup", "cert-uploaded", …
+  string message;
+  string level;      // "info" | "warning" | "error"
+  SysTime timestamp;
+
+  override Json toJson()  {
+    return super.toJson()
+      .set("log_id", logId)
+      .set("destination_name", destinationName)
+      .set("action", action)
+      .set("message", message)
+      .set("level", level)
+      .set("timestamp", timestamp.toISOExtString());
+  }
 }

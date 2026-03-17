@@ -11,5 +11,7 @@ mixin(ShowModule!());
 
 @safe:
 class DSTConfigurationException : DSTException {
-    this(string msg) { super(msg); }
+  this(string msg) {
+    super(msg);
+  }
 }

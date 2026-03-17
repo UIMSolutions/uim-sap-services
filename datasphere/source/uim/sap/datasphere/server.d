@@ -24,7 +24,8 @@ mixin(ShowModule!());
   *
   * Note: This server implementation is basic and may not be suitable for production use without additional features such as logging, metrics, CORS handling, rate limiting, etc.
   */
-class DSPServer {
+class DSPServer : SAPServer {
+  mixin(SAPServerTemplate!DSPServer);
   private DSPService _service;
 
   this(DSPService service) {
@@ -346,10 +347,11 @@ class DSPServer {
   }
 
   private void respondError(HTTPServerResponse res, string message, int statusCode) {
-    Json payload = Json.emptyObject;
-    payload["success"] = false;
-    payload["message"] = message;
-    payload["statusCode"] = statusCode;
+    Json payload = Json.emptyObject
+      .set("success", false)
+      .set("message", message)
+      .set("statusCode", statusCode);
+
     res.writeJsonBody(payload, statusCode);
   }
 }

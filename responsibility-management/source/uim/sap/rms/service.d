@@ -22,34 +22,32 @@ class RMSService : SAPService {
   Json sapDeliveredCategories() {
     Json categories = _store.sapDeliveredTeamCategories().map!(item => item.toJson).array.toJson;
 
-    Json payload = Json.emptyObject;
-    payload["categories"] = categories;
-    payload["total"] = cast(long)categories.length;
-    return payload;
+    return Json.emptyObject
+      .set("categories", categories)
+      .set("total", cast(long)categories.length);
   }
 
   Json listTeamTypes(TenantContext tenant) {
     Json types = _store.listTeamTypes(tenant).map!(item => item.toJson).array.toJson;
 
-    Json payload = Json.emptyObject;
-    payload["team_types"] = types;
-    payload["total"] = cast(long)types.length;
-    return payload;
+    return Json.emptyObject
+      .set("team_types", types)
+      .set("total", cast(long)types.length);
   }
 
   Json upsertTeamType(TenantContext tenant, string code, Json request) {
     auto item = _store.upsertTeamType(tenant, code, request);
-    Json payload = Json.emptyObject;
-    payload["team_type"] = item.toJson();
-    return payload;
+    
+    return Json.emptyObject
+      .set("team_type", item.toJson());
   }
 
   Json deleteTeamType(TenantContext tenant, string code) {
     _store.deleteTeamType(tenant, code);
-    Json payload = Json.emptyObject;
-    payload["deleted"] = true;
-    payload["code"] = code;
-    return payload;
+    
+    return Json.emptyObject
+      .set("deleted", true)
+      .set("code", code);
   }
 
   Json listFunctions(TenantContext tenant) {
@@ -99,12 +97,14 @@ class RMSService : SAPService {
 
   Json updateTeam(TenantContext tenant, string teamId, Json request) {
     auto item = _store.updateTeam(tenant, teamId, request);
+    
     return Json.emptyObject
       .set("team", item.toJson());
   }
 
   Json deleteTeam(TenantContext tenant, string teamId) {
     _store.deleteTeam(tenant, teamId);
+
     return Json.emptyObject
       .set("deleted", true)
       .set("team_id", teamId);
@@ -112,14 +112,13 @@ class RMSService : SAPService {
 
   Json copyTeam(TenantContext tenant, string teamId, Json request) {
     auto copied = _store.copyTeam(tenant, teamId, getString(request, "name", ""));
+
     return Json.emptyObject
       .set("team", copied.toJson());
   }
 
   Json listRules(TenantContext tenant) {
-    Json list = Json.emptyArray;
-    foreach (item; _store.listRules(tenant))
-      list ~= item.toJson();
+    Json list = _store.listRules(tenant).map!(rule => rule.toJson();
 
     return Json.emptyObject
       .set("rules", list)
@@ -128,12 +127,14 @@ class RMSService : SAPService {
 
   Json createRule(TenantContext tenant, Json request) {
     auto item = _store.createRule(tenant, request);
+
     return Json.emptyObject
       .set("rule", item.toJson());
   }
 
   Json getRule(TenantContext tenant, string ruleId) {
     auto item = _store.getRule(tenant, ruleId);
+
     return Json.emptyObject
       .set("rule", item.toJson());
   }
@@ -146,6 +147,7 @@ class RMSService : SAPService {
 
   Json deleteRule(TenantContext tenant, string ruleId) {
     _store.deleteRule(tenant, ruleId);
+
     return Json.emptyObject
       .set("deleted", true)
       .set("rule_id", ruleId);
@@ -156,9 +158,7 @@ class RMSService : SAPService {
   }
 
   Json listLogs(TenantContext tenant, size_t limit = 100) {
-    Json list = Json.emptyArray;
-    foreach (item; _store.listLogs(tenant, limit))
-      list ~= item.toJson();
+    Json list = _store.listLogs(tenant, limit).map!(item => item.toJson).array.toJson;  
 
     return Json.emptyObject
       .set("logs", list)

@@ -13,9 +13,9 @@ mixin(ShowModule!());
 // ---------------------------------------------------------------------------
 // DSTDestination – a configured destination (connection to remote service)
 // ---------------------------------------------------------------------------
-struct DSTDestination {
-  string tenantId;
-  /// Unique name within a tenant (used as lookup key)
+class DSTDestination : SAPTenantObject {
+  mixin(SAPObjectTemplate!DSTDestination);
+
   string name;
   string description;
   /// URL / hostname of the remote service
@@ -37,7 +37,7 @@ struct DSTDestination {
   string password; // stored but masked in output
   /// OAuth2 fields
   string tokenServiceUrl;
-  string clientId;
+  UUID clientId;
   string clientSecret; // stored but masked in output
   /// Certificate name (reference to DSTCertificate)
   string certificateName;
@@ -48,35 +48,30 @@ struct DSTDestination {
   /// Custom key-value properties
   string[string] properties;
   bool active;
-  SysTime createdAt;
-  SysTime updatedAt;
 
   override Json toJson()  {
-    Json j = Json.emptyObject;
-    j["tenant_id"] = tenantId;
-    j["name"] = name;
-    j["description"] = description;
-    j["url"] = url;
-    j["protocol"] = protocol;
-    j["authentication_type"] = authenticationType;
-    j["proxy_type"] = proxyType;
-    j["environment"] = environment;
-    j["user"] = user;
-    j["password"] = password.length > 0 ? "***" : "";
-    j["token_service_url"] = tokenServiceUrl;
-    j["client_id"] = clientId;
-    j["client_secret"] = clientSecret.length > 0 ? "***" : "";
-    j["certificate_name"] = certificateName;
-    j["location_id"] = locationId;
-    j["sap_client"] = sapClient;
     // Properties
     Json props = Json.emptyObject;
     foreach (k, v; properties)
       props[k] = v;
-    j["properties"] = props;
-    j["active"] = active;
-    j["created_at"] = createdAt.toISOExtString();
-    j["updated_at"] = updatedAt.toISOExtString();
-    return j;
+
+    return super.toJson()
+    .set("name", name)
+    .set("description", description)
+    .set("url", url)
+    .set("protocol", protocol)
+    .set("authentication_type", authenticationType)
+    .set("proxy_type", proxyType)
+    .set("environment", environment)
+    .set("user", user)
+    .set("password", password.length > 0 ? "***" : "")
+    .set("token_service_url", tokenServiceUrl)
+    .set("client_id", clientId)
+    .set("client_secret", clientSecret.length > 0 ? "***" : "")
+    .set("certificate_name", certificateName)
+    .set("location_id", locationId)
+    .set("sap_client", sapClient)
+    .set("properties", props)
+    .set("active", active);
   }
 }
