@@ -429,14 +429,6 @@ class ATPService : SAPService {
     body[key].get!string;
   }
 
-  private bool optionalBoolean(Json data, string key, bool fallback) const {
-    if (!(key in data) || data[key].isNull)
-      return fallback;
-
-    requiredBooleanType(data, key);
-    return data[key].get!bool;
-  }
-
   private string[] readStringArray(Json data, string key) const {
     string[] values;
     if (!(key in data) || data[key].isNull)

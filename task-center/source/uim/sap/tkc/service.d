@@ -43,7 +43,7 @@ class TKCService : SAPService {
     provider.name = requiredString(body, "name");
     provider.providerType = optionalString(body, "provider_type", "sap");
     provider.endpoint = optionalString(body, "endpoint", "");
-    provider.active = readrequest.getBoolean((body, "active", true);
+    provider.active = optionalBoolean(data, "active", true);
     provider.createdAt = now;
     provider.updatedAt = now;
 
@@ -375,25 +375,6 @@ class TKCService : SAPService {
       throw new TKCValidationException(key ~ " is required");
     }
     return data[key].get!string;
-  }
-
-  private string optionalString(Json data, string key, string fallback) const {
-    if (!(key in data) || data[key].isNull) {
-      return fallback;
-    }
-
-    if (data[key].type != Json.Type.string)
-      throw new TKCValidationException(key ~ " must be a string");
-    return data[key].get!string;
-  }
-
-  private bool optionalBoolean(Json data, string key, bool fallback) const {
-    if (!(key in data) || data[key].isNull)
-      return fallback;
-    if (data[key].type != Json.Type.bool_) {
-      throw new TKCValidationException(key ~ " must be a boolean");
-    }
-    return data[key].get!bool;
   }
 
   private string[] readStringArray(Json data, string key) const {

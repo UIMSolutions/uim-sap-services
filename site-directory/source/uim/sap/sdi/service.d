@@ -67,7 +67,7 @@ class SDIService : SAPService {
     site.description = optionalString(body, "description", "");
     site.siteAlias = normalizeSiteAlias(optionalString(body, "alias", site.siteId));
     site.runtimeUrl = defaultRuntimeUrl(tenantId, site.siteAlias);
-    site.isDefault = readrequest.getBoolean((body, "is_default", false);
+    site.isDefault = optionalBoolean(data, "is_default", false);
     site.roles = readStringArray(body, "roles");
     site.settings = settingsFromJson(body);
     site.importBundle = Json.emptyObject;
@@ -239,25 +239,6 @@ class SDIService : SAPService {
       throw new SDIValidationException(key ~ " is required");
     }
     return data[key].get!string;
-  }
-
-  private string optionalString(Json data, string key, string fallback) const {
-    if (!(key in data) || data[key].isNull)
-      return fallback;
-
-    if (data[key].type != Json.Type.string)
-      throw new SDIValidationException(key ~ " must be a string");
-
-    return data[key].get!string;
-  }
-
-  private bool optionalBoolean(Json data, string key, bool fallback) const {
-    if (!(key in data) || data[key].isNull)
-      return fallback;
-    if (data[key].type != Json.Type.bool_)
-      throw new SDIValidationException(key ~ " must be a boolean");
-    return
-    data[key].get!bool;
   }
 
   private string[] readStringArray(Json data, string key) const {

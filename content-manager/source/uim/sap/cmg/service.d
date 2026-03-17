@@ -50,7 +50,7 @@ class CMGService : SAPService {
     auto itemid = requiredUUID(body, "item_id");
     auto now = Clock.currTime();
 
-    CMGContentItem item;
+    CMGContentItem item = new CMGContentItem(item);
     item.tenantId = UUID(tenantId);
     item.itemId = itemId;
     item.contentType = normalizedType;
@@ -65,23 +65,20 @@ class CMGService : SAPService {
 
     auto saved = _store.upsertItem(item);
 
-    Json payload = Json.emptyObject;
-    payload["message"] = "Content item saved from manual editor";
-    payload["item"] = saved.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("message", "Content item saved from manual editor")
+      .set("item", saved.toJson());
   }
 
   Json listProviders(string tenantId) {
     validateTenant(tenantId);
 
-    Json providers = _store.listProviders(tenantId)
-      .map!(provider => provider.toJson()).array.toJson();
+    Json providers = _store.listProviders(tenantId).map!(provider => provider.toJson()).array.toJson(); 
 
-    Json payload = Json.emptyObject;
-    payload["tenant_id"] = tenantId;
-    payload["providers"] = providers;
-    payload["count"] = cast(long)providers.length;
-    return payload;
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("providers", providers)
+      .set("count", cast(long)providers.length);
   }
 
   Json upsertProvider(string tenantId, Json data) {
@@ -95,31 +92,30 @@ class CMGService : SAPService {
     provider.providerType = optionalString(body, "provider_type", "remote-content");
     provider.endpoint = optionalString(body, "endpoint", "");
     provider.exposedTypes = normalizeContentTypes(readStringArray(body, "exposed_types"));
-    provider.active = readrequest.getBoolean((body, "active", true);
+    provider.active = optionalBoolean(data, "active", true);
     provider.createdAt = now;
     provider.updatedAt = now;
-
     auto saved = _store.upsertProvider(provider);
-
-    Json payload = Json.emptyObject;
-    payload["message"] = "Content provider registered";
-    payload["provider"] = saved.toJson();
-    return payload;
+    
+    return Json.emptyObject
+      .set("message", "Content provider registered")
+      .set("provider", saved.toJson());
   }
 
   Json integrateProviderContent(string tenantId, string providerId, Json data) {
     validateTenant(tenantId);
     if (providerId.length == 0)
       throw new CMGValidationException("provider_id is required");
-
     auto provider = _store.getProvider(tenantId, providerId);
     if (provider.isNull)
       throw new CMGNotFoundException("Content provider not found");
     if (!provider.get.active)
-      throw new CMGValidationException("Content provider is inactive");
-
-    auto requestedTypes = normalizeContentTypes(readStringArray(body, "content_types"));
-    auto typesToIntegrate = requestedTypes.length > 0 ? requestedTypes : provider.get.exposedTypes;
+      throw new CMGValidationException(
+        "Content provider is inactive");
+    auto requestedTypes = normalizeContentTypes(
+      readStringArray(body, "content_types"));
+    auto typesToIntegrate = requestedTypes.length > 0 ? requestedTypes : provider
+      .get.exposedTypes;
     if (typesToIntegrate.length == 0) {
       typesToIntegrate = [
         "apps", "catalogs", "groups", "roles", "shell-plugins"
@@ -128,10 +124,8 @@ class CMGService : SAPService {
 
     Json imported = Json.emptyArray;
     auto now = Clock.currTime();
-
     foreach (contentType; typesToIntegrate) {
       auto normalizedType = normalizeContentType(contentType);
-
       CMGContentItem item;
       item.tenantId = UUID(tenantId);
       item.itemId = providerId ~ "-" ~ normalizedType;
@@ -140,25 +134,26 @@ class CMGService : SAPService {
       item.description = "Integrated from provider " ~ providerId;
       item.source = "provider";
       item.sourceRef = providerId;
-      item.tags = ["imported", "provider:" ~ providerId];
+      item.tags = [
+        "imported", "provider:" ~ providerId
+      ];
       item.config = Json.emptyObject;
       item.config["provider_id"] = providerId;
       item.config["provider_type"] = provider.get.providerType;
       item.config["integration_mode"] = "provider-sync";
       item.createdAt = now;
       item.updatedAt = now;
-
-      auto saved = _store.upsertItem(item);
+      auto saved = _store.upsertItem(
+        item);
       imported ~= saved.toJson();
     }
 
-    Json payload = Json.emptyObject;
-    payload["message"] = "Provider content integrated into subaccount";
-    payload["tenant_id"] = tenantId;
-    payload["provider_id"] = providerId;
-    payload["imported_items"] = imported;
-    payload["count"] = cast(long)imported.length;
-    return payload;
+    return Json.emptyObject
+      .set("message", "Provider content integrated into subaccount")
+      .set("tenant_id", tenantId)
+      .set("provider_id", providerId)
+      .set("imported_items", imported)
+      .set("count", cast(long)imported.length);
   }
 
   private void validateTenant(string tenantId) const {
@@ -178,62 +173,6 @@ class CMGService : SAPService {
   }
 
   private string[] normalizeContentTypes(string[] values) const {
-    string[] normalized;
-    foreach (value; values)
-      normalized ~= normalizeContentType(value);
-    return normalized;
-  }
-
-  private string requiredString(Json data, string key) const {
-    if (!(key in data) || !data[key].isString || data[key].get!string.length == 0) {
-      throw new CMGValidationException(key ~ " is required");
-    }
-    return     data[key].get!string;
-  }
-
-  private string optionalString(Json data, string key, string fallback) const {
-    if (!(key in data) || data[key].isNull)
-      return fallback;
-    if (!data[key].isString)
-      throw new CMGValidationException(key ~ " must be a string");
-    return     data[key].get!string;
-  }
-
-  private bool optionalBoolean(Json data, string key, bool fallback) const {
-    if (!(key in data) || data[key].isNull)
-      return fallback;
-    if (!data[key].isBoolean)
-      throw new CMGValidationException(key ~ " must be a boolean");
-      
-    return data[key].get!bool;
-  }
-
-  private string[] readStringArray(Json data, string key) const {
-    string[] values;
-    if (!(key in data) || data[key].isNull)
-      return values;
-
-    if (!data[key].isArray)
-      throw new CMGValidationException(key ~ " must be an array");
-
-    foreach (item; data[key].toArray) {
-      if (!item.isString)
-        throw new CMGValidationException(key ~ " must contain strings");
-
-      values ~= item.get!string;
-    }
-    return values;
-  }
-
-  private Json readObject(Json data, string key) const {
-    if (!(key in data) || data[key].isNull) {
-      return Json.emptyObject;
-    }
-
-    if (!data[key].isObject) {
-      throw new CMGValidationException(key ~ " must be an object");
-    }
-
-    return data[key];
+    return values.map!(value => normalizeContentType(value)).array;
   }
 }

@@ -137,11 +137,11 @@ class SMGService : SAPService {
         : existing.get.launchpadMode));
     settings.themeId = optionalString(body, "theme_id", existing.isNull ? "sap_horizon"
         : existing.get.themeId);
-    settings.enableContentApproval = readrequest.getBoolean((body, "enable_content_approval", existing.isNull ? false
+    settings.enableContentApproval = optionalBoolean(data, "enable_content_approval", existing.isNull ? false
         : existing.get.enableContentApproval);
-    settings.enableTransport = readrequest.getBoolean((body, "enable_transport", existing.isNull ? false
+    settings.enableTransport = optionalBoolean(data, "enable_transport", existing.isNull ? false
         : existing.get.enableTransport);
-    settings.enforceRoleBasedAccess = readrequest.getBoolean((body, "enforce_role_based_access", existing.isNull ? true
+    settings.enforceRoleBasedAccess = optionalBoolean(data, "enforce_role_based_access", existing.isNull ? true
         : existing.get.enforceRoleBasedAccess);
     settings.lastChangedBy = optionalString(body, "last_changed_by", "api-user");
     settings.updatedAt = now;
@@ -163,30 +163,6 @@ class SMGService : SAPService {
       throw new SMGValidationException(key ~ " is required");
     }
     return data[key].get!string;
-  }
-
-  private string optionalString(Json data, string key, string fallback) const {
-    if (!(key in data) || data[key].isNull) {
-      return fallback;
-    }
-
-    if (data[key].type != Json.Type.string) {
-      throw new SMGValidationException(key ~ " must be a string");
-    }
-
-    return data[key].get!string;
-  }
-
-  private bool optionalBoolean(Json data, string key, bool fallback) const {
-    if (!(key in data) || data[key].isNull) {
-      return fallback;
-    }
-
-    if (data[key].type != Json.Type.bool_) {
-      throw new SMGValidationException(key ~ " must be a boolean");
-    }
-
-    return data[key].get!bool;
   }
 
   private string[] readStringArray(Json data, string key) const {

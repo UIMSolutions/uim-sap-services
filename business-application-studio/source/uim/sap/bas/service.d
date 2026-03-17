@@ -71,8 +71,8 @@ class BASService : SAPService {
     workspace.status = "RUNNING";
     workspace.accessUrl = optionalString(body, "access_url", "https://bas.example.local/" ~ tenantId ~ "/" ~ workspace
         .workspaceId);
-    workspace.terminalEnabled = readrequest.getBoolean((body, "terminal_enabled", true);
-    workspace.debugEnabled = readrequest.getBoolean((body, "debug_enabled", true);
+    workspace.terminalEnabled = optionalBoolean(data, "terminal_enabled", true);
+    workspace.debugEnabled = optionalBoolean(data, "debug_enabled", true);
     workspace.createdAt = now;
     workspace.updatedAt = now;
 
@@ -325,22 +325,6 @@ class BASService : SAPService {
       throw new BASValidationException(key ~ " is required");
     }
     return data[key].get!string;
-  }
-
-  private string optionalString(Json data, string key, string fallback) const {
-    if (!(key in data) || data[key].isNull)
-      return fallback;
-    if (!data[key].isString)
-      throw new BASValidationException(key ~ " must be a string");
-    return data[key].get!string;
-  }
-
-  private bool optionalBoolean(Json data, string key, bool fallback) const {
-    if (!(key in data) || data[key].isNull)
-      return fallback;
-    if (!data[key].isBoolean)
-      throw new BASValidationException(key ~ " must be a boolean");
-    return data[key].get!bool;
   }
 
   private Json readObject(Json data, string key) const {

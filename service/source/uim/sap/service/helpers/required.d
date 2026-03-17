@@ -30,6 +30,13 @@ string requiredString(Json request, string key) {
   return value;
 }
 
+  private string requiredString(Json data, string key) const {
+    if (!(key in data) || !data[key].isString || data[key].get!string.length == 0) {
+      throw new CMGValidationException(key ~ " is required");
+    }
+    return data[key].get!string;
+  }
+  
 void requiredBooleanType(Json request, string key) {
   if (!request[key].isBoolean) {
     throw new SAPValidationException(key ~ " must be a boolean");

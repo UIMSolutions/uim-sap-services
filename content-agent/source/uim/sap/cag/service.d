@@ -237,7 +237,7 @@ HTML";
         "application", "integration", "workflow", "destination", "role"
       ];
     }
-    provider.active = readrequest.getBoolean((body, "active", true);
+    provider.active = optionalBoolean(data, "active", true);
     provider.createdAt = hasExisting ? existing.createdAt : now;
     provider.updatedAt = now;
 
@@ -341,7 +341,7 @@ HTML";
     queue.name = requiredString(body, "name");
     queue.queueType = normalizeQueueType(requiredString(body, "queue_type"));
     queue.endpoint = optionalString(body, "endpoint", "");
-    queue.active = readrequest.getBoolean((body, "active", true);
+    queue.active = optionalBoolean(data, "active", true);
     queue.createdAt = hasExisting ? existing.createdAt : now;
     queue.updatedAt = now;
 
@@ -383,7 +383,7 @@ HTML";
       }
     }
 
-    auto includeDependencies = readrequest.getBoolean((body, "include_dependencies", true);
+    auto includeDependencies = optionalBoolean(data, "include_dependencies", true);
     auto resolvedIds = requestedIds.dup;
     if (includeDependencies) {
       auto additional = resolveDependencies(tenantId, requestedIds);
@@ -607,22 +607,6 @@ HTML";
       throw new CAGValidationException(key ~ " is required");
     }
     return data[key].get!string;
-  }
-
-  private string optionalString(Json data, string key, string fallback) const {
-    if (!(key in data) || data[key].isNull)
-      return fallback;
-    if (!data[key].isString)
-      throw new CAGValidationException(key ~ " must be a string");
-    return data[key].get!string;
-  }
-
-  private bool optionalBoolean(Json data, string key, bool fallback) const {
-    if (!(key in data) || data[key].isNull)
-      return fallback;
-    if (!data[key].isBoolean)
-      throw new CAGValidationException(key ~ " must be a boolean");
-    return data[key].get!bool;
   }
 
   private string[] readStringArray(Json data, string key) const {

@@ -11,8 +11,9 @@ mixin(ShowModule!());
 
 @safe:
 
-struct CMGContentItem {
-    string tenantId;
+class CMGContentItem : SAPTenantObject {
+  mixin(SAPObjectTemplate!CMGContentItem);
+
     string itemId;
     string contentType;
     string title;
@@ -21,26 +22,18 @@ struct CMGContentItem {
     string sourceRef;
     string[] tags;
     Json config;
-    SysTime createdAt;
-    SysTime updatedAt;
 
     override Json toJson()  {
-        Json payload = Json.emptyObject;
-        payload["tenant_id"] = tenantId;
-        payload["item_id"] = itemId;
-        payload["content_type"] = contentType;
-        payload["title"] = title;
-        payload["description"] = description;
-        payload["source"] = source;
-        payload["source_ref"] = sourceRef;
+        Json tagValues = tags.map!(tag => tag).array.toJson;
 
-        Json tagValues = Json.emptyArray;
-        foreach (tag; tags) tagValues ~= tag;
-        payload["tags"] = tagValues;
-
-        payload["config"] = config;
-        payload["created_at"] = createdAt.toISOExtString();
-        payload["updated_at"] = updatedAt.toISOExtString();
-        return payload;
+        return super.toJson
+        .set("item_id", itemId)
+        .set("content_type", contentType)
+        .set("title", title)
+        .set("description", description)
+        .set("source", source)
+        .set("source_ref", sourceRef)
+        .set("tags", tagValues)
+        .set("config", config);
     }
 }
