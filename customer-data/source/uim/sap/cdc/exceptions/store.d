@@ -10,7 +10,11 @@ mixin(ShowModule!());
 
 @safe:
 class CDCStoreException : CDCException {
-  this(string message, string file = __FILE__, size_t line = __LINE__) {
-    super(message, file, line);
+  this(string message) {
+    super("(CDC) " ~ message);
+  }
+
+  this(string message, string file = __FILE__, size_t line = __LINE__, Throwable next = null) {
+    super("(CDC) " ~ message, file, line, next);
   }
 }

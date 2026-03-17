@@ -46,7 +46,7 @@ class CDCStore : SAPStore {
       auto key = scopedProfileKey(tenantId, region, userId);
       if (auto value = key in _profiles)
         return CDCProfile(*value);
-      return CDCProfile.init;
+      return null;
     }
   }
 
@@ -61,7 +61,7 @@ class CDCStore : SAPStore {
           }
         }
       }
-      return new CDCProfile();
+      return null;
     }
   }
 
@@ -111,7 +111,7 @@ class CDCStore : SAPStore {
       auto key = scopedSiteGroupKey(tenantId, groupId);
       if (auto value = key in _siteGroups)
         return CDCSiteGroup(value);
-      return CDCSiteGroup.init;
+      return null;
     }
   }
 
@@ -289,7 +289,7 @@ class CDCStore : SAPStore {
   }
 
   private CDCConsent parseConsent(Json item) {
-    CDCConsent value;
+    CDCConsent value = new CDCConsent(item);
     value.tenantId = readString(item, "tenant_id", true);
     value.userId = readString(item, "user_id", true);
     value.consentId = readString(item, "consent_id", true);
@@ -303,7 +303,7 @@ class CDCStore : SAPStore {
   }
 
   private CDCSiteGroup parseSiteGroup(Json item) {
-    CDCSiteGroup value;
+    CDCSiteGroup value = new CDCSiteGroup(item);
     value.tenantId = readString(item, "tenant_id", true);
     value.groupId = readString(item, "group_id", true);
     value.name = readString(item, "name", true);
@@ -315,7 +315,7 @@ class CDCStore : SAPStore {
   }
 
   private CDCRiskProvider parseRiskProvider(Json item) {
-    CDCRiskProvider value;
+    CDCRiskProvider value = new CDCRiskProvider(item);
     value.tenantId = readString(item, "tenant_id", true);
     value.providerId = readString(item, "provider_id", true);
     value.name = readString(item, "name", true);
@@ -328,7 +328,7 @@ class CDCStore : SAPStore {
   }
 
   private CDCAuthEvent parseAuthEvent(Json item) {
-    CDCAuthEvent value;
+    CDCAuthEvent value = new CDCAuthEvent(item);
     value.tenantId = readString(item, "tenant_id", true);
     value.eventId = readString(item, "event_id", true);
     value.userId = readString(item, "user_id", true);
@@ -361,9 +361,11 @@ class CDCStore : SAPStore {
   private bool readBool(Json item, string key, bool fallback) {
     if (!(key in item) || item[key].isNull)
       return fallback;
+
     if (item[key].type != Json.Type.bool_) {
       throw new CDCStoreException(key ~ " must be boolean in cache item");
     }
+
     return item[key].get!bool;
   }
 
@@ -405,13 +407,6 @@ class CDCStore : SAPStore {
     } catch (Exception) {
       return SysTime.fromISOExtString("1970-01-01T00:00:00Z");
     }
-  }
-
-  private SysTime readTime(Json item, string key) {
-    if (!(key in item) || !item[key].isString) {
-      return SysTime.fromISOExtString("1970-01-01T00:00:00Z");
-    }
-    return parseTime(item[key].get!string);
   }
 
   private string scopedProfileKey(string tenantId, string region, string userId) {

@@ -38,18 +38,19 @@ class CDCService : SAPService {
     profile.userId = UUID(data.requiredString("user_id"));
     profile.email = data.getString("email", existing.isNull ? "" : existing.get.email);
     profile.phone = data.getString("phone", existing.isNull ? "" : existing.get.phone);
-    profile.firstName = data.getString("first_name", 
+    profile.firstName = data.getString("first_name",
       existing.isNull ? "" : existing.get.firstName);
-    profile.lastName = data.getString("last_name", 
+    profile.lastName = data.getString("last_name",
       existing.isNull ? "" : existing.get.lastName);
-    profile.region = data.getString("region", 
+    profile.region = data.getString("region",
       existing.isNull ? _config.defaultRegion : existing.get.region);
-    profile.siteGroupId = UUID(data.getString("site_group_id", 
-      existing.isNull ? "global-default" : existing.get.siteGroupId));
-    profile.passwordSecret = data.getString("password", existing.isNull ? 
-      "changeme" : existing.get.passwordSecret);
+    profile.siteGroupId = UUID(data.getString("site_group_id",
+        existing.isNull ? "global-default" : existing.get.siteGroupId));
+    profile.passwordSecret = data.getString("password", existing.isNull ?
+        "changeme" : existing.get.passwordSecret);
     profile.active = data.getBoolean("active", existing.isNull ? true : existing.get.active);
-    profile.emailVerified = data.getBoolean("email_verified", existing.isNull ? false : existing.get.emailVerified);
+    profile.emailVerified = data.getBoolean("email_verified", existing.isNull ? false
+        : existing.get.emailVerified);
     profile.preferences = data.readObject("preferences",
       existing.isNull ? Json.emptyObject : existing.get.preferences
     );
@@ -65,7 +66,7 @@ class CDCService : SAPService {
 
     validateRegion(profile.region);
     auto saved = _store.upsertProfile(profile);
-    
+
     Json payload = Json.emptyObject;
     return payload
       .set("message", "Profile upserted")
@@ -250,33 +251,28 @@ class CDCService : SAPService {
     provider.tenantId = UUID(tenantId);
     provider.providerid = requiredUUID(data, "provider_id");
     provider.name = requiredString(data, "name");
-    provider.providerKind = normalizeProviderKind(
-      requiredString(data, "provider_kind"));
-    provider.enabled = data.getBoolean(
-      "enabled", true);
-    provider.config = readObject(data, "config", Json
-        .emptyObject);
+    provider.providerKind = normalizeProviderKind(requiredString(data, "provider_kind"));
+    provider.enabled = optionalBoolean("enabled", true);
+    provider.config = optionalObject(data, "config", Json.emptyObject);
     provider.createdAt = now;
     provider.updatedAt = now;
     auto saved = _store.upsertRiskProvider(
       provider);
-    Json payload = Json.emptyObject;
-    payload["message"] = "Risk provider configured";
-    payload["provider"] = saved.toJson();
-    return payload;
+
+    return Json.emptyObject
+      .set("message", "Risk provider configured")
+      .set("provider", saved.toJson());
   }
 
   Json listRiskProviders(string tenantId) {
     validateTenant(tenantId);
-    Json providers = Json.emptyArray;
-    foreach (provider; _store.listRiskProviders(tenantId))
-      providers ~= provider.toJson();
-    Json payload = Json
-      .emptyObject;
-    payload["tenant_id"] = tenantId;
-    payload["count"] = cast(long)providers.length;
-    payload["providers"] = providers;
-    return payload;
+    Json providers = _store.listRiskProviders(tenantId)
+      .map!(provider => provider.toJson()).array.toJson;
+
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("count", cast(long)providers.length)
+      .set("providers", providers);
   }
 
   Json authenticate(string tenantId, Json data) {
@@ -358,17 +354,16 @@ class CDCService : SAPService {
       providerSignals,
       now
     );
-    Json payload = Json.emptyObject;
-    payload["decision"] = "allow";
-    payload["risk_level"] = riskLevel;
-    payload["risk_score"] = riskScore;
-    payload["session"] = Json.emptyObject;
-    payload["session"]["token"] = "sess-" ~ userId ~ "-" ~ to!string(
-      now.stdTime);
-    payload["session"]["expires_in_seconds"] = 3600;
-    payload["profile"] = profile.toJson();
-    payload["auth_event"] = event.toJson();
-    return payload;
+
+    return super.toJson
+      .set("decision", "allow")
+      .set("risk_level", riskLevel)
+      .set("risk_score", riskScore)
+      .set("session", Json.emptyObject)
+      .set("session", "sess-" ~ userId ~ "-" ~ to!string(now.stdTime))
+      .set("session", 3600)
+      .set("profile", profile.toJson())
+      .set("auth_event", event.toJson());
   }
 
   Json listAuthEvents(string tenantId, size_t limit) {
@@ -377,12 +372,11 @@ class CDCService : SAPService {
     Json events = Json.emptyArray;
     foreach (event; _store.listAuthEvents(tenantId, safeLimit))
       events ~= event.toJson();
-    Json payload = Json
-      .emptyObject;
-    payload["tenant_id"] = tenantId;
-    payload["count"] = cast(long)events.length;
-    payload["events"] = events;
-    return payload;
+    
+    return Json.emptyObject
+    .set("tenant_id", tenantId)
+    .set("count", cast(long)events.length)
+    .set("events", events);
   }
 
   private Json deniedAuthPayload(
@@ -517,13 +511,6 @@ class CDCService : SAPService {
     return values;
   }
 
-  private void validateTenant(
-    string tenantId) const {
-    if (tenantId.length == 0)
-      throw new CDCValidationException(
-        "tenant_id is required");
-  }
-
   private void validateRegion(
     string value) const {
     if (value.length == 0)
@@ -554,49 +541,36 @@ class CDCService : SAPService {
     return normalized;
   }
 
-  private string requiredString(Json data, string key) const {
-    if (!(key in data) || !data[key].isString || data[key]
-      .get!string.length == 0) {
-      throw new CDCValidationException(
-        key ~ " is required");
-    }
-    return data[key].get!string;
-  }
-
-  private string optionalString(Json data, string key, string fallback) const {
-    if (!(key in data) || data[key]
-      .isNull)
+  private bool readrequestgetBoolean(Json data, string key, bool fallback) const {
+    if (!(key in data) || data[key].isNull)
       return fallback;
-    if (!data[key].isString)
-      throw new CDCValidationException(
-        key ~ " must be a string");
-    return data[key]
-      .get!string;
+    requiredBooleanType(data, key);
+    return data[key].get!bool;
   }
 
-  private bool readrequest.getBoolean((Json data, string key, bool fallback) const {
+  private string[] readStringArray(Json data, string key) const {
+    string[] values;
     if (!(key in data) || data[key]
-    .isNull)
-      return fallback; if (!data[key].isBoolean)
-        throw new CDCValidationException(
-          key ~ " must be a boolean"); return data[key].get!bool;}
-
-    private string[] readStringArray(Json data, string key) const {
-      string[] values; if (!(key in data) || data[key]
       .isNull)
-        return values; if (!data[key].isArray)
-          throw new CDCValidationException(
-            key ~ " must be an array"); foreach (item; data[key]) {
-            if (!item.isString)
-              throw new CDCValidationException(
-                key ~ " must contain strings"); values ~= item
-                .get!string;}
-            return values;}
+      return values;
+    requiredArrayType(data, key);
+    foreach (item; data[key]) {
+      if (!item.isString)
+        throw new CDCValidationException(
+          key ~ " must contain strings");
+      values ~= item
+        .get!string;
+    }
+    return values;
+  }
 
-            private Json readObject(Json data, string key, Json fallback) const {
-              if (!(key in data) || data[key]
-              .isNull)
-                return fallback; if (!data[key].isObject)
-                  throw new CDCValidationException(
-                    key ~ " must be an object"); return data[key];}
-            }
+  private Json readObject(Json data, string key, Json fallback) const {
+    if (!(key in data) || data[key]
+      .isNull) {
+      return fallback;
+    }
+
+    requiredObjectType(data, key);
+    return data[key];
+  }
+}

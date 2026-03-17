@@ -421,4 +421,5 @@ class AlertNotificationService : SAPService {
     }
     return Json.emptyObject;
   }
+
 }

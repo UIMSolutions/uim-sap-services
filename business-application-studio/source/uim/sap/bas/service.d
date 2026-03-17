@@ -335,7 +335,7 @@ class BASService : SAPService {
     return data[key].get!string;
   }
 
-  private bool readrequest.getBoolean((Json data, string key, bool fallback) const {
+  private bool optionalBoolean(Json data, string key, bool fallback) const {
     if (!(key in data) || data[key].isNull)
       return fallback;
     if (!data[key].isBoolean)
