@@ -228,7 +228,7 @@ HTML";
     CAGContentProvider provider;
     provider.tenantId = UUID(tenantId);
     provider.providerId = providerId;
-    provider.name = readRequired(body, "name");
+    provider.name = requiredString(body, "name");
     provider.providerType = readOptional(body, "provider_type", "sap-content-provider");
     provider.endpoint = readOptional(body, "endpoint", "");
     provider.supportedTypes = normalizeContentTypes(readStringArray(body, "supported_types"));
@@ -273,7 +273,7 @@ HTML";
     CAGContentItem item;
     item.tenantId = UUID(tenantId);
     item.contentId = contentId;
-    item.title = readRequired(body, "title");
+    item.title = requiredString(body, "title");
     item.contentType = normalizeContentType(readOptional(body, "content_type", "application"));
     item.contentVersion = readOptional(body, "version", "1.0.0");
     item.providerId = readOptional(body, "provider_id", "manual");
@@ -338,8 +338,8 @@ HTML";
     CAGTransportQueue queue;
     queue.tenantId = UUID(tenantId);
     queue.queueId = queueId;
-    queue.name = readRequired(body, "name");
-    queue.queueType = normalizeQueueType(readRequired(body, "queue_type"));
+    queue.name = requiredString(body, "name");
+    queue.queueType = normalizeQueueType(requiredString(body, "queue_type"));
     queue.endpoint = readOptional(body, "endpoint", "");
     queue.active = readrequest.getBoolean((body, "active", true);
     queue.createdAt = hasExisting ? existing.createdAt : now;
@@ -369,9 +369,9 @@ HTML";
   Json createAssembly(string tenantId, Json data) {
     validateTenant(tenantId);
 
-    auto sourceSubaccount = readRequired(body, "source_subaccount");
-    auto targetSubaccount = readRequired(body, "target_subaccount");
-    auto name = readRequired(body, "name");
+    auto sourceSubaccount = requiredString(body, "source_subaccount");
+    auto targetSubaccount = requiredString(body, "target_subaccount");
+    auto name = requiredString(body, "name");
     auto requestedIds = readStringArray(body, "content_ids");
     if (requestedIds.length == 0)
       throw new CAGValidationException("content_ids must contain at least one entry");
@@ -602,7 +602,7 @@ HTML";
     return normalized;
   }
 
-  private string readRequired(Json data, string key) const {
+  private string requiredString(Json data, string key) const {
     if (!(key in data) || !data[key].isString || data[key].get!string.length == 0) {
       throw new CAGValidationException(key ~ " is required");
     }

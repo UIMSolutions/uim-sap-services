@@ -55,7 +55,7 @@ class SMGService : SAPService {
     SMGSite site;
     site.tenantId = UUID(tenantId);
     site.siteId = siteId;
-    site.siteName = readRequired(body, "site_name");
+    site.siteName = requiredString(body, "site_name");
     site.description = readOptional(body, "description", "");
     site.lifecycle = normalizeLifecycle(readOptional(body, "lifecycle", "draft"));
     site.assignedRoles = readStringArray(body, "assigned_roles");
@@ -158,7 +158,7 @@ class SMGService : SAPService {
     return payload;
   }
 
-  private string readRequired(Json data, string key) const {
+  private string requiredString(Json data, string key) const {
     if (!(key in data) || data[key].type != Json.Type.string || data[key].get!string.length == 0) {
       throw new SMGValidationException(key ~ " is required");
     }

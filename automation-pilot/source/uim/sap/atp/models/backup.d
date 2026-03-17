@@ -6,6 +6,18 @@ mixin(ShowModule!());
 
 @safe:
 
+/** 
+  * Represents a backup of ATP data for a tenant. Contains the backup content and metadata.
+  *
+  * This class is used to store and retrieve ATP backup data, which can be used for disaster recovery or data migration purposes.
+  *
+  * Fields:
+  * - backupId: Unique identifier for the backup.
+  * - mode: The mode of the backup (e.g., "full", "incremental").
+  * - content: The actual backup data, stored as JSON.
+  * Methods:
+  * - toJson(): Serializes the backup object to JSON format for storage or transmission.
+  */
 class ATPBackup : SAPTenantObject {
   mixin(SAPObjectTemplate!ATPBackup);
 
@@ -14,12 +26,9 @@ class ATPBackup : SAPTenantObject {
   Json content;
 
   override Json toJson() {
-    Json payload = super.toJson;
-
-    payload["backup_id"] = backupId;
-    payload["mode"] = mode;
-    payload["content"] = content;
-
-    return payload;
+    return super.toJson
+      .set("backup_id", backupId)
+      .set("mode", mode)
+      .set("content", content);
   }
 }

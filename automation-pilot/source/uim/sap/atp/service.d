@@ -218,8 +218,8 @@ class ATPService : SAPService {
 
     ATPSecretInput input;
     input.tenantId = UUID(tenantId);
-    input.key = readRequired(data, "key");
-    auto value = readRequired(data, "value");
+    input.key = requiredString(data, "key");
+    auto value = requiredString(data, "value");
     input.maskedValue = maskValue(value);
     input.purpose = readOptional(data, "purpose", "command-input");
     input.updatedAt = now;
@@ -253,7 +253,7 @@ class ATPService : SAPService {
     schedule.targetType = readOptional(data, "target_type", "execution");
     schedule.targetid = requiredUUID(data, "target_id");
     schedule.mode = readOptional(data, "mode", "cron");
-    schedule.expression = readRequired(data, "expression");
+    schedule.expression = requiredString(data, "expression");
     schedule.active = data.getBoolean("active", true);
     schedule.createdAt = now;
     schedule.updatedAt = now;
@@ -283,8 +283,8 @@ class ATPService : SAPService {
     ATPEventTrigger trigger = new ATPEventTrigger(data);
     trigger.tenantId = UUID(tenantId);
     trigger.triggerid = requiredUUID(data, "trigger_id");
-    trigger.eventSource = readRequired(data, "event_source");
-    trigger.eventType = readRequired(data, "event_type");
+    trigger.eventSource = requiredString(data, "event_source");
+    trigger.eventType = requiredString(data, "event_type");
     trigger.commandid = requiredUUID(data, "command_id");
     trigger.active = data.getBoolean("active", true);
     trigger.createdAt = now;
@@ -309,8 +309,8 @@ class ATPService : SAPService {
 
   Json fireEvent(string tenantId, Json data) {
     validateTenant(tenantId);
-    auto source = readRequired(data, "event_source");
-    auto eventType = readRequired(data, "event_type");
+    auto source = requiredString(data, "event_source");
+    auto eventType = requiredString(data, "event_type");
 
     Json matched = Json.emptyArray;
     foreach (trigger; _store.listEventTriggers(tenantId)) {
@@ -336,7 +336,7 @@ class ATPService : SAPService {
 
   Json generateAiContent(string tenantId, Json data) {
     validateTenant(tenantId);
-    auto prompt = readRequired(data, "prompt");
+    auto prompt = requiredString(data, "prompt");
     auto contentType = readOptional(data, "content_type", "runbook");
 
     Json generated = Json.emptyObject;
@@ -358,7 +358,7 @@ class ATPService : SAPService {
   Json executePrivateOperation(string tenantId, Json data) {
     validateTenant(tenantId);
     auto operationType = readOptional(data, "operation_type", "http-request");
-    auto endpoint = readRequired(data, "endpoint");
+    auto endpoint = requiredString(data, "endpoint");
 
     Json payload = Json.emptyObject;
     payload["message"] = "Private environment operation queued";
@@ -430,7 +430,7 @@ class ATPService : SAPService {
       throw new ATPValidationException("tenant_id is required");
   }
 
-  private string readRequired(Json data, string key) const {
+  private string requiredString(Json data, string key) const {
     if (!(key in body) || body[key].type != Json.Type.string || body[key].get!string.length == 0) {
       throw new ATPValidationException(key ~ " is required");
     }

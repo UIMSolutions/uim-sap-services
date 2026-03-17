@@ -31,7 +31,7 @@ class CDCService : SAPService {
     validateTenant(tenantId);
 
     auto now = Clock.currTime();
-    auto existing = _store.getProfileByTenantUser(tenantId, readRequired(data, "user_id"));
+    auto existing = _store.getProfileByTenantUser(tenantId, requiredString(data, "user_id"));
 
     CDCProfile profile = new CDCProfile(data);
     profile.tenantId = UUID(tenantId);
@@ -133,14 +133,14 @@ class CDCService : SAPService {
     if (userId.length == 0)
       throw new CDCValidationException("user_id is required");
     auto status = normalizeConsentStatus(
-      readRequired(data, "status"));
+      requiredString(data, "status"));
     auto now = Clock.currTime();
 
     CDCConsent consent;
     consent.tenantId = UUID(tenantId);
     consent.userId = userId;
     consent.consentid = requiredUUID(data, "consent_id");
-    consent.purpose = readRequired(data, "purpose");
+    consent.purpose = requiredString(data, "purpose");
     consent.legalBasis = readOptional(data, "legal_basis", "consent");
     consent.status = status;
     consent.source = readOptional(data, "source", "preference-center");
@@ -251,7 +251,7 @@ class CDCService : SAPService {
     provider.providerid = requiredUUID(data, "provider_id");
     provider.name = requiredString(data, "name");
     provider.providerKind = normalizeProviderKind(
-      readRequired(data, "provider_kind"));
+      requiredString(data, "provider_kind"));
     provider.enabled = data.getBoolean(
       "enabled", true);
     provider.config = readObject(data, "config", Json
@@ -282,7 +282,7 @@ class CDCService : SAPService {
   Json authenticate(string tenantId, Json data) {
     validateTenant(tenantId);
     auto userid = requiredUUID(data, "user_id");
-    auto password = readRequired(data, "password");
+    auto password = requiredString(data, "password");
     auto ipAddress = readOptional(data, "ip_address", "");
 
     auto profileOpt = _store.getProfileByTenantUser(tenantId, userId);
@@ -554,7 +554,7 @@ class CDCService : SAPService {
     return normalized;
   }
 
-  private string readRequired(Json data, string key) const {
+  private string requiredString(Json data, string key) const {
     if (!(key in data) || !data[key].isString || data[key]
       .get!string.length == 0) {
       throw new CDCValidationException(

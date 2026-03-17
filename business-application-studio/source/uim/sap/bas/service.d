@@ -65,7 +65,7 @@ class BASService : SAPService {
     BASWorkspace workspace;
     workspace.tenantId = UUID(tenantId);
     workspace.workspaceId = readOptional(body, "workspace_id", "ws-" ~ to!string(now.stdTime));
-    workspace.name = readRequired(body, "name");
+    workspace.name = requiredString(body, "name");
     workspace.scenarioId = scenarioId;
     workspace.region = readOptional(body, "region", _config.defaultRegion);
     workspace.status = "RUNNING";
@@ -320,7 +320,7 @@ class BASService : SAPService {
       throw new BASValidationException("tenant_id is required");
   }
 
-  private string readRequired(Json data, string key) const {
+  private string requiredString(Json data, string key) const {
     if (!(key in data) || !data[key].isString || data[key].get!string.length == 0) {
       throw new BASValidationException(key ~ " is required");
     }

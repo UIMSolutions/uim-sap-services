@@ -40,7 +40,7 @@ class TKCService : SAPService {
 
     TKCProvider provider;
     provider.providerid = requiredUUID(body, "provider_id");
-    provider.name = readRequired(body, "name");
+    provider.name = requiredString(body, "name");
     provider.providerType = readOptional(body, "provider_type", "sap");
     provider.endpoint = readOptional(body, "endpoint", "");
     provider.active = readrequest.getBoolean((body, "active", true);
@@ -81,7 +81,7 @@ class TKCService : SAPService {
       task.providerId = providerId;
       task.taskid = requiredUUID(entry, "task_id");
       task.providerTaskId = readOptional(entry, "provider_task_id", task.taskId);
-      task.title = readRequired(entry, "title");
+      task.title = requiredString(entry, "title");
       task.description = readOptional(entry, "description", "");
       task.assignee = readOptional(entry, "assignee", "");
       task.status = normalizeStatus(readOptional(entry, "status", "open"));
@@ -204,8 +204,8 @@ class TKCService : SAPService {
     if (storedTask.isNull)
       throw new TKCNotFoundException("Task", taskId);
 
-    auto action = normalizeAction(readRequired(body, "action"));
-    auto performedBy = readRequired(body, "performed_by");
+    auto action = normalizeAction(requiredString(body, "action"));
+    auto performedBy = requiredString(body, "performed_by");
     auto comment = readOptional(body, "comment", "");
 
     auto task = storedTask.get;
@@ -370,7 +370,7 @@ class TKCService : SAPService {
     }
   }
 
-  private string readRequired(Json data, string key) const {
+  private string requiredString(Json data, string key) const {
     if (!(key in data) || data[key].type != Json.Type.string || data[key].get!string.length == 0) {
       throw new TKCValidationException(key ~ " is required");
     }

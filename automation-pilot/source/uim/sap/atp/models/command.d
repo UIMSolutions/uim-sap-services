@@ -6,8 +6,9 @@ mixin(ShowModule!());
 
 @safe:
 
-struct ATPCommand {
-  UUID tenantId;
+class ATPCommand : SAPTenantObject {
+  mixin(SAPObjectTemplate!ATPCommand);
+
   UUID commandId;
   UUID catalogId;
   string name;
@@ -16,25 +17,18 @@ struct ATPCommand {
   string[] steps;
   bool allowPrivateEnvironment;
   Json defaults;
-  SysTime createdAt;
-  SysTime updatedAt;
-
+  
   override Json toJson()  {
-    Json info = super.toJson;
-    payload["tenant_id"] = tenantId;
-    payload["command_id"] = commandId;
-    payload["catalog_id"] = catalogId;
-    payload["name"] = name;
-    payload["description"] = description;
-    payload["command_type"] = commandType;
-    Json stepValues = Json.emptyArray;
-    foreach (step; steps)
-      stepValues ~= step;
-    payload["steps"] = stepValues;
-    payload["allow_private_environment"] = allowPrivateEnvironment;
-    payload["defaults"] = defaults;
-    payload["created_at"] = createdAt.toISOExtString();
-    payload["updated_at"] = updatedAt.toISOExtString();
-    return payload;
+    Json stepValues = steps.map!(step => step).array.toJson;
+
+    return super.toJson
+      .set("command_id", commandId)
+      .set("catalog_id", catalogId)
+      .set("name", name)
+      .set("description", description)
+      .set("command_type", commandType)
+      .set("steps", stepValues)
+      .set("allow_private_environment", allowPrivateEnvironment)
+      .set("defaults", defaults);
   }
 }

@@ -63,7 +63,7 @@ class SDIService : SAPService {
     SDISite site;
     site.tenantId = UUID(tenantId);
     site.siteid = requiredUUID(body, "site_id");
-    site.name = readRequired(body, "name");
+    site.name = requiredString(body, "name");
     site.description = readOptional(body, "description", "");
     site.siteAlias = normalizeSiteAlias(readOptional(body, "alias", site.siteId));
     site.runtimeUrl = defaultRuntimeUrl(tenantId, site.siteAlias);
@@ -144,7 +144,7 @@ class SDIService : SAPService {
     validateTenant(tenantId);
     auto site = requireSite(tenantId, siteId);
 
-    site.siteAlias = normalizeSiteAlias(readRequired(body, "alias"));
+    site.siteAlias = normalizeSiteAlias(requiredString(body, "alias"));
     site.runtimeUrl = defaultRuntimeUrl(tenantId, site.siteAlias);
     site.updatedAt = Clock.currTime();
 
@@ -234,7 +234,7 @@ class SDIService : SAPService {
       throw new SDIValidationException("tenant_id is required");
   }
 
-  private string readRequired(Json data, string key) const {
+  private string requiredString(Json data, string key) const {
     if (!(key in body) || body[key].type != Json.Type.string || body[key].get!string.length == 0) {
       throw new SDIValidationException(key ~ " is required");
     }

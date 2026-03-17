@@ -54,7 +54,7 @@ class CMGService : SAPService {
     item.tenantId = UUID(tenantId);
     item.itemId = itemId;
     item.contentType = normalizedType;
-    item.title = readRequired(body, "title");
+    item.title = requiredString(body, "title");
     item.description = readOptional(body, "description", "");
     item.source = "manual";
     item.sourceRef = readOptional(body, "source_ref", "content-editor");
@@ -91,7 +91,7 @@ class CMGService : SAPService {
     CMGContentProvider provider;
     provider.tenantId = UUID(tenantId);
     provider.providerid = requiredUUID(body, "provider_id");
-    provider.name = readRequired(body, "name");
+    provider.name = requiredString(body, "name");
     provider.providerType = readOptional(body, "provider_type", "remote-content");
     provider.endpoint = readOptional(body, "endpoint", "");
     provider.exposedTypes = normalizeContentTypes(readStringArray(body, "exposed_types"));
@@ -184,7 +184,7 @@ class CMGService : SAPService {
     return normalized;
   }
 
-  private string readRequired(Json data, string key) const {
+  private string requiredString(Json data, string key) const {
     if (!(key in data) || !data[key].isString || data[key].get!string.length == 0) {
       throw new CMGValidationException(key ~ " is required");
     }
