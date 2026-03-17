@@ -10,8 +10,22 @@ import uim.sap.pre;
 mixin(ShowModule!());
 
 @safe:
-class PREConfigurationException : PREException {
-    this(string msg, string file = __FILE__, size_t line = __LINE__) {
-        super(msg, file, line);
-    }
+class  PREConfigurationException : SAPConfigurationException {
+  this(string message) {
+    super("(PRE) " ~ message);
+  }
+
+  this(string message, string file = __FILE__, size_t line = __LINE__, Throwable next = null) {
+    super("(PRE) " ~ mPREConfigurationExceptionessage, file, line, next);
+  }
+}
+///
+unittest {
+  PREConfigurationException ex1 = new PREConfigurationException("Test message");
+  assert(ex1.message == "Configuration error: (PRE) Test message");
+
+  PREConfigurationException ex2 = new PREConfigurationException("Test message", "testfile.d", 123);
+  assert(ex2.message == "Configuration error: (PRE) Test message");
+  assert(ex2.file == "testfile.d");
+  assert(ex2.line == 123);
 }

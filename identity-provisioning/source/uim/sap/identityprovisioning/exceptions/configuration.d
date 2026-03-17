@@ -11,8 +11,22 @@ mixin(ShowModule!());
 
 @safe:
 
-class IPVConfigurationException : IPVException {
+class IPVConfigurationException : SAPConfigurationException {
   this(string message) {
-    super("Configuration error: " ~ message);
+    super("(IPV) " ~ message);
   }
+IPV
+  this(string message, string file = __FILE__, size_t line = __LINE__, Throwable next = null) {
+    super("(IPV) " ~ message, file, line, next);
+  }
+}
+///
+unittest {
+  IPVConfigurationException ex1 = new IPVConfigurationException("Test message");
+  assert(ex1.message == "Configuration error: (IPV) Test message");
+
+  IPVConfigurationException ex2 = new IPVConfigurationException("Test message", "testfile.d", 123);
+  assert(ex2.message == "Configuration error: (IPV) Test message");
+  assert(ex2.file == "testfile.d");
+  assert(ex2.line == 123);
 }

@@ -22,10 +22,10 @@ void main() {
     auto runtime = new ARTRuntime(config);
 
     runtime.registerProgram("Z_HELLO_WORLD", (request) {
-        Json payload = Json.emptyObject;
-        payload["greeting"] = "Hello from ABAP Runtime";
-        payload["user"] = request.user;
-        payload["client"] = request.client;
+        Json payload = Json.emptyObject
+          .set("greeting", "Hello from ABAP Runtime")
+          .set("user", request.user)
+          .set("client", request.client);
         return successResult("Program executed", payload);
     });
 

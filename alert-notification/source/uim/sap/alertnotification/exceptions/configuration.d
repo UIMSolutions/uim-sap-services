@@ -11,8 +11,23 @@ mixin(ShowModule!());
 
 @safe:
 
-class AlertNotificationConfigurationException : AlertNotificationException {
-  this(string msg) {
-    super(msg);
+class AlertNotificationConfigurationException : SAPConfigurationException {
+  this(string message) {
+    super("(ANO) " ~ message);
+  }
+
+  this(string message, string file = __FILE__, size_t line = __LINE__, Throwable next = null) {
+    super("(ANO) " ~ message, file, line, next);
   }
 }
+///
+unittest {
+  AlertNotificationConfigurationException ex1 = new AlertNotificationConfigurationException("Test message");
+  assert(ex1.message == "Configuration error: (ANO) Test message");
+
+  AlertNotificationConfigurationException ex2 = new AlertNotificationConfigurationException("Test message", "testfile.d", 123);
+  assert(ex2.message == "Configuration error: (ANO) Test message");
+  assert(ex2.file == "testfile.d");
+  assert(ex2.line == 123);
+}
+

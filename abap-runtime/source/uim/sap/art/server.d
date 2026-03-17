@@ -50,13 +50,12 @@ class ARTRuntimeServer {
     }
 
     if (path.endsWith("/programs") && req.method == HTTPMethod.GET) {
-      Json payload = Json.emptyObject;
-      Json programs = Json.emptyArray;
-      foreach (name; _runtime.listPrograms()) {
-        programs ~= Json(name);
-      }
-      payload["programs"] = programs;
-      payload["count"] = cast(long)_runtime.registeredProgramCount;
+      Json programs = _runtime.listPrograms().map!(prog => Json(name)).toJson;
+
+      Json payload = Json.emptyObject
+        .set("programs", programs)
+        .set("count", cast(long)_runtime.registeredProgramCount);
+
       res.statusCode = 200;
       res.writeJsonBody(payload);
       return;

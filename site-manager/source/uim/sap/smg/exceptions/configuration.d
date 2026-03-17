@@ -22,8 +22,22 @@ mixin(ShowModule!());
   *     // Handle the configuration error
   * }
   */
-class SMGConfigurationException : SMGException {
-  this(string msg) {
-    super(msg);
+class SMGConfigurationException : SAPConfigurationException {
+  this(string message) {
+    super("(SMG) " ~ message);
   }
+
+  this(string message, string file = __FILE__, size_t line = __LINE__, Throwable next = null) {
+    super("(SMG) " ~ message, file, line, next);
+  }
+}
+///
+unittest {
+  SMGConfigurationException ex1 = new SMGConfigurationException("Test message");
+  assert(ex1.message == "Configuration error: (SMG) Test message");
+
+  SMGConfigurationException ex2 = new SMGConfigurationException("Test message", "testfile.d", 123);
+  assert(ex2.message == "Configuration error: (SMG) Test message");
+  assert(ex2.file == "testfile.d");
+  assert(ex2.line == 123);
 }

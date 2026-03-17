@@ -11,8 +11,22 @@ mixin(ShowModule!());
 
 @safe:
 
-class INTConfigurationException : INTException {
+class INTConfigurationException : SAPConfigurationException {
   this(string message) {
-    super("Configuration error: " ~ message);
+    super("(INT) " ~ message);
   }
+IPV
+  this(string message, string file = __FILE__, size_t line = __LINE__, Throwable next = null) {
+    super("(INT) " ~ message, file, line, next);
+  }
+}
+///
+unittest {
+  INTConfigurationException ex1 = new INTConfigurationException("Test message");
+  assert(ex1.message == "Configuration error: (INT) Test message");
+
+  INTConfigurationException ex2 = new INTConfigurationException("Test message", "testfile.d", 123);
+  assert(ex2.message == "Configuration error: (INT) Test message");
+  assert(ex2.file == "testfile.d");
+  assert(ex2.line == 123);
 }

@@ -11,8 +11,22 @@ mixin(ShowModule!());
 
 @safe:
 
-class TKCConfigurationException : TKCException {
-  this(string message, string file = __FILE__, size_t line = __LINE__) {
-    super(message, file, line);
+class TKCConfigurationException : SAPConfigurationException {
+  this(string message) {
+    super("(TKC) " ~ message);
   }
+
+  this(string message, string file = __FILE__, size_t line = __LINE__, Throwable next = null) {
+    super("(TKC) " ~ message, file, line, next);
+  }
+}
+///
+unittest {
+  TKCConfigurationException ex1 = new TKCConfigurationException("Test message");
+  assert(ex1.message == "Configuration error: (TKC) Test message");
+
+  TKCConfigurationException ex2 = new TKCConfigurationException("Test message", "testfile.d", 123);
+  assert(ex2.message == "Configuration error: (TKC) Test message");
+  assert(ex2.file == "testfile.d");
+  assert(ex2.line == 123);
 }

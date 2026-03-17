@@ -13,9 +13,19 @@ class ADLConfigurationException : SAPConfigurationException {
   this(string message) {
     super("(ADL) " ~ message);
   }
+
+  this(string message, string file = __FILE__, size_t line = __LINE__, Throwable next = null) {
+    super("(ADL) " ~ message, file, line, next);
+  }
 }
 ///
 unittest {
-  AuditLogConfigurationException ex = new AuditLogConfigurationException("Test message");
-  assert(ex.message == "Configuration error: (ADL) Test message");
+  ADLConfigurationException ex1 = new ADLConfigurationException("Test message");
+  assert(ex1.message == "Configuration error: (ADL) Test message");
+
+  ADLConfigurationException ex2 = new ADLConfigurationException("Test message", "testfile.d", 123);
+  assert(ex2.message == "Configuration error: (ADL) Test message");
+  assert(ex2.file == "testfile.d");
+  assert(ex2.line == 123);
 }
+

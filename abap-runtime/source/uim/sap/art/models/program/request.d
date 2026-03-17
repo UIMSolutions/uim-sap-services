@@ -21,6 +21,38 @@ mixin(ShowModule!());
 class ARTProgramRequest : SAPObject {
   mixin(SAPObjectTemplate!ARTProgramRequest);
 
+  override bool initialize(Json[string] initData = null) {
+    if (!super.initialize(initData)) {
+      return false;
+    }
+
+if ("program" in initData && initData["program"].isString) {
+      program = initData["program"].get!string;
+    }
+
+    if ("user" in initData && initData["user"].isString) {
+      user = initData["user"].get!string;
+    }
+
+    if ("client" in initData && initData["client"].isString) {
+      client = initData["client"].get!string;
+    }
+
+    if ("language" in initData && initData["language"].isString) {
+      language = initData["language"].get!string;
+    }
+
+    if ("parameters" in initData) {
+      parameters = initData["parameters"];
+    }
+
+    if ("correlationId" in initData && initData["correlationId"].isString) {
+      correlationId = initData["correlationId"].get!string;
+    }
+
+    return true;
+  }
+
   string program;
   string user;
   string client;
@@ -28,46 +60,18 @@ class ARTProgramRequest : SAPObject {
   Json parameters = Json.emptyObject;
   string correlationId;
 
-  static ARTProgramRequest fromJson(Json payload) {
-    ARTProgramRequest request;
-
-    if ("program" in payload && payload["program"].isString) {
-      request.program = payload["program"].get!string;
-    }
-
-    if ("user" in payload && payload["user"].isString) {
-      request.user = payload["user"].get!string;
-    }
-
-    if ("client" in payload && payload["client"].isString) {
-      request.client = payload["client"].get!string;
-    }
-
-    if ("language" in payload && payload["language"].isString) {
-      request.language = payload["language"].get!string;
-    }
-
-    if ("parameters" in payload) {
-      request.parameters = payload["parameters"];
-    }
-
-    if ("correlationId" in payload && payload["correlationId"].isString) {
-      request.correlationId = payload["correlationId"].get!string;
-    }
-
+  static ARTProgramRequest opCall(Json payload) {
+    ARTProgramRequest request = new ARTProgramRequest(payload);
     return request;
   }
 
   override Json toJson()  {
-    Json info = super.toJson;
-
-    payload["program"] = program;
-    payload["user"] = user;
-    payload["client"] = client;
-    payload["language"] = language;
-    payload["parameters"] = parameters;
-    payload["correlationId"] = correlationId;
-    
-    return payload;
+    Json info = super.toJson
+      .set("program", program)
+      .set("user", user)
+      .set("client", client)
+      .set("language", language)
+      .set("parameters", parameters)
+      .set("correlationId", correlationId);
   }
 }

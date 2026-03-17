@@ -16,9 +16,18 @@ class CLFConfigurationException : SAPConfigurationException {
   this(string message) {
     super("(CLF) " ~ message);
   }
+
+  this(string message, string file = __FILE__, size_t line = __LINE__, Throwable next = null) {
+    super("(CLF) " ~ message, file, line, next);
+  }
 }
 ///
 unittest {
-  CLFConfigurationException ex = new CLFConfigurationException("Test message");
-  assert(ex.message == "Configuration error: (CLF) Test message");
+  CLFConfigurationException ex1 = new CLFConfigurationException("Test message");
+  assert(ex1.message == "Configuration error: (CLF) Test message");
+
+  CLFConfigurationException ex2 = new CLFConfigurationException("Test message", "testfile.d", 123);
+  assert(ex2.message == "Configuration error: (CLF) Test message");
+  assert(ex2.file == "testfile.d");
+  assert(ex2.line == 123);
 }
