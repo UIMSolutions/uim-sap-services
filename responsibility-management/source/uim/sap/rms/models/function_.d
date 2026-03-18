@@ -5,16 +5,17 @@
 *****************************************************************************************************************/
 module uim.sap.rms.models.function_;
 
-struct FunctionDef {
+class FunctionDef : SAPObject {
+mixin(SAPObjectTemplate!FunctionDef);
+
     string code;
     string name;
     string description;
 
     override Json toJson()  {
-        Json payload = Json.emptyObject;
-        payload["code"] = code;
-        payload["name"] = name;
-        payload["description"] = description;
-        return payload;
+        return super.toJson()
+						.set("code", code)
+        .set("name", name)
+        .set("description", description);
     }
 }
