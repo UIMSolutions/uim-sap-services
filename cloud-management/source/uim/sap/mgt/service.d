@@ -38,59 +38,55 @@ class MGTService : SAPService {
   }
 
   override Json health() {
-    Json healthInfo = super.health();
-    healthInfo["subdomain"] = _config.subdomain;
-    healthInfo["region"] = _config.region;
-    return healthInfo;
+    auto cfg = cast(MGTConfig) config();
+    return super.health()
+    .set("subdomain", cfg.subdomain)
+    .set("region", cfg.region);
   }
 
   Json environments() {
-    return toVibeJson(getEnvironment(_client));
+    return getEnvironment(_client).toJson;
   }
 
   Json subaccounts() {
-    return toVibeJson(getSubaccounts(_client));
+    return getSubaccounts(_client).toJson;
   }
 
   Json organizations() {
-    return toVibeJson(listOrganizations(_client));
+    return listOrganizations(_client).toJson;
   }
 
   Json spaces() {
-    return toVibeJson(listSpaces(_client));
+    return listSpaces(_client).toJson;
   }
 
   Json applications() {
-    return toVibeJson(listApplications(_client));
+    return listApplications(_client).toJson;
   }
 
   Json application(string guid) {
     if (guid.length == 0) {
       throw new MGTUpstreamException("Application GUID cannot be empty");
     }
-    return toVibeJson(getApplication(_client, guid));
+    return getApplication(_client, guid).toJson;
   }
 
   Json services() {
-    return toVibeJson(listServices(_client));
+    return listServices(_client).toJson;
   }
 
   Json serviceInstances() {
-    return toVibeJson(listServiceInstances(_client));
+    return listServiceInstances(_client).toJson;
   }
 
   Json destinations() {
-    return toVibeJson(listDestinations(_client));
+    return listDestinations(_client).toJson;
   }
 
   Json destination(string name) {
     if (name.length == 0) {
       throw new MGTUpstreamException("Destination name cannot be empty");
     }
-    return toVibeJson(getDestination(_client, name));
-  }
-
-  private Json toVibeJson(StdJson payload) {
-    return parseJsonString(payload.toString());
+    return getDestination(_client, name).toJson;
   }
 }

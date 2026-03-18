@@ -22,7 +22,9 @@ mixin(ShowModule!());
   *     basePath: "/api/mgt"
   * );
   */
-class MGTServer {
+class MGTServer : SAPServer {
+  mixin(SAPServerTemplate!MGTServer);
+  
   private MGTService _service;
 
   this(MGTService service) {

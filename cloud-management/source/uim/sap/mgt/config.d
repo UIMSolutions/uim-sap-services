@@ -40,18 +40,22 @@ class MGTConfig : SAPConfig {
       return false;
     }
 
-    port(cast(ushort)initData.getInteger("port", 8088));
-    host(initData.getString("host", "0.0.0.0"));
+    // Network configuration
     basePath(initData.getString("basePath", "/api/mgt"));
+    host(initData.getString("host", "0.0.0.0"));
+    port(cast(ushort)initData.getInteger("port", 8088));
+    
+    // Service metadata
     serviceName(initData.getString("serviceName", "uim-mgt"));
     serviceVersion(initData.getString("serviceVersion", "1.0.0"));
+
+    requireAuthToken(initData.getBoolean("requireAuthToken", false));
+    authToken = initData.getString("authToken", "");
 
     return true;
   }
 
 
-  bool requireAuthToken = false;
-  string authToken;
 
   string tenant;
   string subdomain;
