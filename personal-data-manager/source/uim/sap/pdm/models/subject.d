@@ -12,9 +12,10 @@ mixin(ShowModule!());
 @safe:
 
 /// Data subject — an identified or identifiable natural/legal person
-struct PDMDataSubject {
+class PDMDataSubject : SAPTenantObject {
+  mixin(SAPTenantObjectTemplate!PDMDataSubject);
+
     string subjectId;
-    string tenantId;
     PDMSubjectType subjectType = PDMSubjectType.privatePerson;
     PDMSubjectStatus status = PDMSubjectStatus.active;
 
@@ -27,11 +28,11 @@ struct PDMDataSubject {
 
     // Corporate fields
     string companyName;
-    string companyId;
+    UUID companyId;
     string department;
 
     // External references
-    string externalId;       // ID in the source system
+    UUID externalId;       // ID in the source system
     string sourceSystem;     // originating application/service
 
     string[string] metadata;
@@ -39,34 +40,31 @@ struct PDMDataSubject {
     SysTime updatedAt;
 
     override Json toJson()  {
-        Json j = Json.emptyObject;
-        j["subject_id"] = subjectId;
-        j["tenant_id"] = tenantId;
-        j["subject_type"] = cast(string) subjectType;
-        j["status"] = cast(string) status;
-        j["first_name"] = firstName;
-        j["last_name"] = lastName;
-        j["display_name"] = displayName;
-        j["email"] = email;
-        j["phone"] = phone;
-        j["company_name"] = companyName;
-        j["company_id"] = companyId;
-        j["department"] = department;
-        j["external_id"] = externalId;
-        j["source_system"] = sourceSystem;
+      auto json = super.toJson()
+        .set("subject_id", subjectId)
+        .set("subject_type", cast(string) subjectType)
+        .set("status", cast(string) status)
+        .set("first_name", firstName)
+        .set("last_name", lastName)
+        .set("display_name", displayName)
+        .set("email", email)
+        .set("phone", phone)
+        .set("company_name", companyName)
+        .set("company_id", companyId.toString())
+        .set("department", department)
+        .set("external_id", externalId)
+        .set("source_system", sourceSystem)
         if (metadata.length > 0) {
-            Json m = Json.emptyObject;
-            foreach (k, v; metadata) m[k] = v;
-            j["metadata"] = m;
+          Json meta = Json.emptyObject;
+          foreach (k, v; metadata) meta[k] = v;
+          json["metadata"] = meta;
         }
-        j["created_at"] = createdAt.toISOExtString();
-        j["updated_at"] = updatedAt.toISOExtString();
-        return j;
-    }
-}
 
-PDMDataSubject subjectFromJson(string subjectId, string tenantId, Json req) {
-    PDMDataSubject s;
+        return json;
+    }
+
+    static PDMDataSubject opCall(string subjectId, string tenantId, Json req) {
+    PDMDataSubject s = new PDMDataSubject(req);
     s.subjectId = subjectId;
     s.tenantId = UUID(tenantId);
     s.createdAt = Clock.currTime();
@@ -104,6 +102,9 @@ PDMDataSubject subjectFromJson(string subjectId, string tenantId, Json req) {
 
     return s;
 }
+
+}
+
 
 private PDMSubjectType parseSubjectType(string s) {
     switch (s) {

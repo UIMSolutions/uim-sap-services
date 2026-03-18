@@ -34,23 +34,19 @@ struct PDMPersonalDataRecord {
     SysTime updatedAt;
 
     override Json toJson()  {
-        Json j = Json.emptyObject;
-        j["record_id"] = recordId;
-        j["subject_id"] = subjectId;
-        j["tenant_id"] = tenantId;
-        j["category"] = cast(string) category;
-        j["purpose"] = cast(string) purpose;
-        j["legal_basis"] = cast(string) legalBasis;
-        j["field_name"] = fieldName;
-        j["field_value"] = fieldValue;
-        j["application_name"] = applicationName;
-        j["application_id"] = applicationId;
-        j["data_store"] = dataStore;
-        j["sensitive"] = sensitive;
-        j["retention_period"] = retentionPeriod;
-        j["created_at"] = createdAt.toISOExtString();
-        j["updated_at"] = updatedAt.toISOExtString();
-        return j;
+        return super.toJson()
+        .set("record_id", recordId)
+        .set("subject_id", subjectId)
+        .set("category", cast(string) category)
+        .set("purpose", cast(string) purpose)
+        .set("legal_basis", cast(string) legalBasis)
+        .set("field_name", fieldName)
+        .set("field_value", fieldValue)
+        .set("application_name", applicationName)
+        .set("application_id", applicationId)
+        .set("data_store", dataStore)
+        .set("sensitive", sensitive)
+        .set("retention_period", retentionPeriod);
     }
 
     /// Redacted version — hides the actual field value
@@ -62,7 +58,7 @@ struct PDMPersonalDataRecord {
 }
 
 PDMPersonalDataRecord recordFromJson(string recordId, string subjectId, string tenantId, Json req) {
-    PDMPersonalDataRecord r;
+    PDMPersonalDataRecord r = new PDMPersonalDataRecord(req);
     r.recordId = recordId;
     r.subjectId = subjectId;
     r.tenantId = UUID(tenantId);

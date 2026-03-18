@@ -29,37 +29,36 @@ struct OBSCredential {
   SysTime expiresAt;
 
   override Json toJson()  {
-    Json j = Json.emptyObject;
-    j["credential_id"] = credentialId;
-    j["bucket_id"] = bucketId;
-    j["tenant_id"] = tenantId;
-    j["credential_type"] = cast(string)credType;
-    j["provider"] = cast(string)provider;
-    j["access_key_id"] = accessKeyId;
-    j["secret_access_key"] = secretAccessKey;
-    if (sessionToken.length > 0)
-      j["session_token"] = sessionToken;
-    j["endpoint"] = endpoint;
-    j["region"] = region;
-    j["issued_at"] = issuedAt.toISOExtString();
-    j["expires_at"] = expiresAt.toISOExtString();
-    return j;
+    Json json = super.toJson;
+    .set("credential_id", credentialId)
+    .set("bucket_id", bucketId)
+    .set("tenant_id", tenantId)
+    .set("credential_type", cast(string)credType)
+    .set("provider", cast(string)provider)
+    .set("access_key_id", accessKeyId)
+    .set("secret_access_key", secretAccessKey)
+    .set("endpoint", endpoint)
+    .set("region", region)
+    .set("issued_at", issuedAt.toISOExtString())
+    .set("expires_at", expiresAt.toISOExtString());
+
+    return sessionToken.length > 0
+      ? json.set("session_token", sessionToken) : json;
   }
 
   /// Redacted version for listing (no secrets)
   Json toRedactedJson() const {
-    Json j = Json.emptyObject;
-    j["credential_id"] = credentialId;
-    j["bucket_id"] = bucketId;
-    j["tenant_id"] = tenantId;
-    j["credential_type"] = cast(string)credType;
-    j["provider"] = cast(string)provider;
-    j["access_key_id"] = accessKeyId;
-    j["secret_access_key"] = "***REDACTED***";
-    j["endpoint"] = endpoint;
-    j["region"] = region;
-    j["issued_at"] = issuedAt.toISOExtString();
-    j["expires_at"] = expiresAt.toISOExtString();
-    return j;
+    return Json.emptyObject
+    .set("credential_id", credentialId)
+    .set("bucket_id", bucketId)
+    .set("tenant_id", tenantId)
+    .set("credential_type", cast(string)credType)
+    .set("provider", cast(string)provider)
+    .set("access_key_id", accessKeyId)
+    .set("secret_access_key", "***REDACTED***")
+    .set("endpoint", endpoint)
+    .set("region", region)
+    .set("issued_at", issuedAt.toISOExtString())
+    .set("expires_at", expiresAt.toISOExtString());
   }
 }

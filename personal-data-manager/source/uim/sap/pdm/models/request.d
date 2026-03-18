@@ -33,27 +33,25 @@ struct PDMDataRequest {
     SysTime completedAt;
 
     override Json toJson()  {
-        Json j = Json.emptyObject;
-        j["request_id"] = requestId;
-        j["subject_id"] = subjectId;
-        j["tenant_id"] = tenantId;
-        j["request_type"] = cast(string) requestType;
-        j["status"] = cast(string) status;
-        j["description"] = description;
-        j["requested_by"] = requestedBy;
-        j["assigned_to"] = assignedTo;
-        j["resolution"] = resolution;
+        Json apps = affectedApplications.map!(app => app.toJson).array.toJson;
 
-        Json apps = Json.emptyArray;
-        foreach (a; affectedApplications) apps ~= Json(a);
-        j["affected_applications"] = apps;
+        Json json = super.toJson
+        .set("request_id", requestId)
+        .set("subject_id", subjectId)
+        .set("tenant_id", tenantId)
+        .set("request_type", cast(string) requestType)
+        .set("status", cast(string) status)
+        .set("description", description)
+        .set("requested_by", requestedBy)
+        .set("assigned_to", assignedTo)
+        .set("resolution", resolution)
+        .set("affected_applications", apps)
+        .set("created_at", createdAt.toISOExtString())
+        .set("updated_at", updatedAt.toISOExtString())
+        .set("deadline", deadline.toISOExtString());
 
-        j["created_at"] = createdAt.toISOExtString();
-        j["updated_at"] = updatedAt.toISOExtString();
-        j["deadline"] = deadline.toISOExtString();
-        if (status == PDMRequestStatus.completed)
-            j["completed_at"] = completedAt.toISOExtString();
-        return j;
+        return status == PDMRequestStatus.completed
+          ? json.set("completed_at", completedAt.toISOExtString()) : json;
     }
 }
 

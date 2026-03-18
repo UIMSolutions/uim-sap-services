@@ -10,15 +10,16 @@ import uim.sap.clf;
 mixin(ShowModule!());
 
 @safe:
-struct CLFApp {
+class CLFApp : SAPObject {
+  mixin(SAPObjectTemplate!CLFApp);
+
   string guid;
   string name;
   string spaceGuid;
   string state = "STOPPED";
   uint instances = 1;
   uint memoryMb = 256;
-  SysTime createdAt;
-
+  
   override Json toJson()  {
     return super.toJson
     .set("guid", guid)
@@ -26,11 +27,10 @@ struct CLFApp {
     .set("space_guid", spaceGuid)
     .set("state", state)
     .set("instances", cast(long)instances)
-    .set("memory_mb", cast(long)memoryMb)
+    .set("memory_mb", cast(long)memoryMb);
   }
-}
 
-CLFApp appFromJson(Json payload) {
+  static CLFApp opCall(Json payload) {
   CLFApp app = new CLFApp(payload);
   app.guid = randomUUID().toString();
   app.createdAt = Clock.currTime();
@@ -57,3 +57,6 @@ CLFApp appFromJson(Json payload) {
   }
   return app;
 }
+}
+
+

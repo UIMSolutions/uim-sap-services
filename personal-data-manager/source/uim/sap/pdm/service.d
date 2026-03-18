@@ -95,7 +95,7 @@ class PDMService : SAPService {
       throw new PDMQuotaExceededException("subjects", cfg.maxSubjectsPerTenant);
 
     string subjectId = generateSubjectId();
-    PDMDataSubject s = subjectFromJson(subjectId, tenantId, req);
+    PDMDataSubject s = PDMDataSubject(subjectId, tenantId, req);
     _store.upsertSubject(s);
     return s.toJson();
   }
@@ -113,10 +113,10 @@ class PDMService : SAPService {
     Json arr = Json.emptyArray;
     foreach (ref s; subjects)
       arr ~= s.toJson();
-    Json result = Json.emptyObject;
-    result["subjects"] = arr;
-    result["total"] = cast(long)subjects.length;
-    return result;
+    
+    return Json.emptyObject
+    .set("subjects", arr)
+    .set("total", cast(long)subjects.length);
   }
 
   /// Search subjects by term (name, email, company, external ID)
@@ -126,11 +126,11 @@ class PDMService : SAPService {
     Json arr = Json.emptyArray;
     foreach (ref s; subjects)
       arr ~= s.toJson();
-    Json result = Json.emptyObject;
-    result["subjects"] = arr;
-    result["total"] = cast(long)subjects.length;
-    result["search_term"] = term;
-    return result;
+    
+    return Json.emptyObject
+    .set("subjects", arr)
+    .set("total", cast(long)subjects.length)
+    .set("search_term", term);
   }
 
   /// Search subjects by type (private or corporate)
@@ -141,11 +141,11 @@ class PDMService : SAPService {
     Json arr = Json.emptyArray;
     foreach (ref s; subjects)
       arr ~= s.toJson();
-    Json result = Json.emptyObject;
-    result["subjects"] = arr;
-    result["total"] = cast(long)subjects.length;
-    result["subject_type"] = typeStr;
-    return result;
+
+    return Json.emptyObject
+    .set("subjects", arr)
+    .set("total", cast(long)subjects.length)
+    .set("subject_type", typeStr);
   }
 
   Json updateSubject(string tenantId, string subjectId, Json req) {
@@ -181,10 +181,9 @@ class PDMService : SAPService {
     _store.removeRecordsBySubject(tenantId, subjectId);
     _store.removeSubject(tenantId, subjectId);
 
-    Json result = Json.emptyObject;
-    result["status"] = "deleted";
-    result["subject_id"] = subjectId;
-    return result;
+    return Json.emptyObject
+    .set("status", "deleted")
+    .set("subject_id", subjectId);
   }
 
   // ══════════════════════════════════════
@@ -240,15 +239,14 @@ class PDMService : SAPService {
     foreach (ref u; usages)
       usageArr ~= u.toJson();
 
-    Json report = Json.emptyObject;
-    report["report_type"] = "personal_data_report";
-    report["generated_at"] = Clock.currTime().toISOExtString();
-    report["subject"] = subject.toJson();
-    report["personal_data_records"] = recArr;
-    report["data_usages"] = usageArr;
-    report["total_records"] = cast(long)records.length;
-    report["total_usages"] = cast(long)usages.length;
-    return report;
+    return Json.emptyObject
+    .set("report_type", "personal_data_report")
+    .set("generated_at", Clock.currTime().toISOExtString())
+    .set("subject", subject.toJson())
+    .set("personal_data_records", recArr)
+    .set("data_usages", usageArr)
+    .set("total_records", cast(long)records.length)
+    .set("total_usages", cast(long)usages.length);
   }
 
   Json deleteRecord(string tenantId, string recordId) {
@@ -256,10 +254,10 @@ class PDMService : SAPService {
     if (!_store.hasRecord(tenantId, recordId))
       throw new PDMNotFoundException("PersonalDataRecord", recordId);
     _store.removeRecord(tenantId, recordId);
-    Json result = Json.emptyObject;
-    result["status"] = "deleted";
-    result["record_id"] = recordId;
-    return result;
+
+    return Json.emptyObject
+    .set("status", "deleted")
+    .set("record_id", recordId);
   }
 
   // ══════════════════════════════════════
@@ -306,11 +304,11 @@ class PDMService : SAPService {
     Json arr = Json.emptyArray;
     foreach (ref r; requests)
       arr ~= r.toJson();
-    Json result = Json.emptyObject;
-    result["subject_id"] = subjectId;
-    result["requests"] = arr;
-    result["total"] = cast(long)requests.length;
-    return result;
+
+    return Json.emptyObject
+    .set("subject_id", subjectId)
+    .set("requests", arr)
+    .set("total", cast(long)requests.length);
   }
 
   Json listRequestsByStatus(string tenantId, string statusStr) {
@@ -320,11 +318,11 @@ class PDMService : SAPService {
     Json arr = Json.emptyArray;
     foreach (ref r; requests)
       arr ~= r.toJson();
-    Json result = Json.emptyObject;
-    result["status_filter"] = statusStr;
-    result["requests"] = arr;
-    result["total"] = cast(long)requests.length;
-    return result;
+
+    return Json.emptyObject
+    .set("status_filter", statusStr)
+    .set("requests", arr)
+    .set("total", cast(long)requests.length);
   }
 
   /// Submit a draft request for processing
@@ -478,13 +476,11 @@ class PDMService : SAPService {
   Json listNotifications(string tenantId, string subjectId) {
     ensureTenant(tenantId);
     auto notifications = _store.listNotificationsBySubject(tenantId, subjectId);
-    Json arr = Json.emptyArray;
-    foreach (ref n; notifications)
-      arr ~= n.toJson();
-    Json result = Json.emptyObject;
-    result["notifications"] = arr;
-    result["total"] = cast(long)notifications.length;
-    return result;
+    Json arr = notifications.map!(notif => n.toJson()).array.toJson;
+
+    return Json.emptyObject
+    .set("notifications", arr)
+    .set("total", cast(long)notifications.length);
   }
 
   // ══════════════════════════════════════

@@ -12,11 +12,12 @@ mixin(ShowModule!());
 @safe:
 
 /// Notification sent to a data subject about their personal data
-struct PDMNotification {
-    string notificationId;
-    string subjectId;
-    string tenantId;
-    string requestId;        // optional: linked to a data request
+class PDMNotification : SAPTenantObject {
+  mixin(SAPObjectTemplate!PDMNotification);
+
+    UUID notificationId;
+    UUID subjectId;
+    UUID requestId;        // optional: linked to a data request
 
     PDMNotificationChannel channel = PDMNotificationChannel.email;
     PDMNotificationStatus status = PDMNotificationStatus.pending;
@@ -24,27 +25,25 @@ struct PDMNotification {
     string recipient;        // email address or portal user
     string subject;          // notification subject line
     string body_;            // notification body content
-    string templateId;       // optional template reference
+    UUID templateId;       // optional template reference
 
     SysTime createdAt;
     SysTime sentAt;
 
     override Json toJson()  {
-        Json j = Json.emptyObject;
-        j["notification_id"] = notificationId;
-        j["subject_id"] = subjectId;
-        j["tenant_id"] = tenantId;
-        j["request_id"] = requestId;
-        j["channel"] = cast(string) channel;
-        j["status"] = cast(string) status;
-        j["recipient"] = recipient;
-        j["subject"] = subject;
-        j["body"] = body_;
-        j["template_id"] = templateId;
-        j["created_at"] = createdAt.toISOExtString();
-        if (status != PDMNotificationStatus.pending)
-            j["sent_at"] = sentAt.toISOExtString();
-        return j;
+        Json json = super.toJson()
+        .set("notification_id", notificationId)
+        .set("subject_id", subjectId)
+        .set("request_id", requestId)
+        .set("channel", cast(string) channel)
+        .set("status", cast(string) status)
+        .set("recipient", recipient)
+        .set("subject", subject)
+        .set("body", body_)
+        .set("template_id", templateId);
+
+        return status != PDMNotificationStatus.pending
+          ? json.set("sent_at", sentAt.toISOExtString()) : json;
     }
 }
 

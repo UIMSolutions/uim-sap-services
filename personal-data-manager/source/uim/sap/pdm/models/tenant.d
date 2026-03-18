@@ -12,8 +12,9 @@ mixin(ShowModule!());
 @safe:
 
 /// Tenant in a multitenant deployment
-struct PDMTenant {
-    string tenantId;
+class PDMTenant : SAPTenantObject {
+  mixin(SAPObjectTemplate!PDMTenant);
+
     string name;
     string description;
     string contactEmail;
@@ -23,42 +24,33 @@ struct PDMTenant {
     size_t requestCount;     // active requests
 
     string[string] metadata;
-    SysTime createdAt;
-    SysTime updatedAt;
 
     override Json toJson()  {
-        Json j = Json.emptyObject;
-        j["tenant_id"] = tenantId;
-        j["name"] = name;
-        j["description"] = description;
-        j["contact_email"] = contactEmail;
-        j["active"] = active;
-
-        import std.conv : to;
-        j["subject_count"] = subjectCount.to!long;
-        j["request_count"] = requestCount.to!long;
+        Json json = super.toJson
+        .set("name", name)
+        .set("description", description)
+        .set("contact_email", contactEmail)
+        .set("active", active)
+        .set("subject_count", subjectCount.to!long)
+        .set("request_count", requestCount.to!long);
 
         if (metadata.length > 0) {
             Json m = Json.emptyObject;
             foreach (k, v; metadata) m[k] = v;
-            j["metadata"] = m;
+            Json["metadata"] = m;
         }
-        j["created_at"] = createdAt.toISOExtString();
-        j["updated_at"] = updatedAt.toISOExtString();
-        return j;
-    }
-}
 
-PDMTenant tenantFromJson(string tenantId, Json req) {
-    PDMTenant t;
+        return Json;
+    }
+
+    static PDMTenant tenantFromJson(string tenantId, Json req) {
+    PDMTenant t = new PDMTenant(req);
     t.tenantId = UUID(tenantId);
     t.createdAt = Clock.currTime();
     t.updatedAt = t.createdAt;
 
-    if ("name" in req && req["name"].isString)
-        t.name = req["name"].get!string;
-    else
-        t.name = tenantId;
+    t.name = "name" in req && req["name"].isString 
+      ? req["name"].get!string : tenantId;
     if ("description" in req && req["description"].isString)
         t.description = req["description"].get!string;
     if ("contact_email" in req && req["contact_email"].isString)
@@ -67,5 +59,9 @@ PDMTenant tenantFromJson(string tenantId, Json req) {
         foreach (string k, v; req["metadata"])
             if (v.isString) t.metadata[k] = v.get!string;
     }
+
     return t;
 }
+
+}
+
