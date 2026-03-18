@@ -1,19 +1,14 @@
 module uim.sap.usagedatamanagement.server;
 
-import std.array : split;
-import std.string : startsWith;
-
-import vibe.data.json : Json;
-import vibe.http.common : HTTPMethod;
-import vibe.http.server : HTTPServerRequest, HTTPServerResponse, HTTPServerSettings, listenHTTP;
-
 import uim.sap.usagedatamanagement;
 
 mixin(ShowModule!());
 
 @safe:
 
-class UDMServer {
+class UDMServer : SAPServer {
+mixin(SAPServerTemplate!UDMServer);
+
   private UDMService _service;
 
   this(UDMService service) {
@@ -118,11 +113,7 @@ class UDMServer {
   }
 
   private bool matchesBasePath(string path, string basePath) {
-    if (path == basePath) {
-      return true;
-    }
-
-    return path.startsWith(basePath ~ "/");
+    return path == basePath ? true : path.startsWith(basePath ~ "/");
   }
 
   private void validateAuth(HTTPServerRequest req) {
@@ -148,17 +139,16 @@ class UDMServer {
     if (clean.length > 0 && clean[$ - 1] == '/') {
       clean = clean[0 .. $ - 1];
     }
-    if (clean.length == 0) {
-      return [];
-    }
-    return clean.split("/");
+
+	return clean.length == 0 ? null : clean.split("/");
   }
 
   private void respondError(HTTPServerResponse res, string message, int statusCode) {
-    Json payload = Json.emptyObject;
-    payload["success"] = false;
-    payload["message"] = message;
-    payload["statusCode"] = statusCode;
+    Json payload = Json.emptyObject
+    .set("success", false)
+    .set("message", message)
+    .set("statusCode", statusCode);
+
     res.writeJsonBody(payload, statusCode);
   }
 }
