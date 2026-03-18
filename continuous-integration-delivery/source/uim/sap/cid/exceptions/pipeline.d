@@ -1,4 +1,9 @@
 module uim.sap.cid.exceptions.pipeline;
+import uim.sap.cid;
+
+mixin(ShowModule!());
+
+@safe:
 
 /// Thrown when a pipeline operation is invalid (e.g. trigger while already running)
 class CIDPipelineException : CIDException {

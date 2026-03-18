@@ -1,15 +1,10 @@
 module uim.sap.cid.server;
 
-import std.array  : split;
-import std.string : startsWith;
+import uim.sap.cid;
 
-import vibe.data.json   : Json;
-import vibe.http.common : HTTPMethod;
-import vibe.http.server : HTTPServerRequest, HTTPServerResponse,
-                          HTTPServerSettings, listenHTTP;
+mixin(ShowModule!());
 
-import uim.sap.cid.exceptions;
-import uim.sap.cid.service;
+@safe:
 
 // ---------------------------------------------------------------------------
 // CIDServer – Vibe.D HTTP server for Continuous Integration and Delivery

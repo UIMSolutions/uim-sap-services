@@ -1,16 +1,17 @@
 module uim.sap.cid.store;
 
-import std.algorithm : sort;
-import std.array     : array;
-import std.conv      : to;
-import std.string    : startsWith;
+import uim.sap.cid;
 
-import uim.sap.cid.models;
+mixin(ShowModule!());
+
+@safe:
 
 // ---------------------------------------------------------------------------
 // CIDStore – in-memory multi-tenant store for CI/CD entities
 // ---------------------------------------------------------------------------
 class CIDStore : SAPStore {
+  mixin(SAPStoreTemplate!CIDStore);
+  
     private CIDRepository[string]  _repos;
     private CIDCredential[string]  _creds;
     private CIDPipeline[string]    _pipelines;

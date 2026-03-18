@@ -1,4 +1,9 @@
 module uim.sap.cid.exceptions.configuration;
+import uim.sap.cid;
+
+mixin(ShowModule!());
+
+@safe:
 
 class CIDConfigurationException : SAPConfigurationException {
   this(string message) {

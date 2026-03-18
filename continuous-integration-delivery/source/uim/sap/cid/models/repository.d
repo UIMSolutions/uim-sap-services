@@ -1,4 +1,9 @@
 module uim.sap.cid.models.repository;
+import uim.sap.cid;
+
+mixin(ShowModule!());
+
+@safe:
 
 // ---------------------------------------------------------------------------
 // CIDRepository – a connected Git repository

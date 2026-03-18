@@ -1,17 +1,10 @@
 module uim.sap.cid.service;
 
-import std.algorithm : canFind;
-import std.array : array;
-import std.conv : to;
-import std.datetime : Clock, SysTime;
-import std.string : toLower;
+import uim.sap.cid;
 
-import vibe.data.json : Json;
+mixin(ShowModule!());
 
-import uim.sap.cid.config;
-import uim.sap.cid.exceptions;
-import uim.sap.cid.models;
-import uim.sap.cid.store;
+@safe:
 
 // ---------------------------------------------------------------------------
 // CIDService – business logic for Continuous Integration and Delivery
@@ -31,11 +24,10 @@ class CIDService : SAPService {
   // Health / readiness
   // -----------------------------------------------------------------------
   Json health() const {
-    Json healthInfo = super.health();
-    healthInfo["runtime"] = _config.runtime;
-    healthInfo["multitenancy"] = true;
-    healthInfo["domain"] = "continuous-integration-delivery";
-    return healthInfo;
+    return super.health()
+    .set("runtime", _config.runtime)
+    .set("multitenancy", true)
+    .set("domain", "continuous-integration-delivery");
   }
 
   // -----------------------------------------------------------------------

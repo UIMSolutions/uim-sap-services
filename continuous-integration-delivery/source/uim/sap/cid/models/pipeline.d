@@ -1,4 +1,9 @@
 module uim.sap.cid.models.pipeline;
+import uim.sap.cid;
+
+mixin(ShowModule!());
+
+@safe:
 
 // ---------------------------------------------------------------------------
 // CIDPipeline – a CI/CD pipeline configuration

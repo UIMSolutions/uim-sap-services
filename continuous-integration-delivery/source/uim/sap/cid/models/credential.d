@@ -1,4 +1,9 @@
 module uim.sap.cid.models.credential;
+import uim.sap.cid;
+
+mixin(ShowModule!());
+
+@safe:
 
 // ---------------------------------------------------------------------------
 // CIDCredential – a stored credential for private repositories
