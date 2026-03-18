@@ -18,7 +18,31 @@ mixin(ShowModule!());
   *
   * The `fromJson` method allows creating a `CLGLogEntry` instance from a JSON payload, while the `toJson` method converts an instance back to JSON format.
   */
-struct CLGLogEntry {
+class CLGLogEntry : SAPObject {
+ mixin(SAPObjectTemplate!CLGLogEntry);
+
+override bool initialize(Json[string] initData = null) {
+	if (!super.initialize(initData)) {
+return false;
+}
+        if ("tenant" in initData && initData["tenant"].isString) {
+            tenant = initData["tenant"].get!string;
+        }
+        if ("source" in initData && initData["source"].isString) {
+            source = initData["source"].get!string;
+        }
+        if ("level" in initData && initData["level"].isString) {
+            level = initData(payload["level"].get!string);
+        }
+        if ("message" in initData && initData["message"].isString) {
+            message = initData["message"].get!string;
+        }
+        if ("attributes" in initData) {
+            attributes = initData["attributes"];
+        }
+
+return true;
+}
     UUID id;
     SysTime timestamp;
     string tenant;
@@ -27,38 +51,23 @@ struct CLGLogEntry {
     string message;
     Json attributes = Json.emptyObject;
 
-    static CLGLogEntry fromJson(Json payload) {
-        CLGLogEntry entry;
+
+    override Json toJson()  {
+        return super.toJson()
+        .set("id", id)
+        .set("timestamp", timestamp.toISOExtString())
+        .set("tenant", tenant)
+        .set("source", source)
+        .set("level", formatLevel(level))
+        .set("message", message)
+        .set("attributes", attributes);
+    }
+
+    static CLGLogEntry opCall(Json payload) {
+        CLGLogEntry entry = new CLGLogEntry(payload);
         entry.id = randomUUID().toString();
         entry.timestamp = Clock.currTime();
 
-        if ("tenant" in payload && payload["tenant"].isString) {
-            entry.tenant = payload["tenant"].get!string;
-        }
-        if ("source" in payload && payload["source"].isString) {
-            entry.source = payload["source"].get!string;
-        }
-        if ("level" in payload && payload["level"].isString) {
-            entry.level = parseLevel(payload["level"].get!string);
-        }
-        if ("message" in payload && payload["message"].isString) {
-            entry.message = payload["message"].get!string;
-        }
-        if ("attributes" in payload) {
-            entry.attributes = payload["attributes"];
-        }
         return entry;
-    }
-
-    override Json toJson()  {
-        Json payload = Json.emptyObject;
-        payload["id"] = id;
-        payload["timestamp"] = timestamp.toISOExtString();
-        payload["tenant"] = tenant;
-        payload["source"] = source;
-        payload["level"] = formatLevel(level);
-        payload["message"] = message;
-        payload["attributes"] = attributes;
-        return payload;
     }
 }
