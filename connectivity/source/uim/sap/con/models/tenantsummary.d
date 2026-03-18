@@ -5,14 +5,19 @@
 *****************************************************************************************************************/
 module uim.sap.con.models.tenantsummary;
 
-struct CONTenantSummary {
-    string tenantId;
+import uim.sap.con;
+
+mixin(ShowModule!());
+
+@safe:
+
+class CONTenantSummary : SAPTenantObject {
+mixin(SAPObjectTemplate!CONTenantSummary);
+
     size_t destinations;
 
     override Json toJson()  {
-        Json payload = Json.emptyObject;
-        payload["tenant_id"] = tenantId;
-        payload["destinations"] = cast(long)destinations;
-        return payload;
+        return super.toJson()
+        .set("destinations", cast(long)destinations);
     }
 }
