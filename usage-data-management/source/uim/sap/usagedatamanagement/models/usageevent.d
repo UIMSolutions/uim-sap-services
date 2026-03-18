@@ -8,12 +8,13 @@ mixin(ShowModule!());
 
 @safe:
 
-struct UsageEvent {
-  string tenantId;
-  string usageEventId;
-  string accountId;
-  string directoryId;
-  string subaccountId;
+class UsageEvent : SAPTenantObject {
+mixin(SAPObjectTemplate!UsageEvent); 
+
+  UUID usageEventId;
+  UUID accountId;
+  UUID directoryId;
+  UUID subaccountId;
   string region;
   string serviceName;
   string planName;
@@ -27,24 +28,21 @@ struct UsageEvent {
   SysTime createdAt;
 
   Json toJson() const {
-    Json payload = Json.emptyObject;
-    payload["tenant_id"] = tenantId;
-    payload["usage_event_id"] = usageEventId;
-    payload["account_id"] = accountId;
-    payload["directory_id"] = directoryId;
-    payload["subaccount_id"] = subaccountId;
-    payload["region"] = region;
-    payload["service_name"] = serviceName;
-    payload["plan_name"] = planName;
-    payload["metric"] = metric;
-    payload["quantity"] = quantity;
-    payload["unit"] = unit;
-    payload["billable"] = billable;
-    payload["unit_price"] = unitPrice;
-    payload["currency"] = currency;
-    payload["occurred_at"] = occurredAt;
-    payload["created_at"] = createdAt.toISOExtString();
-    return payload;
+    return super.toJson
+    .set("usage_event_id", usageEventId)
+    .set("account_id", accountId)
+    .set("directory_id", directoryId)
+    .set("subaccount_id", subaccountId)
+    .set("region", region)
+    .set("service_name", serviceName)
+    .set("plan_name", planName)
+    .set("metric", metric)
+    .set("quantity", quantity)
+    .set("unit", unit)
+    .set("billable", billable)
+    .set("unit_price", unitPrice)
+    .set("currency", currency)
+    .set("occurred_at", occurredAt);
   }
 
   static UsageEvent fromJson(string tenantId, Json request) {
