@@ -17,9 +17,9 @@ struct CLFSpace {
 
   override Json toJson()  {
     return super.toJson
-    .set"guid", guid)
-    .set"name", name)
-    .set"organization_guid", organizationGuid);
+    .set("guid", guid)
+    .set("name", name)
+    .set("organization_guid", organizationGuid);
   }
 }
 

@@ -10,26 +10,36 @@ import uim.sap.clf;
 mixin(ShowModule!());
 
 @safe:
-struct CLFOrg {
-    string guid;
-    string name;
-    SysTime createdAt;
+class CLFOrg : SAPObject {
+  mixin(SAPObjectTemplate!CLFOrg);
 
-    override Json toJson()  {
-        Json payload = Json.emptyObject;
-        payload["guid"] = guid;
-        payload["name"] = name;
-        payload["created_at"] = createdAt.toISOExtString();
-        return payload;
+  override bool initialize(Json[string] initData = null) {
+    if (!super.initialize(initData)) {
+      return false;
     }
-}
 
-CLFOrg orgFromJson(Json payload) {
-    CLFOrg org;
+    if ("name" in initData && initData["name"].isString) {
+      name = initData["name"].get!string;
+    }
+
+    return true;
+  }
+
+  string guid;
+  string name;
+
+  override Json toJson() {
+    return super.toJson()
+      .set("guid", guid)
+      .set("name", name);
+  }
+
+  static CLFOrg opCall(Json payload) {
+    CLFOrg org = new CLFOrg(payload);
     org.guid = randomUUID().toString();
     org.createdAt = Clock.currTime();
-    if ("name" in payload && payload["name"].isString) {
-        org.name = payload["name"].get!string;
-    }
     return org;
 }
+}
+
+

@@ -58,5 +58,19 @@ class CLFApp : SAPObject {
   return app;
 }
 }
+///
+unittest {
+  Json payload = Json.emptyObject
+    .set("name", "my-app")
+    .set("space_guid", "space-123")
+    .set("state", "STARTED")
+    .set("instances", 2)
+    .set("memory_mb", 512);
 
-
+  CLFApp app = CLFApp(payload);
+  assert(app.name == "my-app");
+  assert(app.spaceGuid == "space-123");
+  assert(app.state == "STARTED");
+  assert(app.instances == 2);
+  assert(app.memoryMb == 512);
+}

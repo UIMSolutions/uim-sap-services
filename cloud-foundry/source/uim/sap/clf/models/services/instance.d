@@ -10,7 +10,34 @@ import uim.sap.clf;
 mixin(ShowModule!());
 
 @safe:
-struct CLFServiceInstance {
+class CLFServiceInstance : SAPObject {
+  mixin(SAPObjectTemplate!CLFServiceInstance);
+
+  override bool initialize(Json[string] initData = null) {
+    if (!super.initialize(initData)) {
+      return false;
+    }
+
+    if ("guid" in initData && initData["guid"].isString) {
+      guid = initData["guid"].get!string;
+    }
+
+    if ("name" in initData && initData["name"].isString) {
+      name = initData["name"].get!string;
+    }
+    
+    if ("service_guid" in payload && payload["service_guid"].isString) {
+      instance.serviceGuid = payload["service_guid"].get!string;
+    }
+    
+    if ("space_guid" in payload && payload["space_guid"].isString) {
+      instance.spaceGuid = payload["space_guid"].get!string;
+    }
+
+    status = initData.getSString("status", "create succeeded");
+    return true;
+  }
+
   string guid;
   string name;
   string serviceGuid;
@@ -18,30 +45,20 @@ struct CLFServiceInstance {
   string status = "create succeeded";
   SysTime createdAt;
 
-  override Json toJson()  {
-    Json info = super.toJson;
-    payload["guid"] = guid;
-    payload["name"] = name;
-    payload["service_guid"] = serviceGuid;
-    payload["space_guid"] = spaceGuid;
-    payload["status"] = status;
-    payload["created_at"] = createdAt.toISOExtString();
-    return payload;
+  override Json toJson() {
+    return super.toJson()
+    .set("guid", guid)
+    .set("name", name)
+    .set("service_guid", serviceGuid)
+    .set("space_guid", spaceGuid)
+    .set("status", status);
   }
 
-CLFServiceInstance opCall(Json payload) {
-  CLFServiceInstance instance;
-  instance.guid = randomUUID().toString();
-  instance.createdAt = Clock.currTime();
-  if ("name" in payload && payload["name"].isString) {
-    instance.name = payload["name"].get!string;
+  CLFServiceInstance opCall(Json payload) {
+    CLFServiceInstance instance = new CLFServiceInstance(payload);
+
+    instance.guid = randomUUID().toString();
+    instance.createdAt = Clock.currTime();
+    return instance;
   }
-  if ("service_guid" in payload && payload["service_guid"].isString) {
-    instance.serviceGuid = payload["service_guid"].get!string;
-  }
-  if ("space_guid" in payload && payload["space_guid"].isString) {
-    instance.spaceGuid = payload["space_guid"].get!string;
-  }
-  return instance;
-}
 }

@@ -23,7 +23,7 @@ class CLFService : SAPService {
   }
 
   Json createOrganization(Json request) {
-    auto org = orgFromJson(request);
+    auto org = CLFOrg(request);
     if (org.name.length == 0) {
       throw new CLFValidationException("Organization name is required");
     }
@@ -41,7 +41,7 @@ class CLFService : SAPService {
   }
 
   Json createSpace(Json request) {
-    auto space = spaceFromJson(request);
+    auto space = CLFSpace(request);
     if (space.name.length == 0) {
       throw new CLFValidationException("Space name is required");
     }
@@ -56,18 +56,15 @@ class CLFService : SAPService {
   }
 
   Json listSpaces() {
-    Json payload = Json.emptyObject;
-    Json resources = Json.emptyArray;
-    foreach (space; _store.listSpaces()) {
-      resources ~= space.toJson();
-    }
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)_store.listSpaces().length;
-    return payload;
+    Json resources = _store.listSpaces().map!(space => space.toJson()).array.toJson;
+
+    return Json.emptyObject
+    .set("resources", resources)
+    .set("total_results", cast(long)_store.listSpaces().length);
   }
 
   Json createApp(Json request) {
-    auto app = appFromJson(request);
+    auto app = CLFApp(request);
     if (app.name.length == 0) {
       throw new CLFValidationException("App name is required");
     }
@@ -85,10 +82,9 @@ class CLFService : SAPService {
   Json listApps() {
     Json resources = _store.listApps().map!(app => app.toJson()).array.toJson;
 
-    Json payload = Json.emptyObject;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)_store.listApps().length;
-    return payload;
+    return Json.emptyObject
+    .set("resources", resources)
+    .set("total_results", cast(long)_store.listApps().length);
   }
 
   Json getApp(string guid) {
@@ -102,10 +98,9 @@ class CLFService : SAPService {
   Json listServiceOfferings() {
     Json resources = _store.listServiceOfferings().map!(offering => offering.toJson()).array.toJson;
 
-    Json payload = Json.emptyObject;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)_store.listServiceOfferings().length;
-    return payload;
+    return Json.emptyObject
+    .set("resources", resources)
+    .set("total_results", cast(long)_store.listServiceOfferings().length);
   }
 
   Json createServiceInstance(Json request) {
@@ -133,9 +128,8 @@ class CLFService : SAPService {
   Json listServiceInstances() {
     Json resources = _store.listServiceInstances().map!(instance => instance.toJson()).array.toJson;
 
-    Json payload = Json.emptyObject;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)_store.listServiceInstances().length;
-    return payload;
+    return Json.emptyObject
+    .set("resources", resources)
+    .set("total_results", cast(long)_store.listServiceInstances().length);
   }
 }
