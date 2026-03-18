@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uim-service-manager-service
+  labels:
+    app: uim-service-manager-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: uim-service-manager-service
+  template:
+    metadata:
+      labels:
+        app: uim-service-manager-service
+    spec:
+      containers:
+      - name: uim-service-manager-service
+        image: uimsolutions/uim-service-manager-service:latest
+        imagePullPolicy: IfNotPresent
+        envFrom:
+        - configMapRef:
+            name: uim-service-manager-config
+        ports:
+        - containerPort: 8111
+        readinessProbe:
+          httpGet:
+            path: /api/service-manager/ready
+            port: 8111
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /api/service-manager/health
+            port: 8111
+          initialDelaySeconds: 5
+          periodSeconds: 10
