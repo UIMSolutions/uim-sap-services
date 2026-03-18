@@ -5,7 +5,7 @@
  * License: Apache-2.0
  * Authors: Ozan Nurettin Süel
  */
-module uim.sap.utils;
+module uim.sap.hac.utils;
 
 import std.string : format, join;
 import std.algorithm : map;

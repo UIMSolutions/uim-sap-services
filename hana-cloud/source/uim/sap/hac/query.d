@@ -5,7 +5,7 @@
  * License: Apache-2.0
  * Authors: Ozan Nurettin Süel
  */
-module uim.sap.query;
+module uim.sap.hac.query;
 
 import std.string : format, join;
 import std.array : array, Appender;
