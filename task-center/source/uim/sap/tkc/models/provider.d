@@ -11,27 +11,24 @@ mixin(ShowModule!());
 
 @safe:
 
-struct TKCProvider {
-  string providerId;
+class TKCProvider : SAPObject {
+mixin(SAPObjectTemplate!TKCProvider);
+
+  UUID providerId;
   string name;
   string providerType;
   string endpoint;
   bool active = true;
-  SysTime createdAt;
-  SysTime updatedAt;
   bool hasLastSync;
   SysTime lastSyncAt;
 
   override Json toJson()  {
-    Json info = super.toJson;
-    payload["provider_id"] = providerId;
-    payload["name"] = name;
-    payload["provider_type"] = providerType;
-    payload["endpoint"] = endpoint;
-    payload["active"] = active;
-    payload["created_at"] = createdAt.toISOExtString();
-    payload["updated_at"] = updatedAt.toISOExtString();
-    payload["last_sync_at"] = hasLastSync ? lastSyncAt.toISOExtString() : null;
-    return payload;
+    return super.toJson
+    .set("provider_id", providerId)
+    .set("name", name)
+    .set("provider_type", providerType)
+    .set("endpoint", endpoint)
+    .set("active", active)
+    .set("last_sync_at", hasLastSync ? lastSyncAt.toISOExtString() : null);
   }
 }
