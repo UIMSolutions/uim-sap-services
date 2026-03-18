@@ -5,6 +5,12 @@
 *****************************************************************************************************************/
 module uim.sap.con.exceptions.authorization;
 
+import uim.sap.con;
+
+mixin(ShowModule!());
+
+@safe:
+
 class CONAuthorizationException : CONException {
     this(string msg) {
         super(msg);
