@@ -2,7 +2,7 @@ module uim.sap.ctm.exceptions.configuration;
 
 import uim.sap.ctm;
 
-module(ShowModule!());
+mixin(ShowModule!());
 
 @safe:
 
