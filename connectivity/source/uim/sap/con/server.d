@@ -5,15 +5,11 @@
 *****************************************************************************************************************/
 module uim.sap.con.server;
 
-import std.array : split;
-import std.string : startsWith;
+import uim.sap.con;
 
-import vibe.data.json : Json;
-import vibe.http.common : HTTPMethod;
-import vibe.http.server : HTTPServerRequest, HTTPServerResponse, HTTPServerSettings, listenHTTP;
+mixin(ShowModule!());
 
-import uim.sap.con.exceptions;
-import uim.sap.con.service;
+@safe:
 
 class CONServer {
   private CONService _service;
@@ -157,10 +153,11 @@ class CONServer {
   }
 
   private void respondError(HTTPServerResponse res, string message, int statusCode) {
-    Json payload = Json.emptyObject;
-    payload["success"] = false;
-    payload["message"] = message;
-    payload["statusCode"] = statusCode;
+    Json payload = Json.emptyObject
+    .set("success", false)
+    .set("message", message)
+    .set("statusCode", statusCode);
+
     res.writeJsonBody(payload, statusCode);
   }
 }
