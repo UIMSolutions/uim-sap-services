@@ -21,22 +21,22 @@ class CONService : SAPService {
   }
 
   override Json health() {
-    Json healthInfo = super.health();
-    healthInfo["connector_location_id"] = _config.connectorLocationId;
-    healthInfo["destinations"] = cast(long)_store.countDestinations();
-    return healthInfo;
+			CONConfig cfg = cast(CONConfig)_config;
+			
+    return super.health()
+    .set("connector_location_id", cfg.connectorLocationId)
+    .set("destinations", cast(long)_store.countDestinations());
   }
 
   Json supportedProtocols() {
     Json protocols = CON_SUPPORTED_PROTOCOLS.toJson;
 
-    Json payload = Json.emptyObject;
-    payload["protocols"] = protocols;
-    payload["supports_hybrid_connectivity"] = true;
-    payload["supports_identity_propagation"] = true;
-    payload["supports_multitenancy"] = true;
-    payload["firewall_changes_required"] = false;
-    return payload;
+    return Json.emptyObject
+    .set("protocols", protocols)
+    .set("supports_hybrid_connectivity", true)
+    .set("supports_identity_propagation", true)
+    .set("supports_multitenancy", true)
+    .set("firewall_changes_required", false);
   }
 
   Json upsertDestination(string tenantId, string destinationName, Json request) {
@@ -49,11 +49,10 @@ class CONService : SAPService {
 
     auto saved = _store.upsertDestination(destination);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["destination"] = saved.toJson();
-    payload["deployment_benefit"] = "hybrid tunnel without firewall reconfiguration";
-    return payload;
+    return Json.emptyObject
+    .set("success", true)
+    .set("destination", saved.toJson())
+    .set("deployment_benefit", "hybrid tunnel without firewall reconfiguration");
   }
 
   Json listDestinations(string tenantId) {
@@ -77,9 +76,8 @@ class CONService : SAPService {
       throw new CONNotFoundException("Destination", tenantId ~ "/" ~ destinationName);
     }
 
-    Json payload = Json.emptyObject;
-    payload["destination"] = destination.toJson();
-    return payload;
+    return Json.emptyObject
+    .set("destination", destination.toJson());
   }
 
   Json deleteDestination(string tenantId, string destinationName) {
