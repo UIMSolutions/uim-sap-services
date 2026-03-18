@@ -11,14 +11,13 @@ mixin(ShowModule!());
 
 @safe:
 
-struct CLGMetrics {
+class CLGMetrics : SAPObject {
+mixin(SAPObjectTemplate!CLGMetrics);
+
   size_t totalEntries;
   long[CLGLogLevel] entriesByLevel;
 
   override Json toJson()  {
-    Json info = super.toJson;
-    payload["totalEntries"] = cast(long)totalEntries;
-
     Json levels = Json.emptyObject;
     foreach (lvl; [
         CLGLogLevel.TRACE, CLGLogLevel.DEBUG, CLGLogLevel.INFO, CLGLogLevel.WARN,
@@ -26,7 +25,9 @@ struct CLGMetrics {
       ]) {
       levels[formatLevel(lvl)] = entriesByLevel[lvl];
     }
-    payload["entriesByLevel"] = levels;
-    return payload;
+
+    return super.toJson
+    .set("totalEntries", cast(long)totalEntries)
+    .set("entriesByLevel", levels);
   }
 }
