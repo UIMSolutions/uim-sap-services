@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>Solution Lifecycle Management</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family:'72',Arial,Helvetica,sans-serif; margin:0; background:#f7f7f7; color:#333; }
+    header { background:#354a5f; color:#fff; padding:1rem 2rem; }
+    header h1 { margin:0 0 .2rem; font-size:1.4rem; }
+    header p  { margin:0; font-size:.9rem; opacity:.85; }
+    .container { max-width:1320px; margin:0 auto; padding:1rem 2rem 2rem; }
+    h2 { font-size:1.15rem; margin-top:1.6rem; border-bottom:2px solid #0a6ed1; padding-bottom:.25rem; }
+    .row { display:flex; gap:.55rem; flex-wrap:wrap; margin:.45rem 0; align-items:center; }
+    input,select,button,textarea { padding:.45rem .7rem; font-size:.9rem; border:1px solid #bbb; border-radius:4px; }
+    button { cursor:pointer; background:#0a6ed1; color:#fff; border:none; }
+    button:hover { background:#085caf; }
+    button.secondary { background:#6c757d; }
+    button.secondary:hover { background:#565e64; }
+    button.danger { background:#c62828; }
+    button.danger:hover { background:#a41d1d; }
+    pre { background:#fff; border:1px solid #ddd; padding:1rem; overflow:auto; border-radius:6px; max-height:450px; font-size:.85rem; }
+    .badge { display:inline-block; padding:2px 8px; border-radius:10px; font-size:.78rem; font-weight:600; }
+    .deploying { background:#e3f2fd; color:#1565c0; }
+    .deployed  { background:#e8f5e9; color:#2e7d32; }
+    .updating  { background:#fff3e0; color:#e65100; }
+    .deleting  { background:#fce4ec; color:#c62828; }
+    .deleted   { background:#eeeeee; color:#616161; }
+    .error     { background:#fce4ec; color:#c62828; }
+    .started   { background:#e8f5e9; color:#2e7d32; }
+    .stopped   { background:#eeeeee; color:#616161; }
+    .subscribed   { background:#e8f5e9; color:#2e7d32; }
+    .unsubscribed { background:#eeeeee; color:#616161; }
+    table { width:100%; border-collapse:collapse; margin:.5rem 0; font-size:.88rem; }
+    th,td { text-align:left; padding:.4rem .6rem; border-bottom:1px solid #ddd; }
+    th { background:#f0f0f0; }
+  </style>
+</head>
+<body>
+<header>
+  <h1>Solution Lifecycle Management</h1>
+  <p>Deploy, update, monitor, and manage Multi-Target Application solutions on SAP BTP.</p>
+</header>
+
+<div class="container">
+
+  <div class="row">
+    <label><b>Tenant:</b></label>
+    <input id="tenant" value="acme" style="width:130px"/>
+    <button onclick="refreshAll()">&#8635; Refresh All</button>
+  </div>
+
+  <!-- DEPLOY SOLUTION -->
+  <h2>Deploy Solution</h2>
+  <div class="row">
+    <input id="solName"  placeholder="Solution name" style="width:180px"/>
+    <input id="solMtaId" placeholder="MTA ID" style="width:150px"/>
+    <input id="solMtaVer" placeholder="Version" value="1.0.0" style="width:90px"/>
+    <input id="solArchive" placeholder="Archive ref (URL)" style="width:200px"/>
+    <label><input type="checkbox" id="solMultitenant"/> Multitenant</label>
+    <button onclick="deploySolution()">Deploy</button>
+  </div>
+
+  <!-- SOLUTIONS LIST -->
+  <h2>Solutions</h2>
+  <div id="solutionsList"><em>Click "Refresh All" to load.</em></div>
+
+  <!-- SOLUTION DETAIL -->
+  <h2>Solution Detail</h2>
+  <div class="row">
+    <input id="solDetailId" placeholder="Solution ID" style="width:200px"/>
+    <button onclick="getSolution()">Get</button>
+    <button class="secondary" onclick="updateSolution()">Update</button>
+    <button class="danger" onclick="deleteSolution()">Delete</button>
+  </div>
+  <div class="row">
+    <input id="updMtaVer" placeholder="New version" style="width:120px"/>
+    <input id="updArchive" placeholder="New archive ref" style="width:200px"/>
+  </div>
+  <pre id="solDetail"></pre>
+
+  <!-- COMPONENTS -->
+  <h2>Components</h2>
+  <div class="row">
+    <input id="compSolId" placeholder="Solution ID" style="width:200px"/>
+    <button onclick="listComponents()">List</button>
+  </div>
+  <pre id="componentsList"></pre>
+
+  <!-- SUBSCRIPTIONS -->
+  <h2>Multitenant Subscriptions</h2>
+  <div class="row">
+    <input id="subSolId" placeholder="Solution ID" style="width:200px"/>
+    <input id="subConsumer" placeholder="Consumer subaccount ID" style="width:200px"/>
+    <button onclick="subscribeSolution()">Subscribe</button>
+    <button class="secondary" onclick="listSubscriptions()">List</button>
+  </div>
+  <div class="row">
+    <input id="unsubId" placeholder="Subscription ID" style="width:200px"/>
+    <button class="danger" onclick="unsubscribeSolution()">Unsubscribe</button>
+  </div>
+  <pre id="subscriptionsList"></pre>
+
+  <!-- DEPLOYMENTS HISTORY -->
+  <h2>Deployment History</h2>
+  <div class="row">
+    <input id="depSolId" placeholder="Solution ID (optional)" style="width:200px"/>
+    <button onclick="listDeployments()">List</button>
+  </div>
+  <pre id="deploymentsList"></pre>
+
+  <!-- LOGS -->
+  <h2>Operation Logs</h2>
+  <div class="row">
+    <input id="logSolId" placeholder="Solution ID" style="width:200px"/>
+    <button onclick="listLogs()">List</button>
+  </div>
+  <pre id="logsList"></pre>
+
+</div>
+
+<script>
+const BASE = location.pathname.replace(/\/$/, '');
+
+function api(method, path, body) {
+  const opts = { method, headers: { 'Content-Type': 'application/json' } };
+  if (body) opts.body = JSON.stringify(body);
+  return fetch(BASE + path, opts).then(r => r.json());
+}
+
+function t() { return document.getElementById('tenant').value.trim(); }
+
+function refreshAll() {
+  api('GET', '/v1/tenants/' + t() + '/solutions').then(data => {
+    if (!Array.isArray(data) || data.length === 0) {
+      document.getElementById('solutionsList').innerHTML = '<em>No solutions found.</em>';
+      return;
+    }
+    let html = '<table><tr><th>ID</th><th>Name</th><th>MTA</th><th>Version</th><th>Status</th><th>Multitenant</th></tr>';
+    data.forEach(s => {
+      html += '<tr><td>' + s.solution_id + '</td><td>' + s.name + '</td><td>' + s.mta_id
+        + '</td><td>' + s.mta_version + '</td><td><span class="badge ' + s.status + '">' + s.status
+        + '</span></td><td>' + (s.multitenant ? 'Yes' : 'No') + '</td></tr>';
+    });
+    html += '</table>';
+    document.getElementById('solutionsList').innerHTML = html;
+  });
+}
+
+function deploySolution() {
+  const body = {
+    name: document.getElementById('solName').value,
+    mta_id: document.getElementById('solMtaId').value,
+    mta_version: document.getElementById('solMtaVer').value,
+    mta_archive_ref: document.getElementById('solArchive').value,
+    multitenant: document.getElementById('solMultitenant').checked
+  };
+  api('POST', '/v1/tenants/' + t() + '/solutions', body).then(data => {
+    document.getElementById('solDetail').textContent = JSON.stringify(data, null, 2);
+    refreshAll();
+  });
+}
+
+function getSolution() {
+  const id = document.getElementById('solDetailId').value.trim();
+  api('GET', '/v1/tenants/' + t() + '/solutions/' + id).then(data => {
+    document.getElementById('solDetail').textContent = JSON.stringify(data, null, 2);
+  });
+}
+
+function updateSolution() {
+  const id = document.getElementById('solDetailId').value.trim();
+  const body = {
+    mta_version: document.getElementById('updMtaVer').value,
+    mta_archive_ref: document.getElementById('updArchive').value
+  };
+  api('PUT', '/v1/tenants/' + t() + '/solutions/' + id, body).then(data => {
+    document.getElementById('solDetail').textContent = JSON.stringify(data, null, 2);
+    refreshAll();
+  });
+}
+
+function deleteSolution() {
+  const id = document.getElementById('solDetailId').value.trim();
+  if (!confirm('Delete solution ' + id + '?')) return;
+  api('DELETE', '/v1/tenants/' + t() + '/solutions/' + id).then(data => {
+    document.getElementById('solDetail').textContent = JSON.stringify(data, null, 2);
+    refreshAll();
+  });
+}
+
+function listComponents() {
+  const id = document.getElementById('compSolId').value.trim();
+  api('GET', '/v1/tenants/' + t() + '/solutions/' + id + '/components').then(data => {
+    document.getElementById('componentsList').textContent = JSON.stringify(data, null, 2);
+  });
+}
+
+function subscribeSolution() {
+  const solId = document.getElementById('subSolId').value.trim();
+  const body = { consumer_subaccount_id: document.getElementById('subConsumer').value.trim() };
+  api('POST', '/v1/tenants/' + t() + '/solutions/' + solId + '/subscriptions', body).then(data => {
+    document.getElementById('subscriptionsList').textContent = JSON.stringify(data, null, 2);
+  });
+}
+
+function listSubscriptions() {
+  const solId = document.getElementById('subSolId').value.trim();
+  const path = solId ? '/v1/tenants/' + t() + '/solutions/' + solId + '/subscriptions'
+                     : '/v1/tenants/' + t() + '/subscriptions';
+  api('GET', path).then(data => {
+    document.getElementById('subscriptionsList').textContent = JSON.stringify(data, null, 2);
+  });
+}
+
+function unsubscribeSolution() {
+  const solId = document.getElementById('subSolId').value.trim();
+  const subId = document.getElementById('unsubId').value.trim();
+  api('POST', '/v1/tenants/' + t() + '/solutions/' + solId + '/subscriptions/' + subId + '/unsubscribe').then(data => {
+    document.getElementById('subscriptionsList').textContent = JSON.stringify(data, null, 2);
+  });
+}
+
+function listDeployments() {
+  const solId = document.getElementById('depSolId').value.trim();
+  const path = solId ? '/v1/tenants/' + t() + '/solutions/' + solId + '/deployments'
+                     : '/v1/tenants/' + t() + '/deployments';
+  api('GET', path).then(data => {
+    document.getElementById('deploymentsList').textContent = JSON.stringify(data, null, 2);
+  });
+}
+
+function listLogs() {
+  const solId = document.getElementById('logSolId').value.trim();
+  api('GET', '/v1/tenants/' + t() + '/solutions/' + solId + '/logs').then(data => {
+    document.getElementById('logsList').textContent = JSON.stringify(data, null, 2);
+  });
+}
+</script>
+</body>
+</html>
