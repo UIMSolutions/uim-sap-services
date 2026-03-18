@@ -11,47 +11,46 @@ mixin(ShowModule!());
 
 @safe:
 
-struct DeterminationLog {
-    string id;
+class DeterminationLog : SAPTenantObject {
+mixin(SAPObjectTemplate!DeterminationLog);
+
+    UUID id;
     string timestamp;
-    string tenantId;
-    string spaceId;
+    UUID spaceId;
     string contextType;
     string objectType;
-    string documentId;
+    UUID documentId;
     string[] matchedRuleIds;
-    string[] teamIds;
+    UUID[] teamIds;
     string[] agents;
     string[] notifications;
     long durationMs;
 
     override Json toJson()  {
-        Json payload = Json.emptyObject;
-        payload["id"] = id;
-        payload["timestamp"] = timestamp;
-        payload["tenant_id"] = tenantId;
-        payload["space_id"] = spaceId;
-        payload["context_type"] = contextType;
-        payload["object_type"] = objectType;
-        payload["document_id"] = documentId;
-
         Json rules = Json.emptyArray;
         foreach (item; matchedRuleIds) rules ~= item;
-        payload["matched_rule_ids"] = rules;
 
         Json teams = Json.emptyArray;
         foreach (item; teamIds) teams ~= item;
-        payload["team_ids"] = teams;
 
         Json users = Json.emptyArray;
         foreach (item; agents) users ~= item;
-        payload["agents"] = users;
 
         Json noteList = Json.emptyArray;
         foreach (item; notifications) noteList ~= item;
-        payload["notifications"] = noteList;
 
-        payload["duration_ms"] = durationMs;
-        return payload;
+        return super.toJson()
+        .set("id", id)
+        .set("timestamp", timestamp)
+        .set("tenant_id", tenantId)
+        .set("space_id", spaceId)
+        .set("context_type", contextType)
+        .set("object_type", objectType)
+        .set("document_id", documentId)
+        .set("matched_rule_ids", rules)
+        .set("team_ids", teams)
+        .set("agents", users)
+        .set("notifications", noteList)
+        .set("duration_ms", durationMs);
     }
 }
