@@ -1,4 +1,5 @@
 module uim.sap.cia.models.task;
+
 import uim.sap.cia;
 
 mixin(ShowModule!());
@@ -7,8 +8,9 @@ mixin(ShowModule!());
 // ---------------------------------------------------------------------------
 // Task – a single guided step in a workflow
 // ---------------------------------------------------------------------------
-struct CIATask {
-  UUID tenantId;
+class CIATask : SAPTenantObject {
+mixin(SAPObjectTemplate!CIATask);
+
   UUID workflowId;
   UUID id;
   int order;
@@ -23,25 +25,19 @@ struct CIATask {
   string status;
   /// Additional runtime context (e.g. target system id, config payload)
   Json context;
-  SysTime createdAt;
-  SysTime updatedAt;
 
   override Json toJson()  {
-    Json j = Json.emptyObject;
-    j["tenant_id"] = tenantId;
-    j["workflow_id"] = workflowId;
-    j["id"] = id;
-    j["order"] = order;
-    j["name"] = name;
-    j["description"] = description;
-    j["instructions"] = instructions;
-    j["assigned_role_id"] = assignedRoleId;
-    j["assigned_user_id"] = assignedUserId;
-    j["automated"] = automated;
-    j["status"] = status;
-    j["context"] = context;
-    j["created_at"] = createdAt.toISOExtString();
-    j["updated_at"] = updatedAt.toISOExtString();
-    return j;
+    return super.toJson
+    .set("workflow_id", workflowId)
+    .set("id", id)
+    .set("order", order)
+    .set("name", name)
+    .set("description", description)
+    .set("instructions", instructions)
+    .set("assigned_role_id", assignedRoleId)
+    .set("assigned_user_id", assignedUserId)
+    .set("automated", automated)
+    .set("status", status)
+    .set("context", context);
   }
 }
