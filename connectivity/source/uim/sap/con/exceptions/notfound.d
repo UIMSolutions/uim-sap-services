@@ -5,11 +5,11 @@
 *****************************************************************************************************************/
 module uim.sap.con.exceptions.notfound;
 
+import uim.sap.con;
 
+mixin(ShowModule!());
 
-
-
-
+@safe:
 
 class CONNotFoundException : CONException {
     this(string kind, string id) {
