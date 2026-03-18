@@ -24,25 +24,26 @@ mixin(ShowModule!());
     * - notificationsEnabled: A boolean indicating if the user has enabled notifications for the team.
     * - functions: An array of strings representing the functions assigned to the user within the team.
     */
-struct TeamMember {
-    string userId;
+class TeamMember : SAPObject {
+mixin(SAPObjectTemplate!TeamMember);
+
+    UUID userId;
     string displayName;
     bool isOwner;
     bool notificationsEnabled;
     string[] functions;
 
     override Json toJson()  {
-        Json payload = Json.emptyObject;
-        payload["user_id"] = userId;
-        payload["display_name"] = displayName;
-        payload["is_owner"] = isOwner;
-        payload["notifications_enabled"] = notificationsEnabled;
-
         Json fn = Json.emptyArray;
         foreach (item; functions) {
             fn ~= item;
         }
-        payload["functions"] = fn;
-        return payload;
+
+        return super.toJson
+						.set("user_id", userId)
+        .set("display_name", displayName)
+        .set("is_owner", isOwner)
+        .set("notifications_enabled", notificationsEnabled)
+        .set("functions", fn);
     }
 }
