@@ -11,8 +11,10 @@ mixin(ShowModule!());
 
 @safe:
 
-struct ResponsibilityRule {
-    string id;
+class ResponsibilityRule : SAPObject {
+	mixin(SAPObjectTemplate!ResponsibilityRule);
+
+    UUID id;
     string name;
     string contextType;
     string objectType;
@@ -24,25 +26,20 @@ struct ResponsibilityRule {
     string functionCode;
     bool enabled;
     int priority;
-    string createdAt;
-    string updatedAt;
-
+  
     override Json toJson()  {
-        Json payload = Json.emptyObject;
-        payload["id"] = id;
-        payload["name"] = name;
-        payload["context_type"] = contextType;
-        payload["object_type"] = objectType;
-        payload["mode"] = modeToString(mode);
-        payload["condition_field"] = conditionField;
-        payload["condition_equals"] = conditionEquals;
-        payload["external_api_ref"] = externalApiRef;
-        payload["team_id"] = teamId;
-        payload["function_code"] = functionCode;
-        payload["enabled"] = enabled;
-        payload["priority"] = priority;
-        payload["created_at"] = createdAt;
-        payload["updated_at"] = updatedAt;
-        return payload;
+        return super.toJson
+        .set("id", id)
+        .set("name", name)
+        .set("context_type", contextType)
+        .set("object_type", objectType)
+        .set("mode", modeToString(mode))
+        .set("condition_field", conditionField)
+        .set("condition_equals", conditionEquals)
+        .set("external_api_ref", externalApiRef)
+        .set("team_id", teamId)
+        .set("function_code", functionCode)
+        .set("enabled", enabled)
+        .set("priority", priority);
     }
 }
