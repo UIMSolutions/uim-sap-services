@@ -6,7 +6,9 @@ mixin(ShowModule!());
 
 @safe:
 
-struct Team {
+class Team : SAPObject {
+mixin(SAPObjectTemplate!Team);
+
   string id;
   string name;
   string typeCode;
@@ -15,12 +17,12 @@ struct Team {
   TeamMember[] members;
 
   override Json toJson()  {
-    Json info = super.toJson;
-    payload["id"] = id;
-    payload["name"] = name;
-    payload["type_code"] = typeCode;
-    payload["category_code"] = categoryCode;
-    payload["description"] = description;
+    return super.toJson
+    .set("id", id)
+    .set("name", name)
+    .set("type_code", typeCode)
+    .set("category_code", categoryCode)
+    .set("description", description);
 
     Json memberList = Json.emptyArray;
     foreach (member; members) {
