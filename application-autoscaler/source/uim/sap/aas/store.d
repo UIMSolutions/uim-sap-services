@@ -61,7 +61,7 @@ class AASStore : SAPStore {
     AASApp getApp(string appId) {
         synchronized (_lock) {
             if (auto ptr = appId in _apps) {
-                return *ptr;
+                return _apps[appId];
             }
         }
         return null;
