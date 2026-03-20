@@ -90,9 +90,9 @@ class CREStore : SAPStore {
       _instances.remove(instanceId);
 
       string[] credentialKeys;
+      // Remove associated credentials
       foreach (key; _credentials.keys) {
-        if (key.length > instanceId.length + 1 && key[0 .. instanceId.length] == instanceId && key[instanceId
-            .length] == ':') {
+        if (key.length > instanceId.toString().length + 1 && key[0 .. instanceId.toString().length] == instanceId.toString() && key[instanceId.toString().length] == ':') {
           credentialKeys ~= key;
         }
       }
@@ -102,8 +102,7 @@ class CREStore : SAPStore {
 
       string[] serviceKeyKeys;
       foreach (key; _serviceKeys.keys) {
-        if (key.length > instanceId.length + 1 && key[0 .. instanceId.length] == instanceId && key[instanceId
-            .length] == ':') {
+        if (key.length > instanceId.toString().length + 1 && key[0 .. instanceId.toString().length] == instanceId.toString() && key[instanceId.toString().length] == ':') {
           serviceKeyKeys ~= key;
         }
       }
@@ -177,8 +176,7 @@ class CREStore : SAPStore {
     CRECredential[] values;
     synchronized (_lock) {
       foreach (key, value; _credentials) {
-        if (key.length > instanceId.length + 1 && key[0 .. instanceId.length] == instanceId && key[instanceId
-            .length] == ':') {
+        if (key.length > instanceId.toString().length + 1 && key[0 .. instanceId.toString().length] == instanceId.toString() && key[instanceId.toString().length] == ':') {
           values ~= value;
         }
       }
@@ -205,17 +203,14 @@ class CREStore : SAPStore {
     }
   }
 
-  CREServiceKey getServiceKey(UUID instanceId, string keyId) {
+  CREServiceKey getServiceKey(UUID instanceId, UUID keyId) {
     synchronized (_lock) {
       auto key = compositeKey(instanceId, keyId);
       if (auto serviceKey = key in _serviceKeys) {
-        return *serviceKey;
+        return _serviceKeys[key];
       }
     }
-    return CREServiceKey.init;
+    return null;
   }
 
-  private string compositeKey(string a, string b) {
-    return a ~ ":" ~ b;
-  }
 }

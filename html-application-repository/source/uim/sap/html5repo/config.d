@@ -35,7 +35,6 @@ class HARConfig : SAPConfig {
   int cacheTtlSeconds = 120;
   long maxUploadBytes = 52_428_800L;
 
-  string[string] customHeaders;
 
   override void validate() const {
     super.validate();

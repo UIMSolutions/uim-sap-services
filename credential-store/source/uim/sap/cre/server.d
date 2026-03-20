@@ -63,7 +63,7 @@ class CREServer {
 
       auto segments = normalizedSegments(subPath);
       if (segments.length >= 3 && segments[0] == "v1" && segments[1] == "service_instances") {
-        auto instanceId = segments[2];
+        auto instanceId = UUID(segments[2]);
 
         if (segments.length == 3) {
           if (req.method == HTTPMethod.PUT) {
@@ -102,7 +102,7 @@ class CREServer {
         }
 
         if (segments.length == 5 && segments[3] == "service_keys") {
-          auto serviceKeyId = segments[4];
+          auto serviceKeyId = UUID(segments[4]);
           if (req.method == HTTPMethod.PUT) {
             res.writeJsonBody(_service.upsertServiceKey(instanceId, serviceKeyId, req.json, requestKey), 200);
             return;

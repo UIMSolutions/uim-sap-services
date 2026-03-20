@@ -12,6 +12,8 @@ mixin(ShowModule!());
 @safe:
 
 class MONConfig : SAPConfig {
+  mixin(SAPConfigTemplate!MONConfig);
+
     override bool initialize(Json[string] initData) {
     if (!super.initialize(initData)) {
        return false;
@@ -26,7 +28,6 @@ class MONConfig : SAPConfig {
  bool requireAuthToken = false;
   string authToken;
 
-  string[string] customHeaders;
 
     return true;
   }

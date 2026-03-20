@@ -12,7 +12,7 @@ import uim.sap.fiori;
 /**
  * OData client configuration
  */
-struct ODataConfig : SAPConfig {
+class ODataConfig : SAPConfig {
   mixin(SAPConfigTemplate!ODataConfig);
   
   override bool initialize(Json[string] initData) {
@@ -35,7 +35,6 @@ struct ODataConfig : SAPConfig {
   bool useSSL = true;
   string sapClient;
   string sapLanguage = "EN";
-  string[string] customHeaders;
   Duration timeout = 30.seconds;
 
   override void validate() const {

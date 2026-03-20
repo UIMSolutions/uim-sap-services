@@ -20,7 +20,7 @@ class CREConfig : SAPConfig {
     serviceName(initData.getString("serviceName", "uim-cre"));
     serviceVersion(initData.getString("serviceVersion", "1.0.0"));
 
-    requireAuthToken(initData.getBool("requireAuthToken", false));
+    requireAuthToken(initData.getBoolean("requireAuthToken", false));
     if (requireAuthToken) {
       authToken = initData.getString("authToken", "");
     }
@@ -30,7 +30,7 @@ class CREConfig : SAPConfig {
 
   string masterKey = "uim-cre-dev-master-key";
 
-  override void validate() const {
+  override void validate() {
     super.validate();
 
     if (masterKey.length == 0) {

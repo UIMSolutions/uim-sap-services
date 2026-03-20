@@ -174,3 +174,15 @@ Json optionalObject(Json request, string key) {
   }
   return Json.emptyObject;
 }
+
+   string compositeKey(UUID a, UUID b) {
+    return compositeKey(a.toString(), b.toString());
+  }
+
+   string compositeKey(UUID a, string b) {
+    return compositeKey(a.toString(), b);
+  }
+
+   string compositeKey(string a, string b) {
+    return a ~ ":" ~ b;
+  }

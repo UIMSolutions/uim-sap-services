@@ -92,23 +92,23 @@ class CREService : SAPService {
 
   Json getServiceInstance(UUID instanceId) {
     auto instance = _store.getInstance(instanceId);
-    if (instance.instanceId.length == 0) {
-      throw new CRENotFoundException("Service instance", instanceId);
+    if (instance.instanceId.toString.length == 0) {
+      throw new CRENotFoundException("Service instance", instanceId.toString);
     }
 
     return Json.emptyObject
-      .set("instance", instance.toJson);
+      .set("instance", instance.toJson());
   }
 
   Json deleteServiceInstance(UUID instanceId) {
     if (!_store.deleteInstance(instanceId)) {
-      throw new CRENotFoundException("Service instance", instanceId);
+      throw new CRENotFoundException("Service instance", instanceId.toString);
     }
 
     return Json.emptyObject
       .set("success", true)
       .set("message", "Service instance deleted")
-      .set("instance_id", instanceId);
+      .set("instance_id", instanceId.toString);
   }
 
   Json upsertCredential(UUID instanceId, string credentialName, Json request, string requestKey) {
@@ -146,7 +146,7 @@ class CREService : SAPService {
       throw new CRENotFoundException("Credential", credentialName);
     }
 
-    auto key = requestKey.length > 0 ? requestKey : _config.masterKey;
+    auto key = requestKey.length > 0 ? requestKey : (cast(CREConfig)_config).masterKey;
     string plaintext;
     try {
       plaintext = decryptString(credential.secret, key);
@@ -155,7 +155,7 @@ class CREService : SAPService {
     }
 
     return Json.emptyObject
-      .set("instance_id", instanceId)
+      .set("instance_id", instanceId.toString)
       .set("name", credentialName)
       .set("credential", plaintext)
       .set("metadata", credential.metadata)
@@ -171,7 +171,7 @@ class CREService : SAPService {
     return Json.emptyObject
       .set("success", true)
       .set("message", "Credential deleted")
-      .set("instance_id", instanceId)
+      .set("instance_id", instanceId.toString)
       .set("name", credentialName);
   }
 
@@ -179,11 +179,11 @@ class CREService : SAPService {
     validateInstance(instanceId);
 
     Json keyPayload = Json.emptyObject
-      .set("instance_id", instanceId)
-      .set("service_key_id", serviceKeyId)
-      .set("clientid", "sk-" ~ serviceKeyId)
+      .set("instance_id", instanceId.toString)
+      .set("service_key_id", serviceKeyId.toString)
+      .set("clientid", "sk-" ~ serviceKeyId.toString)
       .set("clientsecret", generateSecretToken())
-      .set("url", _config.basePath ~ "/v1/service_instances/" ~ instanceId ~ "/credentials");
+      .set("url", _config.basePath ~ "/v1/service_instances/" ~ instanceId.toString ~ "/credentials");
 
     auto keyText = keyPayload.toString();
     auto encryptionKey = resolveEncryptionKey(request, requestKey);
@@ -201,10 +201,10 @@ class CREService : SAPService {
     validateInstance(instanceId);
     auto serviceKey = _store.getServiceKey(instanceId, serviceKeyId);
     if (serviceKey.keyId.length == 0) {
-      throw new CRENotFoundException("Service key", serviceKeyId);
+      throw new CRENotFoundException("Service key", serviceKeyId.toString);
     }
 
-    auto key = requestKey.length > 0 ? requestKey : _config.masterKey;
+    auto key = requestKey.length > 0 ? requestKey : (cast(CREConfig)_config).masterKey;
     string plaintext;
     try {
       plaintext = decryptString(serviceKey.secret, key);
@@ -213,8 +213,8 @@ class CREService : SAPService {
     }
 
     return Json.emptyObject
-      .set("instance_id", instanceId)
-      .set("service_key_id", serviceKeyId)
+      .set("instance_id", instanceId.toString)
+      .set("service_key_id", serviceKeyId.toString)
       .set("credentials", parseJsonString(plaintext))
       .set("created_at", serviceKey.createdAt.toISOExtString());
   }
@@ -222,19 +222,19 @@ class CREService : SAPService {
   Json deleteServiceKey(UUID instanceId, UUID serviceKeyId) {
     validateInstance(instanceId);
     if (!_store.deleteServiceKey(instanceId, serviceKeyId)) {
-      throw new CRENotFoundException("Service key", serviceKeyId);
+      throw new CRENotFoundException("Service key", serviceKeyId.toString);
     }
 
     return Json.emptyObject
       .set("success", true)
       .set("message", "Service key deleted")
-      .set("instance_id", instanceId)
-      .set("service_key_id", serviceKeyId);
+      .set("instance_id", instanceId.toString)
+      .set("service_key_id", serviceKeyId.toString);
   }
 
   private void validateInstance(UUID instanceId) {
     if (!_store.hasInstance(instanceId)) {
-      throw new CRENotFoundException("Service instance", instanceId);
+      throw new CRENotFoundException("Service instance", instanceId.toString);
     }
   }
 
@@ -248,6 +248,7 @@ class CREService : SAPService {
     if (requestKey.length > 0) {
       return requestKey;
     }
-    return _config.masterKey;
+
+    return (cast(CREConfig)_config).masterKey;
   }
 }

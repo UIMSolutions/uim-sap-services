@@ -42,8 +42,5 @@ class ISAConfig : SAPConfig {
     if (defaultTenant.length == 0) {
       throw new ISAConfigurationException("Default tenant cannot be empty");
     }
-    if (requireAuthToken && authToken.length == 0) {
-      throw new ISAConfigurationException("Auth token required when token auth is enabled");
-    }
   }
 }

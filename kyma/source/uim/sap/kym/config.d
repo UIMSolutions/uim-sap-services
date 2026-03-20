@@ -23,11 +23,12 @@ class KYMConfig : SAPConfig {
     serviceName(initData.getString("serviceName", "uim-kym"));
     serviceVersion(initData.getString("serviceVersion", "1.0.0"));
 
+  bool requireAuthToken = false;
+  string authToken;
+
     return true;
   }
 
-  bool requireAuthToken = false;
-  string authToken;
 
   /// Maximum namespaces per runtime
   size_t maxNamespaces = 100;
@@ -47,7 +48,6 @@ class KYMConfig : SAPConfig {
   /// Default replica count for microservices
   size_t defaultReplicas = 1;
 
-  string[string] customHeaders;
 
   override void validate() const {
     super.validate();

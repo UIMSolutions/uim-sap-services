@@ -6,6 +6,7 @@ public {
   import uim.sap.cre.config;
   import uim.sap.cre.exceptions;
   import uim.sap.cre.models;
+  import uim.sap.cre.helpers;
   import uim.sap.cre.crypto;
   import uim.sap.cre.store;
   import uim.sap.cre.service;
