@@ -6,25 +6,25 @@ mixin(ShowModule!());
 
 @safe:
 
-struct CREServiceKey {
+class CREServiceKey : SAPObject {
+  mixin(SAPObjectTemplate!CREServiceKey);
+
   UUID instanceId;
   string keyId;
   CREEncryptedPayload secret;
   Json parameters;
   SysTime createdAt;
 
-  Json toJsonSummary() const {
-    Json payload = Json.emptyObject;
-    payload["instance_id"] = instanceId;
-    payload["service_key_id"] = keyId;
-    payload["algorithm"] = secret.algorithm;
-    payload["created_at"] = createdAt.toISOExtString();
-    payload["parameters"] = parameters;
-    return payload;
+  override Json toJson() const {
+    return super.toJson()
+      .set("instance_id", instanceId)
+      .set("service_key_id", keyId)
+      .set("algorithm", secret.algorithm)
+      .set("parameters", parameters);
   }
 }
 
-CREServiceKey serviceKeyFromJson(string instanceId, string keyId, Json request, CREEncryptedPayload encrypted) {
+CREServiceKey serviceKeyFromJson(UUID instanceId, string keyId, Json request, CREEncryptedPayload encrypted) {
   CREServiceKey key;
   key.instanceId = instanceId;
   key.keyId = keyId;

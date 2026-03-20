@@ -123,7 +123,7 @@ class AGTStore : SAPStore {
     return getInstance(tenantId.toString, instanceId.toString);
   }
 
-  AGTRuntimeInstance getInstance(string tenantId, string instanceId) {
+  AGTRuntimeInstance getInstance(string tenantId, UUID instanceId) {
     synchronized (_lock) {
       auto key = instanceKey(tenantId, instanceId);
       if (auto value = key in _instances) {
@@ -223,7 +223,7 @@ class AGTStore : SAPStore {
     return instanceKey(tenantId.toString, instanceId.toString);
   }
 
-  private string instanceKey(string tenantId, string instanceId) {
+  private string instanceKey(string tenantId, UUID instanceId) {
     return tenantId ~ ":instance:" ~ instanceId;
   }
 

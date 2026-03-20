@@ -46,171 +46,176 @@ mixin(ShowModule!());
   *
   * Methods:
   * - CREServiceInstance upsertInstance(CREServiceInstance instance): Inserts or updates a service instance in the store and returns the instance.
-  * - bool deleteInstance(string instanceId): Deletes a service instance from the store by its ID and returns true if the instance was deleted, or false if the instance was not found.
-  * - bool hasInstance(string instanceId): Checks if a service instance exists in the store by its ID and returns true if it exists, or false if it does not exist.
-  * - CREServiceInstance getInstance(string instanceId): Retrieves a service instance from the store by its ID and returns the instance, or an empty instance if not found
+  * - bool deleteInstance(UUID instanceId): Deletes a service instance from the store by its ID and returns true if the instance was deleted, or false if the instance was not found.
+  * - bool hasInstance(UUID instanceId): Checks if a service instance exists in the store by its ID and returns true if it exists, or false if it does not exist.
+  * - CREServiceInstance getInstance(UUID instanceId): Retrieves a service instance from the store by its ID and returns the instance, or an empty instance if not found
   * - CREServiceInstance[] listInstances(): Lists all service instances in the store and returns an array of instances.
   * - CRECredential upsertCredential(CRECredential credential): Inserts or updates a credential in the store and returns the credential.
-  * - bool deleteCredential(string instanceId, string name): Deletes a credential from the store by its instance ID and name, and returns true if the credential was deleted, or false if the credential was not found.
-  * - CRECredential getCredential(string instanceId, string name): Retrieves a credential from the store by its instance ID and name, and returns the credential, or an empty credential if not found.
-  * - CRECredential[] listCredentials(string instanceId): Lists all credentials for a given service instance ID in the store and returns an array of credentials.
+  * - bool deleteCredential(UUID instanceId, string name): Deletes a credential from the store by its instance ID and name, and returns true if the credential was deleted, or false if the credential was not found.
+  * - CRECredential getCredential(UUID instanceId, string name): Retrieves a credential from the store by its instance ID and name, and returns the credential, or an empty credential if not found.
+  * - CRECredential[] listCredentials(UUID instanceId): Lists all credentials for a given service instance ID in the store and returns an array of credentials.
   * - CREServiceKey upsertServiceKey(CREServiceKey key): Inserts or updates a service key in the store and returns the service key.
-  * - bool deleteServiceKey(string instanceId, string keyId): Deletes a service key from the store by its instance ID and key ID, and returns true if the service key was deleted, or false if the service key was not found.
-  * - CREServiceKey getServiceKey(string instanceId, string keyId): Retrieves a service key from the store by its instance ID and key ID, and returns the service key   
+  * - bool deleteServiceKey(UUID instanceId, string keyId): Deletes a service key from the store by its instance ID and key ID, and returns true if the service key was deleted, or false if the service key was not found.
+  * - CREServiceKey getServiceKey(UUID instanceId, string keyId): Retrieves a service key from the store by its instance ID and key ID, and returns the service key   
   * - string compositeKey(string a, string b): A helper method to generate a composite key from two strings (e.g., instance ID and credential name) for use in the dictionaries.
   *
   * Note: This implementation is purely in-memory and does not persist data across application restarts. For a production implementation, consider using a database or other persistent storage mechanism. Thread safety is achieved using a mutex to synchronize access to the internal data structures, but this may not be sufficient for high-concurrency scenarios, and a more robust solution may be needed for production use. The store does not implement any access control or authentication mechanisms, so appropriate security measures should be implemented in a real implementation to protect sensitive data and restrict access to authorized users.
   */
-  
+
 class CREStore : SAPStore {
-    private CREServiceInstance[string] _instances;
-    private CRECredential[string] _credentials;
-    private CREServiceKey[string] _serviceKeys;
-    private Mutex _lock;
+  private CREServiceInstance[UUID] _instances;
+  private CRECredential[string] _credentials;
+  private CREServiceKey[string] _serviceKeys;
+  private Mutex _lock;
 
-    this() {
-        _lock = new Mutex;
+  this() {
+    _lock = new Mutex;
+  }
+
+  CREServiceInstance upsertInstance(CREServiceInstance instance) {
+    synchronized (_lock) {
+      if (auto existing = instance.instanceId in _instances) {
+        instance.createdAt = existing.createdAt;
+      }
+      _instances[instance.instanceId] = instance;
+      return instance;
     }
+  }
 
-    CREServiceInstance upsertInstance(CREServiceInstance instance) {
-        synchronized (_lock) {
-            if (auto existing = instance.instanceId in _instances) {
-                instance.createdAt = existing.createdAt;
-            }
-            _instances[instance.instanceId] = instance;
-            return instance;
+  bool deleteInstance(UUID instanceId) {
+    synchronized (_lock) {
+      if ((instanceId in _instances) is null) {
+        return false;
+      }
+      _instances.remove(instanceId);
+
+      string[] credentialKeys;
+      foreach (key; _credentials.keys) {
+        if (key.length > instanceId.length + 1 && key[0 .. instanceId.length] == instanceId && key[instanceId
+            .length] == ':') {
+          credentialKeys ~= key;
         }
-    }
+      }
+      foreach (key; credentialKeys) {
+        _credentials.remove(key);
+      }
 
-    bool deleteInstance(string instanceId) {
-        synchronized (_lock) {
-            if ((instanceId in _instances) is null) {
-                return false;
-            }
-            _instances.remove(instanceId);
-
-            string[] credentialKeys;
-            foreach (key; _credentials.keys) {
-                if (key.length > instanceId.length + 1 && key[0 .. instanceId.length] == instanceId && key[instanceId.length] == ':') {
-                    credentialKeys ~= key;
-                }
-            }
-            foreach (key; credentialKeys) {
-                _credentials.remove(key);
-            }
-
-            string[] serviceKeyKeys;
-            foreach (key; _serviceKeys.keys) {
-                if (key.length > instanceId.length + 1 && key[0 .. instanceId.length] == instanceId && key[instanceId.length] == ':') {
-                    serviceKeyKeys ~= key;
-                }
-            }
-            foreach (key; serviceKeyKeys) {
-                _serviceKeys.remove(key);
-            }
-            return true;
+      string[] serviceKeyKeys;
+      foreach (key; _serviceKeys.keys) {
+        if (key.length > instanceId.length + 1 && key[0 .. instanceId.length] == instanceId && key[instanceId
+            .length] == ':') {
+          serviceKeyKeys ~= key;
         }
-    }
+      }
 
-    bool hasInstance(string instanceId) {
-        synchronized (_lock) {
-            return (instanceId in _instances) !is null;
+      foreach (key; serviceKeyKeys) {
+        _serviceKeys.remove(key);
+      }
+
+      return true;
+    }
+  }
+
+  bool hasInstance(UUID instanceId) {
+    synchronized (_lock) {
+      return (instanceId in _instances) !is null;
+    }
+  }
+
+  CREServiceInstance getInstance(UUID instanceId) {
+    synchronized (_lock) {
+      if (auto instance = instanceId in _instances) {
+        return *instance;
+      }
+    }
+    return CREServiceInstance.init;
+  }
+
+  CREServiceInstance[] listInstances() {
+    CREServiceInstance[] values;
+    synchronized (_lock) {
+      foreach (item; _instances.byValue) {
+        values ~= item;
+      }
+    }
+    return values;
+  }
+
+  CRECredential upsertCredential(CRECredential credential) {
+    synchronized (_lock) {
+      auto key = compositeKey(credential.instanceId, credential.name);
+      if (auto existing = key in _credentials) {
+        credential.createdAt = existing.createdAt;
+      }
+      _credentials[key] = credential;
+      return credential;
+    }
+  }
+
+  bool deleteCredential(UUID instanceId, string name) {
+    synchronized (_lock) {
+      auto key = compositeKey(instanceId, name);
+      if ((key in _credentials) is null) {
+        return false;
+      }
+      _credentials.remove(key);
+      return true;
+    }
+  }
+
+  CRECredential getCredential(UUID instanceId, string name) {
+    synchronized (_lock) {
+      auto key = compositeKey(instanceId, name);
+      if (auto credential = key in _credentials) {
+        return *credential;
+      }
+    }
+    return CRECredential.init;
+  }
+
+  CRECredential[] listCredentials(UUID instanceId) {
+    CRECredential[] values;
+    synchronized (_lock) {
+      foreach (key, value; _credentials) {
+        if (key.length > instanceId.length + 1 && key[0 .. instanceId.length] == instanceId && key[instanceId
+            .length] == ':') {
+          values ~= value;
         }
+      }
     }
+    return values;
+  }
 
-    CREServiceInstance getInstance(string instanceId) {
-        synchronized (_lock) {
-            if (auto instance = instanceId in _instances) {
-                return *instance;
-            }
-        }
-        return CREServiceInstance.init;
+  CREServiceKey upsertServiceKey(CREServiceKey key) {
+    synchronized (_lock) {
+      auto composite = compositeKey(key.instanceId, key.keyId);
+      _serviceKeys[composite] = key;
+      return key;
     }
+  }
 
-    CREServiceInstance[] listInstances() {
-        CREServiceInstance[] values;
-        synchronized (_lock) {
-            foreach (item; _instances.byValue) {
-                values ~= item;
-            }
-        }
-        return values;
+  bool deleteServiceKey(UUID instanceId, string keyId) {
+    synchronized (_lock) {
+      auto key = compositeKey(instanceId, keyId);
+      if ((key in _serviceKeys) is null) {
+        return false;
+      }
+      _serviceKeys.remove(key);
+      return true;
     }
+  }
 
-    CRECredential upsertCredential(CRECredential credential) {
-        synchronized (_lock) {
-            auto key = compositeKey(credential.instanceId, credential.name);
-            if (auto existing = key in _credentials) {
-                credential.createdAt = existing.createdAt;
-            }
-            _credentials[key] = credential;
-            return credential;
-        }
+  CREServiceKey getServiceKey(UUID instanceId, string keyId) {
+    synchronized (_lock) {
+      auto key = compositeKey(instanceId, keyId);
+      if (auto serviceKey = key in _serviceKeys) {
+        return *serviceKey;
+      }
     }
+    return CREServiceKey.init;
+  }
 
-    bool deleteCredential(string instanceId, string name) {
-        synchronized (_lock) {
-            auto key = compositeKey(instanceId, name);
-            if ((key in _credentials) is null) {
-                return false;
-            }
-            _credentials.remove(key);
-            return true;
-        }
-    }
-
-    CRECredential getCredential(string instanceId, string name) {
-        synchronized (_lock) {
-            auto key = compositeKey(instanceId, name);
-            if (auto credential = key in _credentials) {
-                return *credential;
-            }
-        }
-        return CRECredential.init;
-    }
-
-    CRECredential[] listCredentials(string instanceId) {
-        CRECredential[] values;
-        synchronized (_lock) {
-            foreach (key, value; _credentials) {
-                if (key.length > instanceId.length + 1 && key[0 .. instanceId.length] == instanceId && key[instanceId.length] == ':') {
-                    values ~= value;
-                }
-            }
-        }
-        return values;
-    }
-
-    CREServiceKey upsertServiceKey(CREServiceKey key) {
-        synchronized (_lock) {
-            auto composite = compositeKey(key.instanceId, key.keyId);
-            _serviceKeys[composite] = key;
-            return key;
-        }
-    }
-
-    bool deleteServiceKey(string instanceId, string keyId) {
-        synchronized (_lock) {
-            auto key = compositeKey(instanceId, keyId);
-            if ((key in _serviceKeys) is null) {
-                return false;
-            }
-            _serviceKeys.remove(key);
-            return true;
-        }
-    }
-
-    CREServiceKey getServiceKey(string instanceId, string keyId) {
-        synchronized (_lock) {
-            auto key = compositeKey(instanceId, keyId);
-            if (auto serviceKey = key in _serviceKeys) {
-                return *serviceKey;
-            }
-        }
-        return CREServiceKey.init;
-    }
-
-    private string compositeKey(string a, string b) {
-        return a ~ ":" ~ b;
-    }
+  private string compositeKey(string a, string b) {
+    return a ~ ":" ~ b;
+  }
 }

@@ -183,7 +183,7 @@ class AGTService : SAPService {
     return deployVersion(tenantId.toString, instanceId.toString, request);
   }
 
-  Json deployVersion(string tenantId, string instanceId, Json request) {
+  Json deployVersion(string tenantId, UUID instanceId, Json request) {
     validateId(tenantId, "Tenant ID");
     validateId(instanceId, "Instance ID");
 

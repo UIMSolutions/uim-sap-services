@@ -81,7 +81,7 @@ class SVMStore : SAPStore {
     return values;
   }
 
-  SVMServiceInstance getInstance(string tenantId, string instanceId) {
+  SVMServiceInstance getInstance(string tenantId, UUID instanceId) {
     synchronized (_lock) {
       auto key = scopedKey(tenantId, "instance", instanceId);
       if (auto value = key in _instances) {
@@ -91,7 +91,7 @@ class SVMStore : SAPStore {
     return SVMServiceInstance.init;
   }
 
-  bool deleteInstance(string tenantId, string instanceId) {
+  bool deleteInstance(string tenantId, UUID instanceId) {
     synchronized (_lock) {
       auto key = scopedKey(tenantId, "instance", instanceId);
       if ((key in _instances) is null) {

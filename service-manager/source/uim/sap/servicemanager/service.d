@@ -157,7 +157,7 @@ class SVMService : SAPService {
       .set("total_results", cast(long)resources.length);
   }
 
-  Json patchServiceInstance(string tenantId, string instanceId, Json request) {
+  Json patchServiceInstance(string tenantId, UUID instanceId, Json request) {
     validateTenant(tenantId);
 
     auto current = _store.getInstance(tenantId, instanceId);
@@ -179,7 +179,7 @@ class SVMService : SAPService {
       .set("service_instance", saved.toJson());
   }
 
-  Json deleteServiceInstance(string tenantId, string instanceId) {
+  Json deleteServiceInstance(string tenantId, UUID instanceId) {
     validateTenant(tenantId);
 
     if (!_store.deleteInstance(tenantId, instanceId)) {
@@ -191,7 +191,7 @@ class SVMService : SAPService {
       .set("instance_id", instanceId);
   }
 
-  Json shareServiceInstance(string tenantId, string instanceId, Json request) {
+  Json shareServiceInstance(string tenantId, UUID instanceId, Json request) {
     validateTenant(tenantId);
 
     auto current = _store.getInstance(tenantId, instanceId);
@@ -274,7 +274,7 @@ class SVMService : SAPService {
       .set("binding_id", bindingId);
   }
 
-  Json runtimeInstanceAction(string tenantId, string instanceId, string action) {
+  Json runtimeInstanceAction(string tenantId, UUID instanceId, string action) {
     validateTenant(tenantId);
 
     auto current = _store.getInstance(tenantId, instanceId);

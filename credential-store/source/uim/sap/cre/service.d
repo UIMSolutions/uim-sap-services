@@ -73,25 +73,24 @@ class CREService : SAPService {
     if (instance.isNull) {
       throw new CREValidationException("plan_id is required");
     }
-    
+
     instance.updatedAt = Clock.currTime();
     auto saved = _store.upsertInstance(instance);
 
     return Json.emptyObject
-    .set("success", true)
-    .set("instance", saved.toJson());
+      .set("success", true)
+      .set("instance", saved.toJson());
   }
 
   Json listServiceInstances() {
     Json resources = _store.listInstances().map!(item => item.toJson()).array.toJson();
 
-    Json payload = Json.emptyObject;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)_store.listInstances().length;
-    return payload;
+    return Json.emptyObject
+      .set("resources", resources)
+      .set("total_results", cast(long)_store.listInstances().length);
   }
 
-  Json getServiceInstance(string instanceId) {
+  Json getServiceInstance(UUID instanceId) {
     auto instance = _store.getInstance(instanceId);
     if (instance.instanceId.length == 0) {
       throw new CRENotFoundException("Service instance", instanceId);
@@ -101,7 +100,7 @@ class CREService : SAPService {
       .set("instance", instance.toJson);
   }
 
-  Json deleteServiceInstance(string instanceId) {
+  Json deleteServiceInstance(UUID instanceId) {
     if (!_store.deleteInstance(instanceId)) {
       throw new CRENotFoundException("Service instance", instanceId);
     }
@@ -112,7 +111,7 @@ class CREService : SAPService {
       .set("instance_id", instanceId);
   }
 
-  Json upsertCredential(string instanceId, string credentialName, Json request, string requestKey) {
+  Json upsertCredential(UUID instanceId, string credentialName, Json request, string requestKey) {
     validateInstance(instanceId);
     if (!("credential" in request) || !request["credential"].isString) {
       throw new CREValidationException("credential (string) is required");
@@ -130,17 +129,17 @@ class CREService : SAPService {
       .set("credential", saved.toJsonSummary());
   }
 
-  Json listCredentials(string instanceId) {
+  Json listCredentials(UUID instanceId) {
     validateInstance(instanceId);
-    Json resources = _store.listCredentials(instanceId).map!(credential => credential.toJsonSummary()).array.toJson();
-    
-    Json payload = Json.emptyObject;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)_store.listCredentials(instanceId).length;
-    return payload;
+    Json resources = _store.listCredentials(instanceId)
+      .map!(credential => credential.toJsonSummary()).array.toJson();
+
+    return Json.emptyObject
+      .set("resources", resources)
+      .set("total_results", cast(long)_store.listCredentials(instanceId).length);
   }
 
-  Json getCredential(string instanceId, string credentialName, string requestKey) {
+  Json getCredential(UUID instanceId, string credentialName, string requestKey) {
     validateInstance(instanceId);
     auto credential = _store.getCredential(instanceId, credentialName);
     if (credential.name.length == 0) {
@@ -156,35 +155,35 @@ class CREService : SAPService {
     }
 
     return Json.emptyObject
-    .set("instance_id", instanceId)
-    .set("name", credentialName)
-    .set("credential", plaintext)
-    .set("metadata", credential.metadata)
-    .set("updated_at", credential.updatedAt.toISOExtString());
+      .set("instance_id", instanceId)
+      .set("name", credentialName)
+      .set("credential", plaintext)
+      .set("metadata", credential.metadata)
+      .set("updated_at", credential.updatedAt.toISOExtString());
   }
 
-  Json deleteCredential(string instanceId, string credentialName) {
+  Json deleteCredential(UUID instanceId, string credentialName) {
     validateInstance(instanceId);
     if (!_store.deleteCredential(instanceId, credentialName)) {
       throw new CRENotFoundException("Credential", credentialName);
     }
 
     return Json.emptyObject
-    .set("success", true)
-    .set("message", "Credential deleted")
-    .set("instance_id", instanceId)
-    .set("name", credentialName);
+      .set("success", true)
+      .set("message", "Credential deleted")
+      .set("instance_id", instanceId)
+      .set("name", credentialName);
   }
 
-  Json upsertServiceKey(string instanceId, string serviceKeyId, Json request, string requestKey) {
+  Json upsertServiceKey(UUID instanceId, UUID serviceKeyId, Json request, string requestKey) {
     validateInstance(instanceId);
 
-    Json keyPayload = Json.emptyObject;
-    keyPayload["instance_id"] = instanceId;
-    keyPayload["service_key_id"] = serviceKeyId;
-    keyPayload["clientid"] = "sk-" ~ serviceKeyId;
-    keyPayload["clientsecret"] = generateSecretToken();
-    keyPayload["url"] = _config.basePath ~ "/v1/service_instances/" ~ instanceId ~ "/credentials";
+    Json keyPayload = Json.emptyObject
+      .set("instance_id", instanceId)
+      .set("service_key_id", serviceKeyId)
+      .set("clientid", "sk-" ~ serviceKeyId)
+      .set("clientsecret", generateSecretToken())
+      .set("url", _config.basePath ~ "/v1/service_instances/" ~ instanceId ~ "/credentials");
 
     auto keyText = keyPayload.toString();
     auto encryptionKey = resolveEncryptionKey(request, requestKey);
@@ -194,11 +193,11 @@ class CREService : SAPService {
     auto saved = _store.upsertServiceKey(serviceKey);
 
     return Json.emptyObject
-    .set("success", true)
-    .set("service_key", saved.toJsonSummary());
+      .set("success", true)
+      .set("service_key", saved.toJsonSummary());
   }
 
-  Json getServiceKey(string instanceId, string serviceKeyId, string requestKey) {
+  Json getServiceKey(UUID instanceId, UUID serviceKeyId, string requestKey) {
     validateInstance(instanceId);
     auto serviceKey = _store.getServiceKey(instanceId, serviceKeyId);
     if (serviceKey.keyId.length == 0) {
@@ -214,26 +213,26 @@ class CREService : SAPService {
     }
 
     return Json.emptyObject
-    .set("instance_id", instanceId)
-    .set("service_key_id", serviceKeyId)
-    .set("credentials", parseJsonString(plaintext))
-    .set("created_at", serviceKey.createdAt.toISOExtString());
+      .set("instance_id", instanceId)
+      .set("service_key_id", serviceKeyId)
+      .set("credentials", parseJsonString(plaintext))
+      .set("created_at", serviceKey.createdAt.toISOExtString());
   }
 
-  Json deleteServiceKey(string instanceId, string serviceKeyId) {
+  Json deleteServiceKey(UUID instanceId, UUID serviceKeyId) {
     validateInstance(instanceId);
     if (!_store.deleteServiceKey(instanceId, serviceKeyId)) {
       throw new CRENotFoundException("Service key", serviceKeyId);
     }
 
     return Json.emptyObject
-    .set("success", true)
-    .set("message", "Service key deleted")
-    .set("instance_id", instanceId)
-    .set("service_key_id", serviceKeyId);
+      .set("success", true)
+      .set("message", "Service key deleted")
+      .set("instance_id", instanceId)
+      .set("service_key_id", serviceKeyId);
   }
 
-  private void validateInstance(string instanceId) {
+  private void validateInstance(UUID instanceId) {
     if (!_store.hasInstance(instanceId)) {
       throw new CRENotFoundException("Service instance", instanceId);
     }

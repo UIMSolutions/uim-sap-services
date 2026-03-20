@@ -6,7 +6,9 @@ mixin(ShowModule!());
 
 @safe:
 
-struct CREEncryptedPayload {
+class CREEncryptedPayload : SAPObject {
+    mixin(SAPObjectTemplate!CREEncryptedPayload);
+
     ubyte[] cipherBytes;
     ubyte[] nonceBytes;
     string algorithm = "XOR-KEYSTREAM-V1";
