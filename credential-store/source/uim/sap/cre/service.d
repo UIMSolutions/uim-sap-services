@@ -70,7 +70,7 @@ class CREService : SAPService {
       throw new CREValidationException("service_id is required");
     }
 
-    if (instance.isNull) {
+    if (instance.planId.isNull) {
       throw new CREValidationException("plan_id is required");
     }
 
@@ -126,13 +126,13 @@ class CREService : SAPService {
 
     return Json.emptyObject
       .set("success", true)
-      .set("credential", saved.toJsonSummary());
+      .set("credential", saved.toJson());
   }
 
   Json listCredentials(UUID instanceId) {
     validateInstance(instanceId);
     Json resources = _store.listCredentials(instanceId)
-      .map!(credential => credential.toJsonSummary()).array.toJson();
+      .map!(credential => credential.toJson()).array.toJson();
 
     return Json.emptyObject
       .set("resources", resources)
@@ -194,13 +194,13 @@ class CREService : SAPService {
 
     return Json.emptyObject
       .set("success", true)
-      .set("service_key", saved.toJsonSummary());
+      .set("service_key", saved.toJson());
   }
 
   Json getServiceKey(UUID instanceId, UUID serviceKeyId, string requestKey) {
     validateInstance(instanceId);
     auto serviceKey = _store.getServiceKey(instanceId, serviceKeyId);
-    if (serviceKey.keyId.length == 0) {
+    if (serviceKey.keyId.toString.length == 0) {
       throw new CRENotFoundException("Service key", serviceKeyId.toString);
     }
 

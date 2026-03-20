@@ -9,6 +9,27 @@ mixin(ShowModule!());
 class CREServiceInstance : SAPObject {
   mixin(SAPObjectTemplate!CREServiceInstance);
 
+  override bool initialize(Json[string] initData = null) {
+    if (!super.initialize(initData)) {
+      return false;
+    }
+
+    if ("instance_id" in initData && initData["instance_id"].isString) {
+      instanceId = UUID(initData["instance_id"].get!string);
+    }
+
+    if ("service_id" in initData && initData["service_id"].isString) {
+      serviceId = UUID(initData["service_id"].get!string);
+    }
+
+    if ("plan_id" in initData && initData["plan_id"].isString) {
+      planId = UUID(initData["plan_id"].get!string);
+    }
+
+    status = initData.getString("status", "created");
+    return true;
+  }
+
   UUID instanceId;
   UUID serviceId;
   UUID planId;
@@ -24,23 +45,13 @@ class CREServiceInstance : SAPObject {
       .set("parameters", parameters);
   }
 
-  CREServiceInstance opCall(UUID instanceId, Json request) {
+  static CREServiceInstance opCall(UUID instanceId, Json request) {
     CREServiceInstance instance = new CREServiceInstance(request);
     instance.instanceId = instanceId;
     instance.createdAt = Clock.currTime();
     instance.updatedAt = instance.createdAt;
+    instance.parameters = request.getObject("parameters", Json.emptyObject);
 
-    if ("service_id" in request && request["service_id"].isString) {
-      instance.serviceId = UUID(request["service_id"].get!string);
-    }
-    if ("plan_id" in request && request["plan_id"].isString) {
-      instance.planId = UUID(request["plan_id"].get!string);
-    }
-    
-    instance.parameters = "parameters" in request && request["parameters"].isObject 
-      ? request["parameters"] 
-      : Json.emptyObject;
-      
     return instance;
   }
 }

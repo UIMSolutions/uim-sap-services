@@ -55,7 +55,8 @@ private ubyte[] toBytes(string value) {
 
 private string fromBytes(ubyte[] value) {
   char[] cValue = cast(char[])value;
-  return cast(string)cValue;
+  string result = to!string(cValue);
+  return result;
 }
 
 private ulong checksum(const(ubyte)[] value) {

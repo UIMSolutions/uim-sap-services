@@ -6,7 +6,9 @@ mixin(ShowModule!());
 
 @safe:
 
-void main() {
+version (unittest) {
+} else {
+  void main() {
   CREConfig config = new CREConfig();
   config.host = envOr("CRE_HOST", "0.0.0.0");
   config.port = readPort(envOr("CRE_PORT", "8086"), 8086);
@@ -30,4 +32,5 @@ void main() {
   writeln("Starting CRE service on ", config.host, ":", config.port);
   writeln("Base path: ", config.basePath);
   server.run();
+}
 }

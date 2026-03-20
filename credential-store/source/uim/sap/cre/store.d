@@ -192,12 +192,13 @@ class CREStore : SAPStore {
     }
   }
 
-  bool deleteServiceKey(UUID instanceId, string keyId) {
+  bool deleteServiceKey(UUID instanceId, UUID keyId) {
     synchronized (_lock) {
       auto key = compositeKey(instanceId, keyId);
       if ((key in _serviceKeys) is null) {
         return false;
       }
+      
       _serviceKeys.remove(key);
       return true;
     }

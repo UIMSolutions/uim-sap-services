@@ -14,10 +14,10 @@ class CRECredential : SAPObject {
   CREEncryptedPayload secret;
   Json metadata;
   
-  Json toJsonSummary() const {
+  override Json toJson() {
     return toJson()
       .set("name", name)
-      .set("instance_id", instanceId)
+      .set("instance_id", instanceId.toString())
       .set("algorithm", secret.algorithm)
       .set("metadata", metadata);
   }
