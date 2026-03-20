@@ -71,7 +71,7 @@ mixin(ShowModule!());
   * For more information on data mappings and their management, refer to the SAP Integration Suite documentation.
   */
 struct INTMapping {
-  string tenantId;
+  UUID tenantId;
   string mappingId;
   string name;
   string description;

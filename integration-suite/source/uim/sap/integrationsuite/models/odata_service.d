@@ -12,7 +12,7 @@ mixin(ShowModule!());
 @safe:
 
 struct INTODataService {
-  string tenantId;
+  UUID tenantId;
   string serviceId;
   string name;
   string description;

@@ -43,7 +43,7 @@ mixin(ShowModule!());
   * For more information on data assets and their management, refer to the SAP Integration Suite documentation.
   */
 struct INTDataAsset {
-  string tenantId;
+  UUID tenantId;
   string assetId;
   string name;
   string description;

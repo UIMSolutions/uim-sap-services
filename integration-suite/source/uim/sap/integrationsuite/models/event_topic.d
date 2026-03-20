@@ -32,7 +32,7 @@ mixin(ShowModule!());
   * For more information on event topics and their management, refer to the SAP Integration Suite documentation.
  */
 struct INTEventTopic {
-  string tenantId;
+  UUID tenantId;
   string topicId;
   string topicName;
   string description;

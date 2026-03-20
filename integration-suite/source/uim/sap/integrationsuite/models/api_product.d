@@ -41,7 +41,7 @@ mixin(ShowModule!());
   *   Json response = product.toJson();
   */
 struct INTApiProduct {
-  string tenantId;
+  UUID tenantId;
   string productId;
   string name;
   string description;

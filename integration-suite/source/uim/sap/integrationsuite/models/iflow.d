@@ -35,7 +35,7 @@ mixin(ShowModule!());
   * For more information on iFlows and their management, refer to the SAP Integration Suite documentation.
   */
 struct INTIFlow {
-  string tenantId;
+  UUID tenantId;
   string iflowId;
   string name;
   string description;

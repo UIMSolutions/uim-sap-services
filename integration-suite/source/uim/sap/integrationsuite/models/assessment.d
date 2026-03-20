@@ -12,7 +12,7 @@ mixin(ShowModule!());
 @safe:
 
 struct INTAssessment {
-  string tenantId;
+  UUID tenantId;
   string assessmentId;
   string name;
   string description;

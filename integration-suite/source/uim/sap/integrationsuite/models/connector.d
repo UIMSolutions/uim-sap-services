@@ -40,7 +40,7 @@ mixin(ShowModule!());
   * For more information on connectors and their management, refer to the SAP Integration Suite documentation.
   */
 struct INTConnector {
-  string tenantId;
+  UUID tenantId;
   string connectorId;
   string name;
   string description;

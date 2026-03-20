@@ -12,7 +12,7 @@ mixin(ShowModule!());
 @safe:
 
 struct INTTradingPartner {
-  string tenantId;
+  UUID tenantId;
   string partnerId;
   string name;
   string description;

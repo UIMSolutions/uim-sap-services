@@ -51,7 +51,7 @@ mixin(ShowModule!());
   * For more information on hybrid runtimes and their management, refer to the SAP Integration Suite documentation.
   */
 struct INTHybridRuntime {
-  string tenantId;
+  UUID tenantId;
   string runtimeId;
   string name;
   string description;

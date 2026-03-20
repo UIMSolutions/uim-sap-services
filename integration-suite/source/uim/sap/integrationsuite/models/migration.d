@@ -12,7 +12,7 @@ mixin(ShowModule!());
 @safe:
 
 struct INTMigration {
-  string tenantId;
+  UUID tenantId;
   string migrationId;
   string name;
   string description;

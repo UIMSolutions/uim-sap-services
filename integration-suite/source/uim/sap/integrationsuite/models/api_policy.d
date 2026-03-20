@@ -12,7 +12,7 @@ mixin(ShowModule!());
 @safe:
 
 struct INTApiPolicy {
-    string tenantId;
+    UUID tenantId;
     string policyId;
     string name;
     string description;
