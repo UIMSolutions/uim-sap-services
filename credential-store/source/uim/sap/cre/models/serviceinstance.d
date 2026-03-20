@@ -6,31 +6,27 @@ mixin(ShowModule!());
 
 @safe:
 
-struct CREServiceInstance {
-  string instanceId;
-  string serviceId;
-  string planId;
+class CREServiceInstance : SAPObject {
+  mixin(SAPObjectTemplate!CREServiceInstance);
+
+  UUID instanceId;
+  UUID serviceId;
+  UUID planId;
   string status = "created";
   Json parameters;
-  SysTime createdAt;
-  SysTime updatedAt;
 
   override Json toJson()  {
-    Json info = super.toJson;
-    payload["instance_id"] = instanceId;
-    payload["service_id"] = serviceId;
-    payload["plan_id"] = planId;
-    payload["status"] = status;
-    payload["created_at"] = createdAt.toISOExtString();
-    payload["updated_at"] = updatedAt.toISOExtString();
-    payload["parameters"] = parameters;
+    return super.toJson
+    .set("instance_id", instanceId);
+    .set("service_id", serviceId);
+    .set("plan_id", planId);
+    .set("status", status);
+    .set("parameters", parameters);
     return payload;
   }
-}
 
-
-CREServiceInstance instanceFromJson(string instanceId, Json request) {
-  CREServiceInstance instance;
+  CREServiceInstance opCall(string instanceId, Json request) {
+  CREServiceInstance instance = new CREServiceInstance(request);
   instance.instanceId = instanceId;
   instance.createdAt = Clock.currTime();
   instance.updatedAt = instance.createdAt;
@@ -47,4 +43,7 @@ CREServiceInstance instanceFromJson(string instanceId, Json request) {
     instance.parameters = Json.emptyObject;
   }
   return instance;
+  }
 }
+
+

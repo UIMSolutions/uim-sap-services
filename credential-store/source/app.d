@@ -2,6 +2,10 @@ module app;
 
 import uim.sap.cre;
 
+mixin(ShowModule!());
+
+@safe:
+
 void main() {
   CREConfig config = new CREConfig();
   config.host = envOr("CRE_HOST", "0.0.0.0");

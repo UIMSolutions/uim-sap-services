@@ -63,21 +63,23 @@ class CREService : SAPService {
     _store = new CREStore;
   }
 
-  Json upsertServiceInstance(string instanceId, Json request) {
-    auto instance = instanceFromJson(instanceId, request);
-    if (instance.serviceId.length == 0) {
+  Json upsertServiceInstance(UUID instanceId, Json request) {
+    CREServiceInstance instance = CREServiceInstance(instanceId, request);
+
+    if (instance.serviceId.isNull == 0) {
       throw new CREValidationException("service_id is required");
     }
-    if (instance.planId.length == 0) {
+
+    if (instance.isNull) {
       throw new CREValidationException("plan_id is required");
     }
+    
     instance.updatedAt = Clock.currTime();
     auto saved = _store.upsertInstance(instance);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["instance"] = saved.toJson();
-    return payload;
+    return Json.emptyObject
+    .set("success", true)
+    .set("instance", saved.toJson());
   }
 
   Json listServiceInstances() {
@@ -94,20 +96,20 @@ class CREService : SAPService {
     if (instance.instanceId.length == 0) {
       throw new CRENotFoundException("Service instance", instanceId);
     }
-    Json payload = Json.emptyObject;
-    payload["instance"] = instance.toJson();
-    return payload;
+
+    return Json.emptyObject
+      .set("instance", instance.toJson);
   }
 
   Json deleteServiceInstance(string instanceId) {
     if (!_store.deleteInstance(instanceId)) {
       throw new CRENotFoundException("Service instance", instanceId);
     }
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["message"] = "Service instance deleted";
-    payload["instance_id"] = instanceId;
-    return payload;
+
+    return Json.emptyObject
+      .set("success", true)
+      .set("message", "Service instance deleted")
+      .set("instance_id", instanceId);
   }
 
   Json upsertCredential(string instanceId, string credentialName, Json request, string requestKey) {
@@ -123,10 +125,9 @@ class CREService : SAPService {
 
     auto saved = _store.upsertCredential(credential);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["credential"] = saved.toJsonSummary();
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("credential", saved.toJsonSummary());
   }
 
   Json listCredentials(string instanceId) {
@@ -154,13 +155,12 @@ class CREService : SAPService {
       throw new CREValidationException("Unable to decrypt credential with provided key");
     }
 
-    Json payload = Json.emptyObject;
-    payload["instance_id"] = instanceId;
-    payload["name"] = credentialName;
-    payload["credential"] = plaintext;
-    payload["metadata"] = credential.metadata;
-    payload["updated_at"] = credential.updatedAt.toISOExtString();
-    return payload;
+    return Json.emptyObject
+    .set("instance_id", instanceId)
+    .set("name", credentialName)
+    .set("credential", plaintext)
+    .set("metadata", credential.metadata)
+    .set("updated_at", credential.updatedAt.toISOExtString());
   }
 
   Json deleteCredential(string instanceId, string credentialName) {
@@ -168,12 +168,12 @@ class CREService : SAPService {
     if (!_store.deleteCredential(instanceId, credentialName)) {
       throw new CRENotFoundException("Credential", credentialName);
     }
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["message"] = "Credential deleted";
-    payload["instance_id"] = instanceId;
-    payload["name"] = credentialName;
-    return payload;
+
+    return Json.emptyObject
+    .set("success", true)
+    .set("message", "Credential deleted")
+    .set("instance_id", instanceId)
+    .set("name", credentialName);
   }
 
   Json upsertServiceKey(string instanceId, string serviceKeyId, Json request, string requestKey) {
@@ -193,10 +193,9 @@ class CREService : SAPService {
     auto serviceKey = serviceKeyFromJson(instanceId, serviceKeyId, request, encrypted);
     auto saved = _store.upsertServiceKey(serviceKey);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["service_key"] = saved.toJsonSummary();
-    return payload;
+    return Json.emptyObject
+    .set("success", true)
+    .set("service_key", saved.toJsonSummary());
   }
 
   Json getServiceKey(string instanceId, string serviceKeyId, string requestKey) {
@@ -214,12 +213,11 @@ class CREService : SAPService {
       throw new CREValidationException("Unable to decrypt service key with provided key");
     }
 
-    Json payload = Json.emptyObject;
-    payload["instance_id"] = instanceId;
-    payload["service_key_id"] = serviceKeyId;
-    payload["credentials"] = parseJsonString(plaintext);
-    payload["created_at"] = serviceKey.createdAt.toISOExtString();
-    return payload;
+    return Json.emptyObject
+    .set("instance_id", instanceId)
+    .set("service_key_id", serviceKeyId)
+    .set("credentials", parseJsonString(plaintext))
+    .set("created_at", serviceKey.createdAt.toISOExtString());
   }
 
   Json deleteServiceKey(string instanceId, string serviceKeyId) {
@@ -227,12 +225,12 @@ class CREService : SAPService {
     if (!_store.deleteServiceKey(instanceId, serviceKeyId)) {
       throw new CRENotFoundException("Service key", serviceKeyId);
     }
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["message"] = "Service key deleted";
-    payload["instance_id"] = instanceId;
-    payload["service_key_id"] = serviceKeyId;
-    return payload;
+
+    return Json.emptyObject
+    .set("success", true)
+    .set("message", "Service key deleted")
+    .set("instance_id", instanceId)
+    .set("service_key_id", serviceKeyId);
   }
 
   private void validateInstance(string instanceId) {

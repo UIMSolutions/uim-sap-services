@@ -6,7 +6,7 @@ mixin(ShowModule!());
 
 @safe:
 
-bool optionalBoolean(Json data, string key, bool fallback) const {
+bool optionalBoolean(Json data, string key, bool fallback) {
   if (!(key in data) || data[key].isNull)
     return fallback;
 
@@ -14,7 +14,7 @@ bool optionalBoolean(Json data, string key, bool fallback) const {
   return data[key].get!bool;
 }
 
-string optionalString(Json data, string key, string fallback) const {
+string optionalString(Json data, string key, string fallback) {
   if (!(key in data) || data[key].isNull)
     return fallback;
 
@@ -22,7 +22,7 @@ string optionalString(Json data, string key, string fallback) const {
   return data[key].get!string;
 }
 
-string optionalObject(Json data, string key, Json fallback = Json.emptyObject) const {
+Json optionalObject(Json data, string key, Json fallback = Json.emptyObject) {
   if (!(key in data) || data[key].isNull) {
     return fallback;
   }

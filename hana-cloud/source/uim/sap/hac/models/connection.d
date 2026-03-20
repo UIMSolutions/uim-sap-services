@@ -35,7 +35,7 @@ struct ConnectionConfig : SAPConfig {
     string database;
     
     /// Instance ID
-    string instanceId;
+    UUID instanceId;
     
     /// Authentication credentials
     Credential credential;

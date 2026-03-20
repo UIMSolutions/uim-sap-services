@@ -7,7 +7,7 @@ mixin(ShowModule!());
 @safe:
 
 struct CRECredential {
-  string instanceId;
+  UUID instanceId;
   string name;
   CREEncryptedPayload secret;
   Json metadata;

@@ -32,7 +32,7 @@ struct SVMPlatform {
 
 struct SVMServiceInstance {
   UUID tenantId;
-  string instanceId;
+  UUID instanceId;
   string offeringName;
   string planName;
   string environmentId;
@@ -68,7 +68,7 @@ struct SVMServiceInstance {
 struct SVMServiceBinding {
   UUID tenantId;
   string bindingId;
-  string instanceId;
+  UUID instanceId;
   string name;
   string environmentId;
   string credentialsRef;

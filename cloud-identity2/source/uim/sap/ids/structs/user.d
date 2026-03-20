@@ -93,10 +93,10 @@ struct UserMeta {
  */
 struct User {
     /// Unique identifier
-    string id;
+    UUID id;
     
     /// External identifier
-    string externalId;
+    UUID externalId;
     
     /// Username (required)
     string userName;

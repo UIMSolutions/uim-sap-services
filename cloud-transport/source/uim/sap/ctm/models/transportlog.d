@@ -9,11 +9,12 @@ mixin(ShowModule!());
 // ---------------------------------------------------------------------------
 // CTMTransportLog – an audit/monitoring log entry
 // ---------------------------------------------------------------------------
-struct CTMTransportLog {
-    UUID tenantId;
-    string logId;
-    string requestId;
-    string nodeId;
+class CTMTransportLog : SAPTenantObject {
+    mixin(SAPObjectTemplate!CTMTransportLog);
+
+    UUID logId;
+    UUID requestId;
+    UUID nodeId;
     string action;     // e.g. "created", "forwarded", "queued", "import-started",
                        //      "import-success", "import-error", "reset", "scheduled"
     string message;
@@ -22,15 +23,13 @@ struct CTMTransportLog {
     SysTime timestamp;
 
     override Json toJson()  {
-        Json j = Json.emptyObject;
-        j["tenant_id"]  = tenantId;
-        j["log_id"]     = logId;
-        j["request_id"] = requestId;
-        j["node_id"]    = nodeId;
-        j["action"]     = action;
-        j["message"]    = message;
-        j["level"]      = level;
-        j["timestamp"]  = timestamp.toISOExtString();
-        return j;
+        Json j = super.toJson;
+        .set("log_id", logId)
+        .set("request_id", requestId)
+        .set("node_id", nodeId)
+        .set("action", action)
+        .set("message", message)
+        .set("level", level)
+        .set("timestamp", timestamp.toISOExtString());
     }
 }

@@ -7,7 +7,7 @@ mixin(ShowModule!());
 @safe:
 
 struct CREServiceKey {
-  string instanceId;
+  UUID instanceId;
   string keyId;
   CREEncryptedPayload secret;
   Json parameters;

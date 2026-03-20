@@ -3,7 +3,9 @@ module uim.sap.ctm.models.importqueue;
 // ---------------------------------------------------------------------------
 // CTMImportQueueEntry – an entry in a node's import queue
 // ---------------------------------------------------------------------------
-struct CTMImportQueueEntry {
+class CTMImportQueueEntry : SAPTenantObject {
+    mixin(SAPObjectTemplate!CTMImportQueueEntry);
+
     UUID tenantId;
     UUID nodeId;
     UUID requestId;
@@ -15,14 +17,12 @@ struct CTMImportQueueEntry {
     SysTime importedAt;
 
     override Json toJson()  {
-        Json j = Json.emptyObject;
-        j["tenant_id"]   = tenantId;
-        j["node_id"]     = nodeId;
-        j["request_id"]  = requestId;
-        j["position"]    = position;
-        j["status"]      = status;
-        j["queued_at"]   = queuedAt.toISOExtString();
-        j["imported_at"] = importedAt.toISOExtString();
-        return j;
+        return super.toJson
+        .set("node_id", nodeId)
+        .set("request_id", requestId)
+        .set("position", position)
+        .set("status", status)
+        .set("queued_at", queuedAt.toISOExtString())
+        .set("imported_at", importedAt.toISOExtString());
     }
 }

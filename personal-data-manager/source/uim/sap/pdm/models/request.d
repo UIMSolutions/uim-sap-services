@@ -13,7 +13,7 @@ mixin(ShowModule!());
 
 /// Data subject request — a formal request regarding personal data (GDPR Art. 15-22)
 struct PDMDataRequest {
-    string requestId;
+    UUID requestId;
     string subjectId;
     UUID tenantId;
 

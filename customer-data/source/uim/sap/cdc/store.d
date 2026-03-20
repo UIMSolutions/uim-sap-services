@@ -401,14 +401,6 @@ class CDCStore : SAPStore {
     return item[key];
   }
 
-  private SysTime parseTime(string value) {
-    try {
-      return SysTime.fromISOExtString(value);
-    } catch (Exception) {
-      return SysTime.fromISOExtString("1970-01-01T00:00:00Z");
-    }
-  }
-
   private string scopedProfileKey(string tenantId, string region, string userId) {
     return tenantId ~ ":profile:" ~ region ~ ":" ~ userId;
   }
