@@ -15,7 +15,7 @@ mixin(ShowModule!());
 struct PDMPersonalDataRecord {
     string recordId;
     string subjectId;
-    string tenantId;
+    UUID tenantId;
 
     PDMDataCategory category = PDMDataCategory.identification;
     PDMProcessingPurpose purpose = PDMProcessingPurpose.contractual;

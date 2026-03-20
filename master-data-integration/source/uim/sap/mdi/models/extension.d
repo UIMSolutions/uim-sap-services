@@ -6,7 +6,7 @@ mixin(ShowModule!());
 
 @safe:
 struct MDIExtension {
-  string tenantId;
+  UUID tenantId;
   string extensionId;
   string objectType;
   Json fields;

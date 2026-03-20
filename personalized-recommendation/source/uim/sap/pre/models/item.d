@@ -14,7 +14,7 @@ mixin(ShowModule!());
 /// A catalog item that can be recommended.
 struct PREItem {
   string itemId;
-  string tenantId;
+  UUID tenantId;
   string title;
   string description;
   string category;

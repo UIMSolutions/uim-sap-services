@@ -41,7 +41,7 @@ mixin(ShowModule!());
 struct PDMDataUsage {
   string usageId;
   string subjectId;
-  string tenantId;
+  UUID tenantId;
 
   string applicationName;
   string applicationId;

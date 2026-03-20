@@ -16,7 +16,7 @@ struct PRERecommendation {
   string recommendationId;
   string userId;
   string itemId;
-  string tenantId;
+  UUID tenantId;
   string modelId;
   PRERecommendationType recommendationType;
   double score = 0.0;

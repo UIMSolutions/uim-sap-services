@@ -14,7 +14,7 @@ mixin(ShowModule!());
 /// A business scenario that ties a model to a recommendation use-case.
 struct PREScenario {
   string scenarioId;
-  string tenantId;
+  UUID tenantId;
   string name;
   string description;
   PREScenarioType scenarioType = PREScenarioType.ecommerce;

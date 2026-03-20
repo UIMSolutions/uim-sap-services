@@ -12,7 +12,7 @@ mixin(ShowModule!());
 @safe:
 
 struct CFTaskRun {
-    string tenantId;
+    UUID tenantId;
     string taskRunId;
     string taskName;
     int durationSeconds;

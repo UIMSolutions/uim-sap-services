@@ -7,7 +7,7 @@ mixin(ShowModule!());
 @safe:
 
 struct MDGQualityRule {
-    string tenantId;
+    UUID tenantId;
     string ruleId;
     string name;
     string field;

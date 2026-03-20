@@ -12,7 +12,7 @@ mixin(ShowModule!());
 @safe:
 
 struct RunLog {
-    string tenantId;
+    UUID tenantId;
     string runId;
     string jobId;
     string scheduleId;

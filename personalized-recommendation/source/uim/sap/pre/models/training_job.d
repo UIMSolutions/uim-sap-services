@@ -15,7 +15,7 @@ mixin(ShowModule!());
 struct PRETrainingJob {
     string jobId;
     string modelId;
-    string tenantId;
+    UUID tenantId;
     PRETrainingStatus status = PRETrainingStatus.queued;
     size_t itemsProcessed;
     size_t usersProcessed;

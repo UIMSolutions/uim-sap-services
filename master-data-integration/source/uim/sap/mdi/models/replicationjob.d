@@ -37,7 +37,7 @@ mixin(ShowModule!());
   * - `updatedAt`: A timestamp indicating when the replication job was last updated.
  */ 
 struct MDIReplicationJob {
-    string tenantId;
+    UUID tenantId;
     string jobId;
     string sourceClientId;
     string targetClientId;

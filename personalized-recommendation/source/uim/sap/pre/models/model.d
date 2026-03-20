@@ -9,7 +9,7 @@ mixin(ShowModule!());
 /// A trained recommendation model.
 struct PREModel {
     string modelId;
-    string tenantId;
+    UUID tenantId;
     string name;
     string description;
     PREModelType modelType = PREModelType.collaborative_filtering;

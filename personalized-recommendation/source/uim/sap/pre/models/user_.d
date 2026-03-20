@@ -14,7 +14,7 @@ mixin(ShowModule!());
 /// A user whose interactions are tracked for personalisation.
 struct PREUser {
   string userId;
-  string tenantId;
+  UUID tenantId;
   string displayName;
   PREUserSegment segment = PREUserSegment.new_user;
   string[] preferences;

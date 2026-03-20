@@ -29,7 +29,7 @@ mixin(ShowModule!());
   * - `updatedAt`: A timestamp indicating when the replication client was last updated.
  */
 struct MDIReplicationClient {
-  string tenantId;
+  UUID tenantId;
   string clientId;
   string name;
   string systemType;

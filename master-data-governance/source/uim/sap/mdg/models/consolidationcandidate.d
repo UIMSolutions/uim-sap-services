@@ -7,7 +7,7 @@ mixin(ShowModule!());
 @safe:
 
 struct MDGConsolidationCandidate {
-    string tenantId;
+    UUID tenantId;
     string primaryBpId;
     string duplicateBpId;
     long score;

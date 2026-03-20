@@ -16,7 +16,7 @@ struct PREInteraction {
   string interactionId;
   string userId;
   string itemId;
-  string tenantId;
+  UUID tenantId;
   PREInteractionType interactionType = PREInteractionType.view;
   double weight = 1.0;
   string[string] context;

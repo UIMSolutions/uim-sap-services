@@ -31,7 +31,7 @@ mixin(ShowModule!());
   * - `updatedAt`: A timestamp indicating when the filter was last updated.
   */
 struct MDIFilter {
-  string tenantId;
+  UUID tenantId;
   string filterId;
   string objectType;
   Json conditions;

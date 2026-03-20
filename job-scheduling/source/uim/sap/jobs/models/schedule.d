@@ -12,7 +12,7 @@ mixin(ShowModule!());
 @safe:
 
 struct Schedule {
-    string tenantId;
+    UUID tenantId;
     string scheduleId;
     string jobId;
     string format;

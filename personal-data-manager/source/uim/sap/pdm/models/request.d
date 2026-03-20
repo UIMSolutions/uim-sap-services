@@ -15,7 +15,7 @@ mixin(ShowModule!());
 struct PDMDataRequest {
     string requestId;
     string subjectId;
-    string tenantId;
+    UUID tenantId;
 
     PDMRequestType requestType = PDMRequestType.access;
     PDMRequestStatus status = PDMRequestStatus.draft;

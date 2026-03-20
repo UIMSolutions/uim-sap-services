@@ -12,7 +12,7 @@ mixin(ShowModule!());
 @safe:
 
 struct AlertEvent {
-    string tenantId;
+    UUID tenantId;
     string alertId;
     string eventType;
     string jobId;
