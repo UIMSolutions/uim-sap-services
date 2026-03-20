@@ -1,4 +1,5 @@
 module uim.sap.cia.models.workflow;
+
 import uim.sap.cia;
 
 mixin(ShowModule!());
@@ -7,39 +8,33 @@ mixin(ShowModule!());
 // ---------------------------------------------------------------------------
 // Workflow – a running instance of a scenario for a tenant
 // ---------------------------------------------------------------------------
-struct CIAWorkflow {
-  string tenantId;
-  string id;
-  string scenarioId;
+class CIAWorkflow : SAPTenantObject {
+mixin(SAPObjectTemplate!CIAWorkflow);
+
+  UUID id;
+  UUID scenarioId;
   string scenarioName;
   string name;
   /// Status: "planned" | "running" | "completed" | "failed"
   string status;
   /// IDs of systems selected for this workflow
   string[] systemIds;
-  SysTime createdAt;
-  SysTime updatedAt;
   SysTime startedAt;
   SysTime finishedAt;
 
   override Json toJson()  {
-    Json j = Json.emptyObject;
-    j["tenant_id"] = tenantId;
-    j["id"] = id;
-    j["scenario_id"] = scenarioId;
-    j["scenario_name"] = scenarioName;
-    j["name"] = name;
-    j["status"] = status;
-
     Json s = Json.emptyArray;
     foreach (sysId; systemIds)
       s ~= sysId;
-    j["system_ids"] = s;
 
-    j["created_at"] = createdAt.toISOExtString();
-    j["updated_at"] = updatedAt.toISOExtString();
-    j["started_at"] = startedAt.toISOExtString();
-    j["finished_at"] = finishedAt.toISOExtString();
-    return j;
+    return super.toJson()
+    .set("id", id)
+    .set("scenario_id", scenarioId)
+    .set("scenario_name", scenarioName)
+    .set("name", name)
+    .set("status", status)
+    .set("system_ids", s)
+    .set("started_at", startedAt.toISOExtString())
+    .set("finished_at", finishedAt.toISOExtString());
   }
 }

@@ -5,8 +5,15 @@
 *****************************************************************************************************************/
 module uim.sap.con.models.destination;
 
-struct CONDestination {
-  UUID tenantId;
+import uim.sap.con;
+
+mixin(ShowModule!());
+
+@safe:
+
+class CONDestination : SAPTenantObject {
+mixin(SAPObjectTemplate!CONDestination);
+
   string name;
   string protocol;
   string targetHost;
@@ -18,24 +25,18 @@ struct CONDestination {
   bool identityPropagationEnabled = true;
 
   Json metadata;
-  SysTime createdAt;
-  SysTime updatedAt;
 
   override Json toJson()  {
-    Json info = super.toJson;
-    payload["tenant_id"] = tenantId;
-    payload["name"] = name;
-    payload["protocol"] = protocol;
-    payload["target_host"] = targetHost;
-    payload["target_port"] = cast(long)targetPort;
-    payload["target_path"] = targetPath;
-    payload["on_premise"] = onPremise;
-    payload["cloud_database"] = cloudDatabase;
-    payload["identity_propagation_enabled"] = identityPropagationEnabled;
-    payload["metadata"] = metadata;
-    payload["created_at"] = createdAt.toISOExtString();
-    payload["updated_at"] = updatedAt.toISOExtString();
-    return payload;
+    return super.toJson
+    .set("name", name)
+    .set("protocol", protocol)
+    .set("target_host", targetHost)
+    .set("target_port", cast(long)targetPort)
+    .set("target_path", targetPath)
+    .set("on_premise", onPremise)
+    .set("cloud_database", cloudDatabase)
+    .set("identity_propagation_enabled", identityPropagationEnabled)
+    .set("metadata", metadata);
   }
 }
 

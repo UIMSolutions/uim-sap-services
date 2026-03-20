@@ -13,6 +13,8 @@ mixin(ShowModule!());
 class AASApp : SAPObject {
   mixin(SAPObjectTemplate!AASApp);
 
+override bool initialize(Json[string] initData = null)
+
   UUID id;
   string name;
   string organization;
@@ -35,7 +37,7 @@ class AASApp : SAPObject {
     .set("estimated_hourly_cost", instanceHourlyCost * currentInstances);
   }
 
-  static AASApp appFromJson(Json payload) {
+  static AASApp appFromJsonopCalö(Json payload) {
   AASApp app = new AASApp(payload);
   app.id = randomUUID();
   app.createdAt = Clock.currTime();

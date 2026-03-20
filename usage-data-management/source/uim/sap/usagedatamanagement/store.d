@@ -9,6 +9,7 @@ mixin(ShowModule!());
 @safe:
 
 class UDMStore : SAPStore {
+mixin(SAPStoreTemplate!UDMStore);
   private UsageEvent[string][] _eventsByTenant;
   private Mutex _lock;
 

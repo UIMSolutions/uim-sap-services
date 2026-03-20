@@ -7,8 +7,9 @@ mixin(ShowModule!());
 // ---------------------------------------------------------------------------
 // AutomationResult – outcome of an automated technical configuration step
 // ---------------------------------------------------------------------------
-struct CIAAutomationResult {
-  UUID tenantId;
+class CIAAutomationResult : SAPTenantObject {
+mixin(SAPObjectTemplate!CIAAutomationResult);
+
   UUID workflowId;
   UUID taskId;
   UUID id;
@@ -20,16 +21,14 @@ struct CIAAutomationResult {
   SysTime finishedAt;
 
   override Json toJson()  {
-    Json j = Json.emptyObject;
-    j["tenant_id"] = tenantId;
-    j["workflow_id"] = workflowId;
-    j["task_id"] = taskId;
-    j["id"] = id;
-    j["target_system_id"] = targetSystemId;
-    j["status"] = status;
-    j["output"] = output;
-    j["started_at"] = startedAt.toISOExtString();
-    j["finished_at"] = finishedAt.toISOExtString();
-    return j;
+    return super.toJson
+    .set("workflow_id", workflowId)
+    .set("task_id", taskId)
+    .set("id", id)
+    .set("target_system_id", targetSystemId)
+    .set("status", status)
+    .set("output", output)
+    .set("started_at", startedAt.toISOExtString())
+    .set("finished_at", finishedAt.toISOExtString());
   }
 }

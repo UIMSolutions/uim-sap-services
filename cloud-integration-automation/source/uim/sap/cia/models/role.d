@@ -7,16 +7,17 @@ mixin(ShowModule!());
 // ---------------------------------------------------------------------------
 // Role – a named permission group that tasks can be assigned to
 // ---------------------------------------------------------------------------
-struct CIARole {
+class CIARole : SAPObject {
+mixin(SAPObjectTemplate!CIARole);
+
   string id;
   string name; // e.g. "Basis Administrator", "Cloud Admin"
   string description;
 
   override Json toJson()  {
-    Json j = Json.emptyObject;
-    j["id"] = id;
-    j["name"] = name;
-    j["description"] = description;
-    return j;
+    return super.toJson()
+    .set("id", id)
+    .set("name", name)
+    .set("description", description);
   }
 }

@@ -42,10 +42,10 @@ class AASStore : SAPStore {
         synchronized (_lock) {
             if (auto ptr = appId in _apps) {
                 ptr.currentInstances = desiredInstances;
-                return *ptr;
+                return _apps[appId];
             }
         }
-        return AASApp.init;
+        return null;
     }
 
     AASApp[] listApps() {
@@ -61,10 +61,10 @@ class AASStore : SAPStore {
     AASApp getApp(string appId) {
         synchronized (_lock) {
             if (auto ptr = appId in _apps) {
-                return *ptr;
+                return _apps[appId];
             }
         }
-        return AASApp.init;
+        return null;
     }
 
     bool hasApp(string appId) {
@@ -86,6 +86,6 @@ class AASStore : SAPStore {
                 return (*ptr).dup;
             }
         }
-        return [];
+        return null;
     }
 }

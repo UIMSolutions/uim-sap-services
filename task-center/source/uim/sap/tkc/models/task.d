@@ -11,8 +11,9 @@ mixin(ShowModule!());
 
 @safe:
 
-struct TKCTask {
-  string tenantId;
+class TKCTask : SAPTenantObject {
+mixin(SAPObjectTemplate!TKCTask);
+
   string taskId;
   string providerId;
   string providerTaskId;
@@ -25,40 +26,33 @@ struct TKCTask {
   string nativeAppName;
   string[] tags;
   Json attributes;
-  SysTime createdAt;
-  SysTime updatedAt;
   bool hasDueAt;
   SysTime dueAt;
   TKCTaskAction[] actionHistory;
 
   override Json toJson()  {
-    Json info = super.toJson;
-    payload["tenant_id"] = tenantId;
-    payload["task_id"] = taskId;
-    payload["provider_id"] = providerId;
-    payload["provider_task_id"] = providerTaskId;
-    payload["title"] = title;
-    payload["description"] = description;
-    payload["assignee"] = assignee;
-    payload["status"] = status;
-    payload["priority"] = priority;
-    payload["native_app_url"] = nativeAppUrl;
-    payload["native_app_name"] = nativeAppName;
-
     Json tagValues = Json.emptyArray;
     foreach (tag; tags)
       tagValues ~= tag;
-    payload["tags"] = tagValues;
-
-    payload["attributes"] = attributes;
-    payload["created_at"] = createdAt.toISOExtString();
-    payload["updated_at"] = updatedAt.toISOExtString();
-    payload["due_at"] = hasDueAt ? dueAt.toISOExtString() : null;
 
     Json actionValues = Json.emptyArray;
     foreach (item; actionHistory)
       actionValues ~= item.toJson();
-    payload["action_history"] = actionValues;
-    return payload;
+
+    return super.toJson
+    .set("task_id", taskId)
+    .set("provider_id", providerId)
+    .set("provider_task_id", providerTaskId)
+    .set("title"] = title)
+    .set("description"] = description)
+    .set("assignee"] = assignee)
+    .set("status"] = status)
+    .set("priority"] = priority)
+    .set("native_app_url"] = nativeAppUrl)
+    .set("native_app_name"] = nativeAppName)
+    .set("tags"] = tagValues)
+    .set("attributes", attributes)
+    .set("due_at", hasDueAt ? dueAt.toISOExtString() : null)
+    .set("action_history", actionValues);
   }
 }

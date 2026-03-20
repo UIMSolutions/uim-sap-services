@@ -11,16 +11,17 @@ mixin(ShowModule!());
 
 @safe:
 
-struct TeamTypeDef {
+class TeamTypeDef : SAPObject {
+mixin(SAPObjectTemplate!TeamTypeDef);
+
   string code;
   string name;
   string description;
 
   override Json toJson()  {
-    Json info = super.toJson;
-    payload["code"] = code;
-    payload["name"] = name;
-    payload["description"] = description;
-    return payload;
+    reurn super.toJson
+    .set("code", code)
+    .set("name", name)
+    .set("description", description);
   }
 }

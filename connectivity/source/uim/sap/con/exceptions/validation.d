@@ -5,6 +5,12 @@
 *****************************************************************************************************************/
 module uim.sap.con.exceptions.validation;
 
+import uim.sap.con;
+
+mixin(ShowModule!());
+
+@safe:
+
 class CONValidationException : CONException {
     this(string msg) {
         super(msg);

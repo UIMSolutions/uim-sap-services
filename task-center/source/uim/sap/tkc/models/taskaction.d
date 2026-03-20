@@ -11,18 +11,19 @@ mixin(ShowModule!());
 
 @safe:
 
-struct TKCTaskAction {
+class TKCTaskAction : SAPObject {
+mixin(SAPObjectTemplate!TKCTaskAction);
+
     string action;
     string performedBy;
     string comment;
     SysTime performedAt;
 
     override Json toJson()  {
-        Json payload = Json.emptyObject;
-        payload["action"] = action;
-        payload["performed_by"] = performedBy;
-        payload["comment"] = comment;
-        payload["performed_at"] = performedAt.toISOExtString();
-        return payload;
+        return super.toJson
+        .set("action", action)
+        .set("performed_by", performedBy);
+        .set("comment", comment);
+        .set("performed_at", performedAt.toISOExtString());
     }
 }

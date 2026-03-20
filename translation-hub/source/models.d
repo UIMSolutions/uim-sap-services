@@ -2,7 +2,9 @@ module models;
 
 import std.datetime : Clock, SysTime;
 
-struct SoftwareTranslateRequest {
+class SoftwareTranslateRequest  : SAPObject {
+mixin(SAPObjectTemplate!SoftwareTranslateResponse);
+
     string sourceLanguage;
     string targetLanguage;
     string[] texts;
@@ -10,7 +12,9 @@ struct SoftwareTranslateRequest {
     string domain;   // sap | generic | custom
 }
 
-struct SoftwareTranslateResponse {
+class SoftwareTranslateResponse : SAPObject {
+mixin(SAPObjectTemplate!SoftwareTranslateResponse);
+
     string sourceLanguage;
     string targetLanguage;
     string provider;
@@ -20,7 +24,9 @@ struct SoftwareTranslateResponse {
     SysTime timestamp;
 }
 
-struct DocumentTranslateSyncRequest {
+UUID DocumentTranslateSyncRequest : SAPObject {
+mixin(SAPObjectTemplate!SoftwareTranslateResponse);
+
     string sourceLanguage;
     string targetLanguage;
     string fileName;
@@ -28,15 +34,19 @@ struct DocumentTranslateSyncRequest {
     string provider; // sap-nmt | llm
 }
 
-struct DocumentTranslateSyncResponse {
-    string requestId;
+class DocumentTranslateSyncResponse  : SAPObject {
+mixin(SAPObjectTemplate!SoftwareTranslateResponse);
+
+    UUID requestId;
     string provider;
     string targetLanguage;
     string translatedContent;
     SysTime timestamp;
 }
 
-struct DocumentTranslateAsyncRequest {
+class DocumentTranslateAsyncRequest  : SAPObject {
+mixin(SAPObjectTemplate!SoftwareTranslateResponse);
+
     string sourceLanguage;
     string targetLanguage;
     string fileName;
@@ -51,8 +61,10 @@ enum JobStatus : string {
     failed = "failed"
 }
 
-struct AsyncJob {
-    string id;
+class AsyncJob  : SAPObject {
+mixin(SAPObjectTemplate!SoftwareTranslateResponse);
+
+    UUID id;
     JobStatus status;
     string provider;
     string sourceLanguage;
@@ -63,8 +75,10 @@ struct AsyncJob {
     SysTime updatedAt;
 }
 
-struct Project {
-    string id;
+class Project  : SAPObject {
+mixin(SAPObjectTemplate!SoftwareTranslateResponse);
+
+    UUID id;
     string name;
     string kind; // file | git | abap
     string sourceLanguage;
@@ -72,8 +86,10 @@ struct Project {
     SysTime createdAt;
 }
 
-struct LanguageAsset {
-    string id;
+class LanguageAsset  : SAPObject {
+mixin(SAPObjectTemplate!SoftwareTranslateResponse);
+
+    UUID id;
     string name;
     string domain;
     string sourceLanguage;
@@ -82,7 +98,9 @@ struct LanguageAsset {
     SysTime createdAt;
 }
 
-struct ApiError {
+struct ApiError  : SAPObject {
+mixin(SAPObjectTemplate!SoftwareTranslateResponse);
+
     string error;
     string details;
 }

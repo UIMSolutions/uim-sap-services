@@ -23,26 +23,23 @@ class CLGService : SAPService {
   }
 
   override Json health() {
-    Json healthInfo = super.health();
-    healthInfo["storedEntries"] = cast(long)_store.count();
-    return healthInfo;
+    return super.health()
+    .set("storedEntries", cast(long)_store.count());
   }
 
   override Json ready() {
-    Json readyInfo = super.ready();
-    readyInfo["storedEntries"] = cast(long)_store.count();
-    return readyInfo;
+    return super.ready()
+    .set("storedEntries", cast(long)_store.count());
   }
 
   Json ingest(Json payload) {
-    auto entry = CLGLogEntry.fromJson(payload);
+    auto entry = CLGLogEntry(payload);
     validateEntry(entry);
     _store.append(entry);
 
-    Json response = Json.emptyObject;
-    response["accepted"] = 1;
-    response["entryId"] = entry.id;
-    return response;
+    return Json.emptyObject
+    .set("accepted", 1)
+    .set("entryId", entry.id);
   }
 
   Json ingestBatch(Json payload) {
@@ -52,26 +49,24 @@ class CLGService : SAPService {
 
     CLGLogEntry[] logs;
     foreach (item; payload["logs"].toArray) {
-      auto entry = CLGLogEntry.fromJson(item);
+      auto entry = CLGLogEntry(item);
       validateEntry(entry);
       logs ~= entry;
     }
 
     _store.appendBatch(logs);
 
-    Json response = Json.emptyObject;
-    response["accepted"] = cast(long)logs.length;
-    return response;
+    super Json.emptyObject
+    .set("accepted", cast(long)logs.length);
   }
 
   Json query(Json payload) {
     auto queryRequest = CLGLogQuery.fromJson(payload, _config.defaultQueryLimit);
     auto logs = _store.query(queryRequest);
 
-    Json response = Json.emptyObject;
-    response["count"] = cast(long)logs.length;
-    response["logs"] = logsToJsonArray(logs);
-    return response;
+    super Json.emptyObject
+    .set("count", cast(long)logs.length)
+    .set("logs", logsToJsonArray(logs));
   }
 
   Json metrics() {

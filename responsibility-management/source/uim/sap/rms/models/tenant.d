@@ -11,8 +11,8 @@ mixin(ShowModule!());
 
 @safe:
 
+class TenantContext : SAPTenantObject {
+mixin(SAPObjectTemplate!TenantContext);
 
-struct TenantContext {
-    string tenantId;
-    string spaceId;
+     UUID spaceId;
 }

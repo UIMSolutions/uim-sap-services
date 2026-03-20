@@ -25,16 +25,13 @@ mixin(ShowModule!());
   * - `level`: An optional log level to filter the logs.
   * - `limit`: The maximum number of log entries to return, with a default value of 100.
   */
-struct CLGLogQuery {
-    string tenant;
-    string source;
-    string contains;
-    Nullable!CLGLogLevel level;
-    size_t limit = 100;
+class CLGLogQuery : SAPObject {
+mixin(SAPObjectTemplate!CLGLogQuery);
 
-    static CLGLogQuery fromJson(Json payload, size_t fallbackLimit) {
-        CLGLogQuery query;
-        query.limit = fallbackLimit;
+override bool initialize(Json[string] initData = null) {
+if (!super.initialize(initData)) {
+return false;
+}
 
         if ("tenant" in payload && payload["tenant"].isString) {
             query.tenant = payload["tenant"].get!string;
@@ -46,7 +43,7 @@ struct CLGLogQuery {
             query.contains = payload["contains"].get!string;
         }
         if ("level" in payload && payload["level"].isString) {
-            query.level = Nullable!CLGLogLevel(parseLevel(payload["level"].get!string));
+            query.level = new CLGLogLevel(parseLevel(payload["level"].get!string));
         }
         if ("limit" in payload && payload["limit"].isInteger) {
             auto parsed = payload["limit"].get!long;
@@ -54,6 +51,18 @@ struct CLGLogQuery {
                 query.limit = cast(size_t)parsed;
             }
         }
+
+return true;
+}
+    string tenant;
+    string source;
+    string contains;
+    Nullable!CLGLogLevel level;
+    size_t limit = 100;
+
+    static CLGLogQuery opCall(Json payload, size_t fallbackLimit) {
+        CLGLogQuery query = new CLGLogQuery(payload);
+        query.limit = fallbackLimit;
 
         return query;
     }
