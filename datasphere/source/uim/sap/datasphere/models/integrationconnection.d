@@ -30,7 +30,7 @@ mixin(ShowModule!());
   * - updatedAt: The timestamp of the last update to this connection.  
   */
 struct DATIntegrationConnection {
-  string tenantId;
+  UUID tenantId;
   string connectionId;
   string name;
   string sourceType;

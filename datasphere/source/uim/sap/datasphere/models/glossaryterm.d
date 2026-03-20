@@ -23,7 +23,7 @@ mixin(ShowModule!());
   * - updatedAt: The timestamp of the last update to this glossary term.
   */
 struct DATGlossaryTerm {
-  string tenantId;
+  UUID tenantId;
   string termId;
   string term;
   string definition;

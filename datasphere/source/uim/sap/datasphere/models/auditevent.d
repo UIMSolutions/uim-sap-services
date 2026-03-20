@@ -26,7 +26,7 @@ mixin(ShowModule!());
   * - createdAt: The timestamp when the audit event was created.
  */
 struct DATAuditEvent {
-  string tenantId;
+  UUID tenantId;
   string eventId;
   string operation;
   string layer;

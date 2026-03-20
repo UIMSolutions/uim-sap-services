@@ -27,7 +27,7 @@ mixin(ShowModule!());
   * Note: This struct is a simplified representation and may need to be extended with additional fields or methods depending on the specific requirements of the governance assets being modeled.
  */
 struct DATGovernanceAsset {
-  string tenantId;
+  UUID tenantId;
   string assetId;
   string title;
   string assetType;

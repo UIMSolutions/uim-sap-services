@@ -27,7 +27,7 @@ mixin(ShowModule!());
     * Note: The actual implementation of how the expression is evaluated and enforced is beyond the scope of this struct and would be handled by the underlying data access layer in Datasphere.
     */
 struct DATRowPolicy {
-    string tenantId;
+    UUID tenantId;
     string policyId;
     string dataset;
     string expression;

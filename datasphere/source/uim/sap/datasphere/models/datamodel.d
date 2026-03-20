@@ -29,7 +29,7 @@ mixin(ShowModule!());
   * - updatedAt: The timestamp of the last update to this data model.
  */
 struct DATDataModel {
-  string tenantId;
+  UUID tenantId;
   string modelId;
   string name;
   string modelType;

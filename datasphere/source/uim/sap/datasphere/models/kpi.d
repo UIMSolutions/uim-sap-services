@@ -26,7 +26,7 @@ mixin(ShowModule!());
   * - updatedAt: The timestamp when the KPI was last updated.
   */
 struct DATKpi {
-  string tenantId;
+  UUID tenantId;
   string kpiId;
   string name;
   string formula;

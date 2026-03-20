@@ -27,7 +27,7 @@ mixin(ShowModule!());
   * - updatedAt: The timestamp of the last update to this space.
  */
 struct DATSpace {
-  string tenantId;
+  UUID tenantId;
   string spaceId;
   string name;
   int diskGb;

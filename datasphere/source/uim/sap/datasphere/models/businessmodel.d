@@ -27,7 +27,7 @@ mixin(ShowModule!());
   * - updatedAt: The timestamp of the last update to this business model.
   */
 struct DATBusinessModel {
-  string tenantId;
+  UUID tenantId;
   string modelId;
   string name;
   string description;

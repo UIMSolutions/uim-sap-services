@@ -37,7 +37,7 @@ mixin(ShowModule!());
   * Note: The `toJson()` method is used to serialize the job log entry into a JSON format that can be returned in API responses or stored in a database. The actual implementation of the `to
  */
 struct CISJobLog {
-  string tenantId;
+  UUID tenantId;
   string logId;
   string jobId;
   string level;
