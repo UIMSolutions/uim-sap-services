@@ -15,6 +15,8 @@ import uim.sap.ids;
  * Configuration for Cloud Identity Services
  */
 class IdentityConfig : SAPConfig {
+  mixin(SAPConfigTemplate!IdentityConfig);
+  
   // Service type
   IdentityServiceType serviceType = IdentityServiceType.IAS;
 

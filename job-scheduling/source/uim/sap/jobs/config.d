@@ -60,7 +60,6 @@ class JobSchedulingConfig : SAPConfig {
   bool requireAuthToken = false;
   string authToken;
 
-  string[string] customHeaders;
 
   override void validate() const {
     super.validate();

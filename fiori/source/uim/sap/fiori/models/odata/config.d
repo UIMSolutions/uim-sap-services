@@ -13,6 +13,18 @@ import uim.sap.fiori;
  * OData client configuration
  */
 struct ODataConfig : SAPConfig {
+  mixin(SAPConfigTemplate!ODataConfig);
+  
+  override bool initialize(Json[string] initData) {
+    if (!super.initialize(initData)) {
+      return false;
+    }
+
+    serviceName(initData.getString("serviceName", "uim-odata-client"));
+    serviceVersion(initData.getString("serviceVersion", "1.0.0"));
+    return true;
+  }
+
   string serviceUrl;
   string username;
   string password;

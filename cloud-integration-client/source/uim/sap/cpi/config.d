@@ -43,7 +43,6 @@ class CPIConfig : SAPConfig {
     apiBasePath(initData.getString("apiBasePath", "/api/v1"));
     timeout(initData.getDuration("timeout", 30.seconds));
     maxRetries(initData.getInteger("maxRetries", 2));
-    customHeaders(initData.getObject("customHeaders", new JsonObject).toStringMap());
   }
   
   string baseUrl;
@@ -62,7 +61,6 @@ class CPIConfig : SAPConfig {
   Duration timeout = 30.seconds;
   uint maxRetries = 2;
 
-  string[string] customHeaders;
 
   override void validate() const {
     if (baseUrl.length == 0) {

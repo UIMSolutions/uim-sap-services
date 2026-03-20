@@ -189,7 +189,7 @@ class CREService : SAPService {
     auto encryptionKey = resolveEncryptionKey(request, requestKey);
     auto encrypted = encryptString(keyText, encryptionKey);
 
-    auto serviceKey = serviceKeyFromJson(instanceId, serviceKeyId, request, encrypted);
+    auto serviceKey = CREServiceKey(instanceId, serviceKeyId, request, encrypted);
     auto saved = _store.upsertServiceKey(serviceKey);
 
     return Json.emptyObject

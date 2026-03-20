@@ -31,7 +31,9 @@ CRECredential credentialFromJson(UUID instanceId, string credentialName, Json re
   credential.createdAt = Clock.currTime();
   credential.updatedAt = credential.createdAt;
 
-  return "metadata" in request && request["metadata"].isObject
-    ? credential.metadata = request["metadata"]
-    : credential.metadata = Json.emptyObject;
+  credential.metadata = "metadata" in request && request["metadata"].isObject
+    ? request["metadata"]
+    : Json.emptyObject;
+
+  return credential;
 }

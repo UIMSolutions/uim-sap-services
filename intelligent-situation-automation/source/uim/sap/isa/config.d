@@ -18,21 +18,23 @@ class ISAConfig : SAPConfig {
       return false;
     }
 
+    // Network settings
+    basePath(initData.getString("basePath", "/api/situation-automation"));
     port(cast(ushort)initData.getInteger("port", 8088));
     host(initData.getString("host", "0.0.0.0"));
-    basePath(initData.getString("basePath", "/api/situation-automation"));
+
+    // Service metadata
     serviceName(initData.getString("serviceName", "uim-isa"));
     serviceVersion(initData.getString("serviceVersion", "1.0.0"));
+
+  bool requireAuthToken = false;
+  string authToken;
 
     return true;
   }
 
   string defaultTenant = "default";
 
-  bool requireAuthToken = false;
-  string authToken;
-
-  string[string] customHeaders;
 
   override void validate() const {
     super.validate();

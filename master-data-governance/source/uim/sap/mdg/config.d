@@ -7,6 +7,7 @@ mixin(ShowModule!());
 @safe:
 
 class MDGConfig : SAPConfig {
+  mixin(SAPConfigTemplate!(MDGConfig));
 
   override bool initialize(Json[string] initData) {
     if (!super.initialize(initData)) {
@@ -19,24 +20,20 @@ class MDGConfig : SAPConfig {
     serviceName(initData.getString("serviceName", "uim-mdg"));
     serviceVersion(initData.getString("serviceVersion", "1.0.0"));
 
+  bool requireAuthToken = false;
+  string authToken;
+
     return true;
   }
 
   string defaultApprover = "mdg-approver";
 
-  bool requireAuthToken = false;
-  string authToken;
-
-  string[string] customHeaders;
 
   override void validate() const {
     super.validate();
 
     if (defaultApprover.length == 0) {
       throw new MDGConfigurationException("Default approver cannot be empty");
-    }
-    if (requireAuthToken && authToken.length == 0) {
-      throw new MDGConfigurationException("Auth token required when token auth is enabled");
     }
   }
 }

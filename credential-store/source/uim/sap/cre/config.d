@@ -20,23 +20,19 @@ class CREConfig : SAPConfig {
     serviceName(initData.getString("serviceName", "uim-cre"));
     serviceVersion(initData.getString("serviceVersion", "1.0.0"));
 
+    requireAuthToken(initData.getBool("requireAuthToken", false));
+    if (requireAuthToken) {
+      authToken = initData.getString("authToken", "");
+    }
+
     return true;
   }
 
-
-  bool requireAuthToken = false;
-  string authToken;
-
   string masterKey = "uim-cre-dev-master-key";
-
-  string[string] customHeaders;
 
   override void validate() const {
     super.validate();
 
-    if (requireAuthToken && authToken.length == 0) {
-      throw new CREConfigurationException("Auth token required when token auth is enabled");
-    }
     if (masterKey.length == 0) {
       throw new CREConfigurationException("Master key cannot be empty");
     }

@@ -22,20 +22,20 @@ class CREServiceKey : SAPObject {
       .set("algorithm", secret.algorithm)
       .set("parameters", parameters);
   }
-}
 
-CREServiceKey serviceKeyFromJson(UUID instanceId, string keyId, Json request, CREEncryptedPayload encrypted) {
-  CREServiceKey key;
-  key.instanceId = instanceId;
-  key.keyId = keyId;
-  key.secret = encrypted;
-  key.createdAt = Clock.currTime();
+  CREServiceKey opCall(UUID instanceId, UUID keyId, Json request, CREEncryptedPayload encrypted) {
+    CREServiceKey key;
+    key.instanceId = instanceId;
+    key.keyId = keyId;
+    key.secret = encrypted;
+    key.createdAt = Clock.currTime();
 
-  if ("parameters" in request && request["parameters"].isObject) {
-    key.parameters = request["parameters"];
-  } else {
-    key.parameters = Json.emptyObject;
+    if ("parameters" in request && request["parameters"].isObject) {
+      key.parameters = request["parameters"];
+    } else {
+      key.parameters = Json.emptyObject;
+    }
+    return key;
+
   }
-  return key;
 }
-

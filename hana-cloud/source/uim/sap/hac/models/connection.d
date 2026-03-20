@@ -21,12 +21,14 @@ struct ConnectionConfig : SAPConfig {
       return false;
     }
 
-  }
     /// Host address (e.g., "myaccount.hanacloud.ondemand.com")
     string host;
     
     /// Port number (default: 443 for HTTPS)
     ushort port = 443;
+
+    return true;
+  }
     
     /// Use HTTPS (recommended)
     bool useSSL = true;
@@ -49,8 +51,6 @@ struct ConnectionConfig : SAPConfig {
     /// Verify SSL certificates
     bool verifySSL = true;
     
-    /// Custom headers to include in requests
-    string[string] customHeaders;
     
     /**
      * Validate the configuration
