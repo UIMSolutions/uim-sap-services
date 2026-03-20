@@ -9,7 +9,7 @@ mixin(ShowModule!());
 // CIDCredential – a stored credential for private repositories
 // ---------------------------------------------------------------------------
 struct CIDCredential {
-    string tenantId;
+    UUID tenantId;
     string credentialId;
     string name;
     string description;

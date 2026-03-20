@@ -4,7 +4,7 @@ module uim.sap.ctm.models.transportrequest;
 // CTMTransportRequest – a transport request moving through the landscape
 // ---------------------------------------------------------------------------
 struct CTMTransportRequest {
-    string tenantId;
+    UUID tenantId;
     string requestId;
     string description;
     /// Owning (source) node

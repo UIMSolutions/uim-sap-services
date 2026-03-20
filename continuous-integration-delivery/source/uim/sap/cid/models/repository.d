@@ -9,7 +9,7 @@ mixin(ShowModule!());
 // CIDRepository – a connected Git repository
 // ---------------------------------------------------------------------------
 struct CIDRepository {
-    string tenantId;
+    UUID tenantId;
     string repoId;
     string name;
     string description;

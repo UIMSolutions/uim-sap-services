@@ -38,7 +38,7 @@ mixin(ShowModule!());
   * - updatedAt: The timestamp when the job was last updated.
  */
 struct IPVJob {
-  string tenantId;
+  UUID tenantId;
   string jobId;
   string jobName;
   string sourceSystemId;

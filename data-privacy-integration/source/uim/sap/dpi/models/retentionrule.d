@@ -22,7 +22,7 @@ import std.sap.dpi;
  * - updatedAt: The timestamp of the last update to this rule.  
  */
 struct DPIRetentionRule {
-  string tenantId;
+  UUID tenantId;
   string ruleId;
   string dataCategory;
   int retentionDays;

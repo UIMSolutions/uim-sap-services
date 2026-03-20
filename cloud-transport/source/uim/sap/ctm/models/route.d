@@ -4,7 +4,7 @@ module uim.sap.ctm.models.route;
 // CTMRoute – a directional connection between two nodes
 // ---------------------------------------------------------------------------
 struct CTMRoute {
-    string tenantId;
+    UUID tenantId;
     string routeId;
     string sourceNodeId;
     string targetNodeId;

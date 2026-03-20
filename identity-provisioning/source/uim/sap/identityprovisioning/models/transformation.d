@@ -20,7 +20,7 @@ mixin(ShowModule!());
  *  `action` values: "map", "filter", "skip", "default"
  */
 struct IPVTransformation {
-  string tenantId;
+  UUID tenantId;
   string transformationId;
   string systemId; // which system this rule belongs to
   string entityType = "user"; // "user" | "group"

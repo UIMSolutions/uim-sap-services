@@ -10,7 +10,7 @@ mixin(ShowModule!());
 // CTMTransportLog – an audit/monitoring log entry
 // ---------------------------------------------------------------------------
 struct CTMTransportLog {
-    string tenantId;
+    UUID tenantId;
     string logId;
     string requestId;
     string nodeId;

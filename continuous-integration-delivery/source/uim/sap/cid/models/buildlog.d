@@ -11,7 +11,7 @@ mixin(ShowModule!());
 // CIDBuildLog – a log entry produced during a build
 // ---------------------------------------------------------------------------
 struct CIDBuildLog {
-    string tenantId;
+    UUID tenantId;
     string logId;
     string buildId;
     /// Optional: stage this log belongs to

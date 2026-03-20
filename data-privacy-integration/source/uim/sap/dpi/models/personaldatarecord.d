@@ -24,7 +24,7 @@ import uim.sap.dpi;
     * - deleted: A boolean indicating whether this record has been marked as deleted.  
     */
 struct DPIPersonalDataRecord {
-    string tenantId;
+    UUID tenantId;
     string recordId;
     string subjectId;
     string category;

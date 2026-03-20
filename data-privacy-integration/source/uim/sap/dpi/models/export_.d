@@ -21,7 +21,7 @@ import uim.sap.dpi;
  * - createdAt: The timestamp when this export was created.  
  */
 struct DPIExport {
-  string tenantId;
+  UUID tenantId;
   string exportId;
   string subjectId;
   Json records;

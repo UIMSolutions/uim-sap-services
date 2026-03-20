@@ -21,7 +21,7 @@ mixin(ShowModule!());
  *  `connectorType` values: "sap-ias", "sap-sf", "scim", "ldap", "custom", …
  */
 struct IPVSystem {
-  string tenantId;
+  UUID tenantId;
   string systemId;
   string systemName;
   string description;
