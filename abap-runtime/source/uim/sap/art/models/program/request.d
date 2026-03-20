@@ -58,7 +58,7 @@ if ("program" in initData && initData["program"].isString) {
   string client;
   string language = "EN";
   Json parameters = Json.emptyObject;
-  string correlationId;
+  UUID correlationId;
 
   static ARTProgramRequest opCall(Json payload) {
     ARTProgramRequest request = new ARTProgramRequest(payload);

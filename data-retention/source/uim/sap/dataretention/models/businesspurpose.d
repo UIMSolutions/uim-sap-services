@@ -23,7 +23,7 @@ struct LegalGroundRule {
 }
 
 struct BusinessPurposeRule {
-  string tenantId;
+  UUID tenantId;
   string purposeRuleId;
   string applicationGroup;
   string purposeName;
@@ -52,7 +52,7 @@ struct BusinessPurposeRule {
 }
 
 struct DataSubjectRecord {
-  string tenantId;
+  UUID tenantId;
   string dataSubjectId;
   string applicationGroup;
   string legalGround;
@@ -76,7 +76,7 @@ struct DataSubjectRecord {
 }
 
 struct ArchiveDestructionJob {
-  string tenantId;
+  UUID tenantId;
   string jobId;
   string operation;
   string applicationGroup;

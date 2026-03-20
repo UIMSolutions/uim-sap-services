@@ -8,7 +8,7 @@ class BTPConfig : SAPConfig {
   string region;
   string username;
   string password;
-  string clientId;
+  string UUID;
   string clientSecret;
   string accessToken;
   string tokenType = "Bearer";

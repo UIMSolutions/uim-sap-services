@@ -5,7 +5,7 @@ mixin(ShowModule!());
 
 @safe:
 struct CPSAdminSettings {
-  string tenantId;
+  UUID tenantId;
   Json themes;
   Json transports;
   Json translations;

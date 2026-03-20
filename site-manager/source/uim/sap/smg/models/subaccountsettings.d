@@ -38,7 +38,7 @@ mixin(ShowModule!());
   * - toJson(): Converts the subaccount settings into a JSON object for API responses or storage.
   */
 struct SMGSubaccountSettings {
-    string tenantId;
+    UUID tenantId;
     string defaultSiteId;
     string launchpadMode;
     string themeId;

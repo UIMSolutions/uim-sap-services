@@ -7,7 +7,7 @@ mixin(ShowModule!());
 @safe:
 
 struct EVMDeadLetter {
-    string tenantId;
+    UUID tenantId;
     string deadLetterId;
     string queueName;
     string messageId;

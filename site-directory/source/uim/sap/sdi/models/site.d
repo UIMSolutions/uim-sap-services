@@ -7,7 +7,7 @@ mixin(ShowModule!());
 @safe:
 
 struct SDISite {
-  string tenantId;
+  UUID tenantId;
   string siteId;
   string name;
   string description;

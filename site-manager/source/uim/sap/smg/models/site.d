@@ -36,7 +36,7 @@ mixin(ShowModule!());
   * - toJson(): Converts the site details into a JSON object for API responses or storage.
   */
 struct SMGSite {
-  string tenantId;
+  UUID tenantId;
   string siteId;
   string siteName;
   string description;

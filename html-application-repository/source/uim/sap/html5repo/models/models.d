@@ -29,7 +29,7 @@ struct UploadedAsset {
 }
 
 struct AppVersionInfo {
-    string tenantId;
+    UUID tenantId;
     string spaceId;
     string appId;
     string versionId;
@@ -72,7 +72,7 @@ struct AppVersionInfo {
 }
 
 struct RuntimeAsset {
-    string tenantId;
+    UUID tenantId;
     string spaceId;
     string appId;
     string versionId;

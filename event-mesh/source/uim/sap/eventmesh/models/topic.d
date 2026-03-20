@@ -7,7 +7,7 @@ mixin(ShowModule!());
 @safe:
 
 struct EVMTopic {
-    string tenantId;
+    UUID tenantId;
     string topicName;
     string description;
     long subscriberCount = 0;

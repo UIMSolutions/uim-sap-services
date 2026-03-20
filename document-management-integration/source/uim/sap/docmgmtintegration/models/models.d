@@ -39,7 +39,7 @@ enum CmisObjectType : string {
 
 /// Represents a tenant in the multi-tenant system.
 struct Tenant {
-  string tenantId;
+  UUID tenantId;
   string name;
   string description;
   bool active = true;
@@ -80,7 +80,7 @@ Tenant tenantFromJson(Json request) {
 /// Describes a connected CMIS-compliant repository, scoped to a tenant.
 struct Repository {
   string repositoryId;
-  string tenantId;
+  UUID tenantId;
   string name;
   string description;
   string vendorName;
@@ -140,7 +140,7 @@ Repository repositoryFromJson(string tenantId, Json request) {
 /// A folder (container) in the document hierarchy, scoped to a tenant.
 struct Folder {
   string folderId;
-  string tenantId;
+  UUID tenantId;
   string repositoryId;
   string parentFolderId; // empty string = root-level
   string name;
@@ -201,7 +201,7 @@ Folder folderFromJson(string tenantId, string repositoryId, string parentFolderI
 /// A document (file) stored in a repository folder, scoped to a tenant.
 struct Document {
   string documentId;
-  string tenantId;
+  UUID tenantId;
   string repositoryId;
   string folderId;
   string name;
@@ -286,7 +286,7 @@ Document documentFromJson(string tenantId, string repositoryId, string folderId,
 struct DocumentVersion {
   string versionId;
   string documentId;
-  string tenantId;
+  UUID tenantId;
   int versionNumber;
   string versionLabel;
   string comment;

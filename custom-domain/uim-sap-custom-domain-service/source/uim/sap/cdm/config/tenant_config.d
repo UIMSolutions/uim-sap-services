@@ -5,7 +5,7 @@ import std.file;
 import std.array;
 
 struct TenantConfig : SAPConfig {
-    string tenantId;
+    UUID tenantId;
     string domain;
     string databaseUrl;
     string apiKey;

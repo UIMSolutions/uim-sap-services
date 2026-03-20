@@ -17,7 +17,7 @@ import uim.sap.obs.enumerations;
 struct OBSCredential {
   string credentialId;
   string bucketId;
-  string tenantId;
+  UUID tenantId;
   OBSCredentialType credType = OBSCredentialType.accessKey;
   OBSProvider provider;
   string accessKeyId;

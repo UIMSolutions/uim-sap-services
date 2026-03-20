@@ -5,7 +5,7 @@ import std.datetime : SysTime;
 import vibe.data.json : Json;
 
 struct CAGContentProvider {
-    string tenantId;
+    UUID tenantId;
     string providerId;
     string name;
     string providerType;
@@ -35,7 +35,7 @@ struct CAGContentProvider {
 }
 
 struct CAGContentItem {
-    string tenantId;
+    UUID tenantId;
     string contentId;
     string title;
     string contentType;
@@ -72,7 +72,7 @@ struct CAGContentItem {
 }
 
 struct CAGAssembly {
-    string tenantId;
+    UUID tenantId;
     string assemblyId;
     string name;
     string sourceSubaccount;
@@ -113,7 +113,7 @@ struct CAGAssembly {
 }
 
 struct CAGTransportQueue {
-    string tenantId;
+    UUID tenantId;
     string queueId;
     string name;
     string queueType;
@@ -137,7 +137,7 @@ struct CAGTransportQueue {
 }
 
 struct CAGTransportActivity {
-    string tenantId;
+    UUID tenantId;
     string activityId;
     string assemblyId;
     string queueId;

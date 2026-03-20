@@ -49,20 +49,19 @@ FromJson` function ensures that the `tenantId` is set and that a unique `compone
   class AEMEDAComponent : SAPTenantObject {
     mixin(SAPObjectTemplate!AEMEDAComponent);
 
-  string componentId;
+  UUID componentId;
   string name;
   string componentType;
   string owner;
   string lifecycle = "active";
 
   override override Json toJson()  {
-    Json resultJson = super.toJson();
-    resultJson["component_id"] = componentId;
-    resultJson["name"] = name;
-    resultJson["component_type"] = componentType;
-    resultJson["owner"] = owner;
-    resultJson["lifecycle"] = lifecycle;
-    return resultJson;
+    return super.toJson()
+    .set("component_id", componentId)
+    .set("name", name)
+    .set("component_type", componentType)
+    .set("owner", owner)
+    .set("lifecycle", lifecycle);
   }
 }
 

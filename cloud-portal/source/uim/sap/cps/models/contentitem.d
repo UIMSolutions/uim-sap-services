@@ -5,7 +5,7 @@ mixin(ShowModule!());
 
 @safe:
 struct CPSContentItem {
-  string tenantId;
+  UUID tenantId;
   string itemType;
   string itemId;
   string name;

@@ -55,14 +55,12 @@ class MGTConfig : SAPConfig {
     return true;
   }
 
-
-
   string tenant;
   string subdomain;
   string region = "api.sap.hana.ondemand.com";
   string username;
   string password;
-  string clientId;
+  UUID clientId;
   string clientSecret;
   string accessToken;
   bool useOAuth2 = false;

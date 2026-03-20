@@ -15,7 +15,7 @@ mixin(ShowModule!());
 class AEMNotificationRule : SAPTenantObject {
     mixin(SAPObjectTemplate!AEMNotificationRule);
 
-    string ruleId;
+    UUID ruleId;
     string metric;
     double threshold;
     string severity = "warning";

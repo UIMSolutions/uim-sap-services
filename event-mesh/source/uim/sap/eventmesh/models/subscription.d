@@ -7,7 +7,7 @@ mixin(ShowModule!());
 @safe:
 
 struct EVMSubscription {
-    string tenantId;
+    UUID tenantId;
     string subscriptionId;
     string topicName;
     string queueName;

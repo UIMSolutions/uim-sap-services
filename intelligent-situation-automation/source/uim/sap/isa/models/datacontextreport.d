@@ -6,7 +6,7 @@ mixin(ShowModule!());
 @safe:
 struct DataContextReport {
   string id;
-  string tenantId;
+  UUID tenantId;
   string title;
   string entityType;
   string situationType;

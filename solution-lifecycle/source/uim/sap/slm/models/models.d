@@ -10,7 +10,7 @@ mixin(ShowModule!());
 // SLMSolution – a deployed solution in a subaccount
 // ---------------------------------------------------------------------------
 struct SLMSolution {
-    string tenantId;
+    UUID tenantId;
     string solutionId;
     string name;
     string description;
@@ -94,7 +94,7 @@ struct SLMComponent {
 // SLMDeployment – a deployment/update operation record
 // ---------------------------------------------------------------------------
 struct SLMDeployment {
-    string tenantId;
+    UUID tenantId;
     string deploymentId;
     string solutionId;
     /// MTA archive reference (file path or URL)
@@ -131,7 +131,7 @@ struct SLMDeployment {
 // SLMSubscription – a multitenant subscription from a consumer subaccount
 // ---------------------------------------------------------------------------
 struct SLMSubscription {
-    string tenantId;
+    UUID tenantId;
     string subscriptionId;
     string solutionId;
     /// The subscribing (consumer) subaccount
@@ -165,7 +165,7 @@ struct SLMSubscription {
 // SLMLicense – license information associated with a solution
 // ---------------------------------------------------------------------------
 struct SLMLicense {
-    string tenantId;
+    UUID tenantId;
     string licenseId;
     string solutionId;
     /// Plan: e.g., "standard", "enterprise"
@@ -196,7 +196,7 @@ struct SLMLicense {
 // SLMOperationLog – audit/monitoring log for solution operations
 // ---------------------------------------------------------------------------
 struct SLMOperationLog {
-    string tenantId;
+    UUID tenantId;
     string logId;
     string solutionId;
     string deploymentId;

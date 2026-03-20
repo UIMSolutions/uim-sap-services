@@ -11,7 +11,7 @@ mixin(ShowModule!());
 @safe:
 struct AutomationConfiguration {
   string id;
-  string tenantId;
+  UUID tenantId;
   string name;
   string description;
   string situationType;

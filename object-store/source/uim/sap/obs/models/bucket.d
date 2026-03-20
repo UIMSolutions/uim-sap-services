@@ -17,7 +17,7 @@ import uim.sap.obs.enumerations;
 struct OBSBucket {
   string bucketId;
   string name;
-  string tenantId;
+  UUID tenantId;
   OBSProvider provider = OBSProvider.awsS3;
   OBSBucketStatus status = OBSBucketStatus.active;
   OBSAccessLevel accessLevel = OBSAccessLevel.private_;

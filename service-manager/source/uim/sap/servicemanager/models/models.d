@@ -9,7 +9,7 @@ mixin(ShowModule!());
 @safe:
 
 struct SVMPlatform {
-  string tenantId;
+  UUID tenantId;
   string platformId;
   string name;
   string runtimeType;
@@ -31,7 +31,7 @@ struct SVMPlatform {
 }
 
 struct SVMServiceInstance {
-  string tenantId;
+  UUID tenantId;
   string instanceId;
   string offeringName;
   string planName;
@@ -66,7 +66,7 @@ struct SVMServiceInstance {
 }
 
 struct SVMServiceBinding {
-  string tenantId;
+  UUID tenantId;
   string bindingId;
   string instanceId;
   string name;

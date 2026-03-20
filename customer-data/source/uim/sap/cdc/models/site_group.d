@@ -14,7 +14,7 @@ mixin(ShowModule!());
 class CDCSiteGroup : SAPTenantObject {
   mixin(SAPObjectTemplate!CDCSiteGroup);
 
-  string groupId;
+  UUID groupId;
   string name;
   string[] sites;
   string[] regions;
