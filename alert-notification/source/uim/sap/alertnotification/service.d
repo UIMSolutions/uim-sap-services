@@ -51,7 +51,7 @@ class AlertNotificationService : SAPService {
     return result;
   }
 
-  Json publishAlert(string tenantId, Json request) {
+  Json publishAlert(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
 
     AlertEvent eventItem;
@@ -83,7 +83,7 @@ class AlertNotificationService : SAPService {
     return result;
   }
 
-  Json listAlerts(string tenantId) {
+  Json listAlerts(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
 
     Json resources = Json.emptyArray;
@@ -96,7 +96,7 @@ class AlertNotificationService : SAPService {
     return result;
   }
 
-  Json searchAlerts(string tenantId, Json request) {
+  Json searchAlerts(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
 
     auto eventType = toLower(optionalString(request, "event_type", ""));
@@ -127,7 +127,7 @@ class AlertNotificationService : SAPService {
     return result;
   }
 
-  Json listSubscriptions(string tenantId) {
+  Json listSubscriptions(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
 
     Json resources = Json.emptyArray;
@@ -140,7 +140,7 @@ class AlertNotificationService : SAPService {
     return result;
   }
 
-  Json getSubscription(string tenantId, string subscriptionId) {
+  Json getSubscription(UUID tenantId, string subscriptionId) {
     validateId(tenantId, "Tenant ID");
     validateId(subscriptionId, "Subscription ID");
 
@@ -154,7 +154,7 @@ class AlertNotificationService : SAPService {
     return result;
   }
 
-  Json upsertSubscription(string tenantId, Json request) {
+  Json upsertSubscription(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
 
     AlertSubscription sub;
@@ -175,7 +175,7 @@ class AlertNotificationService : SAPService {
     return result;
   }
 
-  Json deleteSubscription(string tenantId, string subscriptionId) {
+  Json deleteSubscription(UUID tenantId, string subscriptionId) {
     validateId(tenantId, "Tenant ID");
     validateId(subscriptionId, "Subscription ID");
 
@@ -189,7 +189,7 @@ class AlertNotificationService : SAPService {
     return result;
   }
 
-  Json testSubscription(string tenantId, string subscriptionId, Json request) {
+  Json testSubscription(UUID tenantId, string subscriptionId, Json request) {
     auto sub = _store.getSubscription(tenantId, subscriptionId);
     if (sub.subscriptionId.length == 0) {
       throw new AlertNotificationNotFoundException("Subscription", tenantId ~ "/" ~ subscriptionId);
@@ -216,7 +216,7 @@ class AlertNotificationService : SAPService {
       .set("condition", sub.condition);
   }
 
-  Json listDeliveries(string tenantId) {
+  Json listDeliveries(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
 
     Json resources = Json.emptyArray;
@@ -229,7 +229,7 @@ class AlertNotificationService : SAPService {
     return result;
   }
 
-  Json tenantOverview(string tenantId) {
+  Json tenantOverview(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
     auto alerts = _store.listAlerts(tenantId);
     auto subs = _store.listSubscriptions(tenantId);

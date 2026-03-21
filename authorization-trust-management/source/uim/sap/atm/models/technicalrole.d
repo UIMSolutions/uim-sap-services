@@ -37,7 +37,7 @@ class ATMTechnicalRole : SAPTenantObject {
       .set("permissions", perms);
   }
 
-  static ATMTechnicalRole opCall(string tenantId, string roleId, Json request) {
+  static ATMTechnicalRole opCall(UUID tenantId, string roleId, Json request) {
     ATMTechnicalRole role = new ATMTechnicalRole(request);
     role.tenantId = UUID(tenantId);
     role.roleId = roleId.length > 0 ? roleId : randomUUID().toString();

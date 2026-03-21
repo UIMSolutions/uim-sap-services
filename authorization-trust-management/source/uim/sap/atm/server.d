@@ -162,7 +162,7 @@ class ATMServer {
     }
   }
 
-  private ATMSessionContext resolveContext(HTTPServerRequest req, string tenantId) {
+  private ATMSessionContext resolveContext(HTTPServerRequest req, UUID tenantId) {
     if (_service.config.bootstrapToken.length > 0) {
       if ("X-Bootstrap-Token" in req.headers && req.headers["X-Bootstrap-Token"] == _service
         .config.bootstrapToken) {

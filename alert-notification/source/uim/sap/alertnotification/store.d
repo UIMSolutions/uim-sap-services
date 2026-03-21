@@ -30,7 +30,7 @@ class AlertNotificationStore : SAPStore {
     }
   }
 
-  AlertEvent[] listAlerts(string tenantId) {
+  AlertEvent[] listAlerts(UUID tenantId) {
     AlertEvent[] values;
     synchronized (_lock) {
       foreach (key, value; _alerts) {
@@ -53,7 +53,7 @@ class AlertNotificationStore : SAPStore {
     }
   }
 
-  AlertSubscription getSubscription(string tenantId, string subscriptionId) {
+  AlertSubscription getSubscription(UUID tenantId, string subscriptionId) {
     synchronized (_lock) {
       auto key = scopedKey(tenantId, "subscription", subscriptionId);
       if (auto value = key in _subscriptions) {
@@ -63,7 +63,7 @@ class AlertNotificationStore : SAPStore {
     return AlertSubscription.init;
   }
 
-  bool deleteSubscription(string tenantId, string subscriptionId) {
+  bool deleteSubscription(UUID tenantId, string subscriptionId) {
     synchronized (_lock) {
       auto key = scopedKey(tenantId, "subscription", subscriptionId);
       if ((key in _subscriptions) is null) {
@@ -74,7 +74,7 @@ class AlertNotificationStore : SAPStore {
     }
   }
 
-  AlertSubscription[] listSubscriptions(string tenantId) {
+  AlertSubscription[] listSubscriptions(UUID tenantId) {
     AlertSubscription[] values;
     synchronized (_lock) {
       foreach (key, value; _subscriptions) {
@@ -93,7 +93,7 @@ class AlertNotificationStore : SAPStore {
     }
   }
 
-  AlertDelivery[] listDeliveries(string tenantId) {
+  AlertDelivery[] listDeliveries(UUID tenantId) {
     AlertDelivery[] values;
     synchronized (_lock) {
       foreach (key, value; _deliveries) {
@@ -105,11 +105,11 @@ class AlertNotificationStore : SAPStore {
     return values;
   }
 
-  private string scopedKey(string tenantId, string scopePart, string id) {
+  private string scopedKey(UUID tenantId, string scopePart, string id) {
     return tenantId ~ ":" ~ scopePart ~ ":" ~ id;
   }
 
-  private bool belongsTo(string key, string tenantId) {
+  private bool belongsTo(string key, UUID tenantId) {
     return key.length > tenantId.length + 1 && key[0 .. tenantId.length] == tenantId && key[tenantId
       .length] == ':';
   }

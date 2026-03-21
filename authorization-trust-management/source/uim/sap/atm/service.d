@@ -17,7 +17,7 @@ class ATMService : SAPService {
     _store = new ATMStore;
   }
 
-  Json upsertIdentityProvider(string tenantId, string idpId, Json request) {
+  Json upsertIdentityProvider(UUID tenantId, string idpId, Json request) {
     validateId(tenantId, "Tenant ID");
     validateId(idpId, "Identity provider ID");
 
@@ -39,7 +39,7 @@ class ATMService : SAPService {
       .set("identity_provider", saved.toJson());
   }
 
-  Json listIdentityProviders(string tenantId) {
+  Json listIdentityProviders(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
     ensureTenantBootstrapped(tenantId);
 
@@ -54,7 +54,7 @@ class ATMService : SAPService {
       .set("total_results", cast(long)resources.length);
   }
 
-  Json setDefaultIdentityProvider(string tenantId, string idpId) {
+  Json setDefaultIdentityProvider(UUID tenantId, string idpId) {
     validateId(tenantId, "Tenant ID");
     validateId(idpId, "Identity provider ID");
     ensureTenantBootstrapped(tenantId);
@@ -69,7 +69,7 @@ class ATMService : SAPService {
       .set("identity_provider", idp.toJson());
   }
 
-  Json upsertTechnicalRole(string tenantId, string roleId, Json request) {
+  Json upsertTechnicalRole(UUID tenantId, string roleId, Json request) {
     validateId(tenantId, "Tenant ID");
     validateId(roleId, "Technical role ID");
     ensureTenantBootstrapped(tenantId);
@@ -90,7 +90,7 @@ class ATMService : SAPService {
       .set("technical_role", saved.toJson());
   }
 
-  Json listTechnicalRoles(string tenantId) {
+  Json listTechnicalRoles(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
     ensureTenantBootstrapped(tenantId);
 
@@ -105,7 +105,7 @@ class ATMService : SAPService {
       .set("total_results", cast(long)resources.length);
   }
 
-  Json upsertRoleCollection(string tenantId, string collectionId, Json request) {
+  Json upsertRoleCollection(UUID tenantId, string collectionId, Json request) {
     validateId(tenantId, "Tenant ID");
     validateId(collectionId, "Role collection ID");
     ensureTenantBootstrapped(tenantId);
@@ -130,7 +130,7 @@ class ATMService : SAPService {
       .set("role_collection", saved.toJson());
   }
 
-  Json listRoleCollections(string tenantId) {
+  Json listRoleCollections(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
     ensureTenantBootstrapped(tenantId);
 
@@ -142,7 +142,7 @@ class ATMService : SAPService {
       .set("total_results", cast(long)resources.length);
   }
 
-  Json upsertUserAssignments(string tenantId, string userId, Json request) {
+  Json upsertUserAssignments(UUID tenantId, string userId, Json request) {
     validateId(tenantId, "Tenant ID");
     validateId(userId, "User ID");
     ensureTenantBootstrapped(tenantId);
@@ -169,7 +169,7 @@ class ATMService : SAPService {
       .set("assignment", saved.toJson());
   }
 
-  Json getUserAssignments(string tenantId, string userId) {
+  Json getUserAssignments(UUID tenantId, string userId) {
     validateId(tenantId, "Tenant ID");
     validateId(userId, "User ID");
     ensureTenantBootstrapped(tenantId);
@@ -184,7 +184,7 @@ class ATMService : SAPService {
       .set("assignment", assignment.toJson());
   }
 
-  ATMSessionContext authenticateBearer(string tenantId, string authorizationHeader) {
+  ATMSessionContext authenticateBearer(UUID tenantId, string authorizationHeader) {
     validateId(tenantId, "Tenant ID");
     ensureTenantBootstrapped(tenantId);
 
@@ -313,7 +313,7 @@ class ATMService : SAPService {
       .set("session", context.toJson());
   }
 
-  Json authorizeApplication(string tenantId, ATMSessionContext context, string appId, Json request) {
+  Json authorizeApplication(UUID tenantId, ATMSessionContext context, string appId, Json request) {
     validateId(tenantId, "Tenant ID");
     validateId(appId, "Application ID");
 
@@ -346,7 +346,7 @@ class ATMService : SAPService {
     return context.bootstrap || context.permissions.canFind(permission);
   }
 
-  ATMSessionContext bootstrapContext(string tenantId) {
+  ATMSessionContext bootstrapContext(UUID tenantId) {
     ATMSessionContext context;
     context.tenantId = UUID(tenantId);
     context.userId = "bootstrap";
@@ -361,7 +361,7 @@ class ATMService : SAPService {
     return context;
   }
 
-  void ensureTenantBootstrapped(string tenantId) {
+  void ensureTenantBootstrapped(UUID tenantId) {
     auto existingDefault = _store.getDefaultIdp(tenantId);
     if (existingDefault.idpId.length > 0) {
       return;

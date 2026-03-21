@@ -41,7 +41,7 @@ class ATMRoleCollection : SAPTenantObject {
   }
 }
 
-ATMRoleCollection roleCollectionFromJson(string tenantId, string collectionId, Json request) {
+ATMRoleCollection roleCollectionFromJson(UUID tenantId, string collectionId, Json request) {
   ATMRoleCollection collection = new ATMRoleCollection(request);
   
   collection.tenantId = UUID(tenantId);

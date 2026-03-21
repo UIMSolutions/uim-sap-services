@@ -37,7 +37,7 @@ class ATMStore : SAPStore {
     }
   }
 
-  ATMIdentityProvider getIdp(string tenantId, string idpId) {
+  ATMIdentityProvider getIdp(UUID tenantId, string idpId) {
     synchronized (_lock) {
       auto key = idpKey(tenantId, idpId);
       if (auto item = key in _idps) {
@@ -47,7 +47,7 @@ class ATMStore : SAPStore {
     return ATMIdentityProvider.init;
   }
 
-  ATMIdentityProvider[] listIdps(string tenantId) {
+  ATMIdentityProvider[] listIdps(UUID tenantId) {
     ATMIdentityProvider[] result;
     synchronized (_lock) {
       foreach (key, item; _idps) {
@@ -59,7 +59,7 @@ class ATMStore : SAPStore {
     return result;
   }
 
-  ATMIdentityProvider findIdpByIssuer(string tenantId, string issuer) {
+  ATMIdentityProvider findIdpByIssuer(UUID tenantId, string issuer) {
     synchronized (_lock) {
       foreach (key, item; _idps) {
         if (!belongsToTenant(key, tenantId)) {
@@ -73,7 +73,7 @@ class ATMStore : SAPStore {
     return ATMIdentityProvider.init;
   }
 
-  ATMIdentityProvider getDefaultIdp(string tenantId) {
+  ATMIdentityProvider getDefaultIdp(UUID tenantId) {
     synchronized (_lock) {
       foreach (key, item; _idps) {
         if (!belongsToTenant(key, tenantId)) {
@@ -87,7 +87,7 @@ class ATMStore : SAPStore {
     return ATMIdentityProvider.init;
   }
 
-  ATMIdentityProvider setDefaultIdp(string tenantId, string idpId) {
+  ATMIdentityProvider setDefaultIdp(UUID tenantId, string idpId) {
     synchronized (_lock) {
       auto key = idpKey(tenantId, idpId);
       if (auto item = key in _idps) {
@@ -109,7 +109,7 @@ class ATMStore : SAPStore {
     }
   }
 
-  ATMTechnicalRole getTechnicalRole(string tenantId, string roleId) {
+  ATMTechnicalRole getTechnicalRole(UUID tenantId, string roleId) {
     synchronized (_lock) {
       auto key = technicalRoleKey(tenantId, roleId);
       if (auto item = key in _technicalRoles) {
@@ -119,7 +119,7 @@ class ATMStore : SAPStore {
     return ATMTechnicalRole.init;
   }
 
-  ATMTechnicalRole[] listTechnicalRoles(string tenantId) {
+  ATMTechnicalRole[] listTechnicalRoles(UUID tenantId) {
     ATMTechnicalRole[] result;
     synchronized (_lock) {
       foreach (key, item; _technicalRoles) {
@@ -139,7 +139,7 @@ class ATMStore : SAPStore {
     }
   }
 
-  ATMRoleCollection getRoleCollection(string tenantId, string collectionId) {
+  ATMRoleCollection getRoleCollection(UUID tenantId, string collectionId) {
     synchronized (_lock) {
       auto key = roleCollectionKey(tenantId, collectionId);
       if (auto item = key in _roleCollections) {
@@ -149,7 +149,7 @@ class ATMStore : SAPStore {
     return ATMRoleCollection.init;
   }
 
-  ATMRoleCollection[] listRoleCollections(string tenantId) {
+  ATMRoleCollection[] listRoleCollections(UUID tenantId) {
     ATMRoleCollection[] result;
     synchronized (_lock) {
       foreach (key, item; _roleCollections) {
@@ -169,7 +169,7 @@ class ATMStore : SAPStore {
     }
   }
 
-  ATMUserAssignment getUserAssignment(string tenantId, string userId) {
+  ATMUserAssignment getUserAssignment(UUID tenantId, string userId) {
     synchronized (_lock) {
       auto key = userAssignmentKey(tenantId, userId);
       if (auto item = key in _userAssignments) {
@@ -179,7 +179,7 @@ class ATMStore : SAPStore {
     return ATMUserAssignment.init;
   }
 
-  private void clearDefaultIdpInternal(string tenantId, string exemptIdpId) {
+  private void clearDefaultIdpInternal(UUID tenantId, string exemptIdpId) {
     foreach (key, item; _idps) {
       if (!belongsToTenant(key, tenantId)) {
         continue;
@@ -194,23 +194,23 @@ class ATMStore : SAPStore {
     }
   }
 
-  private string idpKey(string tenantId, string idpId) {
+  private string idpKey(UUID tenantId, string idpId) {
     return tenantId ~ ":idp:" ~ idpId;
   }
 
-  private string technicalRoleKey(string tenantId, string roleId) {
+  private string technicalRoleKey(UUID tenantId, string roleId) {
     return tenantId ~ ":tech-role:" ~ roleId;
   }
 
-  private string roleCollectionKey(string tenantId, string collectionId) {
+  private string roleCollectionKey(UUID tenantId, string collectionId) {
     return tenantId ~ ":role-collection:" ~ collectionId;
   }
 
-  private string userAssignmentKey(string tenantId, string userId) {
+  private string userAssignmentKey(UUID tenantId, string userId) {
     return tenantId ~ ":user-assignment:" ~ userId;
   }
 
-  private bool belongsToTenant(string key, string tenantId) {
+  private bool belongsToTenant(string key, UUID tenantId) {
     return key.length > tenantId.length + 1
       && key[0 .. tenantId.length] == tenantId
       && key[tenantId.length] == ':';

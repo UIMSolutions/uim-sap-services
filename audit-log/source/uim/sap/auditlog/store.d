@@ -27,7 +27,7 @@ class AuditLogStore : SAPStore {
         }
     }
 
-    AuditLogEvent[] listEvents(string tenantId) {
+    AuditLogEvent[] listEvents(UUID tenantId) {
         synchronized (_lock) {
             if (auto events = tenantId in _eventsByTenant) {
                 return (*events).dup;
@@ -36,7 +36,7 @@ class AuditLogStore : SAPStore {
         return [];
     }
 
-    void purgeExpired(string tenantId, int retentionDays) {
+    void purgeExpired(UUID tenantId, int retentionDays) {
         synchronized (_lock) {
             if (auto events = tenantId in _eventsByTenant) {
                 AuditLogEvent[] filtered;
@@ -58,7 +58,7 @@ class AuditLogStore : SAPStore {
         }
     }
 
-    AuditLogRetentionPolicy getPolicy(string tenantId) {
+    AuditLogRetentionPolicy getPolicy(UUID tenantId) {
         synchronized (_lock) {
             if (auto policy = tenantId in _policies) {
                 return *policy;

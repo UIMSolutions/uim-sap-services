@@ -16,7 +16,7 @@ class ATMUserAssignment : SAPTenantObject {
       .set("role_collection_ids", refs);
   }
 
-  static ATMUserAssignment opCall(string tenantId, string userId, Json request) {
+  static ATMUserAssignment opCall(UUID tenantId, string userId, Json request) {
     ATMUserAssignment assignment = new ATMUserAssignment(request);
     assignment.tenantId = UUID(tenantId);
     assignment.userId = userId;

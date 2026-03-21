@@ -65,7 +65,7 @@ class AuditLogEvent : SAPTenantObject {
       .set("recommended_type", isRecommendedAuditEventType(eventType));
   }
 
-  AuditLogEvent eventFromJson(string tenantId, Json request) {
+  AuditLogEvent eventFromJson(UUID tenantId, Json request) {
     AuditLogEvent eventItem = new AuditLogEvent(request);
 
     eventItem.tenantId = UUID(tenantId);

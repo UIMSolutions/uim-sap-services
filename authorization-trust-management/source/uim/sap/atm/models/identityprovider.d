@@ -34,7 +34,7 @@ class ATMIdentityProvider : SAPTenantObject {
   }
 }
 
-ATMIdentityProvider idpFromJson(string tenantId, string idpId, Json request) {
+ATMIdentityProvider idpFromJson(UUID tenantId, string idpId, Json request) {
   ATMIdentityProvider idp = new ATMIdentityProvider(request);
   idp.tenantId = UUID(tenantId);
   idp.idpId = idpId.length > 0 ? idpId : randomUUID().toString();

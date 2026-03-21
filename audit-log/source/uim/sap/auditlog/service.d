@@ -33,7 +33,7 @@ class AuditLogService : SAPService {
     return result;
   }
 
-  Json writeEvent(string tenantId, Json request) {
+  Json writeEvent(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
 
     auto eventItem = eventFromJson(tenantId, request);
@@ -58,7 +58,7 @@ class AuditLogService : SAPService {
     return result;
   }
 
-  Json listEvents(string tenantId) {
+  Json listEvents(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
     auto policy = ensurePolicy(tenantId);
     _store.purgeExpired(tenantId, policy.retentionDays);
@@ -76,7 +76,7 @@ class AuditLogService : SAPService {
     return result;
   }
 
-  Json retrieveEvents(string tenantId, Json request) {
+  Json retrieveEvents(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
 
     auto policy = ensurePolicy(tenantId);
@@ -144,7 +144,7 @@ class AuditLogService : SAPService {
     return result;
   }
 
-  Json viewer(string tenantId) {
+  Json viewer(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
     auto policy = ensurePolicy(tenantId);
     _store.purgeExpired(tenantId, policy.retentionDays);
@@ -184,7 +184,7 @@ class AuditLogService : SAPService {
     return result;
   }
 
-  Json getRetentionPolicy(string tenantId) {
+  Json getRetentionPolicy(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
     auto policy = ensurePolicy(tenantId);
     Json result = Json.emptyObject;
@@ -192,7 +192,7 @@ class AuditLogService : SAPService {
     return result;
   }
 
-  Json updateRetentionPolicy(string tenantId, Json request) {
+  Json updateRetentionPolicy(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
     auto policy = ensurePolicy(tenantId);
 
@@ -234,7 +234,7 @@ class AuditLogService : SAPService {
     return result;
   }
 
-  Json usageAndCost(string tenantId) {
+  Json usageAndCost(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
     auto policy = ensurePolicy(tenantId);
     _store.purgeExpired(tenantId, policy.retentionDays);
@@ -256,7 +256,7 @@ class AuditLogService : SAPService {
     return result;
   }
 
-  private AuditLogRetentionPolicy ensurePolicy(string tenantId) {
+  private AuditLogRetentionPolicy ensurePolicy(UUID tenantId) {
     auto cfg = cast(AuditLogConfig)config;
 
     auto policy = _store.getPolicy(tenantId);
