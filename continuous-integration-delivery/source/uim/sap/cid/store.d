@@ -28,11 +28,11 @@ class CIDStore : SAPStore {
         return prefix ~ "-" ~ to!string(_counter);
     }
 
-    private static string tp(string tenantId) {
+    private static string tp(UUID tenantId) {
         return tenantId ~ "::";
     }
 
-    private static string key(string tenantId, string id) {
+    private static string key(UUID tenantId, string id) {
         return tenantId ~ "::" ~ id;
     }
 
@@ -48,20 +48,20 @@ class CIDStore : SAPStore {
         return item;
     }
 
-    CIDRepository[] listRepos(string tenantId) {
+    CIDRepository[] listRepos(UUID tenantId) {
         CIDRepository[] items;
         auto prefix = tp(tenantId);
         foreach (k, v; _repos) if (k.startsWith(prefix)) items ~= v;
         return items;
     }
 
-    bool tryGetRepo(string tenantId, string repoId, out CIDRepository repo) {
+    bool tryGetRepo(UUID tenantId, string repoId, out CIDRepository repo) {
         auto k = key(tenantId, repoId);
         if (k in _repos) { repo = _repos[k]; return true; }
         return false;
     }
 
-    bool removeRepo(string tenantId, string repoId) {
+    bool removeRepo(UUID tenantId, string repoId) {
         auto k = key(tenantId, repoId);
         if (k in _repos) { _repos.remove(k); return true; }
         return false;
@@ -75,20 +75,20 @@ class CIDStore : SAPStore {
         return item;
     }
 
-    CIDCredential[] listCredentials(string tenantId) {
+    CIDCredential[] listCredentials(UUID tenantId) {
         CIDCredential[] items;
         auto prefix = tp(tenantId);
         foreach (k, v; _creds) if (k.startsWith(prefix)) items ~= v;
         return items;
     }
 
-    bool tryGetCredential(string tenantId, string credId, out CIDCredential cred) {
+    bool tryGetCredential(UUID tenantId, string credId, out CIDCredential cred) {
         auto k = key(tenantId, credId);
         if (k in _creds) { cred = _creds[k]; return true; }
         return false;
     }
 
-    bool removeCredential(string tenantId, string credId) {
+    bool removeCredential(UUID tenantId, string credId) {
         auto k = key(tenantId, credId);
         if (k in _creds) { _creds.remove(k); return true; }
         return false;
@@ -102,20 +102,20 @@ class CIDStore : SAPStore {
         return item;
     }
 
-    CIDPipeline[] listPipelines(string tenantId) {
+    CIDPipeline[] listPipelines(UUID tenantId) {
         CIDPipeline[] items;
         auto prefix = tp(tenantId);
         foreach (k, v; _pipelines) if (k.startsWith(prefix)) items ~= v;
         return items;
     }
 
-    bool tryGetPipeline(string tenantId, string pipelineId, out CIDPipeline pipeline) {
+    bool tryGetPipeline(UUID tenantId, string pipelineId, out CIDPipeline pipeline) {
         auto k = key(tenantId, pipelineId);
         if (k in _pipelines) { pipeline = _pipelines[k]; return true; }
         return false;
     }
 
-    bool removePipeline(string tenantId, string pipelineId) {
+    bool removePipeline(UUID tenantId, string pipelineId) {
         auto k = key(tenantId, pipelineId);
         if (k in _pipelines) { _pipelines.remove(k); return true; }
         return false;
@@ -129,7 +129,7 @@ class CIDStore : SAPStore {
         return item;
     }
 
-    CIDBuild[] listBuilds(string tenantId) {
+    CIDBuild[] listBuilds(UUID tenantId) {
         CIDBuild[] items;
         auto prefix = tp(tenantId);
         foreach (k, v; _builds) if (k.startsWith(prefix)) items ~= v;
@@ -137,7 +137,7 @@ class CIDStore : SAPStore {
         return items.array;
     }
 
-    CIDBuild[] listBuildsByPipeline(string tenantId, string pipelineId) {
+    CIDBuild[] listBuildsByPipeline(UUID tenantId, string pipelineId) {
         CIDBuild[] items;
         auto prefix = tp(tenantId);
         foreach (k, v; _builds)
@@ -147,14 +147,14 @@ class CIDStore : SAPStore {
         return items.array;
     }
 
-    bool tryGetBuild(string tenantId, string buildId, out CIDBuild build) {
+    bool tryGetBuild(UUID tenantId, string buildId, out CIDBuild build) {
         auto k = key(tenantId, buildId);
         if (k in _builds) { build = _builds[k]; return true; }
         return false;
     }
 
     /// Return the highest build number for a pipeline (0 if none)
-    int maxBuildNumber(string tenantId, string pipelineId) {
+    int maxBuildNumber(UUID tenantId, string pipelineId) {
         int maxN = 0;
         auto prefix = tp(tenantId);
         foreach (k, v; _builds)
@@ -193,7 +193,7 @@ class CIDStore : SAPStore {
         return item;
     }
 
-    CIDBuildLog[] listLogs(string tenantId, string buildId) {
+    CIDBuildLog[] listLogs(UUID tenantId, string buildId) {
         CIDBuildLog[] items;
         auto prefix = tp(tenantId);
         foreach (k, v; _logs)

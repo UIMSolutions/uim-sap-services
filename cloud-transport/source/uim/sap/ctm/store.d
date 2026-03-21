@@ -30,15 +30,15 @@ class CTMStore : SAPStore {
     // -----------------------------------------------------------------------
     // Key helpers
     // -----------------------------------------------------------------------
-    private static string tp(string tenantId) {
+    private static string tp(UUID tenantId) {
         return tenantId ~ "::";
     }
 
-    private static string key(string tenantId, string id) {
+    private static string key(UUID tenantId, string id) {
         return tenantId ~ "::" ~ id;
     }
 
-    private static string key3(string tenantId, string a, string b) {
+    private static string key3(UUID tenantId, string a, string b) {
         return tenantId ~ "::" ~ a ~ "::" ~ b;
     }
 
@@ -50,14 +50,14 @@ class CTMStore : SAPStore {
         return item;
     }
 
-    CTMNode[] listNodes(string tenantId) {
+    CTMNode[] listNodes(UUID tenantId) {
         CTMNode[] items;
         auto prefix = tp(tenantId);
         foreach (k, v; _nodes) if (k.startsWith(prefix)) items ~= v;
         return items;
     }
 
-    bool tryGetNode(string tenantId, string nodeId, out CTMNode node) {
+    bool tryGetNode(UUID tenantId, string nodeId, out CTMNode node) {
         auto k = key(tenantId, nodeId);
         if (k in _nodes) { node = _nodes[k]; return true; }
         return false;
@@ -71,7 +71,7 @@ class CTMStore : SAPStore {
         return item;
     }
 
-    CTMRoute[] listRoutes(string tenantId) {
+    CTMRoute[] listRoutes(UUID tenantId) {
         CTMRoute[] items;
         auto prefix = tp(tenantId);
         foreach (k, v; _routes) if (k.startsWith(prefix)) items ~= v;
@@ -79,7 +79,7 @@ class CTMStore : SAPStore {
     }
 
     /// Find all active routes whose sourceNodeId matches
-    CTMRoute[] routesFromNode(string tenantId, string sourceNodeId) {
+    CTMRoute[] routesFromNode(UUID tenantId, string sourceNodeId) {
         CTMRoute[] items;
         auto prefix = tp(tenantId);
         foreach (k, v; _routes)
@@ -96,14 +96,14 @@ class CTMStore : SAPStore {
         return item;
     }
 
-    CTMTransportRequest[] listRequests(string tenantId) {
+    CTMTransportRequest[] listRequests(UUID tenantId) {
         CTMTransportRequest[] items;
         auto prefix = tp(tenantId);
         foreach (k, v; _requests) if (k.startsWith(prefix)) items ~= v;
         return items;
     }
 
-    bool tryGetRequest(string tenantId, string requestId, out CTMTransportRequest req) {
+    bool tryGetRequest(UUID tenantId, string requestId, out CTMTransportRequest req) {
         auto k = key(tenantId, requestId);
         if (k in _requests) { req = _requests[k]; return true; }
         return false;
@@ -131,7 +131,7 @@ class CTMStore : SAPStore {
         return item;
     }
 
-    CTMImportQueueEntry[] listQueue(string tenantId, string nodeId) {
+    CTMImportQueueEntry[] listQueue(UUID tenantId, string nodeId) {
         CTMImportQueueEntry[] items;
         auto prefix = key(tenantId, nodeId) ~ "::";
         foreach (k, v; _queue) if (k.startsWith(prefix)) items ~= v;
@@ -139,14 +139,14 @@ class CTMStore : SAPStore {
         return items.array;
     }
 
-    bool tryGetQueueEntry(string tenantId, string nodeId, string requestId,
+    bool tryGetQueueEntry(UUID tenantId, string nodeId, string requestId,
                           out CTMImportQueueEntry entry) {
         auto k = key3(tenantId, nodeId, requestId);
         if (k in _queue) { entry = _queue[k]; return true; }
         return false;
     }
 
-    int nextQueuePosition(string tenantId, string nodeId) {
+    int nextQueuePosition(UUID tenantId, string nodeId) {
         int maxPos = 0;
         auto prefix = key(tenantId, nodeId) ~ "::";
         foreach (k, v; _queue)
@@ -162,7 +162,7 @@ class CTMStore : SAPStore {
         return item;
     }
 
-    CTMTransportLog[] listLogs(string tenantId, string requestId) {
+    CTMTransportLog[] listLogs(UUID tenantId, string requestId) {
         CTMTransportLog[] items;
         auto prefix = tp(tenantId);
         foreach (k, v; _logs)

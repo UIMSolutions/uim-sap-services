@@ -26,13 +26,13 @@ class ATPStore : SAPStore {
         }
     }
 
-    ATPCatalog[] listCatalogs(string tenantId) {
+    ATPCatalog[] listCatalogs(UUID tenantId) {
         ATPCatalog[] values;
         synchronized (_lock) foreach (key, value; _catalogs) if (belongs(key, tenantId, "catalog")) values ~= value;
         return values;
     }
 
-    Nullable!ATPCatalog getCatalog(string tenantId, string catalogId) {
+    Nullable!ATPCatalog getCatalog(UUID tenantId, string catalogId) {
         synchronized (_lock) {
             auto key = scoped("catalog", tenantId, catalogId);
             if (auto value = key in _catalogs) return Nullable!ATPCatalog(*value);
@@ -49,7 +49,7 @@ class ATPStore : SAPStore {
         }
     }
 
-    Nullable!ATPCommand getCommand(string tenantId, string commandId) {
+    Nullable!ATPCommand getCommand(UUID tenantId, string commandId) {
         synchronized (_lock) {
             auto key = scoped("command", tenantId, commandId);
             if (auto value = key in _commands) return Nullable!ATPCommand(*value);
@@ -57,7 +57,7 @@ class ATPStore : SAPStore {
         }
     }
 
-    ATPCommand[] listCommands(string tenantId, string catalogId = "") {
+    ATPCommand[] listCommands(UUID tenantId, string catalogId = "") {
         ATPCommand[] values;
         synchronized (_lock) {
             foreach (key, value; _commands) {
@@ -76,7 +76,7 @@ class ATPStore : SAPStore {
         }
     }
 
-    ATPExecution[] listExecutions(string tenantId) {
+    ATPExecution[] listExecutions(UUID tenantId) {
         ATPExecution[] values;
         synchronized (_lock) foreach (key, value; _executions) if (belongs(key, tenantId, "execution")) values ~= value;
         return values;
@@ -91,7 +91,7 @@ class ATPStore : SAPStore {
         }
     }
 
-    ATPSchedule[] listSchedules(string tenantId) {
+    ATPSchedule[] listSchedules(UUID tenantId) {
         ATPSchedule[] values;
         synchronized (_lock) foreach (key, value; _schedules) if (belongs(key, tenantId, "schedule")) values ~= value;
         return values;
@@ -104,7 +104,7 @@ class ATPStore : SAPStore {
         }
     }
 
-    ATPEventTrigger[] listEventTriggers(string tenantId) {
+    ATPEventTrigger[] listEventTriggers(UUID tenantId) {
         ATPEventTrigger[] values;
         synchronized (_lock) foreach (key, value; _eventTriggers) if (belongs(key, tenantId, "event-trigger")) values ~= value;
         return values;
@@ -117,7 +117,7 @@ class ATPStore : SAPStore {
         }
     }
 
-    ATPSecretInput[] listSecretInputs(string tenantId) {
+    ATPSecretInput[] listSecretInputs(UUID tenantId) {
         ATPSecretInput[] values;
         synchronized (_lock) foreach (key, value; _secretInputs) if (belongs(key, tenantId, "secret")) values ~= value;
         return values;
@@ -130,7 +130,7 @@ class ATPStore : SAPStore {
         }
     }
 
-    Nullable!ATPBackup getBackup(string tenantId, string backupId) {
+    Nullable!ATPBackup getBackup(UUID tenantId, string backupId) {
         synchronized (_lock) {
             auto key = scoped("backup", tenantId, backupId);
             if (auto value = key in _backups) return Nullable!ATPBackup(*value);
@@ -138,17 +138,17 @@ class ATPStore : SAPStore {
         }
     }
 
-    ATPBackup[] listBackups(string tenantId) {
+    ATPBackup[] listBackups(UUID tenantId) {
         ATPBackup[] values;
         synchronized (_lock) foreach (key, value; _backups) if (belongs(key, tenantId, "backup")) values ~= value;
         return values;
     }
 
-    private string scoped(string kind, string tenantId, string id) {
+    private string scoped(string kind, UUID tenantId, string id) {
         return tenantId ~ ":" ~ kind ~ ":" ~ id;
     }
 
-    private bool belongs(string key, string tenantId, string kind) {
+    private bool belongs(string key, UUID tenantId, string kind) {
         auto prefix = tenantId ~ ":" ~ kind ~ ":";
         return key.length >= prefix.length && key[0 .. prefix.length] == prefix;
     }

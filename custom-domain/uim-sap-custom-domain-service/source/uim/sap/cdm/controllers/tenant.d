@@ -18,18 +18,18 @@ class TenantController {
     }
 
     // Endpoint to get tenant details
-    Tenant getTenant(string tenantId) {
+    Tenant getTenant(UUID tenantId) {
         return multitenancyService.getTenant(tenantId);
     }
 
     // Endpoint to update tenant information
-    void updateTenant(string tenantId, Tenant tenant) {
+    void updateTenant(UUID tenantId, Tenant tenant) {
         multitenancyService.updateTenant(tenantId, tenant);
         // Return success response
     }
 
     // Endpoint to delete a tenant
-    void deleteTenant(string tenantId) {
+    void deleteTenant(UUID tenantId) {
         multitenancyService.deleteTenant(tenantId);
         // Return success response
     }

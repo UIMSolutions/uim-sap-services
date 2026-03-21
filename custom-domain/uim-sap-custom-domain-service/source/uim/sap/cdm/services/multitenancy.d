@@ -28,12 +28,12 @@ class MultitenancyService : SAPService {
     }
 
     // Method to retrieve a tenant by ID
-    Tenant getTenantById(string tenantId) {
+    Tenant getTenantById(UUID tenantId) {
         return tenantRepo.findById(tenantId);
     }
 
     // Method to update tenant information
-    void updateTenant(string tenantId, string newName, string newDomain) {
+    void updateTenant(UUID tenantId, string newName, string newDomain) {
         auto tenant = tenantRepo.findById(tenantId);
         if (tenant !is null) {
             tenant.name = newName;
@@ -43,7 +43,7 @@ class MultitenancyService : SAPService {
     }
 
     // Method to delete a tenant
-    void deleteTenant(string tenantId) {
+    void deleteTenant(UUID tenantId) {
         tenantRepo.delete(tenantId);
     }
 

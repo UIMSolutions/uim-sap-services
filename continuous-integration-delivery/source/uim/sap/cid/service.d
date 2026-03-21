@@ -40,11 +40,11 @@ class CIDService : SAPService {
   // =======================================================================
   // REPOSITORIES
   // =======================================================================
-  Json listRepositories(string tenantId) {
+  Json listRepositories(UUID tenantId) {
     return _store.listRepos(tenantId).map!(r => r.toJson()).array.toJson();
   }
 
-  Json createRepository(string tenantId, Json payload) {
+  Json createRepository(UUID tenantId, Json payload) {
     if (!("clone_url" in payload) || payload["clone_url"].get!string.length == 0)
       throw new CIDValidationException("clone_url is required");
 
@@ -74,7 +74,7 @@ class CIDService : SAPService {
     return r.toJson();
   }
 
-  Json getRepository(string tenantId, string repoId) {
+  Json getRepository(UUID tenantId, string repoId) {
     CIDRepository r;
     if (!_store.tryGetRepo(tenantId, repoId, r))
       throw new CIDNotFoundException("Repository", repoId);
@@ -88,7 +88,7 @@ class CIDService : SAPService {
     return j;
   }
 
-  Json removeRepository(string tenantId, string repoId) {
+  Json removeRepository(UUID tenantId, string repoId) {
     if (!_store.removeRepo(tenantId, repoId))
       throw new CIDNotFoundException("Repository", repoId);
     _appendLog(tenantId, "", "", "info", "Repository removed: " ~ repoId);
@@ -100,11 +100,11 @@ class CIDService : SAPService {
   // =======================================================================
   // CREDENTIALS
   // =======================================================================
-  Json listCredentials(string tenantId) {
+  Json listCredentials(UUID tenantId) {
     return _store.listCredentials(tenantId).map!(c => c.toJson()).array.toJson();
   }
 
-  Json createCredential(string tenantId, Json payload) {
+  Json createCredential(UUID tenantId, Json payload) {
     if (!("name" in payload) || payload["name"].get!string.length == 0)
       throw new CIDValidationException("Credential name is required");
 
@@ -130,7 +130,7 @@ class CIDService : SAPService {
     return c.toJson();
   }
 
-  Json removeCredential(string tenantId, string credId) {
+  Json removeCredential(UUID tenantId, string credId) {
     if (!_store.removeCredential(tenantId, credId))
       throw new CIDNotFoundException("Credential", credId);
     _appendLog(tenantId, "", "", "info", "Credential removed: " ~ credId);
@@ -142,11 +142,11 @@ class CIDService : SAPService {
   // =======================================================================
   // PIPELINES
   // =======================================================================
-  Json listPipelines(string tenantId) {
+  Json listPipelines(UUID tenantId) {
     return _store.listPipelines(tenantId).map!(p => p.toJson()).array.toJson();
   }
 
-  Json createPipeline(string tenantId, Json payload) {
+  Json createPipeline(UUID tenantId, Json payload) {
     if (!("name" in payload) || payload["name"].get!string.length == 0)
       throw new CIDValidationException("Pipeline name is required");
 
@@ -184,7 +184,7 @@ class CIDService : SAPService {
     return p.toJson();
   }
 
-  Json getPipeline(string tenantId, string pipelineId) {
+  Json getPipeline(UUID tenantId, string pipelineId) {
     CIDPipeline p;
     if (!_store.tryGetPipeline(tenantId, pipelineId, p))
       throw new CIDNotFoundException("Pipeline", pipelineId);
@@ -197,7 +197,7 @@ class CIDService : SAPService {
     return j;
   }
 
-  Json removePipeline(string tenantId, string pipelineId) {
+  Json removePipeline(UUID tenantId, string pipelineId) {
     if (!_store.removePipeline(tenantId, pipelineId))
       throw new CIDNotFoundException("Pipeline", pipelineId);
     _appendLog(tenantId, "", "", "info", "Pipeline removed: " ~ pipelineId);
@@ -209,12 +209,12 @@ class CIDService : SAPService {
   // =======================================================================
   // BUILDS  (pipeline runs)
   // =======================================================================
-  Json listBuilds(string tenantId) {
+  Json listBuilds(UUID tenantId) {
     return _store.listBuilds(tenantId).map!(b => b.toJson()).array.toJson();
   }
 
   /// Trigger a new build for the given pipeline
-  Json triggerBuild(string tenantId, string pipelineId, Json payload) {
+  Json triggerBuild(UUID tenantId, string pipelineId, Json payload) {
     CIDPipeline p;
     if (!_store.tryGetPipeline(tenantId, pipelineId, p))
       throw new CIDNotFoundException("Pipeline", pipelineId);
@@ -257,12 +257,12 @@ class CIDService : SAPService {
     return _buildDetail(tenantId, build.buildId);
   }
 
-  Json getBuild(string tenantId, string buildId) {
+  Json getBuild(UUID tenantId, string buildId) {
     return _buildDetail(tenantId, buildId);
   }
 
   /// Abort a running or pending build
-  Json abortBuild(string tenantId, string buildId) {
+  Json abortBuild(UUID tenantId, string buildId) {
     CIDBuild build;
     if (!_store.tryGetBuild(tenantId, buildId, build))
       throw new CIDNotFoundException("Build", buildId);
@@ -288,7 +288,7 @@ class CIDService : SAPService {
     return _buildDetail(tenantId, buildId);
   }
 
-  Json listStages(string tenantId, string buildId) {
+  Json listStages(UUID tenantId, string buildId) {
     _requireBuild(tenantId, buildId);
     Json arr = Json.emptyArray;
     foreach (s; _store.listStages(buildId))
@@ -296,7 +296,7 @@ class CIDService : SAPService {
     return arr;
   }
 
-  Json listBuildLogs(string tenantId, string buildId) {
+  Json listBuildLogs(UUID tenantId, string buildId) {
     _requireBuild(tenantId, buildId);
     Json arr = Json.emptyArray;
     foreach (l; _store.listLogs(tenantId, buildId))
@@ -339,7 +339,7 @@ class CIDService : SAPService {
   }
 
   /// Simulate running through every stage of a build
-  private void _simulateBuild(string tenantId, string buildId, CIDPipeline pipeline) {
+  private void _simulateBuild(UUID tenantId, string buildId, CIDPipeline pipeline) {
     CIDBuild build;
     if (!_store.tryGetBuild(tenantId, buildId, build))
       return;
@@ -384,21 +384,21 @@ class CIDService : SAPService {
       "Build #" ~ to!string(build.buildNumber) ~ " finished: " ~ build.status);
   }
 
-  private CIDRepository _requireRepo(string tenantId, string repoId) {
+  private CIDRepository _requireRepo(UUID tenantId, string repoId) {
     CIDRepository r;
     if (!_store.tryGetRepo(tenantId, repoId, r))
       throw new CIDNotFoundException("Repository", repoId);
     return r;
   }
 
-  private CIDBuild _requireBuild(string tenantId, string buildId) {
+  private CIDBuild _requireBuild(UUID tenantId, string buildId) {
     CIDBuild b;
     if (!_store.tryGetBuild(tenantId, buildId, b))
       throw new CIDNotFoundException("Build", buildId);
     return b;
   }
 
-  private Json _buildDetail(string tenantId, string buildId) {
+  private Json _buildDetail(UUID tenantId, string buildId) {
     CIDBuild build;
     if (!_store.tryGetBuild(tenantId, buildId, build))
       throw new CIDNotFoundException("Build", buildId);
@@ -411,7 +411,7 @@ class CIDService : SAPService {
     return j;
   }
 
-  private void _appendLog(string tenantId, string buildId, string stageId,
+  private void _appendLog(UUID tenantId, string buildId, string stageId,
     string level, string message) {
     CIDBuildLog log;
     log.tenantId = UUID(tenantId);

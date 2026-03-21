@@ -239,14 +239,14 @@ HTML";
   // -----------------------------------------------------------------------
   // Systems landscape
   // -----------------------------------------------------------------------
-  Json listSystems(string tenantId) {
+  Json listSystems(UUID tenantId) {
     Json arr = Json.emptyArray;
     foreach (s; _store.listSystems(tenantId))
       arr ~= s.toJson();
     return arr;
   }
 
-  Json upsertSystem(string tenantId, Json payload) {
+  Json upsertSystem(UUID tenantId, Json payload) {
     import std.datetime : Clock;
 
     CIASystem sys;
@@ -262,7 +262,7 @@ HTML";
     return _store.upsertSystem(sys).toJson();
   }
 
-  Json getSystem(string tenantId, string id) {
+  Json getSystem(UUID tenantId, string id) {
     CIASystem sys;
     if (!_store.tryGetSystem(tenantId, id, sys))
       throw new CIANotFoundException("System not found: " ~ id);
@@ -289,7 +289,7 @@ HTML";
   // -----------------------------------------------------------------------
   // Workflows – planning, start, complete
   // -----------------------------------------------------------------------
-  Json listWorkflows(string tenantId) {
+  Json listWorkflows(UUID tenantId) {
     Json arr = Json.emptyArray;
     foreach (w; _store.listWorkflows(tenantId))
       arr ~= w.toJson();
@@ -297,7 +297,7 @@ HTML";
   }
 
   /// Plan a new workflow from a scenario and return it with generated tasks
-  Json planWorkflow(string tenantId, Json payload) {
+  Json planWorkflow(UUID tenantId, Json payload) {
     auto scenarioId = payload["scenario_id"].get!string;
     CIAScenario sc;
     if (!_store.tryGetScenario(scenarioId, sc))
@@ -356,11 +356,11 @@ HTML";
     return _workflowDetail(tenantId, wfId);
   }
 
-  Json getWorkflow(string tenantId, string id) {
+  Json getWorkflow(UUID tenantId, string id) {
     return _workflowDetail(tenantId, id);
   }
 
-  Json startWorkflow(string tenantId, string id) {
+  Json startWorkflow(UUID tenantId, string id) {
     CIAWorkflow wf;
     if (!_store.tryGetWorkflow(tenantId, id, wf))
       throw new CIANotFoundException("Workflow not found: " ~ id);
@@ -376,7 +376,7 @@ HTML";
     return _workflowDetail(tenantId, id);
   }
 
-  Json completeWorkflow(string tenantId, string id) {
+  Json completeWorkflow(UUID tenantId, string id) {
     CIAWorkflow wf;
     if (!_store.tryGetWorkflow(tenantId, id, wf))
       throw new CIANotFoundException("Workflow not found: " ~ id);
@@ -395,7 +395,7 @@ HTML";
   // -----------------------------------------------------------------------
   // Tasks
   // -----------------------------------------------------------------------
-  Json listTasks(string tenantId, string workflowId) {
+  Json listTasks(UUID tenantId, string workflowId) {
     _requireWorkflow(tenantId, workflowId);
     Json arr = Json.emptyArray;
     foreach (t; _store.listTasks(tenantId, workflowId))
@@ -403,7 +403,7 @@ HTML";
     return arr;
   }
 
-  Json getTask(string tenantId, string workflowId, string taskId) {
+  Json getTask(UUID tenantId, string workflowId, string taskId) {
     CIATask task;
     if (!_store.tryGetTask(tenantId, taskId, task) || task.workflowId != workflowId)
       throw new CIANotFoundException("Task not found: " ~ taskId);
@@ -411,7 +411,7 @@ HTML";
   }
 
   /// Assign a task to a role and/or user
-  Json assignTask(string tenantId, string workflowId, string taskId, Json payload) {
+  Json assignTask(UUID tenantId, string workflowId, string taskId, Json payload) {
     CIATask task;
     if (!_store.tryGetTask(tenantId, taskId, task) || task.workflowId != workflowId)
       throw new CIANotFoundException("Task not found: " ~ taskId);
@@ -430,7 +430,7 @@ HTML";
   }
 
   /// Progress a task status
-  Json progressTask(string tenantId, string workflowId, string taskId, Json payload) {
+  Json progressTask(UUID tenantId, string workflowId, string taskId, Json payload) {
     import std.algorithm : canFind;
 
     CIATask task;
@@ -453,7 +453,7 @@ HTML";
   }
 
   /// Trigger automated technical configuration for a task
-  Json automateTask(string tenantId, string workflowId, string taskId) {
+  Json automateTask(UUID tenantId, string workflowId, string taskId) {
     CIATask task;
     if (!_store.tryGetTask(tenantId, taskId, task) || task.workflowId != workflowId)
       throw new CIANotFoundException("Task not found: " ~ taskId);
@@ -493,7 +493,7 @@ HTML";
   // -----------------------------------------------------------------------
   // Parameters
   // -----------------------------------------------------------------------
-  Json listParameters(string tenantId, string workflowId) {
+  Json listParameters(UUID tenantId, string workflowId) {
     _requireWorkflow(tenantId, workflowId);
     Json arr = Json.emptyArray;
     foreach (p; _store.listParameters(workflowId))
@@ -501,7 +501,7 @@ HTML";
     return arr;
   }
 
-  Json setParameter(string tenantId, string workflowId, Json payload) {
+  Json setParameter(UUID tenantId, string workflowId, Json payload) {
     _requireWorkflow(tenantId, workflowId);
     CIAParameter param;
     param.workflowId = workflowId;
@@ -515,7 +515,7 @@ HTML";
   // -----------------------------------------------------------------------
   // Monitoring / Logs
   // -----------------------------------------------------------------------
-  Json listLogs(string tenantId, string workflowId) {
+  Json listLogs(UUID tenantId, string workflowId) {
     _requireWorkflow(tenantId, workflowId);
     Json arr = Json.emptyArray;
     foreach (l; _store.listLogs(tenantId, workflowId))
@@ -526,14 +526,14 @@ HTML";
   // -----------------------------------------------------------------------
   // Private helpers
   // -----------------------------------------------------------------------
-  private CIAWorkflow _requireWorkflow(string tenantId, string workflowId) {
+  private CIAWorkflow _requireWorkflow(UUID tenantId, string workflowId) {
     CIAWorkflow wf;
     if (!_store.tryGetWorkflow(tenantId, workflowId, wf))
       throw new CIANotFoundException("Workflow not found: " ~ workflowId);
     return wf;
   }
 
-  private Json _workflowDetail(string tenantId, string wfId) {
+  private Json _workflowDetail(UUID tenantId, string wfId) {
     CIAWorkflow wf;
     if (!_store.tryGetWorkflow(tenantId, wfId, wf))
       throw new CIANotFoundException("Workflow not found: " ~ wfId);
@@ -545,7 +545,7 @@ HTML";
     return j;
   }
 
-  private string _buildSystemList(string tenantId, string[] systemIds) {
+  private string _buildSystemList(UUID tenantId, string[] systemIds) {
     import std.array : join;
 
     string[] parts;
@@ -559,7 +559,7 @@ HTML";
     return parts.join(", ");
   }
 
-  private void _appendLog(string tenantId, string workflowId, string taskId,
+  private void _appendLog(UUID tenantId, string workflowId, string taskId,
     string level, string message) {
     CIATaskLog log;
     log.tenantId = UUID(tenantId);

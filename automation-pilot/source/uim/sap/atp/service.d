@@ -50,7 +50,7 @@ class ATPService : SAPService {
     return healthInfo;
   }
 
-  Json listCatalogs(string tenantId) {
+  Json listCatalogs(UUID tenantId) {
     validateTenant(tenantId);
     Json catalogs = _store.listCatalogs(tenantId).map!(catalog => catalog.toJson()).array.toJson();
 
@@ -59,7 +59,7 @@ class ATPService : SAPService {
     .set("count", cast(long)catalogs.length);
   }
 
-  Json upsertCatalog(string tenantId, Json data) {
+  Json upsertCatalog(UUID tenantId, Json data) {
     validateTenant(tenantId);
     auto now = Clock.currTime();
 
@@ -80,7 +80,7 @@ class ATPService : SAPService {
     .set("catalog", saved.toJson());
   }
 
-  Json listCommands(string tenantId, string catalogId) {
+  Json listCommands(UUID tenantId, string catalogId) {
     validateTenant(tenantId);
     Json commands = _store.listCommands(tenantId, catalogId).map!(command => command.toJson()).array.toJson();
 
@@ -89,7 +89,7 @@ class ATPService : SAPService {
     .set("count", cast(long)commands.length);
   }
 
-  Json upsertCommand(string tenantId, string catalogId, Json data) {
+  Json upsertCommand(UUID tenantId, string catalogId, Json data) {
     validateTenant(tenantId);
     if (_store.getCatalog(tenantId, catalogId).isNull)
       throw new ATPNotFoundException("Catalog not found");
@@ -121,7 +121,7 @@ return Json.emptyObject
     .set("command", saved.toJson());
   }
 
-  Json runPredefinedCommand(string tenantId, Json data) {
+  Json runPredefinedCommand(UUID tenantId, Json data) {
     validateTenant(tenantId);
     auto commandid = requiredUUID(data, "command_id");
     auto command = requireCommand(tenantId, commandId);
@@ -149,7 +149,7 @@ return Json.emptyObject
     .set("execution", saved.toJson());
   }
 
-  Json listExecutions(string tenantId) {
+  Json listExecutions(UUID tenantId) {
     validateTenant(tenantId);
     Json executions = _store.listExecutions(tenantId).map!(execution => execution.toJson()).array.toJson
 
@@ -158,7 +158,7 @@ return Json.emptyObject
     .set("count", cast(long)executions.length);
   }
 
-  Json backupContent(string tenantId, Json data) {
+  Json backupContent(UUID tenantId, Json data) {
     validateTenant(tenantId);
     auto now = Clock.currTime();
 
@@ -179,7 +179,7 @@ return Json.emptyObject
     return payload;
   }
 
-  Json restoreContent(string tenantId, Json data) {
+  Json restoreContent(UUID tenantId, Json data) {
     validateTenant(tenantId);
     auto backupid = requiredUUID(data, "backup_id");
     auto backup = _store.getBackup(tenantId, backupId);
@@ -193,7 +193,7 @@ return Json.emptyObject
     .set("content", backup.get.content);
   }
 
-  Json listBackups(string tenantId) {
+  Json listBackups(UUID tenantId) {
     validateTenant(tenantId);
     Json backups = _store.listBackups(tenantId).map!(backup => backup.toJson()).array.toJson();
 
@@ -202,7 +202,7 @@ return Json.emptyObject
       .set("count", cast(long)backups.length);
   }
 
-  Json upsertSecretInput(string tenantId, Json data) {
+  Json upsertSecretInput(UUID tenantId, Json data) {
     validateTenant(tenantId);
     auto now = Clock.currTime();
 
@@ -221,7 +221,7 @@ return Json.emptyObject
       .set("secret", saved.toJson());
   }
 
-  Json listSecretInputs(string tenantId) {
+  Json listSecretInputs(UUID tenantId) {
     validateTenant(tenantId);
     Json secrets = _store.listSecretInputs(tenantId).map!(secret => secret.toJson()).array.toJson();
 
@@ -230,7 +230,7 @@ return Json.emptyObject
       .set("count", cast(long)secrets.length);
   }
 
-  Json upsertSchedule(string tenantId, Json data) {
+  Json upsertSchedule(UUID tenantId, Json data) {
     validateTenant(tenantId);
     auto now = Clock.currTime();
 
@@ -252,7 +252,7 @@ return Json.emptyObject
       .set("schedule", saved.toJson());
   }
 
-  Json listSchedules(string tenantId) {
+  Json listSchedules(UUID tenantId) {
     validateTenant(tenantId);
     
     Json schedules = _store.listSchedules(tenantId).map!(schedule => schedule.toJson()).array.toJson();
@@ -262,7 +262,7 @@ return Json.emptyObject
       .set("count", cast(long)schedules.length);
   }
 
-  Json upsertEventTrigger(string tenantId, Json data) {
+  Json upsertEventTrigger(UUID tenantId, Json data) {
     validateTenant(tenantId);
     auto now = Clock.currTime();
 
@@ -282,7 +282,7 @@ return Json.emptyObject
       .set("trigger", saved.toJson());
   }
 
-  Json listEventTriggers(string tenantId) {
+  Json listEventTriggers(UUID tenantId) {
     validateTenant(tenantId);
 
     Json triggers = _store.listEventTriggers(tenantId).map!(trigger => trigger.toJson()).array.toJson();
@@ -292,7 +292,7 @@ return Json.emptyObject
       .set("count", cast(long)triggers.length);
   }
 
-  Json fireEvent(string tenantId, Json data) {
+  Json fireEvent(UUID tenantId, Json data) {
     validateTenant(tenantId);
     auto source = requiredString(data, "event_source");
     auto eventType = requiredString(data, "event_type");
@@ -319,7 +319,7 @@ return Json.emptyObject
       .set("count", cast(long)matched.length);
   }
 
-  Json generateAiContent(string tenantId, Json data) {
+  Json generateAiContent(UUID tenantId, Json data) {
     validateTenant(tenantId);
     auto prompt = requiredString(data, "prompt");
     auto contentType = optionalString(data, "content_type", "runbook");
@@ -336,7 +336,7 @@ return Json.emptyObject
       .set("generated", generated);
   }
 
-  Json executePrivateOperation(string tenantId, Json data) {
+  Json executePrivateOperation(UUID tenantId, Json data) {
     validateTenant(tenantId);
     auto operationType = optionalString(data, "operation_type", "http-request");
     auto endpoint = requiredString(data, "endpoint");
@@ -393,7 +393,7 @@ return Json.emptyObject
     _store.upsertCommand(restart);
   }
   
-  private ATPCommand requireCommand(string tenantId, string commandId) {
+  private ATPCommand requireCommand(UUID tenantId, string commandId) {
     auto command = _store.getCommand(tenantId, commandId);
     if (!command.isNull)
       return command.get;

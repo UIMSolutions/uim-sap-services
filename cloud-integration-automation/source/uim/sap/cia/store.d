@@ -32,11 +32,11 @@ class CIAStore : SAPStore {
     // -----------------------------------------------------------------------
     // Keys
     // -----------------------------------------------------------------------
-    private static string tenantPrefix(string tenantId) {
+    private static string tenantPrefix(UUID tenantId) {
         return tenantId ~ "::";
     }
 
-    private static string key(string tenantId, string id) {
+    private static string key(UUID tenantId, string id) {
         return tenantId ~ "::" ~ id;
     }
 
@@ -67,14 +67,14 @@ class CIAStore : SAPStore {
         return item;
     }
 
-    CIAUser[] listUsers(string tenantId) {
+    CIAUser[] listUsers(UUID tenantId) {
         CIAUser[] items;
         auto prefix = tenantPrefix(tenantId);
         foreach (k, v; _users) if (k.startsWith(prefix)) items ~= v;
         return items.array;
     }
 
-    bool tryGetUser(string tenantId, string id, out CIAUser user) {
+    bool tryGetUser(UUID tenantId, string id, out CIAUser user) {
         auto k = key(tenantId, id);
         if (k in _users) { user = _users[k]; return true; }
         return false;
@@ -88,14 +88,14 @@ class CIAStore : SAPStore {
         return item;
     }
 
-    CIASystem[] listSystems(string tenantId) {
+    CIASystem[] listSystems(UUID tenantId) {
         CIASystem[] items;
         auto prefix = tenantPrefix(tenantId);
         foreach (k, v; _systems) if (k.startsWith(prefix)) items ~= v;
         return items.array;
     }
 
-    bool tryGetSystem(string tenantId, string id, out CIASystem system) {
+    bool tryGetSystem(UUID tenantId, string id, out CIASystem system) {
         auto k = key(tenantId, id);
         if (k in _systems) { system = _systems[k]; return true; }
         return false;
@@ -128,14 +128,14 @@ class CIAStore : SAPStore {
         return item;
     }
 
-    CIAWorkflow[] listWorkflows(string tenantId) {
+    CIAWorkflow[] listWorkflows(UUID tenantId) {
         CIAWorkflow[] items;
         auto prefix = tenantPrefix(tenantId);
         foreach (k, v; _workflows) if (k.startsWith(prefix)) items ~= v;
         return items.array;
     }
 
-    bool tryGetWorkflow(string tenantId, string id, out CIAWorkflow workflow) {
+    bool tryGetWorkflow(UUID tenantId, string id, out CIAWorkflow workflow) {
         auto k = key(tenantId, id);
         if (k in _workflows) { workflow = _workflows[k]; return true; }
         return false;
@@ -149,7 +149,7 @@ class CIAStore : SAPStore {
         return item;
     }
 
-    CIATask[] listTasks(string tenantId, string workflowId) {
+    CIATask[] listTasks(UUID tenantId, string workflowId) {
         import std.algorithm : sort;
         CIATask[] items;
         auto prefix = tenantPrefix(tenantId);
@@ -160,7 +160,7 @@ class CIAStore : SAPStore {
         return items.array;
     }
 
-    bool tryGetTask(string tenantId, string id, out CIATask task) {
+    bool tryGetTask(UUID tenantId, string id, out CIATask task) {
         auto k = key(tenantId, id);
         if (k in _tasks) { task = _tasks[k]; return true; }
         return false;
@@ -195,7 +195,7 @@ class CIAStore : SAPStore {
         return item;
     }
 
-    CIATaskLog[] listLogs(string tenantId, string workflowId) {
+    CIATaskLog[] listLogs(UUID tenantId, string workflowId) {
         import std.algorithm : sort;
         CIATaskLog[] items;
         auto prefix = tenantPrefix(tenantId);
@@ -214,7 +214,7 @@ class CIAStore : SAPStore {
         return item;
     }
 
-    CIAAutomationResult[] listAutomationResults(string tenantId, string taskId) {
+    CIAAutomationResult[] listAutomationResults(UUID tenantId, string taskId) {
         CIAAutomationResult[] items;
         auto prefix = tenantPrefix(tenantId);
         foreach (k, v; _automationResults)

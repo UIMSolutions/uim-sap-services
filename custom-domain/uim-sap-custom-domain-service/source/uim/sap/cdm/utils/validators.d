@@ -15,7 +15,7 @@ bool validateCertificateData(string certificate) {
     return true;
 }
 
-bool validateTenantId(string tenantId) {
+bool validateTenantId(UUID tenantId) {
     // A simple check to ensure tenant ID is not empty and follows a specific format
     enforce(tenantId.length > 0, "Tenant ID cannot be empty");
     return true;

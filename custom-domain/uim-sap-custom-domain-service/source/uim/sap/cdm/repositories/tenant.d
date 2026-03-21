@@ -18,7 +18,7 @@ class TenantRepository {
         writeln("Tenant added: ", tenant.name);
     }
 
-    Tenant getTenant(string tenantId) {
+    Tenant getTenant(UUID tenantId) {
         foreach (tenant; tenants) {
             if (tenant.id == tenantId) {
                 return tenant;
@@ -27,7 +27,7 @@ class TenantRepository {
         return null;
     }
 
-    void updateTenant(string tenantId, Tenant updatedTenant) {
+    void updateTenant(UUID tenantId, Tenant updatedTenant) {
         for (size_t i = 0; i < tenants.length; i++) {
             if (tenants[i].id == tenantId) {
                 tenants[i] = updatedTenant;
@@ -38,7 +38,7 @@ class TenantRepository {
         writeln("Tenant not found: ", tenantId);
     }
 
-    void deleteTenant(string tenantId) {
+    void deleteTenant(UUID tenantId) {
         tenants = tenants.filter!(t => t.id != tenantId);
         writeln("Tenant deleted: ", tenantId);
     }

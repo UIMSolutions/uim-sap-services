@@ -39,7 +39,7 @@ class BtpExtensionService : SAPService {
     }
 
     // Method to retrieve all custom domains for a specific tenant
-    public auto getCustomDomainsForTenant(string tenantId) {
+    public auto getCustomDomainsForTenant(UUID tenantId) {
         return customDomainRepo.findByTenantId(tenantId);
     }
 
