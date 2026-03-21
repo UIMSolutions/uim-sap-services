@@ -30,7 +30,7 @@ void main() {
     });
 
     runtime.registerProgram("Z_ECHO", (request) {
-        Json payload = Json.emptyObject;
+        Json payload = Json.emptyObject
         payload["echo"] = request.parameters;
         return successResult("Echo completed", payload);
     });

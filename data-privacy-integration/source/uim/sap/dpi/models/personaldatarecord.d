@@ -6,6 +6,7 @@
 module uim.sap.dpi.models.personaldatarecord;
 
 import uim.sap.dpi;
+
 @safe:
 
 /**
@@ -23,46 +24,46 @@ import uim.sap.dpi;
     * - updatedAt: The timestamp when this record was last updated.
     * - deleted: A boolean indicating whether this record has been marked as deleted.  
     */
-struct DPIPersonalDataRecord {
-    UUID tenantId;
-    string recordId;
-    string subjectId;
-    string category;
-    string source;
-    Json payload = Json.emptyObject;
-    SysTime createdAt;
-    SysTime updatedAt;
-    bool deleted;
+class DPIPersonalDataRecord : SAPTenantObject {
+  mixin(SAPObjectTemplate!DPIPersonalDataRecord);
 
-    override Json toJson()  {
-        Json result = Json.emptyObject;
-        result["tenant_id"] = tenantId;
-        result["record_id"] = recordId;
-        result["subject_id"] = subjectId;
-        result["category"] = category;
-        result["source"] = source;
-        result["payload"] = payload;
-        result["created_at"] = createdAt.toISOExtString();
-        result["updated_at"] = updatedAt.toISOExtString();
-        result["deleted"] = deleted;
-        return result;
-    }
-}
+  UUID recordId;
+  UUID subjectId;
+  string category;
+  string source;
+  Json payload = Json.emptyObject;
+  bool deleted;
 
-DPIPersonalDataRecord recordFromJson(string tenantId, Json request) {
-    DPIPersonalDataRecord record;
-    record.tenantId = UUID(tenantId);
+  override Json toJson() {
+    return super.toJson
+      .set("record_id", recordId)
+      .set("subject_id", subjectId)
+      .set("category", category)
+      .set("source", source)
+      .set("payload", payload)
+      .set("deleted", deleted);
+  }
+
+  DPIPersonalDataRecord opCall(UUID tenantId, Json request) {
+    DPIPersonalDataRecord record = new DPIPersonalDataRecord(request);
+    record.tenantId = tenantId;
     record.recordId = createId();
     record.createdAt = Clock.currTime();
     record.updatedAt = record.createdAt;
     record.payload = Json.emptyObject;
     record.deleted = false;
 
-    if ("record_id" in request && request["record_id"].isString) record.recordId = request["record_id"].get!string;
-    if ("subject_id" in request && request["subject_id"].isString) record.subjectId = request["subject_id"].get!string;
-    if ("category" in request && request["category"].isString) record.category = request["category"].get!string;
-    if ("source" in request && request["source"].isString) record.source = request["source"].get!string;
-    if ("payload" in request && request["payload"].isObject) record.payload = request["payload"];
+    if ("record_id" in request && request["record_id"].isString)
+      record.recordId = request["record_id"].get!string;
+    if ("subject_id" in request && request["subject_id"].isString)
+      record.subjectId = UUID(request["subject_id"].get!string);
+    if ("category" in request && request["category"].isString)
+      record.category = request["category"].get!string;
+    if ("source" in request && request["source"].isString)
+      record.source = request["source"].get!string;
+    if ("payload" in request && request["payload"].isObject)
+      record.payload = request["payload"];
 
     return record;
+  }
 }

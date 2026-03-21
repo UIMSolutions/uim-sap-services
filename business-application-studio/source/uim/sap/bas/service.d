@@ -32,10 +32,9 @@ class BASService : SAPService {
     validateTenant(tenantId);
 
     Json scenarios = _scenarios.map!(scenario => scenario.toJson()).array.toJson;
-    Json payload = Json.emptyObject;
-    payload["scenarios"] = scenarios;
-    payload["count"] = cast(long)scenarios.length;
-    return payload;
+    return Json.emptyObject
+    .set("scenarios", scenarios)
+    .set("count", cast(long)scenarios.length);
   }
 
   Json listTemplates(string tenantId, string scenarioId = "") {
@@ -48,10 +47,9 @@ class BASService : SAPService {
       templates ~= templateValue.toJson();
     }
 
-    Json payload = Json.emptyObject;
-    payload["templates"] = templates;
-    payload["count"] = cast(long)templates.length;
-    return payload;
+    return Json.emptyObject
+    .set("templates", templates)
+    .set("count", cast(long)templates.length);
   }
 
   Json createWorkspace(string tenantId, Json data) {
@@ -78,10 +76,9 @@ class BASService : SAPService {
 
     auto saved = _store.upsertWorkspace(workspace);
 
-    Json payload = Json.emptyObject;
-    payload["message"] = "Workspace created";
-    payload["workspace"] = saved.toJson();
-    return payload;
+    return Json.emptyObject
+    .set("message", "Workspace created")
+    .set("workspace", saved.toJson());
   }
 
   Json listWorkspaces(string tenantId) {
@@ -90,10 +87,9 @@ class BASService : SAPService {
     foreach (workspace; _store.listWorkspaces(tenantId))
       workspaces ~= workspace.toJson();
 
-    Json payload = Json.emptyObject;
-    payload["workspaces"] = workspaces;
-    payload["count"] = cast(long)workspaces.length;
-    return payload;
+    return Json.emptyObject
+    .set("workspaces", workspaces)
+    .set("count", cast(long)workspaces.length);
   }
 
   Json runWizard(string tenantId, string workspaceId, Json data) {
@@ -111,19 +107,18 @@ class BASService : SAPService {
     run.templateId = templateId;
     run.status = "SUCCESS";
     run.input = readObject(body, "input");
-    run.output = Json.emptyObject;
-    run.output["generated_project"] = "generated-" ~ templateId;
-    run.output["graphical_editor_ready"] = true;
-    run.output["quick_deploy_suggested"] = true;
+    run.output = Json.emptyObject
+    .set("generated_project", "generated-" ~ templateId)
+    .set("graphical_editor_ready", true)
+    .set("quick_deploy_suggested", true);
     run.startedAt = now;
     run.finishedAt = Clock.currTime();
 
     auto saved = _store.upsertWizardRun(run);
 
-    Json payload = Json.emptyObject;
-    payload["message"] = "Wizard executed";
-    payload["wizard_run"] = saved.toJson();
-    return payload;
+    return Json.emptyObject
+    .set("message", "Wizard executed")
+    .set("wizard_run", saved.toJson())  ;
   }
 
   Json listWizardRuns(string tenantId, string workspaceId) {
@@ -133,10 +128,9 @@ class BASService : SAPService {
     foreach (run; _store.listWizardRuns(tenantId, workspaceId))
       runs ~= run.toJson();
 
-    Json payload = Json.emptyObject;
-    payload["wizard_runs"] = runs;
-    payload["count"] = cast(long)runs.length;
-    return payload;
+    return Json.emptyObject
+    .set("wizard_runs", runs)
+    .set("count", cast(long)runs.length);
   }
 
   Json createTerminalSession(string tenantId, string workspaceId, Json data) {
@@ -168,10 +162,9 @@ class BASService : SAPService {
     foreach (session; _store.listTerminalSessions(tenantId, workspaceId))
       sessions ~= session.toJson();
 
-    Json payload = Json.emptyObject;
-    payload["sessions"] = sessions;
-    payload["count"] = cast(long)sessions.length;
-    return payload;
+    return Json.emptyObject
+    .set("sessions", sessions)
+    .set("count", cast(long)sessions.length);
   }
 
   Json runLocalTest(string tenantId, string workspaceId, Json data) {
@@ -179,13 +172,12 @@ class BASService : SAPService {
     if (!workspace.debugEnabled)
       throw new BASValidationException("Debug mode is disabled for workspace");
 
-    Json payload = Json.emptyObject;
-    payload["message"] = "Local test and debug run completed";
-    payload["workspace_id"] = workspaceId;
-    payload["test_suite"] = optionalString(body, "test_suite", "default");
-    payload["result"] = "PASS";
-    payload["duration_ms"] = 820;
-    return payload;
+    return Json.emptyObject
+    .set("message", "Local test and debug run completed")
+    .set("workspace_id", workspaceId)
+    .set("test_suite", optionalString(body, "test_suite", "default"))
+    .set("result", "PASS")
+    .set("duration_ms", 820);
   }
 
   Json createDeployment(string tenantId, string workspaceId, Json data) {
@@ -203,10 +195,9 @@ class BASService : SAPService {
 
     auto saved = _store.upsertDeployment(deployment);
 
-    Json payload = Json.emptyObject;
-    payload["message"] = "Deployment queued";
-    payload["deployment"] = saved.toJson();
-    return payload;
+    return Json.emptyObject
+    .set("message", "Deployment queued")
+    .set("deployment", saved.toJson());
   }
 
   Json listDeployments(string tenantId, string workspaceId) {
@@ -216,14 +207,12 @@ class BASService : SAPService {
     foreach (deployment; _store.listDeployments(tenantId, workspaceId))
       deployments ~= deployment.toJson();
 
-    Json payload = Json.emptyObject;
-    payload["deployments"] = deployments;
-    payload["count"] = cast(long)deployments.length;
-    return payload;
+    return Json.emptyObject
+    .set("deployments", deployments)
+    .set("count", cast(long)deployments.length);
   }
 
   Json availability() const {
-    Json payload = Json.emptyObject;
 
     Json regions = Json.emptyArray;
     foreach (region; _config.regions)
@@ -233,6 +222,7 @@ class BASService : SAPService {
     foreach (provider; _config.hyperscalers)
       hyperscalers ~= provider;
 
+    Json payload = Json.emptyObject;
     payload["multi_cloud"] = true;
     payload["browser_access"] = true;
     payload["regions"] = regions;

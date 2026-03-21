@@ -20,20 +20,17 @@ import uim.sap.dpi;
  * - records: A JSON array containing the personal data records included in this export.
  * - createdAt: The timestamp when this export was created.  
  */
-struct DPIExport {
-  UUID tenantId;
-  string exportId;
-  string subjectId;
+class DPIExport : SAPTenantObject {
+  mixin(SAPObjectTemplate!DPIExport);
+
+  UUID exportId;
+  UUID subjectId;
   Json records;
-  SysTime createdAt;
 
   override Json toJson()  {
-    Json result = Json.emptyObject;
-    result["tenant_id"] = tenantId;
-    result["export_id"] = exportId;
-    result["subject_id"] = subjectId;
-    result["records"] = records;
-    result["created_at"] = createdAt.toISOExtString();
-    return result;
+    return super.toJson
+    .set("export_id", exportId)
+    .set("subject_id", subjectId)
+    .set("records", records);
   }
 }

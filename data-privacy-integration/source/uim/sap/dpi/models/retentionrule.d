@@ -5,7 +5,9 @@
 *****************************************************************************************************************/
 module uim.sap.dpi.models.retentionrule;
 
-import std.sap.dpi;
+import uim.sap.dpi;
+
+mixin(ShowModule!());
 
 @safe:
 
@@ -21,22 +23,20 @@ import std.sap.dpi;
  * - active: A boolean indicating whether the rule is currently active.
  * - updatedAt: The timestamp of the last update to this rule.  
  */
-struct DPIRetentionRule {
-  UUID tenantId;
-  string ruleId;
+class DPIRetentionRule : SAPTenantObject {
+  mixin(SAPObjectTemplate!DPIRetentionRule);
+
+  UUID ruleId;
   string dataCategory;
   int retentionDays;
   bool active;
   SysTime updatedAt;
 
   override Json toJson()  {
-    Json info = super.toJson;
-    payload["tenant_id"] = tenantId;
-    payload["rule_id"] = ruleId;
-    payload["data_category"] = dataCategory;
-    payload["retention_days"] = retentionDays;
-    payload["active"] = active;
-    payload["updated_at"] = updatedAt.toISOExtString();
-    return payload;
+    return super.toJson
+    .set("rule_id", ruleId)
+    .set("data_category", dataCategory)
+    .set("retention_days", retentionDays)
+    .set("active", active);
   }
 }

@@ -23,7 +23,7 @@ class AEMService : SAPService {
 
   Json createBrokerService(string tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
-    
+
     AEMConfig cfg = cast(AEMConfig)_config;
     auto broker = AEMBrokerService(tenantId, request, cfg.defaultMeshRegion);
     if (broker.name.length == 0) {
@@ -33,10 +33,9 @@ class AEMService : SAPService {
     broker.updatedAt = Clock.currTime();
     auto saved = _store.upsertBroker(broker);
 
-    Json result = Json.emptyObject;
-    result["success"] = true;
-    result["broker_service"] = saved.toJson();
-    return result;
+    Json result = Json.emptyObject
+      .set("success", true)
+      .set("broker_service", saved.toJson());
   }
 
   Json listBrokerServices(string tenantId) {
@@ -44,11 +43,10 @@ class AEMService : SAPService {
 
     Json resources = _store.listBrokers(tenantId).map!(resource => broker.toJson()).array.toJson;
 
-    Json result = Json.emptyObject;
-    result["tenant_id"] = tenantId;
-    result["resources"] = resources;
-    result["total_results"] = cast(long)resources.length;
-    return result;
+    Json result = Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json createEventMesh(string tenantId, string brokerServiceId, Json request) {
@@ -69,10 +67,9 @@ class AEMService : SAPService {
     mesh.updatedAt = Clock.currTime();
     auto saved = _store.upsertMesh(mesh);
 
-    Json result = Json.emptyObject;
-    result["success"] = true;
-    result["event_mesh"] = saved.toJson();
-    return result;
+    Json result = Json.emptyObject
+      .set("success", true)
+      .set("event_mesh", saved.toJson());
   }
 
   Json listEventMeshes(string tenantId) {
@@ -81,9 +78,9 @@ class AEMService : SAPService {
     Json resources = _store.listMeshes(tenantId).map!(mesh => mesh.toJson()).array.toJson;
 
     return Json.emptyObject
-    .set("tenant_id", tenantId)
-    .set("resources", resources)
-    .set("total_results", cast(long)resources.length);
+      .set("tenant_id", tenantId)
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json registerTopic(string tenantId, string meshId, Json request) {
@@ -141,11 +138,10 @@ class AEMService : SAPService {
 
     checkAndCreateAlerts(tenantId, meshId, eventItem.topic);
 
-    Json result = Json.emptyObject;
-    result["success"] = true;
-    result["event"] = savedEvent.toJson();
-    result["message"] = "Event published to mesh topic";
-    return result;
+    Json result = Json.emptyObject
+      .set("success", true)
+      .set("event", savedEvent.toJson())
+      .set("message", "Event published to mesh topic");
   }
 
   Json listTopicEvents(string tenantId, string meshId, string topic) {
@@ -153,15 +149,15 @@ class AEMService : SAPService {
     validateId(meshId, "Mesh ID");
     validateId(topic, "Topic");
 
-    Json resources = _store.listTopicEvents(tenantId, meshId, topic).map!(event => event.toJson).array.toJson();
+    Json resources = _store.listTopicEvents(tenantId, meshId, topic)
+      .map!(event => event.toJson).array.toJson();
 
-    Json result = Json.emptyObject;
-    result["tenant_id"] = tenantId;
-    result["mesh_id"] = meshId;
-    result["topic"] = topic;
-    result["resources"] = resources;
-    result["total_results"] = cast(long)resources.length;
-    return result;
+    Json result = Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("mesh_id", meshId)
+      .set("topic", topic)
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json upsertComponent(string tenantId, Json request) {

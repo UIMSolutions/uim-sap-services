@@ -23,14 +23,13 @@ class DPIService : SAPService {
   }
 
   override Json health() {
-    Json healthInfo = super.health();
-    healthInfo["multitenancy"] = true;
-    return healthInfo;
+    return super.health()
+      .set("multitenancy", true);
   }
 
   Json ingestRecord(string tenantId, Json request) {
     validateTenant(tenantId);
-    auto record = recordFromJson(tenantId, request);
+    auto record = DPIPersonalDataRecord(tenantId, request);
     if (record.subjectId.length == 0)
       throw new DPIValidationException("subject_id is required");
     if (record.category.length == 0)
@@ -41,17 +40,16 @@ class DPIService : SAPService {
     record.updatedAt = Clock.currTime();
     auto saved = _store.upsertRecord(record);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["record"] = saved.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("record", saved.toJson());
   }
 
   Json upsertRetentionRule(string tenantId, string ruleId, Json request) {
     validateTenant(tenantId);
     validateId(ruleId, "Rule ID");
 
-    DPIRetentionRule rule;
+    DPIRetentionRule rule = new DPIRetentionRule(request);
     rule.tenantId = UUID(tenantId);
     rule.ruleId = ruleId;
     rule.dataCategory = "default";
@@ -73,10 +71,9 @@ class DPIService : SAPService {
 
     auto saved = _store.upsertRule(rule);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["rule"] = saved.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("rule", saved.toJson());
   }
 
   Json listRetentionRules(string tenantId) {
@@ -85,10 +82,9 @@ class DPIService : SAPService {
     foreach (rule; _store.listRules(tenantId))
       resources ~= rule.toJson();
 
-    Json payload = Json.emptyObject;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)resources.length;
-    return payload;
+    return Json.emptyObject
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json triggerRetentionDeletion(string tenantId, Json request) {
@@ -100,21 +96,20 @@ class DPIService : SAPService {
     auto category = request["data_category"].get!string;
     auto deleted = _store.retentionDelete(tenantId, category);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["tenant_id"] = tenantId;
-    payload["data_category"] = category;
-    payload["deleted_records"] = deleted;
-    payload["reason"] = "end-of-purpose";
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("tenant_id", tenantId)
+      .set("data_category", category)
+      .set("deleted_records", deleted)
+      .set("reason", "end-of-purpose");
   }
 
   Json generateReport(string tenantId, Json request) {
     validateTenant(tenantId);
 
-    string subjectId;
+    UUID subjectId;
     if ("subject_id" in request && request["subject_id"].isString) {
-      subjectId = request["subject_id"].get!string;
+      subjectId = UUID(request["subject_id"].get!string);
     }
 
     DPIPersonalDataRecord[] records = subjectId.length > 0
@@ -124,15 +119,14 @@ class DPIService : SAPService {
     foreach (record; records)
       entries ~= record.toJson();
 
-    Json payload = Json.emptyObject;
-    payload["tenant_id"] = tenantId;
-    payload["subject_id"] = subjectId;
-    payload["records"] = entries;
-    payload["total_results"] = cast(long)entries.length;
-    payload["can_export"] = true;
-    payload["can_trigger_correction"] = true;
-    payload["can_trigger_deletion"] = true;
-    return payload;
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("subject_id", subjectId)
+      .set("records", entries)
+      .set("total_results", cast(long)entries.length)
+      .set("can_export", true)
+      .set("can_trigger_correction", true)
+      .set("can_trigger_deletion", true);
   }
 
   Json exportReport(string tenantId, Json request) {
@@ -141,7 +135,7 @@ class DPIService : SAPService {
       throw new DPIValidationException("subject_id is required");
     }
 
-    auto subjectId = request["subject_id"].get!string;
+    auto subjectId = UUID(request["subject_id"].get!string);
     auto records = _store.listSubjectRecords(tenantId, subjectId);
     Json entries = Json.emptyArray;
     foreach (record; records)
@@ -156,11 +150,10 @@ class DPIService : SAPService {
 
     auto saved = _store.saveExport(exportItem);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["export"] = saved.toJson();
-    payload["format"] = "json";
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("export", saved.toJson())
+      .set("format", "json");
   }
 
   Json triggerCorrection(string tenantId, Json request) {
@@ -190,10 +183,10 @@ class DPIService : SAPService {
       throw new DPINotFoundException("Record", recordId);
 
     Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["record_id"] = recordId;
-    payload["operation"] = "correction_triggered";
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("record_id", recordId)
+      .set("operation", "correction_triggered");
   }
 
   Json triggerDeletion(string tenantId, Json request) {
@@ -205,12 +198,11 @@ class DPIService : SAPService {
     auto subjectId = request["subject_id"].get!string;
     auto deleted = _store.deleteSubjectRecords(tenantId, subjectId);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["subject_id"] = subjectId;
-    payload["deleted_records"] = deleted;
-    payload["operation"] = "deletion_triggered";
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("subject_id", subjectId)
+      .set("deleted_records", deleted)
+      .set("operation", "deletion_triggered");
   }
 
   Json anonymize(Json request) {
@@ -252,12 +244,11 @@ class DPIService : SAPService {
       output = pseudonymizeText(tenantId, text);
     }
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["mode"] = mode;
-    payload["type"] = inputType;
-    payload["result"] = output;
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("mode", mode)
+      .set("type", inputType)
+      .set("result", output);
   }
 
   private string anonymizeText(string text) {
@@ -278,9 +269,7 @@ class DPIService : SAPService {
       result = result.replace(original, pseudo);
     }
 
-    if (result == text) {
-      return "PSEUDO::" ~ _store.pseudonymFor(tenantId, text);
-    }
-    return result;
+    return result == text
+      ? "PSEUDO::" ~ _store.pseudonymFor(tenantId, text) : result;
   }
 }

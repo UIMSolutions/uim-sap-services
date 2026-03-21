@@ -208,12 +208,12 @@ class AlertNotificationService : SAPService {
     eventItem.createdAt = Clock.currTime();
 
     auto matched = matchesCondition(eventItem, sub.condition);
-    Json result = Json.emptyObject;
-    result["subscription_id"] = subscriptionId;
-    result["matched"] = matched;
-    result["event"] = eventItem.toJson();
-    result["condition"] = sub.condition;
-    return result;
+    Json result = Json.emptyObject
+    result
+      .set("subscription_id", subscriptionId)
+      .set("matched", matched)
+      .set("event", eventItem.toJson())
+      .set("condition", sub.condition);
   }
 
   Json listDeliveries(string tenantId) {
@@ -242,14 +242,13 @@ class AlertNotificationService : SAPService {
       }
     }
 
-    Json result = Json.emptyObject;
-    result["tenant_id"] = tenantId;
-    result["alerts_total"] = cast(long)alerts.length;
-    result["subscriptions_total"] = cast(long)subs.length;
-    result["subscriptions_active"] = activeSubs;
-    result["deliveries_total"] = cast(long)deliveries.length;
-    result["delivery_options"] = listDeliveryOptions()["resources"];
-    return result;
+    Json result = Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("alerts_total", cast(long)alerts.length)
+      .set("subscriptions_total", cast(long)subs.length)
+      .set("subscriptions_active", activeSubs)
+      .set("deliveries_total", cast(long)deliveries.length)
+      .set("delivery_options", listDeliveryOptions()["resources"]);
   }
 
   private AlertDelivery[] fanOut(AlertEvent eventItem) {
