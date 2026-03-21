@@ -41,7 +41,7 @@ class CDCStore : SAPStore {
     }
   }
 
-  CDCProfile getProfileByTenantRegionUser(string tenantId, string region, string userId) {
+  CDCProfile getProfileByTenantRegionUser(UUID tenantId, string region, string userId) {
     synchronized (_lock) {
       auto key = scopedProfileKey(tenantId, region, userId);
       if (auto value = key in _profiles)
@@ -50,7 +50,7 @@ class CDCStore : SAPStore {
     }
   }
 
-  CDCProfile getProfileByTenantUser(string tenantId, string userId) {
+  CDCProfile getProfileByTenantUser(UUID tenantId, string userId) {
     synchronized (_lock) {
       auto prefix = tenantId ~ ":profile:";
       auto suffix = ":" ~ userId;
@@ -65,7 +65,7 @@ class CDCStore : SAPStore {
     }
   }
 
-  CDCProfile[] listProfilesByTenant(string tenantId) {
+  CDCProfile[] listProfilesByTenant(UUID tenantId) {
     synchronized (_lock) {
       auto prefix = tenantId ~ ":profile:";
       _profiles.byKeyValue
@@ -84,7 +84,7 @@ class CDCStore : SAPStore {
     }
   }
 
-  CDCConsent[] listConsents(string tenantId, string userId) {
+  CDCConsent[] listConsents(UUID tenantId, string userId) {
     synchronized (_lock) {
       auto prefix = scopedConsentPrefix(tenantId, userId);
       return _consents.byKeyValue
@@ -106,7 +106,7 @@ class CDCStore : SAPStore {
     }
   }
 
-  CDCSiteGroup getSiteGroup(string tenantId, string groupId) {
+  CDCSiteGroup getSiteGroup(UUID tenantId, string groupId) {
     synchronized (_lock) {
       auto key = scopedSiteGroupKey(tenantId, groupId);
       if (auto value = key in _siteGroups)
@@ -115,7 +115,7 @@ class CDCStore : SAPStore {
     }
   }
 
-  CDCSiteGroup[] listSiteGroups(string tenantId) {
+  CDCSiteGroup[] listSiteGroups(UUID tenantId) {
     CDCSiteGroup[] values;
     synchronized (_lock) {
       auto prefix = tenantId ~ ":site-group:";
@@ -139,7 +139,7 @@ class CDCStore : SAPStore {
     }
   }
 
-  CDCRiskProvider[] listRiskProviders(string tenantId) {
+  CDCRiskProvider[] listRiskProviders(UUID tenantId) {
     CDCRiskProvider[] values;
     synchronized (_lock) {
       auto prefix = tenantId ~ ":risk-provider:";
@@ -160,7 +160,7 @@ class CDCStore : SAPStore {
     }
   }
 
-  CDCAuthEvent[] listAuthEvents(string tenantId, size_t limit) {
+  CDCAuthEvent[] listAuthEvents(UUID tenantId, size_t limit) {
     CDCAuthEvent[] values;
     synchronized (_lock) {
       auto prefix = tenantId ~ ":auth-event:";
@@ -401,27 +401,27 @@ class CDCStore : SAPStore {
     return item[key];
   }
 
-  private string scopedProfileKey(string tenantId, string region, string userId) {
+  private string scopedProfileKey(UUID tenantId, string region, string userId) {
     return tenantId ~ ":profile:" ~ region ~ ":" ~ userId;
   }
 
-  private string scopedConsentPrefix(string tenantId, string userId) {
+  private string scopedConsentPrefix(UUID tenantId, string userId) {
     return tenantId ~ ":consent:" ~ userId ~ ":";
   }
 
-  private string scopedConsentKey(string tenantId, string userId, string consentId) {
+  private string scopedConsentKey(UUID tenantId, string userId, string consentId) {
     return scopedConsentPrefix(tenantId, userId) ~ consentId;
   }
 
-  private string scopedSiteGroupKey(string tenantId, string groupId) {
+  private string scopedSiteGroupKey(UUID tenantId, string groupId) {
     return tenantId ~ ":site-group:" ~ groupId;
   }
 
-  private string scopedRiskProviderKey(string tenantId, string providerId) {
+  private string scopedRiskProviderKey(UUID tenantId, string providerId) {
     return tenantId ~ ":risk-provider:" ~ providerId;
   }
 
-  private string scopedAuthEventKey(string tenantId, string eventId) {
+  private string scopedAuthEventKey(UUID tenantId, string eventId) {
     return tenantId ~ ":auth-event:" ~ eventId;
   }
 }

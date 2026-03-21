@@ -27,7 +27,7 @@ interface IRepositoryConnector {
     string repositoryId();
 
     /// The owning tenant identifier.
-    string tenantId();
+    UUID tenantId();
 }
 
 /// Built-in internal repository connector backed by the in-memory store.
@@ -61,7 +61,7 @@ class InternalRepositoryConnector : IRepositoryConnector {
         return _repo.repositoryId;
     }
 
-    string tenantId() {
+    UUID tenantId() {
         return _repo.tenantId;
     }
 }
@@ -89,7 +89,7 @@ class ExternalCmisConnector : IRepositoryConnector {
         return _repo.repositoryId;
     }
 
-    string tenantId() {
+    UUID tenantId() {
         return _repo.tenantId;
     }
 }

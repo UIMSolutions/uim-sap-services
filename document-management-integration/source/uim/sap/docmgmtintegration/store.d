@@ -58,7 +58,7 @@ class DocMgmtIntegrationStore : SAPStore {
         }
     }
 
-    Tenant getTenant(string tenantId) {
+    Tenant getTenant(UUID tenantId) {
         synchronized (_lock) {
             if (auto t = tenantId in _tenants)
                 return *t;
@@ -74,7 +74,7 @@ class DocMgmtIntegrationStore : SAPStore {
         }
     }
 
-    bool removeTenant(string tenantId) {
+    bool removeTenant(UUID tenantId) {
         synchronized (_lock) {
             if (tenantId in _tenants) {
                 _tenants.remove(tenantId);
@@ -112,7 +112,7 @@ class DocMgmtIntegrationStore : SAPStore {
         return Repository.init;
     }
 
-    Repository[] listRepositories(string tenantId) {
+    Repository[] listRepositories(UUID tenantId) {
         synchronized (_lock) {
             Repository[] result;
             foreach (r; _repositories.byValue()) {
@@ -170,7 +170,7 @@ class DocMgmtIntegrationStore : SAPStore {
         }
     }
 
-    Folder[] listFolders(string tenantId, string repositoryId, string parentFolderId) {
+    Folder[] listFolders(UUID tenantId, string repositoryId, string parentFolderId) {
         synchronized (_lock) {
             Folder[] result;
             foreach (f; _folders.byValue()) {
@@ -270,7 +270,7 @@ class DocMgmtIntegrationStore : SAPStore {
         }
     }
 
-    Document[] listDocuments(string tenantId, string repositoryId, string folderId) {
+    Document[] listDocuments(UUID tenantId, string repositoryId, string folderId) {
         synchronized (_lock) {
             Document[] result;
             foreach (d; _documents.byValue()) {
@@ -388,7 +388,7 @@ class DocMgmtIntegrationStore : SAPStore {
         }
     }
 
-    UIComponentConfig getUIConfig(string tenantId) {
+    UIComponentConfig getUIConfig(UUID tenantId) {
         synchronized (_lock) {
             if (auto c = tenantId in _uiConfigs)
                 return *c;
@@ -396,7 +396,7 @@ class DocMgmtIntegrationStore : SAPStore {
         return UIComponentConfig.init;
     }
 
-    bool removeUIConfig(string tenantId) {
+    bool removeUIConfig(UUID tenantId) {
         synchronized (_lock) {
             if (tenantId in _uiConfigs) {
                 _uiConfigs.remove(tenantId);
@@ -435,7 +435,7 @@ class DocMgmtIntegrationStore : SAPStore {
         }
     }
 
-    IntegrationLink[] listLinks(string tenantId) {
+    IntegrationLink[] listLinks(UUID tenantId) {
         synchronized (_lock) {
             IntegrationLink[] result;
             foreach (l; _links.byValue()) {
@@ -447,7 +447,7 @@ class DocMgmtIntegrationStore : SAPStore {
     }
 
     /// List links matching a specific external business object.
-    IntegrationLink[] listLinksByObject(string tenantId, string externalObjectType, string externalObjectId) {
+    IntegrationLink[] listLinksByObject(UUID tenantId, string externalObjectType, string externalObjectId) {
         synchronized (_lock) {
             IntegrationLink[] result;
             foreach (l; _links.byValue()) {
@@ -461,7 +461,7 @@ class DocMgmtIntegrationStore : SAPStore {
     }
 
     /// List links pointing to a specific document.
-    IntegrationLink[] listLinksByDocument(string tenantId, string documentId) {
+    IntegrationLink[] listLinksByDocument(UUID tenantId, string documentId) {
         synchronized (_lock) {
             IntegrationLink[] result;
             foreach (l; _links.byValue()) {

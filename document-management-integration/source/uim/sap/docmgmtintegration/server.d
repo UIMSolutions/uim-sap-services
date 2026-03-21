@@ -171,7 +171,7 @@ class DocMgmtIntegrationServer {
     // /v1/tenants/{tenantId}/{resource}[/...]
     // -------------------------------------------------------------------
 
-    private bool routeTenantSubResources(string tenantId, string[] seg,
+    private bool routeTenantSubResources(UUID tenantId, string[] seg,
                                           HTTPServerRequest req,
                                           HTTPServerResponse res) {
         if (seg.length < 1) return false;
@@ -208,7 +208,7 @@ class DocMgmtIntegrationServer {
     // /v1/tenants/{tid}/repositories[/...]
     // -------------------------------------------------------------------
 
-    private bool routeRepositories(string tenantId, string[] seg,
+    private bool routeRepositories(UUID tenantId, string[] seg,
                                     HTTPServerRequest req, HTTPServerResponse res) {
         // GET /v1/tenants/{tid}/repositories
         if (seg.length == 0 && req.method == HTTPMethod.GET) {
@@ -273,7 +273,7 @@ class DocMgmtIntegrationServer {
     // /v1/tenants/{tid}/repositories/{repoId}/folders[/...]
     // -------------------------------------------------------------------
 
-    private bool routeRepoFolders(string tenantId, string repoId, string[] seg,
+    private bool routeRepoFolders(UUID tenantId, string repoId, string[] seg,
                                    HTTPServerRequest req, HTTPServerResponse res) {
         // POST /v1/tenants/{tid}/repositories/{id}/folders
         if (seg.length == 0 && req.method == HTTPMethod.POST) {
@@ -294,7 +294,7 @@ class DocMgmtIntegrationServer {
     // /v1/tenants/{tid}/repositories/{repoId}/documents[/...]
     // -------------------------------------------------------------------
 
-    private bool routeRepoDocuments(string tenantId, string repoId, string[] seg,
+    private bool routeRepoDocuments(UUID tenantId, string repoId, string[] seg,
                                      HTTPServerRequest req, HTTPServerResponse res) {
         // POST /v1/tenants/{tid}/repositories/{id}/documents
         if (seg.length == 0 && req.method == HTTPMethod.POST) {
@@ -315,7 +315,7 @@ class DocMgmtIntegrationServer {
     // /v1/tenants/{tid}/documents/{docId}/...
     // -------------------------------------------------------------------
 
-    private bool routeDocument(string tenantId, string docId, string[] seg,
+    private bool routeDocument(UUID tenantId, string docId, string[] seg,
                                 HTTPServerRequest req, HTTPServerResponse res) {
         // GET /v1/tenants/{tid}/documents/{id}
         if (seg.length == 0 && req.method == HTTPMethod.GET) {
@@ -411,7 +411,7 @@ class DocMgmtIntegrationServer {
     // /v1/tenants/{tid}/folders/{folderId}/...
     // -------------------------------------------------------------------
 
-    private bool routeFolder(string tenantId, string folderId, string[] seg,
+    private bool routeFolder(UUID tenantId, string folderId, string[] seg,
                               HTTPServerRequest req, HTTPServerResponse res) {
         // GET /v1/tenants/{tid}/folders/{id}
         if (seg.length == 0 && req.method == HTTPMethod.GET) {
@@ -458,7 +458,7 @@ class DocMgmtIntegrationServer {
     // /v1/tenants/{tid}/ui-component
     // -------------------------------------------------------------------
 
-    private bool routeUIComponent(string tenantId, string[] seg,
+    private bool routeUIComponent(UUID tenantId, string[] seg,
                                    HTTPServerRequest req, HTTPServerResponse res) {
         // GET /v1/tenants/{tid}/ui-component
         if (seg.length == 0 && req.method == HTTPMethod.GET) {
@@ -482,7 +482,7 @@ class DocMgmtIntegrationServer {
     // /v1/tenants/{tid}/links[/...]
     // -------------------------------------------------------------------
 
-    private bool routeLinks(string tenantId, string[] seg,
+    private bool routeLinks(UUID tenantId, string[] seg,
                              HTTPServerRequest req, HTTPServerResponse res) {
         // POST /v1/tenants/{tid}/links  — create link
         if (seg.length == 0 && req.method == HTTPMethod.POST) {

@@ -115,7 +115,7 @@ classDiagram
     }
 
     class CPSSite {
-      +string tenantId
+      +UUID tenantId
       +string siteId
       +string name
       +string design
@@ -127,7 +127,7 @@ classDiagram
     }
 
     class CPSSiteAdministration {
-      +string tenantId
+      +UUID tenantId
       +string theme
       +bool transportEnabled
       +bool translationEnabled

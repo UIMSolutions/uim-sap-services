@@ -52,7 +52,7 @@ class DSPService : SAPService {
   }
 
 
-  Json createDataModel(string tenantId, Json request) {
+  Json createDataModel(UUID tenantId, Json request) {
     validateTenant(tenantId);
     auto modelName = requiredString(request, "name");
 
@@ -75,7 +75,7 @@ class DSPService : SAPService {
     return payload;
   }
 
-  Json listDataModels(string tenantId) {
+  Json listDataModels(UUID tenantId) {
     validateTenant(tenantId);
     Json resources = Json.emptyArray;
     foreach (item; _store.listDataModels(tenantId))
@@ -87,7 +87,7 @@ class DSPService : SAPService {
     return payload;
   }
 
-  Json createExternalDataset(string tenantId, Json request) {
+  Json createExternalDataset(UUID tenantId, Json request) {
     validateTenant(tenantId);
     auto sourceType = toLower(requiredString(request, "source_type"));
     if (sourceType != "csv" && sourceType != "marketplace" && sourceType != "third_party") {
@@ -105,7 +105,7 @@ class DSPService : SAPService {
     return payload;
   }
 
-  Json runDataFlow(string tenantId, Json request) {
+  Json runDataFlow(UUID tenantId, Json request) {
     validateTenant(tenantId);
     auto name = requiredString(request, "name");
 
@@ -119,7 +119,7 @@ class DSPService : SAPService {
     return payload;
   }
 
-  Json replicateModel(string tenantId, Json request) {
+  Json replicateModel(UUID tenantId, Json request) {
     validateTenant(tenantId);
     auto modelId = requiredString(request, "model_id");
 
@@ -139,7 +139,7 @@ class DSPService : SAPService {
     return payload;
   }
 
-  Json createBusinessModel(string tenantId, Json request) {
+  Json createBusinessModel(UUID tenantId, Json request) {
     validateTenant(tenantId);
     auto modelName = requiredString(request, "name");
 
@@ -161,7 +161,7 @@ class DSPService : SAPService {
     return payload;
   }
 
-  Json listBusinessModels(string tenantId) {
+  Json listBusinessModels(UUID tenantId) {
     validateTenant(tenantId);
     Json resources = Json.emptyArray;
     foreach (item; _store.listBusinessModels(tenantId))
@@ -173,7 +173,7 @@ class DSPService : SAPService {
     return payload;
   }
 
-  Json previewBusinessModel(string tenantId, string modelId) {
+  Json previewBusinessModel(UUID tenantId, string modelId) {
     validateTenant(tenantId);
 
     DATBusinessModel model;
@@ -204,7 +204,7 @@ class DSPService : SAPService {
     return payload;
   }
 
-  Json createConnection(string tenantId, Json request) {
+  Json createConnection(UUID tenantId, Json request) {
     validateTenant(tenantId);
     auto name = requiredString(request, "name");
     auto sourceType = requiredString(request, "source_type");
@@ -231,7 +231,7 @@ class DSPService : SAPService {
     return payload;
   }
 
-  Json listConnections(string tenantId) {
+  Json listConnections(UUID tenantId) {
     validateTenant(tenantId);
     Json resources = Json.emptyArray;
     foreach (item; _store.listConnections(tenantId))
@@ -243,7 +243,7 @@ class DSPService : SAPService {
     return payload;
   }
 
-  Json migrateTrustedModels(string tenantId, Json request) {
+  Json migrateTrustedModels(UUID tenantId, Json request) {
     validateTenant(tenantId);
     auto sourceSystem = requiredString(request, "source_system");
 
@@ -256,7 +256,7 @@ class DSPService : SAPService {
     return payload;
   }
 
-  Json createSpace(string tenantId, Json request) {
+  Json createSpace(UUID tenantId, Json request) {
     validateTenant(tenantId);
 
     DATSpace item;
@@ -278,7 +278,7 @@ class DSPService : SAPService {
     return payload;
   }
 
-  Json listSpaces(string tenantId) {
+  Json listSpaces(UUID tenantId) {
     validateTenant(tenantId);
     Json resources = Json.emptyArray;
     foreach (item; _store.listSpaces(tenantId))
@@ -290,7 +290,7 @@ class DSPService : SAPService {
     return payload;
   }
 
-  Json updateSpace(string tenantId, string spaceId, Json request) {
+  Json updateSpace(UUID tenantId, string spaceId, Json request) {
     validateTenant(tenantId);
     validateId(spaceId, "Space ID");
 
@@ -317,7 +317,7 @@ class DSPService : SAPService {
     return payload;
   }
 
-  Json addSpaceUser(string tenantId, string spaceId, Json request) {
+  Json addSpaceUser(UUID tenantId, string spaceId, Json request) {
     validateTenant(tenantId);
     validateId(spaceId, "Space ID");
 
@@ -373,7 +373,7 @@ class DSPService : SAPService {
     return payload;
   }
 
-  Json upsertRowPolicy(string tenantId, string policyId, Json request) {
+  Json upsertRowPolicy(UUID tenantId, string policyId, Json request) {
     validateTenant(tenantId);
     validateId(policyId, "Policy ID");
 
@@ -392,7 +392,7 @@ class DSPService : SAPService {
     return payload;
   }
 
-  Json listRowPolicies(string tenantId) {
+  Json listRowPolicies(UUID tenantId) {
     validateTenant(tenantId);
     Json resources = Json.emptyArray;
     foreach (item; _store.listRowPolicies(tenantId))
@@ -404,7 +404,7 @@ class DSPService : SAPService {
     return payload;
   }
 
-  Json setFunctionalAccess(string tenantId, string roleName, Json request) {
+  Json setFunctionalAccess(UUID tenantId, string roleName, Json request) {
     validateTenant(tenantId);
     validateId(roleName, "Role name");
 
@@ -416,7 +416,7 @@ class DSPService : SAPService {
     return payload;
   }
 
-  Json setSpaceAccess(string tenantId, string spaceId, Json request) {
+  Json setSpaceAccess(UUID tenantId, string spaceId, Json request) {
     validateTenant(tenantId);
     validateId(spaceId, "Space ID");
 
@@ -428,7 +428,7 @@ class DSPService : SAPService {
     return payload;
   }
 
-  Json addAuditEvent(string tenantId, Json request) {
+  Json addAuditEvent(UUID tenantId, Json request) {
     validateTenant(tenantId);
 
     DATAuditEvent item;
@@ -448,7 +448,7 @@ class DSPService : SAPService {
     return payload;
   }
 
-  Json listAuditEvents(string tenantId) {
+  Json listAuditEvents(UUID tenantId) {
     validateTenant(tenantId);
     Json resources = Json.emptyArray;
     foreach (item; _store.listAuditEvents(tenantId))
@@ -460,7 +460,7 @@ class DSPService : SAPService {
     return payload;
   }
 
-  Json publishCatalogAsset(string tenantId, Json request) {
+  Json publishCatalogAsset(UUID tenantId, Json request) {
     validateTenant(tenantId);
 
     DATGovernanceAsset item;
@@ -480,7 +480,7 @@ class DSPService : SAPService {
     return payload;
   }
 
-  Json listCatalogAssets(string tenantId) {
+  Json listCatalogAssets(UUID tenantId) {
     validateTenant(tenantId);
     Json resources = Json.emptyArray;
     foreach (item; _store.listAssets(tenantId))
@@ -492,7 +492,7 @@ class DSPService : SAPService {
     return payload;
   }
 
-  Json createGlossaryTerm(string tenantId, Json request) {
+  Json createGlossaryTerm(UUID tenantId, Json request) {
     validateTenant(tenantId);
 
     DATGlossaryTerm item;
@@ -510,7 +510,7 @@ class DSPService : SAPService {
     return payload;
   }
 
-  Json listGlossaryTerms(string tenantId) {
+  Json listGlossaryTerms(UUID tenantId) {
     validateTenant(tenantId);
     Json resources = Json.emptyArray;
     foreach (item; _store.listTerms(tenantId))
@@ -522,7 +522,7 @@ class DSPService : SAPService {
     return payload;
   }
 
-  Json createKPI(string tenantId, Json request) {
+  Json createKPI(UUID tenantId, Json request) {
     validateTenant(tenantId);
 
     DATKpi item;
@@ -541,7 +541,7 @@ class DSPService : SAPService {
     return payload;
   }
 
-  Json listKPIs(string tenantId) {
+  Json listKPIs(UUID tenantId) {
     validateTenant(tenantId);
     Json resources = Json.emptyArray;
     foreach (item; _store.listKPIs(tenantId))
@@ -553,7 +553,7 @@ class DSPService : SAPService {
     return payload;
   }
 
-  Json listConsumptionConnectors(string tenantId) {
+  Json listConsumptionConnectors(UUID tenantId) {
     validateTenant(tenantId);
 
     Json connectors = Json.emptyArray;
@@ -582,7 +582,7 @@ class DSPService : SAPService {
     return payload;
   }
 
-  Json odataEntity(string tenantId, string entitySet) {
+  Json odataEntity(UUID tenantId, string entitySet) {
     validateTenant(tenantId);
     validateId(entitySet, "Entity set");
 

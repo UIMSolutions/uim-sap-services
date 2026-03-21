@@ -108,7 +108,7 @@ struct Repository {
   }
 }
 
-Repository repositoryFromJson(string tenantId, Json request) {
+Repository repositoryFromJson(UUID tenantId, Json request) {
   Repository repo;
   repo.repositoryId = randomUUID().toString();
   repo.tenantId = UUID(tenantId);
@@ -171,7 +171,7 @@ struct Folder {
   }
 }
 
-Folder folderFromJson(string tenantId, string repositoryId, string parentFolderId, Json request) {
+Folder folderFromJson(UUID tenantId, string repositoryId, string parentFolderId, Json request) {
   Folder f;
   f.folderId = randomUUID().toString();
   f.tenantId = UUID(tenantId);
@@ -246,7 +246,7 @@ struct Document {
   }
 }
 
-Document documentFromJson(string tenantId, string repositoryId, string folderId, Json request) {
+Document documentFromJson(UUID tenantId, string repositoryId, string folderId, Json request) {
   Document d;
   d.documentId = randomUUID().toString();
   d.tenantId = UUID(tenantId);
@@ -315,7 +315,7 @@ struct DocumentVersion {
   }
 }
 
-DocumentVersion versionFromJson(string tenantId, string documentId,
+DocumentVersion versionFromJson(UUID tenantId, string documentId,
   int versionNumber, Json request) {
   DocumentVersion v;
   v.versionId = randomUUID().toString();
@@ -414,7 +414,7 @@ struct UIComponentConfig {
   }
 }
 
-UIComponentConfig uiConfigFromJson(string tenantId, Json request) {
+UIComponentConfig uiConfigFromJson(UUID tenantId, Json request) {
   UIComponentConfig cfg;
   cfg.tenantId = UUID(tenantId);
 
@@ -481,7 +481,7 @@ struct IntegrationLink {
   }
 }
 
-IntegrationLink linkFromJson(string tenantId, Json request) {
+IntegrationLink linkFromJson(UUID tenantId, Json request) {
   IntegrationLink lnk;
   lnk.linkId = randomUUID().toString();
   lnk.tenantId = UUID(tenantId);

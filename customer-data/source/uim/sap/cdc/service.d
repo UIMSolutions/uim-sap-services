@@ -27,7 +27,7 @@ class CDCService : SAPService {
       .set("domain", "customer-data");
   }
 
-  Json upsertProfile(string tenantId, Json data) {
+  Json upsertProfile(UUID tenantId, Json data) {
     validateTenant(tenantId);
 
     auto now = Clock.currTime();
@@ -73,7 +73,7 @@ class CDCService : SAPService {
       .set("profile", saved.toJson());
   }
 
-  Json listProfiles(string tenantId, string region, string search, size_t limit, size_t offset) {
+  Json listProfiles(UUID tenantId, string region, string search, size_t limit, size_t offset) {
     validateTenant(tenantId);
     auto normalizedSearch = toLower(search);
     auto normalizedRegion = toLower(
@@ -115,7 +115,7 @@ class CDCService : SAPService {
       .set("profiles", profiles);
   }
 
-  Json getProfile(string tenantId, string userId) {
+  Json getProfile(UUID tenantId, string userId) {
     validateTenant(tenantId);
     if (userId.length == 0)
       throw new CDCValidationException("user_id is required");
@@ -129,7 +129,7 @@ class CDCService : SAPService {
     return payload;
   }
 
-  Json upsertConsent(string tenantId, string userId, Json data) {
+  Json upsertConsent(UUID tenantId, string userId, Json data) {
     validateTenant(tenantId);
     if (userId.length == 0)
       throw new CDCValidationException("user_id is required");
@@ -156,7 +156,7 @@ class CDCService : SAPService {
     return payload;
   }
 
-  Json listConsents(string tenantId, string userId) {
+  Json listConsents(UUID tenantId, string userId) {
     validateTenant(tenantId);
     if (userId.length == 0)
       throw new CDCValidationException("user_id is required");
@@ -172,7 +172,7 @@ class CDCService : SAPService {
     return payload;
   }
 
-  Json upsertSiteGroup(string tenantId, Json data) {
+  Json upsertSiteGroup(UUID tenantId, Json data) {
     validateTenant(tenantId);
     auto now = Clock.currTime();
 
@@ -198,7 +198,7 @@ class CDCService : SAPService {
     return payload;
   }
 
-  Json listSiteGroups(string tenantId) {
+  Json listSiteGroups(UUID tenantId) {
     validateTenant(tenantId);
     Json groups = Json.emptyArray;
     foreach (group; _store.listSiteGroups(tenantId))
@@ -211,7 +211,7 @@ class CDCService : SAPService {
     return payload;
   }
 
-  Json resolveGlobalAccess(string tenantId, string userId, string site) {
+  Json resolveGlobalAccess(UUID tenantId, string userId, string site) {
     validateTenant(tenantId);
     if (userId.length == 0)
       throw new CDCValidationException("user_id is required");
@@ -243,7 +243,7 @@ class CDCService : SAPService {
     return payload;
   }
 
-  Json upsertRiskProvider(string tenantId, Json data) {
+  Json upsertRiskProvider(UUID tenantId, Json data) {
     validateTenant(tenantId);
     auto now = Clock.currTime();
 
@@ -264,7 +264,7 @@ class CDCService : SAPService {
       .set("provider", saved.toJson());
   }
 
-  Json listRiskProviders(string tenantId) {
+  Json listRiskProviders(UUID tenantId) {
     validateTenant(tenantId);
     Json providers = _store.listRiskProviders(tenantId)
       .map!(provider => provider.toJson()).array.toJson;
@@ -275,7 +275,7 @@ class CDCService : SAPService {
       .set("providers", providers);
   }
 
-  Json authenticate(string tenantId, Json data) {
+  Json authenticate(UUID tenantId, Json data) {
     validateTenant(tenantId);
     auto userid = requiredUUID(data, "user_id");
     auto password = requiredString(data, "password");
@@ -366,7 +366,7 @@ class CDCService : SAPService {
       .set("auth_event", event.toJson());
   }
 
-  Json listAuthEvents(string tenantId, size_t limit) {
+  Json listAuthEvents(UUID tenantId, size_t limit) {
     validateTenant(tenantId);
     auto safeLimit = limit == 0 ? 100 : limit;
     Json events = Json.emptyArray;
@@ -380,7 +380,7 @@ class CDCService : SAPService {
   }
 
   private Json deniedAuthPayload(
-    string tenantId,
+    UUID tenantId,
     string userId,
     string ipAddress,
     string decision,
@@ -411,7 +411,7 @@ class CDCService : SAPService {
   }
 
   private CDCAuthEvent appendAuthEvent(
-    string tenantId,
+    UUID tenantId,
     string userId,
     string providerId,
     string ipAddress,

@@ -89,7 +89,7 @@ class DocMgmtIntegrationService : SAPService {
         return r;
     }
 
-    Json getTenant(string tenantId) {
+    Json getTenant(UUID tenantId) {
         validateId(tenantId, "Tenant ID");
         auto tenant = _store.getTenant(tenantId);
         if (tenant.tenantId.length == 0)
@@ -109,7 +109,7 @@ class DocMgmtIntegrationService : SAPService {
         return r;
     }
 
-    Json updateTenant(string tenantId, Json request) {
+    Json updateTenant(UUID tenantId, Json request) {
         validateId(tenantId, "Tenant ID");
         auto tenant = _store.getTenant(tenantId);
         if (tenant.tenantId.length == 0)
@@ -129,7 +129,7 @@ class DocMgmtIntegrationService : SAPService {
         return r;
     }
 
-    Json deleteTenant(string tenantId) {
+    Json deleteTenant(UUID tenantId) {
         validateId(tenantId, "Tenant ID");
         auto tenant = _store.getTenant(tenantId);
         if (tenant.tenantId.length == 0)
@@ -155,7 +155,7 @@ class DocMgmtIntegrationService : SAPService {
     // Repositories (tenant-scoped)
     // ===================================================================
 
-    Json listRepositories(string tenantId) {
+    Json listRepositories(UUID tenantId) {
         ensureTenant(tenantId);
         Json resources = Json.emptyArray;
         foreach (repo; _store.listRepositories(tenantId))
@@ -166,7 +166,7 @@ class DocMgmtIntegrationService : SAPService {
         return r;
     }
 
-    Json getRepository(string tenantId, string repositoryId) {
+    Json getRepository(UUID tenantId, string repositoryId) {
         ensureTenant(tenantId);
         validateId(repositoryId, "Repository ID");
         auto repo = _store.getRepository(repositoryId);
@@ -177,7 +177,7 @@ class DocMgmtIntegrationService : SAPService {
         return r;
     }
 
-    Json connectRepository(string tenantId, Json request) {
+    Json connectRepository(UUID tenantId, Json request) {
         ensureTenant(tenantId);
         auto repo = repositoryFromJson(tenantId, request);
         if (repo.name.length == 0)
@@ -197,7 +197,7 @@ class DocMgmtIntegrationService : SAPService {
         return r;
     }
 
-    Json disconnectRepository(string tenantId, string repositoryId) {
+    Json disconnectRepository(UUID tenantId, string repositoryId) {
         ensureTenant(tenantId);
         validateId(repositoryId, "Repository ID");
         auto repo = _store.getRepository(repositoryId);
@@ -217,7 +217,7 @@ class DocMgmtIntegrationService : SAPService {
     // Folders (tenant-scoped)
     // ===================================================================
 
-    Json createFolder(string tenantId, string repositoryId,
+    Json createFolder(UUID tenantId, string repositoryId,
                       string parentFolderId, Json request) {
         ensureTenant(tenantId);
         validateId(repositoryId, "Repository ID");
@@ -238,7 +238,7 @@ class DocMgmtIntegrationService : SAPService {
         return r;
     }
 
-    Json getFolder(string tenantId, string folderId) {
+    Json getFolder(UUID tenantId, string folderId) {
         ensureTenant(tenantId);
         validateId(folderId, "Folder ID");
         auto folder = _store.getFolder(folderId);
@@ -251,7 +251,7 @@ class DocMgmtIntegrationService : SAPService {
         return r;
     }
 
-    Json updateFolder(string tenantId, string folderId, Json request) {
+    Json updateFolder(UUID tenantId, string folderId, Json request) {
         ensureTenant(tenantId);
         validateId(folderId, "Folder ID");
         auto folder = _store.getFolder(folderId);
@@ -273,7 +273,7 @@ class DocMgmtIntegrationService : SAPService {
         return r;
     }
 
-    Json deleteFolder(string tenantId, string folderId) {
+    Json deleteFolder(UUID tenantId, string folderId) {
         ensureTenant(tenantId);
         validateId(folderId, "Folder ID");
         auto folder = _store.getFolder(folderId);
@@ -295,7 +295,7 @@ class DocMgmtIntegrationService : SAPService {
         return r;
     }
 
-    Json listFolderContents(string tenantId, string repositoryId, string folderId) {
+    Json listFolderContents(UUID tenantId, string repositoryId, string folderId) {
         ensureTenant(tenantId);
         validateId(repositoryId, "Repository ID");
         ensureRepository(tenantId, repositoryId);
@@ -321,7 +321,7 @@ class DocMgmtIntegrationService : SAPService {
         return r;
     }
 
-    Json moveFolder(string tenantId, string folderId, Json request) {
+    Json moveFolder(UUID tenantId, string folderId, Json request) {
         ensureTenant(tenantId);
         validateId(folderId, "Folder ID");
         auto folder = _store.getFolder(folderId);
@@ -350,7 +350,7 @@ class DocMgmtIntegrationService : SAPService {
         return r;
     }
 
-    Json copyFolder(string tenantId, string folderId, Json request) {
+    Json copyFolder(UUID tenantId, string folderId, Json request) {
         ensureTenant(tenantId);
         validateId(folderId, "Folder ID");
         auto folder = _store.getFolder(folderId);
@@ -384,7 +384,7 @@ class DocMgmtIntegrationService : SAPService {
     // Documents (tenant-scoped)
     // ===================================================================
 
-    Json createDocument(string tenantId, string repositoryId,
+    Json createDocument(UUID tenantId, string repositoryId,
                         string folderId, Json request) {
         ensureTenant(tenantId);
         validateId(repositoryId, "Repository ID");
@@ -436,7 +436,7 @@ class DocMgmtIntegrationService : SAPService {
         return r;
     }
 
-    Json getDocument(string tenantId, string documentId) {
+    Json getDocument(UUID tenantId, string documentId) {
         ensureTenant(tenantId);
         validateId(documentId, "Document ID");
         auto doc = _store.getDocument(documentId);
@@ -450,7 +450,7 @@ class DocMgmtIntegrationService : SAPService {
         return r;
     }
 
-    Json updateDocument(string tenantId, string documentId, Json request) {
+    Json updateDocument(UUID tenantId, string documentId, Json request) {
         ensureTenant(tenantId);
         validateId(documentId, "Document ID");
         auto doc = _store.getDocument(documentId);
@@ -484,7 +484,7 @@ class DocMgmtIntegrationService : SAPService {
         return r;
     }
 
-    Json deleteDocument(string tenantId, string documentId) {
+    Json deleteDocument(UUID tenantId, string documentId) {
         ensureTenant(tenantId);
         validateId(documentId, "Document ID");
         auto doc = _store.getDocument(documentId);
@@ -507,7 +507,7 @@ class DocMgmtIntegrationService : SAPService {
         return r;
     }
 
-    Json moveDocument(string tenantId, string documentId, Json request) {
+    Json moveDocument(UUID tenantId, string documentId, Json request) {
         ensureTenant(tenantId);
         validateId(documentId, "Document ID");
         auto doc = _store.getDocument(documentId);
@@ -528,7 +528,7 @@ class DocMgmtIntegrationService : SAPService {
         return r;
     }
 
-    Json copyDocument(string tenantId, string documentId, Json request) {
+    Json copyDocument(UUID tenantId, string documentId, Json request) {
         ensureTenant(tenantId);
         validateId(documentId, "Document ID");
         auto doc = _store.getDocument(documentId);
@@ -553,7 +553,7 @@ class DocMgmtIntegrationService : SAPService {
     // Document Viewing & Download
     // ===================================================================
 
-    Json viewDocument(string tenantId, string documentId) {
+    Json viewDocument(UUID tenantId, string documentId) {
         ensureTenant(tenantId);
         validateId(documentId, "Document ID");
         auto doc = _store.getDocument(documentId);
@@ -587,7 +587,7 @@ class DocMgmtIntegrationService : SAPService {
         return r;
     }
 
-    Json downloadDocument(string tenantId, string documentId) {
+    Json downloadDocument(UUID tenantId, string documentId) {
         ensureTenant(tenantId);
         validateId(documentId, "Document ID");
         auto doc = _store.getDocument(documentId);
@@ -619,7 +619,7 @@ class DocMgmtIntegrationService : SAPService {
     // Metadata Management
     // ===================================================================
 
-    Json getDocumentMetadata(string tenantId, string documentId) {
+    Json getDocumentMetadata(UUID tenantId, string documentId) {
         ensureTenant(tenantId);
         validateId(documentId, "Document ID");
         auto doc = _store.getDocument(documentId);
@@ -644,7 +644,7 @@ class DocMgmtIntegrationService : SAPService {
         return r;
     }
 
-    Json updateDocumentMetadata(string tenantId, string documentId, Json request) {
+    Json updateDocumentMetadata(UUID tenantId, string documentId, Json request) {
         ensureTenant(tenantId);
         validateId(documentId, "Document ID");
         auto doc = _store.getDocument(documentId);
@@ -666,7 +666,7 @@ class DocMgmtIntegrationService : SAPService {
         return r;
     }
 
-    Json getFolderProperties(string tenantId, string folderId) {
+    Json getFolderProperties(UUID tenantId, string folderId) {
         ensureTenant(tenantId);
         validateId(folderId, "Folder ID");
         auto folder = _store.getFolder(folderId);
@@ -685,7 +685,7 @@ class DocMgmtIntegrationService : SAPService {
         return r;
     }
 
-    Json updateFolderProperties(string tenantId, string folderId, Json request) {
+    Json updateFolderProperties(UUID tenantId, string folderId, Json request) {
         ensureTenant(tenantId);
         validateId(folderId, "Folder ID");
         auto folder = _store.getFolder(folderId);
@@ -711,7 +711,7 @@ class DocMgmtIntegrationService : SAPService {
     // Versioning (tenant-scoped)
     // ===================================================================
 
-    Json listVersions(string tenantId, string documentId) {
+    Json listVersions(UUID tenantId, string documentId) {
         ensureTenant(tenantId);
         validateId(documentId, "Document ID");
         ensureDocument(tenantId, documentId);
@@ -728,7 +728,7 @@ class DocMgmtIntegrationService : SAPService {
         return r;
     }
 
-    Json createVersion(string tenantId, string documentId, Json request) {
+    Json createVersion(UUID tenantId, string documentId, Json request) {
         ensureTenant(tenantId);
         validateId(documentId, "Document ID");
         auto doc = _store.getDocument(documentId);
@@ -776,7 +776,7 @@ class DocMgmtIntegrationService : SAPService {
         return r;
     }
 
-    Json getVersion(string tenantId, string documentId, string versionId) {
+    Json getVersion(UUID tenantId, string documentId, string versionId) {
         ensureTenant(tenantId);
         validateId(documentId, "Document ID");
         validateId(versionId, "Version ID");
@@ -795,7 +795,7 @@ class DocMgmtIntegrationService : SAPService {
     // Check-out / Check-in Workflow
     // ===================================================================
 
-    Json checkOutDocument(string tenantId, string documentId, Json request) {
+    Json checkOutDocument(UUID tenantId, string documentId, Json request) {
         ensureTenant(tenantId);
         validateId(documentId, "Document ID");
         auto doc = _store.getDocument(documentId);
@@ -821,7 +821,7 @@ class DocMgmtIntegrationService : SAPService {
         return r;
     }
 
-    Json checkInDocument(string tenantId, string documentId, Json request) {
+    Json checkInDocument(UUID tenantId, string documentId, Json request) {
         ensureTenant(tenantId);
         validateId(documentId, "Document ID");
         auto doc = _store.getDocument(documentId);
@@ -871,7 +871,7 @@ class DocMgmtIntegrationService : SAPService {
         return r;
     }
 
-    Json cancelCheckOut(string tenantId, string documentId, Json request) {
+    Json cancelCheckOut(UUID tenantId, string documentId, Json request) {
         ensureTenant(tenantId);
         validateId(documentId, "Document ID");
         auto doc = _store.getDocument(documentId);
@@ -897,7 +897,7 @@ class DocMgmtIntegrationService : SAPService {
     // Sorting / Personalization
     // ===================================================================
 
-    Json listDocumentsSorted(string tenantId, string repositoryId,
+    Json listDocumentsSorted(UUID tenantId, string repositoryId,
                              string folderId, Json request) {
         ensureTenant(tenantId);
         validateId(repositoryId, "Repository ID");
@@ -958,7 +958,7 @@ class DocMgmtIntegrationService : SAPService {
     // UI Component Configuration (tenant-scoped)
     // ===================================================================
 
-    Json getUIComponentConfig(string tenantId) {
+    Json getUIComponentConfig(UUID tenantId) {
         ensureTenant(tenantId);
         auto cfg = _store.getUIConfig(tenantId);
         // Return defaults if none configured
@@ -971,7 +971,7 @@ class DocMgmtIntegrationService : SAPService {
         return r;
     }
 
-    Json setUIComponentConfig(string tenantId, Json request) {
+    Json setUIComponentConfig(UUID tenantId, Json request) {
         ensureTenant(tenantId);
         auto cfg = uiConfigFromJson(tenantId, request);
         auto saved = _store.setUIConfig(cfg);
@@ -982,7 +982,7 @@ class DocMgmtIntegrationService : SAPService {
         return r;
     }
 
-    Json deleteUIComponentConfig(string tenantId) {
+    Json deleteUIComponentConfig(UUID tenantId) {
         ensureTenant(tenantId);
         _store.removeUIConfig(tenantId);
 
@@ -996,7 +996,7 @@ class DocMgmtIntegrationService : SAPService {
     // Integration Links (tenant-scoped)
     // ===================================================================
 
-    Json createLink(string tenantId, Json request) {
+    Json createLink(UUID tenantId, Json request) {
         ensureTenant(tenantId);
         auto link = linkFromJson(tenantId, request);
 
@@ -1021,7 +1021,7 @@ class DocMgmtIntegrationService : SAPService {
         return r;
     }
 
-    Json getLink(string tenantId, string linkId) {
+    Json getLink(UUID tenantId, string linkId) {
         ensureTenant(tenantId);
         validateId(linkId, "Link ID");
         auto link = _store.getLink(linkId);
@@ -1033,7 +1033,7 @@ class DocMgmtIntegrationService : SAPService {
         return r;
     }
 
-    Json deleteLink(string tenantId, string linkId) {
+    Json deleteLink(UUID tenantId, string linkId) {
         ensureTenant(tenantId);
         validateId(linkId, "Link ID");
         auto link = _store.getLink(linkId);
@@ -1048,7 +1048,7 @@ class DocMgmtIntegrationService : SAPService {
         return r;
     }
 
-    Json listLinks(string tenantId) {
+    Json listLinks(UUID tenantId) {
         ensureTenant(tenantId);
         Json resources = Json.emptyArray;
         foreach (l; _store.listLinks(tenantId))
@@ -1059,7 +1059,7 @@ class DocMgmtIntegrationService : SAPService {
         return r;
     }
 
-    Json listLinksByObject(string tenantId, string objectType, string objectId) {
+    Json listLinksByObject(UUID tenantId, string objectType, string objectId) {
         ensureTenant(tenantId);
         Json resources = Json.emptyArray;
         foreach (l; _store.listLinksByObject(tenantId, objectType, objectId))
@@ -1072,7 +1072,7 @@ class DocMgmtIntegrationService : SAPService {
         return r;
     }
 
-    Json listLinksByDocument(string tenantId, string documentId) {
+    Json listLinksByDocument(UUID tenantId, string documentId) {
         ensureTenant(tenantId);
         ensureDocument(tenantId, documentId);
         Json resources = Json.emptyArray;
@@ -1089,7 +1089,7 @@ class DocMgmtIntegrationService : SAPService {
     // Private helpers
     // ===================================================================
 
-    private void ensureTenant(string tenantId) {
+    private void ensureTenant(UUID tenantId) {
         if (_config.multitenancyEnabled) {
             if (tenantId.length == 0)
                 throw new DocMgmtIntegrationTenantRequiredException(
@@ -1103,7 +1103,7 @@ class DocMgmtIntegrationService : SAPService {
         }
     }
 
-    private void ensureRepository(string tenantId, string repositoryId) {
+    private void ensureRepository(UUID tenantId, string repositoryId) {
         auto repo = _store.getRepository(repositoryId);
         if (repo.repositoryId.length == 0 || repo.tenantId != tenantId)
             throw new DocMgmtIntegrationNotFoundException("Repository", repositoryId);
@@ -1115,13 +1115,13 @@ class DocMgmtIntegrationService : SAPService {
             throw new DocMgmtIntegrationNotFoundException("Folder", folderId);
     }
 
-    private void ensureDocument(string tenantId, string documentId) {
+    private void ensureDocument(UUID tenantId, string documentId) {
         auto doc = _store.getDocument(documentId);
         if (doc.documentId.length == 0 || doc.tenantId != tenantId)
             throw new DocMgmtIntegrationNotFoundException("Document", documentId);
     }
 
-    private void removeDocumentsInFolder(string tenantId, string repositoryId, string folderId) {
+    private void removeDocumentsInFolder(UUID tenantId, string repositoryId, string folderId) {
         foreach (d; _store.listDocuments(tenantId, repositoryId, folderId))
             _store.removeDocument(d.documentId);
     }

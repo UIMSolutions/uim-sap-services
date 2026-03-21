@@ -51,7 +51,7 @@ class DSPStore : SAPStore {
         }
     }
 
-    DATSpace[] listSpaces(string tenantId) {
+    DATSpace[] listSpaces(UUID tenantId) {
         DATSpace[] values;
         synchronized (_lock) {
             foreach (key, value; _spaces) if (belongsTo(key, tenantId)) values ~= value;
@@ -59,7 +59,7 @@ class DSPStore : SAPStore {
         return values;
     }
 
-    bool getSpace(string tenantId, string spaceId, out DATSpace result) {
+    bool getSpace(UUID tenantId, string spaceId, out DATSpace result) {
         synchronized (_lock) {
             auto key = scopedKey(tenantId, "space", spaceId);
             if (auto existing = key in _spaces) {
@@ -77,7 +77,7 @@ class DSPStore : SAPStore {
         }
     }
 
-    DATDataModel[] listDataModels(string tenantId) {
+    DATDataModel[] listDataModels(UUID tenantId) {
         DATDataModel[] values;
         synchronized (_lock) {
             foreach (key, value; _dataModels) if (belongsTo(key, tenantId)) values ~= value;
@@ -85,7 +85,7 @@ class DSPStore : SAPStore {
         return values;
     }
 
-    bool getDataModel(string tenantId, string modelId, out DATDataModel result) {
+    bool getDataModel(UUID tenantId, string modelId, out DATDataModel result) {
         synchronized (_lock) {
             auto key = scopedKey(tenantId, "dmodel", modelId);
             if (auto existing = key in _dataModels) {
@@ -103,7 +103,7 @@ class DSPStore : SAPStore {
         }
     }
 
-    DATBusinessModel[] listBusinessModels(string tenantId) {
+    DATBusinessModel[] listBusinessModels(UUID tenantId) {
         DATBusinessModel[] values;
         synchronized (_lock) {
             foreach (key, value; _businessModels) if (belongsTo(key, tenantId)) values ~= value;
@@ -111,7 +111,7 @@ class DSPStore : SAPStore {
         return values;
     }
 
-    bool getBusinessModel(string tenantId, string modelId, out DATBusinessModel result) {
+    bool getBusinessModel(UUID tenantId, string modelId, out DATBusinessModel result) {
         synchronized (_lock) {
             auto key = scopedKey(tenantId, "bmodel", modelId);
             if (auto existing = key in _businessModels) {
@@ -129,7 +129,7 @@ class DSPStore : SAPStore {
         }
     }
 
-    DATIntegrationConnection[] listConnections(string tenantId) {
+    DATIntegrationConnection[] listConnections(UUID tenantId) {
         DATIntegrationConnection[] values;
         synchronized (_lock) {
             foreach (key, value; _connections) if (belongsTo(key, tenantId)) values ~= value;
@@ -144,7 +144,7 @@ class DSPStore : SAPStore {
         }
     }
 
-    DATGovernanceAsset[] listAssets(string tenantId) {
+    DATGovernanceAsset[] listAssets(UUID tenantId) {
         DATGovernanceAsset[] values;
         synchronized (_lock) {
             foreach (key, value; _catalogAssets) if (belongsTo(key, tenantId)) values ~= value;
@@ -159,7 +159,7 @@ class DSPStore : SAPStore {
         }
     }
 
-    DATGlossaryTerm[] listTerms(string tenantId) {
+    DATGlossaryTerm[] listTerms(UUID tenantId) {
         DATGlossaryTerm[] values;
         synchronized (_lock) {
             foreach (key, value; _glossaryTerms) if (belongsTo(key, tenantId)) values ~= value;
@@ -174,7 +174,7 @@ class DSPStore : SAPStore {
         }
     }
 
-    DATKpi[] listKPIs(string tenantId) {
+    DATKpi[] listKPIs(UUID tenantId) {
         DATKpi[] values;
         synchronized (_lock) {
             foreach (key, value; _kpis) if (belongsTo(key, tenantId)) values ~= value;
@@ -189,7 +189,7 @@ class DSPStore : SAPStore {
         }
     }
 
-    DATRowPolicy[] listRowPolicies(string tenantId) {
+    DATRowPolicy[] listRowPolicies(UUID tenantId) {
         DATRowPolicy[] values;
         synchronized (_lock) {
             foreach (key, value; _rowPolicies) if (belongsTo(key, tenantId)) values ~= value;
@@ -204,7 +204,7 @@ class DSPStore : SAPStore {
         }
     }
 
-    DATAuditEvent[] listAuditEvents(string tenantId) {
+    DATAuditEvent[] listAuditEvents(UUID tenantId) {
         synchronized (_lock) {
             if (auto events = tenantId in _auditEvents) {
                 return (*events).dup;
@@ -226,11 +226,11 @@ class DSPStore : SAPStore {
         }
     }
 
-    private string scopedKey(string tenantId, string scopePart, string id) {
+    private string scopedKey(UUID tenantId, string scopePart, string id) {
         return tenantId ~ ":" ~ scopePart ~ ":" ~ id;
     }
 
-    private bool belongsTo(string key, string tenantId) {
+    private bool belongsTo(string key, UUID tenantId) {
         return key.length > tenantId.length + 1 && key[0 .. tenantId.length] == tenantId && key[tenantId.length] == ':';
     }
 }
