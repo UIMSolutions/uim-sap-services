@@ -43,7 +43,7 @@ class PDMTenant : SAPTenantObject {
         return Json;
     }
 
-    static PDMTenant tenantFromJson(string tenantId, Json req) {
+    static PDMTenant tenantFromJson(UUID tenantId, Json req) {
     PDMTenant t = new PDMTenant(req);
     t.tenantId = UUID(tenantId);
     t.createdAt = Clock.currTime();

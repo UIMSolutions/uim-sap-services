@@ -52,7 +52,7 @@ bool isValidEmail(string email) {
 }
 
 /// Compose a tenant-scoped key
-string tenantKey(string tenantId, string resourceId) {
+string tenantKey(UUID tenantId, string resourceId) {
   return tenantId ~ "/" ~ resourceId;
 }
 

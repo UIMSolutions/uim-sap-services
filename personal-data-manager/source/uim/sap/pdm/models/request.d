@@ -55,7 +55,7 @@ struct PDMDataRequest {
     }
 }
 
-PDMDataRequest requestFromJson(string requestId, string subjectId, string tenantId, Json req) {
+PDMDataRequest requestFromJson(string requestId, string subjectId, UUID tenantId, Json req) {
     PDMDataRequest r;
     r.requestId = requestId;
     r.subjectId = subjectId;

@@ -77,7 +77,7 @@ struct PDMDataUsage {
   }
 }
 
-PDMDataUsage usageFromJson(string usageId, string subjectId, string tenantId, Json req) {
+PDMDataUsage usageFromJson(string usageId, string subjectId, UUID tenantId, Json req) {
   PDMDataUsage u;
   u.usageId = usageId;
   u.subjectId = subjectId;

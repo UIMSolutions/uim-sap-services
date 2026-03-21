@@ -44,7 +44,7 @@ class IPVStore : SAPStore {
         }
     }
 
-    IPVSystem getSystem(string tenantId, string systemName) {
+    IPVSystem getSystem(UUID tenantId, string systemName) {
         synchronized (_lock) {
             auto key = systemKey(tenantId, systemName);
             if (auto value = key in _systems)
@@ -53,7 +53,7 @@ class IPVStore : SAPStore {
         return IPVSystem.init;
     }
 
-    IPVSystem getSystemById(string tenantId, string systemId) {
+    IPVSystem getSystemById(UUID tenantId, string systemId) {
         synchronized (_lock) {
             foreach (_, sys; _systems) {
                 if (sys.tenantId == tenantId && sys.systemId == systemId)
@@ -63,7 +63,7 @@ class IPVStore : SAPStore {
         return IPVSystem.init;
     }
 
-    IPVSystem[] listSystems(string tenantId) {
+    IPVSystem[] listSystems(UUID tenantId) {
         IPVSystem[] list;
         synchronized (_lock) {
             foreach (key, sys; _systems) {
@@ -74,7 +74,7 @@ class IPVStore : SAPStore {
         return list;
     }
 
-    IPVSystem[] listSystemsByType(string tenantId, string systemType) {
+    IPVSystem[] listSystemsByType(UUID tenantId, string systemType) {
         IPVSystem[] list;
         synchronized (_lock) {
             foreach (key, sys; _systems) {
@@ -85,7 +85,7 @@ class IPVStore : SAPStore {
         return list;
     }
 
-    bool deleteSystem(string tenantId, string systemName) {
+    bool deleteSystem(UUID tenantId, string systemName) {
         synchronized (_lock) {
             auto key = systemKey(tenantId, systemName);
             if (key in _systems) {
@@ -109,7 +109,7 @@ class IPVStore : SAPStore {
         }
     }
 
-    IPVUser getUser(string tenantId, string userId) {
+    IPVUser getUser(UUID tenantId, string userId) {
         synchronized (_lock) {
             auto key = userKey(tenantId, userId);
             if (auto value = key in _users)
@@ -118,7 +118,7 @@ class IPVStore : SAPStore {
         return IPVUser.init;
     }
 
-    IPVUser[] listUsers(string tenantId) {
+    IPVUser[] listUsers(UUID tenantId) {
         IPVUser[] list;
         synchronized (_lock) {
             foreach (key, user; _users) {
@@ -129,7 +129,7 @@ class IPVStore : SAPStore {
         return list;
     }
 
-    IPVUser[] listUsersBySystem(string tenantId, string systemId) {
+    IPVUser[] listUsersBySystem(UUID tenantId, string systemId) {
         IPVUser[] list;
         synchronized (_lock) {
             foreach (key, user; _users) {
@@ -141,7 +141,7 @@ class IPVStore : SAPStore {
     }
 
     /** List users modified after the given timestamp (for delta reads). */
-    IPVUser[] listModifiedUsersSince(string tenantId, string systemId, string sinceTimestamp) {
+    IPVUser[] listModifiedUsersSince(UUID tenantId, string systemId, string sinceTimestamp) {
         IPVUser[] list;
         synchronized (_lock) {
             foreach (key, user; _users) {
@@ -155,7 +155,7 @@ class IPVStore : SAPStore {
         return list;
     }
 
-    bool deleteUser(string tenantId, string userId) {
+    bool deleteUser(UUID tenantId, string userId) {
         synchronized (_lock) {
             auto key = userKey(tenantId, userId);
             if (key in _users) {
@@ -179,7 +179,7 @@ class IPVStore : SAPStore {
         }
     }
 
-    IPVGroup getGroup(string tenantId, string groupId) {
+    IPVGroup getGroup(UUID tenantId, string groupId) {
         synchronized (_lock) {
             auto key = groupKey(tenantId, groupId);
             if (auto value = key in _groups)
@@ -188,7 +188,7 @@ class IPVStore : SAPStore {
         return IPVGroup.init;
     }
 
-    IPVGroup[] listGroups(string tenantId) {
+    IPVGroup[] listGroups(UUID tenantId) {
         IPVGroup[] list;
         synchronized (_lock) {
             foreach (key, group; _groups) {
@@ -199,7 +199,7 @@ class IPVStore : SAPStore {
         return list;
     }
 
-    IPVGroup[] listGroupsBySystem(string tenantId, string systemId) {
+    IPVGroup[] listGroupsBySystem(UUID tenantId, string systemId) {
         IPVGroup[] list;
         synchronized (_lock) {
             foreach (key, group; _groups) {
@@ -210,7 +210,7 @@ class IPVStore : SAPStore {
         return list;
     }
 
-    bool deleteGroup(string tenantId, string groupId) {
+    bool deleteGroup(UUID tenantId, string groupId) {
         synchronized (_lock) {
             auto key = groupKey(tenantId, groupId);
             if (key in _groups) {
@@ -230,7 +230,7 @@ class IPVStore : SAPStore {
         }
     }
 
-    IPVTransformation getTransformation(string tenantId, string transformationId) {
+    IPVTransformation getTransformation(UUID tenantId, string transformationId) {
         synchronized (_lock) {
             if (auto value = transformationId in _transformations) {
                 if (value.tenantId == tenantId)
@@ -240,7 +240,7 @@ class IPVStore : SAPStore {
         return IPVTransformation.init;
     }
 
-    IPVTransformation[] listTransformations(string tenantId) {
+    IPVTransformation[] listTransformations(UUID tenantId) {
         IPVTransformation[] list;
         synchronized (_lock) {
             foreach (_, t; _transformations) {
@@ -251,7 +251,7 @@ class IPVStore : SAPStore {
         return list;
     }
 
-    IPVTransformation[] listTransformationsForSystem(string tenantId, string systemId) {
+    IPVTransformation[] listTransformationsForSystem(UUID tenantId, string systemId) {
         IPVTransformation[] list;
         synchronized (_lock) {
             foreach (_, t; _transformations) {
@@ -262,7 +262,7 @@ class IPVStore : SAPStore {
         return list;
     }
 
-    bool deleteTransformation(string tenantId, string transformationId) {
+    bool deleteTransformation(UUID tenantId, string transformationId) {
         synchronized (_lock) {
             if (auto t = transformationId in _transformations) {
                 if (t.tenantId == tenantId) {
@@ -283,7 +283,7 @@ class IPVStore : SAPStore {
         }
     }
 
-    IPVJob getJob(string tenantId, string jobId) {
+    IPVJob getJob(UUID tenantId, string jobId) {
         synchronized (_lock) {
             if (auto value = jobId in _jobs) {
                 if (value.tenantId == tenantId)
@@ -293,7 +293,7 @@ class IPVStore : SAPStore {
         return IPVJob.init;
     }
 
-    IPVJob[] listJobs(string tenantId) {
+    IPVJob[] listJobs(UUID tenantId) {
         IPVJob[] list;
         synchronized (_lock) {
             foreach (_, job; _jobs) {
@@ -304,7 +304,7 @@ class IPVStore : SAPStore {
         return list;
     }
 
-    IPVJob[] listJobsBySystem(string tenantId, string sourceSystemId) {
+    IPVJob[] listJobsBySystem(UUID tenantId, string sourceSystemId) {
         IPVJob[] list;
         synchronized (_lock) {
             foreach (_, job; _jobs) {
@@ -315,7 +315,7 @@ class IPVStore : SAPStore {
         return list;
     }
 
-    bool deleteJob(string tenantId, string jobId) {
+    bool deleteJob(UUID tenantId, string jobId) {
         synchronized (_lock) {
             if (auto j = jobId in _jobs) {
                 if (j.tenantId == tenantId) {
@@ -336,7 +336,7 @@ class IPVStore : SAPStore {
         }
     }
 
-    IPVJobLog[] listJobLogs(string tenantId, string jobId) {
+    IPVJobLog[] listJobLogs(UUID tenantId, string jobId) {
         synchronized (_lock) {
             if (auto logs = jobId in _jobLogs) {
                 IPVJobLog[] filtered;
@@ -350,7 +350,7 @@ class IPVStore : SAPStore {
         return [];
     }
 
-    IPVJobLog[] listJobLogsByLevel(string tenantId, string jobId, string level) {
+    IPVJobLog[] listJobLogsByLevel(UUID tenantId, string jobId, string level) {
         synchronized (_lock) {
             if (auto logs = jobId in _jobLogs) {
                 IPVJobLog[] filtered;
@@ -373,7 +373,7 @@ class IPVStore : SAPStore {
         }
     }
 
-    IPVNotification getNotification(string tenantId, string subscriptionId) {
+    IPVNotification getNotification(UUID tenantId, string subscriptionId) {
         synchronized (_lock) {
             if (auto value = subscriptionId in _notifications) {
                 if (value.tenantId == tenantId)
@@ -383,7 +383,7 @@ class IPVStore : SAPStore {
         return IPVNotification.init;
     }
 
-    IPVNotification[] listNotifications(string tenantId) {
+    IPVNotification[] listNotifications(UUID tenantId) {
         IPVNotification[] list;
         synchronized (_lock) {
             foreach (_, n; _notifications) {
@@ -394,7 +394,7 @@ class IPVStore : SAPStore {
         return list;
     }
 
-    IPVNotification[] listNotificationsForSystem(string tenantId, string sourceSystemId) {
+    IPVNotification[] listNotificationsForSystem(UUID tenantId, string sourceSystemId) {
         IPVNotification[] list;
         synchronized (_lock) {
             foreach (_, n; _notifications) {
@@ -405,7 +405,7 @@ class IPVStore : SAPStore {
         return list;
     }
 
-    bool deleteNotification(string tenantId, string subscriptionId) {
+    bool deleteNotification(UUID tenantId, string subscriptionId) {
         synchronized (_lock) {
             if (auto n = subscriptionId in _notifications) {
                 if (n.tenantId == tenantId) {
@@ -418,7 +418,7 @@ class IPVStore : SAPStore {
     }
 
     /** Update system entity counts. */
-    void updateSystemCounts(string tenantId, string systemId, long userCount, long groupCount) {
+    void updateSystemCounts(UUID tenantId, string systemId, long userCount, long groupCount) {
         synchronized (_lock) {
             foreach (key, ref sys; _systems) {
                 if (sys.tenantId == tenantId && sys.systemId == systemId) {
@@ -434,19 +434,19 @@ class IPVStore : SAPStore {
 
     // ─── Key helpers ──────────────────────────────────────────
 
-    private string systemKey(string tenantId, string systemName) {
+    private string systemKey(UUID tenantId, string systemName) {
         return tenantId ~ ":system:" ~ systemName;
     }
 
-    private string userKey(string tenantId, string userId) {
+    private string userKey(UUID tenantId, string userId) {
         return tenantId ~ ":user:" ~ userId;
     }
 
-    private string groupKey(string tenantId, string groupId) {
+    private string groupKey(UUID tenantId, string groupId) {
         return tenantId ~ ":group:" ~ groupId;
     }
 
-    private bool belongsToTenant(string key, string tenantId) {
+    private bool belongsToTenant(string key, UUID tenantId) {
         return key.length > tenantId.length + 1
             && key[0 .. tenantId.length] == tenantId
             && key[tenantId.length] == ':';

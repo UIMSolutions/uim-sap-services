@@ -89,7 +89,7 @@ class PREServer {
             return;
         }
 
-        string tenantId = rest[0];
+        UUID tenantId = rest[0];
 
         // /v1/tenants/{tid}/items...
         if (rest.length >= 2 && rest[1] == "items") {
@@ -133,7 +133,7 @@ class PREServer {
     // ──────── Item Routes ────────
 
     private void routeItems(HTTPServerRequest req, HTTPServerResponse res,
-            string tenantId, string[] rest) {
+            UUID tenantId, string[] rest) {
         // GET|POST /v1/tenants/{tid}/items
         if (rest.length == 0) {
             if (req.method == HTTPMethod.GET) {
@@ -180,7 +180,7 @@ class PREServer {
     // ──────── User Routes ────────
 
     private void routeUsers(HTTPServerRequest req, HTTPServerResponse res,
-            string tenantId, string[] rest) {
+            UUID tenantId, string[] rest) {
         // GET|POST /v1/tenants/{tid}/users
         if (rest.length == 0) {
             if (req.method == HTTPMethod.GET) {
@@ -227,7 +227,7 @@ class PREServer {
     // ──────── Interaction Routes ────────
 
     private void routeInteractions(HTTPServerRequest req, HTTPServerResponse res,
-            string tenantId, string[] rest) {
+            UUID tenantId, string[] rest) {
         // POST /v1/tenants/{tid}/interactions
         if (rest.length == 0 && req.method == HTTPMethod.POST) {
             res.writeJsonBody(_service.recordInteraction(tenantId, parseBody(req)), 201);
@@ -239,7 +239,7 @@ class PREServer {
     // ──────── Model Routes ────────
 
     private void routeModels(HTTPServerRequest req, HTTPServerResponse res,
-            string tenantId, string[] rest) {
+            UUID tenantId, string[] rest) {
         // GET|POST /v1/tenants/{tid}/models
         if (rest.length == 0) {
             if (req.method == HTTPMethod.GET) {
@@ -288,7 +288,7 @@ class PREServer {
     // ──────── Scenario Routes ────────
 
     private void routeScenarios(HTTPServerRequest req, HTTPServerResponse res,
-            string tenantId, string[] rest) {
+            UUID tenantId, string[] rest) {
         // GET|POST /v1/tenants/{tid}/scenarios
         if (rest.length == 0) {
             if (req.method == HTTPMethod.GET) {
@@ -325,7 +325,7 @@ class PREServer {
     // ──────── Recommendation Routes ────────
 
     private void routeRecommend(HTTPServerRequest req, HTTPServerResponse res,
-            string tenantId, string[] rest) {
+            UUID tenantId, string[] rest) {
         if (rest.length == 0 || req.method != HTTPMethod.GET) {
             respondError(res, "Not found", 404);
             return;

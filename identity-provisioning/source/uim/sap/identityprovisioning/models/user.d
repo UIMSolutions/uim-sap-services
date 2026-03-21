@@ -56,7 +56,7 @@ struct IPVUser {
   }
 }
 
-IPVUser userFromJson(string tenantId, Json request) {
+IPVUser userFromJson(UUID tenantId, Json request) {
   IPVUser u;
   u.tenantId = UUID(tenantId);
   u.userId = randomUUID().toString();

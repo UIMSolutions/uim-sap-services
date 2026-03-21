@@ -43,7 +43,7 @@ string generateTenantId() {
     return "tnt-" ~ randomUUID().toString();
 }
 
-string tenantKey(string tenantId, string resourceId) {
+string tenantKey(UUID tenantId, string resourceId) {
     return tenantId ~ "/" ~ resourceId;
 }
 

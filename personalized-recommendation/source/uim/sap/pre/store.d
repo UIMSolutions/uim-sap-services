@@ -29,14 +29,14 @@ class PREStore : SAPStore {
 
     // ──────── Items ────────
 
-    void addItem(string tenantId, ref PREItem item) {
+    void addItem(UUID tenantId, ref PREItem item) {
         synchronized (_mutex) {
             auto key = tenantKey(tenantId, item.itemId);
             _items[key] = item;
         }
     }
 
-    PREItem* getItem(string tenantId, string itemId) {
+    PREItem* getItem(UUID tenantId, string itemId) {
         synchronized (_mutex) {
             auto key = tenantKey(tenantId, itemId);
             if (auto p = key in _items)
@@ -45,7 +45,7 @@ class PREStore : SAPStore {
         }
     }
 
-    PREItem[] listItems(string tenantId) {
+    PREItem[] listItems(UUID tenantId) {
         synchronized (_mutex) {
             PREItem[] result;
             auto prefix = tenantId ~ "/";
@@ -56,7 +56,7 @@ class PREStore : SAPStore {
         }
     }
 
-    bool removeItem(string tenantId, string itemId) {
+    bool removeItem(UUID tenantId, string itemId) {
         synchronized (_mutex) {
             auto key = tenantKey(tenantId, itemId);
             if (key in _items) {
@@ -67,7 +67,7 @@ class PREStore : SAPStore {
         }
     }
 
-    size_t countItems(string tenantId) {
+    size_t countItems(UUID tenantId) {
         synchronized (_mutex) {
             size_t n;
             auto prefix = tenantId ~ "/";
@@ -80,14 +80,14 @@ class PREStore : SAPStore {
 
     // ──────── Users ────────
 
-    void addUser(string tenantId, ref PREUser user) {
+    void addUser(UUID tenantId, ref PREUser user) {
         synchronized (_mutex) {
             auto key = tenantKey(tenantId, user.userId);
             _users[key] = user;
         }
     }
 
-    PREUser* getUser(string tenantId, string userId) {
+    PREUser* getUser(UUID tenantId, string userId) {
         synchronized (_mutex) {
             auto key = tenantKey(tenantId, userId);
             if (auto p = key in _users)
@@ -96,7 +96,7 @@ class PREStore : SAPStore {
         }
     }
 
-    PREUser[] listUsers(string tenantId) {
+    PREUser[] listUsers(UUID tenantId) {
         synchronized (_mutex) {
             PREUser[] result;
             auto prefix = tenantId ~ "/";
@@ -107,7 +107,7 @@ class PREStore : SAPStore {
         }
     }
 
-    bool removeUser(string tenantId, string userId) {
+    bool removeUser(UUID tenantId, string userId) {
         synchronized (_mutex) {
             auto key = tenantKey(tenantId, userId);
             if (key in _users) {
@@ -118,7 +118,7 @@ class PREStore : SAPStore {
         }
     }
 
-    size_t countUsers(string tenantId) {
+    size_t countUsers(UUID tenantId) {
         synchronized (_mutex) {
             size_t n;
             auto prefix = tenantId ~ "/";
@@ -131,14 +131,14 @@ class PREStore : SAPStore {
 
     // ──────── Interactions ────────
 
-    void addInteraction(string tenantId, ref PREInteraction interaction) {
+    void addInteraction(UUID tenantId, ref PREInteraction interaction) {
         synchronized (_mutex) {
             auto key = tenantKey(tenantId, interaction.interactionId);
             _interactions[key] = interaction;
         }
     }
 
-    PREInteraction[] listInteractionsByUser(string tenantId, string userId) {
+    PREInteraction[] listInteractionsByUser(UUID tenantId, string userId) {
         synchronized (_mutex) {
             PREInteraction[] result;
             auto prefix = tenantId ~ "/";
@@ -149,7 +149,7 @@ class PREStore : SAPStore {
         }
     }
 
-    PREInteraction[] listInteractionsByItem(string tenantId, string itemId) {
+    PREInteraction[] listInteractionsByItem(UUID tenantId, string itemId) {
         synchronized (_mutex) {
             PREInteraction[] result;
             auto prefix = tenantId ~ "/";
@@ -160,7 +160,7 @@ class PREStore : SAPStore {
         }
     }
 
-    PREInteraction[] listInteractions(string tenantId) {
+    PREInteraction[] listInteractions(UUID tenantId) {
         synchronized (_mutex) {
             PREInteraction[] result;
             auto prefix = tenantId ~ "/";
@@ -171,7 +171,7 @@ class PREStore : SAPStore {
         }
     }
 
-    size_t countInteractionsByUser(string tenantId, string userId) {
+    size_t countInteractionsByUser(UUID tenantId, string userId) {
         synchronized (_mutex) {
             size_t n;
             auto prefix = tenantId ~ "/";
@@ -184,14 +184,14 @@ class PREStore : SAPStore {
 
     // ──────── Models ────────
 
-    void addModel(string tenantId, ref PREModel model) {
+    void addModel(UUID tenantId, ref PREModel model) {
         synchronized (_mutex) {
             auto key = tenantKey(tenantId, model.modelId);
             _models[key] = model;
         }
     }
 
-    PREModel* getModel(string tenantId, string modelId) {
+    PREModel* getModel(UUID tenantId, string modelId) {
         synchronized (_mutex) {
             auto key = tenantKey(tenantId, modelId);
             if (auto p = key in _models)
@@ -200,7 +200,7 @@ class PREStore : SAPStore {
         }
     }
 
-    PREModel[] listModels(string tenantId) {
+    PREModel[] listModels(UUID tenantId) {
         synchronized (_mutex) {
             PREModel[] result;
             auto prefix = tenantId ~ "/";
@@ -211,7 +211,7 @@ class PREStore : SAPStore {
         }
     }
 
-    bool removeModel(string tenantId, string modelId) {
+    bool removeModel(UUID tenantId, string modelId) {
         synchronized (_mutex) {
             auto key = tenantKey(tenantId, modelId);
             if (key in _models) {
@@ -222,7 +222,7 @@ class PREStore : SAPStore {
         }
     }
 
-    size_t countModels(string tenantId) {
+    size_t countModels(UUID tenantId) {
         synchronized (_mutex) {
             size_t n;
             auto prefix = tenantId ~ "/";
@@ -235,14 +235,14 @@ class PREStore : SAPStore {
 
     // ──────── Scenarios ────────
 
-    void addScenario(string tenantId, ref PREScenario scenario) {
+    void addScenario(UUID tenantId, ref PREScenario scenario) {
         synchronized (_mutex) {
             auto key = tenantKey(tenantId, scenario.scenarioId);
             _scenarios[key] = scenario;
         }
     }
 
-    PREScenario* getScenario(string tenantId, string scenarioId) {
+    PREScenario* getScenario(UUID tenantId, string scenarioId) {
         synchronized (_mutex) {
             auto key = tenantKey(tenantId, scenarioId);
             if (auto p = key in _scenarios)
@@ -251,7 +251,7 @@ class PREStore : SAPStore {
         }
     }
 
-    PREScenario[] listScenarios(string tenantId) {
+    PREScenario[] listScenarios(UUID tenantId) {
         synchronized (_mutex) {
             PREScenario[] result;
             auto prefix = tenantId ~ "/";
@@ -262,7 +262,7 @@ class PREStore : SAPStore {
         }
     }
 
-    bool removeScenario(string tenantId, string scenarioId) {
+    bool removeScenario(UUID tenantId, string scenarioId) {
         synchronized (_mutex) {
             auto key = tenantKey(tenantId, scenarioId);
             if (key in _scenarios) {
@@ -275,14 +275,14 @@ class PREStore : SAPStore {
 
     // ──────── Training Jobs ────────
 
-    void addTrainingJob(string tenantId, ref PRETrainingJob job) {
+    void addTrainingJob(UUID tenantId, ref PRETrainingJob job) {
         synchronized (_mutex) {
             auto key = tenantKey(tenantId, job.jobId);
             _trainingJobs[key] = job;
         }
     }
 
-    PRETrainingJob* getTrainingJob(string tenantId, string jobId) {
+    PRETrainingJob* getTrainingJob(UUID tenantId, string jobId) {
         synchronized (_mutex) {
             auto key = tenantKey(tenantId, jobId);
             if (auto p = key in _trainingJobs)
@@ -291,7 +291,7 @@ class PREStore : SAPStore {
         }
     }
 
-    PRETrainingJob[] listTrainingJobs(string tenantId, string modelId) {
+    PRETrainingJob[] listTrainingJobs(UUID tenantId, string modelId) {
         synchronized (_mutex) {
             PRETrainingJob[] result;
             auto prefix = tenantId ~ "/";

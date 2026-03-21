@@ -141,7 +141,7 @@ class PDMServer {
       return;
     }
 
-    string tenantId = rest[0];
+    UUID tenantId = rest[0];
 
     // GET /v1/tenants/{tid}
     if (rest.length == 1 && req.method == HTTPMethod.GET) {
@@ -169,7 +169,7 @@ class PDMServer {
   // ──────────────────────────────────────
 
   private void routeSubjects(HTTPServerRequest req, HTTPServerResponse res,
-    string tenantId, string[] rest) {
+    UUID tenantId, string[] rest) {
     // GET|POST /v1/tenants/{tid}/subjects
     if (rest.length == 0) {
       if (req.method == HTTPMethod.GET) {
@@ -270,7 +270,7 @@ class PDMServer {
   // ──────────────────────────────────────
 
   private void routeRecords(HTTPServerRequest req, HTTPServerResponse res,
-    string tenantId, string subjectId, string[] rest) {
+    UUID tenantId, string subjectId, string[] rest) {
     // GET|POST /v1/tenants/{tid}/subjects/{sid}/records
     if (rest.length == 0) {
       if (req.method == HTTPMethod.GET) {
@@ -300,7 +300,7 @@ class PDMServer {
   // ──────────────────────────────────────
 
   private void routeSubjectRequests(HTTPServerRequest req, HTTPServerResponse res,
-    string tenantId, string subjectId, string[] rest) {
+    UUID tenantId, string subjectId, string[] rest) {
     // GET|POST /v1/tenants/{tid}/subjects/{sid}/requests
     if (rest.length == 0) {
       if (req.method == HTTPMethod.GET) {
@@ -324,7 +324,7 @@ class PDMServer {
   // ──────────────────────────────────────
 
   private void routeRequests(HTTPServerRequest req, HTTPServerResponse res,
-    string tenantId, string[] rest) {
+    UUID tenantId, string[] rest) {
     // GET /v1/tenants/{tid}/requests
     if (rest.length == 0 && req.method == HTTPMethod.GET) {
       auto statusFilter = req.params.get("status", "");
@@ -381,7 +381,7 @@ class PDMServer {
   // ──────────────────────────────────────
 
   private void routeUsages(HTTPServerRequest req, HTTPServerResponse res,
-    string tenantId, string subjectId, string[] rest) {
+    UUID tenantId, string subjectId, string[] rest) {
     // GET|POST /v1/tenants/{tid}/subjects/{sid}/usages
     if (rest.length == 0) {
       if (req.method == HTTPMethod.GET) {

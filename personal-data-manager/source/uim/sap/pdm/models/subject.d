@@ -63,7 +63,7 @@ class PDMDataSubject : SAPTenantObject {
         return json;
     }
 
-    static PDMDataSubject opCall(string subjectId, string tenantId, Json req) {
+    static PDMDataSubject opCall(string subjectId, UUID tenantId, Json req) {
     PDMDataSubject s = new PDMDataSubject(req);
     s.subjectId = subjectId;
     s.tenantId = UUID(tenantId);

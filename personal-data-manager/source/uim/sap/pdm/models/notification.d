@@ -47,7 +47,7 @@ class PDMNotification : SAPTenantObject {
     }
 }
 
-PDMNotification notificationFromJson(string notificationId, string subjectId, string tenantId, Json req) {
+PDMNotification notificationFromJson(string notificationId, string subjectId, UUID tenantId, Json req) {
     PDMNotification n;
     n.notificationId = notificationId;
     n.subjectId = subjectId;

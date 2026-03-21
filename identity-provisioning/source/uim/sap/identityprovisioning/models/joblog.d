@@ -43,7 +43,7 @@ struct IPVJobLog {
 }
 
 /** Factory helper to create a new log entry. */
-IPVJobLog createJobLog(string tenantId, string jobId, string level, string entityType,
+IPVJobLog createJobLog(UUID tenantId, string jobId, string level, string entityType,
   string entityId, string message, string details = "") {
   IPVJobLog log;
   log.tenantId = UUID(tenantId);

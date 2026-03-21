@@ -26,7 +26,7 @@ class PREService : SAPService {
   //  Item Catalog
   // ──────────────────────────────────────
 
-  Json addItem(string tenantId, Json data_) {
+  Json addItem(UUID tenantId, Json data_) {
     ensureTenant(tenantId);
     if (_store.countItems(tenantId) >= config.maxItemsPerTenant) {
       throw new PREQuotaExceededException("Maximum items per tenant exceeded");
@@ -43,7 +43,7 @@ class PREService : SAPService {
     return itemToJson(item);
   }
 
-  Json getItem(string tenantId, string itemId) {
+  Json getItem(UUID tenantId, string itemId) {
     ensureTenant(tenantId);
     auto p = _store.getItem(tenantId, itemId);
     if (p is null) {
@@ -52,7 +52,7 @@ class PREService : SAPService {
     return itemToJson(*p);
   }
 
-  Json listItems(string tenantId) {
+  Json listItems(UUID tenantId) {
     ensureTenant(tenantId);
     Json arr = Json.emptyArray;
     foreach (ref i; _store.listItems(tenantId)) {
@@ -61,7 +61,7 @@ class PREService : SAPService {
     return arr;
   }
 
-  Json updateItem(string tenantId, string itemId, Json data_) {
+  Json updateItem(UUID tenantId, string itemId, Json data_) {
     ensureTenant(tenantId);
     auto p = _store.getItem(tenantId, itemId);
     if (p is null) {
@@ -98,7 +98,7 @@ class PREService : SAPService {
     return itemToJson(*p);
   }
 
-  Json deleteItem(string tenantId, string itemId) {
+  Json deleteItem(UUID tenantId, string itemId) {
     ensureTenant(tenantId);
     if (!_store.removeItem(tenantId, itemId)) {
       throw new PRENotFoundException("Item not found: " ~ itemId);
@@ -113,7 +113,7 @@ class PREService : SAPService {
   //  User Management
   // ──────────────────────────────────────
 
-  Json registerUser(string tenantId, Json data_) {
+  Json registerUser(UUID tenantId, Json data_) {
     ensureTenant(tenantId);
     if (_store.countUsers(tenantId) >= config.maxUsersPerTenant) {
       throw new PREQuotaExceededException("Maximum users per tenant exceeded");
@@ -130,7 +130,7 @@ class PREService : SAPService {
     return userToJson(user);
   }
 
-  Json getUser(string tenantId, string userId) {
+  Json getUser(UUID tenantId, string userId) {
     ensureTenant(tenantId);
     auto p = _store.getUser(tenantId, userId);
     if (p is null) {
@@ -139,7 +139,7 @@ class PREService : SAPService {
     return userToJson(*p);
   }
 
-  Json listUsers(string tenantId) {
+  Json listUsers(UUID tenantId) {
     ensureTenant(tenantId);
     Json arr = Json.emptyArray;
     foreach (ref u; _store.listUsers(tenantId)) {
@@ -148,7 +148,7 @@ class PREService : SAPService {
     return arr;
   }
 
-  Json updateUser(string tenantId, string userId, Json data_) {
+  Json updateUser(UUID tenantId, string userId, Json data_) {
     ensureTenant(tenantId);
     auto p = _store.getUser(tenantId, userId);
     if (p is null) {
@@ -172,7 +172,7 @@ class PREService : SAPService {
     return userToJson(*p);
   }
 
-  Json deleteUser(string tenantId, string userId) {
+  Json deleteUser(UUID tenantId, string userId) {
     ensureTenant(tenantId);
     if (!_store.removeUser(tenantId, userId)) {
       throw new PRENotFoundException("User not found: " ~ userId);
@@ -187,7 +187,7 @@ class PREService : SAPService {
   //  Interaction Tracking
   // ──────────────────────────────────────
 
-  Json recordInteraction(string tenantId, Json data_) {
+  Json recordInteraction(UUID tenantId, Json data_) {
     ensureTenant(tenantId);
     auto interaction = interactionFromJson(body_);
     interaction.tenantId = UUID(tenantId);
@@ -217,7 +217,7 @@ class PREService : SAPService {
     return interactionToJson(interaction);
   }
 
-  Json listUserInteractions(string tenantId, string userId) {
+  Json listUserInteractions(UUID tenantId, string userId) {
     ensureTenant(tenantId);
     Json arr = Json.emptyArray;
     foreach (ref i; _store.listInteractionsByUser(tenantId, userId)) {
@@ -226,7 +226,7 @@ class PREService : SAPService {
     return arr;
   }
 
-  Json listItemInteractions(string tenantId, string itemId) {
+  Json listItemInteractions(UUID tenantId, string itemId) {
     ensureTenant(tenantId);
     Json arr = Json.emptyArray;
     foreach (ref i; _store.listInteractionsByItem(tenantId, itemId)) {
@@ -239,7 +239,7 @@ class PREService : SAPService {
   //  Model Management
   // ──────────────────────────────────────
 
-  Json createModel(string tenantId, Json data_) {
+  Json createModel(UUID tenantId, Json data_) {
     ensureTenant(tenantId);
     if (_store.countModels(tenantId) >= config.maxModelsPerTenant) {
       throw new PREQuotaExceededException("Maximum models per tenant exceeded");
@@ -262,7 +262,7 @@ class PREService : SAPService {
     return modelToJson(model);
   }
 
-  Json getModel(string tenantId, string modelId) {
+  Json getModel(UUID tenantId, string modelId) {
     ensureTenant(tenantId);
     auto p = _store.getModel(tenantId, modelId);
     if (p is null) {
@@ -271,7 +271,7 @@ class PREService : SAPService {
     return modelToJson(*p);
   }
 
-  Json listModels(string tenantId) {
+  Json listModels(UUID tenantId) {
     ensureTenant(tenantId);
     Json arr = Json.emptyArray;
     foreach (ref m; _store.listModels(tenantId))
@@ -279,7 +279,7 @@ class PREService : SAPService {
     return arr;
   }
 
-  Json deleteModel(string tenantId, string modelId) {
+  Json deleteModel(UUID tenantId, string modelId) {
     ensureTenant(tenantId);
     if (!_store.removeModel(tenantId, modelId)) {
       throw new PRENotFoundException("Model not found: " ~ modelId);
@@ -290,7 +290,7 @@ class PREService : SAPService {
   }
 
   /// Simulate training the model: counts items, users, interactions and marks ready.
-  Json trainModel(string tenantId, string modelId) {
+  Json trainModel(UUID tenantId, string modelId) {
     ensureTenant(tenantId);
     auto p = _store.getModel(tenantId, modelId);
     if (p is null) {
@@ -338,7 +338,7 @@ class PREService : SAPService {
     return modelToJson(*p);
   }
 
-  Json listTrainingJobs(string tenantId, string modelId) {
+  Json listTrainingJobs(UUID tenantId, string modelId) {
     ensureTenant(tenantId);
     Json arr = Json.emptyArray;
     foreach (ref j; _store.listTrainingJobs(tenantId, modelId))
@@ -350,7 +350,7 @@ class PREService : SAPService {
   //  Scenario Management
   // ──────────────────────────────────────
 
-  Json createScenario(string tenantId, Json data_) {
+  Json createScenario(UUID tenantId, Json data_) {
     ensureTenant(tenantId);
     auto scenario = scenarioFromJson(body_);
     scenario.tenantId = UUID(tenantId);
@@ -373,7 +373,7 @@ class PREService : SAPService {
     return scenarioToJson(scenario);
   }
 
-  Json getScenario(string tenantId, string scenarioId) {
+  Json getScenario(UUID tenantId, string scenarioId) {
     ensureTenant(tenantId);
     auto p = _store.getScenario(tenantId, scenarioId);
     if (p is null) {
@@ -382,7 +382,7 @@ class PREService : SAPService {
     return scenarioToJson(*p);
   }
 
-  Json listScenarios(string tenantId) {
+  Json listScenarios(UUID tenantId) {
     ensureTenant(tenantId);
     Json arr = Json.emptyArray;
     foreach (ref s; _store.listScenarios(tenantId))
@@ -390,7 +390,7 @@ class PREService : SAPService {
     return arr;
   }
 
-  Json deleteScenario(string tenantId, string scenarioId) {
+  Json deleteScenario(UUID tenantId, string scenarioId) {
     ensureTenant(tenantId);
     if (!_store.removeScenario(tenantId, scenarioId)) {
       throw new PRENotFoundException("Scenario not found: " ~ scenarioId);
@@ -406,7 +406,7 @@ class PREService : SAPService {
 
   /// Returns next-item recommendations personalised for the given user
   /// based on their interaction history.
-  Json getNextItemRecommendations(string tenantId, string userId, string modelId, size_t limit) {
+  Json getNextItemRecommendations(UUID tenantId, string userId, string modelId, size_t limit) {
     ensureTenant(tenantId);
     auto model = ensureModelReady(tenantId, modelId);
     auto userP = _store.getUser(tenantId, userId);
@@ -504,7 +504,7 @@ class PREService : SAPService {
   // ──────────────────────────────────────
 
   /// Returns items similar to the given item based on attribute / category overlap.
-  Json getSimilarItemRecommendations(string tenantId, string itemId, string modelId, size_t limit) {
+  Json getSimilarItemRecommendations(UUID tenantId, string itemId, string modelId, size_t limit) {
     ensureTenant(tenantId);
     auto model = ensureModelReady(tenantId, modelId);
     auto sourceP = _store.getItem(tenantId, itemId);
@@ -584,7 +584,7 @@ class PREService : SAPService {
   // ──────────────────────────────────────
 
   /// Personalised search: combines text query with user context and interaction history.
-  Json getSmartSearchResults(string tenantId, string userId, string query, string modelId, size_t limit) {
+  Json getSmartSearchResults(UUID tenantId, string userId, string query, string modelId, size_t limit) {
     ensureTenant(tenantId);
     auto model = ensureModelReady(tenantId, modelId);
 
@@ -679,7 +679,7 @@ class PREService : SAPService {
   // ──────────────────────────────────────
 
   /// Returns item-attribute affinities derived from a user's interaction history.
-  Json getUserAffinityRecommendations(string tenantId, string userId, string modelId, size_t limit) {
+  Json getUserAffinityRecommendations(UUID tenantId, string userId, string modelId, size_t limit) {
     ensureTenant(tenantId);
     auto model = ensureModelReady(tenantId, modelId);
     auto userP = _store.getUser(tenantId, userId);
@@ -767,12 +767,12 @@ class PREService : SAPService {
   //  Private Helpers
   // ──────────────────────────────────────
 
-  private void ensureTenant(string tenantId) {
+  private void ensureTenant(UUID tenantId) {
     if (tenantId.length == 0)
       throw new PREValidationException("Tenant ID must not be empty");
   }
 
-  private PREModel* ensureModelReady(string tenantId, string modelId) {
+  private PREModel* ensureModelReady(UUID tenantId, string modelId) {
     auto p = _store.getModel(tenantId, modelId);
     if (p is null)
       throw new PRENotFoundException("Model not found: " ~ modelId);

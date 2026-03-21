@@ -61,7 +61,7 @@ struct IPVNotification {
   }
 }
 
-IPVNotification notificationFromJson(string tenantId, Json request) {
+IPVNotification notificationFromJson(UUID tenantId, Json request) {
   IPVNotification n;
   n.tenantId = UUID(tenantId);
   n.subscriptionId = randomUUID().toString();

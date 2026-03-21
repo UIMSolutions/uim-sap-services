@@ -57,13 +57,13 @@ class PDMService : SAPService {
   // ══════════════════════════════════════
 
   Json createTenant(Json req) {
-    string tenantId = generateTenantId();
+    UUID tenantId = generateTenantId();
     PDMTenant t = tenantFromJson(tenantId, req);
     _store.upsertTenant(t);
     return t.toJson();
   }
 
-  Json getTenant(string tenantId) {
+  Json getTenant(UUID tenantId) {
     if (!_store.hasTenant(tenantId))
       throw new PDMNotFoundException("Tenant", tenantId);
     auto t = _store.getTenant(tenantId);
@@ -87,7 +87,7 @@ class PDMService : SAPService {
   //  Data Subject Identification
   // ══════════════════════════════════════
 
-  Json registerSubject(string tenantId, Json req) {
+  Json registerSubject(UUID tenantId, Json req) {
     ensureTenant(tenantId);
     
     PDMConfig cfg = cast(PDMConfig)_config;
@@ -100,14 +100,14 @@ class PDMService : SAPService {
     return s.toJson();
   }
 
-  Json getSubject(string tenantId, string subjectId) {
+  Json getSubject(UUID tenantId, string subjectId) {
     ensureTenant(tenantId);
     if (!_store.hasSubject(tenantId, subjectId))
       throw new PDMNotFoundException("DataSubject", subjectId);
     return _store.getSubject(tenantId, subjectId).toJson();
   }
 
-  Json listSubjects(string tenantId) {
+  Json listSubjects(UUID tenantId) {
     ensureTenant(tenantId);
     auto subjects = _store.listSubjects(tenantId);
     Json arr = Json.emptyArray;
@@ -120,7 +120,7 @@ class PDMService : SAPService {
   }
 
   /// Search subjects by term (name, email, company, external ID)
-  Json searchSubjects(string tenantId, string term) {
+  Json searchSubjects(UUID tenantId, string term) {
     ensureTenant(tenantId);
     auto subjects = _store.searchSubjects(tenantId, term);
     Json arr = Json.emptyArray;
@@ -134,7 +134,7 @@ class PDMService : SAPService {
   }
 
   /// Search subjects by type (private or corporate)
-  Json searchSubjectsByType(string tenantId, string typeStr) {
+  Json searchSubjectsByType(UUID tenantId, string typeStr) {
     ensureTenant(tenantId);
     PDMSubjectType st = parseSubjectTypeStr(typeStr);
     auto subjects = _store.searchSubjectsByType(tenantId, st);
@@ -148,7 +148,7 @@ class PDMService : SAPService {
     .set("subject_type", typeStr);
   }
 
-  Json updateSubject(string tenantId, string subjectId, Json req) {
+  Json updateSubject(UUID tenantId, string subjectId, Json req) {
     ensureTenant(tenantId);
     if (!_store.hasSubject(tenantId, subjectId))
       throw new PDMNotFoundException("DataSubject", subjectId);
@@ -173,7 +173,7 @@ class PDMService : SAPService {
     return s.toJson();
   }
 
-  Json deleteSubject(string tenantId, string subjectId) {
+  Json deleteSubject(UUID tenantId, string subjectId) {
     ensureTenant(tenantId);
     if (!_store.hasSubject(tenantId, subjectId))
       throw new PDMNotFoundException("DataSubject", subjectId);
@@ -190,7 +190,7 @@ class PDMService : SAPService {
   //  Personal Data Records (Inform)
   // ══════════════════════════════════════
 
-  Json addRecord(string tenantId, string subjectId, Json req) {
+  Json addRecord(UUID tenantId, string subjectId, Json req) {
     ensureTenant(tenantId);
     if (!_store.hasSubject(tenantId, subjectId))
       throw new PDMNotFoundException("DataSubject", subjectId);
@@ -206,7 +206,7 @@ class PDMService : SAPService {
   }
 
   /// Get all personal data records for a data subject (inform)
-  Json getSubjectRecords(string tenantId, string subjectId) {
+  Json getSubjectRecords(UUID tenantId, string subjectId) {
     ensureTenant(tenantId);
     if (!_store.hasSubject(tenantId, subjectId))
       throw new PDMNotFoundException("DataSubject", subjectId);
@@ -223,7 +223,7 @@ class PDMService : SAPService {
   }
 
   /// Generate a personal data report for a subject (for sending via email)
-  Json generateDataReport(string tenantId, string subjectId) {
+  Json generateDataReport(UUID tenantId, string subjectId) {
     ensureTenant(tenantId);
     if (!_store.hasSubject(tenantId, subjectId))
       throw new PDMNotFoundException("DataSubject", subjectId);
@@ -249,7 +249,7 @@ class PDMService : SAPService {
     .set("total_usages", cast(long)usages.length);
   }
 
-  Json deleteRecord(string tenantId, string recordId) {
+  Json deleteRecord(UUID tenantId, string recordId) {
     ensureTenant(tenantId);
     if (!_store.hasRecord(tenantId, recordId))
       throw new PDMNotFoundException("PersonalDataRecord", recordId);
@@ -264,7 +264,7 @@ class PDMService : SAPService {
   //  Data Subject Requests (Manage)
   // ══════════════════════════════════════
 
-  Json createRequest(string tenantId, string subjectId, Json req) {
+  Json createRequest(UUID tenantId, string subjectId, Json req) {
     ensureTenant(tenantId);
     if (!_store.hasSubject(tenantId, subjectId))
       throw new PDMNotFoundException("DataSubject", subjectId);
@@ -279,14 +279,14 @@ class PDMService : SAPService {
     return r.toJson();
   }
 
-  Json getRequest(string tenantId, string requestId) {
+  Json getRequest(UUID tenantId, string requestId) {
     ensureTenant(tenantId);
     if (!_store.hasRequest(tenantId, requestId))
       throw new PDMNotFoundException("DataRequest", requestId);
     return _store.getRequest(tenantId, requestId).toJson();
   }
 
-  Json listRequests(string tenantId) {
+  Json listRequests(UUID tenantId) {
     ensureTenant(tenantId);
     auto requests = _store.listRequests(tenantId);
     Json arr = Json.emptyArray;
@@ -298,7 +298,7 @@ class PDMService : SAPService {
     return result;
   }
 
-  Json listRequestsBySubject(string tenantId, string subjectId) {
+  Json listRequestsBySubject(UUID tenantId, string subjectId) {
     ensureTenant(tenantId);
     auto requests = _store.listRequestsBySubject(tenantId, subjectId);
     Json arr = Json.emptyArray;
@@ -311,7 +311,7 @@ class PDMService : SAPService {
     .set("total", cast(long)requests.length);
   }
 
-  Json listRequestsByStatus(string tenantId, string statusStr) {
+  Json listRequestsByStatus(UUID tenantId, string statusStr) {
     ensureTenant(tenantId);
     PDMRequestStatus st = parseRequestStatusStr(statusStr);
     auto requests = _store.listRequestsByStatus(tenantId, st);
@@ -326,7 +326,7 @@ class PDMService : SAPService {
   }
 
   /// Submit a draft request for processing
-  Json submitRequest(string tenantId, string requestId) {
+  Json submitRequest(UUID tenantId, string requestId) {
     ensureTenant(tenantId);
     if (!_store.hasRequest(tenantId, requestId))
       throw new PDMNotFoundException("DataRequest", requestId);
@@ -342,7 +342,7 @@ class PDMService : SAPService {
   }
 
   /// Begin processing a submitted request
-  Json processRequest(string tenantId, string requestId) {
+  Json processRequest(UUID tenantId, string requestId) {
     ensureTenant(tenantId);
     if (!_store.hasRequest(tenantId, requestId))
       throw new PDMNotFoundException("DataRequest", requestId);
@@ -364,7 +364,7 @@ class PDMService : SAPService {
   }
 
   /// Complete a request
-  Json completeRequest(string tenantId, string requestId, Json req) {
+  Json completeRequest(UUID tenantId, string requestId, Json req) {
     ensureTenant(tenantId);
     if (!_store.hasRequest(tenantId, requestId))
       throw new PDMNotFoundException("DataRequest", requestId);
@@ -383,7 +383,7 @@ class PDMService : SAPService {
   }
 
   /// Reject a request
-  Json rejectRequest(string tenantId, string requestId, Json req) {
+  Json rejectRequest(UUID tenantId, string requestId, Json req) {
     ensureTenant(tenantId);
     if (!_store.hasRequest(tenantId, requestId))
       throw new PDMNotFoundException("DataRequest", requestId);
@@ -401,7 +401,7 @@ class PDMService : SAPService {
   }
 
   /// Cancel a request
-  Json cancelRequest(string tenantId, string requestId) {
+  Json cancelRequest(UUID tenantId, string requestId) {
     ensureTenant(tenantId);
     if (!_store.hasRequest(tenantId, requestId))
       throw new PDMNotFoundException("DataRequest", requestId);
@@ -420,7 +420,7 @@ class PDMService : SAPService {
   //  Notifications (Inform via email)
   // ══════════════════════════════════════
 
-  Json sendNotification(string tenantId, string subjectId, Json req) {
+  Json sendNotification(UUID tenantId, string subjectId, Json req) {
     ensureTenant(tenantId);
     if (!_store.hasSubject(tenantId, subjectId))
       throw new PDMNotFoundException("DataSubject", subjectId);
@@ -445,7 +445,7 @@ class PDMService : SAPService {
   }
 
   /// Send a full data report to the subject via email
-  Json sendDataReport(string tenantId, string subjectId) {
+  Json sendDataReport(UUID tenantId, string subjectId) {
     ensureTenant(tenantId);
     if (!_store.hasSubject(tenantId, subjectId))
       throw new PDMNotFoundException("DataSubject", subjectId);
@@ -473,7 +473,7 @@ class PDMService : SAPService {
     return result;
   }
 
-  Json listNotifications(string tenantId, string subjectId) {
+  Json listNotifications(UUID tenantId, string subjectId) {
     ensureTenant(tenantId);
     auto notifications = _store.listNotificationsBySubject(tenantId, subjectId);
     Json arr = notifications.map!(notif => n.toJson()).array.toJson;
@@ -487,7 +487,7 @@ class PDMService : SAPService {
   //  Data Usage Tracking
   // ══════════════════════════════════════
 
-  Json addUsage(string tenantId, string subjectId, Json req) {
+  Json addUsage(UUID tenantId, string subjectId, Json req) {
     ensureTenant(tenantId);
     if (!_store.hasSubject(tenantId, subjectId))
       throw new PDMNotFoundException("DataSubject", subjectId);
@@ -498,7 +498,7 @@ class PDMService : SAPService {
     return u.toJson();
   }
 
-  Json listUsages(string tenantId, string subjectId) {
+  Json listUsages(UUID tenantId, string subjectId) {
     ensureTenant(tenantId);
     auto usages = _store.listUsagesBySubject(tenantId, subjectId);
     Json arr = Json.emptyArray;
@@ -514,7 +514,7 @@ class PDMService : SAPService {
   //  Private Helpers
   // ══════════════════════════════════════
 
-  private void ensureTenant(string tenantId) {
+  private void ensureTenant(UUID tenantId) {
     PDMConfig cfg = cast(PDMConfig)_config;
     if (cfg.multitenancy && !_store.hasTenant(tenantId)) {
       throw new PDMNotFoundException("Tenant", tenantId);

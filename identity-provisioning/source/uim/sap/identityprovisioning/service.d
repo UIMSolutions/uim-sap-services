@@ -53,7 +53,7 @@ class IPVService : SAPService {
 
   // ─── System CRUD ──────────────────────────────────────────
 
-  Json createSystem(string tenantId, Json request) {
+  Json createSystem(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
 
     auto system = systemFromJson(tenantId, request);
@@ -74,7 +74,7 @@ class IPVService : SAPService {
     return result;
   }
 
-  Json listSystems(string tenantId, string systemType = "") {
+  Json listSystems(UUID tenantId, string systemType = "") {
     validateId(tenantId, "Tenant ID");
 
     IPVSystem[] systems = systemType.length > 0 
@@ -90,7 +90,7 @@ class IPVService : SAPService {
     return result;
   }
 
-  Json getSystem(string tenantId, string systemName) {
+  Json getSystem(UUID tenantId, string systemName) {
     validateId(tenantId, "Tenant ID");
     validateId(systemName, "System name");
 
@@ -103,7 +103,7 @@ class IPVService : SAPService {
     return result;
   }
 
-  Json updateSystem(string tenantId, string systemName, Json request) {
+  Json updateSystem(UUID tenantId, string systemName, Json request) {
     validateId(tenantId, "Tenant ID");
     validateId(systemName, "System name");
 
@@ -131,7 +131,7 @@ class IPVService : SAPService {
     return result;
   }
 
-  Json deleteSystem(string tenantId, string systemName) {
+  Json deleteSystem(UUID tenantId, string systemName) {
     validateId(tenantId, "Tenant ID");
     validateId(systemName, "System name");
 
@@ -146,7 +146,7 @@ class IPVService : SAPService {
 
   // ─── User CRUD ────────────────────────────────────────────
 
-  Json createUser(string tenantId, Json request) {
+  Json createUser(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
 
     auto user = userFromJson(tenantId, request);
@@ -161,7 +161,7 @@ class IPVService : SAPService {
     return result;
   }
 
-  Json listUsers(string tenantId) {
+  Json listUsers(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
 
     Json resources = Json.emptyArray;
@@ -176,7 +176,7 @@ class IPVService : SAPService {
     return result;
   }
 
-  Json getUser(string tenantId, string userId) {
+  Json getUser(UUID tenantId, string userId) {
     validateId(tenantId, "Tenant ID");
     validateId(userId, "User ID");
 
@@ -189,7 +189,7 @@ class IPVService : SAPService {
     return result;
   }
 
-  Json updateUser(string tenantId, string userId, Json request) {
+  Json updateUser(UUID tenantId, string userId, Json request) {
     validateId(tenantId, "Tenant ID");
     validateId(userId, "User ID");
 
@@ -231,7 +231,7 @@ class IPVService : SAPService {
     return result;
   }
 
-  Json deleteUser(string tenantId, string userId) {
+  Json deleteUser(UUID tenantId, string userId) {
     validateId(tenantId, "Tenant ID");
     validateId(userId, "User ID");
 
@@ -246,7 +246,7 @@ class IPVService : SAPService {
 
   // ─── Group CRUD ───────────────────────────────────────────
 
-  Json createGroup(string tenantId, Json request) {
+  Json createGroup(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
 
     auto group = groupFromJson(tenantId, request);
@@ -261,7 +261,7 @@ class IPVService : SAPService {
     return result;
   }
 
-  Json listGroups(string tenantId) {
+  Json listGroups(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
 
     Json resources = Json.emptyArray;
@@ -276,7 +276,7 @@ class IPVService : SAPService {
     return result;
   }
 
-  Json getGroup(string tenantId, string groupId) {
+  Json getGroup(UUID tenantId, string groupId) {
     validateId(tenantId, "Tenant ID");
     validateId(groupId, "Group ID");
 
@@ -289,7 +289,7 @@ class IPVService : SAPService {
     return result;
   }
 
-  Json deleteGroup(string tenantId, string groupId) {
+  Json deleteGroup(UUID tenantId, string groupId) {
     validateId(tenantId, "Tenant ID");
     validateId(groupId, "Group ID");
 
@@ -304,7 +304,7 @@ class IPVService : SAPService {
 
   // ─── Transformation / Filter CRUD ─────────────────────────
 
-  Json createTransformation(string tenantId, Json request) {
+  Json createTransformation(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
 
     auto transformation = transformationFromJson(tenantId, request);
@@ -319,7 +319,7 @@ class IPVService : SAPService {
     return result;
   }
 
-  Json listTransformations(string tenantId, string systemId = "") {
+  Json listTransformations(UUID tenantId, string systemId = "") {
     validateId(tenantId, "Tenant ID");
 
     IPVTransformation[] transformations;
@@ -340,7 +340,7 @@ class IPVService : SAPService {
     return result;
   }
 
-  Json getTransformation(string tenantId, string transformationId) {
+  Json getTransformation(UUID tenantId, string transformationId) {
     validateId(tenantId, "Tenant ID");
     validateId(transformationId, "Transformation ID");
 
@@ -353,7 +353,7 @@ class IPVService : SAPService {
     return result;
   }
 
-  Json deleteTransformation(string tenantId, string transformationId) {
+  Json deleteTransformation(UUID tenantId, string transformationId) {
     validateId(tenantId, "Tenant ID");
     validateId(transformationId, "Transformation ID");
 
@@ -377,7 +377,7 @@ class IPVService : SAPService {
      *  In delta mode, only entities modified since the last delta
      *  token are read.
      */
-  Json runJob(string tenantId, Json request) {
+  Json runJob(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
 
     auto job = jobFromJson(tenantId, request);
@@ -449,7 +449,7 @@ class IPVService : SAPService {
     return result;
   }
 
-  Json listJobs(string tenantId) {
+  Json listJobs(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
 
     Json resources = Json.emptyArray;
@@ -464,7 +464,7 @@ class IPVService : SAPService {
     return result;
   }
 
-  Json getJob(string tenantId, string jobId) {
+  Json getJob(UUID tenantId, string jobId) {
     validateId(tenantId, "Tenant ID");
     validateId(jobId, "Job ID");
 
@@ -477,7 +477,7 @@ class IPVService : SAPService {
     return result;
   }
 
-  Json cancelJob(string tenantId, string jobId) {
+  Json cancelJob(UUID tenantId, string jobId) {
     validateId(tenantId, "Tenant ID");
     validateId(jobId, "Job ID");
 
@@ -506,7 +506,7 @@ class IPVService : SAPService {
 
   // ─── Job Logging ──────────────────────────────────────────
 
-  Json listJobLogs(string tenantId, string jobId, string level = "") {
+  Json listJobLogs(UUID tenantId, string jobId, string level = "") {
     validateId(tenantId, "Tenant ID");
     validateId(jobId, "Job ID");
 
@@ -534,7 +534,7 @@ class IPVService : SAPService {
   }
 
   /** Export job logs as a flat JSON array (for download). */
-  Json exportJobLogs(string tenantId, string jobId) {
+  Json exportJobLogs(UUID tenantId, string jobId) {
     validateId(tenantId, "Tenant ID");
     validateId(jobId, "Job ID");
 
@@ -562,7 +562,7 @@ class IPVService : SAPService {
 
   // ─── Notification Subscriptions ───────────────────────────
 
-  Json createNotification(string tenantId, Json request) {
+  Json createNotification(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
 
     auto notification = notificationFromJson(tenantId, request);
@@ -581,7 +581,7 @@ class IPVService : SAPService {
     return result;
   }
 
-  Json listNotifications(string tenantId) {
+  Json listNotifications(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
 
     Json resources = Json.emptyArray;
@@ -596,7 +596,7 @@ class IPVService : SAPService {
     return result;
   }
 
-  Json deleteNotification(string tenantId, string subscriptionId) {
+  Json deleteNotification(UUID tenantId, string subscriptionId) {
     validateId(tenantId, "Tenant ID");
     validateId(subscriptionId, "Subscription ID");
 
@@ -611,7 +611,7 @@ class IPVService : SAPService {
 
   // ─── Dashboard ────────────────────────────────────────────
 
-  Json dashboard(string tenantId) {
+  Json dashboard(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
 
     auto systems = _store.listSystems(tenantId);
@@ -660,7 +660,7 @@ class IPVService : SAPService {
 
   // ─── Private provisioning engine ──────────────────────────
 
-  private void executeProvisioning(string tenantId, ref IPVJob job) {
+  private void executeProvisioning(UUID tenantId, ref IPVJob job) {
     // Get users from source system
     IPVUser[] sourceUsers;
     if (job.readMode == "delta" && job.deltaToken.length > 0) {
@@ -870,7 +870,7 @@ class IPVService : SAPService {
     }
   }
 
-  private void notifySubscribers(string tenantId, string sourceSystemId, string eventType, string jobId) {
+  private void notifySubscribers(UUID tenantId, string sourceSystemId, string eventType, string jobId) {
     auto subscribers = _store.listNotificationsForSystem(tenantId, sourceSystemId);
     foreach (sub; subscribers) {
       foreach (evt; sub.eventTypes) {

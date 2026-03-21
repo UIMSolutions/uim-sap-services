@@ -91,7 +91,7 @@ struct IPVJob {
   }
 }
 
-IPVJob jobFromJson(string tenantId, Json request) {
+IPVJob jobFromJson(UUID tenantId, Json request) {
   IPVJob j;
   j.tenantId = UUID(tenantId);
   j.jobId = randomUUID().toString();

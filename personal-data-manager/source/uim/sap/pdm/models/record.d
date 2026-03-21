@@ -57,7 +57,7 @@ struct PDMPersonalDataRecord {
     }
 }
 
-PDMPersonalDataRecord recordFromJson(string recordId, string subjectId, string tenantId, Json req) {
+PDMPersonalDataRecord recordFromJson(string recordId, string subjectId, UUID tenantId, Json req) {
     PDMPersonalDataRecord r = new PDMPersonalDataRecord(req);
     r.recordId = recordId;
     r.subjectId = subjectId;
