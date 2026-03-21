@@ -25,7 +25,7 @@ class SVMStore : SAPStore {
     }
   }
 
-  SVMPlatform[] listPlatforms(string tenantId) {
+  SVMPlatform[] listPlatforms(UUID tenantId) {
     SVMPlatform[] values;
     synchronized (_lock) {
       foreach (key, value; _platforms) {
@@ -37,7 +37,7 @@ class SVMStore : SAPStore {
     return values;
   }
 
-  SVMPlatform getPlatform(string tenantId, string platformId) {
+  SVMPlatform getPlatform(UUID tenantId, string platformId) {
     synchronized (_lock) {
       auto key = scopedKey(tenantId, "platform", platformId);
       if (auto value = key in _platforms) {
@@ -47,7 +47,7 @@ class SVMStore : SAPStore {
     return SVMPlatform.init;
   }
 
-  bool deletePlatform(string tenantId, string platformId) {
+  bool deletePlatform(UUID tenantId, string platformId) {
     synchronized (_lock) {
       auto key = scopedKey(tenantId, "platform", platformId);
       if ((key in _platforms) is null) {
@@ -69,7 +69,7 @@ class SVMStore : SAPStore {
     }
   }
 
-  SVMServiceInstance[] listInstances(string tenantId) {
+  SVMServiceInstance[] listInstances(UUID tenantId) {
     SVMServiceInstance[] values;
     synchronized (_lock) {
       foreach (key, value; _instances) {
@@ -81,7 +81,7 @@ class SVMStore : SAPStore {
     return values;
   }
 
-  SVMServiceInstance getInstance(string tenantId, UUID instanceId) {
+  SVMServiceInstance getInstance(UUID tenantId, UUID instanceId) {
     synchronized (_lock) {
       auto key = scopedKey(tenantId, "instance", instanceId);
       if (auto value = key in _instances) {
@@ -91,7 +91,7 @@ class SVMStore : SAPStore {
     return SVMServiceInstance.init;
   }
 
-  bool deleteInstance(string tenantId, UUID instanceId) {
+  bool deleteInstance(UUID tenantId, UUID instanceId) {
     synchronized (_lock) {
       auto key = scopedKey(tenantId, "instance", instanceId);
       if ((key in _instances) is null) {
@@ -109,7 +109,7 @@ class SVMStore : SAPStore {
     }
   }
 
-  SVMServiceBinding[] listBindings(string tenantId) {
+  SVMServiceBinding[] listBindings(UUID tenantId) {
     SVMServiceBinding[] values;
     synchronized (_lock) {
       foreach (key, value; _bindings) {
@@ -121,7 +121,7 @@ class SVMStore : SAPStore {
     return values;
   }
 
-  bool deleteBinding(string tenantId, string bindingId) {
+  bool deleteBinding(UUID tenantId, string bindingId) {
     synchronized (_lock) {
       auto key = scopedKey(tenantId, "binding", bindingId);
       if ((key in _bindings) is null) {
@@ -132,11 +132,11 @@ class SVMStore : SAPStore {
     }
   }
 
-  private string scopedKey(string tenantId, string scopePart, string id) {
+  private string scopedKey(UUID tenantId, string scopePart, string id) {
     return tenantId ~ ":" ~ scopePart ~ ":" ~ id;
   }
 
-  private bool belongsTo(string key, string tenantId) {
+  private bool belongsTo(string key, UUID tenantId) {
     return key.length > tenantId.length + 1 && key[0 .. tenantId.length] == tenantId && key[tenantId.length] == ':';
   }
 }

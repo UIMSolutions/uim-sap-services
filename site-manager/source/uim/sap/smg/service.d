@@ -33,7 +33,7 @@ class SMGService : SAPService {
     return readyInfo;
   }
 
-  Json listSites(string tenantId) {
+  Json listSites(UUID tenantId) {
     validateTenant(tenantId);
     Json payload = Json.emptyObject;
     Json items = Json.emptyArray;
@@ -45,7 +45,7 @@ class SMGService : SAPService {
     return payload;
   }
 
-  Json upsertSite(string tenantId, Json data) {
+  Json upsertSite(UUID tenantId, Json data) {
     validateTenant(tenantId);
 
     auto siteid = requiredUUID(body, "site_id");
@@ -71,7 +71,7 @@ class SMGService : SAPService {
     return payload;
   }
 
-  Json getSite(string tenantId, string siteId) {
+  Json getSite(UUID tenantId, string siteId) {
     validateTenant(tenantId);
     if (siteId.length == 0)
       throw new SMGValidationException("site_id is required");
@@ -85,7 +85,7 @@ class SMGService : SAPService {
     return payload;
   }
 
-  Json deleteSite(string tenantId, string siteId) {
+  Json deleteSite(UUID tenantId, string siteId) {
     validateTenant(tenantId);
     if (siteId.length == 0)
       throw new SMGValidationException("site_id is required");
@@ -100,7 +100,7 @@ class SMGService : SAPService {
     return payload;
   }
 
-  Json getSubaccountSettings(string tenantId) {
+  Json getSubaccountSettings(UUID tenantId) {
     validateTenant(tenantId);
 
     auto settings = _store.getSubaccountSettings(tenantId);
@@ -124,7 +124,7 @@ class SMGService : SAPService {
     return payload;
   }
 
-  Json upsertSubaccountSettings(string tenantId, Json data) {
+  Json upsertSubaccountSettings(UUID tenantId, Json data) {
     validateTenant(tenantId);
     auto now = Clock.currTime();
 

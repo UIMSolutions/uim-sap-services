@@ -31,7 +31,7 @@ class SMGStore : SAPStore {
         }
     }
 
-    SMGSite[] listSites(string tenantId) {
+    SMGSite[] listSites(UUID tenantId) {
         SMGSite[] values;
         synchronized (_lock) {
             foreach (key, value; _sites) if (belongsToTenant(key, tenantId)) values ~= value;
@@ -39,7 +39,7 @@ class SMGStore : SAPStore {
         return values;
     }
 
-    Nullable!SMGSite getSite(string tenantId, string siteId) {
+    Nullable!SMGSite getSite(UUID tenantId, string siteId) {
         synchronized (_lock) {
             auto key = scopedKey(tenantId, "site", siteId);
             if (auto value = key in _sites) return Nullable!SMGSite(*value);
@@ -47,7 +47,7 @@ class SMGStore : SAPStore {
         }
     }
 
-    bool deleteSite(string tenantId, string siteId) {
+    bool deleteSite(UUID tenantId, string siteId) {
         synchronized (_lock) {
             auto key = scopedKey(tenantId, "site", siteId);
             if ((key in _sites) is null) return false;
@@ -73,7 +73,7 @@ class SMGStore : SAPStore {
         }
     }
 
-    Nullable!SMGSubaccountSettings getSubaccountSettings(string tenantId) {
+    Nullable!SMGSubaccountSettings getSubaccountSettings(UUID tenantId) {
         synchronized (_lock) {
             auto key = scopedKey(tenantId, "subaccount", "settings");
             if (auto value = key in _subaccountSettings) return Nullable!SMGSubaccountSettings(*value);
@@ -81,12 +81,12 @@ class SMGStore : SAPStore {
         }
     }
 
-    private bool belongsToTenant(string key, string tenantId) {
+    private bool belongsToTenant(string key, UUID tenantId) {
         auto prefix = tenantId ~ ":";
         return key.length >= prefix.length && key[0 .. prefix.length] == prefix;
     }
 
-    private string scopedKey(string tenantId, string kind, string id) {
+    private string scopedKey(UUID tenantId, string kind, string id) {
         return tenantId ~ ":" ~ kind ~ ":" ~ id;
     }
 }

@@ -31,7 +31,7 @@ class SDIStore : SAPStore {
     }
   }
 
-  SDISite[] listSites(string tenantId) {
+  SDISite[] listSites(UUID tenantId) {
     SDISite[] values;
     synchronized (_lock) {
       auto prefix = tenantId ~ ":";
@@ -43,7 +43,7 @@ class SDIStore : SAPStore {
     return values;
   }
 
-  Nullable!SDISite getSite(string tenantId, string siteId) {
+  Nullable!SDISite getSite(UUID tenantId, string siteId) {
     synchronized (_lock) {
       auto key = scopedKey(tenantId, siteId);
       if (auto value = key in _sites)
@@ -52,7 +52,7 @@ class SDIStore : SAPStore {
     }
   }
 
-  bool deleteSite(string tenantId, string siteId) {
+  bool deleteSite(UUID tenantId, string siteId) {
     synchronized (_lock) {
       auto key = scopedKey(tenantId, siteId);
       if ((key in _sites) is null)
@@ -62,7 +62,7 @@ class SDIStore : SAPStore {
     }
   }
 
-  void setDefaultSite(string tenantId, string siteId) {
+  void setDefaultSite(UUID tenantId, string siteId) {
     synchronized (_lock) {
       auto prefix = tenantId ~ ":";
       foreach (key, value; _sites) {
@@ -74,7 +74,7 @@ class SDIStore : SAPStore {
     }
   }
 
-  private string scopedKey(string tenantId, string siteId) {
+  private string scopedKey(UUID tenantId, string siteId) {
     return tenantId ~ ":" ~ siteId;
   }
 }

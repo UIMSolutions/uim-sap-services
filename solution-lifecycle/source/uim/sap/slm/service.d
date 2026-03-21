@@ -50,12 +50,12 @@ class SLMService : SAPService {
   // -----------------------------------------------------------------------
 
   /// List all solutions in a tenant
-  Json listSolutions(string tenantId) {
+  Json listSolutions(UUID tenantId) {
     return _store.listSolutions(tenantId).map!(s => s.toJson()).array.toJson;
   }
 
   /// Deploy a new solution via MTA archive
-  Json deploySolution(string tenantId, Json payload) {
+  Json deploySolution(UUID tenantId, Json payload) {
     SLMSolution sol;
     sol.tenantId = tenantId;
     sol.solutionId = jstr(payload, "solution_id");
@@ -107,12 +107,12 @@ class SLMService : SAPService {
   }
 
   /// Get full detail for a single solution
-  Json getSolution(string tenantId, string solutionId) {
+  Json getSolution(UUID tenantId, string solutionId) {
     return _solutionDetail(tenantId, solutionId);
   }
 
   /// Update an existing solution (new MTA version)
-  Json updateSolution(string tenantId, string solutionId, Json payload) {
+  Json updateSolution(UUID tenantId, string solutionId, Json payload) {
     SLMSolution sol;
     if (!_store.tryGetSolution(tenantId, solutionId, sol))
       throw new SLMNotFoundException("Solution", solutionId);
@@ -159,7 +159,7 @@ class SLMService : SAPService {
   }
 
   /// Delete a solution
-  Json deleteSolution(string tenantId, string solutionId) {
+  Json deleteSolution(UUID tenantId, string solutionId) {
     SLMSolution sol;
     if (!_store.tryGetSolution(tenantId, solutionId, sol))
       throw new SLMNotFoundException("Solution", solutionId);
@@ -199,7 +199,7 @@ class SLMService : SAPService {
   // COMPONENTS – Monitor individual parts of a solution
   // -----------------------------------------------------------------------
 
-  Json listComponents(string tenantId, string solutionId) {
+  Json listComponents(UUID tenantId, string solutionId) {
     _requireSolution(tenantId, solutionId);
     Json arr = Json.emptyArray;
     foreach (c; _store.listComponents(solutionId))
@@ -207,7 +207,7 @@ class SLMService : SAPService {
     return arr;
   }
 
-  Json getComponent(string tenantId, string solutionId, string componentId) {
+  Json getComponent(UUID tenantId, string solutionId, string componentId) {
     _requireSolution(tenantId, solutionId);
     SLMComponent comp;
     if (!_store.tryGetComponent(solutionId, componentId, comp))
@@ -219,11 +219,11 @@ class SLMService : SAPService {
   // DEPLOYMENTS – Operation history
   // -----------------------------------------------------------------------
 
-  Json listDeployments(string tenantId) {
+  Json listDeployments(UUID tenantId) {
     return _store.listDeployments(tenantId).map!(d => d.toJson()).array.toJson;
   }
 
-  Json listDeploymentsForSolution(string tenantId, string solutionId) {
+  Json listDeploymentsForSolution(UUID tenantId, string solutionId) {
     _requireSolution(tenantId, solutionId);
     Json arr = Json.emptyArray;
     foreach (d; _store.deploymentsForSolution(tenantId, solutionId))
@@ -235,11 +235,11 @@ class SLMService : SAPService {
   // SUBSCRIPTIONS – Multitenant solution subscriptions
   // -----------------------------------------------------------------------
 
-  Json listSubscriptions(string tenantId) {
+  Json listSubscriptions(UUID tenantId) {
     return _store.listSubscriptions(tenantId).map!(s => s.toJson()).array.toJson;
   }
 
-  Json listSubscriptionsForSolution(string tenantId, string solutionId) {
+  Json listSubscriptionsForSolution(UUID tenantId, string solutionId) {
     _requireSolution(tenantId, solutionId);
     Json arr = Json.emptyArray;
     foreach (s; _store.subscriptionsForSolution(tenantId, solutionId))
@@ -248,7 +248,7 @@ class SLMService : SAPService {
   }
 
   /// Subscribe a consumer subaccount to a multitenant solution
-  Json subscribe(string tenantId, string solutionId, Json payload) {
+  Json subscribe(UUID tenantId, string solutionId, Json payload) {
     SLMSolution sol;
     if (!_store.tryGetSolution(tenantId, solutionId, sol))
       throw new SLMNotFoundException("Solution", solutionId);
@@ -277,7 +277,7 @@ class SLMService : SAPService {
   }
 
   /// Unsubscribe a consumer subaccount
-  Json unsubscribe(string tenantId, string solutionId, string subscriptionId) {
+  Json unsubscribe(UUID tenantId, string solutionId, string subscriptionId) {
     _requireSolution(tenantId, solutionId);
     SLMSubscription sub;
     if (!_store.tryGetSubscription(tenantId, subscriptionId, sub))
@@ -299,7 +299,7 @@ class SLMService : SAPService {
   // LICENSES
   // -----------------------------------------------------------------------
 
-  Json listLicensesForSolution(string tenantId, string solutionId) {
+  Json listLicensesForSolution(UUID tenantId, string solutionId) {
     _requireSolution(tenantId, solutionId);
     Json arr = Json.emptyArray;
     foreach (l; _store.licensesForSolution(tenantId, solutionId))
@@ -311,7 +311,7 @@ class SLMService : SAPService {
   // LOGS (monitoring)
   // -----------------------------------------------------------------------
 
-  Json listLogs(string tenantId, string solutionId) {
+  Json listLogs(UUID tenantId, string solutionId) {
     _requireSolution(tenantId, solutionId);
     Json arr = Json.emptyArray;
     foreach (l; _store.listLogs(tenantId, solutionId))
@@ -323,14 +323,14 @@ class SLMService : SAPService {
   // Private helpers
   // -----------------------------------------------------------------------
 
-  private SLMSolution _requireSolution(string tenantId, string solutionId) {
+  private SLMSolution _requireSolution(UUID tenantId, string solutionId) {
     SLMSolution sol;
     if (!_store.tryGetSolution(tenantId, solutionId, sol))
       throw new SLMNotFoundException("Solution", solutionId);
     return sol;
   }
 
-  private Json _solutionDetail(string tenantId, string solutionId) {
+  private Json _solutionDetail(UUID tenantId, string solutionId) {
     SLMSolution sol;
     if (!_store.tryGetSolution(tenantId, solutionId, sol))
       throw new SLMNotFoundException("Solution", solutionId);
@@ -387,7 +387,7 @@ class SLMService : SAPService {
     }
   }
 
-  private void _appendLog(string tenantId, string solutionId, string deploymentId,
+  private void _appendLog(UUID tenantId, string solutionId, string deploymentId,
     string action, string level, string message) {
     SLMOperationLog log;
     log.tenantId = tenantId;

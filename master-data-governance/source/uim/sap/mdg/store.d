@@ -27,7 +27,7 @@ class MDGStore : SAPStore {
     }
   }
 
-  bool deleteBusinessPartner(string tenantId, string bpId) {
+  bool deleteBusinessPartner(UUID tenantId, string bpId) {
     synchronized (_lock) {
       auto key = bpKey(tenantId, bpId);
       if ((key in _businessPartners) is null) {
@@ -38,7 +38,7 @@ class MDGStore : SAPStore {
     }
   }
 
-  MDGBusinessPartner getBusinessPartner(string tenantId, string bpId) {
+  MDGBusinessPartner getBusinessPartner(UUID tenantId, string bpId) {
     synchronized (_lock) {
       auto key = bpKey(tenantId, bpId);
       if (auto value = key in _businessPartners) {
@@ -48,7 +48,7 @@ class MDGStore : SAPStore {
     return MDGBusinessPartner.init;
   }
 
-  MDGBusinessPartner[] listBusinessPartners(string tenantId) {
+  MDGBusinessPartner[] listBusinessPartners(UUID tenantId) {
     MDGBusinessPartner[] values;
     synchronized (_lock) {
       foreach (key, bp; _businessPartners) {
@@ -68,7 +68,7 @@ class MDGStore : SAPStore {
     }
   }
 
-  MDGQualityRule getRule(string tenantId, string ruleId) {
+  MDGQualityRule getRule(UUID tenantId, string ruleId) {
     synchronized (_lock) {
       auto key = ruleKey(tenantId, ruleId);
       if (auto rule = key in _rules) {
@@ -78,7 +78,7 @@ class MDGStore : SAPStore {
     return MDGQualityRule.init;
   }
 
-  MDGQualityRule[] listRules(string tenantId) {
+  MDGQualityRule[] listRules(UUID tenantId) {
     MDGQualityRule[] values;
     synchronized (_lock) {
       foreach (key, rule; _rules) {
@@ -90,15 +90,15 @@ class MDGStore : SAPStore {
     return values;
   }
 
-  private string bpKey(string tenantId, string bpId) {
+  private string bpKey(UUID tenantId, string bpId) {
     return tenantId ~ ":bp:" ~ bpId;
   }
 
-  private string ruleKey(string tenantId, string ruleId) {
+  private string ruleKey(UUID tenantId, string ruleId) {
     return tenantId ~ ":rule:" ~ ruleId;
   }
 
-  private bool belongsToTenant(string key, string tenantId) {
+  private bool belongsToTenant(string key, UUID tenantId) {
     return key.length > tenantId.length + 1 && key[0 .. tenantId.length] == tenantId && key[tenantId
       .length] == ':';
   }

@@ -69,7 +69,7 @@ class TKCStore : SAPStore {
     }
   }
 
-  Nullable!TKCTask getTask(string tenantId, string taskId) {
+  Nullable!TKCTask getTask(UUID tenantId, string taskId) {
     synchronized (_lock) {
       auto key = scopedTaskKey(tenantId, taskId);
       if (auto value = key in _tasks)
@@ -252,7 +252,7 @@ class TKCStore : SAPStore {
     return providerId;
   }
 
-  private string scopedTaskKey(string tenantId, string taskId) const {
+  private string scopedTaskKey(UUID tenantId, string taskId) const {
     return tenantId ~ ":" ~ taskId;
   }
 }

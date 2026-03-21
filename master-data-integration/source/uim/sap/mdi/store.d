@@ -26,7 +26,7 @@ class MDIStore : SAPStore {
         }
     }
 
-    MDIReplicationClient getClient(string tenantId, string clientId) {
+    MDIReplicationClient getClient(UUID tenantId, string clientId) {
         synchronized (_lock) {
             auto key = scopedKey(tenantId, "client", clientId);
             if (auto value = key in _clients) return *value;
@@ -34,7 +34,7 @@ class MDIStore : SAPStore {
         return MDIReplicationClient.init;
     }
 
-    MDIReplicationClient[] listClients(string tenantId) {
+    MDIReplicationClient[] listClients(UUID tenantId) {
         MDIReplicationClient[] values;
         synchronized (_lock) {
             foreach (key, value; _clients) if (belongsTo(key, tenantId)) values ~= value;
@@ -49,7 +49,7 @@ class MDIStore : SAPStore {
         }
     }
 
-    MDIFilter[] listFilters(string tenantId) {
+    MDIFilter[] listFilters(UUID tenantId) {
         MDIFilter[] values;
         synchronized (_lock) {
             foreach (key, value; _filters) if (belongsTo(key, tenantId)) values ~= value;
@@ -64,7 +64,7 @@ class MDIStore : SAPStore {
         }
     }
 
-    MDIExtension[] listExtensions(string tenantId) {
+    MDIExtension[] listExtensions(UUID tenantId) {
         MDIExtension[] values;
         synchronized (_lock) {
             foreach (key, value; _extensions) if (belongsTo(key, tenantId)) values ~= value;
@@ -79,7 +79,7 @@ class MDIStore : SAPStore {
         }
     }
 
-    MDIReplicationJob[] listJobs(string tenantId) {
+    MDIReplicationJob[] listJobs(UUID tenantId) {
         MDIReplicationJob[] values;
         synchronized (_lock) {
             foreach (key, value; _jobs) if (belongsTo(key, tenantId)) values ~= value;
@@ -87,11 +87,11 @@ class MDIStore : SAPStore {
         return values;
     }
 
-    private string scopedKey(string tenantId, string scopePart, string id) {
+    private string scopedKey(UUID tenantId, string scopePart, string id) {
         return tenantId ~ ":" ~ scopePart ~ ":" ~ id;
     }
 
-    private bool belongsTo(string key, string tenantId) {
+    private bool belongsTo(string key, UUID tenantId) {
         return key.length > tenantId.length + 1 && key[0 .. tenantId.length] == tenantId && key[tenantId.length] == ':';
     }
 }

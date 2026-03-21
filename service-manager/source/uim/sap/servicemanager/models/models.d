@@ -87,7 +87,7 @@ struct SVMServiceBinding {
   }
 }
 
-SVMPlatform parsePlatform(string tenantId, Json request) {
+SVMPlatform parsePlatform(UUID tenantId, Json request) {
   SVMPlatform platform;
   platform.tenantId = tenantId;
   platform.platformId = request.getString("platform_id", createId());
@@ -99,7 +99,7 @@ SVMPlatform parsePlatform(string tenantId, Json request) {
   return platform;
 }
 
-SVMServiceInstance parseServiceInstance(string tenantId, Json request) {
+SVMServiceInstance parseServiceInstance(UUID tenantId, Json request) {
   SVMServiceInstance instanceItem;
   instanceItem.tenantId = tenantId;
   instanceItem.instanceId = request.getString("instance_id", createId());
@@ -126,7 +126,7 @@ SVMServiceInstance parseServiceInstance(string tenantId, Json request) {
   return instanceItem;
 }
 
-SVMServiceBinding parseServiceBinding(string tenantId, Json request) {
+SVMServiceBinding parseServiceBinding(UUID tenantId, Json request) {
   SVMServiceBinding binding;
   binding.tenantId = tenantId;
   binding.bindingId = request.getString("binding_id", createId());

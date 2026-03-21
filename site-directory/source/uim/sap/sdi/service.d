@@ -43,7 +43,7 @@ class SDIService : SAPService {
     return payload;
   }
 
-  Json listSiteTiles(string tenantId) {
+  Json listSiteTiles(UUID tenantId) {
     validateTenant(tenantId);
     Json tiles = Json.emptyArray;
     foreach (site; _store.listSites(tenantId))
@@ -56,7 +56,7 @@ class SDIService : SAPService {
     return payload;
   }
 
-  Json createSite(string tenantId, Json data) {
+  Json createSite(UUID tenantId, Json data) {
     validateTenant(tenantId);
     auto now = Clock.currTime();
 
@@ -84,7 +84,7 @@ class SDIService : SAPService {
     return payload;
   }
 
-  Json getSite(string tenantId, string siteId) {
+  Json getSite(UUID tenantId, string siteId) {
     validateTenant(tenantId);
     auto site = requireSite(tenantId, siteId);
 
@@ -93,7 +93,7 @@ class SDIService : SAPService {
     return payload;
   }
 
-  Json deleteSite(string tenantId, string siteId) {
+  Json deleteSite(UUID tenantId, string siteId) {
     validateTenant(tenantId);
     if (!_store.deleteSite(tenantId, siteId))
       throw new SDINotFoundException("Site not found");
@@ -104,7 +104,7 @@ class SDIService : SAPService {
     return payload;
   }
 
-  Json importSite(string tenantId, string siteId, Json data) {
+  Json importSite(UUID tenantId, string siteId, Json data) {
     validateTenant(tenantId);
     auto existing = requireSite(tenantId, siteId);
     auto now = Clock.currTime();
@@ -128,7 +128,7 @@ class SDIService : SAPService {
     return payload;
   }
 
-  Json exportSite(string tenantId, string siteId) {
+  Json exportSite(UUID tenantId, string siteId) {
     validateTenant(tenantId);
     auto site = requireSite(tenantId, siteId);
 
@@ -140,7 +140,7 @@ class SDIService : SAPService {
     return payload;
   }
 
-  Json updateAlias(string tenantId, string siteId, Json data) {
+  Json updateAlias(UUID tenantId, string siteId, Json data) {
     validateTenant(tenantId);
     auto site = requireSite(tenantId, siteId);
 
@@ -156,7 +156,7 @@ class SDIService : SAPService {
     return payload;
   }
 
-  Json setDefaultSite(string tenantId, string siteId) {
+  Json setDefaultSite(UUID tenantId, string siteId) {
     validateTenant(tenantId);
     auto site = requireSite(tenantId, siteId);
     site.isDefault = true;
@@ -170,7 +170,7 @@ class SDIService : SAPService {
     return payload;
   }
 
-  Json openRuntimeSite(string tenantId, string siteId) {
+  Json openRuntimeSite(UUID tenantId, string siteId) {
     validateTenant(tenantId);
     auto site = requireSite(tenantId, siteId);
 
@@ -181,7 +181,7 @@ class SDIService : SAPService {
     return payload;
   }
 
-  Json getSiteSettings(string tenantId, string siteId) {
+  Json getSiteSettings(UUID tenantId, string siteId) {
     validateTenant(tenantId);
     auto site = requireSite(tenantId, siteId);
 
@@ -191,7 +191,7 @@ class SDIService : SAPService {
     return payload;
   }
 
-  Json updateSiteSettings(string tenantId, string siteId, Json data) {
+  Json updateSiteSettings(UUID tenantId, string siteId, Json data) {
     validateTenant(tenantId);
     auto site = requireSite(tenantId, siteId);
 
@@ -205,7 +205,7 @@ class SDIService : SAPService {
     return payload;
   }
 
-  Json assignRoles(string tenantId, string siteId, Json data) {
+  Json assignRoles(UUID tenantId, string siteId, Json data) {
     validateTenant(tenantId);
     auto site = requireSite(tenantId, siteId);
 
@@ -220,7 +220,7 @@ class SDIService : SAPService {
     return payload;
   }
 
-  private SDISite requireSite(string tenantId, string siteId) {
+  private SDISite requireSite(UUID tenantId, string siteId) {
     if (siteId.length == 0)
       throw new SDIValidationException("site_id is required");
     auto site = _store.getSite(tenantId, siteId);
@@ -229,7 +229,7 @@ class SDIService : SAPService {
     return site.get;
   }
 
-  private void validateTenant(string tenantId) const {
+  private void validateTenant(UUID tenantId) const {
     if (tenantId.length == 0)
       throw new SDIValidationException("tenant_id is required");
   }
@@ -287,7 +287,7 @@ class SDIService : SAPService {
     return normalized;
   }
 
-  private string defaultRuntimeUrl(string tenantId, string siteAlias) const {
+  private string defaultRuntimeUrl(UUID tenantId, string siteAlias) const {
     return "https://runtime.local/" ~ tenantId ~ "/" ~ siteAlias;
   }
 

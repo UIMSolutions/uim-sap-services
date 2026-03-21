@@ -66,7 +66,7 @@ class SVMService : SAPService {
       .set("catalog_scope", "global-marketplace");
   }
 
-  Json serviceOfferings(string tenantId) {
+  Json serviceOfferings(UUID tenantId) {
     validateTenant(tenantId);
 
     auto payload = marketplaceOfferings();
@@ -75,7 +75,7 @@ class SVMService : SAPService {
     return payload;
   }
 
-  Json upsertPlatform(string tenantId, Json request) {
+  Json upsertPlatform(UUID tenantId, Json request) {
     validateTenant(tenantId);
 
     auto platform = parsePlatform(tenantId, request);
@@ -92,7 +92,7 @@ class SVMService : SAPService {
       .set("platform", saved.toJson());
   }
 
-  Json listPlatforms(string tenantId) {
+  Json listPlatforms(UUID tenantId) {
     validateTenant(tenantId);
 
     Json resources = Json.emptyArray;
@@ -106,7 +106,7 @@ class SVMService : SAPService {
       .set("total_results", cast(long)resources.length);
   }
 
-  Json deletePlatform(string tenantId, string platformId) {
+  Json deletePlatform(UUID tenantId, string platformId) {
     validateTenant(tenantId);
     if (platformId.length == 0) {
       throw new SVMValidationException("platformId cannot be empty");
@@ -121,7 +121,7 @@ class SVMService : SAPService {
       .set("platform_id", platformId);
   }
 
-  Json upsertServiceInstance(string tenantId, Json request) {
+  Json upsertServiceInstance(UUID tenantId, Json request) {
     validateTenant(tenantId);
 
     auto instanceItem = parseServiceInstance(tenantId, request);
@@ -143,7 +143,7 @@ class SVMService : SAPService {
       .set("service_instance", saved.toJson());
   }
 
-  Json listServiceInstances(string tenantId) {
+  Json listServiceInstances(UUID tenantId) {
     validateTenant(tenantId);
 
     Json resources = Json.emptyArray;
@@ -157,7 +157,7 @@ class SVMService : SAPService {
       .set("total_results", cast(long)resources.length);
   }
 
-  Json patchServiceInstance(string tenantId, UUID instanceId, Json request) {
+  Json patchServiceInstance(UUID tenantId, UUID instanceId, Json request) {
     validateTenant(tenantId);
 
     auto current = _store.getInstance(tenantId, instanceId);
@@ -179,7 +179,7 @@ class SVMService : SAPService {
       .set("service_instance", saved.toJson());
   }
 
-  Json deleteServiceInstance(string tenantId, UUID instanceId) {
+  Json deleteServiceInstance(UUID tenantId, UUID instanceId) {
     validateTenant(tenantId);
 
     if (!_store.deleteInstance(tenantId, instanceId)) {
@@ -191,7 +191,7 @@ class SVMService : SAPService {
       .set("instance_id", instanceId);
   }
 
-  Json shareServiceInstance(string tenantId, UUID instanceId, Json request) {
+  Json shareServiceInstance(UUID tenantId, UUID instanceId, Json request) {
     validateTenant(tenantId);
 
     auto current = _store.getInstance(tenantId, instanceId);
@@ -226,7 +226,7 @@ class SVMService : SAPService {
       .set("service_instance", saved.toJson());
   }
 
-  Json upsertServiceBinding(string tenantId, Json request) {
+  Json upsertServiceBinding(UUID tenantId, Json request) {
     validateTenant(tenantId);
 
     auto binding = parseServiceBinding(tenantId, request);
@@ -248,7 +248,7 @@ class SVMService : SAPService {
       .set("service_binding", saved.toJson());
   }
 
-  Json listServiceBindings(string tenantId) {
+  Json listServiceBindings(UUID tenantId) {
     validateTenant(tenantId);
 
     Json resources = Json.emptyArray;
@@ -262,7 +262,7 @@ class SVMService : SAPService {
       .set("total_results", cast(long)resources.length);
   }
 
-  Json deleteServiceBinding(string tenantId, string bindingId) {
+  Json deleteServiceBinding(UUID tenantId, string bindingId) {
     validateTenant(tenantId);
 
     if (!_store.deleteBinding(tenantId, bindingId)) {
@@ -274,7 +274,7 @@ class SVMService : SAPService {
       .set("binding_id", bindingId);
   }
 
-  Json runtimeInstanceAction(string tenantId, UUID instanceId, string action) {
+  Json runtimeInstanceAction(UUID tenantId, UUID instanceId, string action) {
     validateTenant(tenantId);
 
     auto current = _store.getInstance(tenantId, instanceId);
@@ -310,7 +310,7 @@ class SVMService : SAPService {
     return row;
   }
 
-  private void validateTenant(string tenantId) {
+  private void validateTenant(UUID tenantId) {
     if (tenantId.length == 0) {
       throw new SVMValidationException("tenantId cannot be empty");
     }

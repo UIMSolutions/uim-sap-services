@@ -30,7 +30,7 @@ struct MDGQualityRule {
     }
 }
 
-MDGQualityRule qualityRuleFromJson(string tenantId, string ruleId, Json request) {
+MDGQualityRule qualityRuleFromJson(UUID tenantId, string ruleId, Json request) {
     MDGQualityRule rule;
     rule.tenantId = UUID(tenantId);
     rule.ruleId = ruleId;

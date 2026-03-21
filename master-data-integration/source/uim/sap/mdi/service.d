@@ -28,7 +28,7 @@ class MDIService : SAPService {
   }
 
 
-  Json upsertClient(string tenantId, Json request) {
+  Json upsertClient(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
     auto client = clientFromJson(tenantId, request);
     if (client.name.length == 0)
@@ -41,7 +41,7 @@ class MDIService : SAPService {
     return payload;
   }
 
-  Json listClients(string tenantId) {
+  Json listClients(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
     Json resources = Json.emptyArray;
     foreach (client; _store.listClients(tenantId))
@@ -53,7 +53,7 @@ class MDIService : SAPService {
     return payload;
   }
 
-  Json upsertFilter(string tenantId, string filterId, Json request) {
+  Json upsertFilter(UUID tenantId, string filterId, Json request) {
     validateId(tenantId, "Tenant ID");
     validateId(filterId, "Filter ID");
 
@@ -84,7 +84,7 @@ class MDIService : SAPService {
     return payload;
   }
 
-  Json listFilters(string tenantId) {
+  Json listFilters(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
     Json resources = Json.emptyArray;
     foreach (filter; _store.listFilters(tenantId))
@@ -96,7 +96,7 @@ class MDIService : SAPService {
     return payload;
   }
 
-  Json upsertExtension(string tenantId, string extensionId, Json request) {
+  Json upsertExtension(UUID tenantId, string extensionId, Json request) {
     validateId(tenantId, "Tenant ID");
     validateId(extensionId, "Extension ID");
 
@@ -127,7 +127,7 @@ class MDIService : SAPService {
     return payload;
   }
 
-  Json listExtensions(string tenantId) {
+  Json listExtensions(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
     Json resources = Json.emptyArray;
     foreach (extension; _store.listExtensions(tenantId))
@@ -139,7 +139,7 @@ class MDIService : SAPService {
     return payload;
   }
 
-  Json replicate(string tenantId, Json request) {
+  Json replicate(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
 
     if (!("source_client_id" in request) || !request["source_client_id"].isString) {
@@ -192,7 +192,7 @@ class MDIService : SAPService {
     return payload;
   }
 
-  Json listReplications(string tenantId) {
+  Json listReplications(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
     Json resources = Json.emptyArray;
     foreach (job; _store.listJobs(tenantId))

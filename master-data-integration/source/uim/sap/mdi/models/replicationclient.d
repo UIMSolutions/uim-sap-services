@@ -46,7 +46,7 @@ struct MDIReplicationClient {
   }
 }
 
-MDIReplicationClient clientFromJson(string tenantId, Json request) {
+MDIReplicationClient clientFromJson(UUID tenantId, Json request) {
   MDIReplicationClient client;
   client.tenantId = UUID(tenantId);
   client.clientId = createId();

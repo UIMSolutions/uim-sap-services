@@ -15,7 +15,7 @@ class MDGService : SAPService {
     _store = new MDGStore;
   }
 
-  Json upsertBusinessPartner(string tenantId, Json request) {
+  Json upsertBusinessPartner(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
     auto bp = businessPartnerFromJson(tenantId, request, _config.defaultApprover);
     validateBusinessPartner(bp);
@@ -30,7 +30,7 @@ class MDGService : SAPService {
     return payload;
   }
 
-  Json upsertBusinessPartnersBatch(string tenantId, Json request) {
+  Json upsertBusinessPartnersBatch(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
     if (!("business_partners" in request) || !request["business_partners"].isArray) {
       throw new MDGValidationException("business_partners array is required");
@@ -56,7 +56,7 @@ class MDGService : SAPService {
     return payload;
   }
 
-  Json listBusinessPartners(string tenantId) {
+  Json listBusinessPartners(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
 
     Json resources = Json.emptyArray;
@@ -71,7 +71,7 @@ class MDGService : SAPService {
     return payload;
   }
 
-  Json updateWorkflowState(string tenantId, string bpId, Json request) {
+  Json updateWorkflowState(UUID tenantId, string bpId, Json request) {
     validateId(tenantId, "Tenant ID");
     validateId(bpId, "Business partner ID");
     if (!("workflow_state" in request) || request["workflow_state"].type != Json.Type.string) {
@@ -102,7 +102,7 @@ class MDGService : SAPService {
     return payload;
   }
 
-  Json ingestBusinessPartners(string tenantId, Json request) {
+  Json ingestBusinessPartners(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
 
     if (!("source" in request) || request["source"].type != Json.Type.string) {
@@ -135,7 +135,7 @@ class MDGService : SAPService {
     return payload;
   }
 
-  Json detectDuplicates(string tenantId) {
+  Json detectDuplicates(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
 
     auto bps = _store.listBusinessPartners(tenantId);
@@ -153,7 +153,7 @@ class MDGService : SAPService {
     return payload;
   }
 
-  Json mergeDuplicates(string tenantId, Json request) {
+  Json mergeDuplicates(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
     if (!("primary_bp_id" in request) || request["primary_bp_id"].type != Json.Type.string) {
       throw new MDGValidationException("primary_bp_id is required");
@@ -194,7 +194,7 @@ class MDGService : SAPService {
     return payload;
   }
 
-  Json upsertRule(string tenantId, string ruleId, Json request) {
+  Json upsertRule(UUID tenantId, string ruleId, Json request) {
     validateId(tenantId, "Tenant ID");
     validateId(ruleId, "Rule ID");
 
@@ -209,7 +209,7 @@ class MDGService : SAPService {
     return payload;
   }
 
-  Json listRules(string tenantId) {
+  Json listRules(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
     Json resources = Json.emptyArray;
     foreach (rule; _store.listRules(tenantId)) {
@@ -223,7 +223,7 @@ class MDGService : SAPService {
     return payload;
   }
 
-  Json evaluateDataQuality(string tenantId) {
+  Json evaluateDataQuality(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
     auto rules = _store.listRules(tenantId);
     auto bps = _store.listBusinessPartners(tenantId);

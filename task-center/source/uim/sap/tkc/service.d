@@ -54,7 +54,7 @@ class TKCService : SAPService {
       .set("provider", saved.toJson());
   }
 
-  Json federateTasks(string tenantId, string providerId, Json data) {
+  Json federateTasks(UUID tenantId, string providerId, Json data) {
     validateTenant(tenantId);
     if (providerId.length == 0)
       throw new TKCValidationException("provider_id is required");
@@ -119,7 +119,7 @@ class TKCService : SAPService {
   }
 
   Json listTasks(
-    string tenantId,
+    UUID tenantId,
     string assignee,
     string status,
     string providerId,
@@ -181,7 +181,7 @@ class TKCService : SAPService {
       .set("tasks", tasks);
   }
 
-  Json getTask(string tenantId, string taskId) {
+  Json getTask(UUID tenantId, string taskId) {
     validateTenant(tenantId);
     if (taskId.length == 0)
       throw new TKCValidationException("task_id is required");
@@ -195,7 +195,7 @@ class TKCService : SAPService {
     return payload;
   }
 
-  Json performTaskAction(string tenantId, string taskId, Json data) {
+  Json performTaskAction(UUID tenantId, string taskId, Json data) {
     validateTenant(tenantId);
     if (taskId.length == 0)
       throw new TKCValidationException("task_id is required");
@@ -228,7 +228,7 @@ class TKCService : SAPService {
       .set("task", saved.toJson());
   }
 
-  Json navigateToTaskApp(string tenantId, string taskId) {
+  Json navigateToTaskApp(UUID tenantId, string taskId) {
     validateTenant(tenantId);
     if (taskId.length == 0)
       throw new TKCValidationException("task_id is required");
@@ -249,7 +249,7 @@ class TKCService : SAPService {
 
   }
 
-  private void validateTenant(string tenantId) const {
+  private void validateTenant(UUID tenantId) const {
     if (tenantId.length == 0)
       throw new TKCValidationException("tenant_id is required");
   }

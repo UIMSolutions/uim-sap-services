@@ -46,7 +46,7 @@ struct MDGBusinessPartner {
   }
 }
 
-MDGBusinessPartner businessPartnerFromJson(string tenantId, Json request, string defaultApprover) {
+MDGBusinessPartner businessPartnerFromJson(UUID tenantId, Json request, string defaultApprover) {
   MDGBusinessPartner bp;
   bp.tenantId = UUID(tenantId);
   bp.bpId = randomUUID().toString();

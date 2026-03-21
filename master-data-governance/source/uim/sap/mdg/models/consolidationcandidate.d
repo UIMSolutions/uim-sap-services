@@ -22,7 +22,7 @@ struct MDGConsolidationCandidate {
     }
 }
 
-MDGConsolidationCandidate[] detectDuplicateCandidates(string tenantId, MDGBusinessPartner[] businessPartners) {
+MDGConsolidationCandidate[] detectDuplicateCandidates(UUID tenantId, MDGBusinessPartner[] businessPartners) {
     auto builder = appender!(MDGConsolidationCandidate[])();
 
     for (size_t i = 0; i < businessPartners.length; ++i) {

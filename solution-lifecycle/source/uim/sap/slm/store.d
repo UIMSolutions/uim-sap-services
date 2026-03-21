@@ -30,11 +30,11 @@ class SLMStore : SAPStore {
     // -----------------------------------------------------------------------
     // Key helpers
     // -----------------------------------------------------------------------
-    private static string tp(string tenantId) {
+    private static string tp(UUID tenantId) {
         return tenantId ~ "::";
     }
 
-    private static string key(string tenantId, string id) {
+    private static string key(UUID tenantId, string id) {
         return tenantId ~ "::" ~ id;
     }
 
@@ -50,20 +50,20 @@ class SLMStore : SAPStore {
         return item;
     }
 
-    SLMSolution[] listSolutions(string tenantId) {
+    SLMSolution[] listSolutions(UUID tenantId) {
         SLMSolution[] items;
         auto prefix = tp(tenantId);
         foreach (k, v; _solutions) if (k.startsWith(prefix)) items ~= v;
         return items;
     }
 
-    bool tryGetSolution(string tenantId, string solutionId, out SLMSolution sol) {
+    bool tryGetSolution(UUID tenantId, string solutionId, out SLMSolution sol) {
         auto k = key(tenantId, solutionId);
         if (k in _solutions) { sol = _solutions[k]; return true; }
         return false;
     }
 
-    bool removeSolution(string tenantId, string solutionId) {
+    bool removeSolution(UUID tenantId, string solutionId) {
         auto k = key(tenantId, solutionId);
         if (k in _solutions) { _solutions.remove(k); return true; }
         return false;
@@ -106,14 +106,14 @@ class SLMStore : SAPStore {
         return item;
     }
 
-    SLMDeployment[] listDeployments(string tenantId) {
+    SLMDeployment[] listDeployments(UUID tenantId) {
         SLMDeployment[] items;
         auto prefix = tp(tenantId);
         foreach (k, v; _deployments) if (k.startsWith(prefix)) items ~= v;
         return items;
     }
 
-    SLMDeployment[] deploymentsForSolution(string tenantId, string solutionId) {
+    SLMDeployment[] deploymentsForSolution(UUID tenantId, string solutionId) {
         SLMDeployment[] items;
         auto prefix = tp(tenantId);
         foreach (k, v; _deployments)
@@ -123,7 +123,7 @@ class SLMStore : SAPStore {
         return items.array;
     }
 
-    bool tryGetDeployment(string tenantId, string deploymentId, out SLMDeployment dep) {
+    bool tryGetDeployment(UUID tenantId, string deploymentId, out SLMDeployment dep) {
         auto k = key(tenantId, deploymentId);
         if (k in _deployments) { dep = _deployments[k]; return true; }
         return false;
@@ -137,14 +137,14 @@ class SLMStore : SAPStore {
         return item;
     }
 
-    SLMSubscription[] listSubscriptions(string tenantId) {
+    SLMSubscription[] listSubscriptions(UUID tenantId) {
         SLMSubscription[] items;
         auto prefix = tp(tenantId);
         foreach (k, v; _subscriptions) if (k.startsWith(prefix)) items ~= v;
         return items;
     }
 
-    SLMSubscription[] subscriptionsForSolution(string tenantId, string solutionId) {
+    SLMSubscription[] subscriptionsForSolution(UUID tenantId, string solutionId) {
         SLMSubscription[] items;
         auto prefix = tp(tenantId);
         foreach (k, v; _subscriptions)
@@ -153,7 +153,7 @@ class SLMStore : SAPStore {
         return items;
     }
 
-    bool tryGetSubscription(string tenantId, string subscriptionId, out SLMSubscription sub) {
+    bool tryGetSubscription(UUID tenantId, string subscriptionId, out SLMSubscription sub) {
         auto k = key(tenantId, subscriptionId);
         if (k in _subscriptions) { sub = _subscriptions[k]; return true; }
         return false;
@@ -167,14 +167,14 @@ class SLMStore : SAPStore {
         return item;
     }
 
-    SLMLicense[] listLicenses(string tenantId) {
+    SLMLicense[] listLicenses(UUID tenantId) {
         SLMLicense[] items;
         auto prefix = tp(tenantId);
         foreach (k, v; _licenses) if (k.startsWith(prefix)) items ~= v;
         return items;
     }
 
-    SLMLicense[] licensesForSolution(string tenantId, string solutionId) {
+    SLMLicense[] licensesForSolution(UUID tenantId, string solutionId) {
         SLMLicense[] items;
         auto prefix = tp(tenantId);
         foreach (k, v; _licenses)
@@ -191,7 +191,7 @@ class SLMStore : SAPStore {
         return item;
     }
 
-    SLMOperationLog[] listLogs(string tenantId, string solutionId) {
+    SLMOperationLog[] listLogs(UUID tenantId, string solutionId) {
         SLMOperationLog[] items;
         auto prefix = tp(tenantId);
         foreach (k, v; _logs)
@@ -201,7 +201,7 @@ class SLMStore : SAPStore {
         return items.array;
     }
 
-    SLMOperationLog[] listAllLogs(string tenantId) {
+    SLMOperationLog[] listAllLogs(UUID tenantId) {
         SLMOperationLog[] items;
         auto prefix = tp(tenantId);
         foreach (k, v; _logs) if (k.startsWith(prefix)) items ~= v;
