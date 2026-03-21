@@ -33,7 +33,7 @@ mixin(ShowModule!());
   * );
   */
 class MGTConfig : SAPConfig {
-  mixin(SAPConfigTemplate!HTMRepoConfig);
+  mixin(SAPConfigTemplate!MGTConfig);
 
   override bool initialize(Json[string] initData = null) {
     if (!super.initialize(initData)) {
@@ -50,7 +50,9 @@ class MGTConfig : SAPConfig {
     serviceVersion(initData.getString("serviceVersion", "1.0.0"));
 
     requireAuthToken(initData.getBoolean("requireAuthToken", false));
-    authToken = initData.getString("authToken", "");
+    if (requireAuthToken) {
+      authToken = initData.getString("authToken", "");
+    }
 
     return true;
   }
@@ -70,9 +72,6 @@ class MGTConfig : SAPConfig {
   override void validate() const {
     super.validate();
 
-    if (requireAuthToken && authToken.length == 0) {
-      throw new MGTConfigurationException("Auth token required when token auth is enabled");
-    }
     if (region.length == 0) {
       throw new MGTConfigurationException("BTP region cannot be empty");
     }

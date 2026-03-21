@@ -9,9 +9,7 @@ targetType "executable"
 targetName "uim-mgt-service"
 targetPath "build"
 sourcePaths "source"
-sourcePaths "../btp/source"
 importPaths "source"
-importPaths "../btp/source"
 
 
 // Dependency on the core framework

@@ -1,16 +1,10 @@
 module uim.sap.cia.service;
+import uim.sap.cia;
 
-import std.array : array;
-import std.conv : to;
-import std.datetime : Clock, SysTime;
-import std.string : toLower, replace;
+mixin(ShowModule!());
 
-import vibe.data.json : Json;
+@safe:
 
-import uim.sap.cia.config;
-import uim.sap.cia.exceptions;
-import uim.sap.cia.models;
-import uim.sap.cia.store;
 
 // ---------------------------------------------------------------------------
 // CIAService – orchestrates all domain logic
@@ -30,9 +24,9 @@ class CIAService : SAPService {
   // -----------------------------------------------------------------------
   // Health / readiness
   // -----------------------------------------------------------------------
-  Json health() const {
+  override Json health()  {
     Json healthInfo = super.health();
-    healthInfo["runtime"] = _config.runtime;
+    healthInfo["runtime"] = (cast(CIAConfig)_config).runtime;
     healthInfo["multitenancy"] = true;
     healthInfo["domain"] = "cloud-integration-automation";
     return healthInfo;
@@ -249,9 +243,9 @@ HTML";
   Json upsertSystem(UUID tenantId, Json payload) {
     import std.datetime : Clock;
 
-    CIASystem sys;
+    CIASystem sys = new CIASystem(payload);
     sys.tenantId = UUID(tenantId);
-    sys.id = payload["id"].get!string;
+    sys.id = UUID(payload["id"].get!string);
     sys.name = payload["name"].get!string;
     sys.systemType = "system_type" in payload ? payload["system_type"].get!string : "other";
     sys.host = "host" in payload ? payload["host"].get!string : "";
@@ -262,8 +256,8 @@ HTML";
     return _store.upsertSystem(sys).toJson();
   }
 
-  Json getSystem(UUID tenantId, string id) {
-    CIASystem sys;
+  Json getSystem(UUID tenantId, UUID id) {
+    CIASystem sys = new CIASystem;
     if (!_store.tryGetSystem(tenantId, id, sys))
       throw new CIANotFoundException("System not found: " ~ id);
     return sys.toJson();
@@ -279,8 +273,8 @@ HTML";
     return arr;
   }
 
-  Json getScenario(string id) {
-    CIAScenario sc;
+  Json getScenario(UUID id) {
+    CIAScenario sc = new CIAScenario;
     if (!_store.tryGetScenario(id, sc))
       throw new CIANotFoundException("Scenario not found: " ~ id);
     return sc.toJson();
@@ -299,7 +293,7 @@ HTML";
   /// Plan a new workflow from a scenario and return it with generated tasks
   Json planWorkflow(UUID tenantId, Json payload) {
     auto scenarioId = payload["scenario_id"].get!string;
-    CIAScenario sc;
+    CIAScenario sc = new CIAScenario;
     if (!_store.tryGetScenario(scenarioId, sc))
       throw new CIANotFoundException("Scenario not found: " ~ scenarioId);
 
@@ -309,8 +303,8 @@ HTML";
       foreach (s; payload["system_ids"].toArray)
         sysIds ~= s.get!string;
 
-    auto wfId = _store.nextId("wf");
-    CIAWorkflow wf;
+    auto wfId = UUID(_store.nextId("wf"));
+    CIAWorkflow wf = new CIAWorkflow;
     wf.tenantId = UUID(tenantId);
     wf.id = wfId;
     wf.scenarioId = scenarioId;
@@ -327,12 +321,12 @@ HTML";
 
     // Generate tasks from scenario templates
     foreach (tmpl; sc.taskTemplates) {
-      auto taskId = _store.nextId("task");
+      auto taskId = UUID(_store.nextId("task"));
 
       // Render instructions – substitute {{systemList}} placeholder
       string instr = tmpl.instructions.replace("{{systemList}}", _buildSystemList(tenantId, sysIds));
 
-      CIATask task;
+      CIATask task = new CIATask;
       task.tenantId = UUID(tenantId);
       task.workflowId = wfId;
       task.id = taskId;
@@ -356,11 +350,11 @@ HTML";
     return _workflowDetail(tenantId, wfId);
   }
 
-  Json getWorkflow(UUID tenantId, string id) {
+  Json getWorkflow(UUID tenantId, UUID id) {
     return _workflowDetail(tenantId, id);
   }
 
-  Json startWorkflow(UUID tenantId, string id) {
+  Json startWorkflow(UUID tenantId, UUID id) {
     CIAWorkflow wf;
     if (!_store.tryGetWorkflow(tenantId, id, wf))
       throw new CIANotFoundException("Workflow not found: " ~ id);
@@ -376,7 +370,7 @@ HTML";
     return _workflowDetail(tenantId, id);
   }
 
-  Json completeWorkflow(UUID tenantId, string id) {
+  Json completeWorkflow(UUID tenantId, UUID id) {
     CIAWorkflow wf;
     if (!_store.tryGetWorkflow(tenantId, id, wf))
       throw new CIANotFoundException("Workflow not found: " ~ id);
@@ -395,7 +389,7 @@ HTML";
   // -----------------------------------------------------------------------
   // Tasks
   // -----------------------------------------------------------------------
-  Json listTasks(UUID tenantId, string workflowId) {
+  Json listTasks(UUID tenantId, UUID workflowId) {
     _requireWorkflow(tenantId, workflowId);
     Json arr = Json.emptyArray;
     foreach (t; _store.listTasks(tenantId, workflowId))
@@ -403,7 +397,7 @@ HTML";
     return arr;
   }
 
-  Json getTask(UUID tenantId, string workflowId, string taskId) {
+  Json getTask(UUID tenantId, UUID workflowId, UUID taskId) {
     CIATask task;
     if (!_store.tryGetTask(tenantId, taskId, task) || task.workflowId != workflowId)
       throw new CIANotFoundException("Task not found: " ~ taskId);
@@ -411,7 +405,7 @@ HTML";
   }
 
   /// Assign a task to a role and/or user
-  Json assignTask(UUID tenantId, string workflowId, string taskId, Json payload) {
+  Json assignTask(UUID tenantId, UUID workflowId, UUID taskId, Json payload) {
     CIATask task;
     if (!_store.tryGetTask(tenantId, taskId, task) || task.workflowId != workflowId)
       throw new CIANotFoundException("Task not found: " ~ taskId);
@@ -430,7 +424,7 @@ HTML";
   }
 
   /// Progress a task status
-  Json progressTask(UUID tenantId, string workflowId, string taskId, Json payload) {
+  Json progressTask(UUID tenantId, UUID workflowId, UUID taskId, Json payload) {
     import std.algorithm : canFind;
 
     CIATask task;
@@ -453,7 +447,7 @@ HTML";
   }
 
   /// Trigger automated technical configuration for a task
-  Json automateTask(UUID tenantId, string workflowId, string taskId) {
+  Json automateTask(UUID tenantId, UUID workflowId, UUID taskId) {
     CIATask task;
     if (!_store.tryGetTask(tenantId, taskId, task) || task.workflowId != workflowId)
       throw new CIANotFoundException("Task not found: " ~ taskId);
@@ -493,7 +487,7 @@ HTML";
   // -----------------------------------------------------------------------
   // Parameters
   // -----------------------------------------------------------------------
-  Json listParameters(UUID tenantId, string workflowId) {
+  Json listParameters(UUID tenantId, UUID workflowId) {
     _requireWorkflow(tenantId, workflowId);
     Json arr = Json.emptyArray;
     foreach (p; _store.listParameters(workflowId))
@@ -501,7 +495,7 @@ HTML";
     return arr;
   }
 
-  Json setParameter(UUID tenantId, string workflowId, Json payload) {
+  Json setParameter(UUID tenantId, UUID workflowId, Json payload) {
     _requireWorkflow(tenantId, workflowId);
     CIAParameter param;
     param.workflowId = workflowId;
@@ -515,7 +509,7 @@ HTML";
   // -----------------------------------------------------------------------
   // Monitoring / Logs
   // -----------------------------------------------------------------------
-  Json listLogs(UUID tenantId, string workflowId) {
+  Json listLogs(UUID tenantId, UUID workflowId) {
     _requireWorkflow(tenantId, workflowId);
     Json arr = Json.emptyArray;
     foreach (l; _store.listLogs(tenantId, workflowId))
@@ -526,15 +520,15 @@ HTML";
   // -----------------------------------------------------------------------
   // Private helpers
   // -----------------------------------------------------------------------
-  private CIAWorkflow _requireWorkflow(UUID tenantId, string workflowId) {
-    CIAWorkflow wf;
+  private CIAWorkflow _requireWorkflow(UUID tenantId, UUID workflowId) {
+    CIAWorkflow wf = new CIAWorkflow;
     if (!_store.tryGetWorkflow(tenantId, workflowId, wf))
       throw new CIANotFoundException("Workflow not found: " ~ workflowId);
     return wf;
   }
 
-  private Json _workflowDetail(UUID tenantId, string wfId) {
-    CIAWorkflow wf;
+  private Json _workflowDetail(UUID tenantId, UUID wfId) {
+    CIAWorkflow wf = new CIAWorkflow;
     if (!_store.tryGetWorkflow(tenantId, wfId, wf))
       throw new CIANotFoundException("Workflow not found: " ~ wfId);
     auto j = wf.toJson();
@@ -550,7 +544,7 @@ HTML";
 
     string[] parts;
     foreach (sid; systemIds) {
-      CIASystem sys;
+      CIASystem sys = new CIASystem;
       if (_store.tryGetSystem(tenantId, sid, sys))
         parts ~= sys.name ~ " (" ~ sys.systemType ~ ")";
       else
@@ -559,10 +553,10 @@ HTML";
     return parts.join(", ");
   }
 
-  private void _appendLog(UUID tenantId, string workflowId, string taskId,
+  private void _appendLog(UUID tenantId, UUID workflowId, UUID taskId,
     string level, string message) {
-    CIATaskLog log;
-    log.tenantId = UUID(tenantId);
+    CIATaskLog log = new CIATaskLog;
+    log.tenantId = tenantId;
     log.workflowId = workflowId;
     log.taskId = taskId;
     log.id = _store.nextId("log");
@@ -584,7 +578,7 @@ HTML";
     _store.upsertRole(CIARole("role-qa", "Quality Assurance", "Validates integration connectivity and end-to-end scenario testing"));
 
     // Scenario 1: S/4HANA Cloud → SAP Integration Suite
-    CIAScenario sc1;
+    CIAScenario sc1 = new CIAScenario;
     sc1.id = "sc-s4hana-integration-suite";
     sc1.name = "S/4HANA Cloud → SAP Integration Suite";
     sc1.description = "Configure end-to-end integration between S/4HANA Cloud and SAP Integration Suite on BTP.";
@@ -617,7 +611,7 @@ HTML";
     _store.upsertScenario(sc1);
 
     // Scenario 2: S/4HANA On-Premises → SAP SuccessFactors
-    CIAScenario sc2;
+    CIAScenario sc2 = new CIAScenario;
     sc2.id = "sc-s4hana-onprem-successfactors";
     sc2.name = "S/4HANA On-Premises → SAP SuccessFactors";
     sc2.description = "Employee data integration from S/4HANA On-Premises to SAP SuccessFactors Employee Central.";
@@ -658,7 +652,7 @@ HTML";
     _store.upsertScenario(sc2);
 
     // Scenario 3: SAP Ariba Network Integration
-    CIAScenario sc3;
+    CIAScenario sc3 = new CIAScenario;
     sc3.id = "sc-s4hana-ariba-procurement";
     sc3.name = "S/4HANA Cloud → SAP Ariba (Procurement)";
     sc3.description = "Configure purchase order integration from S/4HANA Cloud to SAP Ariba Network.";

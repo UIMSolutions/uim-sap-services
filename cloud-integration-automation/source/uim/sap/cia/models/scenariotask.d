@@ -1,4 +1,9 @@
 module uim.sap.cia.models.scenariotask;
+import uim.sap.cia;
+
+mixin(ShowModule!());
+
+@safe:
 
 // ---------------------------------------------------------------------------
 // ScenarioTaskTemplate – a task template embedded in a scenario definition

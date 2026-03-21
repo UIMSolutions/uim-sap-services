@@ -9,7 +9,7 @@ mixin(ShowModule!());
 // Workflow – a running instance of a scenario for a tenant
 // ---------------------------------------------------------------------------
 class CIAWorkflow : SAPTenantObject {
-mixin(SAPObjectTemplate!CIAWorkflow);
+  mixin(SAPObjectTemplate!CIAWorkflow);
 
   UUID id;
   UUID scenarioId;
@@ -22,19 +22,19 @@ mixin(SAPObjectTemplate!CIAWorkflow);
   SysTime startedAt;
   SysTime finishedAt;
 
-  override Json toJson()  {
+  override Json toJson() {
     Json s = Json.emptyArray;
     foreach (sysId; systemIds)
       s ~= sysId;
 
     return super.toJson()
-    .set("id", id)
-    .set("scenario_id", scenarioId)
-    .set("scenario_name", scenarioName)
-    .set("name", name)
-    .set("status", status)
-    .set("system_ids", s)
-    .set("started_at", startedAt.toISOExtString())
-    .set("finished_at", finishedAt.toISOExtString());
+      .set("id", id)
+      .set("scenario_id", scenarioId)
+      .set("scenario_name", scenarioName)
+      .set("name", name)
+      .set("status", status)
+      .set("system_ids", s)
+      .set("started_at", startedAt.toISOExtString())
+      .set("finished_at", finishedAt.toISOExtString());
   }
 }

@@ -106,7 +106,7 @@ class CIAServer {
         }
         if (segs.length == 3 && segs[0] == "v1" && segs[1] == "scenarios") {
             if (req.method == HTTPMethod.GET) {
-                res.writeJsonBody(_service.getScenario(segs[2]), 200);
+                res.writeJsonBody(_service.getScenario(UUID(segs[2])), 200);
                 return;
             }
         }
@@ -116,7 +116,7 @@ class CIAServer {
             respondError(res, "Not found", 404);
             return;
         }
-        auto tenantId = segs[2];
+        auto tenantId = UUID(segs[2]);
 
         // ── /systems ──────────────────────────────────────────────────────
         if (segs.length == 4 && segs[3] == "systems") {
@@ -131,7 +131,7 @@ class CIAServer {
         }
         if (segs.length == 5 && segs[3] == "systems") {
             if (req.method == HTTPMethod.GET) {
-                res.writeJsonBody(_service.getSystem(tenantId, segs[4]), 200);
+                res.writeJsonBody(_service.getSystem(tenantId, UUID(segs[4])), 200);
                 return;
             }
         }
@@ -148,7 +148,7 @@ class CIAServer {
             }
         }
         if (segs.length == 5 && segs[3] == "workflows") {
-            auto wfId = segs[4];
+            auto wfId = UUID(segs[4]);
             if (req.method == HTTPMethod.GET) {
                 res.writeJsonBody(_service.getWorkflow(tenantId, wfId), 200);
                 return;
@@ -158,18 +158,20 @@ class CIAServer {
         // ── /workflows/:id/start|complete ─────────────────────────────────
         if (segs.length == 6 && segs[3] == "workflows" && segs[5] == "start"
                 && req.method == HTTPMethod.POST) {
-            res.writeJsonBody(_service.startWorkflow(tenantId, segs[4]), 200);
+            auto wfId = UUID(segs[4]);
+            res.writeJsonBody(_service.startWorkflow(tenantId, wfId), 200);
             return;
         }
         if (segs.length == 6 && segs[3] == "workflows" && segs[5] == "complete"
                 && req.method == HTTPMethod.POST) {
-            res.writeJsonBody(_service.completeWorkflow(tenantId, segs[4]), 200);
+            auto wfId = UUID(segs[4]);
+            res.writeJsonBody(_service.completeWorkflow(tenantId, wfId), 200);
             return;
         }
 
         // ── /workflows/:wfId/tasks ────────────────────────────────────────
         if (segs.length == 6 && segs[3] == "workflows" && segs[5] == "tasks") {
-            auto wfId = segs[4];
+            auto wfId = UUID(segs[4]);
             if (req.method == HTTPMethod.GET) {
                 res.writeJsonBody(_service.listTasks(tenantId, wfId), 200);
                 return;
@@ -178,8 +180,8 @@ class CIAServer {
 
         // ── /workflows/:wfId/tasks/:taskId ────────────────────────────────
         if (segs.length == 7 && segs[3] == "workflows" && segs[5] == "tasks") {
-            auto wfId   = segs[4];
-            auto taskId = segs[6];
+            auto wfId   = UUID(segs[4]);
+            auto taskId = UUID(segs[6]);
             if (req.method == HTTPMethod.GET) {
                 res.writeJsonBody(_service.getTask(tenantId, wfId, taskId), 200);
                 return;
@@ -189,8 +191,8 @@ class CIAServer {
         // ── /workflows/:wfId/tasks/:taskId/assign|progress|automate ───────
         if (segs.length == 8 && segs[3] == "workflows" && segs[5] == "tasks"
                 && req.method == HTTPMethod.POST) {
-            auto wfId   = segs[4];
-            auto taskId = segs[6];
+            auto wfId   = UUID(segs[4]);
+            auto taskId = UUID(segs[6]);
             auto action = segs[7];
             if (action == "assign") {
                 res.writeJsonBody(_service.assignTask(tenantId, wfId, taskId, req.json), 200);
@@ -208,7 +210,7 @@ class CIAServer {
 
         // ── /workflows/:wfId/parameters ───────────────────────────────────
         if (segs.length == 6 && segs[3] == "workflows" && segs[5] == "parameters") {
-            auto wfId = segs[4];
+            auto wfId = UUID(segs[4]);
             if (req.method == HTTPMethod.GET) {
                 res.writeJsonBody(_service.listParameters(tenantId, wfId), 200);
                 return;
@@ -221,8 +223,9 @@ class CIAServer {
 
         // ── /workflows/:wfId/logs (monitoring) ────────────────────────────
         if (segs.length == 6 && segs[3] == "workflows" && segs[5] == "logs") {
+            auto wfId = UUID(segs[4]);
             if (req.method == HTTPMethod.GET) {
-                res.writeJsonBody(_service.listLogs(tenantId, segs[4]), 200);
+                res.writeJsonBody(_service.listLogs(tenantId, wfId), 200);
                 return;
             }
         }

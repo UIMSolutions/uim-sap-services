@@ -1,10 +1,10 @@
 module uim.sap.cia.store;
 
-import std.array  : array;
-import std.conv   : to;
-import std.string : startsWith;
+import uim.sap.cia;
 
-import uim.sap.cia.models;
+mixin(ShowModule!());
+
+@safe:
 
 // ---------------------------------------------------------------------------
 // CIAStore – thread-safe in-memory store for all CIA entities

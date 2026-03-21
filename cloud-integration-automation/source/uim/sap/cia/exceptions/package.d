@@ -1,13 +1,11 @@
 module uim.sap.cia.exceptions;
 
 public {
-  import uim.framework.exceptions;
-  
-  import uim.sap.dpi.exceptions.authorization;
-  import uim.sap.dpi.exceptions.automation;
-  import uim.sap.dpi.exceptions.configuration;
-  import uim.sap.dpi.exceptions.exception;
-  import uim.sap.dpi.exceptions.notfound;
-  import uim.sap.dpi.exceptions.validation;
-  import uim.sap.dpi.exceptions.workflowstate;
+  import uim.sap.cia.exceptions.authorization;
+  import uim.sap.cia.exceptions.automation;
+  import uim.sap.cia.exceptions.configuration;
+  import uim.sap.cia.exceptions.exception;
+  import uim.sap.cia.exceptions.notfound;
+  import uim.sap.cia.exceptions.validation;
+  import uim.sap.cia.exceptions.workflowstate;
 }

@@ -1,10 +1,13 @@
 module uim.sap.cia;
 
-public import uim.sap.cia.config;
-public import uim.sap.cia.exceptions;
-public import uim.sap.cia.models;
-public import uim.sap.cia.store;
-public import uim.sap.cia.service;
-public import uim.sap.cia.server;
+public {
+  import uim.sap.service;
+  import uim.sap.cia.config;
+  import uim.sap.cia.exceptions;
+  import uim.sap.cia.models;
+  import uim.sap.cia.store;
+  import uim.sap.cia.service;
+  import uim.sap.cia.server;
+}
 
 enum UIM_CIA_VERSION = "1.0.0";

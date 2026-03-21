@@ -1,8 +1,10 @@
 module uim.sap.cia.config;
 
-import std.string : startsWith;
+import uim.sap.cia;
 
-import uim.sap.cia.exceptions;
+mixin(ShowModule!());
+
+@safe:
 
 /// Configuration for the Cloud Integration Automation service
 class CIAConfig : SAPConfig {
@@ -29,7 +31,7 @@ class CIAConfig : SAPConfig {
 
   string runtime = "cloud-foundry";
 
-  override void validate() const {
+  override void validate() {
     super.validate();
 
     if (runtime.length == 0) {

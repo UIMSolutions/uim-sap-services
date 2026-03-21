@@ -25,6 +25,6 @@ mixin(SAPObjectTemplate!CIASystem);
     .set("system_type", systemType)
     .set("host", host)
     .set("description", description)
-    .set("active"] = active);
+    .set("active", active);
    }
 }
