@@ -34,7 +34,7 @@ struct EVMQueue {
     }
 }
 
-EVMQueue queueFromJson(string tenantId, Json request) {
+EVMQueue queueFromJson(UUID tenantId, Json request) {
     EVMQueue q;
     q.tenantId = UUID(tenantId);
 

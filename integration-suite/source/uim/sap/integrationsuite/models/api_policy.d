@@ -39,7 +39,7 @@ struct INTApiPolicy {
     }
 }
 
-INTApiPolicy apiPolicyFromJson(string tenantId, Json request) {
+INTApiPolicy apiPolicyFromJson(UUID tenantId, Json request) {
     INTApiPolicy p;
     p.tenantId = UUID(tenantId);
     p.policyId = randomUUID().toString();

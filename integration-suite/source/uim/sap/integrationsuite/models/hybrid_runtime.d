@@ -36,7 +36,7 @@ mixin(ShowModule!());
   * 
   * Methods:
   * - toJson(): Converts the hybrid runtime instance into a JSON representation for API responses or storage.
-  * - hybridRuntimeFromJson(string tenantId, Json request): Creates a new hybrid runtime instance from a JSON request, generating a unique runtimeId and setting the createdAt and updatedAt timestamps
+  * - hybridRuntimeFromJson(UUID tenantId, Json request): Creates a new hybrid runtime instance from a JSON request, generating a unique runtimeId and setting the createdAt and updatedAt timestamps
   * 
   * Statuses:
   * - online: The hybrid runtime is operational and can host integration flows and API proxies.
@@ -84,7 +84,7 @@ struct INTHybridRuntime {
   }
 }
 
-INTHybridRuntime hybridRuntimeFromJson(string tenantId, Json request) {
+INTHybridRuntime hybridRuntimeFromJson(UUID tenantId, Json request) {
   INTHybridRuntime r;
   r.tenantId = UUID(tenantId);
   r.runtimeId = randomUUID().toString();

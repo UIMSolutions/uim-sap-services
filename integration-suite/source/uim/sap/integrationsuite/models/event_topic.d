@@ -27,7 +27,7 @@ mixin(ShowModule!());
   * 
   * Methods:
   * - toJson(): Converts the event topic instance into a JSON representation.
-  * - eventTopicFromJson(string tenantId, Json request): Creates a new event topic instance from a JSON request, generating a unique topicId and setting the createdAt and updatedAt timestamps
+  * - eventTopicFromJson(UUID tenantId, Json request): Creates a new event topic instance from a JSON request, generating a unique topicId and setting the createdAt and updatedAt timestamps
   * 
   * For more information on event topics and their management, refer to the SAP Integration Suite documentation.
  */
@@ -55,7 +55,7 @@ struct INTEventTopic {
   }
 }
 
-INTEventTopic eventTopicFromJson(string tenantId, Json request) {
+INTEventTopic eventTopicFromJson(UUID tenantId, Json request) {
   INTEventTopic t;
   t.tenantId = UUID(tenantId);
   t.topicId = randomUUID().toString();

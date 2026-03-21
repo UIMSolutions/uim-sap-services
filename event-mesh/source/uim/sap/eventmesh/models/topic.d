@@ -28,7 +28,7 @@ struct EVMTopic {
     }
 }
 
-EVMTopic topicFromJson(string tenantId, Json request) {
+EVMTopic topicFromJson(UUID tenantId, Json request) {
     EVMTopic t;
     t.tenantId = UUID(tenantId);
 

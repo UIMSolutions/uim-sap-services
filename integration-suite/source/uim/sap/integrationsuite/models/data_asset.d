@@ -33,7 +33,7 @@ mixin(ShowModule!());
   *
   * Methods:
   * - toJson(): Converts the data asset instance into a JSON representation.
-  * - dataAssetFromJson(string tenantId, Json request): Creates a new data asset instance from a JSON request, generating a unique assetId and setting the createdAt and updatedAt timestamps
+  * - dataAssetFromJson(UUID tenantId, Json request): Creates a new data asset instance from a JSON request, generating a unique assetId and setting the createdAt and updatedAt timestamps
   * 
   * Statuses:
   * - available: The data asset is available for use.
@@ -78,7 +78,7 @@ struct INTDataAsset {
   }
 }
 
-INTDataAsset dataAssetFromJson(string tenantId, Json request) {
+INTDataAsset dataAssetFromJson(UUID tenantId, Json request) {
   INTDataAsset a;
   a.tenantId = UUID(tenantId);
   a.assetId = randomUUID().toString();

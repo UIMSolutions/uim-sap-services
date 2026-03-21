@@ -75,7 +75,7 @@ struct INTApiProduct {
   }
 }
 
-INTApiProduct apiProductFromJson(string tenantId, Json request) {
+INTApiProduct apiProductFromJson(UUID tenantId, Json request) {
   INTApiProduct p;
   p.tenantId = UUID(tenantId);
   p.productId = randomUUID().toString();

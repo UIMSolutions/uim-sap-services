@@ -73,7 +73,7 @@ struct INTConnector {
   }
 }
 
-INTConnector connectorFromJson(string tenantId, Json request) {
+INTConnector connectorFromJson(UUID tenantId, Json request) {
   INTConnector c;
   c.tenantId = UUID(tenantId);
   c.connectorId = randomUUID().toString();

@@ -48,7 +48,7 @@ struct INTODataService {
   }
 }
 
-INTODataService odataServiceFromJson(string tenantId, Json request) {
+INTODataService odataServiceFromJson(UUID tenantId, Json request) {
   INTODataService svc;
   svc.tenantId = UUID(tenantId);
   svc.serviceId = randomUUID().toString();

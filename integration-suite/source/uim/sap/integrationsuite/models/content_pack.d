@@ -39,7 +39,7 @@ mixin(ShowModule!());
   *
   * Methods:
   * - toJson(): Converts the content pack instance into a JSON representation.
-  * - contentPackFromJson(string tenantId, Json request): Creates a new content pack instance from a JSON request, generating a unique packId and setting the createdAt and updatedAt timestamps
+  * - contentPackFromJson(UUID tenantId, Json request): Creates a new content pack instance from a JSON request, generating a unique packId and setting the createdAt and updatedAt timestamps
   * 
   * Statuses:
   * - available: The content pack is available for installation.
@@ -99,7 +99,7 @@ struct INTContentPack {
   }
 }
 
-INTContentPack contentPackFromJson(string tenantId, Json request) {
+INTContentPack contentPackFromJson(UUID tenantId, Json request) {
   INTContentPack p;
   p.tenantId = UUID(tenantId);
   p.packId = randomUUID().toString();

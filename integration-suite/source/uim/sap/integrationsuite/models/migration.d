@@ -51,7 +51,7 @@ struct INTMigration {
   }
 }
 
-INTMigration migrationFromJson(string tenantId, Json request) {
+INTMigration migrationFromJson(UUID tenantId, Json request) {
   INTMigration m;
   m.tenantId = UUID(tenantId);
   m.migrationId = randomUUID().toString();

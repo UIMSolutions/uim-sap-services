@@ -21,7 +21,7 @@ class INTService : SAPService {
   //  Cloud Integration — IFlows
   // =================================================================
 
-  Json createIFlow(string tenantId, Json request) {
+  Json createIFlow(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
     auto f = iflowFromJson(tenantId, request);
     if (f.name.length == 0)
@@ -34,7 +34,7 @@ class INTService : SAPService {
     return r;
   }
 
-  Json listIFlows(string tenantId) {
+  Json listIFlows(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
     Json resources = Json.emptyArray;
     foreach (f; _store.listIFlows(tenantId))
@@ -42,7 +42,7 @@ class INTService : SAPService {
     return listResult(tenantId, resources);
   }
 
-  Json getIFlow(string tenantId, string iflowId) {
+  Json getIFlow(UUID tenantId, string iflowId) {
     validateId(tenantId, "Tenant ID");
     auto f = _store.getIFlow(tenantId, iflowId);
     if (f.iflowId.length == 0)
@@ -52,7 +52,7 @@ class INTService : SAPService {
     return r;
   }
 
-  Json deployIFlow(string tenantId, string iflowId) {
+  Json deployIFlow(UUID tenantId, string iflowId) {
     validateId(tenantId, "Tenant ID");
     auto f = _store.getIFlow(tenantId, iflowId);
     if (f.iflowId.length == 0)
@@ -70,7 +70,7 @@ class INTService : SAPService {
     return r;
   }
 
-  Json deleteIFlow(string tenantId, string iflowId) {
+  Json deleteIFlow(UUID tenantId, string iflowId) {
     validateId(tenantId, "Tenant ID");
     if (!_store.deleteIFlow(tenantId, iflowId))
       throw new INTNotFoundException("IFlow", iflowId);
@@ -79,7 +79,7 @@ class INTService : SAPService {
 
   // --- Message Processing Logs ---
 
-  Json createMessageLog(string tenantId, Json request) {
+  Json createMessageLog(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
     auto l = messageLogFromJson(tenantId, request);
     auto saved = _store.appendMessageLog(l);
@@ -89,7 +89,7 @@ class INTService : SAPService {
     return r;
   }
 
-  Json listMessageLogs(string tenantId) {
+  Json listMessageLogs(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
     Json resources = Json.emptyArray;
     foreach (l; _store.listMessageLogs(tenantId))
@@ -101,7 +101,7 @@ class INTService : SAPService {
   //  API Management — Proxies
   // =================================================================
 
-  Json createApiProxy(string tenantId, Json request) {
+  Json createApiProxy(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
     auto p = apiProxyFromJson(tenantId, request);
     if (p.name.length == 0)
@@ -116,7 +116,7 @@ class INTService : SAPService {
     return r;
   }
 
-  Json listApiProxies(string tenantId) {
+  Json listApiProxies(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
     Json resources = Json.emptyArray;
     foreach (p; _store.listApiProxies(tenantId))
@@ -124,7 +124,7 @@ class INTService : SAPService {
     return listResult(tenantId, resources);
   }
 
-  Json getApiProxy(string tenantId, string proxyId) {
+  Json getApiProxy(UUID tenantId, string proxyId) {
     validateId(tenantId, "Tenant ID");
     auto p = _store.getApiProxy(tenantId, proxyId);
     if (p.proxyId.length == 0)
@@ -134,7 +134,7 @@ class INTService : SAPService {
     return r;
   }
 
-  Json deleteApiProxy(string tenantId, string proxyId) {
+  Json deleteApiProxy(UUID tenantId, string proxyId) {
     validateId(tenantId, "Tenant ID");
     if (!_store.deleteApiProxy(tenantId, proxyId))
       throw new INTNotFoundException("API Proxy", proxyId);
@@ -145,7 +145,7 @@ class INTService : SAPService {
   //  API Management — Products
   // =================================================================
 
-  Json createApiProduct(string tenantId, Json request) {
+  Json createApiProduct(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
     auto p = apiProductFromJson(tenantId, request);
     if (p.name.length == 0)
@@ -158,7 +158,7 @@ class INTService : SAPService {
     return r;
   }
 
-  Json listApiProducts(string tenantId) {
+  Json listApiProducts(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
     Json resources = Json.emptyArray;
     foreach (p; _store.listApiProducts(tenantId))
@@ -166,7 +166,7 @@ class INTService : SAPService {
     return listResult(tenantId, resources);
   }
 
-  Json getApiProduct(string tenantId, string productId) {
+  Json getApiProduct(UUID tenantId, string productId) {
     validateId(tenantId, "Tenant ID");
     auto p = _store.getApiProduct(tenantId, productId);
     if (p.productId.length == 0)
@@ -176,7 +176,7 @@ class INTService : SAPService {
     return r;
   }
 
-  Json deleteApiProduct(string tenantId, string productId) {
+  Json deleteApiProduct(UUID tenantId, string productId) {
     validateId(tenantId, "Tenant ID");
     if (!_store.deleteApiProduct(tenantId, productId))
       throw new INTNotFoundException("API Product", productId);
@@ -187,7 +187,7 @@ class INTService : SAPService {
   //  API Management — Policies
   // =================================================================
 
-  Json createApiPolicy(string tenantId, Json request) {
+  Json createApiPolicy(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
     auto p = apiPolicyFromJson(tenantId, request);
     if (p.name.length == 0)
@@ -200,7 +200,7 @@ class INTService : SAPService {
     return r;
   }
 
-  Json listApiPolicies(string tenantId) {
+  Json listApiPolicies(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
     Json resources = Json.emptyArray;
     foreach (p; _store.listApiPolicies(tenantId))
@@ -208,7 +208,7 @@ class INTService : SAPService {
     return listResult(tenantId, resources);
   }
 
-  Json deleteApiPolicy(string tenantId, string policyId) {
+  Json deleteApiPolicy(UUID tenantId, string policyId) {
     validateId(tenantId, "Tenant ID");
     if (!_store.deleteApiPolicy(tenantId, policyId))
       throw new INTNotFoundException("API Policy", policyId);
@@ -219,7 +219,7 @@ class INTService : SAPService {
   //  Event Management
   // =================================================================
 
-  Json createEventTopic(string tenantId, Json request) {
+  Json createEventTopic(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
     auto t = eventTopicFromJson(tenantId, request);
     if (t.topicName.length == 0)
@@ -236,7 +236,7 @@ class INTService : SAPService {
     return r;
   }
 
-  Json listEventTopics(string tenantId) {
+  Json listEventTopics(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
     Json resources = Json.emptyArray;
     foreach (t; _store.listEventTopics(tenantId))
@@ -244,7 +244,7 @@ class INTService : SAPService {
     return listResult(tenantId, resources);
   }
 
-  Json publishEvent(string tenantId, string topicName, Json request) {
+  Json publishEvent(UUID tenantId, string topicName, Json request) {
     validateId(tenantId, "Tenant ID");
     auto topic = _store.getEventTopicByName(tenantId, topicName);
     if (topic.topicId.length == 0)
@@ -271,14 +271,14 @@ class INTService : SAPService {
     return r;
   }
 
-  Json deleteEventTopic(string tenantId, string topicId) {
+  Json deleteEventTopic(UUID tenantId, string topicId) {
     validateId(tenantId, "Tenant ID");
     if (!_store.deleteEventTopic(tenantId, topicId))
       throw new INTNotFoundException("Event Topic", topicId);
     return deleteResult("Event Topic deleted");
   }
 
-  Json createEventSubscription(string tenantId, Json request) {
+  Json createEventSubscription(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
     auto s = eventSubscriptionFromJson(tenantId, request);
     if (s.topicName.length == 0)
@@ -302,7 +302,7 @@ class INTService : SAPService {
     return r;
   }
 
-  Json listEventSubscriptions(string tenantId) {
+  Json listEventSubscriptions(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
     Json resources = Json.emptyArray;
     foreach (s; _store.listEventSubscriptions(tenantId))
@@ -310,7 +310,7 @@ class INTService : SAPService {
     return listResult(tenantId, resources);
   }
 
-  Json deleteEventSubscription(string tenantId, string subscriptionId) {
+  Json deleteEventSubscription(UUID tenantId, string subscriptionId) {
     validateId(tenantId, "Tenant ID");
     if (!_store.deleteEventSubscription(tenantId, subscriptionId))
       throw new INTNotFoundException("Event Subscription", subscriptionId);
@@ -321,7 +321,7 @@ class INTService : SAPService {
   //  Open Connectors
   // =================================================================
 
-  Json createConnector(string tenantId, Json request) {
+  Json createConnector(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
     auto c = connectorFromJson(tenantId, request);
     if (c.name.length == 0)
@@ -336,14 +336,14 @@ class INTService : SAPService {
     return r;
   }
 
-  Json listConnectors(string tenantId) {
+  Json listConnectors(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
     
     Json resources = _store.listConnectors(tenantId).map!(c => c.toJson).array.toJson();
     return listResult(tenantId, resources);
   }
 
-  Json getConnector(string tenantId, string connectorId) {
+  Json getConnector(UUID tenantId, string connectorId) {
     validateId(tenantId, "Tenant ID");
     auto c = _store.getConnector(tenantId, connectorId);
     if (c.connectorId.length == 0)
@@ -353,7 +353,7 @@ class INTService : SAPService {
     return r;
   }
 
-  Json deleteConnector(string tenantId, string connectorId) {
+  Json deleteConnector(UUID tenantId, string connectorId) {
     validateId(tenantId, "Tenant ID");
     if (!_store.deleteConnector(tenantId, connectorId)) {
       throw new INTNotFoundException("Connector", connectorId);
@@ -366,7 +366,7 @@ class INTService : SAPService {
   //  Integration Advisor — Mappings
   // =================================================================
 
-  Json createMapping(string tenantId, Json request) {
+  Json createMapping(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
     auto m = mappingFromJson(tenantId, request);
     if (m.name.length == 0)
@@ -379,7 +379,7 @@ class INTService : SAPService {
     return r;
   }
 
-  Json listMappings(string tenantId) {
+  Json listMappings(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
     Json resources = Json.emptyArray;
     foreach (m; _store.listMappings(tenantId))
@@ -387,7 +387,7 @@ class INTService : SAPService {
     return listResult(tenantId, resources);
   }
 
-  Json getMapping(string tenantId, string mappingId) {
+  Json getMapping(UUID tenantId, string mappingId) {
     validateId(tenantId, "Tenant ID");
     auto m = _store.getMapping(tenantId, mappingId);
     if (m.mappingId.length == 0)
@@ -397,7 +397,7 @@ class INTService : SAPService {
     return r;
   }
 
-  Json deleteMapping(string tenantId, string mappingId) {
+  Json deleteMapping(UUID tenantId, string mappingId) {
     validateId(tenantId, "Tenant ID");
 
     if (!_store.deleteMapping(tenantId, mappingId))
@@ -409,7 +409,7 @@ class INTService : SAPService {
   //  Trading Partner Management — Partners
   // =================================================================
 
-  Json createTradingPartner(string tenantId, Json request) {
+  Json createTradingPartner(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
 
     auto tp = tradingPartnerFromJson(tenantId, request);
@@ -424,7 +424,7 @@ class INTService : SAPService {
     return r;
   }
 
-  Json listTradingPartners(string tenantId) {
+  Json listTradingPartners(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
     Json resources = Json.emptyArray;
     foreach (tp; _store.listTradingPartners(tenantId))
@@ -432,7 +432,7 @@ class INTService : SAPService {
     return listResult(tenantId, resources);
   }
 
-  Json getTradingPartner(string tenantId, string partnerId) {
+  Json getTradingPartner(UUID tenantId, string partnerId) {
     validateId(tenantId, "Tenant ID");
     auto tp = _store.getTradingPartner(tenantId, partnerId);
     if (tp.partnerId.length == 0)
@@ -442,7 +442,7 @@ class INTService : SAPService {
     return r;
   }
 
-  Json deleteTradingPartner(string tenantId, string partnerId) {
+  Json deleteTradingPartner(UUID tenantId, string partnerId) {
     validateId(tenantId, "Tenant ID");
     if (!_store.deleteTradingPartner(tenantId, partnerId))
       throw new INTNotFoundException("Trading Partner", partnerId);
@@ -453,7 +453,7 @@ class INTService : SAPService {
   //  Trading Partner Management — Agreements
   // =================================================================
 
-  Json createAgreement(string tenantId, Json request) {
+  Json createAgreement(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
     auto a = INTAgreement(tenantId, request);
     if (a.partnerId.length == 0)
@@ -477,13 +477,13 @@ class INTService : SAPService {
       .set("agreement", saved.toJson());
   }
 
-  Json listAgreements(string tenantId) {
+  Json listAgreements(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
     Json resources = _store.listAgreements(tenantId).map!(a => a.toJson).array.toJson();
     return listResult(tenantId, resources);
   }
 
-  Json getAgreement(string tenantId, string agreementId) {
+  Json getAgreement(UUID tenantId, string agreementId) {
     validateId(tenantId, "Tenant ID");
     auto a = _store.getAgreement(tenantId, agreementId);
     if (a.agreementId.length == 0)
@@ -493,7 +493,7 @@ class INTService : SAPService {
     return r;
   }
 
-  Json deleteAgreement(string tenantId, string agreementId) {
+  Json deleteAgreement(UUID tenantId, string agreementId) {
     validateId(tenantId, "Tenant ID");
 
     if (!_store.deleteAgreement(tenantId, agreementId)) {
@@ -507,7 +507,7 @@ class INTService : SAPService {
   //  OData Provisioning
   // =================================================================
 
-  Json createODataService(string tenantId, Json request) {
+  Json createODataService(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
     auto svc = odataServiceFromJson(tenantId, request);
     if (svc.name.length == 0)
@@ -526,7 +526,7 @@ class INTService : SAPService {
     return listODataServices(tenantId.toString());
   }
 
-  Json listODataServices(string tenantId) {
+  Json listODataServices(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
 
     Json resources = _store.listODataServices(tenantId).map!(svc => svc.toJson).array.toJson();
@@ -537,7 +537,7 @@ class INTService : SAPService {
     return getODataService(tenantId.toString(), serviceId.toString());
   }
 
-  Json getODataService(string tenantId, string serviceId) {
+  Json getODataService(UUID tenantId, string serviceId) {
     validateId(tenantId, "Tenant ID");
 
     auto svc = _store.getODataService(tenantId, serviceId);
@@ -549,7 +549,7 @@ class INTService : SAPService {
     return json.set("odata_service", svc.toJson());
   }
 
-  Json deleteODataService(string tenantId, string serviceId) {
+  Json deleteODataService(UUID tenantId, string serviceId) {
     validateId(tenantId, "Tenant ID");
     if (!_store.deleteODataService(tenantId, serviceId)) {
       throw new INTNotFoundException("OData Service", serviceId);
@@ -561,7 +561,7 @@ class INTService : SAPService {
   //  Integration Assessment
   // =================================================================
 
-  Json createAssessment(string tenantId, Json request) {
+  Json createAssessment(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
     auto a = assessmentFromJson(tenantId, request);
     if (a.name.length == 0)
@@ -578,7 +578,7 @@ class INTService : SAPService {
     return listAssessments(tenantId.toString());
   }
 
-  Json listAssessments(string tenantId) {
+  Json listAssessments(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
     Json resources = _store.listAssessments(tenantId).map!(a => a.toJson).array.toJson();
     return listResult(tenantId, resources);
@@ -588,7 +588,7 @@ class INTService : SAPService {
     return getAssessment(tenantId.toString(), assessmentId.toString());
   }
 
-  Json getAssessment(string tenantId, string assessmentId) {
+  Json getAssessment(UUID tenantId, string assessmentId) {
     validateId(tenantId, "Tenant ID");
     auto a = _store.getAssessment(tenantId, assessmentId);
     if (a.assessmentId.length == 0)
@@ -602,7 +602,7 @@ class INTService : SAPService {
     return deleteAssessment(tenantId.toString(), assessmentId.toString());
   }
 
-  Json deleteAssessment(string tenantId, string assessmentId) {
+  Json deleteAssessment(UUID tenantId, string assessmentId) {
     validateId(tenantId, "Tenant ID");
     if (!_store.deleteAssessment(tenantId, assessmentId))
       throw new INTNotFoundException("Assessment", assessmentId);
@@ -613,7 +613,7 @@ class INTService : SAPService {
   //  Migration Assessment
   // =================================================================
 
-  Json createMigration(string tenantId, Json request) {
+  Json createMigration(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
     auto m = migrationFromJson(tenantId, request);
     if (m.name.length == 0)
@@ -639,7 +639,7 @@ class INTService : SAPService {
     return r;
   }
 
-  Json listMigrations(string tenantId) {
+  Json listMigrations(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
     Json resources = Json.emptyArray;
     foreach (m; _store.listMigrations(tenantId))
@@ -647,7 +647,7 @@ class INTService : SAPService {
     return listResult(tenantId, resources);
   }
 
-  Json getMigration(string tenantId, string migrationId) {
+  Json getMigration(UUID tenantId, string migrationId) {
     validateId(tenantId, "Tenant ID");
     auto m = _store.getMigration(tenantId, migrationId);
     if (m.migrationId.length == 0)
@@ -657,7 +657,7 @@ class INTService : SAPService {
     return r;
   }
 
-  Json completeMigration(string tenantId, string migrationId) {
+  Json completeMigration(UUID tenantId, string migrationId) {
     validateId(tenantId, "Tenant ID");
     auto m = _store.getMigration(tenantId, migrationId);
     if (m.migrationId.length == 0)
@@ -675,7 +675,7 @@ class INTService : SAPService {
     return r;
   }
 
-  Json deleteMigration(string tenantId, string migrationId) {
+  Json deleteMigration(UUID tenantId, string migrationId) {
     validateId(tenantId, "Tenant ID");
     if (!_store.deleteMigration(tenantId, migrationId))
       throw new INTNotFoundException("Migration", migrationId);
@@ -686,7 +686,7 @@ class INTService : SAPService {
   //  Hybrid Integration
   // =================================================================
 
-  Json registerHybridRuntime(string tenantId, Json request) {
+  Json registerHybridRuntime(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
     auto rt = hybridRuntimeFromJson(tenantId, request);
     if (rt.name.length == 0)
@@ -700,7 +700,7 @@ class INTService : SAPService {
     return r;
   }
 
-  Json listHybridRuntimes(string tenantId) {
+  Json listHybridRuntimes(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
     Json resources = Json.emptyArray;
     foreach (rt; _store.listHybridRuntimes(tenantId))
@@ -708,7 +708,7 @@ class INTService : SAPService {
     return listResult(tenantId, resources);
   }
 
-  Json getHybridRuntime(string tenantId, string runtimeId) {
+  Json getHybridRuntime(UUID tenantId, string runtimeId) {
     validateId(tenantId, "Tenant ID");
     auto rt = _store.getHybridRuntime(tenantId, runtimeId);
     if (rt.runtimeId.length == 0)
@@ -718,7 +718,7 @@ class INTService : SAPService {
     return r;
   }
 
-  Json heartbeatHybridRuntime(string tenantId, string runtimeId) {
+  Json heartbeatHybridRuntime(UUID tenantId, string runtimeId) {
     validateId(tenantId, "Tenant ID");
     auto rt = _store.getHybridRuntime(tenantId, runtimeId);
     if (rt.runtimeId.length == 0)
@@ -735,7 +735,7 @@ class INTService : SAPService {
     return r;
   }
 
-  Json deleteHybridRuntime(string tenantId, string runtimeId) {
+  Json deleteHybridRuntime(UUID tenantId, string runtimeId) {
     validateId(tenantId, "Tenant ID");
     if (!_store.deleteHybridRuntime(tenantId, runtimeId))
       throw new INTNotFoundException("Hybrid Runtime", runtimeId);
@@ -746,7 +746,7 @@ class INTService : SAPService {
   //  Data Space Integration
   // =================================================================
 
-  Json createDataAsset(string tenantId, Json request) {
+  Json createDataAsset(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
     auto a = dataAssetFromJson(tenantId, request);
     if (a.name.length == 0)
@@ -759,7 +759,7 @@ class INTService : SAPService {
     return r;
   }
 
-  Json listDataAssets(string tenantId) {
+  Json listDataAssets(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
     Json resources = Json.emptyArray;
     foreach (a; _store.listDataAssets(tenantId))
@@ -767,7 +767,7 @@ class INTService : SAPService {
     return listResult(tenantId, resources);
   }
 
-  Json getDataAsset(string tenantId, string assetId) {
+  Json getDataAsset(UUID tenantId, string assetId) {
     validateId(tenantId, "Tenant ID");
     auto a = _store.getDataAsset(tenantId, assetId);
     if (a.assetId.length == 0)
@@ -777,7 +777,7 @@ class INTService : SAPService {
     return r;
   }
 
-  Json deleteDataAsset(string tenantId, string assetId) {
+  Json deleteDataAsset(UUID tenantId, string assetId) {
     validateId(tenantId, "Tenant ID");
     if (!_store.deleteDataAsset(tenantId, assetId))
       throw new INTNotFoundException("Data Asset", assetId);
@@ -788,7 +788,7 @@ class INTService : SAPService {
   //  Content Packs
   // =================================================================
 
-  Json createContentPack(string tenantId, Json request) {
+  Json createContentPack(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
     auto p = contentPackFromJson(tenantId, request);
     if (p.name.length == 0)
@@ -801,7 +801,7 @@ class INTService : SAPService {
     return r;
   }
 
-  Json listContentPacks(string tenantId) {
+  Json listContentPacks(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
     Json resources = Json.emptyArray;
     foreach (p; _store.listContentPacks(tenantId))
@@ -809,7 +809,7 @@ class INTService : SAPService {
     return listResult(tenantId, resources);
   }
 
-  Json getContentPack(string tenantId, string packId) {
+  Json getContentPack(UUID tenantId, string packId) {
     validateId(tenantId, "Tenant ID");
     auto p = _store.getContentPack(tenantId, packId);
     if (p.packId.length == 0)
@@ -819,7 +819,7 @@ class INTService : SAPService {
     return r;
   }
 
-  Json installContentPack(string tenantId, string packId) {
+  Json installContentPack(UUID tenantId, string packId) {
     validateId(tenantId, "Tenant ID");
     auto p = _store.getContentPack(tenantId, packId);
     if (p.packId.length == 0)
@@ -837,7 +837,7 @@ class INTService : SAPService {
     return r;
   }
 
-  Json deleteContentPack(string tenantId, string packId) {
+  Json deleteContentPack(UUID tenantId, string packId) {
     validateId(tenantId, "Tenant ID");
     if (!_store.deleteContentPack(tenantId, packId))
       throw new INTNotFoundException("Content Pack", packId);
@@ -848,7 +848,7 @@ class INTService : SAPService {
   //  Dashboard
   // =================================================================
 
-  Json dashboard(string tenantId) {
+  Json dashboard(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
 
     Json r = Json.emptyObject;
@@ -877,7 +877,7 @@ class INTService : SAPService {
   //  Helpers
   // =================================================================
 
-  private Json listResult(string tenantId, Json resources) {
+  private Json listResult(UUID tenantId, Json resources) {
     Json r = Json.emptyObject;
     r["tenant_id"] = tenantId;
     r["resources"] = resources;

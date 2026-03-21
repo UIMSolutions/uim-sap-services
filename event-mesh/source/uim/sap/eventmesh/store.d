@@ -39,7 +39,7 @@ class EVMStore : SAPStore {
         }
     }
 
-    EVMQueue getQueue(string tenantId, string queueName) {
+    EVMQueue getQueue(UUID tenantId, string queueName) {
         synchronized (_lock) {
             auto key = queueKey(tenantId, queueName);
             if (auto value = key in _queues) {
@@ -49,7 +49,7 @@ class EVMStore : SAPStore {
         return EVMQueue.init;
     }
 
-    EVMQueue[] listQueues(string tenantId) {
+    EVMQueue[] listQueues(UUID tenantId) {
         EVMQueue[] list;
         synchronized (_lock) {
             foreach (key, queue; _queues) {
@@ -61,7 +61,7 @@ class EVMStore : SAPStore {
         return list;
     }
 
-    bool deleteQueue(string tenantId, string queueName) {
+    bool deleteQueue(UUID tenantId, string queueName) {
         synchronized (_lock) {
             auto key = queueKey(tenantId, queueName);
             if (key in _queues) {
@@ -89,7 +89,7 @@ class EVMStore : SAPStore {
         }
     }
 
-    EVMTopic getTopic(string tenantId, string topicName) {
+    EVMTopic getTopic(UUID tenantId, string topicName) {
         synchronized (_lock) {
             auto key = topicKey(tenantId, topicName);
             if (auto value = key in _topics) {
@@ -99,7 +99,7 @@ class EVMStore : SAPStore {
         return EVMTopic.init;
     }
 
-    EVMTopic[] listTopics(string tenantId) {
+    EVMTopic[] listTopics(UUID tenantId) {
         EVMTopic[] list;
         synchronized (_lock) {
             foreach (key, topic; _topics) {
@@ -128,7 +128,7 @@ class EVMStore : SAPStore {
         }
     }
 
-    EVMSubscription[] listSubscriptions(string tenantId) {
+    EVMSubscription[] listSubscriptions(UUID tenantId) {
         EVMSubscription[] list;
         synchronized (_lock) {
             foreach (_, sub; _subscriptions) {
@@ -140,7 +140,7 @@ class EVMStore : SAPStore {
         return list;
     }
 
-    EVMSubscription[] subscriptionsForTopic(string tenantId, string topicName) {
+    EVMSubscription[] subscriptionsForTopic(UUID tenantId, string topicName) {
         EVMSubscription[] list;
         synchronized (_lock) {
             foreach (_, sub; _subscriptions) {
@@ -154,7 +154,7 @@ class EVMStore : SAPStore {
 
     // --- Message operations ---
 
-    void enqueueMessage(string tenantId, string queueName, EVMMessage message) {
+    void enqueueMessage(UUID tenantId, string queueName, EVMMessage message) {
         synchronized (_lock) {
             auto key = queueKey(tenantId, queueName);
             message.queueName = queueName;
@@ -167,7 +167,7 @@ class EVMStore : SAPStore {
         }
     }
 
-    EVMMessage[] listMessages(string tenantId, string queueName) {
+    EVMMessage[] listMessages(UUID tenantId, string queueName) {
         synchronized (_lock) {
             auto key = queueKey(tenantId, queueName);
             if (auto items = key in _messagesByQueue) {
@@ -177,7 +177,7 @@ class EVMStore : SAPStore {
         return [];
     }
 
-    EVMMessage consumeMessage(string tenantId, string queueName) {
+    EVMMessage consumeMessage(UUID tenantId, string queueName) {
         synchronized (_lock) {
             auto key = queueKey(tenantId, queueName);
             if (auto items = key in _messagesByQueue) {
@@ -194,7 +194,7 @@ class EVMStore : SAPStore {
         return EVMMessage.init;
     }
 
-    bool acknowledgeMessage(string tenantId, string queueName, string messageId) {
+    bool acknowledgeMessage(UUID tenantId, string queueName, string messageId) {
         synchronized (_lock) {
             auto key = queueKey(tenantId, queueName);
             if (auto items = key in _messagesByQueue) {
@@ -209,7 +209,7 @@ class EVMStore : SAPStore {
         return false;
     }
 
-    long queueDepth(string tenantId, string queueName) {
+    long queueDepth(UUID tenantId, string queueName) {
         synchronized (_lock) {
             auto key = queueKey(tenantId, queueName);
             if (auto items = key in _messagesByQueue) {
@@ -234,7 +234,7 @@ class EVMStore : SAPStore {
         }
     }
 
-    EVMWebhook[] listWebhooks(string tenantId) {
+    EVMWebhook[] listWebhooks(UUID tenantId) {
         EVMWebhook[] list;
         synchronized (_lock) {
             foreach (_, wh; _webhooks) {
@@ -246,7 +246,7 @@ class EVMStore : SAPStore {
         return list;
     }
 
-    EVMWebhook[] webhooksForQueue(string tenantId, string queueName) {
+    EVMWebhook[] webhooksForQueue(UUID tenantId, string queueName) {
         EVMWebhook[] list;
         synchronized (_lock) {
             foreach (_, wh; _webhooks) {
@@ -258,7 +258,7 @@ class EVMStore : SAPStore {
         return list;
     }
 
-    bool deleteWebhook(string tenantId, string webhookId) {
+    bool deleteWebhook(UUID tenantId, string webhookId) {
         synchronized (_lock) {
             if (auto wh = webhookId in _webhooks) {
                 if (wh.tenantId == tenantId) {
@@ -283,7 +283,7 @@ class EVMStore : SAPStore {
         }
     }
 
-    EVMDeadLetter[] listDeadLetters(string tenantId, string queueName) {
+    EVMDeadLetter[] listDeadLetters(UUID tenantId, string queueName) {
         synchronized (_lock) {
             auto key = queueKey(tenantId, queueName);
             if (auto items = key in _deadLettersByQueue) {
@@ -295,15 +295,15 @@ class EVMStore : SAPStore {
 
     // --- Key helpers ---
 
-    private string queueKey(string tenantId, string queueName) {
+    private string queueKey(UUID tenantId, string queueName) {
         return tenantId ~ ":queue:" ~ queueName;
     }
 
-    private string topicKey(string tenantId, string topicName) {
+    private string topicKey(UUID tenantId, string topicName) {
         return tenantId ~ ":topic:" ~ topicName;
     }
 
-    private bool belongsToTenant(string key, string tenantId) {
+    private bool belongsToTenant(string key, UUID tenantId) {
         return key.length > tenantId.length + 1
             && key[0 .. tenantId.length] == tenantId
             && key[tenantId.length] == ':';

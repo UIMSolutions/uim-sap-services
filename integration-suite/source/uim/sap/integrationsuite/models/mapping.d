@@ -56,7 +56,7 @@ mixin(ShowModule!());
   * 
   * Methods:
   * - toJson(): Converts the mapping instance into a JSON representation for API responses or storage.
-  * - mappingFromJson(string tenantId, Json request): Creates a new mapping instance from a JSON request, generating a unique mappingId and setting the createdAt and updatedAt timestamps.   
+  * - mappingFromJson(UUID tenantId, Json request): Creates a new mapping instance from a JSON request, generating a unique mappingId and setting the createdAt and updatedAt timestamps.   
   * 
   * Statuses:
   * - draft: The mapping is still being defined and is not yet ready for use.
@@ -104,7 +104,7 @@ struct INTMapping {
   }
 }
 
-INTMapping mappingFromJson(string tenantId, Json request) {
+INTMapping mappingFromJson(UUID tenantId, Json request) {
   INTMapping m;
   m.tenantId = UUID(tenantId);
   m.mappingId = randomUUID().toString();

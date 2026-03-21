@@ -34,7 +34,7 @@ struct EVMWebhook {
     }
 }
 
-EVMWebhook webhookFromJson(string tenantId, Json request) {
+EVMWebhook webhookFromJson(UUID tenantId, Json request) {
     EVMWebhook w;
     w.tenantId = UUID(tenantId);
     w.webhookId = randomUUID().toString();

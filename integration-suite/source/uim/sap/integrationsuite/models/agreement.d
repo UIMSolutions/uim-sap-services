@@ -123,7 +123,7 @@ if ("partner_id" in request && request["partner_id"].isString)
       .set("transaction_count", transactionCount);
   }
 
-  static INTAgreement opCall(string tenantId, Json request) {
+  static INTAgreement opCall(UUID tenantId, Json request) {
   INTAgreement agreement = new INTAgreement(request);
   agreement.tenantId = UUID(tenantId);
   agreement.agreementId = randomUUID().toString();

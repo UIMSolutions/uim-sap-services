@@ -29,7 +29,7 @@ mixin(ShowModule!());
   * 
   * Methods:
   * - toJson(): Converts the subscription instance into a JSON representation.
-  * - eventSubscriptionFromJson(string tenantId, Json request): Creates a new subscription instance from a JSON request, generating a unique subscriptionId and setting the createdAt and updatedAt timestamps. 
+  * - eventSubscriptionFromJson(UUID tenantId, Json request): Creates a new subscription instance from a JSON request, generating a unique subscriptionId and setting the createdAt and updatedAt timestamps. 
   * For more information on event subscriptions and their management, refer to the SAP Integration Suite documentation.
   */
 struct INTEventSubscription {
@@ -60,7 +60,7 @@ struct INTEventSubscription {
   }
 }
 
-INTEventSubscription eventSubscriptionFromJson(string tenantId, Json request) {
+INTEventSubscription eventSubscriptionFromJson(UUID tenantId, Json request) {
   INTEventSubscription s;
   s.tenantId = UUID(tenantId);
   s.subscriptionId = randomUUID().toString();

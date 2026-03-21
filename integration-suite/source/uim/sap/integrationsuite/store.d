@@ -77,7 +77,7 @@ class INTStore : SAPStore {
         }
     }
 
-    INTIFlow getIFlow(string tenantId, string iflowId) {
+    INTIFlow getIFlow(UUID tenantId, string iflowId) {
         synchronized (_lock) {
             auto key = tenantKey(tenantId, iflowId);
             if (auto v = key in _iflows) return *v;
@@ -85,7 +85,7 @@ class INTStore : SAPStore {
         return INTIFlow.init;
     }
 
-    INTIFlow[] listIFlows(string tenantId) {
+    INTIFlow[] listIFlows(UUID tenantId) {
         INTIFlow[] list;
         synchronized (_lock) {
             foreach (key, f; _iflows) {
@@ -95,7 +95,7 @@ class INTStore : SAPStore {
         return list;
     }
 
-    bool deleteIFlow(string tenantId, string iflowId) {
+    bool deleteIFlow(UUID tenantId, string iflowId) {
         synchronized (_lock) {
             auto key = tenantKey(tenantId, iflowId);
             if (key in _iflows) { _iflows.remove(key); return true; }
@@ -114,7 +114,7 @@ class INTStore : SAPStore {
         }
     }
 
-    INTMessageLog[] listMessageLogs(string tenantId) {
+    INTMessageLog[] listMessageLogs(UUID tenantId) {
         synchronized (_lock) {
             if (auto logs = tenantId in _messageLogs)
                 return (*logs).dup;
@@ -122,7 +122,7 @@ class INTStore : SAPStore {
         return [];
     }
 
-    INTMessageLog[] listMessageLogsByIFlow(string tenantId, string iflowId) {
+    INTMessageLog[] listMessageLogsByIFlow(UUID tenantId, string iflowId) {
         INTMessageLog[] result;
         synchronized (_lock) {
             if (auto logs = tenantId in _messageLogs) {
@@ -151,7 +151,7 @@ class INTStore : SAPStore {
         }
     }
 
-    INTApiProxy getApiProxy(string tenantId, string proxyId) {
+    INTApiProxy getApiProxy(UUID tenantId, string proxyId) {
         synchronized (_lock) {
             auto key = tenantKey(tenantId, proxyId);
             if (auto v = key in _apiProxies) return *v;
@@ -159,7 +159,7 @@ class INTStore : SAPStore {
         return INTApiProxy.init;
     }
 
-    INTApiProxy[] listApiProxies(string tenantId) {
+    INTApiProxy[] listApiProxies(UUID tenantId) {
         INTApiProxy[] list;
         synchronized (_lock) {
             foreach (key, p; _apiProxies) {
@@ -169,7 +169,7 @@ class INTStore : SAPStore {
         return list;
     }
 
-    bool deleteApiProxy(string tenantId, string proxyId) {
+    bool deleteApiProxy(UUID tenantId, string proxyId) {
         synchronized (_lock) {
             auto key = tenantKey(tenantId, proxyId);
             if (key in _apiProxies) { _apiProxies.remove(key); return true; }
@@ -193,7 +193,7 @@ class INTStore : SAPStore {
         }
     }
 
-    INTApiProduct getApiProduct(string tenantId, string productId) {
+    INTApiProduct getApiProduct(UUID tenantId, string productId) {
         synchronized (_lock) {
             auto key = tenantKey(tenantId, productId);
             if (auto v = key in _apiProducts) return *v;
@@ -201,7 +201,7 @@ class INTStore : SAPStore {
         return INTApiProduct.init;
     }
 
-    INTApiProduct[] listApiProducts(string tenantId) {
+    INTApiProduct[] listApiProducts(UUID tenantId) {
         INTApiProduct[] list;
         synchronized (_lock) {
             foreach (key, p; _apiProducts) {
@@ -211,7 +211,7 @@ class INTStore : SAPStore {
         return list;
     }
 
-    bool deleteApiProduct(string tenantId, string productId) {
+    bool deleteApiProduct(UUID tenantId, string productId) {
         synchronized (_lock) {
             auto key = tenantKey(tenantId, productId);
             if (key in _apiProducts) { _apiProducts.remove(key); return true; }
@@ -234,7 +234,7 @@ class INTStore : SAPStore {
         }
     }
 
-    INTApiPolicy getApiPolicy(string tenantId, string policyId) {
+    INTApiPolicy getApiPolicy(UUID tenantId, string policyId) {
         synchronized (_lock) {
             auto key = tenantKey(tenantId, policyId);
             if (auto v = key in _apiPolicies) return *v;
@@ -242,7 +242,7 @@ class INTStore : SAPStore {
         return INTApiPolicy.init;
     }
 
-    INTApiPolicy[] listApiPolicies(string tenantId) {
+    INTApiPolicy[] listApiPolicies(UUID tenantId) {
         INTApiPolicy[] list;
         synchronized (_lock) {
             foreach (key, p; _apiPolicies) {
@@ -252,7 +252,7 @@ class INTStore : SAPStore {
         return list;
     }
 
-    bool deleteApiPolicy(string tenantId, string policyId) {
+    bool deleteApiPolicy(UUID tenantId, string policyId) {
         synchronized (_lock) {
             auto key = tenantKey(tenantId, policyId);
             if (key in _apiPolicies) { _apiPolicies.remove(key); return true; }
@@ -277,7 +277,7 @@ class INTStore : SAPStore {
         }
     }
 
-    INTEventTopic getEventTopic(string tenantId, string topicId) {
+    INTEventTopic getEventTopic(UUID tenantId, string topicId) {
         synchronized (_lock) {
             auto key = tenantKey(tenantId, topicId);
             if (auto v = key in _eventTopics) return *v;
@@ -285,7 +285,7 @@ class INTStore : SAPStore {
         return INTEventTopic.init;
     }
 
-    INTEventTopic getEventTopicByName(string tenantId, string topicName) {
+    INTEventTopic getEventTopicByName(UUID tenantId, string topicName) {
         synchronized (_lock) {
             foreach (_, t; _eventTopics) {
                 if (t.tenantId == tenantId && t.topicName == topicName)
@@ -295,7 +295,7 @@ class INTStore : SAPStore {
         return INTEventTopic.init;
     }
 
-    INTEventTopic[] listEventTopics(string tenantId) {
+    INTEventTopic[] listEventTopics(UUID tenantId) {
         INTEventTopic[] list;
         synchronized (_lock) {
             foreach (key, t; _eventTopics) {
@@ -305,7 +305,7 @@ class INTStore : SAPStore {
         return list;
     }
 
-    bool deleteEventTopic(string tenantId, string topicId) {
+    bool deleteEventTopic(UUID tenantId, string topicId) {
         synchronized (_lock) {
             auto key = tenantKey(tenantId, topicId);
             if (key in _eventTopics) { _eventTopics.remove(key); return true; }
@@ -328,7 +328,7 @@ class INTStore : SAPStore {
         }
     }
 
-    INTEventSubscription[] listEventSubscriptions(string tenantId) {
+    INTEventSubscription[] listEventSubscriptions(UUID tenantId) {
         INTEventSubscription[] list;
         synchronized (_lock) {
             foreach (_, s; _eventSubscriptions) {
@@ -338,7 +338,7 @@ class INTStore : SAPStore {
         return list;
     }
 
-    INTEventSubscription[] subscriptionsForTopic(string tenantId, string topicName) {
+    INTEventSubscription[] subscriptionsForTopic(UUID tenantId, string topicName) {
         INTEventSubscription[] list;
         synchronized (_lock) {
             foreach (_, s; _eventSubscriptions) {
@@ -349,7 +349,7 @@ class INTStore : SAPStore {
         return list;
     }
 
-    bool deleteEventSubscription(string tenantId, string subscriptionId) {
+    bool deleteEventSubscription(UUID tenantId, string subscriptionId) {
         synchronized (_lock) {
             auto key = tenantKey(tenantId, subscriptionId);
             if (key in _eventSubscriptions) { _eventSubscriptions.remove(key); return true; }
@@ -373,7 +373,7 @@ class INTStore : SAPStore {
         }
     }
 
-    INTConnector getConnector(string tenantId, string connectorId) {
+    INTConnector getConnector(UUID tenantId, string connectorId) {
         synchronized (_lock) {
             auto key = tenantKey(tenantId, connectorId);
             if (auto v = key in _connectors) return *v;
@@ -381,7 +381,7 @@ class INTStore : SAPStore {
         return INTConnector.init;
     }
 
-    INTConnector[] listConnectors(string tenantId) {
+    INTConnector[] listConnectors(UUID tenantId) {
         INTConnector[] list;
         synchronized (_lock) {
             foreach (key, c; _connectors) {
@@ -391,7 +391,7 @@ class INTStore : SAPStore {
         return list;
     }
 
-    bool deleteConnector(string tenantId, string connectorId) {
+    bool deleteConnector(UUID tenantId, string connectorId) {
         synchronized (_lock) {
             auto key = tenantKey(tenantId, connectorId);
             if (key in _connectors) { _connectors.remove(key); return true; }
@@ -414,7 +414,7 @@ class INTStore : SAPStore {
         }
     }
 
-    INTMapping getMapping(string tenantId, string mappingId) {
+    INTMapping getMapping(UUID tenantId, string mappingId) {
         synchronized (_lock) {
             auto key = tenantKey(tenantId, mappingId);
             if (auto v = key in _mappings) return *v;
@@ -422,7 +422,7 @@ class INTStore : SAPStore {
         return INTMapping.init;
     }
 
-    INTMapping[] listMappings(string tenantId) {
+    INTMapping[] listMappings(UUID tenantId) {
         INTMapping[] list;
         synchronized (_lock) {
             foreach (key, m; _mappings) {
@@ -432,7 +432,7 @@ class INTStore : SAPStore {
         return list;
     }
 
-    bool deleteMapping(string tenantId, string mappingId) {
+    bool deleteMapping(UUID tenantId, string mappingId) {
         synchronized (_lock) {
             auto key = tenantKey(tenantId, mappingId);
             if (key in _mappings) { _mappings.remove(key); return true; }
@@ -456,7 +456,7 @@ class INTStore : SAPStore {
         }
     }
 
-    INTTradingPartner getTradingPartner(string tenantId, string partnerId) {
+    INTTradingPartner getTradingPartner(UUID tenantId, string partnerId) {
         synchronized (_lock) {
             auto key = tenantKey(tenantId, partnerId);
             if (auto v = key in _tradingPartners) return *v;
@@ -464,7 +464,7 @@ class INTStore : SAPStore {
         return INTTradingPartner.init;
     }
 
-    INTTradingPartner[] listTradingPartners(string tenantId) {
+    INTTradingPartner[] listTradingPartners(UUID tenantId) {
         INTTradingPartner[] list;
         synchronized (_lock) {
             foreach (key, tp; _tradingPartners) {
@@ -474,7 +474,7 @@ class INTStore : SAPStore {
         return list;
     }
 
-    bool deleteTradingPartner(string tenantId, string partnerId) {
+    bool deleteTradingPartner(UUID tenantId, string partnerId) {
         synchronized (_lock) {
             auto key = tenantKey(tenantId, partnerId);
             if (key in _tradingPartners) { _tradingPartners.remove(key); return true; }
@@ -498,7 +498,7 @@ class INTStore : SAPStore {
         }
     }
 
-    INTAgreement getAgreement(string tenantId, string agreementId) {
+    INTAgreement getAgreement(UUID tenantId, string agreementId) {
         synchronized (_lock) {
             auto key = tenantKey(tenantId, agreementId);
             if (auto v = key in _agreements) return *v;
@@ -506,7 +506,7 @@ class INTStore : SAPStore {
         return INTAgreement.init;
     }
 
-    INTAgreement[] listAgreements(string tenantId) {
+    INTAgreement[] listAgreements(UUID tenantId) {
         INTAgreement[] list;
         synchronized (_lock) {
             foreach (key, a; _agreements) {
@@ -516,7 +516,7 @@ class INTStore : SAPStore {
         return list;
     }
 
-    INTAgreement[] listAgreementsForPartner(string tenantId, string partnerId) {
+    INTAgreement[] listAgreementsForPartner(UUID tenantId, string partnerId) {
         INTAgreement[] list;
         synchronized (_lock) {
             foreach (_, a; _agreements) {
@@ -527,7 +527,7 @@ class INTStore : SAPStore {
         return list;
     }
 
-    bool deleteAgreement(string tenantId, string agreementId) {
+    bool deleteAgreement(UUID tenantId, string agreementId) {
         synchronized (_lock) {
             auto key = tenantKey(tenantId, agreementId);
             if (key in _agreements) { _agreements.remove(key); return true; }
@@ -551,7 +551,7 @@ class INTStore : SAPStore {
         }
     }
 
-    INTODataService getODataService(string tenantId, string serviceId) {
+    INTODataService getODataService(UUID tenantId, string serviceId) {
         synchronized (_lock) {
             auto key = tenantKey(tenantId, serviceId);
             if (auto v = key in _odataServices) return *v;
@@ -559,7 +559,7 @@ class INTStore : SAPStore {
         return INTODataService.init;
     }
 
-    INTODataService[] listODataServices(string tenantId) {
+    INTODataService[] listODataServices(UUID tenantId) {
         INTODataService[] list;
         synchronized (_lock) {
             foreach (key, svc; _odataServices) {
@@ -569,7 +569,7 @@ class INTStore : SAPStore {
         return list;
     }
 
-    bool deleteODataService(string tenantId, string serviceId) {
+    bool deleteODataService(UUID tenantId, string serviceId) {
         synchronized (_lock) {
             auto key = tenantKey(tenantId, serviceId);
             if (key in _odataServices) { _odataServices.remove(key); return true; }
@@ -592,7 +592,7 @@ class INTStore : SAPStore {
         }
     }
 
-    INTAssessment getAssessment(string tenantId, string assessmentId) {
+    INTAssessment getAssessment(UUID tenantId, string assessmentId) {
         synchronized (_lock) {
             auto key = tenantKey(tenantId, assessmentId);
             if (auto v = key in _assessments) return *v;
@@ -600,7 +600,7 @@ class INTStore : SAPStore {
         return INTAssessment.init;
     }
 
-    INTAssessment[] listAssessments(string tenantId) {
+    INTAssessment[] listAssessments(UUID tenantId) {
         INTAssessment[] list;
         synchronized (_lock) {
             foreach (key, a; _assessments) {
@@ -610,7 +610,7 @@ class INTStore : SAPStore {
         return list;
     }
 
-    bool deleteAssessment(string tenantId, string assessmentId) {
+    bool deleteAssessment(UUID tenantId, string assessmentId) {
         synchronized (_lock) {
             auto key = tenantKey(tenantId, assessmentId);
             if (key in _assessments) { _assessments.remove(key); return true; }
@@ -633,7 +633,7 @@ class INTStore : SAPStore {
         }
     }
 
-    INTMigration getMigration(string tenantId, string migrationId) {
+    INTMigration getMigration(UUID tenantId, string migrationId) {
         synchronized (_lock) {
             auto key = tenantKey(tenantId, migrationId);
             if (auto v = key in _migrations) return *v;
@@ -641,7 +641,7 @@ class INTStore : SAPStore {
         return INTMigration.init;
     }
 
-    INTMigration[] listMigrations(string tenantId) {
+    INTMigration[] listMigrations(UUID tenantId) {
         INTMigration[] list;
         synchronized (_lock) {
             foreach (key, m; _migrations) {
@@ -651,7 +651,7 @@ class INTStore : SAPStore {
         return list;
     }
 
-    bool deleteMigration(string tenantId, string migrationId) {
+    bool deleteMigration(UUID tenantId, string migrationId) {
         synchronized (_lock) {
             auto key = tenantKey(tenantId, migrationId);
             if (key in _migrations) { _migrations.remove(key); return true; }
@@ -674,7 +674,7 @@ class INTStore : SAPStore {
         }
     }
 
-    INTHybridRuntime getHybridRuntime(string tenantId, string runtimeId) {
+    INTHybridRuntime getHybridRuntime(UUID tenantId, string runtimeId) {
         synchronized (_lock) {
             auto key = tenantKey(tenantId, runtimeId);
             if (auto v = key in _hybridRuntimes) return *v;
@@ -682,7 +682,7 @@ class INTStore : SAPStore {
         return INTHybridRuntime.init;
     }
 
-    INTHybridRuntime[] listHybridRuntimes(string tenantId) {
+    INTHybridRuntime[] listHybridRuntimes(UUID tenantId) {
         INTHybridRuntime[] list;
         synchronized (_lock) {
             foreach (key, r; _hybridRuntimes) {
@@ -692,7 +692,7 @@ class INTStore : SAPStore {
         return list;
     }
 
-    bool deleteHybridRuntime(string tenantId, string runtimeId) {
+    bool deleteHybridRuntime(UUID tenantId, string runtimeId) {
         synchronized (_lock) {
             auto key = tenantKey(tenantId, runtimeId);
             if (key in _hybridRuntimes) { _hybridRuntimes.remove(key); return true; }
@@ -716,7 +716,7 @@ class INTStore : SAPStore {
         }
     }
 
-    INTDataAsset getDataAsset(string tenantId, string assetId) {
+    INTDataAsset getDataAsset(UUID tenantId, string assetId) {
         synchronized (_lock) {
             auto key = tenantKey(tenantId, assetId);
             if (auto v = key in _dataAssets) return *v;
@@ -724,7 +724,7 @@ class INTStore : SAPStore {
         return INTDataAsset.init;
     }
 
-    INTDataAsset[] listDataAssets(string tenantId) {
+    INTDataAsset[] listDataAssets(UUID tenantId) {
         INTDataAsset[] list;
         synchronized (_lock) {
             foreach (key, a; _dataAssets) {
@@ -734,7 +734,7 @@ class INTStore : SAPStore {
         return list;
     }
 
-    bool deleteDataAsset(string tenantId, string assetId) {
+    bool deleteDataAsset(UUID tenantId, string assetId) {
         synchronized (_lock) {
             auto key = tenantKey(tenantId, assetId);
             if (key in _dataAssets) { _dataAssets.remove(key); return true; }
@@ -757,7 +757,7 @@ class INTStore : SAPStore {
         }
     }
 
-    INTContentPack getContentPack(string tenantId, string packId) {
+    INTContentPack getContentPack(UUID tenantId, string packId) {
         synchronized (_lock) {
             auto key = tenantKey(tenantId, packId);
             if (auto v = key in _contentPacks) return *v;
@@ -765,7 +765,7 @@ class INTStore : SAPStore {
         return INTContentPack.init;
     }
 
-    INTContentPack[] listContentPacks(string tenantId) {
+    INTContentPack[] listContentPacks(UUID tenantId) {
         INTContentPack[] list;
         synchronized (_lock) {
             foreach (key, p; _contentPacks) {
@@ -775,7 +775,7 @@ class INTStore : SAPStore {
         return list;
     }
 
-    bool deleteContentPack(string tenantId, string packId) {
+    bool deleteContentPack(UUID tenantId, string packId) {
         synchronized (_lock) {
             auto key = tenantKey(tenantId, packId);
             if (key in _contentPacks) { _contentPacks.remove(key); return true; }
@@ -787,11 +787,11 @@ class INTStore : SAPStore {
     //  Helpers
     // =====================================================================
 
-    private string tenantKey(string tenantId, string resourceId) {
+    private string tenantKey(UUID tenantId, string resourceId) {
         return tenantId ~ ":" ~ resourceId;
     }
 
-    private bool belongsTo(string key, string tenantId) {
+    private bool belongsTo(string key, UUID tenantId) {
         return key.length > tenantId.length + 1
             && key[0 .. tenantId.length] == tenantId
             && key[tenantId.length] == ':';

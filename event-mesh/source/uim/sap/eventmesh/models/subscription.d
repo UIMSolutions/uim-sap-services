@@ -30,7 +30,7 @@ struct EVMSubscription {
     }
 }
 
-EVMSubscription subscriptionFromJson(string tenantId, Json request) {
+EVMSubscription subscriptionFromJson(UUID tenantId, Json request) {
     EVMSubscription s;
     s.tenantId = UUID(tenantId);
     s.subscriptionId = randomUUID().toString();

@@ -83,7 +83,7 @@ class INTServer : SAPServer {
     private void routeTenant(
         HTTPServerRequest req,
         HTTPServerResponse res,
-        string tenantId,
+        UUID tenantId,
         string[] segs
     ) {
         if (segs.length == 0) {
@@ -156,7 +156,7 @@ class INTServer : SAPServer {
 
     private void routeIFlows(
         HTTPServerRequest req, HTTPServerResponse res,
-        string tenantId, string[] rest
+        UUID tenantId, string[] rest
     ) {
         // POST / GET  .../iflows
         if (rest.length == 0) {
@@ -195,7 +195,7 @@ class INTServer : SAPServer {
 
     private void routeMessageLogs(
         HTTPServerRequest req, HTTPServerResponse res,
-        string tenantId, string[] rest
+        UUID tenantId, string[] rest
     ) {
         if (rest.length == 0) {
             if (req.method == HTTPMethod.POST) {
@@ -216,7 +216,7 @@ class INTServer : SAPServer {
 
     private void routeApiProxies(
         HTTPServerRequest req, HTTPServerResponse res,
-        string tenantId, string[] rest
+        UUID tenantId, string[] rest
     ) {
         if (rest.length == 0) {
             if (req.method == HTTPMethod.POST) {
@@ -248,7 +248,7 @@ class INTServer : SAPServer {
 
     private void routeApiProducts(
         HTTPServerRequest req, HTTPServerResponse res,
-        string tenantId, string[] rest
+        UUID tenantId, string[] rest
     ) {
         if (rest.length == 0) {
             if (req.method == HTTPMethod.POST) {
@@ -280,7 +280,7 @@ class INTServer : SAPServer {
 
     private void routeApiPolicies(
         HTTPServerRequest req, HTTPServerResponse res,
-        string tenantId, string[] rest
+        UUID tenantId, string[] rest
     ) {
         if (rest.length == 0) {
             if (req.method == HTTPMethod.POST) {
@@ -305,7 +305,7 @@ class INTServer : SAPServer {
 
     private void routeEventTopics(
         HTTPServerRequest req, HTTPServerResponse res,
-        string tenantId, string[] rest
+        UUID tenantId, string[] rest
     ) {
         if (rest.length == 0) {
             if (req.method == HTTPMethod.POST) {
@@ -336,7 +336,7 @@ class INTServer : SAPServer {
 
     private void routeEventSubscriptions(
         HTTPServerRequest req, HTTPServerResponse res,
-        string tenantId, string[] rest
+        UUID tenantId, string[] rest
     ) {
         if (rest.length == 0) {
             if (req.method == HTTPMethod.POST) {
@@ -361,7 +361,7 @@ class INTServer : SAPServer {
 
     private void routeConnectors(
         HTTPServerRequest req, HTTPServerResponse res,
-        string tenantId, string[] rest
+        UUID tenantId, string[] rest
     ) {
         if (rest.length == 0) {
             if (req.method == HTTPMethod.POST) {
@@ -393,7 +393,7 @@ class INTServer : SAPServer {
 
     private void routeMappings(
         HTTPServerRequest req, HTTPServerResponse res,
-        string tenantId, string[] rest
+        UUID tenantId, string[] rest
     ) {
         if (rest.length == 0) {
             if (req.method == HTTPMethod.POST) {
@@ -425,7 +425,7 @@ class INTServer : SAPServer {
 
     private void routeTradingPartners(
         HTTPServerRequest req, HTTPServerResponse res,
-        string tenantId, string[] rest
+        UUID tenantId, string[] rest
     ) {
         if (rest.length == 0) {
             if (req.method == HTTPMethod.POST) {
@@ -457,7 +457,7 @@ class INTServer : SAPServer {
 
     private void routeAgreements(
         HTTPServerRequest req, HTTPServerResponse res,
-        string tenantId, string[] rest
+        UUID tenantId, string[] rest
     ) {
         if (rest.length == 0) {
             if (req.method == HTTPMethod.POST) {
@@ -489,7 +489,7 @@ class INTServer : SAPServer {
 
     private void routeODataServices(
         HTTPServerRequest req, HTTPServerResponse res,
-        string tenantId, string[] rest
+        UUID tenantId, string[] rest
     ) {
         if (rest.length == 0) {
             if (req.method == HTTPMethod.POST) {
@@ -521,7 +521,7 @@ class INTServer : SAPServer {
 
     private void routeAssessments(
         HTTPServerRequest req, HTTPServerResponse res,
-        string tenantId, string[] rest
+        UUID tenantId, string[] rest
     ) {
         if (rest.length == 0) {
             if (req.method == HTTPMethod.POST) {
@@ -553,7 +553,7 @@ class INTServer : SAPServer {
 
     private void routeMigrations(
         HTTPServerRequest req, HTTPServerResponse res,
-        string tenantId, string[] rest
+        UUID tenantId, string[] rest
     ) {
         if (rest.length == 0) {
             if (req.method == HTTPMethod.POST) {
@@ -590,7 +590,7 @@ class INTServer : SAPServer {
 
     private void routeHybridRuntimes(
         HTTPServerRequest req, HTTPServerResponse res,
-        string tenantId, string[] rest
+        UUID tenantId, string[] rest
     ) {
         if (rest.length == 0) {
             if (req.method == HTTPMethod.POST) {
@@ -627,7 +627,7 @@ class INTServer : SAPServer {
 
     private void routeDataAssets(
         HTTPServerRequest req, HTTPServerResponse res,
-        string tenantId, string[] rest
+        UUID tenantId, string[] rest
     ) {
         if (rest.length == 0) {
             if (req.method == HTTPMethod.POST) {
@@ -659,7 +659,7 @@ class INTServer : SAPServer {
 
     private void routeContentPacks(
         HTTPServerRequest req, HTTPServerResponse res,
-        string tenantId, string[] rest
+        UUID tenantId, string[] rest
     ) {
         if (rest.length == 0) {
             if (req.method == HTTPMethod.POST) {

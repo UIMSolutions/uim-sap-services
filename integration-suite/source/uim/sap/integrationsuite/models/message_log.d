@@ -64,7 +64,7 @@ struct INTMessageLog {
   }
 }
 
-INTMessageLog messageLogFromJson(string tenantId, Json request) {
+INTMessageLog messageLogFromJson(UUID tenantId, Json request) {
   INTMessageLog l;
   l.tenantId = UUID(tenantId);
   l.logId = randomUUID().toString();

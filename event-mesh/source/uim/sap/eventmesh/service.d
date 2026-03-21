@@ -19,7 +19,7 @@ class EVMService : SAPService {
 
   // --- Queue management ---
 
-  Json createQueue(string tenantId, Json request) {
+  Json createQueue(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
 
     auto queue = queueFromJson(tenantId, request);
@@ -40,7 +40,7 @@ class EVMService : SAPService {
     return result;
   }
 
-  Json listQueues(string tenantId) {
+  Json listQueues(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
 
     Json resources = Json.emptyArray;
@@ -55,7 +55,7 @@ class EVMService : SAPService {
     return result;
   }
 
-  Json getQueue(string tenantId, string queueName) {
+  Json getQueue(UUID tenantId, string queueName) {
     validateId(tenantId, "Tenant ID");
     validateId(queueName, "Queue name");
 
@@ -70,7 +70,7 @@ class EVMService : SAPService {
     return result;
   }
 
-  Json deleteQueue(string tenantId, string queueName) {
+  Json deleteQueue(UUID tenantId, string queueName) {
     validateId(tenantId, "Tenant ID");
     validateId(queueName, "Queue name");
 
@@ -86,7 +86,7 @@ class EVMService : SAPService {
 
   // --- Topic management ---
 
-  Json createTopic(string tenantId, Json request) {
+  Json createTopic(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
 
     auto topic = topicFromJson(tenantId, request);
@@ -107,7 +107,7 @@ class EVMService : SAPService {
     return result;
   }
 
-  Json listTopics(string tenantId) {
+  Json listTopics(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
 
     Json resources = Json.emptyArray;
@@ -124,7 +124,7 @@ class EVMService : SAPService {
 
   // --- Subscription management ---
 
-  Json createSubscription(string tenantId, Json request) {
+  Json createSubscription(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
 
     auto subscription = subscriptionFromJson(tenantId, request);
@@ -153,7 +153,7 @@ class EVMService : SAPService {
     return result;
   }
 
-  Json listSubscriptions(string tenantId) {
+  Json listSubscriptions(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
 
     Json resources = Json.emptyArray;
@@ -170,7 +170,7 @@ class EVMService : SAPService {
 
   // --- Publish events ---
 
-  Json publishMessage(string tenantId, string topicName, Json request) {
+  Json publishMessage(UUID tenantId, string topicName, Json request) {
     validateId(tenantId, "Tenant ID");
     validateId(topicName, "Topic name");
 
@@ -211,7 +211,7 @@ class EVMService : SAPService {
 
   // --- Consume events ---
 
-  Json consumeMessage(string tenantId, string queueName) {
+  Json consumeMessage(UUID tenantId, string queueName) {
     validateId(tenantId, "Tenant ID");
     validateId(queueName, "Queue name");
 
@@ -235,7 +235,7 @@ class EVMService : SAPService {
     return result;
   }
 
-  Json acknowledgeMessage(string tenantId, string queueName, string messageId) {
+  Json acknowledgeMessage(UUID tenantId, string queueName, string messageId) {
     validateId(tenantId, "Tenant ID");
     validateId(queueName, "Queue name");
     validateId(messageId, "Message ID");
@@ -250,7 +250,7 @@ class EVMService : SAPService {
     return result;
   }
 
-  Json listQueueMessages(string tenantId, string queueName) {
+  Json listQueueMessages(UUID tenantId, string queueName) {
     validateId(tenantId, "Tenant ID");
     validateId(queueName, "Queue name");
 
@@ -274,7 +274,7 @@ class EVMService : SAPService {
 
   // --- Webhook management ---
 
-  Json registerWebhook(string tenantId, Json request) {
+  Json registerWebhook(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
 
     auto webhook = webhookFromJson(tenantId, request);
@@ -298,7 +298,7 @@ class EVMService : SAPService {
     return result;
   }
 
-  Json listWebhooks(string tenantId) {
+  Json listWebhooks(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
 
     Json resources = Json.emptyArray;
@@ -313,7 +313,7 @@ class EVMService : SAPService {
     return result;
   }
 
-  Json deleteWebhook(string tenantId, string webhookId) {
+  Json deleteWebhook(UUID tenantId, string webhookId) {
     validateId(tenantId, "Tenant ID");
     validateId(webhookId, "Webhook ID");
 
@@ -329,7 +329,7 @@ class EVMService : SAPService {
 
   // --- Dead letter queue ---
 
-  Json listDeadLetters(string tenantId, string queueName) {
+  Json listDeadLetters(UUID tenantId, string queueName) {
     validateId(tenantId, "Tenant ID");
     validateId(queueName, "Queue name");
 
@@ -353,7 +353,7 @@ class EVMService : SAPService {
 
   // --- Dashboard ---
 
-  Json dashboard(string tenantId) {
+  Json dashboard(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
 
     auto queues = _store.listQueues(tenantId);
