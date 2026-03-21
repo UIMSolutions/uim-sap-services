@@ -27,7 +27,7 @@ mixin(ShowModule!());
   * - `updatedAt`: The timestamp of when the event mesh was last updated.
   * Methods:
   * - `toJson()`: Converts the event mesh instance to a JSON object for API responses.
-  * - `meshFromJson(string tenantId, string brokerServiceId, Json request)`: Creates an instance of `AEMEventMesh` from a JSON request, initializing fields based
+  * - `meshFromJson(UUID tenantId, string brokerServiceId, Json request)`: Creates an instance of `AEMEventMesh` from a JSON request, initializing fields based
   *   on the provided data and generating a unique `meshId` if not provided.
   * Example usage:
   * ```
@@ -64,7 +64,7 @@ class AEMEventMesh : SAPTenantObject {
     }
 }
 
-AEMEventMesh meshFromJson(string tenantId, string brokerServiceId, Json request) {
+AEMEventMesh meshFromJson(UUID tenantId, string brokerServiceId, Json request) {
     AEMEventMesh mesh = new AEMEventMesh();
     mesh.tenantId = UUID(tenantId);
     mesh.meshId = randomUUID();

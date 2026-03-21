@@ -53,7 +53,7 @@ class AGTMobileApp : SAPTenantObject {
       .set("lifecycle", lifecycle);
   }
 
-  static AGTMobileApp opCall(string tenantId, Json request, string defaultBackend) {
+  static AGTMobileApp opCall(UUID tenantId, Json request, string defaultBackend) {
     AGTMobileApp app = new AGTMobileApp(request);
     app.tenantId = UUID(tenantId);
     app.appId = randomUUID();

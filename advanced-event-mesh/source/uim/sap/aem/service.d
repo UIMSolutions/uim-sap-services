@@ -21,7 +21,7 @@ class AEMService : SAPService {
     _store = new AEMStore;
   }
 
-  Json createBrokerService(string tenantId, Json request) {
+  Json createBrokerService(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
 
     AEMConfig cfg = cast(AEMConfig)_config;
@@ -38,7 +38,7 @@ class AEMService : SAPService {
       .set("broker_service", saved.toJson());
   }
 
-  Json listBrokerServices(string tenantId) {
+  Json listBrokerServices(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
 
     Json resources = _store.listBrokers(tenantId).map!(resource => broker.toJson()).array.toJson;
@@ -49,7 +49,7 @@ class AEMService : SAPService {
       .set("total_results", cast(long)resources.length);
   }
 
-  Json createEventMesh(string tenantId, string brokerServiceId, Json request) {
+  Json createEventMesh(UUID tenantId, string brokerServiceId, Json request) {
     validateId(tenantId, "Tenant ID");
     validateId(brokerServiceId, "Broker service ID");
 
@@ -72,7 +72,7 @@ class AEMService : SAPService {
       .set("event_mesh", saved.toJson());
   }
 
-  Json listEventMeshes(string tenantId) {
+  Json listEventMeshes(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
 
     Json resources = _store.listMeshes(tenantId).map!(mesh => mesh.toJson()).array.toJson;
@@ -83,7 +83,7 @@ class AEMService : SAPService {
       .set("total_results", cast(long)resources.length);
   }
 
-  Json registerTopic(string tenantId, string meshId, Json request) {
+  Json registerTopic(UUID tenantId, string meshId, Json request) {
     validateId(tenantId, "Tenant ID");
     validateId(meshId, "Mesh ID");
 
@@ -110,7 +110,7 @@ class AEMService : SAPService {
     return result;
   }
 
-  Json publishEvent(string tenantId, string meshId, Json request) {
+  Json publishEvent(UUID tenantId, string meshId, Json request) {
     validateId(tenantId, "Tenant ID");
     validateId(meshId, "Mesh ID");
 
@@ -144,7 +144,7 @@ class AEMService : SAPService {
       .set("message", "Event published to mesh topic");
   }
 
-  Json listTopicEvents(string tenantId, string meshId, string topic) {
+  Json listTopicEvents(UUID tenantId, string meshId, string topic) {
     validateId(tenantId, "Tenant ID");
     validateId(meshId, "Mesh ID");
     validateId(topic, "Topic");
@@ -160,7 +160,7 @@ class AEMService : SAPService {
       .set("total_results", cast(long)resources.length);
   }
 
-  Json upsertComponent(string tenantId, Json request) {
+  Json upsertComponent(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
 
     auto component = componentFromJson(tenantId, request);
@@ -180,7 +180,7 @@ class AEMService : SAPService {
     return result;
   }
 
-  Json listComponents(string tenantId) {
+  Json listComponents(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
 
     Json resources = Json.emptyArray;
@@ -195,7 +195,7 @@ class AEMService : SAPService {
     return result;
   }
 
-  Json addSubscription(string tenantId, string componentId, Json request) {
+  Json addSubscription(UUID tenantId, string componentId, Json request) {
     validateId(tenantId, "Tenant ID");
     validateId(componentId, "Component ID");
 
@@ -229,7 +229,7 @@ class AEMService : SAPService {
     return result;
   }
 
-  Json modelEDA(string tenantId) {
+  Json modelEDA(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
 
     Json nodes = Json.emptyArray;
@@ -280,7 +280,7 @@ class AEMService : SAPService {
     return result;
   }
 
-  Json upsertNotificationRule(string tenantId, string ruleId, Json request) {
+  Json upsertNotificationRule(UUID tenantId, string ruleId, Json request) {
     validateId(tenantId, "Tenant ID");
     validateId(ruleId, "Rule ID");
 
@@ -301,7 +301,7 @@ class AEMService : SAPService {
     return result;
   }
 
-  Json listNotificationRules(string tenantId) {
+  Json listNotificationRules(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
 
     Json resources = Json.emptyArray;
@@ -316,7 +316,7 @@ class AEMService : SAPService {
     return result;
   }
 
-  Json monitoringDashboard(string tenantId) {
+  Json monitoringDashboard(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
 
     auto brokers = _store.listBrokers(tenantId);
@@ -361,7 +361,7 @@ class AEMService : SAPService {
     return result;
   }
 
-  Json listAlerts(string tenantId) {
+  Json listAlerts(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
 
     Json resources = Json.emptyArray;
@@ -376,7 +376,7 @@ class AEMService : SAPService {
     return result;
   }
 
-  private void checkAndCreateAlerts(string tenantId, string meshId, string topic) {
+  private void checkAndCreateAlerts(UUID tenantId, string meshId, string topic) {
     auto depth = cast(double)_store.topicDepth(tenantId, meshId, topic);
     foreach (rule; _store.listNotificationRules(tenantId)) {
       if (!rule.enabled) {

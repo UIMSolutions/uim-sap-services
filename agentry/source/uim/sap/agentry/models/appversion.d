@@ -68,7 +68,7 @@ class AGTAppVersion : SAPTenantObject {
       .set("build_status", buildStatus);
   }
 
-  static AGTAppVersion opCall(string tenantId, string appId, Json request) {
+  static AGTAppVersion opCall(UUID tenantId, string appId, Json request) {
     AGTAppVersion appVersion = new AGTAppVersion(request);
     
     appVersion.tenantId = UUID(tenantId);

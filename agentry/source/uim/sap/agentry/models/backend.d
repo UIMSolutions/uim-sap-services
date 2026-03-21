@@ -70,7 +70,7 @@ class AGTBackendSystem : SAPTenantObject {
       .set("enabled", enabled);
   }
 
-  static AGTBackendSystem opCall(string tenantId, Json request) {
+  static AGTBackendSystem opCall(UUID tenantId, Json request) {
     AGTBackendSystem backend = new AGTBackendSystem(request);
     backend.tenantId = UUID(tenantId);
     backend.backendId = randomUUID();

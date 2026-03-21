@@ -46,7 +46,7 @@ class AGTRuntimeInstance : SAPTenantObject {
       .set("status", status);
   }
 
-  static AGTRuntimeInstance opCall(string tenantId, Json request) {
+  static AGTRuntimeInstance opCall(UUID tenantId, Json request) {
     AGTRuntimeInstance instance = new AGTRuntimeInstance(request);
     instance.tenantId = UUID(tenantId);
     instance.instanceId = randomUUID();

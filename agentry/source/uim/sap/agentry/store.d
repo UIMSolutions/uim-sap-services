@@ -41,7 +41,7 @@ class AGTStore : SAPStore {
     return getApp(tenantId.toString, appId.toString);
   }
 
-  AGTMobileApp getApp(string tenantId, string appId) {
+  AGTMobileApp getApp(UUID tenantId, string appId) {
     synchronized (_lock) {
       auto key = appKey(tenantId, appId);
       if (auto value = key in _apps) {
@@ -55,7 +55,7 @@ class AGTStore : SAPStore {
     return listApps(tenantId.toString);
   }
 
-  AGTMobileApp[] listApps(string tenantId) {
+  AGTMobileApp[] listApps(UUID tenantId) {
     AGTMobileApp[] list;
     synchronized (_lock) {
       foreach (key, app; _apps) {
@@ -79,7 +79,7 @@ class AGTStore : SAPStore {
     return listVersions(tenantId.toString, appId.toString);
   }
 
-  AGTAppVersion[] listVersions(string tenantId, string appId) {
+  AGTAppVersion[] listVersions(UUID tenantId, string appId) {
     synchronized (_lock) {
       auto key = appKey(tenantId, appId);
       if (auto list = key in _versionsByApp) {
@@ -101,7 +101,7 @@ class AGTStore : SAPStore {
     return listTestRuns(tenantId.toString, appId.toString);
   }
   
-  AGTTestRun[] listTestRuns(string tenantId, string appId) {
+  AGTTestRun[] listTestRuns(UUID tenantId, string appId) {
     synchronized (_lock) {
       auto key = appKey(tenantId, appId);
       if (auto list = key in _testRunsByApp) {
@@ -123,7 +123,7 @@ class AGTStore : SAPStore {
     return getInstance(tenantId.toString, instanceId.toString);
   }
 
-  AGTRuntimeInstance getInstance(string tenantId, UUID instanceId) {
+  AGTRuntimeInstance getInstance(UUID tenantId, UUID instanceId) {
     synchronized (_lock) {
       auto key = instanceKey(tenantId, instanceId);
       if (auto value = key in _instances) {
@@ -137,7 +137,7 @@ class AGTStore : SAPStore {
     return listInstances(tenantId.toString);
   }
   
-  AGTRuntimeInstance[] listInstances(string tenantId) {
+  AGTRuntimeInstance[] listInstances(UUID tenantId) {
     AGTRuntimeInstance[] list;
     synchronized (_lock) {
       foreach (key, instance; _instances) {
@@ -161,7 +161,7 @@ class AGTStore : SAPStore {
     return getDevice(tenantId.toString, deviceId.toString);
   }
 
-  AGTDevice getDevice(string tenantId, string deviceId) {
+  AGTDevice getDevice(UUID tenantId, string deviceId) {
     synchronized (_lock) {
       auto key = deviceKey(tenantId, deviceId);
       if (auto value = key in _devices) {
@@ -175,7 +175,7 @@ class AGTStore : SAPStore {
     return listDevices(tenantId.toString);
   }
 
-  AGTDevice[] listDevices(string tenantId) {
+  AGTDevice[] listDevices(UUID tenantId) {
     AGTDevice[] list;
     synchronized (_lock) {
       foreach (key, device; _devices) {
@@ -199,7 +199,7 @@ class AGTStore : SAPStore {
     return listBackends(tenantId.toString);
   }
 
-  AGTBackendSystem[] listBackends(string tenantId) {
+  AGTBackendSystem[] listBackends(UUID tenantId) {
     AGTBackendSystem[] list;
     synchronized (_lock) {
       foreach (key, backend; _backends) {
@@ -215,7 +215,7 @@ class AGTStore : SAPStore {
     return appKey(tenantId.toString, appId.toString);
   }
 
-  private string appKey(string tenantId, string appId) {
+  private string appKey(UUID tenantId, string appId) {
     return tenantId ~ ":app:" ~ appId;
   }
 
@@ -223,7 +223,7 @@ class AGTStore : SAPStore {
     return instanceKey(tenantId.toString, instanceId.toString);
   }
 
-  private string instanceKey(string tenantId, UUID instanceId) {
+  private string instanceKey(UUID tenantId, UUID instanceId) {
     return tenantId ~ ":instance:" ~ instanceId;
   }
 
@@ -231,7 +231,7 @@ class AGTStore : SAPStore {
     return deviceKey(tenantId.toString, deviceId.toString);
   }
 
-  private string deviceKey(string tenantId, string deviceId) {
+  private string deviceKey(UUID tenantId, string deviceId) {
     return tenantId ~ ":device:" ~ deviceId;
   }
 
@@ -239,7 +239,7 @@ class AGTStore : SAPStore {
     return backendKey(tenantId.toString, backendId.toString);
   }
 
-  private string backendKey(string tenantId, string backendId) {
+  private string backendKey(UUID tenantId, string backendId) {
     return tenantId ~ ":backend:" ~ backendId;
   }
 
@@ -247,7 +247,7 @@ class AGTStore : SAPStore {
     return belongsToTenant(key, tenantId.toString);
   }
 
-  private bool belongsToTenant(string key, string tenantId) {
+  private bool belongsToTenant(string key, UUID tenantId) {
     return key.length > tenantId.length + 1
       && key[0 .. tenantId.length] == tenantId
       && key[tenantId.length] == ':';

@@ -37,7 +37,7 @@ class AGTService : SAPService {
     _store = new AGTStore;
   }
 
-  Json upsertMobileApp(string tenantId, Json request) {
+  Json upsertMobileApp(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
 
     AGTConfig cfg = cast(AGTConfig)config;
@@ -54,7 +54,7 @@ class AGTService : SAPService {
       .set("mobile_app", saved.toJson());
   }
 
-  Json listMobileApps(string tenantId) {
+  Json listMobileApps(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
 
     Json resources = _store.listApps(tenantId).map!(app => app.toJson()).array.toJson();
@@ -65,7 +65,7 @@ class AGTService : SAPService {
       .set("total_results", cast(long)resources.length);
   }
 
-  Json createVersion(string tenantId, string appId, Json request) {
+  Json createVersion(UUID tenantId, string appId, Json request) {
     validateId(tenantId, "Tenant ID");
     validateId(appId, "App ID");
 
@@ -87,7 +87,7 @@ class AGTService : SAPService {
     return result;
   }
 
-  Json listVersions(string tenantId, string appId) {
+  Json listVersions(UUID tenantId, string appId) {
     validateId(tenantId, "Tenant ID");
     validateId(appId, "App ID");
 
@@ -101,7 +101,7 @@ class AGTService : SAPService {
       .set("total_results", cast(long)resources.length);
   }
 
-  Json triggerTestRun(string tenantId, string appId, Json request) {
+  Json triggerTestRun(UUID tenantId, string appId, Json request) {
     validateId(tenantId, "Tenant ID");
     validateId(appId, "App ID");
 
@@ -126,7 +126,7 @@ class AGTService : SAPService {
       .set("test_run", saved.toJson());
   }
 
-  Json listTestRuns(string tenantId, string appId) {
+  Json listTestRuns(UUID tenantId, string appId) {
     validateId(tenantId, "Tenant ID");
     validateId(appId, "App ID");
 
@@ -140,7 +140,7 @@ class AGTService : SAPService {
       .set("total_results", cast(long)resources.length);
   }
 
-  Json upsertRuntimeInstance(string tenantId, Json request) {
+  Json upsertRuntimeInstance(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
 
     auto instance = AGTRuntimeInstance(tenantId, request);
@@ -165,7 +165,7 @@ class AGTService : SAPService {
     return listRuntimeInstances(tenantId.toString);
   }
 
-  Json listRuntimeInstances(string tenantId) {
+  Json listRuntimeInstances(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
 
     Json resources = Json.emptyArray;
@@ -183,7 +183,7 @@ class AGTService : SAPService {
     return deployVersion(tenantId.toString, instanceId.toString, request);
   }
 
-  Json deployVersion(string tenantId, UUID instanceId, Json request) {
+  Json deployVersion(UUID tenantId, UUID instanceId, Json request) {
     validateId(tenantId, "Tenant ID");
     validateId(instanceId, "Instance ID");
 
@@ -228,7 +228,7 @@ class AGTService : SAPService {
     return upsertDevice(tenantId.toString, request);
   }
 
-  Json upsertDevice(string tenantId, Json request) {
+  Json upsertDevice(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
 
     auto device = AGTDevice(tenantId, request);
@@ -257,7 +257,7 @@ class AGTService : SAPService {
     return listDevices(tenantId.toString);
   }
 
-  Json listDevices(string tenantId) {
+  Json listDevices(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
 
     Json resources = _store.listDevices(tenantId).map!(device => device.toJson()).array.toJson();
@@ -272,7 +272,7 @@ class AGTService : SAPService {
     return syncDevice(tenantId.toString, deviceId.toString, request);
   }
 
-  Json syncDevice(string tenantId, string deviceId, Json request) {
+  Json syncDevice(UUID tenantId, string deviceId, Json request) {
     validateId(tenantId, "Tenant ID");
     validateId(deviceId, "Device ID");
 
@@ -297,7 +297,7 @@ class AGTService : SAPService {
     return upsertBackendSystem(tenantId.toString, request);
   }
 
-  Json upsertBackendSystem(string tenantId, Json request) {
+  Json upsertBackendSystem(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
 
     auto backend = AGTBackendSystem(tenantId, request);
@@ -317,7 +317,7 @@ class AGTService : SAPService {
     return listBackendSystems(tenantId.toString);
   }
 
-  Json listBackendSystems(string tenantId) {
+  Json listBackendSystems(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
 
     Json resources = _store.listBackends(tenantId).map!(backend => backend.toJson()).array.toJson();
@@ -332,7 +332,7 @@ class AGTService : SAPService {
     return operationsDashboard(tenantId.toString);
   }
 
-  Json operationsDashboard(string tenantId) {
+  Json operationsDashboard(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
 
     auto apps = _store.listApps(tenantId);

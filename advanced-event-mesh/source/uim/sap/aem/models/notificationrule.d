@@ -36,7 +36,7 @@ class AEMNotificationRule : SAPTenantObject {
     }
 }
 
-AEMNotificationRule notificationRuleFromJson(string tenantId, string ruleId, Json request) {
+AEMNotificationRule notificationRuleFromJson(UUID tenantId, string ruleId, Json request) {
   AEMNotificationRule rule = new AEMNotificationRule();
   rule.tenantId = UUID(tenantId);
   rule.ruleId = ruleId;

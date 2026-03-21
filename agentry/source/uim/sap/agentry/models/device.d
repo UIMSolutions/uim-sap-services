@@ -53,7 +53,7 @@ class AGTDevice : SAPTenantObject {
       .set("last_sync_at", lastSyncAt.toISOExtString().toJson);
   }
 
-  static AGTDevice opCall(string tenantId, Json request) {
+  static AGTDevice opCall(UUID tenantId, Json request) {
     AGTDevice device = new AGTDevice(request);
     
     device.tenantId = UUID(tenantId);

@@ -31,7 +31,7 @@ Json` function provides a way to create an instance of `AEMEDAComponent` from a 
   * - `updatedAt`: The timestamp of when the component was last updated.
   * Methods:
   * - `toJson()`: Converts the component instance to a JSON object for API responses.
-  * - `componentFromJson(string tenantId, Json request)`: Creates an instance of `AEMEDAComponent` from a JSON request, initializing fields based on the provided data and
+  * - `componentFromJson(UUID tenantId, Json request)`: Creates an instance of `AEMEDAComponent` from a JSON request, initializing fields based on the provided data and
   *   generating a unique `componentId` if not provided.
   * Example usage:
   * ```
@@ -65,7 +65,7 @@ FromJson` function ensures that the `tenantId` is set and that a unique `compone
   }
 }
 
-AEMEDAComponent componentFromJson(string tenantId, Json request) {
+AEMEDAComponent componentFromJson(UUID tenantId, Json request) {
   AEMEDAComponent component = new AEMEDAComponent();
   component.tenantId = UUID(tenantId);
   component.componentId = randomUUID().toString();

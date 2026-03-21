@@ -42,7 +42,7 @@ class AEMStore : SAPStore {
     }
   }
 
-  AEMBrokerService getBroker(string tenantId, string brokerServiceId) {
+  AEMBrokerService getBroker(UUID tenantId, string brokerServiceId) {
     synchronized (_lock) {
       auto key = brokerKey(tenantId, brokerServiceId);
       if (auto value = key in _brokers) {
@@ -52,7 +52,7 @@ class AEMStore : SAPStore {
     return new AEMBrokerService;
   }
 
-  AEMBrokerService[] listBrokers(string tenantId) {
+  AEMBrokerService[] listBrokers(UUID tenantId) {
     AEMBrokerService[] list;
     synchronized (_lock) {
       foreach (key, broker; _brokers) {
@@ -75,7 +75,7 @@ class AEMStore : SAPStore {
     }
   }
 
-  AEMEventMesh getMesh(string tenantId, string meshId) {
+  AEMEventMesh getMesh(UUID tenantId, string meshId) {
     synchronized (_lock) {
       auto key = meshKey(tenantId, meshId);
       if (auto value = key in _meshes) {
@@ -85,7 +85,7 @@ class AEMStore : SAPStore {
     return new AEMEventMesh;
   }
 
-  AEMEventMesh[] listMeshes(string tenantId) {
+  AEMEventMesh[] listMeshes(UUID tenantId) {
     AEMEventMesh[] list;
     synchronized (_lock) {
       foreach (key, mesh; _meshes) {
@@ -105,7 +105,7 @@ class AEMStore : SAPStore {
     }
   }
 
-  AEMEDAComponent getComponent(string tenantId, string componentId) {
+  AEMEDAComponent getComponent(UUID tenantId, string componentId) {
     synchronized (_lock) {
       auto key = componentKey(tenantId, componentId);
       if (auto value = key in _components) {
@@ -115,7 +115,7 @@ class AEMStore : SAPStore {
     return new AEMEDAComponent;
   }
 
-  AEMEDAComponent[] listComponents(string tenantId) {
+  AEMEDAComponent[] listComponents(UUID tenantId) {
     AEMEDAComponent[] list;
     synchronized (_lock) {
       foreach (key, component; _components) {
@@ -134,7 +134,7 @@ class AEMStore : SAPStore {
     }
   }
 
-  AEMSubscription[] listSubscriptions(string tenantId) {
+  AEMSubscription[] listSubscriptions(UUID tenantId) {
     synchronized (_lock) {
       if (auto subscriptions = tenantId in _subscriptionsByTenant) {
         return subscriptions.dup;
@@ -151,7 +151,7 @@ class AEMStore : SAPStore {
     }
   }
 
-  AEMTopicEvent[] listTopicEvents(string tenantId, string meshId, string topic) {
+  AEMTopicEvent[] listTopicEvents(UUID tenantId, string meshId, string topic) {
     synchronized (_lock) {
       auto key = topicKey(tenantId, meshId, topic);
       if (auto items = key in _eventsByTopicKey) {
@@ -161,7 +161,7 @@ class AEMStore : SAPStore {
     return [];
   }
 
-  long topicDepth(string tenantId, string meshId, string topic) {
+  long topicDepth(UUID tenantId, string meshId, string topic) {
     synchronized (_lock) {
       auto key = topicKey(tenantId, meshId, topic);
       if (auto items = key in _eventsByTopicKey) {
@@ -179,7 +179,7 @@ class AEMStore : SAPStore {
     }
   }
 
-  AEMNotificationRule[] listNotificationRules(string tenantId) {
+  AEMNotificationRule[] listNotificationRules(UUID tenantId) {
     AEMNotificationRule[] list;
     synchronized (_lock) {
       foreach (key, rule; _notifications) {
@@ -197,7 +197,7 @@ class AEMStore : SAPStore {
     }
   }
 
-  AEMMonitoringAlert[] listAlerts(string tenantId) {
+  AEMMonitoringAlert[] listAlerts(UUID tenantId) {
     synchronized (_lock) {
       if (auto alerts = tenantId in _alertsByTenant) {
         return (*alerts).dup;
@@ -206,27 +206,27 @@ class AEMStore : SAPStore {
     return [];
   }
 
-  private string brokerKey(string tenantId, string brokerServiceId) {
+  private string brokerKey(UUID tenantId, string brokerServiceId) {
     return tenantId ~ ":broker:" ~ brokerServiceId;
   }
 
-  private string meshKey(string tenantId, string meshId) {
+  private string meshKey(UUID tenantId, string meshId) {
     return tenantId ~ ":mesh:" ~ meshId;
   }
 
-  private string componentKey(string tenantId, string componentId) {
+  private string componentKey(UUID tenantId, string componentId) {
     return tenantId ~ ":component:" ~ componentId;
   }
 
-  private string notificationKey(string tenantId, string ruleId) {
+  private string notificationKey(UUID tenantId, string ruleId) {
     return tenantId ~ ":notification:" ~ ruleId;
   }
 
-  private string topicKey(string tenantId, string meshId, string topic) {
+  private string topicKey(UUID tenantId, string meshId, string topic) {
     return tenantId ~ ":topic:" ~ meshId ~ ":" ~ topic;
   }
 
-  private bool belongsToTenant(string key, string tenantId) {
+  private bool belongsToTenant(string key, UUID tenantId) {
     return key.length > tenantId.length + 1
       && key[0 .. tenantId.length] == tenantId
       && key[tenantId.length] == ':';

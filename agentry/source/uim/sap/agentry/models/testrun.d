@@ -61,7 +61,7 @@ class AGTTestRun : SAPTenantObject {
       .set("executed_at", executedAt.toISOExtString());
   }
 
-  static AGTTestRun opCall(string tenantId, string appId, Json request) {
+  static AGTTestRun opCall(UUID tenantId, string appId, Json request) {
     AGTTestRun testRun = new AGTTestRun(request);
     testRun.tenantId = UUID(tenantId);
     testRun.appId = toUUID(appId);
