@@ -52,7 +52,7 @@ struct OAuth2Token {
  * OAuth2 client credentials
  */
 struct OAuth2Credentials {
-    string clientId;
+    UUID clientId;
     string clientSecret;
     string[] scopes;
     

@@ -106,7 +106,7 @@ class IdentityConfig : SAPConfig {
   /**
      * Create a default IAS configuration
      */
-  static IdentityConfig createIAS(string tenantHost, string clientId, string clientSecret) pure nothrow @safe {
+  static IdentityConfig createIAS(string tenantHost, UUID clientId, string clientSecret) pure nothrow @safe {
     IdentityConfig config = new IdentityConfig();
     config.serviceType = IdentityServiceType.IAS;
     config.tenantHost = tenantHost;
@@ -120,7 +120,7 @@ class IdentityConfig : SAPConfig {
   /**
      * Create a default IPS configuration
      */
-  static IdentityConfig createIPS(string tenantHost, string clientId, string clientSecret) pure nothrow @safe {
+  static IdentityConfig createIPS(string tenantHost, UUID clientId, string clientSecret) pure nothrow @safe {
     IdentityConfig config = new IdentityConfig();
     config.serviceType = IdentityServiceType.IPS;
     config.tenantHost = tenantHost;

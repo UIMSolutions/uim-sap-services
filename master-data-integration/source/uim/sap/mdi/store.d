@@ -26,7 +26,7 @@ class MDIStore : SAPStore {
         }
     }
 
-    MDIReplicationClient getClient(UUID tenantId, string clientId) {
+    MDIReplicationClient getClient(UUID tenantId, UUID clientId) {
         synchronized (_lock) {
             auto key = scopedKey(tenantId, "client", clientId);
             if (auto value = key in _clients) return *value;

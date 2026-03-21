@@ -30,7 +30,7 @@ mixin(ShowModule!());
  */
 struct MDIReplicationClient {
   UUID tenantId;
-  string clientId;
+  UUID clientId;
   string name;
   string systemType;
   SysTime updatedAt;

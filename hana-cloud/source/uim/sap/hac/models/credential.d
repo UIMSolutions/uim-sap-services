@@ -61,7 +61,7 @@ struct Credential {
     /**
      * Create OAuth2 credentials
      */
-    static Credential oauth(string clientId, string clientSecret) pure nothrow @safe {
+    static Credential oauth(UUID clientId, string clientSecret) pure nothrow @safe {
         Credential cred;
         cred.type = AuthType.OAuth2;
         cred.clientId = clientId;

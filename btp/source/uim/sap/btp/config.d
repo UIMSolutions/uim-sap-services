@@ -30,7 +30,7 @@ BTPConfig defaultConfig(
 BTPConfig oAuth2Config(
   string tenant,
   string subdomain,
-  string clientId,
+  UUID clientId,
   string clientSecret,
   string region = "api.sap.hana.ondemand.com"
 ) {

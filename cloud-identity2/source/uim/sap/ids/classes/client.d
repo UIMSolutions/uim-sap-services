@@ -47,7 +47,7 @@ class IdentityClient {
   /**
      * Create a client with IAS configuration
      */
-  static IdentityClient createIAS(string tenantHost, string clientId, string clientSecret) {
+  static IdentityClient createIAS(string tenantHost, UUID clientId, string clientSecret) {
     auto config = IdentityConfig.createIAS(tenantHost, clientId, clientSecret);
     return new IdentityClient(config);
   }
@@ -55,7 +55,7 @@ class IdentityClient {
   /**
      * Create a client with IPS configuration
      */
-  static IdentityClient createIPS(string tenantHost, string clientId, string clientSecret) {
+  static IdentityClient createIPS(string tenantHost, UUID clientId, string clientSecret) {
     auto config = IdentityConfig.createIPS(tenantHost, clientId, clientSecret);
     return new IdentityClient(config);
   }

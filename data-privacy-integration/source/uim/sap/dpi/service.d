@@ -46,7 +46,7 @@ class DPIService : SAPService {
       .set("record", saved.toJson());
   }
 
-  Json upsertRetentionRule(UUID tenantId, string ruleId, Json request) {
+  Json upsertRetentionRule(UUID tenantId, UUID ruleId, Json request) {
     validateTenant(tenantId);
     validateId(ruleId, "Rule ID");
 
