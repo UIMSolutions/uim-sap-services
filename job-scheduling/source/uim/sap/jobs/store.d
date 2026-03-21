@@ -34,7 +34,7 @@ class JobSchedulingStore : SAPStore {
         }
     }
 
-    bool getJob(string tenantId, string jobId, out Job item) {
+    bool getJob(UUID tenantId, string jobId, out Job item) {
         synchronized (_lock) {
             auto key = scopedKey(tenantId, "job", jobId);
             if (auto existing = key in _jobs) {
@@ -45,7 +45,7 @@ class JobSchedulingStore : SAPStore {
         return false;
     }
 
-    Job[] listJobs(string tenantId) {
+    Job[] listJobs(UUID tenantId) {
         Job[] values;
         synchronized (_lock) {
             foreach (key, value; _jobs) {
@@ -55,7 +55,7 @@ class JobSchedulingStore : SAPStore {
         return values;
     }
 
-    bool deleteJob(string tenantId, string jobId) {
+    bool deleteJob(UUID tenantId, string jobId) {
         synchronized (_lock) {
             auto key = scopedKey(tenantId, "job", jobId);
             if (key in _jobs) {
@@ -73,7 +73,7 @@ class JobSchedulingStore : SAPStore {
         }
     }
 
-    bool getSchedule(string tenantId, string scheduleId, out Schedule item) {
+    bool getSchedule(UUID tenantId, string scheduleId, out Schedule item) {
         synchronized (_lock) {
             auto key = scopedKey(tenantId, "schedule", scheduleId);
             if (auto existing = key in _schedules) {
@@ -84,7 +84,7 @@ class JobSchedulingStore : SAPStore {
         return false;
     }
 
-    Schedule[] listSchedules(string tenantId) {
+    Schedule[] listSchedules(UUID tenantId) {
         Schedule[] values;
         synchronized (_lock) {
             foreach (key, value; _schedules) {
@@ -104,7 +104,7 @@ class JobSchedulingStore : SAPStore {
         return values;
     }
 
-    bool deleteSchedule(string tenantId, string scheduleId) {
+    bool deleteSchedule(UUID tenantId, string scheduleId) {
         synchronized (_lock) {
             auto key = scopedKey(tenantId, "schedule", scheduleId);
             if (key in _schedules) {
@@ -122,7 +122,7 @@ class JobSchedulingStore : SAPStore {
         }
     }
 
-    RunLog[] listRuns(string tenantId) {
+    RunLog[] listRuns(UUID tenantId) {
         RunLog[] values;
         synchronized (_lock) {
             foreach (key, value; _runs) {
@@ -139,7 +139,7 @@ class JobSchedulingStore : SAPStore {
         }
     }
 
-    AlertEvent[] listAlerts(string tenantId) {
+    AlertEvent[] listAlerts(UUID tenantId) {
         AlertEvent[] values;
         synchronized (_lock) {
             foreach (key, value; _alerts) {
@@ -156,7 +156,7 @@ class JobSchedulingStore : SAPStore {
         }
     }
 
-    CFTaskRun[] listCFTaskRuns(string tenantId) {
+    CFTaskRun[] listCFTaskRuns(UUID tenantId) {
         CFTaskRun[] values;
         synchronized (_lock) {
             foreach (key, value; _cfTaskRuns) {
@@ -166,11 +166,11 @@ class JobSchedulingStore : SAPStore {
         return values;
     }
 
-    private string scopedKey(string tenantId, string scopePart, string id) {
+    private string scopedKey(UUID tenantId, string scopePart, string id) {
         return tenantId ~ ":" ~ scopePart ~ ":" ~ id;
     }
 
-    private bool belongsTo(string key, string tenantId) {
+    private bool belongsTo(string key, UUID tenantId) {
         return key.length > tenantId.length + 1 &&
             key[0 .. tenantId.length] == tenantId &&
             key[tenantId.length] == ':';

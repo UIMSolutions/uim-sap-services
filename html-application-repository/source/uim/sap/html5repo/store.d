@@ -87,7 +87,7 @@ class HARsitoryStore : SAPStore {
         }
     }
 
-    void setActiveVersion(string tenantId, string spaceId, string appId, string versionId) {
+    void setActiveVersion(UUID tenantId, string spaceId, string appId, string versionId) {
         auto requested = tryGetVersionInfo(tenantId, spaceId, appId, versionId);
         if (requested.versionId.length == 0) {
             throw new HARNotFoundException("Version", appId ~ ":" ~ versionId);
@@ -114,7 +114,7 @@ class HARsitoryStore : SAPStore {
         rename(tempFile, activeFile);
     }
 
-    AppVersionInfo[] listVersions(string tenantId, string spaceId, string appId) {
+    AppVersionInfo[] listVersions(UUID tenantId, string spaceId, string appId) {
         AppVersionInfo[] results;
         auto versionsRoot = buildPath(appDirectory(tenantId, spaceId, appId), "versions");
         if (!exists(versionsRoot) || !isDir(versionsRoot)) {
@@ -143,7 +143,7 @@ class HARsitoryStore : SAPStore {
         return results;
     }
 
-    Json[] listApplications(string tenantId, string spaceId, bool includePublicFromOtherSpaces) {
+    Json[] listApplications(UUID tenantId, string spaceId, bool includePublicFromOtherSpaces) {
         Json[] result;
         auto spacesRoot = buildPath(tenantDirectory(tenantId), "spaces");
         if (!exists(spacesRoot)) {
@@ -198,7 +198,7 @@ class HARsitoryStore : SAPStore {
         return result;
     }
 
-    AppVersionInfo tryGetVersionInfo(string tenantId, string spaceId, string appId, string versionId) {
+    AppVersionInfo tryGetVersionInfo(UUID tenantId, string spaceId, string appId, string versionId) {
         auto metadataFile = buildPath(versionDirectory(tenantId, spaceId, appId, versionId), "metadata.json");
         if (!exists(metadataFile)) {
             return AppVersionInfo.init;
@@ -214,7 +214,7 @@ class HARsitoryStore : SAPStore {
         }
     }
 
-    string activeVersion(string tenantId, string spaceId, string appId) {
+    string activeVersion(UUID tenantId, string spaceId, string appId) {
         auto activeFile = buildPath(appDirectory(tenantId, spaceId, appId), "active-version.txt");
         if (!exists(activeFile)) {
             return "";
@@ -222,7 +222,7 @@ class HARsitoryStore : SAPStore {
         return strip(readText(activeFile));
     }
 
-    string[] listFiles(string tenantId, string spaceId, string appId, string versionId) {
+    string[] listFiles(UUID tenantId, string spaceId, string appId, string versionId) {
         string[] files;
         auto contentRoot = buildPath(versionDirectory(tenantId, spaceId, appId, versionId), "content");
         if (!exists(contentRoot)) {
@@ -246,7 +246,7 @@ class HARsitoryStore : SAPStore {
     }
 
     RuntimeAsset loadAsset(
-        string tenantId,
+        UUID tenantId,
         string spaceId,
         string appId,
         string versionId,
@@ -294,7 +294,7 @@ class HARsitoryStore : SAPStore {
         return asset;
     }
 
-    void deleteVersion(string tenantId, string spaceId, string appId, string versionId) {
+    void deleteVersion(UUID tenantId, string spaceId, string appId, string versionId) {
         auto root = versionDirectory(tenantId, spaceId, appId, versionId);
         if (!exists(root)) {
             throw new HARNotFoundException("Version", appId ~ ":" ~ versionId);
@@ -361,19 +361,19 @@ class HARsitoryStore : SAPStore {
         }
     }
 
-    private string appDirectory(string tenantId, string spaceId, string appId) {
+    private string appDirectory(UUID tenantId, string spaceId, string appId) {
         return buildPath(spaceDirectory(tenantId, spaceId), "apps", safeIdentity(appId));
     }
 
-    private string versionDirectory(string tenantId, string spaceId, string appId, string versionId) {
+    private string versionDirectory(UUID tenantId, string spaceId, string appId, string versionId) {
         return buildPath(appDirectory(tenantId, spaceId, appId), "versions", safeIdentity(versionId));
     }
 
-    private string tenantDirectory(string tenantId) {
+    private string tenantDirectory(UUID tenantId) {
         return buildPath(_root, "tenants", safeIdentity(tenantId));
     }
 
-    private string spaceDirectory(string tenantId, string spaceId) {
+    private string spaceDirectory(UUID tenantId, string spaceId) {
         return buildPath(tenantDirectory(tenantId), "spaces", safeIdentity(spaceId));
     }
 

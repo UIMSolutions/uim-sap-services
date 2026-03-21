@@ -138,7 +138,7 @@ class HARService : SAPService {
     }
 
     RuntimeAsset runtimeAssetByActiveVersion(
-        string tenantId,
+        UUID tenantId,
         string spaceId,
         string appId,
         string assetPath,
@@ -161,7 +161,7 @@ class HARService : SAPService {
     }
 
     RuntimeAsset runtimeAssetByVersion(
-        string tenantId,
+        UUID tenantId,
         string spaceId,
         string appId,
         string versionId,
@@ -220,7 +220,7 @@ class HARService : SAPService {
         return fallback;
     }
 
-    private void invalidateAppCache(string tenantId, string spaceId, string appId) {
+    private void invalidateAppCache(UUID tenantId, string spaceId, string appId) {
         auto prefix = tenantId ~ "|" ~ spaceId ~ "|" ~ appId ~ "|";
         _cache.invalidateByPrefix(prefix);
     }

@@ -69,7 +69,7 @@ class UDMService : SAPService {
     return payload;
   }
 
-  Json ingestUsageEvent(string tenantId, Json request) {
+  Json ingestUsageEvent(UUID tenantId, Json request) {
     validateTenant(tenantId);
 
     auto eventItem = UsageEvent.fromJson(tenantId, request);
@@ -95,7 +95,7 @@ class UDMService : SAPService {
     return payload;
   }
 
-  Json listUsageEvents(string tenantId) {
+  Json listUsageEvents(UUID tenantId) {
     validateTenant(tenantId);
 
     Json resources = Json.emptyArray;
@@ -125,7 +125,7 @@ class UDMService : SAPService {
     return payload;
   }
 
-  Json monthlyUsageReport(string tenantId, Json request) {
+  Json monthlyUsageReport(UUID tenantId, Json request) {
     validateTenant(tenantId);
 
     auto month = request.getString("month", currentMonth());
@@ -181,7 +181,7 @@ class UDMService : SAPService {
     return payload;
   }
 
-  Json subaccountUsageReport(string tenantId, Json request) {
+  Json subaccountUsageReport(UUID tenantId, Json request) {
     validateTenant(tenantId);
 
     auto fromDate = request.getString("from_date", "");
@@ -246,7 +246,7 @@ class UDMService : SAPService {
     return payload;
   }
 
-  Json monthlySubaccountCostsReport(string tenantId, Json request) {
+  Json monthlySubaccountCostsReport(UUID tenantId, Json request) {
     validateTenant(tenantId);
 
     auto month = request.getString("month", currentMonth());
@@ -319,7 +319,7 @@ class UDMService : SAPService {
     return row;
   }
 
-  private void validateTenant(string tenantId) {
+  private void validateTenant(UUID tenantId) {
     if (tenantId.length == 0) {
       throw new UDMValidationException("tenantId cannot be empty");
     }

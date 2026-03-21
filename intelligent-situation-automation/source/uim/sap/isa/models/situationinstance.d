@@ -38,7 +38,7 @@ class SituationInstance : SAPTenantObject {
   }
 }
 
-SituationInstance situationFromJson(Json payload, string tenantId) {
+SituationInstance situationFromJson(Json payload, UUID tenantId) {
   SituationInstance instance;
   instance.id = randomUUID().toString();
   instance.tenantId = UUID(tenantId);

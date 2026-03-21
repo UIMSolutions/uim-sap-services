@@ -267,7 +267,7 @@ HTML";
     return data;
   }
 
-  Json createJob(string tenantId, Json request) {
+  Json createJob(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
 
     Job item;
@@ -297,7 +297,7 @@ HTML";
     return data;
   }
 
-  Json listJobs(string tenantId) {
+  Json listJobs(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
     Json resources = Json.emptyArray;
     foreach (item; _store.listJobs(tenantId))
@@ -309,7 +309,7 @@ HTML";
     return data;
   }
 
-  Json getJob(string tenantId, string jobId) {
+  Json getJob(UUID tenantId, string jobId) {
     validateId(tenantId, "Tenant ID");
     validateId(jobId, "Job ID");
 
@@ -323,7 +323,7 @@ HTML";
     return data;
   }
 
-  Json updateJob(string tenantId, string jobId, Json request) {
+  Json updateJob(UUID tenantId, string jobId, Json request) {
     validateId(tenantId, "Tenant ID");
     validateId(jobId, "Job ID");
 
@@ -356,7 +356,7 @@ HTML";
     return data;
   }
 
-  Json deleteJob(string tenantId, string jobId) {
+  Json deleteJob(UUID tenantId, string jobId) {
     validateId(tenantId, "Tenant ID");
     validateId(jobId, "Job ID");
 
@@ -370,7 +370,7 @@ HTML";
     return data;
   }
 
-  Json createSchedule(string tenantId, Json request) {
+  Json createSchedule(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
 
     auto jobId = requiredString(request, "job_id");
@@ -401,7 +401,7 @@ HTML";
     return data;
   }
 
-  Json listSchedules(string tenantId) {
+  Json listSchedules(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
     Json resources = Json.emptyArray;
     foreach (item; _store.listSchedules(tenantId))
@@ -413,7 +413,7 @@ HTML";
     return data;
   }
 
-  Json getSchedule(string tenantId, string scheduleId) {
+  Json getSchedule(UUID tenantId, string scheduleId) {
     validateId(tenantId, "Tenant ID");
     validateId(scheduleId, "Schedule ID");
 
@@ -427,7 +427,7 @@ HTML";
     return data;
   }
 
-  Json updateSchedule(string tenantId, string scheduleId, Json request) {
+  Json updateSchedule(UUID tenantId, string scheduleId, Json request) {
     validateId(tenantId, "Tenant ID");
     validateId(scheduleId, "Schedule ID");
 
@@ -458,7 +458,7 @@ HTML";
     return data;
   }
 
-  Json deleteSchedule(string tenantId, string scheduleId) {
+  Json deleteSchedule(UUID tenantId, string scheduleId) {
     validateId(tenantId, "Tenant ID");
     validateId(scheduleId, "Schedule ID");
 
@@ -472,7 +472,7 @@ HTML";
     return data;
   }
 
-  Json runJobNow(string tenantId, string jobId, Json request) {
+  Json runJobNow(UUID tenantId, string jobId, Json request) {
     validateId(tenantId, "Tenant ID");
     validateId(jobId, "Job ID");
 
@@ -505,7 +505,7 @@ HTML";
     return data;
   }
 
-  Json runCFTask(string tenantId, Json request) {
+  Json runCFTask(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
 
     auto taskName = optionalString(request, "task_name", "cf-task");
@@ -545,7 +545,7 @@ HTML";
     return data;
   }
 
-  Json listCFTaskRuns(string tenantId) {
+  Json listCFTaskRuns(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
     Json resources = Json.emptyArray;
     foreach (item; _store.listCFTaskRuns(tenantId))
@@ -557,7 +557,7 @@ HTML";
     return data;
   }
 
-  Json listRuns(string tenantId) {
+  Json listRuns(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
     Json resources = Json.emptyArray;
     foreach (item; _store.listRuns(tenantId))
@@ -569,7 +569,7 @@ HTML";
     return data;
   }
 
-  Json listAlerts(string tenantId) {
+  Json listAlerts(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
     Json resources = Json.emptyArray;
     foreach (item; _store.listAlerts(tenantId))
@@ -581,7 +581,7 @@ HTML";
     return data;
   }
 
-  Json dashboardData(string tenantId) {
+  Json dashboardData(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
 
     auto jobs = _store.listJobs(tenantId);
@@ -658,7 +658,7 @@ HTML";
   }
 
   private RunLog createRun(
-    string tenantId,
+    UUID tenantId,
     string jobId,
     string scheduleId,
     string runtime,
@@ -680,7 +680,7 @@ HTML";
   }
 
   private void executeRun(
-    string tenantId,
+    UUID tenantId,
     Job job,
     string runId,
     string scheduleId,
@@ -721,7 +721,7 @@ HTML";
     pushCloudAlm(run);
   }
 
-  private RunLog* runById(string tenantId, string runId) {
+  private RunLog* runById(UUID tenantId, string runId) {
     foreach (item; _store.listRuns(tenantId)) {
       if (item.runId == runId) {
         auto copy = new RunLog;

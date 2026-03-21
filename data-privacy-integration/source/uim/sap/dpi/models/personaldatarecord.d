@@ -47,14 +47,14 @@ class DPIPersonalDataRecord : SAPTenantObject {
   DPIPersonalDataRecord opCall(UUID tenantId, Json request) {
     DPIPersonalDataRecord record = new DPIPersonalDataRecord(request);
     record.tenantId = tenantId;
-    record.recordId = createId();
+    record.recordId = randomUUID;
     record.createdAt = Clock.currTime();
     record.updatedAt = record.createdAt;
     record.payload = Json.emptyObject;
     record.deleted = false;
 
     if ("record_id" in request && request["record_id"].isString)
-      record.recordId = request["record_id"].get!string;
+      record.recordId = UUID(request["record_id"].get!string);
     if ("subject_id" in request && request["subject_id"].isString)
       record.subjectId = UUID(request["subject_id"].get!string);
     if ("category" in request && request["category"].isString)

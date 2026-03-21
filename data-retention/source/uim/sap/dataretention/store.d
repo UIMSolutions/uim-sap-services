@@ -29,7 +29,7 @@ class DRMStore : SAPStore {
     }
   }
 
-  BusinessPurposeRule[] listPurposeRules(string tenantId) {
+  BusinessPurposeRule[] listPurposeRules(UUID tenantId) {
     BusinessPurposeRule[] rules;
     synchronized (_lock) {
       foreach (key, value; _purposeRules) {
@@ -41,7 +41,7 @@ class DRMStore : SAPStore {
     return rules;
   }
 
-  BusinessPurposeRule getPurposeRule(string tenantId, string purposeRuleId) {
+  BusinessPurposeRule getPurposeRule(UUID tenantId, string purposeRuleId) {
     synchronized (_lock) {
       auto key = scopedKey(tenantId, "purpose", purposeRuleId);
       if (auto value = key in _purposeRules) {
@@ -59,7 +59,7 @@ class DRMStore : SAPStore {
     }
   }
 
-  DataSubjectRecord getDataSubject(string tenantId, string dataSubjectId) {
+  DataSubjectRecord getDataSubject(UUID tenantId, string dataSubjectId) {
     synchronized (_lock) {
       auto key = scopedKey(tenantId, "subject", dataSubjectId);
       if (auto value = key in _dataSubjects) {
@@ -69,7 +69,7 @@ class DRMStore : SAPStore {
     return DataSubjectRecord.init;
   }
 
-  DataSubjectRecord[] listDataSubjects(string tenantId) {
+  DataSubjectRecord[] listDataSubjects(UUID tenantId) {
     DataSubjectRecord[] subjects;
     synchronized (_lock) {
       foreach (key, value; _dataSubjects) {
@@ -88,7 +88,7 @@ class DRMStore : SAPStore {
     }
   }
 
-  ArchiveDestructionJob[] listJobs(string tenantId) {
+  ArchiveDestructionJob[] listJobs(UUID tenantId) {
     ArchiveDestructionJob[] jobs;
     synchronized (_lock) {
       foreach (key, value; _jobs) {
@@ -100,11 +100,11 @@ class DRMStore : SAPStore {
     return jobs;
   }
 
-  private string scopedKey(string tenantId, string scopePart, string id) {
+  private string scopedKey(UUID tenantId, string scopePart, string id) {
     return tenantId ~ ":" ~ scopePart ~ ":" ~ id;
   }
 
-  private bool belongsTo(string key, string tenantId) {
+  private bool belongsTo(string key, UUID tenantId) {
     return key.length > tenantId.length + 1 && key[0 .. tenantId.length] == tenantId && key[tenantId.length] == ':';
   }
 }

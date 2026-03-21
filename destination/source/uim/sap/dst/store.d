@@ -28,11 +28,11 @@ class DSTStore : SAPStore {
     return prefix ~ "-" ~ to!string(_counter);
   }
 
-  private static string tp(string tenantId) {
+  private static string tp(UUID tenantId) {
     return tenantId ~ "::";
   }
 
-  private static string key(string tenantId, string name) {
+  private static string key(UUID tenantId, string name) {
     return tenantId ~ "::" ~ name;
   }
 
@@ -44,7 +44,7 @@ class DSTStore : SAPStore {
     return item;
   }
 
-  DSTDestination[] listDestinations(string tenantId) {
+  DSTDestination[] listDestinations(UUID tenantId) {
     DSTDestination[] items;
     auto prefix = tp(tenantId);
     foreach (k, v; _destinations)
@@ -54,7 +54,7 @@ class DSTStore : SAPStore {
   }
 
   /// Filter destinations by protocol or proxyType
-  DSTDestination[] filterDestinations(string tenantId, string protocol, string proxyType) {
+  DSTDestination[] filterDestinations(UUID tenantId, string protocol, string proxyType) {
     DSTDestination[] items;
     auto prefix = tp(tenantId);
     foreach (k, v; _destinations) {
@@ -69,7 +69,7 @@ class DSTStore : SAPStore {
     return items;
   }
 
-  bool tryGetDestination(string tenantId, string name, out DSTDestination dest) {
+  bool tryGetDestination(UUID tenantId, string name, out DSTDestination dest) {
     auto k = key(tenantId, name);
     if (k in _destinations) {
       dest = _destinations[k];
@@ -78,7 +78,7 @@ class DSTStore : SAPStore {
     return false;
   }
 
-  bool removeDestination(string tenantId, string name) {
+  bool removeDestination(UUID tenantId, string name) {
     auto k = key(tenantId, name);
     if (k in _destinations) {
       _destinations.remove(k);
@@ -95,7 +95,7 @@ class DSTStore : SAPStore {
     return item;
   }
 
-  DSTCertificate[] listCertificates(string tenantId) {
+  DSTCertificate[] listCertificates(UUID tenantId) {
     DSTCertificate[] items;
     auto prefix = tp(tenantId);
     foreach (k, v; _certificates)
@@ -104,7 +104,7 @@ class DSTStore : SAPStore {
     return items;
   }
 
-  bool tryGetCertificate(string tenantId, string name, out DSTCertificate cert) {
+  bool tryGetCertificate(UUID tenantId, string name, out DSTCertificate cert) {
     auto k = key(tenantId, name);
     if (k in _certificates) {
       cert = _certificates[k];
@@ -113,7 +113,7 @@ class DSTStore : SAPStore {
     return false;
   }
 
-  bool removeCertificate(string tenantId, string name) {
+  bool removeCertificate(UUID tenantId, string name) {
     auto k = key(tenantId, name);
     if (k in _certificates) {
       _certificates.remove(k);
@@ -130,7 +130,7 @@ class DSTStore : SAPStore {
     return item;
   }
 
-  DSTAuditLog[] listLogs(string tenantId) {
+  DSTAuditLog[] listLogs(UUID tenantId) {
     DSTAuditLog[] items;
     auto prefix = tp(tenantId);
     foreach (k, v; _logs)
@@ -140,7 +140,7 @@ class DSTStore : SAPStore {
     return items.array;
   }
 
-  DSTAuditLog[] listLogsByDestination(string tenantId, string destName) {
+  DSTAuditLog[] listLogsByDestination(UUID tenantId, string destName) {
     DSTAuditLog[] items;
     auto prefix = tp(tenantId);
     foreach (k, v; _logs)

@@ -133,7 +133,7 @@ classDiagram
     }
 
     class CMGContentItem {
-      +string tenantId
+      +UUID tenantId
       +string itemId
       +string contentType
       +string title
@@ -144,7 +144,7 @@ classDiagram
     }
 
     class CMGContentProvider {
-      +string tenantId
+      +UUID tenantId
       +string providerId
       +string name
       +string providerType

@@ -44,42 +44,42 @@ class CAGStore : SAPStore {
         return item;
     }
 
-    CAGContentProvider[] listProviders(string tenantId) {
+    CAGContentProvider[] listProviders(UUID tenantId) {
         CAGContentProvider[] items;
         auto prefix = tenantPrefix(tenantId);
         foreach (k, v; _providers) if (k.startsWith(prefix)) items ~= v;
         return items.array;
     }
 
-    CAGContentItem[] listContent(string tenantId) {
+    CAGContentItem[] listContent(UUID tenantId) {
         CAGContentItem[] items;
         auto prefix = tenantPrefix(tenantId);
         foreach (k, v; _content) if (k.startsWith(prefix)) items ~= v;
         return items.array;
     }
 
-    CAGAssembly[] listAssemblies(string tenantId) {
+    CAGAssembly[] listAssemblies(UUID tenantId) {
         CAGAssembly[] items;
         auto prefix = tenantPrefix(tenantId);
         foreach (k, v; _assemblies) if (k.startsWith(prefix)) items ~= v;
         return items.array;
     }
 
-    CAGTransportQueue[] listQueues(string tenantId) {
+    CAGTransportQueue[] listQueues(UUID tenantId) {
         CAGTransportQueue[] items;
         auto prefix = tenantPrefix(tenantId);
         foreach (k, v; _queues) if (k.startsWith(prefix)) items ~= v;
         return items.array;
     }
 
-    CAGTransportActivity[] listActivities(string tenantId) {
+    CAGTransportActivity[] listActivities(UUID tenantId) {
         CAGTransportActivity[] items;
         auto prefix = tenantPrefix(tenantId);
         foreach (k, v; _activities) if (k.startsWith(prefix)) items ~= v;
         return items.array;
     }
 
-    bool tryGetProvider(string tenantId, string providerId, out CAGContentProvider provider) {
+    bool tryGetProvider(UUID tenantId, string providerId, out CAGContentProvider provider) {
         auto k = key(tenantId, providerId);
         if (k in _providers) {
             provider = _providers[k];
@@ -88,7 +88,7 @@ class CAGStore : SAPStore {
         return false;
     }
 
-    bool tryGetContent(string tenantId, string contentId, out CAGContentItem item) {
+    bool tryGetContent(UUID tenantId, string contentId, out CAGContentItem item) {
         auto k = key(tenantId, contentId);
         if (k in _content) {
             item = _content[k];
@@ -97,7 +97,7 @@ class CAGStore : SAPStore {
         return false;
     }
 
-    bool tryGetAssembly(string tenantId, string assemblyId, out CAGAssembly item) {
+    bool tryGetAssembly(UUID tenantId, string assemblyId, out CAGAssembly item) {
         auto k = key(tenantId, assemblyId);
         if (k in _assemblies) {
             item = _assemblies[k];
@@ -106,7 +106,7 @@ class CAGStore : SAPStore {
         return false;
     }
 
-    bool tryGetQueue(string tenantId, string queueId, out CAGTransportQueue item) {
+    bool tryGetQueue(UUID tenantId, string queueId, out CAGTransportQueue item) {
         auto k = key(tenantId, queueId);
         if (k in _queues) {
             item = _queues[k];
@@ -115,11 +115,11 @@ class CAGStore : SAPStore {
         return false;
     }
 
-    private string key(string tenantId, string id) const {
+    private string key(UUID tenantId, string id) const {
         return tenantId ~ ":" ~ id;
     }
 
-    private string tenantPrefix(string tenantId) const {
+    private string tenantPrefix(UUID tenantId) const {
         return tenantId ~ ":";
     }
 }

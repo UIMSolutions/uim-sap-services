@@ -28,7 +28,7 @@ class CMGService : SAPService {
     return healthInfo;
   }
 
-  Json listContent(string tenantId, string contentType) {
+  Json listContent(UUID tenantId, string contentType) {
     validateTenant(tenantId);
     auto normalizedType = normalizeContentType(contentType);
 
@@ -43,7 +43,7 @@ class CMGService : SAPService {
     return payload;
   }
 
-  Json upsertManualContent(string tenantId, string contentType, Json data) {
+  Json upsertManualContent(UUID tenantId, string contentType, Json data) {
     validateTenant(tenantId);
     auto normalizedType = normalizeContentType(contentType);
 
@@ -70,7 +70,7 @@ class CMGService : SAPService {
       .set("item", saved.toJson());
   }
 
-  Json listProviders(string tenantId) {
+  Json listProviders(UUID tenantId) {
     validateTenant(tenantId);
 
     Json providers = _store.listProviders(tenantId).map!(provider => provider.toJson()).array.toJson(); 
@@ -81,7 +81,7 @@ class CMGService : SAPService {
       .set("count", cast(long)providers.length);
   }
 
-  Json upsertProvider(string tenantId, Json data) {
+  Json upsertProvider(UUID tenantId, Json data) {
     validateTenant(tenantId);
 
     auto now = Clock.currTime();
@@ -102,7 +102,7 @@ class CMGService : SAPService {
       .set("provider", saved.toJson());
   }
 
-  Json integrateProviderContent(string tenantId, string providerId, Json data) {
+  Json integrateProviderContent(UUID tenantId, string providerId, Json data) {
     validateTenant(tenantId);
     if (providerId.length == 0)
       throw new CMGValidationException("provider_id is required");
@@ -156,7 +156,7 @@ class CMGService : SAPService {
       .set("count", cast(long)imported.length);
   }
 
-  private void validateTenant(string tenantId) const {
+  private void validateTenant(UUID tenantId) const {
     if (tenantId.length == 0)
       throw new CMGValidationException("tenant_id is required");
   }

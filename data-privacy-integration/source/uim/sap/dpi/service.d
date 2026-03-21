@@ -27,8 +27,9 @@ class DPIService : SAPService {
       .set("multitenancy", true);
   }
 
-  Json ingestRecord(string tenantId, Json request) {
+  Json ingestRecord(UUID tenantId, Json request) {
     validateTenant(tenantId);
+
     auto record = DPIPersonalDataRecord(tenantId, request);
     if (record.subjectId.length == 0)
       throw new DPIValidationException("subject_id is required");
@@ -45,12 +46,12 @@ class DPIService : SAPService {
       .set("record", saved.toJson());
   }
 
-  Json upsertRetentionRule(string tenantId, string ruleId, Json request) {
+  Json upsertRetentionRule(UUID tenantId, string ruleId, Json request) {
     validateTenant(tenantId);
     validateId(ruleId, "Rule ID");
 
     DPIRetentionRule rule = new DPIRetentionRule(request);
-    rule.tenantId = UUID(tenantId);
+    rule.tenantId = tenantId;
     rule.ruleId = ruleId;
     rule.dataCategory = "default";
     rule.retentionDays = _config.defaultRetentionDays;
@@ -76,7 +77,7 @@ class DPIService : SAPService {
       .set("rule", saved.toJson());
   }
 
-  Json listRetentionRules(string tenantId) {
+  Json listRetentionRules(UUID tenantId) {
     validateTenant(tenantId);
     Json resources = Json.emptyArray;
     foreach (rule; _store.listRules(tenantId))
@@ -87,7 +88,7 @@ class DPIService : SAPService {
       .set("total_results", cast(long)resources.length);
   }
 
-  Json triggerRetentionDeletion(string tenantId, Json request) {
+  Json triggerRetentionDeletion(UUID tenantId, Json request) {
     validateTenant(tenantId);
     if (!("data_category" in request) || !request["data_category"].isString) {
       throw new DPIValidationException("data_category is required");
@@ -104,7 +105,7 @@ class DPIService : SAPService {
       .set("reason", "end-of-purpose");
   }
 
-  Json generateReport(string tenantId, Json request) {
+  Json generateReport(UUID tenantId, Json request) {
     validateTenant(tenantId);
 
     UUID subjectId;
@@ -129,7 +130,7 @@ class DPIService : SAPService {
       .set("can_trigger_deletion", true);
   }
 
-  Json exportReport(string tenantId, Json request) {
+  Json exportReport(UUID tenantId, Json request) {
     validateTenant(tenantId);
     if (!("subject_id" in request) || !request["subject_id"].isString) {
       throw new DPIValidationException("subject_id is required");
@@ -156,7 +157,7 @@ class DPIService : SAPService {
       .set("format", "json");
   }
 
-  Json triggerCorrection(string tenantId, Json request) {
+  Json triggerCorrection(UUID tenantId, Json request) {
     validateTenant(tenantId);
     if (!("record_id" in request) || request["record_id"].type != Json.Type.string) {
       throw new DPIValidationException("record_id is required");
@@ -189,7 +190,7 @@ class DPIService : SAPService {
       .set("operation", "correction_triggered");
   }
 
-  Json triggerDeletion(string tenantId, Json request) {
+  Json triggerDeletion(UUID tenantId, Json request) {
     validateTenant(tenantId);
     if (!("subject_id" in request) || request["subject_id"].type != Json.Type.string) {
       throw new DPIValidationException("subject_id is required");
@@ -237,7 +238,7 @@ class DPIService : SAPService {
     if (mode == "anonymize") {
       output = anonymizeText(text);
     } else {
-      string tenantId = "default";
+      UUID tenantId = "default";
       if ("tenant_id" in request && request["tenant_id"].isString) {
         tenantId = request["tenant_id"].get!string;
       }
@@ -259,7 +260,7 @@ class DPIService : SAPService {
     return result;
   }
 
-  private string pseudonymizeText(string tenantId, string text) {
+  private string pseudonymizeText(UUID tenantId, string text) {
     auto emailRx = regex(`[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}`);
     string result = text;
 

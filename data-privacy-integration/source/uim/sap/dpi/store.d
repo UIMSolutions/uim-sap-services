@@ -30,7 +30,7 @@ class DPIStore : SAPStore {
     }
   }
 
-  DPIRetentionRule[] listRules(string tenantId) {
+  DPIRetentionRule[] listRules(UUID tenantId) {
     DPIRetentionRule[] values;
     synchronized (_lock) {
       foreach (key, value; _rules)
@@ -50,7 +50,7 @@ class DPIStore : SAPStore {
     }
   }
 
-  DPIPersonalDataRecord[] listRecords(string tenantId) {
+  DPIPersonalDataRecord[] listRecords(UUID tenantId) {
     DPIPersonalDataRecord[] values;
     synchronized (_lock) {
       foreach (key, value; _records) {
@@ -61,7 +61,7 @@ class DPIStore : SAPStore {
     return values;
   }
 
-  DPIPersonalDataRecord[] listSubjectRecords(string tenantId, string subjectId) {
+  DPIPersonalDataRecord[] listSubjectRecords(UUID tenantId, string subjectId) {
     DPIPersonalDataRecord[] values;
     synchronized (_lock) {
       foreach (key, value; _records) {
@@ -72,7 +72,7 @@ class DPIStore : SAPStore {
     return values;
   }
 
-  long deleteSubjectRecords(string tenantId, string subjectId) {
+  long deleteSubjectRecords(UUID tenantId, string subjectId) {
     long deleted;
     synchronized (_lock) {
       foreach (key, ref value; _records) {
@@ -85,7 +85,7 @@ class DPIStore : SAPStore {
     return deleted;
   }
 
-  long retentionDelete(string tenantId, string category) {
+  long retentionDelete(UUID tenantId, string category) {
     long deleted;
     auto normalizedCategory = toLower(category);
     synchronized (_lock) {
@@ -106,7 +106,7 @@ class DPIStore : SAPStore {
     }
   }
 
-  string pseudonymFor(string tenantId, string value) {
+  string pseudonymFor(UUID tenantId, string value) {
     auto key = tenantId ~ "::" ~ value;
     synchronized (_lock) {
       if (auto existing = key in _pseudonymMap) {
@@ -118,11 +118,11 @@ class DPIStore : SAPStore {
     }
   }
 
-  private string scopedKey(string tenantId, string scopePart, string id) {
+  private string scopedKey(UUID tenantId, string scopePart, string id) {
     return tenantId ~ ":" ~ scopePart ~ ":" ~ id;
   }
 
-  private bool belongsTo(string key, string tenantId) {
+  private bool belongsTo(string key, UUID tenantId) {
     return key.length > tenantId.length + 1 && key[0 .. tenantId.length] == tenantId && key[tenantId
       .length] == ':';
   }

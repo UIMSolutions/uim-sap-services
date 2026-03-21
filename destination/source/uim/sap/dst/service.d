@@ -44,7 +44,7 @@ class DSTService : SAPService {
   // =======================================================================
   // DESTINATIONS
   // =======================================================================
-  Json listDestinations(string tenantId, string protocolFilter, string proxyFilter) {
+  Json listDestinations(UUID tenantId, string protocolFilter, string proxyFilter) {
     DSTDestination[] items = null;
     protocolFilter.length > 0 || proxyFilter.length > 0
       ? _store.filterDestinations(tenantId, protocolFilter, proxyFilter) : _store.listDestinations(
@@ -53,7 +53,7 @@ class DSTService : SAPService {
     return items.map!(d => d.toJson()).array.toJson();
   }
 
-  Json createDestination(string tenantId, Json payload) {
+  Json createDestination(UUID tenantId, Json payload) {
     if (!("name" in payload) || payload["name"].get!string.length == 0)
       throw new DSTValidationException("Destination name is required");
     if (!("url" in payload) || payload["url"].get!string.length == 0)
@@ -119,7 +119,7 @@ class DSTService : SAPService {
     return d.toJson();
   }
 
-  Json getDestination(string tenantId, string name) {
+  Json getDestination(UUID tenantId, string name) {
     DSTDestination d = new DSTDestination;
     if (!_store.tryGetDestination(tenantId, name, d))
       throw new DSTNotFoundException("Destination", name);
@@ -132,7 +132,7 @@ class DSTService : SAPService {
     return j;
   }
 
-  Json updateDestination(string tenantId, string name, Json payload) {
+  Json updateDestination(UUID tenantId, string name, Json payload) {
     DSTDestination d = new DSTDestination;
     if (!_store.tryGetDestination(tenantId, name, d))
       throw new DSTNotFoundException("Destination", name);
@@ -196,7 +196,7 @@ class DSTService : SAPService {
     return deleteDestination(tenantId.toString(), name);
   }
 
-  Json deleteDestination(string tenantId, string name) {
+  Json deleteDestination(UUID tenantId, string name) {
     if (!_store.removeDestination(tenantId, name))
       throw new DSTNotFoundException("Destination", name);
     _appendLog(tenantId, name, "deleted", "info", "Destination deleted: " ~ name);
@@ -208,7 +208,7 @@ class DSTService : SAPService {
   // =======================================================================
   // DESTINATION LOOKUP (runtime resolution)
   // =======================================================================
-  Json lookupDestination(string tenantId, string name) {
+  Json lookupDestination(UUID tenantId, string name) {
     DSTDestination d;
     if (!_store.tryGetDestination(tenantId, name, d))
       throw new DSTNotFoundException("Destination", name);
@@ -273,14 +273,14 @@ class DSTService : SAPService {
   // =======================================================================
   // CERTIFICATES
   // =======================================================================
-  Json listCertificates(string tenantId) {
+  Json listCertificates(UUID tenantId) {
     Json arr = Json.emptyArray;
     foreach (c; _store.listCertificates(tenantId))
       arr ~= c.toJson();
     return arr;
   }
 
-  Json createCertificate(string tenantId, Json payload) {
+  Json createCertificate(UUID tenantId, Json payload) {
     if (!("name" in payload) || payload["name"].get!string.length == 0)
       throw new DSTValidationException("Certificate name is required");
     if (!("content" in payload) || payload["content"].get!string.length == 0)
@@ -311,14 +311,14 @@ class DSTService : SAPService {
     return c.toJson();
   }
 
-  Json getCertificate(string tenantId, string name) {
+  Json getCertificate(UUID tenantId, string name) {
     DSTCertificate c;
     if (!_store.tryGetCertificate(tenantId, name, c))
       throw new DSTNotFoundException("Certificate", name);
     return c.toJson();
   }
 
-  Json deleteCertificate(string tenantId, string name) {
+  Json deleteCertificate(UUID tenantId, string name) {
     if (!_store.removeCertificate(tenantId, name))
       throw new DSTNotFoundException("Certificate", name);
     _appendLog(tenantId, "", "cert-deleted", "info", "Certificate deleted: " ~ name);
@@ -330,7 +330,7 @@ class DSTService : SAPService {
   // =======================================================================
   // AUDIT LOGS
   // =======================================================================
-  Json listLogs(string tenantId) {
+  Json listLogs(UUID tenantId) {
     return _store.listLogs(tenantId).map!(log => log.toJson()).array.toJson;
   }
 
@@ -406,7 +406,7 @@ class DSTService : SAPService {
     }
   }
 
-  private void _appendLog(string tenantId, string destName,
+  private void _appendLog(UUID tenantId, string destName,
     string action, string level, string message) {
     DSTAuditLog log;
     log.tenantId = UUID(tenantId);

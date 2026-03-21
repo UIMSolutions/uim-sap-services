@@ -204,7 +204,7 @@ class CAGService : SAPService {
 HTML";
   }
 
-  Json listProviders(string tenantId) {
+  Json listProviders(UUID tenantId) {
     validateTenant(tenantId);
     Json resources = Json.emptyArray;
     foreach (provider; _store.listProviders(tenantId))
@@ -217,7 +217,7 @@ HTML";
     return payload;
   }
 
-  Json upsertProvider(string tenantId, Json data) {
+  Json upsertProvider(UUID tenantId, Json data) {
     validateTenant(tenantId);
     auto providerid = requiredUUID(body, "provider_id");
     auto now = Clock.currTime();
@@ -249,7 +249,7 @@ HTML";
     return payload;
   }
 
-  Json listContent(string tenantId) {
+  Json listContent(UUID tenantId) {
     validateTenant(tenantId);
     Json resources = Json.emptyArray;
     foreach (item; _store.listContent(tenantId))
@@ -262,7 +262,7 @@ HTML";
     return payload;
   }
 
-  Json upsertContent(string tenantId, Json data) {
+  Json upsertContent(UUID tenantId, Json data) {
     validateTenant(tenantId);
     auto contentid = requiredUUID(body, "content_id");
     auto now = Clock.currTime();
@@ -291,7 +291,7 @@ HTML";
     return payload;
   }
 
-  Json getContent(string tenantId, string contentId) {
+  Json getContent(UUID tenantId, string contentId) {
     validateTenant(tenantId);
     validateId(contentId, "content_id");
 
@@ -314,7 +314,7 @@ HTML";
     return payload;
   }
 
-  Json listQueues(string tenantId) {
+  Json listQueues(UUID tenantId) {
     validateTenant(tenantId);
     Json resources = Json.emptyArray;
     foreach (queue; _store.listQueues(tenantId))
@@ -327,7 +327,7 @@ HTML";
     return payload;
   }
 
-  Json upsertQueue(string tenantId, Json data) {
+  Json upsertQueue(UUID tenantId, Json data) {
     validateTenant(tenantId);
     auto queueid = requiredUUID(body, "queue_id");
     auto now = Clock.currTime();
@@ -353,7 +353,7 @@ HTML";
     return payload;
   }
 
-  Json listAssemblies(string tenantId) {
+  Json listAssemblies(UUID tenantId) {
     validateTenant(tenantId);
     Json resources = Json.emptyArray;
     foreach (item; _store.listAssemblies(tenantId))
@@ -366,7 +366,7 @@ HTML";
     return payload;
   }
 
-  Json createAssembly(string tenantId, Json data) {
+  Json createAssembly(UUID tenantId, Json data) {
     validateTenant(tenantId);
 
     auto sourceSubaccount = requiredString(body, "source_subaccount");
@@ -427,7 +427,7 @@ HTML";
     return payload;
   }
 
-  Json getAssembly(string tenantId, string assemblyId) {
+  Json getAssembly(UUID tenantId, string assemblyId) {
     validateTenant(tenantId);
     validateId(assemblyId, "assembly_id");
 
@@ -441,7 +441,7 @@ HTML";
     return payload;
   }
 
-  Json getMtarMetadata(string tenantId, string assemblyId) {
+  Json getMtarMetadata(UUID tenantId, string assemblyId) {
     validateTenant(tenantId);
     validateId(assemblyId, "assembly_id");
 
@@ -471,7 +471,7 @@ HTML";
     return payload;
   }
 
-  Json exportAssembly(string tenantId, string assemblyId, Json data) {
+  Json exportAssembly(UUID tenantId, string assemblyId, Json data) {
     validateTenant(tenantId);
     validateId(assemblyId, "assembly_id");
 
@@ -523,7 +523,7 @@ HTML";
     return payload;
   }
 
-  Json listActivities(string tenantId) {
+  Json listActivities(UUID tenantId) {
     validateTenant(tenantId);
     Json resources = Json.emptyArray;
     foreach (item; _store.listActivities(tenantId))
@@ -536,7 +536,7 @@ HTML";
     return payload;
   }
 
-  private string[] resolveDependencies(string tenantId, string[] seedIds) {
+  private string[] resolveDependencies(UUID tenantId, string[] seedIds) {
     bool[string] visited;
     string[] ordered;
     string[] queue = seedIds.dup;
@@ -569,7 +569,7 @@ HTML";
     return false;
   }
 
-  private void validateTenant(string tenantId) const {
+  private void validateTenant(UUID tenantId) const {
     if (tenantId.length == 0)
       throw new CAGValidationException("tenant_id is required");
   }

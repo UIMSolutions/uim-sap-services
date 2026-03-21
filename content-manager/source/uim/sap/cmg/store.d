@@ -31,7 +31,7 @@ class CMGStore : SAPStore {
         }
     }
 
-    CMGContentItem[] listItems(string tenantId, string contentType) {
+    CMGContentItem[] listItems(UUID tenantId, string contentType) {
         CMGContentItem[] values;
         synchronized (_lock) {
             auto prefix = tenantId ~ ":item:" ~ contentType ~ ":";
@@ -42,7 +42,7 @@ class CMGStore : SAPStore {
         return values;
     }
 
-    Nullable!CMGContentProvider getProvider(string tenantId, string providerId) {
+    Nullable!CMGContentProvider getProvider(UUID tenantId, string providerId) {
         synchronized (_lock) {
             auto key = scopedProviderKey(tenantId, providerId);
             if (auto value = key in _providers) return Nullable!CMGContentProvider(*value);
@@ -59,7 +59,7 @@ class CMGStore : SAPStore {
         }
     }
 
-    CMGContentProvider[] listProviders(string tenantId) {
+    CMGContentProvider[] listProviders(UUID tenantId) {
         CMGContentProvider[] values;
         synchronized (_lock) {
             auto prefix = tenantId ~ ":provider:";
@@ -70,11 +70,11 @@ class CMGStore : SAPStore {
         return values;
     }
 
-    private string scopedItemKey(string tenantId, string contentType, string itemId) {
+    private string scopedItemKey(UUID tenantId, string contentType, string itemId) {
         return tenantId ~ ":item:" ~ contentType ~ ":" ~ itemId;
     }
 
-    private string scopedProviderKey(string tenantId, string providerId) {
+    private string scopedProviderKey(UUID tenantId, string providerId) {
         return tenantId ~ ":provider:" ~ providerId;
     }
 }

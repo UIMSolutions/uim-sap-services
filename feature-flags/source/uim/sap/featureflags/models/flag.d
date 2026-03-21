@@ -94,7 +94,7 @@ if ("flag_name" in request && request["flag_name"].isString) {
       .set("evaluation_count", evaluationCount);
   }
 
-  static FFLFlag opCall(string tenantId, Json request) {
+  static FFLFlag opCall(UUID tenantId, Json request) {
     FFLFlag f = new FFLFlag(request);
     f.tenantId = UUID(tenantId);
     f.flagId = randomUUID().toString();

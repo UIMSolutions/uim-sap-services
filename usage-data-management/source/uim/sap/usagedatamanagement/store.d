@@ -24,7 +24,7 @@ mixin(SAPStoreTemplate!UDMStore);
     }
   }
 
-  UsageEvent[] listEvents(string tenantId) {
+  UsageEvent[] listEvents(UUID tenantId) {
     synchronized (_lock) {
       if (auto values = tenantId in _eventsByTenant) {
         return (*values).dup;
@@ -33,7 +33,7 @@ mixin(SAPStoreTemplate!UDMStore);
     return [];
   }
 
-  long countEvents(string tenantId = "") {
+  long countEvents(UUID tenantId = "") {
     synchronized (_lock) {
       if (tenantId.length > 0) {
         if (auto values = tenantId in _eventsByTenant) {

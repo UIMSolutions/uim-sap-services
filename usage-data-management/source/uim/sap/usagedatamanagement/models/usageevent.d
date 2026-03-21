@@ -45,7 +45,7 @@ mixin(SAPObjectTemplate!UsageEvent);
     .set("occurred_at", occurredAt);
   }
 
-  static UsageEvent fromJson(string tenantId, Json request) {
+  static UsageEvent fromJson(UUID tenantId, Json request) {
     UsageEvent eventItem;
     eventItem.tenantId = tenantId;
     eventItem.usageEventId = request.getString("usage_event_id", createId());

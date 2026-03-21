@@ -39,7 +39,7 @@ class DRMService : SAPService {
     return payload;
   }
 
-  Json upsertBusinessPurpose(string tenantId, Json request) {
+  Json upsertBusinessPurpose(UUID tenantId, Json request) {
     validateTenant(tenantId);
 
     auto rule = parseBusinessPurposeRule(tenantId, request);
@@ -54,7 +54,7 @@ class DRMService : SAPService {
     return payload;
   }
 
-  Json listBusinessPurposes(string tenantId) {
+  Json listBusinessPurposes(UUID tenantId) {
     validateTenant(tenantId);
 
     Json resources = Json.emptyArray;
@@ -69,15 +69,15 @@ class DRMService : SAPService {
     return payload;
   }
 
-  Json upsertRetentionRule(string tenantId, Json request) {
+  Json upsertRetentionRule(UUID tenantId, Json request) {
     return upsertBusinessPurpose(tenantId, request);
   }
 
-  Json listRetentionRules(string tenantId) {
+  Json listRetentionRules(UUID tenantId) {
     return listBusinessPurposes(tenantId);
   }
 
-  Json upsertDataSubject(string tenantId, string dataSubjectId, Json request) {
+  Json upsertDataSubject(UUID tenantId, string dataSubjectId, Json request) {
     validateTenant(tenantId);
     if (dataSubjectId.length == 0) {
       throw new DRMValidationException("dataSubjectId cannot be empty");
@@ -93,7 +93,7 @@ class DRMService : SAPService {
     return payload;
   }
 
-  Json listDataSubjects(string tenantId) {
+  Json listDataSubjects(UUID tenantId) {
     validateTenant(tenantId);
 
     Json resources = Json.emptyArray;
@@ -108,7 +108,7 @@ class DRMService : SAPService {
     return payload;
   }
 
-  Json evaluateDataSubject(string tenantId, string dataSubjectId) {
+  Json evaluateDataSubject(UUID tenantId, string dataSubjectId) {
     validateTenant(tenantId);
 
     auto record = _store.getDataSubject(tenantId, dataSubjectId);
@@ -176,15 +176,15 @@ class DRMService : SAPService {
     return payload;
   }
 
-  Json createArchiveJob(string tenantId, Json request) {
+  Json createArchiveJob(UUID tenantId, Json request) {
     return createOperationJob(tenantId, "archive", request);
   }
 
-  Json createDestructionJob(string tenantId, Json request) {
+  Json createDestructionJob(UUID tenantId, Json request) {
     return createOperationJob(tenantId, "destroy", request);
   }
 
-  Json listJobs(string tenantId) {
+  Json listJobs(UUID tenantId) {
     validateTenant(tenantId);
 
     Json resources = Json.emptyArray;
@@ -199,7 +199,7 @@ class DRMService : SAPService {
     return payload;
   }
 
-  private Json createOperationJob(string tenantId, string operation, Json request) {
+  private Json createOperationJob(UUID tenantId, string operation, Json request) {
     validateTenant(tenantId);
 
     auto job = parseArchiveDestructionJob(tenantId, operation, request);
@@ -213,7 +213,7 @@ class DRMService : SAPService {
     return payload;
   }
 
-  private void validateTenant(string tenantId) {
+  private void validateTenant(UUID tenantId) {
     if (tenantId.length == 0) {
       throw new DRMValidationException("tenantId cannot be empty");
     }

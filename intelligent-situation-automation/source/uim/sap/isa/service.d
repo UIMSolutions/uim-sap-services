@@ -31,14 +31,14 @@ class ISAService : SAPService {
   }
 
 
-  Json createConfiguration(string tenantId, Json request) {
+  Json createConfiguration(UUID tenantId, Json request) {
     auto cfg = configFromJson(request, tenantId);
     validateConfiguration(cfg);
     auto created = _store.createConfiguration(cfg);
     return created.toJson();
   }
 
-  Json updateConfiguration(string tenantId, string configId, Json request) {
+  Json updateConfiguration(UUID tenantId, string configId, Json request) {
     auto existing = _store.getConfiguration(configId);
     if (existing.id.length == 0 || existing.tenantId != tenantId) {
       throw new ISANotFoundException("configuration", configId);
@@ -55,7 +55,7 @@ class ISAService : SAPService {
     return saved.toJson();
   }
 
-  Json deleteConfiguration(string tenantId, string configId) {
+  Json deleteConfiguration(UUID tenantId, string configId) {
     auto existing = _store.getConfiguration(configId);
     if (existing.id.length == 0 || existing.tenantId != tenantId) {
       throw new ISANotFoundException("configuration", configId);
@@ -71,7 +71,7 @@ class ISAService : SAPService {
     return payload;
   }
 
-  Json getConfiguration(string tenantId, string configId) {
+  Json getConfiguration(UUID tenantId, string configId) {
     auto cfg = _store.getConfiguration(configId);
     if (cfg.id.length == 0 || cfg.tenantId != tenantId) {
       throw new ISANotFoundException("configuration", configId);
@@ -80,7 +80,7 @@ class ISAService : SAPService {
     return cfg.toJson();
   }
 
-  Json listConfigurations(string tenantId) {
+  Json listConfigurations(UUID tenantId) {
     Json payload = Json.emptyObject;
     Json resources = Json.emptyArray;
 
@@ -94,7 +94,7 @@ class ISAService : SAPService {
     return payload;
   }
 
-  Json createSituation(string tenantId, Json request) {
+  Json createSituation(UUID tenantId, Json request) {
     auto instance = situationFromJson(request, tenantId);
 
     if (instance.situationType.length == 0) {
@@ -108,7 +108,7 @@ class ISAService : SAPService {
     return created.toJson();
   }
 
-  Json listSituations(string tenantId) {
+  Json listSituations(UUID tenantId) {
     Json payload = Json.emptyObject;
     Json resources = Json.emptyArray;
 
@@ -122,7 +122,7 @@ class ISAService : SAPService {
     return payload;
   }
 
-  Json dashboard(string tenantId) {
+  Json dashboard(UUID tenantId) {
     auto situations = _store.listSituations(tenantId);
     auto configs = _store.listConfigurations(tenantId);
 
@@ -163,7 +163,7 @@ class ISAService : SAPService {
     return payload;
   }
 
-  Json analyzeSituations(string tenantId, string situationType) {
+  Json analyzeSituations(UUID tenantId, string situationType) {
     auto situations = _store.listSituations(tenantId);
 
     long[string] byType;
@@ -210,7 +210,7 @@ class ISAService : SAPService {
     return payload;
   }
 
-  Json exploreRelatedSituations(string tenantId) {
+  Json exploreRelatedSituations(UUID tenantId) {
     auto situations = _store.listSituations(tenantId);
     auto reports = _store.listReports(tenantId);
 
@@ -257,7 +257,7 @@ class ISAService : SAPService {
     return payload;
   }
 
-  Json contextReports(string tenantId) {
+  Json contextReports(UUID tenantId) {
     Json payload = Json.emptyObject;
     Json resources = Json.emptyArray;
 
@@ -291,7 +291,7 @@ class ISAService : SAPService {
     return 3.0;
   }
 
-  private Json[] automationSuggestions(string tenantId) {
+  private Json[] automationSuggestions(UUID tenantId) {
     auto situations = _store.listSituations(tenantId);
     auto configs = _store.listConfigurations(tenantId);
 

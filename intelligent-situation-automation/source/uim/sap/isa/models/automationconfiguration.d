@@ -44,7 +44,7 @@ struct AutomationConfiguration {
   }
 }
 
-AutomationConfiguration configFromJson(Json payload, string tenantId) {
+AutomationConfiguration configFromJson(Json payload, UUID tenantId) {
   AutomationConfiguration config;
   config.id = randomUUID().toString();
   config.tenantId = UUID(tenantId);

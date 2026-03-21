@@ -105,7 +105,7 @@ struct ArchiveDestructionJob {
   }
 }
 
-BusinessPurposeRule parseBusinessPurposeRule(string tenantId, Json request) {
+BusinessPurposeRule parseBusinessPurposeRule(UUID tenantId, Json request) {
   BusinessPurposeRule rule;
   rule.tenantId = tenantId;
   rule.purposeRuleId = request.getString("purpose_rule_id", createId());
@@ -131,7 +131,7 @@ BusinessPurposeRule parseBusinessPurposeRule(string tenantId, Json request) {
   return rule;
 }
 
-DataSubjectRecord parseDataSubjectRecord(string tenantId, string subjectId, Json request) {
+DataSubjectRecord parseDataSubjectRecord(UUID tenantId, string subjectId, Json request) {
   DataSubjectRecord record;
   record.tenantId = tenantId;
   record.dataSubjectId = subjectId;
@@ -144,7 +144,7 @@ DataSubjectRecord parseDataSubjectRecord(string tenantId, string subjectId, Json
   return record;
 }
 
-ArchiveDestructionJob parseArchiveDestructionJob(string tenantId, string operation, Json request) {
+ArchiveDestructionJob parseArchiveDestructionJob(UUID tenantId, string operation, Json request) {
   ArchiveDestructionJob job;
   job.tenantId = tenantId;
   job.jobId = request.getString("job_id", createId());

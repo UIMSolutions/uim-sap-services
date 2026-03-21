@@ -57,7 +57,7 @@ class ISAStore : SAPStore {
         return AutomationConfiguration.init;
     }
 
-    AutomationConfiguration[] listConfigurations(string tenantId) {
+    AutomationConfiguration[] listConfigurations(UUID tenantId) {
         AutomationConfiguration[] result;
         synchronized (_lock) {
             foreach (cfg; _configs.byValue) {
@@ -76,7 +76,7 @@ class ISAStore : SAPStore {
         }
     }
 
-    SituationInstance[] listSituations(string tenantId) {
+    SituationInstance[] listSituations(UUID tenantId) {
         synchronized (_lock) {
             if (auto ptr = tenantId in _situationsByTenant) {
                 return (*ptr).dup;
@@ -92,7 +92,7 @@ class ISAStore : SAPStore {
         }
     }
 
-    DataContextReport[] listReports(string tenantId) {
+    DataContextReport[] listReports(UUID tenantId) {
         synchronized (_lock) {
             if (auto ptr = tenantId in _reportsByTenant) {
                 return (*ptr).dup;
@@ -101,7 +101,7 @@ class ISAStore : SAPStore {
         return [];
     }
 
-    void seed(string tenantId) {
+    void seed(UUID tenantId) {
         synchronized (_lock) {
             if ((tenantId in _situationsByTenant) !is null) {
                 return;

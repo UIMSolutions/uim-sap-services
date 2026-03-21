@@ -39,7 +39,7 @@ class DPIConfig : SAPConfig {
 
   int defaultRetentionDays = 365;
 
-  override void validate() const {
+  override void validate() {
     super.validate();
 
     if (defaultRetentionDays <= 0) {

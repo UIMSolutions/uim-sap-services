@@ -44,7 +44,7 @@ class FFLStore : SAPStore {
         }
     }
 
-    FFLFlag getFlag(string tenantId, string flagName) {
+    FFLFlag getFlag(UUID tenantId, string flagName) {
         synchronized (_lock) {
             auto key = flagKey(tenantId, flagName);
             if (auto value = key in _flags) {
@@ -54,7 +54,7 @@ class FFLStore : SAPStore {
         return FFLFlag.init;
     }
 
-    FFLFlag getFlagById(string tenantId, string flagId) {
+    FFLFlag getFlagById(UUID tenantId, string flagId) {
         synchronized (_lock) {
             foreach (_, flag; _flags) {
                 if (flag.tenantId == tenantId && flag.flagId == flagId) {
@@ -65,7 +65,7 @@ class FFLStore : SAPStore {
         return FFLFlag.init;
     }
 
-    FFLFlag[] listFlags(string tenantId) {
+    FFLFlag[] listFlags(UUID tenantId) {
         FFLFlag[] list;
         synchronized (_lock) {
             foreach (key, flag; _flags) {
@@ -77,7 +77,7 @@ class FFLStore : SAPStore {
         return list;
     }
 
-    bool deleteFlag(string tenantId, string flagName) {
+    bool deleteFlag(UUID tenantId, string flagName) {
         synchronized (_lock) {
             auto key = flagKey(tenantId, flagName);
             if (key in _flags) {
@@ -89,7 +89,7 @@ class FFLStore : SAPStore {
     }
 
     /** Atomically increment the evaluation count and persist. */
-    void incrementEvaluationCount(string tenantId, string flagName) {
+    void incrementEvaluationCount(UUID tenantId, string flagName) {
         synchronized (_lock) {
             auto key = flagKey(tenantId, flagName);
             if (auto flag = key in _flags) {
@@ -100,7 +100,7 @@ class FFLStore : SAPStore {
     }
 
     /** Replace all flags for a tenant (used by import). */
-    long importFlags(string tenantId, FFLFlag[] flags) {
+    long importFlags(UUID tenantId, FFLFlag[] flags) {
         synchronized (_lock) {
             // Remove existing flags for the tenant
             string[] keysToRemove;
@@ -124,11 +124,11 @@ class FFLStore : SAPStore {
 
     // --- Key helpers ---
 
-    private string flagKey(string tenantId, string flagName) {
+    private string flagKey(UUID tenantId, string flagName) {
         return tenantId ~ ":flag:" ~ flagName;
     }
 
-    private bool belongsToTenant(string key, string tenantId) {
+    private bool belongsToTenant(string key, UUID tenantId) {
         return key.length > tenantId.length + 1
             && key[0 .. tenantId.length] == tenantId
             && key[tenantId.length] == ':';

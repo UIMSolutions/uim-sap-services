@@ -33,7 +33,7 @@ class FFLService : SAPService {
 
   // ─── Flag CRUD ────────────────────────────────────────────
 
-  Json createFlag(string tenantId, Json request) {
+  Json createFlag(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
 
     auto flag = flagFromJson(tenantId, request);
@@ -62,7 +62,7 @@ class FFLService : SAPService {
     return result;
   }
 
-  Json listFlags(string tenantId) {
+  Json listFlags(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
 
     Json resources = Json.emptyArray;
@@ -77,7 +77,7 @@ class FFLService : SAPService {
     return result;
   }
 
-  Json getFlag(string tenantId, string flagName) {
+  Json getFlag(UUID tenantId, string flagName) {
     validateId(tenantId, "Tenant ID");
     validateId(flagName, "Flag name");
 
@@ -91,7 +91,7 @@ class FFLService : SAPService {
     return result;
   }
 
-  Json updateFlag(string tenantId, string flagName, Json request) {
+  Json updateFlag(UUID tenantId, string flagName, Json request) {
     validateId(tenantId, "Tenant ID");
     validateId(flagName, "Flag name");
 
@@ -151,7 +151,7 @@ class FFLService : SAPService {
     return result;
   }
 
-  Json deleteFlag(string tenantId, string flagName) {
+  Json deleteFlag(UUID tenantId, string flagName) {
     validateId(tenantId, "Tenant ID");
     validateId(flagName, "Flag name");
 
@@ -167,7 +167,7 @@ class FFLService : SAPService {
 
   // ─── Toggle (quick enable/disable) ───────────────────────
 
-  Json toggleFlag(string tenantId, string flagName) {
+  Json toggleFlag(UUID tenantId, string flagName) {
     validateId(tenantId, "Tenant ID");
     validateId(flagName, "Flag name");
 
@@ -200,7 +200,7 @@ class FFLService : SAPService {
      *  If the flag is inactive (`status != "active"`), Boolean flags
      *  return false and String flags return the default variation.
      */
-  Json evaluateFlag(string tenantId, string flagName, string identifier) {
+  Json evaluateFlag(UUID tenantId, string flagName, string identifier) {
     validateId(tenantId, "Tenant ID");
     validateId(flagName, "Flag name");
 
@@ -232,7 +232,7 @@ class FFLService : SAPService {
 
   // ─── Export / Import ──────────────────────────────────────
 
-  Json exportFlags(string tenantId) {
+  Json exportFlags(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
 
     FFLExportData data;
@@ -247,7 +247,7 @@ class FFLService : SAPService {
     return result;
   }
 
-  Json importFlags(string tenantId, Json request) {
+  Json importFlags(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
 
     if (!("flags" in request) || !request["flags"].isArray) {
@@ -280,7 +280,7 @@ class FFLService : SAPService {
 
   // ─── Dashboard ────────────────────────────────────────────
 
-  Json dashboard(string tenantId) {
+  Json dashboard(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
 
     auto flags = _store.listFlags(tenantId);
