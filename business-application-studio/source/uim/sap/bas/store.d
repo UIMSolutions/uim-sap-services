@@ -29,7 +29,7 @@ class BASStore : SAPStore {
     }
   }
 
-  BASWorkspace[] listWorkspaces(string tenantId) {
+  BASWorkspace[] listWorkspaces(UUID tenantId) {
     BASWorkspace[] values;
     synchronized (_lock) {
       foreach (key, value; _workspaces) {
@@ -40,7 +40,7 @@ class BASStore : SAPStore {
     return values;
   }
 
-  Nullable!BASWorkspace getWorkspace(string tenantId, string workspaceId) {
+  Nullable!BASWorkspace getWorkspace(UUID tenantId, string workspaceId) {
     synchronized (_lock) {
       auto key = scoped("workspace", tenantId, workspaceId);
       if (auto value = key in _workspaces)
@@ -56,7 +56,7 @@ class BASStore : SAPStore {
     }
   }
 
-  BASWizardRun[] listWizardRuns(string tenantId, string workspaceId) {
+  BASWizardRun[] listWizardRuns(UUID tenantId, string workspaceId) {
     BASWizardRun[] values;
     synchronized (_lock) {
       foreach (key, value; _wizardRuns) {
@@ -77,7 +77,7 @@ class BASStore : SAPStore {
     }
   }
 
-  BASTerminalSession[] listTerminalSessions(string tenantId, string workspaceId) {
+  BASTerminalSession[] listTerminalSessions(UUID tenantId, string workspaceId) {
     BASTerminalSession[] values;
     synchronized (_lock) {
       foreach (key, value; _terminalSessions) {
@@ -98,7 +98,7 @@ class BASStore : SAPStore {
     }
   }
 
-  BASDeployment[] listDeployments(string tenantId, string workspaceId) {
+  BASDeployment[] listDeployments(UUID tenantId, string workspaceId) {
     BASDeployment[] values;
     synchronized (_lock) {
       foreach (key, value; _deployments) {
@@ -112,11 +112,11 @@ class BASStore : SAPStore {
     return values;
   }
 
-  private string scoped(string kind, string tenantId, string id) {
+  private string scoped(string kind, UUID tenantId, string id) {
     return tenantId ~ ":" ~ kind ~ ":" ~ id;
   }
 
-  private bool belongs(string key, string tenantId, string kind) {
+  private bool belongs(string key, UUID tenantId, string kind) {
     auto prefix = tenantId ~ ":" ~ kind ~ ":";
     return key.length >= prefix.length && key[0 .. prefix.length] == prefix;
   }

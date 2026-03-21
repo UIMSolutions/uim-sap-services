@@ -28,7 +28,7 @@ class BASService : SAPService {
     return healthInfo;
   }
 
-  Json listScenarios(string tenantId) {
+  Json listScenarios(UUID tenantId) {
     validateTenant(tenantId);
 
     Json scenarios = _scenarios.map!(scenario => scenario.toJson()).array.toJson;
@@ -37,7 +37,7 @@ class BASService : SAPService {
     .set("count", cast(long)scenarios.length);
   }
 
-  Json listTemplates(string tenantId, string scenarioId = "") {
+  Json listTemplates(UUID tenantId, string scenarioId = "") {
     validateTenant(tenantId);
 
     Json templates = Json.emptyArray;
@@ -52,7 +52,7 @@ class BASService : SAPService {
     .set("count", cast(long)templates.length);
   }
 
-  Json createWorkspace(string tenantId, Json data) {
+  Json createWorkspace(UUID tenantId, Json data) {
     validateTenant(tenantId);
 
     auto scenarioid = requiredUUID(body, "scenario_id");
@@ -81,7 +81,7 @@ class BASService : SAPService {
     .set("workspace", saved.toJson());
   }
 
-  Json listWorkspaces(string tenantId) {
+  Json listWorkspaces(UUID tenantId) {
     validateTenant(tenantId);
     Json workspaces = Json.emptyArray;
     foreach (workspace; _store.listWorkspaces(tenantId))
@@ -92,7 +92,7 @@ class BASService : SAPService {
     .set("count", cast(long)workspaces.length);
   }
 
-  Json runWizard(string tenantId, string workspaceId, Json data) {
+  Json runWizard(UUID tenantId, string workspaceId, Json data) {
     auto workspace = requireWorkspace(tenantId, workspaceId);
     auto templateid = requiredUUID(body, "template_id");
     if (!hasTemplate(templateId, workspace.scenarioId)) {
@@ -121,7 +121,7 @@ class BASService : SAPService {
     .set("wizard_run", saved.toJson())  ;
   }
 
-  Json listWizardRuns(string tenantId, string workspaceId) {
+  Json listWizardRuns(UUID tenantId, string workspaceId) {
     requireWorkspace(tenantId, workspaceId);
 
     Json runs = Json.emptyArray;
@@ -133,7 +133,7 @@ class BASService : SAPService {
     .set("count", cast(long)runs.length);
   }
 
-  Json createTerminalSession(string tenantId, string workspaceId, Json data) {
+  Json createTerminalSession(UUID tenantId, string workspaceId, Json data) {
     auto workspace = requireWorkspace(tenantId, workspaceId);
     if (!workspace.terminalEnabled)
       throw new BASValidationException("Terminal access is disabled for workspace");
@@ -155,7 +155,7 @@ class BASService : SAPService {
     return payload;
   }
 
-  Json listTerminalSessions(string tenantId, string workspaceId) {
+  Json listTerminalSessions(UUID tenantId, string workspaceId) {
     requireWorkspace(tenantId, workspaceId);
 
     Json sessions = Json.emptyArray;
@@ -167,7 +167,7 @@ class BASService : SAPService {
     .set("count", cast(long)sessions.length);
   }
 
-  Json runLocalTest(string tenantId, string workspaceId, Json data) {
+  Json runLocalTest(UUID tenantId, string workspaceId, Json data) {
     auto workspace = requireWorkspace(tenantId, workspaceId);
     if (!workspace.debugEnabled)
       throw new BASValidationException("Debug mode is disabled for workspace");
@@ -180,7 +180,7 @@ class BASService : SAPService {
     .set("duration_ms", 820);
   }
 
-  Json createDeployment(string tenantId, string workspaceId, Json data) {
+  Json createDeployment(UUID tenantId, string workspaceId, Json data) {
     requireWorkspace(tenantId, workspaceId);
 
     auto now = Clock.currTime();
@@ -200,7 +200,7 @@ class BASService : SAPService {
     .set("deployment", saved.toJson());
   }
 
-  Json listDeployments(string tenantId, string workspaceId) {
+  Json listDeployments(UUID tenantId, string workspaceId) {
     requireWorkspace(tenantId, workspaceId);
 
     Json deployments = Json.emptyArray;
@@ -280,7 +280,7 @@ class BASService : SAPService {
     _templates ~= workflowTemplate;
   }
 
-  private BASWorkspace requireWorkspace(string tenantId, string workspaceId) {
+  private BASWorkspace requireWorkspace(UUID tenantId, string workspaceId) {
     validateTenant(tenantId);
     if (workspaceId.length == 0)
       throw new BASValidationException("workspace_id is required");
@@ -305,7 +305,7 @@ class BASService : SAPService {
     return false;
   }
 
-  private void validateTenant(string tenantId) const {
+  private void validateTenant(UUID tenantId) const {
     if (tenantId.length == 0)
       throw new BASValidationException("tenant_id is required");
   }

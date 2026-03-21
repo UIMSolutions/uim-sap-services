@@ -39,7 +39,7 @@ class CONService : SAPService {
     .set("firewall_changes_required", false);
   }
 
-  Json upsertDestination(string tenantId, string destinationName, Json request) {
+  Json upsertDestination(UUID tenantId, string destinationName, Json request) {
     validateTenant(tenantId);
     validateName(destinationName, "Destination name");
 
@@ -55,7 +55,7 @@ class CONService : SAPService {
     .set("deployment_benefit", "hybrid tunnel without firewall reconfiguration");
   }
 
-  Json listDestinations(string tenantId) {
+  Json listDestinations(UUID tenantId) {
     validateTenant(tenantId);
 
     Json resources = _store.listDestinations(tenantId)
@@ -67,7 +67,7 @@ class CONService : SAPService {
       .set("total_results", cast(long)_store.countDestinations(tenantId));
   }
 
-  Json getDestination(string tenantId, string destinationName) {
+  Json getDestination(UUID tenantId, string destinationName) {
     validateTenant(tenantId);
     validateName(destinationName, "Destination name");
 
@@ -80,7 +80,7 @@ class CONService : SAPService {
     .set("destination", destination.toJson());
   }
 
-  Json deleteDestination(string tenantId, string destinationName) {
+  Json deleteDestination(UUID tenantId, string destinationName) {
     validateTenant(tenantId);
     validateName(destinationName, "Destination name");
 
@@ -95,7 +95,7 @@ class CONService : SAPService {
       .set("message", "Destination deleted");
   }
 
-  Json listCloudDatabases(string tenantId) {
+  Json listCloudDatabases(UUID tenantId) {
     validateTenant(tenantId);
 
     Json resources = _store.listCloudDatabases(tenantId)
@@ -125,7 +125,7 @@ class CONService : SAPService {
       .set("multitenant_mode", "shared-compute");
   }
 
-  Json connect(string tenantId, string destinationName, Json request, string cloudIdentityHeader) {
+  Json connect(UUID tenantId, string destinationName, Json request, string cloudIdentityHeader) {
     validateTenant(tenantId);
     validateName(destinationName, "Destination name");
 
@@ -171,7 +171,7 @@ class CONService : SAPService {
       .set("message", "Connectivity route prepared");
   }
 
-  private void validateTenant(string tenantId) {
+  private void validateTenant(UUID tenantId) {
     validateName(tenantId, "Tenant ID");
   }
 

@@ -28,7 +28,7 @@ class CONStore : SAPStore {
     }
   }
 
-  bool deleteDestination(string tenantId, string name) {
+  bool deleteDestination(UUID tenantId, string name) {
     synchronized (_lock) {
       auto key = compositeKey(tenantId, name);
       if ((key in _destinations) is null) {
@@ -39,7 +39,7 @@ class CONStore : SAPStore {
     }
   }
 
-  CONDestination getDestination(string tenantId, string name) {
+  CONDestination getDestination(UUID tenantId, string name) {
     synchronized (_lock) {
       auto key = compositeKey(tenantId, name);
       if (auto destination = key in _destinations) {
@@ -49,7 +49,7 @@ class CONStore : SAPStore {
     return CONDestination.init;
   }
 
-  CONDestination[] listDestinations(string tenantId) {
+  CONDestination[] listDestinations(UUID tenantId) {
     CONDestination[] values;
     synchronized (_lock) {
       foreach (key, destination; _destinations) {
@@ -61,7 +61,7 @@ class CONStore : SAPStore {
     return values;
   }
 
-  CONDestination[] listCloudDatabases(string tenantId) {
+  CONDestination[] listCloudDatabases(UUID tenantId) {
     CONDestination[] values;
     synchronized (_lock) {
       foreach (key, destination; _destinations) {
@@ -95,7 +95,7 @@ class CONStore : SAPStore {
     }
   }
 
-  size_t countDestinations(string tenantId) {
+  size_t countDestinations(UUID tenantId) {
     size_t total;
     synchronized (_lock) {
       foreach (key; _destinations.keys) {
@@ -107,11 +107,11 @@ class CONStore : SAPStore {
     return total;
   }
 
-  private string compositeKey(string tenantId, string destinationName) {
+  private string compositeKey(UUID tenantId, string destinationName) {
     return tenantId ~ ":" ~ destinationName;
   }
 
-  private bool startsWithTenant(string key, string tenantId) {
+  private bool startsWithTenant(string key, UUID tenantId) {
     return key.length > tenantId.length + 1 && key[0 .. tenantId.length] == tenantId && key[tenantId
       .length] == ':';
   }
@@ -125,7 +125,7 @@ class CONStore : SAPStore {
     return 0;
   }
 
-  private bool containsTenant(string[] values, string tenantId) {
+  private bool containsTenant(string[] values, UUID tenantId) {
     foreach (value; values) {
       if (value == tenantId) {
         return true;

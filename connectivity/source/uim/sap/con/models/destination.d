@@ -40,7 +40,7 @@ mixin(SAPObjectTemplate!CONDestination);
   }
 }
 
-CONDestination destinationFromJson(string tenantId, string name, Json request) {
+CONDestination destinationFromJson(UUID tenantId, string name, Json request) {
   CONDestination destination;
   destination.tenantId = UUID(tenantId);
   destination.name = name;

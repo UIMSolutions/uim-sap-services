@@ -32,7 +32,7 @@ class CPSStore : SAPStore {
         }
     }
 
-    CPSSite getSite(string tenantId, string siteId) {
+    CPSSite getSite(UUID tenantId, string siteId) {
         synchronized (_lock) {
             auto key = scopedKey(tenantId, "site", siteId);
             if (auto value = key in _sites) return *value;
@@ -40,7 +40,7 @@ class CPSStore : SAPStore {
         return CPSSite.init;
     }
 
-    bool deleteSite(string tenantId, string siteId) {
+    bool deleteSite(UUID tenantId, string siteId) {
         synchronized (_lock) {
             auto key = scopedKey(tenantId, "site", siteId);
             if ((key in _sites) is null) return false;
@@ -49,7 +49,7 @@ class CPSStore : SAPStore {
         }
     }
 
-    CPSSite[] listSites(string tenantId) {
+    CPSSite[] listSites(UUID tenantId) {
         CPSSite[] values;
         synchronized (_lock) {
             foreach (key, value; _sites) if (belongsTo(key, tenantId)) values ~= value;
@@ -64,7 +64,7 @@ class CPSStore : SAPStore {
         }
     }
 
-    CPSAdminSettings getAdmin(string tenantId) {
+    CPSAdminSettings getAdmin(UUID tenantId) {
         synchronized (_lock) {
             auto key = scopedKey(tenantId, "admin", "default");
             if (auto value = key in _admin) return *value;
@@ -79,7 +79,7 @@ class CPSStore : SAPStore {
         }
     }
 
-    CPSContentItem[] listContent(string tenantId, string itemType) {
+    CPSContentItem[] listContent(UUID tenantId, string itemType) {
         CPSContentItem[] values;
         synchronized (_lock) {
             foreach (key, value; _content) {
@@ -96,7 +96,7 @@ class CPSStore : SAPStore {
         }
     }
 
-    CPSLaunchpadModule[] listLaunchpad(string tenantId) {
+    CPSLaunchpadModule[] listLaunchpad(UUID tenantId) {
         CPSLaunchpadModule[] values;
         synchronized (_lock) {
             foreach (key, value; _launchpad) if (belongsTo(key, tenantId)) values ~= value;
@@ -111,7 +111,7 @@ class CPSStore : SAPStore {
         }
     }
 
-    CPSContentProvider getProvider(string tenantId, string providerId) {
+    CPSContentProvider getProvider(UUID tenantId, string providerId) {
         synchronized (_lock) {
             auto key = scopedKey(tenantId, "provider", providerId);
             if (auto value = key in _providers) return *value;
@@ -119,7 +119,7 @@ class CPSStore : SAPStore {
         return CPSContentProvider.init;
     }
 
-    CPSContentProvider[] listProviders(string tenantId) {
+    CPSContentProvider[] listProviders(UUID tenantId) {
         CPSContentProvider[] values;
         synchronized (_lock) {
             foreach (key, value; _providers) if (belongsTo(key, tenantId)) values ~= value;
@@ -127,11 +127,11 @@ class CPSStore : SAPStore {
         return values;
     }
 
-    private string scopedKey(string tenantId, string scopePart, string id) {
+    private string scopedKey(UUID tenantId, string scopePart, string id) {
         return tenantId ~ ":" ~ scopePart ~ ":" ~ id;
     }
 
-    private bool belongsTo(string key, string tenantId) {
+    private bool belongsTo(string key, UUID tenantId) {
         return key.length > tenantId.length + 1 && key[0 .. tenantId.length] == tenantId && key[tenantId.length] == ':';
     }
 

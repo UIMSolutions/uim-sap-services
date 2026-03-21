@@ -71,7 +71,7 @@ unittest {
   assert(json["updated_at"].isString);
 }
 
-CISGroup groupFromJson(string tenantId, Json request) {
+CISGroup groupFromJson(UUID tenantId, Json request) {
   CISGroup group;
   group.tenantId = UUID(tenantId);
   group.groupId = createId();

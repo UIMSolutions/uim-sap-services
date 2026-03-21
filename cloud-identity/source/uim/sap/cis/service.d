@@ -60,7 +60,7 @@ class CISService : SAPService {
     return payload;
   }
 
-  Json login(string tenantId, Json request) {
+  Json login(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
     auto method = _config.defaultAuthMethod;
     if ("method" in request && request["method"].isString) {
@@ -84,7 +84,7 @@ class CISService : SAPService {
     return payload;
   }
 
-  Json upsertUser(string tenantId, Json request) {
+  Json upsertUser(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
     auto user = userFromJson(tenantId, request);
     validateUser(user);
@@ -98,7 +98,7 @@ class CISService : SAPService {
     return payload;
   }
 
-  Json listUsers(string tenantId) {
+  Json listUsers(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
     Json resources = Json.emptyArray;
     foreach (user; _store.listUsers(tenantId))
@@ -113,7 +113,7 @@ class CISService : SAPService {
     return payload;
   }
 
-  Json upsertGroup(string tenantId, Json request) {
+  Json upsertGroup(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
     auto group = groupFromJson(tenantId, request);
     if (group.displayName.length == 0) {
@@ -128,7 +128,7 @@ class CISService : SAPService {
     return payload;
   }
 
-  Json listGroups(string tenantId) {
+  Json listGroups(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
     Json resources = Json.emptyArray;
     foreach (group; _store.listGroups(tenantId))
@@ -143,7 +143,7 @@ class CISService : SAPService {
     return payload;
   }
 
-  Json inviteUser(string tenantId, Json request) {
+  Json inviteUser(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
     if (!("email" in request) || !request["email"].isString || request["email"].get!string.length == 0) {
       throw new CISValidationException("email is required");
@@ -157,7 +157,7 @@ class CISService : SAPService {
     return payload;
   }
 
-  Json setUiText(string tenantId, string locale, Json request) {
+  Json setUiText(UUID tenantId, string locale, Json request) {
     validateId(tenantId, "Tenant ID");
     validateId(locale, "Locale");
 
@@ -170,7 +170,7 @@ class CISService : SAPService {
     return payload;
   }
 
-  Json upsertDelegationRule(string tenantId, string ruleId, Json request) {
+  Json upsertDelegationRule(UUID tenantId, string ruleId, Json request) {
     validateId(tenantId, "Tenant ID");
     validateId(ruleId, "Rule ID");
 
@@ -201,7 +201,7 @@ class CISService : SAPService {
     return payload;
   }
 
-  Json listDelegationRules(string tenantId) {
+  Json listDelegationRules(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
     Json resources = Json.emptyArray;
     foreach (rule; _store.listDelegationRules(tenantId))
@@ -213,7 +213,7 @@ class CISService : SAPService {
     return payload;
   }
 
-  Json upsertPolicy(string tenantId, string policyId, Json request) {
+  Json upsertPolicy(UUID tenantId, string policyId, Json request) {
     validateId(tenantId, "Tenant ID");
     validateId(policyId, "Policy ID");
 
@@ -246,7 +246,7 @@ class CISService : SAPService {
     return payload;
   }
 
-  Json listPolicies(string tenantId) {
+  Json listPolicies(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
     Json resources = Json.emptyArray;
     foreach (policy; _store.listPolicies(tenantId))
@@ -258,7 +258,7 @@ class CISService : SAPService {
     return payload;
   }
 
-  Json authorize(string tenantId, Json request) {
+  Json authorize(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
     if (!("instance_id" in request) || request["instance_id"].type != Json.Type.string) {
       throw new CISValidationException("instance_id is required");
@@ -288,7 +288,7 @@ class CISService : SAPService {
     return payload;
   }
 
-  Json upsertRiskPolicy(string tenantId, string policyId, Json request) {
+  Json upsertRiskPolicy(UUID tenantId, string policyId, Json request) {
     validateId(tenantId, "Tenant ID");
     validateId(policyId, "Policy ID");
 
@@ -319,7 +319,7 @@ class CISService : SAPService {
     return payload;
   }
 
-  Json listRiskPolicies(string tenantId) {
+  Json listRiskPolicies(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
     Json resources = Json.emptyArray;
     foreach (policy; _store.listRiskPolicies(tenantId))
@@ -331,7 +331,7 @@ class CISService : SAPService {
     return payload;
   }
 
-  Json evaluateRisk(string tenantId, Json request) {
+  Json evaluateRisk(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
     string ip;
     string group;
@@ -367,7 +367,7 @@ class CISService : SAPService {
     return payload;
   }
 
-  Json startProvisioningJob(string tenantId, Json request) {
+  Json startProvisioningJob(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
 
     CISProvisioningJob job;
@@ -411,7 +411,7 @@ class CISService : SAPService {
     return payload;
   }
 
-  Json listProvisioningJobs(string tenantId) {
+  Json listProvisioningJobs(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
     Json resources = Json.emptyArray;
     foreach (job; _store.listJobs(tenantId))
@@ -423,7 +423,7 @@ class CISService : SAPService {
     return payload;
   }
 
-  Json listJobLogs(string tenantId) {
+  Json listJobLogs(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
     Json resources = Json.emptyArray;
     foreach (log; _store.listJobLogs(tenantId))
@@ -435,7 +435,7 @@ class CISService : SAPService {
     return payload;
   }
 
-  Json subscribeNotifications(string tenantId, Json request) {
+  Json subscribeNotifications(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
     CISNotificationSubscription sub;
     sub.tenantId = UUID(tenantId);
@@ -460,7 +460,7 @@ class CISService : SAPService {
     return payload;
   }
 
-  Json listNotificationSubscriptions(string tenantId) {
+  Json listNotificationSubscriptions(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
     Json resources = Json.emptyArray;
     foreach (sub; _store.listSubscriptions(tenantId))

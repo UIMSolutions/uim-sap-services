@@ -107,7 +107,7 @@ unittest {
   assert(userJson["updated_at"].length > 0);
 }
 
-CISUser userFromJson(string tenantId, Json request) {
+CISUser userFromJson(UUID tenantId, Json request) {
   CISUser user;
   user.tenantId = UUID(tenantId);
   user.userId = createId();

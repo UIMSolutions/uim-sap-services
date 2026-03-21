@@ -24,7 +24,7 @@ class CPSService : SAPService {
     _store = new CPSStore;
   }
 
-  Json upsertSite(string tenantId, Json request) {
+  Json upsertSite(UUID tenantId, Json request) {
     CPSConfig cfg = cast(CPSConfig)_config;
 
     validateId(tenantId, "Tenant ID");
@@ -41,7 +41,7 @@ class CPSService : SAPService {
     return payload;
   }
 
-  Json listSites(string tenantId) {
+  Json listSites(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
     Json resources = Json.emptyArray;
     foreach (site; _store.listSites(tenantId))
@@ -53,7 +53,7 @@ class CPSService : SAPService {
     return payload;
   }
 
-  Json getSite(string tenantId, string siteId) {
+  Json getSite(UUID tenantId, string siteId) {
     validateId(tenantId, "Tenant ID");
     validateId(siteId, "Site ID");
     auto site = _store.getSite(tenantId, siteId);
@@ -65,7 +65,7 @@ class CPSService : SAPService {
     return payload;
   }
 
-  Json deleteSite(string tenantId, string siteId) {
+  Json deleteSite(UUID tenantId, string siteId) {
     validateId(tenantId, "Tenant ID");
     validateId(siteId, "Site ID");
     if (!_store.deleteSite(tenantId, siteId))
@@ -77,7 +77,7 @@ class CPSService : SAPService {
     return payload;
   }
 
-  Json resolveNavigation(string tenantId, Json request) {
+  Json resolveNavigation(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
 
     Json roles = Json.emptyArray;
@@ -110,7 +110,7 @@ class CPSService : SAPService {
     return payload;
   }
 
-  Json listEntryPoints(string tenantId) {
+  Json listEntryPoints(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
     Json resources = Json.emptyArray;
 
@@ -139,7 +139,7 @@ class CPSService : SAPService {
     return payload;
   }
 
-  Json upsertSiteAdministration(string tenantId, Json request) {
+  Json upsertSiteAdministration(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
 
     CPSAdminSettings admin;
@@ -169,7 +169,7 @@ class CPSService : SAPService {
     return payload;
   }
 
-  Json getSiteAdministration(string tenantId) {
+  Json getSiteAdministration(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
     auto admin = _store.getAdmin(tenantId);
     if (admin.tenantId.length == 0) {
@@ -187,7 +187,7 @@ class CPSService : SAPService {
     return payload;
   }
 
-  Json upsertContent(string tenantId, string contentType, Json request) {
+  Json upsertContent(UUID tenantId, string contentType, Json request) {
     validateId(tenantId, "Tenant ID");
     validateContentType(contentType);
 
@@ -215,7 +215,7 @@ class CPSService : SAPService {
     return payload;
   }
 
-  Json listContent(string tenantId, string contentType) {
+  Json listContent(UUID tenantId, string contentType) {
     validateId(tenantId, "Tenant ID");
     validateContentType(contentType);
 
@@ -229,7 +229,7 @@ class CPSService : SAPService {
     return payload;
   }
 
-  Json upsertLaunchpadModule(string tenantId, Json request) {
+  Json upsertLaunchpadModule(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
 
     CPSLaunchpadModule launchpadModule;
@@ -262,7 +262,7 @@ class CPSService : SAPService {
     return payload;
   }
 
-  Json listLaunchpadModules(string tenantId) {
+  Json listLaunchpadModules(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
     Json resources = Json.emptyArray;
     foreach (launchpadModule; _store.listLaunchpad(tenantId))
@@ -274,7 +274,7 @@ class CPSService : SAPService {
     return payload;
   }
 
-  Json upsertProvider(string tenantId, Json request) {
+  Json upsertProvider(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
     CPSContentProvider provider;
     provider.tenantId = UUID(tenantId);
@@ -303,7 +303,7 @@ class CPSService : SAPService {
     return payload;
   }
 
-  Json listProviders(string tenantId) {
+  Json listProviders(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
     Json resources = Json.emptyArray;
     foreach (provider; _store.listProviders(tenantId))
@@ -315,7 +315,7 @@ class CPSService : SAPService {
     return payload;
   }
 
-  Json consumeProvider(string tenantId, string providerId) {
+  Json consumeProvider(UUID tenantId, string providerId) {
     validateId(tenantId, "Tenant ID");
     validateId(providerId, "Provider ID");
 

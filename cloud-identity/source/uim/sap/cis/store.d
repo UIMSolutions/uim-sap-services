@@ -57,7 +57,7 @@ class CISStore : SAPStore {
     }
   }
 
-  CISUser getUser(string tenantId, string userId) {
+  CISUser getUser(UUID tenantId, string userId) {
     synchronized (_lock) {
       auto key = scopedKey(tenantId, "user", userId);
       if (auto value = key in _users)
@@ -66,7 +66,7 @@ class CISStore : SAPStore {
     return CISUser.init;
   }
 
-  CISUser[] listUsers(string tenantId) {
+  CISUser[] listUsers(UUID tenantId) {
     CISUser[] values;
     synchronized (_lock) {
       foreach (key, value; _users) {
@@ -85,7 +85,7 @@ class CISStore : SAPStore {
     }
   }
 
-  CISGroup[] listGroups(string tenantId) {
+  CISGroup[] listGroups(UUID tenantId) {
     CISGroup[] values;
     synchronized (_lock) {
       foreach (key, value; _groups) {
@@ -103,7 +103,7 @@ class CISStore : SAPStore {
     }
   }
 
-  CISDelegationRule[] listDelegationRules(string tenantId) {
+  CISDelegationRule[] listDelegationRules(UUID tenantId) {
     CISDelegationRule[] values;
     synchronized (_lock) {
       foreach (key, value; _delegationRules) {
@@ -121,7 +121,7 @@ class CISStore : SAPStore {
     }
   }
 
-  CISAuthorizationPolicy[] listPolicies(string tenantId) {
+  CISAuthorizationPolicy[] listPolicies(UUID tenantId) {
     CISAuthorizationPolicy[] values;
     synchronized (_lock) {
       foreach (key, value; _policies) {
@@ -139,7 +139,7 @@ class CISStore : SAPStore {
     }
   }
 
-  CISRiskPolicy[] listRiskPolicies(string tenantId) {
+  CISRiskPolicy[] listRiskPolicies(UUID tenantId) {
     CISRiskPolicy[] values;
     synchronized (_lock) {
       foreach (key, value; _riskPolicies) {
@@ -157,7 +157,7 @@ class CISStore : SAPStore {
     }
   }
 
-  CISProvisioningJob[] listJobs(string tenantId) {
+  CISProvisioningJob[] listJobs(UUID tenantId) {
     CISProvisioningJob[] values;
     synchronized (_lock) {
       foreach (key, value; _jobs) {
@@ -175,7 +175,7 @@ class CISStore : SAPStore {
     }
   }
 
-  CISJobLog[] listJobLogs(string tenantId) {
+  CISJobLog[] listJobLogs(UUID tenantId) {
     CISJobLog[] values;
     synchronized (_lock) {
       foreach (log; _jobLogs) {
@@ -193,7 +193,7 @@ class CISStore : SAPStore {
     }
   }
 
-  CISNotificationSubscription[] listSubscriptions(string tenantId) {
+  CISNotificationSubscription[] listSubscriptions(UUID tenantId) {
     CISNotificationSubscription[] values;
     synchronized (_lock) {
       foreach (key, value; _subscriptions) {
@@ -204,11 +204,11 @@ class CISStore : SAPStore {
     return values;
   }
 
-  private string scopedKey(string tenantId, string scopePart, string id) {
+  private string scopedKey(UUID tenantId, string scopePart, string id) {
     return tenantId ~ ":" ~ scopePart ~ ":" ~ id;
   }
 
-  private bool belongsTo(string key, string tenantId) {
+  private bool belongsTo(string key, UUID tenantId) {
     return key.length > tenantId.length + 1 && key[0 .. tenantId.length] == tenantId && key[tenantId
       .length] == ':';
   }
