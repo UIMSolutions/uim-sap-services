@@ -106,7 +106,7 @@ class IPVServer : SAPServer {
     }
 
     try {
-      validateAuth(req);
+      validateAuth(req, _service.config);
 
       auto segments = normalizedSegments(subPath);
 
@@ -337,21 +337,6 @@ class IPVServer : SAPServer {
       respondError(res, e.msg, 500);
     } catch (Exception e) {
       respondError(res, e.msg, 500);
-    }
-  }
-
-  private void validateAuth(HTTPServerRequest req) {
-    if (!_service.config.requireAuthToken) {
-      return;
-    }
-
-    if (!("Authorization" in req.headers)) {
-      throw new IPVAuthorizationException("Missing Authorization header");
-    }
-
-    auto expected = "Bearer " ~ _service.config.authToken;
-    if (req.headers["Authorization"] != expected) {
-      throw new IPVAuthorizationException("Invalid token");
     }
   }
 }

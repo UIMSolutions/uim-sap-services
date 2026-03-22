@@ -84,7 +84,7 @@ class KSTServer {
     auto requestKey = req.headers.get("X-KST-Encryption-Key", "");
 
     try {
-      validateAuth(req);
+      validateAuth(req, _service.config);
       auto segments = normalizedSegments(subPath);
 
       // POST /v1/auth/client-cert
@@ -234,18 +234,6 @@ class KSTServer {
     }
 
     respondError(res, "Not found", 404);
-  }
-
-  private void validateAuth(HTTPServerRequest req) {
-    if (!_service.config.requireAuthToken)
-      return;
-
-    if (!("Authorization" in req.headers))
-      throw new KSTAuthorizationException("Missing Authorization header");
-
-    auto expected = "Bearer " ~ _service.config.authToken;
-    if (req.headers["Authorization"] != expected)
-      throw new KSTAuthorizationException("Invalid token");
   }
 }
 

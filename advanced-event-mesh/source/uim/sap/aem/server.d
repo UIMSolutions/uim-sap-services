@@ -90,7 +90,7 @@ class AEMServer : SAPServer {
     }
 
     try {
-      validateAuth(req);
+      validateAuth(req, _service.config);
 
       auto segments = normalizedSegments(subPath);
       if (segments.length >= 3 && segments[0] == "v1" && segments[1] == "tenants") {

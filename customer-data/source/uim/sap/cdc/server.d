@@ -187,14 +187,6 @@ private void handleRequest(
   }
 }
 
-private void validateAuth(bool requireAuthToken, string authToken, HTTPServerRequest req) {
-  if (!requireAuthToken) return;
-  if (!("Authorization" in req.headers)) throw new CDCAuthorizationException("Missing Authorization header");
-
-  auto expected = "Bearer " ~ authToken;
-  if (req.headers["Authorization"] != expected) throw new CDCAuthorizationException("Invalid token");
-}
-
 private size_t parseSizeT(string rawValue, size_t fallback) {
   try {
     auto parsed = to!long(rawValue);

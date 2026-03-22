@@ -217,5 +217,4 @@ class HARServer : SAPServer {
     }
     return resultPath;
   }
-
 }

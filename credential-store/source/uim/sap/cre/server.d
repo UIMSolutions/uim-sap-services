@@ -52,7 +52,7 @@ class CREServer {
     auto requestKey = req.headers.get("X-CRE-Encryption-Key", "");
 
     try {
-      validateAuth(req);
+      validateAuth(req, _service.config);
 
       if (subPath == "/v1/service_instances") {
         if (req.method == HTTPMethod.GET) {
@@ -132,20 +132,6 @@ class CREServer {
     }
   }
 
-  private void validateAuth(HTTPServerRequest req) {
-    if (!_service.config.requireAuthToken) {
-      return;
-    }
-
-    if (!("Authorization" in req.headers)) {
-      throw new CREAuthorizationException("Missing Authorization header");
-    }
-
-    auto expected = "Bearer " ~ _service.config.authToken;
-    if (req.headers["Authorization"] != expected) {
-      throw new CREAuthorizationException("Invalid token");
-    }
-  }
 }
 ///
 unittest {

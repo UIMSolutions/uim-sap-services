@@ -55,7 +55,7 @@ class INTServer : SAPServer {
     }
 
     try {
-      validateAuth(req);
+      validateAuth(req, _service.config);
       auto segments = normalizedSegments(subPath);
 
       // All business routes: /v1/tenants/{tenantId}/...
@@ -725,21 +725,4 @@ class INTServer : SAPServer {
     }
     respondError(res, "Not found", 404);
   }
-
-  // ================================================================
-  //  Auth & helpers
-  // ================================================================
-
-  private void validateAuth(HTTPServerRequest req) {
-    if (!_service.config.requireAuthToken)
-      return;
-
-    if (!("Authorization" in req.headers))
-      throw new INTAuthorizationException("Missing Authorization header");
-
-    auto expected = "Bearer " ~ _service.config.authToken;
-    if (req.headers["Authorization"] != expected)
-      throw new INTAuthorizationException("Invalid token");
-  }
-
 }

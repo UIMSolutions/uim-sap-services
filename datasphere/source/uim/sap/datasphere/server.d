@@ -66,7 +66,7 @@ class DSPServer : SAPServer {
     }
 
     try {
-      validateAuth(req);
+      validateAuth(req, _service.config);
       auto segments = normalizedSegments(subPath);
 
       if (segments.length == 3 && segments[0] == "v1" && segments[1] == "admin" && segments[2] == "tenant") {
@@ -322,16 +322,5 @@ class DSPServer : SAPServer {
     } catch (Exception e) {
       respondError(res, e.msg, 500);
     }
-  }
-
-  private void validateAuth(HTTPServerRequest req) {
-    if (!_service.config.requireAuthToken)
-      return;
-    if (!("Authorization" in req.headers)) {
-      throw new DSPAuthorizationException("Missing Authorization header");
-    }
-    auto expected = "Bearer " ~ _service.config.authToken;
-    if (req.headers["Authorization"] != expected)
-      throw new DSPAuthorizationException("Invalid token");
   }
 }

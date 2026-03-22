@@ -63,7 +63,7 @@ class ARTRuntimeServer {
 
     if (path.endsWith("/run") && req.method == HTTPMethod.POST) {
       try {
-        validateAuth(req);
+        validateAuth(req, _service.config);
         auto input = req.json;
         auto programRequest = ARTProgramRequest.fromJson(input);
         auto output = _runtime.execute(programRequest);
@@ -85,15 +85,4 @@ class ARTRuntimeServer {
 
     respondError(res, "Not found", 404);
   }
-
-  private void validateAuth(HTTPServerRequest req) {
-    validateRequiredAuth(req, _runtime.config.requireAuthToken);
-
-    auto auth = req.headers["Authorization"];
-    auto expected = "Bearer " ~ _runtime.config.authToken;
-    if (auth != expected) {
-      throw new ARTRuntimeAuthenticationException("Invalid token");
-    }
-  }
-
 }
