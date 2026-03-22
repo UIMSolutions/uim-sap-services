@@ -306,7 +306,7 @@ class AlertNotificationService : SAPService {
     }
 
     if (tags.length > 0) {
-      auto eventTags = toLoweredStringArray(eventItem.tags);
+      auto eventTags = loweredStringArray(eventItem.tags);
       foreach (tag; tags) {
         if (!eventTags.canFind(tag)) {
           return false;
@@ -322,7 +322,7 @@ class AlertNotificationService : SAPService {
       return true;
     }
 
-    auto haystack = toLoweredStringArray(available);
+    auto haystack = loweredStringArray(available);
     foreach (item; requested.toArray) {
       if (!item.isString) {
         continue;
@@ -374,10 +374,10 @@ class AlertNotificationService : SAPService {
     if (!(key in objectOrMap) || !objectOrMap[key].isArray) {
       return null;
     }
-    return toLoweredStringArray(objectOrMap[key]);
+    return loweredStringArray(objectOrMap[key]);
   }
 
-  private string[] toLoweredStringArray(Json values) {
+  private string[] loweredStringArray(Json values) {
     string[] result;
     if (!(values.isArray)) {
       return result;
@@ -388,17 +388,6 @@ class AlertNotificationService : SAPService {
       }
     }
     return result;
-  }
-
-  private string requiredString(Json request, string key) {
-    if (!(key in request) || !request[key].isString) {
-      throw new AlertNotificationValidationException(key ~ " is required");
-    }
-    auto value = request[key].get!string;
-    if (value.length == 0) {
-      throw new AlertNotificationValidationException(key ~ " cannot be empty");
-    }
-    return value;
   }
 
   private Json optionalArray(Json request, string key) {

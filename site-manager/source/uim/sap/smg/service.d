@@ -158,13 +158,6 @@ class SMGService : SAPService {
     return payload;
   }
 
-  private string requiredString(Json data, string key) const {
-    if (!(key in data) || data[key].type != Json.Type.string || data[key].get!string.length == 0) {
-      throw new SMGValidationException(key ~ " is required");
-    }
-    return data[key].get!string;
-  }
-
   private string[] readStringArray(Json data, string key) const {
     string[] values;
     if (!(key in data) || data[key].isNull) {

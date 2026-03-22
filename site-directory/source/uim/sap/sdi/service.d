@@ -234,13 +234,6 @@ class SDIService : SAPService {
       throw new SDIValidationException("tenant_id is required");
   }
 
-  private string requiredString(Json data, string key) const {
-    if (!(key in body) || body[key].type != Json.Type.string || body[key].get!string.length == 0) {
-      throw new SDIValidationException(key ~ " is required");
-    }
-    return data[key].get!string;
-  }
-
   private string[] readStringArray(Json data, string key) const {
     string[] values;
     if (!(key in data) || data[key].isNull)

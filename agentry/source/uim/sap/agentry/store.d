@@ -13,14 +13,15 @@ mixin(ShowModule!());
 
 @safe:
 class AGTStore : SAPStore {
-  private AGTMobileApp[string] _apps;
-  private AGTAppVersion[][string] _versionsByApp;
-  private AGTTestRun[][string] _testRunsByApp;
-  private AGTRuntimeInstance[string] _instances;
-  private AGTDevice[string] _devices;
-  private AGTBackendSystem[string] _backends;
+  mixin(SAPStoreTemplate!AGTStore);
 
-  private Mutex _lock;
+  protected AGTMobileApp[string] _apps;
+  protected AGTAppVersion[][string] _versionsByApp;
+  protected AGTTestRun[][string] _testRunsByApp;
+  protected AGTRuntimeInstance[string] _instances;
+  protected AGTDevice[string] _devices;
+  protected AGTBackendSystem[string] _backends;
+  protected Mutex _lock;
 
   this() {
     _lock = new Mutex;

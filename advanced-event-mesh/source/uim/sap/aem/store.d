@@ -14,16 +14,16 @@ mixin(ShowModule!());
 @safe:
 
 class AEMStore : SAPStore {
-  private AEMBrokerService[string] _brokers;
-  private AEMEventMesh[string] _meshes;
-  private AEMEDAComponent[string] _components;
-  private AEMNotificationRule[string] _notifications;
-
-  private AEMSubscription[][string] _subscriptionsByTenant;
-  private AEMTopicEvent[][string] _eventsByTopicKey;
-  private AEMMonitoringAlert[][string] _alertsByTenant;
-
-  private Mutex _lock;
+  mixin(SAPStoreTemplate!AEMStore);
+  
+  protected AEMBrokerService[string] _brokers;
+  protected AEMEventMesh[string] _meshes;
+  protected AEMEDAComponent[string] _components;
+  protected AEMNotificationRule[string] _notifications;
+  protected AEMSubscription[][string] _subscriptionsByTenant;
+  protected AEMTopicEvent[][string] _eventsByTopicKey;
+  protected AEMMonitoringAlert[][string] _alertsByTenant;
+  protected Mutex _lock;
 
   this() {
     _lock = new Mutex;

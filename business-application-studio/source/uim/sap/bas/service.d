@@ -308,13 +308,6 @@ class BASService : SAPService {
       throw new BASValidationException("tenant_id is required");
   }
 
-  private string requiredString(Json data, string key) const {
-    if (!(key in data) || !data[key].isString || data[key].get!string.length == 0) {
-      throw new BASValidationException(key ~ " is required");
-    }
-    return data[key].get!string;
-  }
-
   private Json readObject(Json data, string key) const {
     if (!(key in data) || data[key].isNull)
       return Json.emptyObject;

@@ -1012,17 +1012,6 @@ HTML";
     }
   }
 
-  private string requiredString(Json request, string key) {
-    if (!(key in request) || request[key].type != Json.Type.string) {
-      throw new JobSchedulingValidationException(key ~ " is required");
-    }
-    auto value = request[key].get!string;
-    if (value.length == 0) {
-      throw new JobSchedulingValidationException(key ~ " cannot be empty");
-    }
-    return value;
-  }
-
   private string optionalString(Json request, string key, string fallback) {
     if (key in request && request[key].isString) {
       auto value = request[key].get!string;

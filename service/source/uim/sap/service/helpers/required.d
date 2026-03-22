@@ -18,6 +18,10 @@ UUID requiredUUID(Json request, string key) {
   return UUID(value);
 }
 
+/**
+  * Validates that the specified key exists in the JSON object and is a non-empty string.
+  * Returns the string value if valid, otherwise throws SAPValidationException.
+  */
 string requiredString(Json data, string key) {
   requiredKey(data, key);
   requiredStringType(data, key);
