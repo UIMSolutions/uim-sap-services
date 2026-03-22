@@ -16,8 +16,8 @@ class CAGConfig : SAPConfig {
 
     // Service runtime settings
     basePath(initData.getString("basePath", "/api/content-agent"));
-    port(cast(ushort)initData.getInteger("port", 8096));
     host(initData.getString("host", "0.0.0.0"));
+    port(cast(ushort)initData.getInteger("port", 8096));
 
     // Service identity settings
     serviceName(initData.getString("serviceName", "uim-content-agent"));
