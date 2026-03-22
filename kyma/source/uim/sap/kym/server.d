@@ -105,7 +105,7 @@ class KYMServer {
     }
 
     try {
-      validateAuth(req);
+      validateAuth(req, _service.config);
       auto segments = normalizedSegments(subPath);
 
       // GET /v1/metrics
@@ -395,19 +395,5 @@ class KYMServer {
     }
 
     respondError(res, "Not found", 404);
-  }
-
-  // ── Helpers ──
-
-  private void validateAuth(HTTPServerRequest req) {
-    if (!_service.config.requireAuthToken)
-      return;
-
-    if (!("Authorization" in req.headers))
-      throw new KYMAuthorizationException("Missing Authorization header");
-
-    auto expected = "Bearer " ~ _service.config.authToken;
-    if (req.headers["Authorization"] != expected)
-      throw new KYMAuthorizationException("Invalid token");
   }
 }

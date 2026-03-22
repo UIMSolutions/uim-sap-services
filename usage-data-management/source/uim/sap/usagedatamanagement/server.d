@@ -52,7 +52,7 @@ mixin(SAPServerTemplate!UDMServer);
     }
 
     try {
-      validateAuth(req);
+      validateAuth(req, _service.config);
 
       if (subPath == "/v1/discovery" && req.method == HTTPMethod.GET) {
         res.writeJsonBody(_service.discovery(), 200);
@@ -114,20 +114,5 @@ mixin(SAPServerTemplate!UDMServer);
 
   private bool matchesBasePath(string path, string basePath) {
     return path == basePath ? true : path.startsWith(basePath ~ "/");
-  }
-
-  private void validateAuth(HTTPServerRequest req) {
-    if (!_service.config.requireAuthToken) {
-      return;
-    }
-
-    if (!("Authorization" in req.headers)) {
-      throw new UDMAuthorizationException("Missing Authorization header");
-    }
-
-    auto expected = "Bearer " ~ _service.config.authToken;
-    if (req.headers["Authorization"] != expected) {
-      throw new UDMAuthorizationException("Invalid token");
-    }
   }
 }

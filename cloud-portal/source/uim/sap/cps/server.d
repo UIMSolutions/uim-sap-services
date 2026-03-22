@@ -51,7 +51,7 @@ class CPSServer : SAPServer {
     }
 
     try {
-      validateAuth(req);
+      validateAuth(req, _service.config);
 
       auto segments = normalizedSegments(subPath);
       if (segments.length >= 3 && segments[0] == "v1" && segments[1] == "tenants") {
@@ -162,15 +162,5 @@ class CPSServer : SAPServer {
     } catch (Exception e) {
       respondError(res, e.msg, 500);
     }
-  }
-
-  private void validateAuth(HTTPServerRequest req) {
-    if (!_service.config.requireAuthToken)
-      return;
-    if (!("Authorization" in req.headers))
-      throw new CPSAuthorizationException("Missing Authorization header");
-    auto expected = "Bearer " ~ _service.config.authToken;
-    if (req.headers["Authorization"] != expected)
-      throw new CPSAuthorizationException("Invalid token");
   }
 }

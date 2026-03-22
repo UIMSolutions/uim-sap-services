@@ -57,7 +57,7 @@ class DRMServer {
     }
 
     try {
-      validateAuth(req);
+      validateAuth(req, _service.config);
 
       if (subPath == "/v1/discovery" && req.method == HTTPMethod.GET) {
         res.writeJsonBody(_service.discovery(), 200);
@@ -142,20 +142,5 @@ class DRMServer {
       return true;
     }
     return path.startsWith(basePath ~ "/");
-  }
-
-  private void validateAuth(HTTPServerRequest req) {
-    if (!_service.config.requireAuthToken) {
-      return;
-    }
-
-    if (!("Authorization" in req.headers)) {
-      throw new DRMAuthorizationException("Missing Authorization header");
-    }
-
-    auto expected = "Bearer " ~ _service.config.authToken;
-    if (req.headers["Authorization"] != expected) {
-      throw new DRMAuthorizationException("Invalid token");
-    }
   }
 }

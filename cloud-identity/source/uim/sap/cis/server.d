@@ -192,13 +192,4 @@ class CISServer {
     }
   }
 
-  private void validateAuth(HTTPServerRequest req) {
-    if (!_service.config.requireAuthToken)
-      return;
-    if (!("Authorization" in req.headers))
-      throw new CISAuthorizationException("Missing Authorization header");
-    auto expected = "Bearer " ~ _service.config.authToken;
-    if (req.headers["Authorization"] != expected)
-      throw new CISAuthorizationException("Invalid token");
-  }
 }
