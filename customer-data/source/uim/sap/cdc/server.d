@@ -212,11 +212,3 @@ private size_t parseSizeT(string rawValue, size_t fallback) {
     return fallback;
   }
 }
-
-private void respondError(HTTPServerResponse res, string message, int statusCode) {
-  Json payload = Json.emptyObject;
-  payload["success"] = false;
-  payload["message"] = message;
-  payload["status_code"] = statusCode;
-  res.writeJsonBody(payload, statusCode);
-}
