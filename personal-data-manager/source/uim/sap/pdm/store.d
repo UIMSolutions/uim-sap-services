@@ -17,12 +17,12 @@ mixin(ShowModule!());
  */
 class PDMStore : SAPStore {
   private {
-    PDMTenant[UUID] _tenants; // key: tenantId
+    PDMTenant[string] _tenants; // key: tenantId
     PDMDataSubject[string] _subjects; // key: tenantId/subjectId
-    PDMPersonalDataRecord[UUID] _records; // key: tenantId/recordId
-    PDMDataRequest[UUID] _requests; // key: tenantId/requestId
-    PDMNotification[UUID] _notifications; // key: tenantId/notificationId
-    PDMDataUsage[UUID] _usages; // key: tenantId/usageId
+    PDMPersonalDataRecord[string] _records; // key: tenantId/recordId
+    PDMDataRequest[string] _requests; // key: tenantId/requestId
+    PDMNotification[string] _notifications; // key: tenantId/notificationId
+    PDMDataUsage[string] _usages; // key: tenantId/usageId
     Mutex _mutex;
   }
 
@@ -36,22 +36,22 @@ class PDMStore : SAPStore {
 
   PDMTenant upsertTenant(PDMTenant t) {
     synchronized (_mutex) {
-      _tenants[t.tenantId] = t;
+      _tenants[t.tenantId.toString] = t;
       return t;
     }
   }
 
   PDMTenant getTenant(UUID tenantId) {
     synchronized (_mutex) {
-      if (auto p = tenantId in _tenants)
-        return *p;
-      return PDMTenant.init;
+      if (hasTenant(tenantId))
+        return _tenants[tenantId.toString];
+      return null;
     }
   }
 
   bool hasTenant(UUID tenantId) {
     synchronized (_mutex) {
-      return (tenantId in _tenants) !is null;
+      return (tenantId.toString in _tenants) ? true : false;
     }
   }
 
@@ -63,8 +63,8 @@ class PDMStore : SAPStore {
 
   bool removeTenant(UUID tenantId) {
     synchronized (_mutex) {
-      if (tenantId in _tenants) {
-        _tenants.remove(tenantId);
+      if (hasTenant(tenantId)) {
+        _tenants.remove(tenantId.toString);
         return true;
       }
       return false;
@@ -77,7 +77,7 @@ class PDMStore : SAPStore {
 
   PDMDataSubject upsertSubject(PDMDataSubject s) {
     synchronized (_mutex) {
-      auto key = tenantKey(s.tenantId, s.subjectId);
+      string key = tenantKey(s.tenantId, s.subjectId);
       _subjects[key] = s;
       return s;
     }
@@ -85,55 +85,41 @@ class PDMStore : SAPStore {
 
   PDMDataSubject getSubject(UUID tenantId, UUID subjectId) {
     synchronized (_mutex) {
-      auto key = tenantKey(tenantId, subjectId);
-      if (auto p = key in _subjects)
-        return *p;
-      return PDMDataSubject.init;
+      string key = tenantKey(tenantId, subjectId);
+      if (key in _subjects)
+        return _subjects[key];
+      return null;
     }
   }
 
   bool hasSubject(UUID tenantId, UUID subjectId) {
     synchronized (_mutex) {
-      auto key = tenantKey(tenantId, subjectId);
-      return _subjects.hasKey(key);
+      string key = tenantKey(tenantId, subjectId);
+      return (key in _subjects) ? true : false;
     }
   }
 
   PDMDataSubject[] listSubjects(UUID tenantId) {
     synchronized (_mutex) {
-      PDMDataSubject[] result;
-      foreach (ref s; _subjects)
-        if (s.tenantId == tenantId)
-          result ~= s;
-      return result;
+      return _subjects.byValue.filter!(s => s.tenantId == tenantId).array;
     }
   }
 
   PDMDataSubject[] searchSubjects(UUID tenantId, string term) {
     synchronized (_mutex) {
-      PDMDataSubject[] result;
-      foreach (ref s; _subjects) {
-        if (s.tenantId == tenantId && matchesSubject(s, term))
-          result ~= s;
-      }
-      return result;
+      return _subjects.byValue.filter!(subject => subject.tenantId == tenantId && matchesSubject(subject, term)).array;
     }
   }
 
   PDMDataSubject[] searchSubjectsByType(UUID tenantId, PDMSubjectType subjectType) {
     synchronized (_mutex) {
-      PDMDataSubject[] result;
-      foreach (ref s; _subjects) {
-        if (s.tenantId == tenantId && s.subjectType == subjectType)
-          result ~= s;
-      }
-      return result;
+      return _subjects.byValue.filter!(subject => subject.tenantId == tenantId && subject.subjectType == subjectType).array;
     }
   }
 
   bool removeSubject(UUID tenantId, UUID subjectId) {
     synchronized (_mutex) {
-      auto key = tenantKey(tenantId, subjectId);
+      string key = tenantKey(tenantId, subjectId);
       if (key in _subjects) {
         _subjects.remove(key);
         return true;
@@ -164,7 +150,7 @@ class PDMStore : SAPStore {
 
   PDMPersonalDataRecord upsertRecord(PDMPersonalDataRecord r) {
     synchronized (_mutex) {
-      auto key = tenantKey(r.tenantId, r.recordId);
+      string key = tenantKey(r.tenantId, r.recordId);
       _records[key] = r;
       return r;
     }
@@ -172,7 +158,7 @@ class PDMStore : SAPStore {
 
   PDMPersonalDataRecord getRecord(UUID tenantId, UUID recordId) {
     synchronized (_mutex) {
-      auto key = tenantKey(tenantId, recordId);
+      string key = tenantKey(tenantId, recordId);
       if (auto p = key in _records)
         return *p;
       return PDMPersonalDataRecord.init;
@@ -181,8 +167,10 @@ class PDMStore : SAPStore {
 
   bool hasRecord(UUID tenantId, UUID recordId) {
     synchronized (_mutex) {
-      auto key = tenantKey(tenantId, recordId);
-      return _records.hasKey(key);
+      string key = tenantKey(tenantId, recordId);
+      if (key in _records)
+        return true;
+      return false;
     }
   }
 
@@ -198,7 +186,7 @@ class PDMStore : SAPStore {
 
   bool removeRecord(UUID tenantId, UUID recordId) {
     synchronized (_mutex) {
-      auto key = tenantKey(tenantId, recordId);
+      string key = tenantKey(tenantId, recordId);
       if (key in _records) {
         _records.remove(key);
         return true;
@@ -223,11 +211,8 @@ class PDMStore : SAPStore {
 
   size_t recordCountBySubject(UUID tenantId, UUID subjectId) {
     synchronized (_mutex) {
-      size_t count = 0;
-      foreach (ref r; _records)
-        if (r.tenantId == tenantId && r.subjectId == subjectId)
-          count++;
-      return count;
+      return _records.byValue.filter!(r => r.tenantId == tenantId && r.subjectId == subjectId)
+        .array.length;
     }
   }
 
@@ -237,7 +222,7 @@ class PDMStore : SAPStore {
 
   PDMDataRequest upsertRequest(PDMDataRequest r) {
     synchronized (_mutex) {
-      auto key = tenantKey(r.tenantId, r.requestId);
+      string key = tenantKey(r.tenantId, r.requestId);
       _requests[key] = r;
       return r;
     }
@@ -245,57 +230,44 @@ class PDMStore : SAPStore {
 
   PDMDataRequest getRequest(UUID tenantId, UUID requestId) {
     synchronized (_mutex) {
-      auto key = tenantKey(tenantId, requestId);
-      if (auto p = key in _requests)
-        return *p;
-      return PDMDataRequest.init;
+      string key = tenantKey(tenantId, requestId);
+      if (key in _requests)
+        return _requests[key];
+      return null;
     }
   }
 
   bool hasRequest(UUID tenantId, UUID requestId) {
     synchronized (_mutex) {
-      auto key = tenantKey(tenantId, requestId);
-      return _requests.hasKey(key);
+      string key = tenantKey(tenantId, requestId);
+      if (key in _requests)
+        return true;
+      return false;
     }
   }
 
   PDMDataRequest[] listRequests(UUID tenantId) {
     synchronized (_mutex) {
-      PDMDataRequest[] result;
-      foreach (ref r; _requests)
-        if (r.tenantId == tenantId)
-          result ~= r;
-      return result;
+      return _requests.byValue.filter!(r => r.tenantId == tenantId).array;
     }
   }
 
   PDMDataRequest[] listRequestsBySubject(UUID tenantId, UUID subjectId) {
     synchronized (_mutex) {
-      PDMDataRequest[] result;
-      foreach (ref r; _requests)
-        if (r.tenantId == tenantId && r.subjectId == subjectId)
-          result ~= r;
-      return result;
+      return _requests.byValue.filter!(r => r.tenantId == tenantId && r.subjectId == subjectId)
+        .array;
     }
   }
 
   PDMDataRequest[] listRequestsByStatus(UUID tenantId, PDMRequestStatus status) {
     synchronized (_mutex) {
-      PDMDataRequest[] result;
-      foreach (ref r; _requests)
-        if (r.tenantId == tenantId && r.status == status)
-          result ~= r;
-      return result;
+      return _requests.byValue.filter!(r => r.tenantId == tenantId && r.status == status).array;
     }
   }
 
   size_t requestCount(UUID tenantId) {
     synchronized (_mutex) {
-      size_t count = 0;
-      foreach (ref r; _requests)
-        if (r.tenantId == tenantId)
-          count++;
-      return count;
+      return _requests.byValue.filter!(r => r.tenantId == tenantId).array.length;
     }
   }
 
@@ -311,40 +283,37 @@ class PDMStore : SAPStore {
 
   PDMNotification storeNotification(PDMNotification n) {
     synchronized (_mutex) {
-      auto key = tenantKey(n.tenantId, n.notificationId);
+      string key = tenantKey(n.tenantId, n.notificationId);
       _notifications[key] = n;
       return n;
     }
   }
 
-  PDMNotification getNotification(UUID tenantId, string notificationId) {
+  PDMNotification getNotification(UUID tenantId, UUID notificationId) {
     synchronized (_mutex) {
-      auto key = tenantKey(tenantId, notificationId);
-      if (auto p = key in _notifications)
-        return *p;
-      return PDMNotification.init;
+      string key = tenantKey(tenantId, notificationId);
+      if (key in _notifications)
+        return _notifications[key];
+      return null;
     }
   }
 
   PDMNotification[] listNotificationsBySubject(UUID tenantId, UUID subjectId) {
     synchronized (_mutex) {
-      PDMNotification[] result;
-      foreach (ref n; _notifications)
-        if (n.tenantId == tenantId && n.subjectId == subjectId)
-          result ~= n;
-      return result;
+      return _notifications.byValue.filter!(n => n.tenantId == tenantId && n.subjectId == subjectId)
+        .array;
     }
   }
 
-  bool updateNotificationStatus(UUID tenantId, string notificationId, PDMNotificationStatus status) {
+  bool updateNotificationStatus(UUID tenantId, UUID notificationId, PDMNotificationStatus status) {
     synchronized (_mutex) {
-      auto key = tenantKey(tenantId, notificationId);
-      if (auto p = key in _notifications) {
-        p.status = status;
+      string key = tenantKey(tenantId, notificationId);
+      if (key in _notifications) {
+        _notifications[key].status = status;
         if (status == PDMNotificationStatus.sent) {
           import std.datetime : Clock;
 
-          p.sentAt = Clock.currTime();
+          _notifications[key].sentAt = Clock.currTime();
         }
         return true;
       }
@@ -358,7 +327,7 @@ class PDMStore : SAPStore {
 
   PDMDataUsage upsertUsage(PDMDataUsage u) {
     synchronized (_mutex) {
-      auto key = tenantKey(u.tenantId, u.usageId);
+      string key = tenantKey(u.tenantId, u.usageId);
       _usages[key] = u;
       return u;
     }
@@ -366,17 +335,13 @@ class PDMStore : SAPStore {
 
   PDMDataUsage[] listUsagesBySubject(UUID tenantId, UUID subjectId) {
     synchronized (_mutex) {
-      PDMDataUsage[] result;
-      foreach (ref u; _usages)
-        if (u.tenantId == tenantId && u.subjectId == subjectId)
-          result ~= u;
-      return result;
+      return _usages.byValue.filter!(u => u.tenantId == tenantId && u.subjectId == subjectId).array;
     }
   }
 
-  bool removeUsage(UUID tenantId, string usageId) {
+  bool removeUsage(UUID tenantId, UUID usageId) {
     synchronized (_mutex) {
-      auto key = tenantKey(tenantId, usageId);
+      string key = tenantKey(tenantId, usageId);
       if (key in _usages) {
         _usages.remove(key);
         return true;

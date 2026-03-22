@@ -137,8 +137,6 @@ class PDMService : SAPService {
     auto subjects = _store.searchSubjectsByType(tenantId, st);
     auto arr = subjects.map!(s => s.toJson).array;
 
-    arr ~= s.toJson();
-
     return Json.emptyObject
       .set("subjects", arr)
       .set("total", cast(long)subjects.length)
@@ -410,7 +408,7 @@ class PDMService : SAPService {
     if (!_store.hasSubject(tenantId, subjectId))
       throw new PDMNotFoundException("DataSubject", subjectId);
 
-    string notificationId = generateNotificationId();
+    UUID notificationId = UUID(generateNotificationId());
     PDMNotification n = notificationFromJson(notificationId, subjectId, tenantId, req);
 
     // If no recipient, use the subject's email
@@ -438,8 +436,8 @@ class PDMService : SAPService {
     auto subject = _store.getSubject(tenantId, subjectId);
     auto report = generateDataReport(tenantId, subjectId);
 
-    string notificationId = generateNotificationId();
-    PDMNotification n;
+    UUID notificationId = UUID(generateNotificationId());
+    PDMNotification n = new PDMNotification;
     n.notificationId = notificationId;
     n.subjectId = subjectId;
     n.tenantId = tenantId;

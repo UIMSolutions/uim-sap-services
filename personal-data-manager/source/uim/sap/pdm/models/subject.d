@@ -87,7 +87,7 @@ class PDMDataSubject : SAPTenantObject {
     if ("company_name" in req && req["company_name"].isString)
       s.companyName = req["company_name"].get!string;
     if ("company_id" in req && req["company_id"].isString)
-      s.companyId = req["company_id"].get!string;
+      s.companyId = UUID(req["company_id"].get!string);
     if ("department" in req && req["department"].isString)
       s.department = req["department"].get!string;
     if ("external_id" in req && req["external_id"].isString)
@@ -95,7 +95,7 @@ class PDMDataSubject : SAPTenantObject {
     if ("source_system" in req && req["source_system"].isString)
       s.sourceSystem = req["source_system"].get!string;
     if ("metadata" in req && req["metadata"].type == Json.Type.object) {
-      foreach (string k, v; req["metadata"])
+      foreach (string k, v; req["metadata"].toMap)
         if (v.isString)
           s.metadata[k] = v.get!string;
     }

@@ -34,6 +34,9 @@ class PDMConfig : SAPConfig {
       authToken(initData.getString("authToken", ""));
     }
 
+    // Default tenant configuration
+    defaultTenantId = randomUUID();
+
     return true;
   }
 
@@ -50,7 +53,7 @@ class PDMConfig : SAPConfig {
   size_t requestTimeoutSecs = 86_400;
 
   /// Default tenant ID for single-tenant mode
-  string defaultTenantId = "default";
+  UUID defaultTenantId;
 
   /// Enable multitenancy
   bool multitenancy = true;

@@ -288,7 +288,7 @@ class PDMServer {
 
     // DELETE /v1/tenants/{tid}/subjects/{sid}/records/{rid}
     if (rest.length == 1 && req.method == HTTPMethod.DELETE) {
-      res.writeJsonBody(_service.deleteRecord(tenantId, rest[0]), 200);
+      res.writeJsonBody(_service.deleteRecord(tenantId, UUID(rest[0])), 200);
       return;
     }
 
@@ -340,7 +340,7 @@ class PDMServer {
       return;
     }
 
-    UUID requestId = rest[0];
+    UUID requestId = UUID(rest[0]);
 
     // GET /v1/tenants/{tid}/requests/{rid}
     if (rest.length == 1 && req.method == HTTPMethod.GET) {

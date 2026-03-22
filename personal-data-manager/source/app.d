@@ -11,7 +11,9 @@ mixin(ShowModule!());
 
 @safe:
 
-void main() {
+version (unittest) {
+} else {
+  void main() {
     PDMConfig config = new PDMConfig();
     config.host = envOr("PDM_HOST", "0.0.0.0");
     config.port = readPort(envOr("PDM_PORT", "8092"), 8092);
@@ -23,7 +25,7 @@ void main() {
     config.maxRequestsPerTenant = readSize(envOr("PDM_MAX_REQUESTS_PER_TENANT", "10000"), 10_000);
     config.maxRecordsPerSubject = readSize(envOr("PDM_MAX_RECORDS_PER_SUBJECT", "500"), 500);
     config.requestTimeoutSecs = readSize(envOr("PDM_REQUEST_TIMEOUT_SECS", "86400"), 86_400);
-    config.defaultTenantId = envOr("PDM_DEFAULT_TENANT_ID", "default");
+    config.defaultTenantId = UUID(envOr("PDM_DEFAULT_TENANT_ID", config.defaultTenantId.toString));
     config.multitenancy = envOr("PDM_MULTITENANCY", "true") == "true";
 
     auto token = envOr("PDM_AUTH_TOKEN", "");
@@ -42,4 +44,5 @@ void main() {
     writeln("Base path: ", config.basePath);
     writeln("Multitenancy: ", config.multitenancy);
     server.run();
+}
 }

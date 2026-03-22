@@ -45,7 +45,7 @@ class PDMTenant : SAPTenantObject {
 
     static PDMTenant opCall(UUID tenantId, Json req) {
     PDMTenant t = new PDMTenant(req);
-    t.tenantId = UUID(tenantId);
+    t.tenantId = tenantId;
     t.createdAt = Clock.currTime();
     t.updatedAt = t.createdAt;
 
