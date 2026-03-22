@@ -159,10 +159,10 @@ class CPSService : SAPService {
       admin.extensions = request["extensions"];
 
     auto saved = _store.upsertAdmin(admin);
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["administration"] = saved.toJson();
-    return payload;
+    
+    return Json.emptyObject
+      .set("success", true)
+      .set("administration", saved.toJson());      
   }
 
   Json getSiteAdministration(UUID tenantId) {
