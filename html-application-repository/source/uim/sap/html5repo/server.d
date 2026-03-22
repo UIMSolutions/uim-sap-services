@@ -203,21 +203,6 @@ class HARServer : SAPServer {
     return tenant;
   }
 
-  private void validateManagementAuth(HTTPServerRequest req) {
-    if (!_service.config.requireManagementAuth) {
-      return;
-    }
-
-    if (!("Authorization" in req.headers)) {
-      throw new HARAuthorizationException("Missing Authorization header");
-    }
-
-    auto expected = "Bearer " ~ _service.config.managementAuthToken;
-    if (req.headers["Authorization"] != expected) {
-      throw new HARAuthorizationException("Invalid management token");
-    }
-  }
-
   private string joinFrom(string[] segments, size_t startIndex) {
     if (segments.length <= startIndex) {
       throw new HARValidationException("Asset path is required");

@@ -69,7 +69,7 @@ class DocMgmtIntegrationServer {
 
     // All other endpoints require auth
     try {
-      validateAuth(req);
+      validateAuth(req, _service.config);
       auto segments = normalizedSegments(subPath);
 
       if (segments.length == 0) {
@@ -527,19 +527,5 @@ class DocMgmtIntegrationServer {
     }
 
     return false;
-  }
-
-  // -------------------------------------------------------------------
-  // Auth
-  // -------------------------------------------------------------------
-
-  private void validateAuth(HTTPServerRequest req) {
-    if (!_service.config.requireAuthToken)
-      return;
-    if (!("Authorization" in req.headers))
-      throw new DocMgmtIntegrationAuthorizationException("Missing Authorization header");
-    auto expected = "Bearer " ~ _service.config.authToken;
-    if (req.headers["Authorization"] != expected)
-      throw new DocMgmtIntegrationAuthorizationException("Invalid management token");
   }
 }

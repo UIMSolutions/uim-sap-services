@@ -25,6 +25,11 @@ bool validateId(string value, string fieldName) {
   return true;
 }
 
+/**
+  * Validates the Authorization header in the request against the expected token in the config.
+  * If the config does not require an auth token, this function does nothing.
+  * Throws SAPAuthenticationException if validation fails.
+  */
 bool validateAuth(HTTPServerRequest req, ISAPConfig cfg) {
   if (!cfg.requireAuthToken) {
     return;

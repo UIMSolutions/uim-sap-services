@@ -62,7 +62,7 @@ class DMAServer {
 
     // All other endpoints require auth
     try {
-      validateAuth(req);
+      validateAuth(req, _service.config);
       auto segments = normalizedSegments(subPath);
 
       if (segments.length == 0) {
@@ -364,19 +364,5 @@ class DMAServer {
     }
 
     return false;
-  }
-
-  // -------------------------------------------------------------------
-  // Auth
-  // -------------------------------------------------------------------
-
-  private void validateAuth(HTTPServerRequest req) {
-    if (!_service.config.requireAuthToken)
-      return;
-    if (!("Authorization" in req.headers))
-      throw new DMAAuthorizationException("Missing Authorization header");
-    auto expected = "Bearer " ~ _service.config.authToken;
-    if (req.headers["Authorization"] != expected)
-      throw new DMAAuthorizationException("Invalid management token");
   }
 }

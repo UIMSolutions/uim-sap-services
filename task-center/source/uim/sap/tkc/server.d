@@ -65,7 +65,7 @@ class TKCServer : SAPServer{
     }
 
     try {
-      validateAuth(req);
+      validateAuth(req, _service.config);
 
       auto segments = normalizedSegments(subPath);
 
@@ -170,17 +170,6 @@ class TKCServer : SAPServer{
     } catch (Exception e) {
       respondError(res, e.msg, 500);
     }
-  }
-
-  private void validateAuth(HTTPServerRequest req) {
-    if (!_requireAuthToken)
-      return;
-    if (!("Authorization" in req.headers))
-      throw new TKCAuthorizationException("Missing Authorization header");
-
-    auto expected = "Bearer " ~ _authToken;
-    if (req.headers["Authorization"] != expected)
-      throw new TKCAuthorizationException("Invalid token");
   }
 
   private size_t parseSizeT(string rawValue, size_t fallback) {
