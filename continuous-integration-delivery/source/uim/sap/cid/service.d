@@ -92,9 +92,9 @@ class CIDService : SAPService {
     if (!_store.removeRepo(tenantId, repoId))
       throw new CIDNotFoundException("Repository", repoId);
     _appendLog(tenantId, "", "", "info", "Repository removed: " ~ repoId);
-    Json j = Json.emptyObject;
-    j["deleted"] = repoId;
-    return j;
+    
+    return Json.emptyObject
+      .set("deleted", repoId);
   }
 
   // =======================================================================
@@ -134,9 +134,9 @@ class CIDService : SAPService {
     if (!_store.removeCredential(tenantId, credId))
       throw new CIDNotFoundException("Credential", credId);
     _appendLog(tenantId, "", "", "info", "Credential removed: " ~ credId);
-    Json j = Json.emptyObject;
-    j["deleted"] = credId;
-    return j;
+
+    return Json.emptyObject
+      .set("deleted", credId);
   }
 
   // =======================================================================
@@ -201,9 +201,9 @@ class CIDService : SAPService {
     if (!_store.removePipeline(tenantId, pipelineId))
       throw new CIDNotFoundException("Pipeline", pipelineId);
     _appendLog(tenantId, "", "", "info", "Pipeline removed: " ~ pipelineId);
-    Json j = Json.emptyObject;
-    j["deleted"] = pipelineId;
-    return j;
+    
+    return Json.emptyObject
+      .set("deleted", pipelineId);
   }
 
   // =======================================================================

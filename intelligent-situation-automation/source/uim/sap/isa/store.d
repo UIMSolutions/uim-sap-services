@@ -82,7 +82,7 @@ class ISAStore : SAPStore {
                 return (*ptr).dup;
             }
         }
-        return [];
+        return null;
     }
 
     DataContextReport addReport(DataContextReport report) {
@@ -98,7 +98,7 @@ class ISAStore : SAPStore {
                 return (*ptr).dup;
             }
         }
-        return [];
+        return null;
     }
 
     void seed(UUID tenantId) {

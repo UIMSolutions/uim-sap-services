@@ -450,12 +450,12 @@ class ATMService : SAPService {
 
   private string[] claimStringArray(Json claims, string key) {
     if (!(key in claims)) {
-      return [];
+      return null;
     }
     if (claims[key].isArray) {
       return stringArrayFromJson(claims[key]);
     }
-    return [];
+    return null;
   }
 
   private string[] readScopeClaims(Json claims) {

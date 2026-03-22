@@ -181,7 +181,7 @@ class CPSServer : SAPServer {
     if (clean.length > 0 && clean[$ - 1] == '/')
       clean = clean[0 .. $ - 1];
     if (clean.length == 0)
-      return [];
+      return null;
     return clean.split("/");
   }
 
