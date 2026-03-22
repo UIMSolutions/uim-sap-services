@@ -245,11 +245,19 @@ class RMSServer {
     return clean.split("/");
   }
 
+  /**
+    * Helper to send error responses in a consistent format.
+    *
+    * @param res The HTTP response object to write to
+    * @param message A human-readable error message
+    * @param statusCode The HTTP status code to use (e.g. 400, 404, 500)
+    */
   private void respondError(HTTPServerResponse res, string message, int statusCode) {
-    Json payload = Json.emptyObject;
-    payload["success"] = false;
-    payload["message"] = message;
-    payload["status_code"] = statusCode;
-    res.writeJsonBody(payload, statusCode);
+    auto response = Json.emptyObject
+      .set("success", false)
+      .set("message", message)
+      .set("status_code", statusCode);
+
+    res.writeJsonBody(response, statusCode);
   }
 }

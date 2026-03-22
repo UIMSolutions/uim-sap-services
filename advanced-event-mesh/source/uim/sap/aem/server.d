@@ -251,12 +251,4 @@ class AEMServer : SAPServer {
     }
     return clean.split("/");
   }
-
-  private void respondError(HTTPServerResponse res, string message, int statusCode) {
-    Json payload = Json.emptyObject;
-    payload["success"] = false;
-    payload["message"] = message;
-    payload["statusCode"] = statusCode;
-    res.writeJsonBody(payload, statusCode);
-  }
 }

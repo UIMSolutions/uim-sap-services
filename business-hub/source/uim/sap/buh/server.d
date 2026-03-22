@@ -134,13 +134,4 @@ class BUHServer {
     }
     return parts[$ - 1];
   }
-
-  private void respondError(HTTPServerResponse res, string message, int statusCode) {
-    Json payload = Json.emptyObject
-    .set("success", false)
-    .set("message", message)
-    .set("statusCode", statusCode);
-    
-    res.writeJsonBody(payload, statusCode);
-  }
 }

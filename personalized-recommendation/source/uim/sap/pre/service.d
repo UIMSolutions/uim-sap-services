@@ -284,9 +284,9 @@ class PREService : SAPService {
     if (!_store.removeModel(tenantId, modelId)) {
       throw new PRENotFoundException("Model not found: " ~ modelId);
     }
-    Json j = Json.emptyObject;
-    j["deleted"] = modelId;
-    return j;
+    
+    return Json.emptyObject
+      .set("deleted", modelId);
   }
 
   /// Simulate training the model: counts items, users, interactions and marks ready.

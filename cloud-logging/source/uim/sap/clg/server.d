@@ -111,14 +111,4 @@ class CLGServer {
       throw new CLGAuthorizationException("Invalid token");
     }
   }
-
-  private void respondError(HTTPServerResponse res, string message, int statusCode) {
-    Json payload = Json.emptyObject
-      .set("success", false)
-      .set("message", message)
-      .set("statusCode", statusCode);
-    res.statusCode = statusCode;
-    
-    res.writeJsonBody(payload);
-  }
 }
