@@ -130,17 +130,4 @@ mixin(SAPServerTemplate!UDMServer);
       throw new UDMAuthorizationException("Invalid token");
     }
   }
-
-  private string[] normalizedSegments(string subPath) {
-    auto clean = subPath;
-    if (clean.length > 0 && clean[0] == '/') {
-      clean = clean[1 .. $];
-    }
-    if (clean.length > 0 && clean[$ - 1] == '/') {
-      clean = clean[0 .. $ - 1];
-    }
-
-	return clean.length == 0 ? null : clean.split("/");
-  }
-
 }
