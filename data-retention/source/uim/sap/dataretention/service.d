@@ -207,10 +207,9 @@ class DRMService : SAPService {
 
     auto saved = _store.appendJob(job);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["job"] = saved.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("job", saved.toJson());
   }
 
   private void validateTenant(UUID tenantId) {

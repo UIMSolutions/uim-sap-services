@@ -210,11 +210,10 @@ HTML";
     foreach (provider; _store.listProviders(tenantId))
       resources ~= provider.toJson();
 
-    Json payload = Json.emptyObject;
-    payload["tenant_id"] = tenantId;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)resources.length;
-    return payload;
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json upsertProvider(UUID tenantId, Json data) {
@@ -243,10 +242,9 @@ HTML";
 
     auto saved = _store.upsertProvider(provider);
 
-    Json payload = Json.emptyObject;
-    payload["message"] = "Content provider saved";
-    payload["provider"] = saved.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("message", "Content provider saved")
+      .set("provider", saved.toJson());
   }
 
   Json listContent(UUID tenantId) {
@@ -285,10 +283,9 @@ HTML";
 
     auto saved = _store.upsertContent(item);
 
-    Json payload = Json.emptyObject;
-    payload["message"] = "Content item saved";
-    payload["item"] = saved.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("message", "Content item saved")
+      .set("item", saved.toJson());
   }
 
   Json getContent(UUID tenantId, string contentId) {
@@ -347,10 +344,9 @@ HTML";
 
     auto saved = _store.upsertQueue(queue);
 
-    Json payload = Json.emptyObject;
-    payload["message"] = "Transport queue saved";
-    payload["queue"] = saved.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("message", "Transport queue saved")
+      .set("queue", saved.toJson());
   }
 
   Json listAssemblies(UUID tenantId) {
@@ -359,11 +355,10 @@ HTML";
     foreach (item; _store.listAssemblies(tenantId))
       resources ~= item.toJson();
 
-    Json payload = Json.emptyObject;
-    payload["tenant_id"] = tenantId;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)resources.length;
-    return payload;
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json createAssembly(UUID tenantId, Json data) {
@@ -419,12 +414,11 @@ HTML";
         manifestItems ~= item.toJson();
     }
 
-    Json payload = Json.emptyObject;
-    payload["message"] = "Content assembled into MTAR metadata";
-    payload["assembly"] = saved.toJson();
-    payload["manifest_items"] = manifestItems;
-    payload["created_by"] = optionalString(body, "created_by", "system");
-    return payload;
+    return Json.emptyObject
+      .set("message", "Content assembled into MTAR metadata")
+      .set("assembly", saved.toJson())
+      .set("manifest_items", manifestItems)
+      .set("created_by", optionalString(body, "created_by", "system"));
   }
 
   Json getAssembly(UUID tenantId, string assemblyId) {
@@ -436,9 +430,8 @@ HTML";
       throw new CAGNotFoundException("assembly not found");
     }
 
-    Json payload = Json.emptyObject;
-    payload["assembly"] = assembly.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("assembly", assembly.toJson());
   }
 
   Json getMtarMetadata(UUID tenantId, string assemblyId) {
@@ -454,21 +447,21 @@ HTML";
     foreach (contentId; assembly.resolvedContentIds) {
       CAGContentItem item;
       if (_store.tryGetContent(tenantId, contentId, item)) {
-        Json moduleData = Json.emptyObject;
-        moduleData["name"] = item.contentId;
-        moduleData["type"] = item.contentType;
-        moduleData["version"] = item.contentVersion;
+        Json moduleData = Json.emptyObject
+          .set("name", item.contentId)
+          .set("type", item.contentType)
+          .set("version", item.contentVersion);
         modules ~= moduleData;
       }
     }
 
-    Json payload = Json.emptyObject;
-    payload["tenant_id"] = tenantId;
-    payload["assembly_id"] = assemblyId;
-    payload["mtar_name"] = assembly.mtarName;
-    payload["download_url"] = assembly.mtarDownloadUrl;
-    payload["modules"] = modules;
-    return payload;
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("assembly_id", assemblyId)
+      .set("mtar_name", assembly.mtarName)
+      .set("download_url", assembly.mtarDownloadUrl)
+      .set("modules", modules);
+
   }
 
   Json exportAssembly(UUID tenantId, string assemblyId, Json data) {

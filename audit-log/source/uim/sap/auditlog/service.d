@@ -27,10 +27,10 @@ class AuditLogService : SAPService {
     foreach (eventType; AUDIT_LOG_RECOMMENDED_EVENT_TYPES) {
       resources ~= eventType;
     }
-    Json result = Json.emptyObject;
-    result["resources"] = resources;
-    result["total_results"] = cast(long)resources.length;
-    return result;
+
+    return Json.emptyObject
+    .set("resources", resources)
+    .set("total_results", cast(long)resources.length);
   }
 
   Json writeEvent(UUID tenantId, Json request) {

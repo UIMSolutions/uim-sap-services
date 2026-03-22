@@ -6,30 +6,28 @@ mixin(ShowModule!());
 
 @safe:
 
-
 // ---------------------------------------------------------------------------
 // CIDBuildLog – a log entry produced during a build
 // ---------------------------------------------------------------------------
 struct CIDBuildLog {
-    UUID tenantId;
-    string logId;
-    string buildId;
-    /// Optional: stage this log belongs to
-    string stageId;
-    /// Level: "info" | "warning" | "error" | "debug"
-    string level;
-    string message;
-    SysTime timestamp;
+  UUID tenantId;
+  string logId;
+  string buildId;
+  /// Optional: stage this log belongs to
+  string stageId;
+  /// Level: "info" | "warning" | "error" | "debug"
+  string level;
+  string message;
+  SysTime timestamp;
 
-    override Json toJson()  {
-        Json j = Json.emptyObject;
-        j["tenant_id"] = tenantId;
-        j["log_id"]    = logId;
-        j["build_id"]  = buildId;
-        j["stage_id"]  = stageId;
-        j["level"]     = level;
-        j["message"]   = message;
-        j["timestamp"] = timestamp.toISOExtString();
-        return j;
-    }
+  override Json toJson() {
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("log_id", logId)
+      .set("build_id", buildId)
+      .set("stage_id", stageId)
+      .set("level", level)
+      .set("message", message)
+      .set("timestamp", timestamp.toISOExtString());
+  }
 }

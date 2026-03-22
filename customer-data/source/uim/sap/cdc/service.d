@@ -149,11 +149,11 @@ class CDCService : SAPService {
     consent.updatedAt = now;
 
     auto saved = _store.upsertConsent(consent);
-    Json payload = Json.emptyObject;
-    payload["message"] = "Consent preference saved";
-    payload["transparency_note"] = "Consent state is visible and auditable for the end user";
-    payload["consent"] = saved.toJson();
-    return payload;
+    
+    return Json.emptyObject
+      .set("message", "Consent preference saved")
+      .set("transparency_note", "Consent state is visible and auditable for the end user")
+      .set("consent", saved.toJson());
   }
 
   Json listConsents(UUID tenantId, string userId) {
@@ -164,12 +164,12 @@ class CDCService : SAPService {
     Json consents = Json.emptyArray;
     foreach (consent; _store.listConsents(tenantId, userId))
       consents ~= consent.toJson();
-    Json payload = Json.emptyObject;
-    payload["tenant_id"] = tenantId;
-    payload["user_id"] = userId;
-    payload["count"] = cast(long)consents.length;
-    payload["consents"] = consents;
-    return payload;
+    
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("user_id", userId)
+      .set("count", cast(long)consents.length)
+      .set("consents", consents);
   }
 
   Json upsertSiteGroup(UUID tenantId, Json data) {
@@ -203,12 +203,11 @@ class CDCService : SAPService {
     Json groups = Json.emptyArray;
     foreach (group; _store.listSiteGroups(tenantId))
       groups ~= group.toJson();
-    Json payload = Json.emptyObject;
-    payload["tenant_id"] = tenantId;
-    payload["count"] = cast(long)groups
-      .length;
-    payload["site_groups"] = groups;
-    return payload;
+      
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("count", cast(long)groups.length)
+      .set("site_groups", groups);
   }
 
   Json resolveGlobalAccess(UUID tenantId, string userId, string site) {

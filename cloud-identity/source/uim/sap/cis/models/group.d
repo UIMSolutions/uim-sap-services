@@ -42,7 +42,7 @@ struct CISGroup {
   Json members;
   SysTime updatedAt;
 
-  override Json toJson()  {
+  override Json toJson() {
     Json info = super.toJson;
     payload["id"] = groupId;
     payload["tenant_id"] = tenantId;
@@ -91,10 +91,10 @@ CISGroup groupFromJson(UUID tenantId, Json request) {
 unittest {
   mixin(ShowTest!("Testing groupFromJson() function"));
 
-  Json request = Json.emptyObject;
-  request["id"] = "group123";
-  request["displayName"] = "Test Group";
-  request["members"] = ["user1", "user2"].toJson;
+  Json request = Json.emptyObject
+    .set("id", "group123")
+    .set("displayName", "Test Group")
+    .set("members", ["user1", "user2"].toJson);
 
   CISGroup group = groupFromJson("tenant123", request);
   assert(group.tenantId == "tenant123");

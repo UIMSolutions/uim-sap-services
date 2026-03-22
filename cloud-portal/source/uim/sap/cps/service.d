@@ -251,11 +251,11 @@ class CPSService : SAPService {
       throw new CPSValidationException("solution_name is required");
 
     auto saved = _store.upsertLaunchpad(launchpadModule);
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["launchpad_module"] = saved.toJson();
-    payload["embedded_launchpad"] = true;
-    return payload;
+
+    return Json.emptyObject
+      .set("success", true)
+      .set("launchpad_module", saved.toJson())
+      .set("embedded_launchpad", true);
   }
 
   Json listLaunchpadModules(UUID tenantId) {
@@ -264,10 +264,9 @@ class CPSService : SAPService {
     foreach (launchpadModule; _store.listLaunchpad(tenantId))
       resources ~= launchpadModule.toJson();
 
-    Json payload = Json.emptyObject;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)resources.length;
-    return payload;
+    return Json.emptyObject
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json upsertProvider(UUID tenantId, Json request) {
@@ -292,11 +291,10 @@ class CPSService : SAPService {
       throw new CPSValidationException("solution_name is required");
 
     auto saved = _store.upsertProvider(provider);
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["provider"] = saved.toJson();
-    payload["saas_content_provider"] = true;
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("provider", saved.toJson())
+      .set("saas_content_provider", true);
   }
 
   Json listProviders(UUID tenantId) {
@@ -305,10 +303,9 @@ class CPSService : SAPService {
     foreach (provider; _store.listProviders(tenantId))
       resources ~= provider.toJson();
 
-    Json payload = Json.emptyObject;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)resources.length;
-    return payload;
+    return Json.emptyObject
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json consumeProvider(UUID tenantId, string providerId) {
@@ -319,11 +316,10 @@ class CPSService : SAPService {
     if (provider.providerId.length == 0)
       throw new CPSNotFoundException("Provider", tenantId ~ "/" ~ providerId);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["consumed"] = provider.toJson();
-    payload["message"] = "SaaS content provider exposed for portal consumption";
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("consumed", provider.toJson())
+      .set("message", "SaaS content provider exposed for portal consumption");
   }
 
   private void validateContentType(string contentType) {
@@ -335,10 +331,7 @@ class CPSService : SAPService {
   private bool containsString(Json values, string needle) {
     if (!values.isArray || needle.length == 0)
       return false;
-    foreach (item; values.toArray) {
-      if (item.isString && item.get!string == needle)
-        return true;
-    }
-    return false;
+    
+    return values.toArray.any!(item => item.isString && item.get!string == needle);
   }
 }

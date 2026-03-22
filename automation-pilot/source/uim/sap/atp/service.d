@@ -176,10 +176,10 @@ class ATPService : SAPService {
     backup.createdAt = now;
 
     auto saved = _store.upsertBackup(backup);
-    Json payload = Json.emptyObject;
-    payload["message"] = "Backup completed";
-    payload["backup"] = saved.toJson();
-    return payload;
+    
+    return Json.emptyObject
+      .set("message", "Backup completed")
+      .set("backup", saved.toJson());
   }
 
   Json restoreContent(UUID tenantId, Json data) {

@@ -6,7 +6,6 @@ mixin(ShowModule!());
 
 @safe:
 
-
 class BASService : SAPService {
   mixin(SAPServiceTemplate!BASService);
 
@@ -33,8 +32,8 @@ class BASService : SAPService {
 
     Json scenarios = _scenarios.map!(scenario => scenario.toJson()).array.toJson;
     return Json.emptyObject
-    .set("scenarios", scenarios)
-    .set("count", cast(long)scenarios.length);
+      .set("scenarios", scenarios)
+      .set("count", cast(long)scenarios.length);
   }
 
   Json listTemplates(UUID tenantId, string scenarioId = "") {
@@ -48,8 +47,8 @@ class BASService : SAPService {
     }
 
     return Json.emptyObject
-    .set("templates", templates)
-    .set("count", cast(long)templates.length);
+      .set("templates", templates)
+      .set("count", cast(long)templates.length);
   }
 
   Json createWorkspace(UUID tenantId, Json data) {
@@ -77,8 +76,8 @@ class BASService : SAPService {
     auto saved = _store.upsertWorkspace(workspace);
 
     return Json.emptyObject
-    .set("message", "Workspace created")
-    .set("workspace", saved.toJson());
+      .set("message", "Workspace created")
+      .set("workspace", saved.toJson());
   }
 
   Json listWorkspaces(UUID tenantId) {
@@ -88,8 +87,8 @@ class BASService : SAPService {
       workspaces ~= workspace.toJson();
 
     return Json.emptyObject
-    .set("workspaces", workspaces)
-    .set("count", cast(long)workspaces.length);
+      .set("workspaces", workspaces)
+      .set("count", cast(long)workspaces.length);
   }
 
   Json runWizard(UUID tenantId, string workspaceId, Json data) {
@@ -108,17 +107,17 @@ class BASService : SAPService {
     run.status = "SUCCESS";
     run.input = readObject(body, "input");
     run.output = Json.emptyObject
-    .set("generated_project", "generated-" ~ templateId)
-    .set("graphical_editor_ready", true)
-    .set("quick_deploy_suggested", true);
+      .set("generated_project", "generated-" ~ templateId)
+      .set("graphical_editor_ready", true)
+      .set("quick_deploy_suggested", true);
     run.startedAt = now;
     run.finishedAt = Clock.currTime();
 
     auto saved = _store.upsertWizardRun(run);
 
     return Json.emptyObject
-    .set("message", "Wizard executed")
-    .set("wizard_run", saved.toJson())  ;
+      .set("message", "Wizard executed")
+      .set("wizard_run", saved.toJson());
   }
 
   Json listWizardRuns(UUID tenantId, string workspaceId) {
@@ -129,8 +128,8 @@ class BASService : SAPService {
       runs ~= run.toJson();
 
     return Json.emptyObject
-    .set("wizard_runs", runs)
-    .set("count", cast(long)runs.length);
+      .set("wizard_runs", runs)
+      .set("count", cast(long)runs.length);
   }
 
   Json createTerminalSession(UUID tenantId, string workspaceId, Json data) {
@@ -149,10 +148,9 @@ class BASService : SAPService {
 
     auto saved = _store.upsertTerminalSession(session);
 
-    Json payload = Json.emptyObject;
-    payload["message"] = "Terminal session opened";
-    payload["session"] = saved.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("message", "Terminal session opened")
+      .set("session", saved.toJson());
   }
 
   Json listTerminalSessions(UUID tenantId, string workspaceId) {
@@ -163,8 +161,8 @@ class BASService : SAPService {
       sessions ~= session.toJson();
 
     return Json.emptyObject
-    .set("sessions", sessions)
-    .set("count", cast(long)sessions.length);
+      .set("sessions", sessions)
+      .set("count", cast(long)sessions.length);
   }
 
   Json runLocalTest(UUID tenantId, string workspaceId, Json data) {
@@ -173,11 +171,11 @@ class BASService : SAPService {
       throw new BASValidationException("Debug mode is disabled for workspace");
 
     return Json.emptyObject
-    .set("message", "Local test and debug run completed")
-    .set("workspace_id", workspaceId)
-    .set("test_suite", optionalString(body, "test_suite", "default"))
-    .set("result", "PASS")
-    .set("duration_ms", 820);
+      .set("message", "Local test and debug run completed")
+      .set("workspace_id", workspaceId)
+      .set("test_suite", optionalString(body, "test_suite", "default"))
+      .set("result", "PASS")
+      .set("duration_ms", 820);
   }
 
   Json createDeployment(UUID tenantId, string workspaceId, Json data) {
@@ -196,8 +194,8 @@ class BASService : SAPService {
     auto saved = _store.upsertDeployment(deployment);
 
     return Json.emptyObject
-    .set("message", "Deployment queued")
-    .set("deployment", saved.toJson());
+      .set("message", "Deployment queued")
+      .set("deployment", saved.toJson());
   }
 
   Json listDeployments(UUID tenantId, string workspaceId) {
@@ -208,8 +206,8 @@ class BASService : SAPService {
       deployments ~= deployment.toJson();
 
     return Json.emptyObject
-    .set("deployments", deployments)
-    .set("count", cast(long)deployments.length);
+      .set("deployments", deployments)
+      .set("count", cast(long)deployments.length);
   }
 
   Json availability() const {

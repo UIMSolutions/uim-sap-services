@@ -116,13 +116,13 @@ class DQMService : SAPService {
       addresses ~= item;
     }
 
-    Json payload = Json.emptyObject;
-    payload["query"] = Json.emptyObject;
-    payload["query"]["latitude"] = latitude;
-    payload["query"]["longitude"] = longitude;
-    payload["nearest_addresses"] = addresses;
-    payload["total_results"] = cast(long)addresses.length;
-    return payload;
+    return Json.emptyObject
+      .set("query", Json.emptyObject
+        .set("latitude", latitude)
+        .set("longitude", longitude)
+      )
+      .set("nearest_addresses", addresses)
+      .set("total_results", cast(long)addresses.length);
   }
 
   Json suggestAddresses(Json request) {
