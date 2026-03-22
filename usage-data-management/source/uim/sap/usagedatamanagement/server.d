@@ -143,12 +143,4 @@ mixin(SAPServerTemplate!UDMServer);
 	return clean.length == 0 ? null : clean.split("/");
   }
 
-  private void respondError(HTTPServerResponse res, string message, int statusCode) {
-    Json payload = Json.emptyObject
-    .set("success", false)
-    .set("message", message)
-    .set("statusCode", statusCode);
-
-    res.writeJsonBody(payload, statusCode);
-  }
 }

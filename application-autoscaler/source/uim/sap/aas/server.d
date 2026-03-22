@@ -150,13 +150,4 @@ class AASServer {
     auto parts = path.split("/");
     return parts.length >= 4 ? parts[3] : "";
   }
-
-  private void respondError(HTTPServerResponse res, string message, int statusCode) {
-    Json payload = Json.emptyObject
-    .set("success", false)
-    .set("message", message)
-    .set("statusCode", statusCode);
-    
-    res.writeJsonBody(payload, statusCode);
-  }
 }
