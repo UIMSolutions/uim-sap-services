@@ -25,7 +25,7 @@ struct MOBSecurityPolicy {
   SysTime updatedAt;
 
   override Json toJson()  {
-    Json j = Json.emptyObject;
+    return super.toJson()
     j["app_id"] = appId;
     j["auth_type"] = cast(string)authType;
     j["passcode_enabled"] = passcodeEnabled;

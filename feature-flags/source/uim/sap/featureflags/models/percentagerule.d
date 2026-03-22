@@ -25,7 +25,7 @@ class FFLPercentageEntry : SAPObject {
   uint weight = 0;
 
   override Json toJson() {
-    Json j = Json.emptyObject;
+    return super.toJson()
     j["variation_id"] = variationId;
     j["weight"] = cast(long)weight;
     return j;

@@ -123,9 +123,9 @@ class HanaClient {
         ensureConnected();
         
         auto url = format("%s/sql/prepared", config.databaseUrl());
-        auto payload = Json.emptyObject;
-        payload["statement"] = sql;
-        payload["parameters"] = Json(parameters);
+        auto payload = Json.emptyObject
+        .set("statement", sql)
+        .set("parameters", Json(parameters));
         
         SAPResponse response = makeRequest(HTTPMethod.POST, url, payload);
         

@@ -22,7 +22,7 @@ struct MOBUsageReport {
   size_t offlineSyncCount;
 
   override Json toJson() {
-    Json j = Json.emptyObject;
+    return super.toJson()
     j["app_id"] = appId;
     j["total_users"] = cast(long)totalUsers;
     j["active_users"] = cast(long)activeUsers;

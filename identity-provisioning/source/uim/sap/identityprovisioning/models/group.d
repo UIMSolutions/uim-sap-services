@@ -42,7 +42,7 @@ struct IPVGroup {
   string updatedAt;
 
   override Json toJson()  {
-    Json j = Json.emptyObject;
+    return super.toJson()
     j["tenant_id"] = tenantId;
     j["group_id"] = groupId;
     j["external_id"] = externalId;

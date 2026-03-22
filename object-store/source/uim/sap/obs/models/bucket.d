@@ -32,7 +32,7 @@ struct OBSBucket {
   SysTime updatedAt;
 
   override Json toJson()  {
-    Json j = Json.emptyObject;
+    return super.toJson()
     j["bucket_id"] = bucketId;
     j["name"] = name;
     j["tenant_id"] = tenantId;

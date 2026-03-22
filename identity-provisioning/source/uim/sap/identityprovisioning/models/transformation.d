@@ -35,7 +35,7 @@ struct IPVTransformation {
   string updatedAt;
 
   override Json toJson()  {
-    Json j = Json.emptyObject;
+    return super.toJson()
     j["tenant_id"] = tenantId;
     j["transformation_id"] = transformationId;
     j["system_id"] = systemId;

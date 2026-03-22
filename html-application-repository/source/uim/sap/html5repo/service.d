@@ -70,11 +70,10 @@ class HARService : SAPService {
     _store.setActiveVersion(tenant.tenantId, tenant.spaceId, appId, versionId);
     invalidateAppCache(tenant.tenantId, tenant.spaceId, appId);
 
-    Json payload = Json.emptyObject;
-    payload["activated"] = true;
-    payload["app_id"] = appId;
-    payload["version"] = versionId;
-    return payload;
+    return Json.emptyObject
+      .set("activated", true)
+      .set("app_id", appId)
+      .set("version", versionId);
   }
 
   Json listVersions(TenantContext tenant, string appId) {
@@ -84,13 +83,12 @@ class HARService : SAPService {
       list ~= item.toJson();
     }
 
-    Json payload = Json.emptyObject;
-    payload["tenant_id"] = tenant.tenantId;
-    payload["space_id"] = tenant.spaceId;
-    payload["app_id"] = appId;
-    payload["versions"] = list;
-    payload["active_version"] = _store.activeVersion(tenant.tenantId, tenant.spaceId, appId);
-    return payload;
+    return Json.emptyObject
+      .set("tenant_id", tenant.tenantId)
+      .set("space_id", tenant.spaceId)
+      .set("app_id", appId)
+      .set("versions", list)
+      .set("active_version", _store.activeVersion(tenant.tenantId, tenant.spaceId, appId));
   }
 
   Json listFiles(TenantContext tenant, string appId, string versionId) {

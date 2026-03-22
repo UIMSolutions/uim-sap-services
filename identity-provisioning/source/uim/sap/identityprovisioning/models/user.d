@@ -30,7 +30,7 @@ struct IPVUser {
   string updatedAt;
 
   override Json toJson()  {
-    Json j = Json.emptyObject;
+    return super.toJson()
     j["tenant_id"] = tenantId;
     j["user_id"] = userId;
     j["external_id"] = externalId;

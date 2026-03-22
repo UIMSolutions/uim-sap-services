@@ -40,7 +40,7 @@ struct IPVNotification {
   string updatedAt;
 
   override Json toJson()  {
-    Json j = Json.emptyObject;
+    return super.toJson()
     j["tenant_id"] = tenantId;
     j["subscription_id"] = subscriptionId;
     j["source_system_id"] = sourceSystemId;

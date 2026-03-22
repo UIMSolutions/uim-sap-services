@@ -21,7 +21,7 @@ struct MOBAppVersion {
   SysTime activatedAt;
 
   override Json toJson()  {
-    Json j = Json.emptyObject;
+    return super.toJson()
     j["version_id"] = versionId;
     j["app_id"] = appId;
     j["status"] = cast(string)status;

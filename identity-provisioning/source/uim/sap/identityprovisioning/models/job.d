@@ -60,7 +60,7 @@ struct IPVJob {
   string updatedAt;
 
   override Json toJson()  {
-    Json j = Json.emptyObject;
+    return super.toJson()
     j["tenant_id"] = tenantId;
     j["job_id"] = jobId;
     j["job_name"] = jobName;

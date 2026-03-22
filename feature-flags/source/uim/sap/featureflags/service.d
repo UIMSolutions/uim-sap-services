@@ -180,11 +180,10 @@ class FFLService : SAPService {
     flag.updatedAt = Clock.currTime().toISOExtString();
     auto saved = _store.upsertFlag(flag);
 
-    Json result = Json.emptyObject;
-    result["success"] = true;
-    result["flag_name"] = saved.flagName;
-    result["enabled"] = saved.enabled;
-    return result;
+    return Json.emptyObject
+    .set("success", true)
+    .set("flag_name", saved.flagName)
+    .set("enabled", saved.enabled);
   }
 
   // ─── Evaluation engine ────────────────────────────────────
@@ -304,15 +303,14 @@ class FFLService : SAPService {
       totalEvaluations += flag.evaluationCount;
     }
 
-    Json result = Json.emptyObject;
-    result["tenant_id"] = tenantId;
-    result["total_flags"] = cast(long)flags.length;
-    result["boolean_flags"] = totalBoolean;
-    result["string_flags"] = totalString;
-    result["enabled_flags"] = totalEnabled;
-    result["active_flags"] = totalActive;
-    result["total_evaluations"] = totalEvaluations;
-    return result;
+    return Json.emptyObject
+    .set("tenant_id", tenantId)
+    .set("total_flags", cast(long)flags.length)
+    .set("boolean_flags", totalBoolean)
+    .set("string_flags", totalString)
+    .set("enabled_flags", totalEnabled)
+    .set("active_flags", totalActive)
+    .set("total_evaluations", totalEvaluations);
   }
 
   // ─── Private evaluation helpers ───────────────────────────

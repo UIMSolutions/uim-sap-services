@@ -43,7 +43,7 @@ struct OBSMultipartUpload {
   SysTime initiatedAt;
 
   override Json toJson() {
-    Json j = Json.emptyObject;
+    return super.toJson()
     j["upload_id"] = uploadId;
     j["bucket_id"] = bucketId;
     j["object_key"] = objectKey;
