@@ -64,7 +64,7 @@ class MONStore : SAPStore {
                     return *history;
                 }
             }
-            return [];
+            return null;
         }
     }
 

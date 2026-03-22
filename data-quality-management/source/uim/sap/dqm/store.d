@@ -34,7 +34,7 @@ class DQMStore : SAPStore {
     }
 
     DQMGeoRecord[] suggest(string query, string country, size_t limit = 5) {
-        if (query.length == 0) return [];
+        if (query.length == 0) return null;
         auto normalizedQuery = toLower(query);
         auto normalizedCountry = toLower(country);
 

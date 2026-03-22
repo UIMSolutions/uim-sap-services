@@ -374,7 +374,7 @@ class AlertNotificationService : SAPService {
 
   private string[] getStringArray(Json objectOrMap, string key) {
     if (!(key in objectOrMap) || !objectOrMap[key].isArray) {
-      return [];
+      return null;
     }
     return toLoweredStringArray(objectOrMap[key]);
   }

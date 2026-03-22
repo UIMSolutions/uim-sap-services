@@ -266,7 +266,7 @@ class DMAStore : SAPStore {
             if (auto vers = documentId in _versions)
                 return (*vers).dup;
         }
-        return [];
+        return null;
     }
 
     DocumentVersion getVersion(string documentId, string versionId) {

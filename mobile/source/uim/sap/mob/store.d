@@ -175,7 +175,7 @@ class MOBStore : SAPStore {
         synchronized (_mutex) {
             if (auto p = appId in _notifications)
                 return *p;
-            return [];
+            return null;
         }
     }
 
