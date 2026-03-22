@@ -37,7 +37,7 @@ struct QueryResult {
      */
     Json[] getRow(size_t index) const @safe {
         if (index >= rows.length) {
-            return [];
+            return null;
         }
         return rows[index];
     }

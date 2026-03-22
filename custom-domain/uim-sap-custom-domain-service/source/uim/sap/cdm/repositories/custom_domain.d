@@ -15,7 +15,7 @@ class CustomDomainRepository {
   // Function to load custom domains from a JSON file
   public CustomDomain[] loadCustomDomains() {
     if (!exists(dataFilePath)) {
-      return [];
+      return null;
     }
 
     auto jsonData = readText(dataFilePath);

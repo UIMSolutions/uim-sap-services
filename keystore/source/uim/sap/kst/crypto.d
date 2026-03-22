@@ -175,7 +175,7 @@ private string bytesToHex(const(ubyte)[] bytes) {
 }
 
 private ubyte[] hexToBytes(string hex) {
-    if (hex.length % 2 != 0) return [];
+    if (hex.length % 2 != 0) return null;
     ubyte[] result;
     result.length = hex.length / 2;
     foreach (i; 0 .. result.length) {

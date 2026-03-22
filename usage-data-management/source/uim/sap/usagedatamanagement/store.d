@@ -30,7 +30,7 @@ mixin(SAPStoreTemplate!UDMStore);
         return (*values).dup;
       }
     }
-    return [];
+    return null;
   }
 
   long countEvents(UUID tenantId = "") {
