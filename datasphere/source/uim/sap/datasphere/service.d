@@ -69,10 +69,9 @@ class DSPService : SAPService {
 
     auto saved = _store.upsertDataModel(item);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["model"] = saved.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("model", saved.toJson());
   }
 
   Json listDataModels(UUID tenantId) {

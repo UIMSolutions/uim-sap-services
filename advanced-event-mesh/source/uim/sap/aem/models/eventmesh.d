@@ -41,50 +41,45 @@ mixin(ShowModule!());
 FromJson` function ensures that the `tenantId` and `brokerServiceId` are set and that a unique `meshId` is generated if it is not included in the request. The `toJson` method provides a standardized way to serialize the event mesh's data for use in various parts of the application, such as API responses or database storage.
   */
 class AEMEventMesh : SAPTenantObject {
-    mixin(SAPObjectTemplate!AEMEventMesh);
+  mixin(SAPObjectTemplate!AEMEventMesh);
 
-    UUID meshId;
-    UUID brokerServiceId;
-    string name;
-    string[] topics;
+  UUID meshId;
+  UUID brokerServiceId;
+  string name;
+  string[] topics;
 
-    override override Json toJson()  {
-        Json payload = super.toJson();
+  override override Json toJson() {
+    auto topicsJson = topics.map!(topic => topic).array;
 
-        Json topicsJson = Json.emptyArray;
-        foreach (topic; topics) {
-            topicsJson ~= topic;
-        }
-
-        payload["mesh_id"] = meshId.toJson;
-        payload["broker_service_id"] = brokerServiceId.toJson;
-        payload["name"] = name;
-        payload["topics"] = topicsJson;
-        return payload;
-    }
+    return super.toJson()
+      .set("mesh_id", meshId.toJson)
+      .set("broker_service_id", brokerServiceId.toJson)
+      .set("name", name)
+      .set("topics", topicsJson);
+  }
 }
 
 AEMEventMesh meshFromJson(UUID tenantId, string brokerServiceId, Json request) {
-    AEMEventMesh mesh = new AEMEventMesh();
-    mesh.tenantId = UUID(tenantId);
-    mesh.meshId = randomUUID();
-    mesh.brokerServiceId = UUID(brokerServiceId);
-    mesh.createdAt = Clock.currTime();
-    mesh.updatedAt = mesh.createdAt;
+  AEMEventMesh mesh = new AEMEventMesh();
+  mesh.tenantId = UUID(tenantId);
+  mesh.meshId = randomUUID();
+  mesh.brokerServiceId = UUID(brokerServiceId);
+  mesh.createdAt = Clock.currTime();
+  mesh.updatedAt = mesh.createdAt;
 
-    if ("mesh_id" in request && request["mesh_id"].isString) {
-        mesh.meshId = UUID(request["mesh_id"].get!string);
+  if ("mesh_id" in request && request["mesh_id"].isString) {
+    mesh.meshId = UUID(request["mesh_id"].get!string);
+  }
+  if ("name" in request && request["name"].isString) {
+    mesh.name = request["name"].get!string;
+  }
+  if ("topics" in request && request["topics"].isArray) {
+    foreach (topicJson; request["topics"].toArray) {
+      if (topicJson.isString) {
+        mesh.topics ~= topicJson.get!string;
+      }
     }
-    if ("name" in request && request["name"].isString) {
-        mesh.name = request["name"].get!string;
-    }
-    if ("topics" in request && request["topics"].isArray) {
-        foreach (topicJson; request["topics"].toArray) {
-            if (topicJson.isString) {
-                mesh.topics ~= topicJson.get!string;
-            }
-        }
-    }
+  }
 
-    return mesh;
+  return mesh;
 }

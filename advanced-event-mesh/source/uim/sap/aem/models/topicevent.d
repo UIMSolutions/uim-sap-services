@@ -19,20 +19,20 @@ class AEMTopicEvent : SAPTenantObject {
       return false;
     }
 
-      if ("event_id" in initData && initData["event_id"].isString) {
-    eventId = UUID(initData["event_id"].get!string);
-  }
-  if ("topic" in initData && initData["topic"].isString) {
-    topic = initData["topic"].get!string;
-  }
-  if ("publisher" in initData && initData["publisher"].isString) {
-    publisher = initData["publisher"].get!string;
-  }
-  if ("payload" in initData) {
-    payload = initData["payload"];
-  }
+    if ("event_id" in initData && initData["event_id"].isString) {
+      eventId = UUID(initData["event_id"].get!string);
+    }
+    if ("topic" in initData && initData["topic"].isString) {
+      topic = initData["topic"].get!string;
+    }
+    if ("publisher" in initData && initData["publisher"].isString) {
+      publisher = initData["publisher"].get!string;
+    }
+    if ("payload" in initData) {
+      payload = initData["payload"];
+    }
 
-  return true;
+    return true;
   }
 
   UUID meshId;
@@ -42,7 +42,7 @@ class AEMTopicEvent : SAPTenantObject {
   Json payload = Json.emptyObject;
   SysTime publishedAt;
 
-  override override Json toJson()  {
+  override override Json toJson() {
     return super.toJson()
       .set("mesh_id", meshId.toJson)
       .set("event_id", eventId.toJson)

@@ -34,10 +34,9 @@ class CLFService : SAPService {
   Json listOrganizations() {
     Json resources = _store.listOrgs().map!(org => org.toJson()).array.toJson;
 
-    Json payload = Json.emptyObject;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)_store.listOrgs().length;
-    return payload;
+    return Json.emptyObject
+      .set("resources", resources)
+      .set("total_results", cast(long)_store.listOrgs().length);
   }
 
   Json createSpace(Json request) {

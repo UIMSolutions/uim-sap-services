@@ -34,10 +34,9 @@ class AlertNotificationService : SAPService {
       resources ~= item;
     }
 
-    Json result = Json.emptyObject;
-    result["resources"] = resources;
-    result["total_results"] = cast(long)resources.length;
-    return result;
+    return Json.emptyObject
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json listDeliveryOptions() {
@@ -45,10 +44,10 @@ class AlertNotificationService : SAPService {
     foreach (option; ALERT_DELIVERY_OPTIONS) {
       resources ~= option;
     }
-    Json result = Json.emptyObject;
-    result["resources"] = resources;
-    result["total_results"] = cast(long)resources.length;
-    return result;
+
+    return Json.emptyObject
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json publishAlert(UUID tenantId, Json request) {
@@ -89,10 +88,10 @@ class AlertNotificationService : SAPService {
     foreach (eventItem; _store.listAlerts(tenantId)) {
       resources ~= eventItem.toJson();
     }
-    Json result = Json.emptyObject;
-    result["resources"] = resources;
-    result["total_results"] = cast(long)resources.length;
-    return result;
+    
+    return Json.emptyObject
+    .set("resources", resources)
+    .set("total_results", cast(long)resources.length);
   }
 
   Json searchAlerts(UUID tenantId, Json request) {
@@ -144,9 +143,8 @@ class AlertNotificationService : SAPService {
       throw new AlertNotificationNotFoundException("Subscription", tenantId ~ "/" ~ subscriptionId);
     }
 
-    Json result = Json.emptyObject;
-    result["subscription"] = sub.toJson();
-    return result;
+    return Json.emptyObject
+      .set("subscription", sub.toJson());
   }
 
   Json upsertSubscription(UUID tenantId, Json request) {

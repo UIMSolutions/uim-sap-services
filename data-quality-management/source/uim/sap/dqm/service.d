@@ -110,9 +110,9 @@ class DQMService : SAPService {
     auto nearest = _store.nearest(latitude, longitude, limit);
     Json addresses = Json.emptyArray;
     foreach (record; nearest) {
-      Json item = Json.emptyObject;
-      item["address"] = record.address.toJson();
-      item["point"] = record.point.toJson();
+      Json item = Json.emptyObject
+        .set("address", record.address.toJson())
+        .set("point", record.point.toJson());
       addresses ~= item;
     }
 

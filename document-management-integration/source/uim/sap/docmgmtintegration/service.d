@@ -103,10 +103,10 @@ class DocMgmtIntegrationService : SAPService {
         Json resources = Json.emptyArray;
         foreach (t; _store.listTenants())
             resources ~= t.toJson();
-        Json r = Json.emptyObject;
-        r["resources"] = resources;
-        r["total_results"] = cast(long) resources.length;
-        return r;
+        
+        return Json.emptyObject
+        .set("resources", resources)
+        .set("total_results", cast(long) resources.length);
     }
 
     Json updateTenant(UUID tenantId, Json request) {
