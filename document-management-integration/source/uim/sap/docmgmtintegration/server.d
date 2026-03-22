@@ -558,10 +558,4 @@ class DocMgmtIntegrationServer {
     return clean.split("/");
   }
 
-  private void respondError(HTTPServerResponse res, string message, int statusCode) {
-    return Json.emptyObject
-      .set("success", false)
-      .set("message", message)
-      .set("statusCode", statusCode);
-  }
 }
