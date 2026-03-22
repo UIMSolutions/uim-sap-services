@@ -421,19 +421,4 @@ class PDMServer {
 
     return path.split("/").filter!(s => s.length > 0).array;
   }
-
-  private static Json parseBody(HTTPServerRequest req) {
-    try {
-      return req.readJson();
-    } catch (Exception) {
-      return Json.emptyObject;
-    }
-  }
-
-  private static void respondError(HTTPServerResponse res, string message, int code) {
-    Json j = Json.emptyObject;
-    j["error"] = message;
-    j["code"] = code;
-    res.writeJsonBody(j, code);
-  }
 }

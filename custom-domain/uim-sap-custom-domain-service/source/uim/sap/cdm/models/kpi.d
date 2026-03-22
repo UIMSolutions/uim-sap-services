@@ -22,7 +22,7 @@ struct Kpi {
     // Method to create a KPI from JSON format
     static Kpi fromJson(JsonValue json) {
         return Kpi(
-            json["name"].str,
+            json["name"].get!string,
             json["value"].toDouble(),
             DateTime.fromISOExtString(json["timestamp"].str),
             json["description"].str

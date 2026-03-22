@@ -59,7 +59,8 @@ class SLMService : SAPService {
     SLMSolution sol;
     sol.tenantId = tenantId;
     sol.solutionId = jstr(payload, "solution_id");
-    if (sol.solutionId.length == 0) sol.solutionId = _store.nextId("sol");
+    if (sol.solutionId.length == 0)
+      sol.solutionId = _store.nextId("sol");
     sol.name = payload["name"].get!string;
     sol.description = jstr(payload, "description");
     sol.mtaId = payload["mta_id"].get!string;
@@ -260,7 +261,8 @@ class SLMService : SAPService {
     SLMSubscription sub;
     sub.tenantId = tenantId;
     sub.subscriptionId = jstr(payload, "subscription_id");
-    if (sub.subscriptionId.length == 0) sub.subscriptionId = _store.nextId("sub");
+    if (sub.subscriptionId.length == 0)
+      sub.subscriptionId = _store.nextId("sub");
     sub.solutionId = solutionId;
     sub.consumerSubaccountId = payload["consumer_subaccount_id"].get!string;
     sub.consumerTenantId = jstr(payload, "consumer_tenant_id");
@@ -331,26 +333,20 @@ class SLMService : SAPService {
   }
 
   private Json _solutionDetail(UUID tenantId, string solutionId) {
-    SLMSolution sol;
+    auto subscriptions = _store.subscriptionsForSolution(tenantId, solutionId)
+      .map(sub => sub.toJson()).array;
+    auto components = _store.listComponents(solutionId).map(component => component.toJson()).array;
+    auto licenses = _store.licensesForSolution(tenantId, solutionId)
+      .map(license => license.toJson()).array;
+
+    SLMSolution sol = new SLMSolution();
     if (!_store.tryGetSolution(tenantId, solutionId, sol))
       throw new SLMNotFoundException("Solution", solutionId);
-    auto j = sol.toJson();
-    // Embed components
-    Json components = Json.emptyArray;
-    foreach (c; _store.listComponents(solutionId))
-      components ~= c.toJson();
-    j["components"] = components;
-    // Embed subscriptions
-    Json subscriptions = Json.emptyArray;
-    foreach (s; _store.subscriptionsForSolution(tenantId, solutionId))
-      subscriptions ~= s.toJson();
-    j["subscriptions"] = subscriptions;
-    // Embed licenses
-    Json licenses = Json.emptyArray;
-    foreach (l; _store.licensesForSolution(tenantId, solutionId))
-      licenses ~= l.toJson();
-    j["licenses"] = licenses;
-    return j;
+
+    return sol.toJson()
+      .set("components", components)
+      .set("subscriptions", subscriptions)
+      .set("licenses", licenses);
   }
 
   /// Create default components from MTA descriptor payload
@@ -360,7 +356,8 @@ class SLMService : SAPService {
         SLMComponent c;
         c.solutionId = solutionId;
         c.componentId = jstr(cp, "component_id");
-        if (c.componentId.length == 0) c.componentId = _store.nextId("comp");
+        if (c.componentId.length == 0)
+          c.componentId = _store.nextId("comp");
         c.name = cp["name"].get!string;
         c.componentType = jstr(cp, "component_type", "module");
         c.status = "started";

@@ -54,20 +54,20 @@ private SoftwareTranslateRequest parseSoftwareRequest(Json data) {
 
 private DocumentTranslateSyncRequest parseDocumentSyncRequest(Json json) {
   return DocumentTranslateSyncRequest(
-    json["sourceLanguage"].str,
-    json["targetLanguage"].str,
-    json["fileName"].str,
-    json["content"].str,
+    json["sourceLanguage"].get!string,
+    json["targetLanguage"].get!string,
+    json["fileName"].get!string,
+    json["content"].get!string,
     json["provider"].type == JSONType.null_ ? "sap-nmt" : json["provider"].str
   );
 }
 
 private DocumentTranslateAsyncRequest parseDocumentAsyncRequest(Json json) {
   return DocumentTranslateAsyncRequest(
-    json["sourceLanguage"].str,
-    json["targetLanguage"].str,
-    json["fileName"].str,
-    json["content"].str,
+    json["sourceLanguage"].get!string,
+    json["targetLanguage"].get!string,
+    json["fileName"].get!string,
+    json["content"].get!string,
     json["provider"].type == JSONType.null_ ? "sap-nmt" : json["provider"].str
   );
 }

@@ -13,31 +13,30 @@ mixin(ShowModule!());
 
 /// Tracks the status of a model-training job.
 struct PRETrainingJob {
-    string jobId;
-    string modelId;
-    UUID tenantId;
-    PRETrainingStatus status = PRETrainingStatus.queued;
-    size_t itemsProcessed;
-    size_t usersProcessed;
-    size_t interactionsProcessed;
-    string startedAt;
-    string completedAt;
-    string errorMessage;
-    string createdAt;
+  string jobId;
+  string modelId;
+  UUID tenantId;
+  PRETrainingStatus status = PRETrainingStatus.queued;
+  size_t itemsProcessed;
+  size_t usersProcessed;
+  size_t interactionsProcessed;
+  string startedAt;
+  string completedAt;
+  string errorMessage;
+  string createdAt;
 }
 
 Json trainingJobToJson(const ref PRETrainingJob t) {
-    Json j = Json.emptyObject;
-    j["jobId"] = t.jobId;
-    j["modelId"] = t.modelId;
-    j["tenantId"] = t.tenantId;
-    j["status"] = t.status.to!string;
-    j["itemsProcessed"] = cast(long) t.itemsProcessed;
-    j["usersProcessed"] = cast(long) t.usersProcessed;
-    j["interactionsProcessed"] = cast(long) t.interactionsProcessed;
-    j["startedAt"] = t.startedAt;
-    j["completedAt"] = t.completedAt;
-    j["errorMessage"] = t.errorMessage;
-    j["createdAt"] = t.createdAt;
-    return j;
+  return Json.emptyObject
+    .set("jobId", t.jobId)
+    .set("modelId", t.modelId)
+    .set("tenantId", t.tenantId)
+    .set("status", t.status.to!string)
+    .set("itemsProcessed", cast(long)t.itemsProcessed)
+    .set("usersProcessed", cast(long)t.usersProcessed)
+    .set("interactionsProcessed", cast(long)t.interactionsProcessed)
+    .set("startedAt", t.startedAt)
+    .set("completedAt", t.completedAt)
+    .set("errorMessage", t.errorMessage)
+    .set("createdAt", t.createdAt);
 }

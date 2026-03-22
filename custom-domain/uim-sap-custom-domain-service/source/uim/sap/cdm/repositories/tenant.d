@@ -50,7 +50,7 @@ class TenantRepository {
     void loadTenantsFromJson(string jsonData) {
         auto json = parseJSON(jsonData);
         foreach (tenantJson; json["tenants"].array) {
-            tenants ~= Tenant(tenantJson["id"].str, tenantJson["name"].str);
+            tenants ~= Tenant(tenantJson["id"].get!string, tenantJson["name"].str);
         }
     }
 }

@@ -56,10 +56,10 @@ Json set(T)(Json json, string key, T[] values) {
 }
 
 unittest {
-  Json j = Json.emptyObject
+  Json j1 = Json.emptyObject
     .set("key1", "value1");
 
-  assert(j["key1"] == "value1");
+  assert(j1["key1"] == "value1");
 
   Json j2 = Json.emptyObject
     .set("key1", "value1")

@@ -24,26 +24,23 @@ struct PREUser {
 }
 
 Json userToJson(const ref PREUser u) {
-  Json j = Json.emptyObject;
-  j["userId"] = u.userId;
-  j["tenantId"] = u.tenantId;
-  j["displayName"] = u.displayName;
-  j["segment"] = u.segment.to!string;
-  {
-    Json arr = Json.emptyArray;
-    foreach (p; u.preferences)
-      arr ~= Json(p);
-    j["preferences"] = arr;
-  }
-  {
-    Json obj = Json.emptyObject;
-    foreach (k, v; u.context)
-      obj[k] = v;
-    j["context"] = obj;
-  }
-  j["createdAt"] = u.createdAt;
-  j["updatedAt"] = u.updatedAt;
-  return j;
+  Json arr = Json.emptyArray;
+  foreach (p; u.preferences)
+    arr ~= Json(p);
+
+  Json obj = Json.emptyObject;
+  foreach (k, v; u.context)
+    obj[k] = v;
+
+  return Json.emptyObject
+    .set("userId", u.userId)
+    .set("tenantId", u.tenantId)
+    .set("displayName", u.displayName)
+    .set("segment", u.segment.to!string)
+    .set("preferences", arr)
+    .set("context", obj)
+    .set("createdAt", u.createdAt)
+    .set("updatedAt", u.updatedAt);
 }
 
 PREUser userFromJson(Json j) {

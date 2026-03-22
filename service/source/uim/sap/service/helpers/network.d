@@ -41,3 +41,17 @@ string[] normalizedSegments(string subPath) {
   }
   return clean.split("/");
 }
+
+/**
+  * Helper to safely parse JSON body from an HTTP request.
+  * If parsing fails, it returns an empty JSON object instead of throwing an error.
+  * @param req The HTTP request object to read from
+  * @return The parsed JSON object, or an empty JSON object if parsing fails
+  */
+Json parseBody(HTTPServerRequest req) {
+  try {
+    return req.readJson();
+  } catch (Exception) {
+    return Json.emptyObject;
+  }
+}

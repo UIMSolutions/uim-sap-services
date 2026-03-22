@@ -30,10 +30,10 @@ struct Certificate {
     // Function to deserialize JSON to a Certificate object
     static Certificate fromJson(JsonValue json) {
         return Certificate(
-            json["id"].str,
-            json["domain"].str,
-            json["certificateData"].str,
-            json["privateKey"].str,
+            json["id"].get!string,
+            json["domain"].get!string,
+            json["certificateData"].get!string,
+            json["privateKey"].get!string,
             DateTime.fromISOExtString(json["expirationDate"].str),
             json["isActive"].bool
         );

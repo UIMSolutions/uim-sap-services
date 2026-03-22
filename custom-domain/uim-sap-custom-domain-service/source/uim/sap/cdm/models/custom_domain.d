@@ -34,8 +34,8 @@ struct CustomDomain {
     // Function to create a CustomDomain from JSON
     static CustomDomain fromJson(JsonObject json) {
         return CustomDomain(
-            json["domainName"].str,
-            json["owner"].str,
+            json["domainName"].get!string,
+            json["owner"].get!string,
             DomainStatus.valueOf(json["status"].str),
             DateTime.fromISOExtString(json["createdAt"].str),
             DateTime.fromISOExtString(json["updatedAt"].str),

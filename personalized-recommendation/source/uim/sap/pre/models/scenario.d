@@ -26,23 +26,21 @@ struct PREScenario {
 }
 
 Json scenarioToJson(const ref PREScenario s) {
-  Json j = Json.emptyObject;
-  j["scenarioId"] = s.scenarioId;
-  j["tenantId"] = s.tenantId;
-  j["name"] = s.name;
-  j["description"] = s.description;
-  j["scenarioType"] = s.scenarioType.to!string;
-  j["modelId"] = s.modelId;
-  j["active"] = s.active;
-  {
-    Json obj = Json.emptyObject;
-    foreach (k, v; s.config)
-      obj[k] = v;
-    j["config"] = obj;
-  }
-  j["createdAt"] = s.createdAt;
-  j["updatedAt"] = s.updatedAt;
-  return j;
+  Json obj = Json.emptyObject;
+  foreach (k, v; s.config)
+    obj[k] = v;
+
+  return Json.emptyObject
+  .set("scenarioId", s.scenarioId)
+  .set("tenantId", s.tenantId)
+  .set("name", s.name)
+  .set("description", s.description)
+  .set("scenarioType", s.scenarioType.to!string)
+  .set("modelId", s.modelId)
+  .set("active", s.active)
+  .set("config", obj)
+  .set("createdAt", s.createdAt)
+  .set("updatedAt", s.updatedAt);
 }
 
 PREScenario scenarioFromJson(Json j) {
