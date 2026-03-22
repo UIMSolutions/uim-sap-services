@@ -103,7 +103,7 @@ class PREService : SAPService {
     if (!_store.removeItem(tenantId, itemId)) {
       throw new PRENotFoundException("Item not found: " ~ itemId);
     }
-    
+
     Json json = Json.emptyObject;
     json["deleted"] = itemId;
     return json;
@@ -177,7 +177,7 @@ class PREService : SAPService {
     if (!_store.removeUser(tenantId, userId)) {
       throw new PRENotFoundException("User not found: " ~ userId);
     }
-    
+
     Json j = Json.emptyObject;
     j["deleted"] = userId;
     return j;
@@ -284,7 +284,7 @@ class PREService : SAPService {
     if (!_store.removeModel(tenantId, modelId)) {
       throw new PRENotFoundException("Model not found: " ~ modelId);
     }
-    
+
     return Json.emptyObject
       .set("deleted", modelId);
   }
@@ -751,13 +751,13 @@ class PREService : SAPService {
     result["modelId"] = modelId;
     Json arr = Json.emptyArray;
     foreach (idx, ref e; entries) {
-      Json j = Json.emptyObject;
-      j["rank"] = cast(long)(idx + 1);
-      j["affinityKey"] = e.key;
-      j["affinityType"] = e.type_;
-      j["score"] = e.score;
-      arr ~= j;
+      arr ~= Json.emptyObject
+        .set("rank", cast(long)(idx + 1))
+        .set("affinityKey", e.key)
+        .set("affinityType", e.type_)
+        .set("score", e.score);
     }
+
     result["affinities"] = arr;
     result["count"] = cast(long)entries.length;
     return result;

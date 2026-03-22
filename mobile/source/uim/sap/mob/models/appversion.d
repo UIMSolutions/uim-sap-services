@@ -22,18 +22,17 @@ struct MOBAppVersion {
 
   override Json toJson()  {
     return super.toJson()
-    j["version_id"] = versionId;
-    j["app_id"] = appId;
-    j["status"] = cast(string)status;
-    j["release_notes"] = releaseNotes;
-    j["package_url"] = packageUrl;
-    j["package_size_bytes"] = cast(long)packageSizeBytes;
-    j["checksum"] = checksum;
-    j["mandatory_update"] = mandatoryUpdate;
-    j["min_os_version"] = minOsVersion;
-    j["created_at"] = createdAt.toISOExtString();
-    j["activated_at"] = activatedAt.toISOExtString();
-    return j;
+    .set("version_id", versionId)
+    .set("app_id", appId)
+    .set("status", cast(string)status)
+    .set("release_notes", releaseNotes)
+    .set("package_url", packageUrl)
+    .set("package_size_bytes", cast(long)packageSizeBytes)
+    .set("checksum", checksum)
+    .set("mandatory_update", mandatoryUpdate)
+    .set("min_os_version", minOsVersion)
+    .set("created_at", createdAt.toISOExtString())
+    .set("activated_at", activatedAt.toISOExtString());
   }
 }
 

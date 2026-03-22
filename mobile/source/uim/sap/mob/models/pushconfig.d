@@ -20,21 +20,19 @@ struct MOBPushConfig {
   SysTime createdAt;
   SysTime updatedAt;
 
-  override Json toJson()  {
+  override Json toJson() {
     return super.toJson()
-    j["app_id"] = appId;
-    j["enabled"] = enabled;
-    j["provider"] = cast(string)provider;
-    j["sender_id"] = senderId;
-    j["sandbox"] = sandbox;
-    j["created_at"] = createdAt.toISOExtString();
-    j["updated_at"] = updatedAt.toISOExtString();
-    // Omit sensitive keys from default serialization
-    j["server_key_set"] = serverKey.length > 0;
-    j["apns_team_id"] = apnsTeamId;
-    j["apns_key_id"] = apnsKeyId;
-    j["apns_bundle_id"] = apnsBundleId;
-    return j;
+      .set("app_id", appId)
+      .set("enabled", enabled)
+      .set("provider", cast(string)provider)
+      .set("sender_id", senderId)
+      .set("sandbox", sandbox)
+      .set("created_at", createdAt.toISOExtString())
+      .set("updated_at", updatedAt.toISOExtString())
+      .set("server_key_set", serverKey.length > 0) // Omit sensitive keys from default serialization
+      .set("apns_team_id", apnsTeamId)
+      .set("apns_key_id", apnsKeyId)
+      .set("apns_bundle_id", apnsBundleId);
   }
 }
 

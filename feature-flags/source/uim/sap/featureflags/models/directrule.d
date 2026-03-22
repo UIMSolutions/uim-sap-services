@@ -25,17 +25,16 @@ struct FFLDirectRule {
   bool booleanValue = true; // for Boolean flags — override value
 
   override Json toJson()  {
-    return super.toJson()
-    j["rule_id"] = ruleId;
-
     Json ids = Json.emptyArray;
     foreach (id; identifiers) {
       ids ~= Json(id);
     }
-    j["identifiers"] = ids;
-    j["variation_id"] = variationId;
-    j["boolean_value"] = booleanValue;
-    return j;
+
+    return super.toJson()
+    .set("rule_id", ruleId)
+    .set("identifiers", ids)
+    .set("variation_id", variationId)
+    .set("boolean_value", booleanValue);
   }
 }
 

@@ -25,18 +25,16 @@ struct CIDCredential {
     SysTime updatedAt;
 
     override Json toJson()  {
-        Json j = Json.emptyObject;
-        j["tenant_id"]       = tenantId;
-        j["credential_id"]   = credentialId;
-        j["name"]            = name;
-        j["description"]     = description;
-        j["credential_type"] = credentialType;
-        j["username"]        = username;
-        // Never expose secrets in JSON
-        j["token"]           = token.length > 0 ? "***" : "";
-        j["ssh_key"]         = sshKey.length > 0 ? "***" : "";
-        j["created_at"]      = createdAt.toISOExtString();
-        j["updated_at"]      = updatedAt.toISOExtString();
-        return j;
+        return super.toJson()
+        .set("tenant_id", tenantId)
+        .set("credential_id", credentialId)
+        .set("name", name)
+        .set("description", description)
+        .set("credential_type", credentialType)
+        .set("username", username)
+        .set("token", token.length > 0 ? "***" : "") // Never expose secrets in JSON
+        .set("ssh_key", sshKey.length > 0 ? "***" : "")
+        .set("created_at", createdAt.toISOExtString())
+        .set("updated_at", updatedAt.toISOExtString());
     }
 }

@@ -39,25 +39,23 @@ struct IPVNotification {
   string createdAt;
   string updatedAt;
 
-  override Json toJson()  {
-    return super.toJson()
-    j["tenant_id"] = tenantId;
-    j["subscription_id"] = subscriptionId;
-    j["source_system_id"] = sourceSystemId;
-    j["callback_url"] = callbackUrl;
-
+  override Json toJson() {
     Json events = Json.emptyArray;
     foreach (evt; eventTypes) {
       events ~= Json(evt);
     }
-    j["event_types"] = events;
 
-    j["active"] = active;
-    j["delivered_count"] = deliveredCount;
-    j["failed_count"] = failedCount;
-    j["created_at"] = createdAt;
-    j["updated_at"] = updatedAt;
-    return j;
+    return super.toJson()
+      .set("tenant_id", tenantId)
+      .set("subscription_id", subscriptionId)
+      .set("source_system_id", sourceSystemId)
+      .set("callback_url", callbackUrl)
+      .set("event_types", events)
+      .set("active", active)
+      .set("delivered_count", deliveredCount)
+      .set("failed_count", failedCount)
+      .set("created_at", createdAt)
+      .set("updated_at", updatedAt);
   }
 }
 

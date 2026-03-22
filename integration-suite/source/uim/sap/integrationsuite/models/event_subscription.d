@@ -44,19 +44,18 @@ struct INTEventSubscription {
   string createdAt;
   string updatedAt;
 
-  override Json toJson()  {
+  override Json toJson() {
     return super.toJson()
-    j["tenant_id"] = tenantId;
-    j["subscription_id"] = subscriptionId;
-    j["topic_name"] = topicName;
-    j["callback_url"] = callbackUrl;
-    j["delivery_mode"] = deliveryMode;
-    j["active"] = active;
-    j["delivered_count"] = deliveredCount;
-    j["failed_count"] = failedCount;
-    j["created_at"] = createdAt;
-    j["updated_at"] = updatedAt;
-    return j;
+      .set("tenant_id", tenantId)
+      .set("subscription_id", subscriptionId)
+      .set("topic_name", topicName)
+      .set("callback_url", callbackUrl)
+      .set("delivery_mode", deliveryMode)
+      .set("active", active)
+      .set("delivered_count", deliveredCount)
+      .set("failed_count", failedCount)
+      .set("created_at", createdAt)
+      .set("updated_at", updatedAt);
   }
 }
 

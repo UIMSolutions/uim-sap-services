@@ -23,19 +23,18 @@ struct MOBUsageReport {
 
   override Json toJson() {
     return super.toJson()
-    j["app_id"] = appId;
-    j["total_users"] = cast(long)totalUsers;
-    j["active_users"] = cast(long)activeUsers;
-    j["locked_users"] = cast(long)lockedUsers;
-    j["wiped_users"] = cast(long)wipedUsers;
-    j["total_sessions"] = cast(long)totalSessions;
-    j["total_push_sent"] = cast(long)totalPushSent;
-    j["total_push_delivered"] = cast(long)totalPushDelivered;
-    j["total_push_failed"] = cast(long)totalPushFailed;
-    j["total_versions"] = cast(long)totalVersions;
-    j["active_version"] = activeVersion;
-    j["offline_sync_count"] = cast(long)offlineSyncCount;
-    return j;
+      .set("app_id", appId)
+      .set("total_users", cast(long)totalUsers)
+      .set("active_users", cast(long)activeUsers)
+      .set("locked_users", cast(long)lockedUsers)
+      .set("wiped_users", cast(long)wipedUsers)
+      .set("total_sessions", cast(long)totalSessions)
+      .set("total_push_sent", cast(long)totalPushSent)
+      .set("total_push_delivered", cast(long)totalPushDelivered)
+      .set("total_push_failed", cast(long)totalPushFailed)
+      .set("total_versions", cast(long)totalVersions)
+      .set("active_version", activeVersion)
+      .set("offline_sync_count", cast(long)offlineSyncCount);
   }
 }
 

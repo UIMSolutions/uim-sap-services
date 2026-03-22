@@ -19,18 +19,17 @@ struct EVMWebhook {
     string updatedAt;
 
     override Json toJson()  {
-        Json j = Json.emptyObject;
-        j["tenant_id"] = tenantId;
-        j["webhook_id"] = webhookId;
-        j["queue_name"] = queueName;
-        j["callback_url"] = callbackUrl;
-        j["method"] = method;
-        j["active"] = active;
-        j["delivered_count"] = deliveredCount;
-        j["failed_count"] = failedCount;
-        j["created_at"] = createdAt;
-        j["updated_at"] = updatedAt;
-        return j;
+      return super.toJson()
+        .set("tenant_id", tenantId)
+        .set("webhook_id", webhookId)
+        .set("queue_name", queueName)
+        .set("callback_url", callbackUrl)
+        .set("method", method)
+        .set("active", active)
+        .set("delivered_count", deliveredCount)
+        .set("failed_count", failedCount)
+        .set("created_at", createdAt)
+        .set("updated_at", updatedAt);
     }
 }
 

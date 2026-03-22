@@ -24,21 +24,19 @@ struct PREInteraction {
 }
 
 Json interactionToJson(const ref PREInteraction i) {
-  Json j = Json.emptyObject;
-  j["interactionId"] = i.interactionId;
-  j["userId"] = i.userId;
-  j["itemId"] = i.itemId;
-  j["tenantId"] = i.tenantId;
-  j["interactionType"] = i.interactionType.to!string;
-  j["weight"] = i.weight;
-  {
-    Json obj = Json.emptyObject;
-    foreach (k, v; i.context)
-      obj[k] = v;
-    j["context"] = obj;
-  }
-  j["timestamp"] = i.timestamp;
-  return j;
+  Json obj = Json.emptyObject;
+  foreach (k, v; i.context)
+    obj[k] = v;
+
+  return Json.emptyObject
+    .set("interactionId", i.interactionId)
+    .set("userId", i.userId)
+    .set("itemId", i.itemId)
+    .set("tenantId", i.tenantId)
+    .set("interactionType", i.interactionType.to!string)
+    .set("weight", i.weight)
+    .set("context", obj)
+    .set("timestamp", i.timestamp)
 }
 
 PREInteraction interactionFromJson(Json j) {

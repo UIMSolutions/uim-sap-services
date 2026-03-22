@@ -72,30 +72,28 @@ struct INTContentPack {
   string updatedAt;
 
   override Json toJson()  {
-    return super.toJson()
-    j["tenant_id"] = tenantId;
-    j["pack_id"] = packId;
-    j["name"] = name;
-    j["description"] = description;
-    j["vendor"] = vendor;
-    j["version"] = version_;
-    j["category"] = category;
-
-    Json flows = Json.emptyArray;
+        Json flows = Json.emptyArray;
     foreach (id; iflowIds)
       flows ~= Json(id);
-    j["iflow_ids"] = flows;
 
     Json maps = Json.emptyArray;
     foreach (id; mappingIds)
       maps ~= Json(id);
-    j["mapping_ids"] = maps;
 
-    j["status"] = status;
-    j["installed_at"] = installedAt;
-    j["created_at"] = createdAt;
-    j["updated_at"] = updatedAt;
-    return j;
+    return super.toJson()
+    .set("tenant_id", tenantId)
+    .set("pack_id", packId)
+    .set("name", name)
+    .set("description", description)
+    .set("vendor", vendor)
+    .set("version", version_)
+    .set("category", category)
+    .set("iflow_ids", flows)
+    .set("mapping_ids", maps)
+    .set("status", status)
+    .set("installed_at", installedAt)
+    .set("created_at", createdAt)
+    .set("updated_at", updatedAt);
   }
 }
 

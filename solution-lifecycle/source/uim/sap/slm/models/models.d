@@ -33,8 +33,8 @@ struct SLMSolution {
     SysTime createdAt;
     SysTime updatedAt;
 
-    Json toJson() {
-        Json j = Json.emptyObject;
+    override Json toJson() {
+        return super.toJson()
         j["tenant_id"]          = tenantId;
         j["solution_id"]        = solutionId;
         j["name"]               = name;

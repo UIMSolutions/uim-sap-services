@@ -30,28 +30,28 @@ struct OBSObject {
     SysTime updatedAt;
 
     override Json toJson()  {
-        Json j = Json.emptyObject;
-        j["object_id"] = objectId;
-        j["bucket_id"] = bucketId;
-        j["key"] = key;
-
         import std.conv : to;
-        j["size_bytes"] = sizeBytes.to!long;
 
-        j["content_type"] = contentType;
-        j["etag"] = etag;
-        j["status"] = cast(string) status;
-        j["storage_class"] = cast(string) storageClass;
-        j["version_id"] = versionId;
-        j["is_latest"] = isLatest;
+        Json j = super.toJson()
+        .set("object_id", objectId)
+        .set("bucket_id", bucketId)
+        .set("key", key)
+        .set("size_bytes", sizeBytes.to!long)
+        .set("content_type", contentType)
+        .set("etag", etag)
+        .set("status", cast(string) status)
+        .set("storage_class", cast(string) storageClass)
+        .set("version_id", versionId)
+        .set("is_latest", isLatest)
+        .set("created_at", createdAt.toISOExtString())
+        .set("updated_at", updatedAt.toISOExtString());
 
         if (userMetadata.length > 0) {
             Json m = Json.emptyObject;
             foreach (k, v; userMetadata) m[k] = v;
             j["user_metadata"] = m;
         }
-        j["created_at"] = createdAt.toISOExtString();
-        j["updated_at"] = updatedAt.toISOExtString();
+
         return j;
     }
 }
