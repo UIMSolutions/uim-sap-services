@@ -64,360 +64,350 @@ import uim.sap.kym.service;
  *     DELETE /v1/namespaces/{ns}/service-bindings/{name}
  */
 class KYMServer {
-    private KYMService _service;
+  private KYMService _service;
 
-    this(KYMService service) {
-        _service = service;
+  this(KYMService service) {
+    _service = service;
+  }
+
+  void run() {
+    auto settings = new HTTPServerSettings;
+    settings.port = _service.config.port;
+    settings.bindAddresses = [_service.config.host];
+    listenHTTP(settings, &handleRequest);
+    runApplication();
+  }
+
+  private void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {
+    foreach (key, value; _service.config.customHeaders)
+      res.headers[key] = value;
+
+    auto basePath = _service.config.basePath;
+    auto path = req.path;
+
+    if (!path.startsWith(basePath)) {
+      respondError(res, "Not found", 404);
+      return;
     }
 
-    void run() {
-        auto settings = new HTTPServerSettings;
-        settings.port = _service.config.port;
-        settings.bindAddresses = [_service.config.host];
-        listenHTTP(settings, &handleRequest);
-        runApplication();
+    auto subPath = path[basePath.length .. $];
+    if (subPath.length == 0)
+      subPath = "/";
+
+    // Health / ready (no auth)
+    if (subPath == "/health" && req.method == HTTPMethod.GET) {
+      res.writeJsonBody(_service.health(), 200);
+      return;
+    }
+    if (subPath == "/ready" && req.method == HTTPMethod.GET) {
+      res.writeJsonBody(_service.ready(), 200);
+      return;
     }
 
-    private void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {
-        foreach (key, value; _service.config.customHeaders)
-            res.headers[key] = value;
+    try {
+      validateAuth(req);
+      auto segments = normalizedSegments(subPath);
 
-        auto basePath = _service.config.basePath;
-        auto path = req.path;
+      // GET /v1/metrics
+      if (segments.length == 2 && segments[0] == "v1" && segments[1] == "metrics" && req.method == HTTPMethod
+        .GET) {
+        res.writeJsonBody(_service.getMetrics(), 200);
+        return;
+      }
 
-        if (!path.startsWith(basePath)) {
-            respondError(res, "Not found", 404);
-            return;
-        }
+      // /v1/namespaces...
+      if (segments.length >= 2 && segments[0] == "v1" && segments[1] == "namespaces") {
+        routeNamespaces(req, res, segments[2 .. $]);
+        return;
+      }
 
-        auto subPath = path[basePath.length .. $];
-        if (subPath.length == 0)
-            subPath = "/";
+      respondError(res, "Not found", 404);
+    } catch (KYMAuthorizationException e) {
+      respondError(res, e.msg, 401);
+    } catch (KYMConflictException e) {
+      respondError(res, e.msg, 409);
+    } catch (KYMNotFoundException e) {
+      respondError(res, e.msg, 404);
+    } catch (KYMQuotaExceededException e) {
+      respondError(res, e.msg, 429);
+    } catch (KYMValidationException e) {
+      respondError(res, e.msg, 422);
+    } catch (KYMException e) {
+      respondError(res, e.msg, 500);
+    } catch (Exception e) {
+      respondError(res, e.msg, 500);
+    }
+  }
 
-        // Health / ready (no auth)
-        if (subPath == "/health" && req.method == HTTPMethod.GET) {
-            res.writeJsonBody(_service.health(), 200);
-            return;
-        }
-        if (subPath == "/ready" && req.method == HTTPMethod.GET) {
-            res.writeJsonBody(_service.ready(), 200);
-            return;
-        }
-
-        try {
-            validateAuth(req);
-            auto segments = normalizedSegments(subPath);
-
-            // GET /v1/metrics
-            if (segments.length == 2 && segments[0] == "v1" && segments[1] == "metrics" && req.method == HTTPMethod.GET) {
-                res.writeJsonBody(_service.getMetrics(), 200);
-                return;
-            }
-
-            // /v1/namespaces...
-            if (segments.length >= 2 && segments[0] == "v1" && segments[1] == "namespaces") {
-                routeNamespaces(req, res, segments[2 .. $]);
-                return;
-            }
-
-            respondError(res, "Not found", 404);
-        } catch (KYMAuthorizationException e) {
-            respondError(res, e.msg, 401);
-        } catch (KYMConflictException e) {
-            respondError(res, e.msg, 409);
-        } catch (KYMNotFoundException e) {
-            respondError(res, e.msg, 404);
-        } catch (KYMQuotaExceededException e) {
-            respondError(res, e.msg, 429);
-        } catch (KYMValidationException e) {
-            respondError(res, e.msg, 422);
-        } catch (KYMException e) {
-            respondError(res, e.msg, 500);
-        } catch (Exception e) {
-            respondError(res, e.msg, 500);
-        }
+  private void routeNamespaces(HTTPServerRequest req, HTTPServerResponse res, string[] segments) {
+    // GET /v1/namespaces
+    if (segments.length == 0 && req.method == HTTPMethod.GET) {
+      res.writeJsonBody(_service.listNamespaces(), 200);
+      return;
+    }
+    if (segments.length == 0) {
+      respondError(res, "Not found", 404);
+      return;
     }
 
-    private void routeNamespaces(HTTPServerRequest req, HTTPServerResponse res, string[] segments) {
-        // GET /v1/namespaces
-        if (segments.length == 0 && req.method == HTTPMethod.GET) {
-            res.writeJsonBody(_service.listNamespaces(), 200);
-            return;
-        }
-        if (segments.length == 0) {
-            respondError(res, "Not found", 404);
-            return;
-        }
+    auto ns = segments[0];
 
-        auto ns = segments[0];
-
-        // POST /v1/namespaces/{ns}
-        if (segments.length == 1 && req.method == HTTPMethod.POST) {
-            res.writeJsonBody(_service.createNamespace(ns, req.json), 201);
-            return;
-        }
-        // PUT /v1/namespaces/{ns}
-        if (segments.length == 1 && req.method == HTTPMethod.PUT) {
-            res.writeJsonBody(_service.updateNamespace(ns, req.json), 200);
-            return;
-        }
-        // GET /v1/namespaces/{ns}
-        if (segments.length == 1 && req.method == HTTPMethod.GET) {
-            res.writeJsonBody(_service.getNamespace(ns), 200);
-            return;
-        }
-        // DELETE /v1/namespaces/{ns}
-        if (segments.length == 1 && req.method == HTTPMethod.DELETE) {
-            res.writeJsonBody(_service.deleteNamespace(ns), 200);
-            return;
-        }
-
-        // Sub-resources within a namespace
-        if (segments.length >= 2) {
-            auto resource = segments[1];
-
-            if (resource == "functions") {
-                routeFunctions(req, res, ns, segments[2 .. $]);
-                return;
-            }
-            if (resource == "microservices") {
-                routeMicroservices(req, res, ns, segments[2 .. $]);
-                return;
-            }
-            if (resource == "events") {
-                routeEvents(req, res, ns, segments[2 .. $]);
-                return;
-            }
-            if (resource == "subscriptions") {
-                routeSubscriptions(req, res, ns, segments[2 .. $]);
-                return;
-            }
-            if (resource == "api-rules") {
-                routeApiRules(req, res, ns, segments[2 .. $]);
-                return;
-            }
-            if (resource == "service-bindings") {
-                routeServiceBindings(req, res, ns, segments[2 .. $]);
-                return;
-            }
-        }
-
-        respondError(res, "Not found", 404);
+    // POST /v1/namespaces/{ns}
+    if (segments.length == 1 && req.method == HTTPMethod.POST) {
+      res.writeJsonBody(_service.createNamespace(ns, req.json), 201);
+      return;
+    }
+    // PUT /v1/namespaces/{ns}
+    if (segments.length == 1 && req.method == HTTPMethod.PUT) {
+      res.writeJsonBody(_service.updateNamespace(ns, req.json), 200);
+      return;
+    }
+    // GET /v1/namespaces/{ns}
+    if (segments.length == 1 && req.method == HTTPMethod.GET) {
+      res.writeJsonBody(_service.getNamespace(ns), 200);
+      return;
+    }
+    // DELETE /v1/namespaces/{ns}
+    if (segments.length == 1 && req.method == HTTPMethod.DELETE) {
+      res.writeJsonBody(_service.deleteNamespace(ns), 200);
+      return;
     }
 
-    // ── Functions ──
+    // Sub-resources within a namespace
+    if (segments.length >= 2) {
+      auto resource = segments[1];
 
-    private void routeFunctions(HTTPServerRequest req, HTTPServerResponse res, string ns, string[] segments) {
-        // GET /v1/namespaces/{ns}/functions
-        if (segments.length == 0 && req.method == HTTPMethod.GET) {
-            res.writeJsonBody(_service.listFunctions(ns), 200);
-            return;
-        }
-        if (segments.length == 0) {
-            respondError(res, "Not found", 404);
-            return;
-        }
-
-        auto name = segments[0];
-
-        // POST /v1/namespaces/{ns}/functions/{name}/invoke
-        if (segments.length == 2 && segments[1] == "invoke" && req.method == HTTPMethod.POST) {
-            res.writeJsonBody(_service.invokeFunction(ns, name, req.json), 200);
-            return;
-        }
-
-        // POST /v1/namespaces/{ns}/functions/{name}
-        if (segments.length == 1 && req.method == HTTPMethod.POST) {
-            res.writeJsonBody(_service.createFunction(ns, name, req.json), 201);
-            return;
-        }
-        // PUT /v1/namespaces/{ns}/functions/{name}
-        if (segments.length == 1 && req.method == HTTPMethod.PUT) {
-            res.writeJsonBody(_service.updateFunction(ns, name, req.json), 200);
-            return;
-        }
-        // GET /v1/namespaces/{ns}/functions/{name}
-        if (segments.length == 1 && req.method == HTTPMethod.GET) {
-            res.writeJsonBody(_service.getFunction(ns, name), 200);
-            return;
-        }
-        // DELETE /v1/namespaces/{ns}/functions/{name}
-        if (segments.length == 1 && req.method == HTTPMethod.DELETE) {
-            res.writeJsonBody(_service.deleteFunction(ns, name), 200);
-            return;
-        }
-
-        respondError(res, "Not found", 404);
+      if (resource == "functions") {
+        routeFunctions(req, res, ns, segments[2 .. $]);
+        return;
+      }
+      if (resource == "microservices") {
+        routeMicroservices(req, res, ns, segments[2 .. $]);
+        return;
+      }
+      if (resource == "events") {
+        routeEvents(req, res, ns, segments[2 .. $]);
+        return;
+      }
+      if (resource == "subscriptions") {
+        routeSubscriptions(req, res, ns, segments[2 .. $]);
+        return;
+      }
+      if (resource == "api-rules") {
+        routeApiRules(req, res, ns, segments[2 .. $]);
+        return;
+      }
+      if (resource == "service-bindings") {
+        routeServiceBindings(req, res, ns, segments[2 .. $]);
+        return;
+      }
     }
 
-    // ── Microservices ──
+    respondError(res, "Not found", 404);
+  }
 
-    private void routeMicroservices(HTTPServerRequest req, HTTPServerResponse res, string ns, string[] segments) {
-        if (segments.length == 0 && req.method == HTTPMethod.GET) {
-            res.writeJsonBody(_service.listMicroservices(ns), 200);
-            return;
-        }
-        if (segments.length == 0) {
-            respondError(res, "Not found", 404);
-            return;
-        }
+  // ── Functions ──
 
-        auto name = segments[0];
-
-        // POST /v1/namespaces/{ns}/microservices/{name}/scale
-        if (segments.length == 2 && segments[1] == "scale" && req.method == HTTPMethod.POST) {
-            res.writeJsonBody(_service.scaleMicroservice(ns, name, req.json), 200);
-            return;
-        }
-
-        if (segments.length == 1 && req.method == HTTPMethod.POST) {
-            res.writeJsonBody(_service.createMicroservice(ns, name, req.json), 201);
-            return;
-        }
-        if (segments.length == 1 && req.method == HTTPMethod.PUT) {
-            res.writeJsonBody(_service.updateMicroservice(ns, name, req.json), 200);
-            return;
-        }
-        if (segments.length == 1 && req.method == HTTPMethod.GET) {
-            res.writeJsonBody(_service.getMicroservice(ns, name), 200);
-            return;
-        }
-        if (segments.length == 1 && req.method == HTTPMethod.DELETE) {
-            res.writeJsonBody(_service.deleteMicroservice(ns, name), 200);
-            return;
-        }
-
-        respondError(res, "Not found", 404);
+  private void routeFunctions(HTTPServerRequest req, HTTPServerResponse res, string ns, string[] segments) {
+    // GET /v1/namespaces/{ns}/functions
+    if (segments.length == 0 && req.method == HTTPMethod.GET) {
+      res.writeJsonBody(_service.listFunctions(ns), 200);
+      return;
+    }
+    if (segments.length == 0) {
+      respondError(res, "Not found", 404);
+      return;
     }
 
-    // ── Events ──
+    auto name = segments[0];
 
-    private void routeEvents(HTTPServerRequest req, HTTPServerResponse res, string ns, string[] segments) {
-        // POST /v1/namespaces/{ns}/events
-        if (segments.length == 0 && req.method == HTTPMethod.POST) {
-            res.writeJsonBody(_service.publishEvent(ns, req.json), 200);
-            return;
-        }
-
-        respondError(res, "Not found", 404);
+    // POST /v1/namespaces/{ns}/functions/{name}/invoke
+    if (segments.length == 2 && segments[1] == "invoke" && req.method == HTTPMethod.POST) {
+      res.writeJsonBody(_service.invokeFunction(ns, name, req.json), 200);
+      return;
     }
 
-    // ── Subscriptions ──
-
-    private void routeSubscriptions(HTTPServerRequest req, HTTPServerResponse res, string ns, string[] segments) {
-        // GET /v1/namespaces/{ns}/subscriptions
-        if (segments.length == 0 && req.method == HTTPMethod.GET) {
-            res.writeJsonBody(_service.listSubscriptions(ns), 200);
-            return;
-        }
-        // POST /v1/namespaces/{ns}/subscriptions  (id auto-generated)
-        if (segments.length == 0 && req.method == HTTPMethod.POST) {
-            res.writeJsonBody(_service.createSubscription(ns, req.json), 201);
-            return;
-        }
-
-        if (segments.length >= 1) {
-            auto id = segments[0];
-
-            if (segments.length == 1 && req.method == HTTPMethod.GET) {
-                res.writeJsonBody(_service.getSubscription(ns, id), 200);
-                return;
-            }
-            if (segments.length == 1 && req.method == HTTPMethod.DELETE) {
-                res.writeJsonBody(_service.deleteSubscription(ns, id), 200);
-                return;
-            }
-        }
-
-        respondError(res, "Not found", 404);
+    // POST /v1/namespaces/{ns}/functions/{name}
+    if (segments.length == 1 && req.method == HTTPMethod.POST) {
+      res.writeJsonBody(_service.createFunction(ns, name, req.json), 201);
+      return;
+    }
+    // PUT /v1/namespaces/{ns}/functions/{name}
+    if (segments.length == 1 && req.method == HTTPMethod.PUT) {
+      res.writeJsonBody(_service.updateFunction(ns, name, req.json), 200);
+      return;
+    }
+    // GET /v1/namespaces/{ns}/functions/{name}
+    if (segments.length == 1 && req.method == HTTPMethod.GET) {
+      res.writeJsonBody(_service.getFunction(ns, name), 200);
+      return;
+    }
+    // DELETE /v1/namespaces/{ns}/functions/{name}
+    if (segments.length == 1 && req.method == HTTPMethod.DELETE) {
+      res.writeJsonBody(_service.deleteFunction(ns, name), 200);
+      return;
     }
 
-    // ── API Rules ──
+    respondError(res, "Not found", 404);
+  }
 
-    private void routeApiRules(HTTPServerRequest req, HTTPServerResponse res, string ns, string[] segments) {
-        if (segments.length == 0 && req.method == HTTPMethod.GET) {
-            res.writeJsonBody(_service.listApiRules(ns), 200);
-            return;
-        }
-        if (segments.length == 0) {
-            respondError(res, "Not found", 404);
-            return;
-        }
+  // ── Microservices ──
 
-        auto name = segments[0];
-
-        if (segments.length == 1 && req.method == HTTPMethod.POST) {
-            res.writeJsonBody(_service.createApiRule(ns, name, req.json), 201);
-            return;
-        }
-        if (segments.length == 1 && req.method == HTTPMethod.PUT) {
-            res.writeJsonBody(_service.updateApiRule(ns, name, req.json), 200);
-            return;
-        }
-        if (segments.length == 1 && req.method == HTTPMethod.GET) {
-            res.writeJsonBody(_service.getApiRule(ns, name), 200);
-            return;
-        }
-        if (segments.length == 1 && req.method == HTTPMethod.DELETE) {
-            res.writeJsonBody(_service.deleteApiRule(ns, name), 200);
-            return;
-        }
-
-        respondError(res, "Not found", 404);
+  private void routeMicroservices(HTTPServerRequest req, HTTPServerResponse res, string ns, string[] segments) {
+    if (segments.length == 0 && req.method == HTTPMethod.GET) {
+      res.writeJsonBody(_service.listMicroservices(ns), 200);
+      return;
+    }
+    if (segments.length == 0) {
+      respondError(res, "Not found", 404);
+      return;
     }
 
-    // ── Service Bindings ──
+    auto name = segments[0];
 
-    private void routeServiceBindings(HTTPServerRequest req, HTTPServerResponse res, string ns, string[] segments) {
-        if (segments.length == 0 && req.method == HTTPMethod.GET) {
-            res.writeJsonBody(_service.listServiceBindings(ns), 200);
-            return;
-        }
-        if (segments.length == 0) {
-            respondError(res, "Not found", 404);
-            return;
-        }
-
-        auto name = segments[0];
-
-        if (segments.length == 1 && req.method == HTTPMethod.POST) {
-            res.writeJsonBody(_service.createServiceBinding(ns, name, req.json), 201);
-            return;
-        }
-        if (segments.length == 1 && req.method == HTTPMethod.GET) {
-            res.writeJsonBody(_service.getServiceBinding(ns, name), 200);
-            return;
-        }
-        if (segments.length == 1 && req.method == HTTPMethod.DELETE) {
-            res.writeJsonBody(_service.deleteServiceBinding(ns, name), 200);
-            return;
-        }
-
-        respondError(res, "Not found", 404);
+    // POST /v1/namespaces/{ns}/microservices/{name}/scale
+    if (segments.length == 2 && segments[1] == "scale" && req.method == HTTPMethod.POST) {
+      res.writeJsonBody(_service.scaleMicroservice(ns, name, req.json), 200);
+      return;
     }
 
-    // ── Helpers ──
-
-    private void validateAuth(HTTPServerRequest req) {
-        if (!_service.config.requireAuthToken)
-            return;
-
-        if (!("Authorization" in req.headers))
-            throw new KYMAuthorizationException("Missing Authorization header");
-
-        auto expected = "Bearer " ~ _service.config.authToken;
-        if (req.headers["Authorization"] != expected)
-            throw new KYMAuthorizationException("Invalid token");
+    if (segments.length == 1 && req.method == HTTPMethod.POST) {
+      res.writeJsonBody(_service.createMicroservice(ns, name, req.json), 201);
+      return;
+    }
+    if (segments.length == 1 && req.method == HTTPMethod.PUT) {
+      res.writeJsonBody(_service.updateMicroservice(ns, name, req.json), 200);
+      return;
+    }
+    if (segments.length == 1 && req.method == HTTPMethod.GET) {
+      res.writeJsonBody(_service.getMicroservice(ns, name), 200);
+      return;
+    }
+    if (segments.length == 1 && req.method == HTTPMethod.DELETE) {
+      res.writeJsonBody(_service.deleteMicroservice(ns, name), 200);
+      return;
     }
 
-    private string[] normalizedSegments(string subPath) {
-        auto clean = subPath;
-        if (clean.length > 0 && clean[0] == '/')
-            clean = clean[1 .. $];
-        if (clean.length > 0 && clean[$ - 1] == '/')
-            clean = clean[0 .. $ - 1];
-        if (clean.length == 0)
-            return null;
-        return clean.split("/");
+    respondError(res, "Not found", 404);
+  }
+
+  // ── Events ──
+
+  private void routeEvents(HTTPServerRequest req, HTTPServerResponse res, string ns, string[] segments) {
+    // POST /v1/namespaces/{ns}/events
+    if (segments.length == 0 && req.method == HTTPMethod.POST) {
+      res.writeJsonBody(_service.publishEvent(ns, req.json), 200);
+      return;
     }
+
+    respondError(res, "Not found", 404);
+  }
+
+  // ── Subscriptions ──
+
+  private void routeSubscriptions(HTTPServerRequest req, HTTPServerResponse res, string ns, string[] segments) {
+    // GET /v1/namespaces/{ns}/subscriptions
+    if (segments.length == 0 && req.method == HTTPMethod.GET) {
+      res.writeJsonBody(_service.listSubscriptions(ns), 200);
+      return;
+    }
+    // POST /v1/namespaces/{ns}/subscriptions  (id auto-generated)
+    if (segments.length == 0 && req.method == HTTPMethod.POST) {
+      res.writeJsonBody(_service.createSubscription(ns, req.json), 201);
+      return;
+    }
+
+    if (segments.length >= 1) {
+      auto id = segments[0];
+
+      if (segments.length == 1 && req.method == HTTPMethod.GET) {
+        res.writeJsonBody(_service.getSubscription(ns, id), 200);
+        return;
+      }
+      if (segments.length == 1 && req.method == HTTPMethod.DELETE) {
+        res.writeJsonBody(_service.deleteSubscription(ns, id), 200);
+        return;
+      }
+    }
+
+    respondError(res, "Not found", 404);
+  }
+
+  // ── API Rules ──
+
+  private void routeApiRules(HTTPServerRequest req, HTTPServerResponse res, string ns, string[] segments) {
+    if (segments.length == 0 && req.method == HTTPMethod.GET) {
+      res.writeJsonBody(_service.listApiRules(ns), 200);
+      return;
+    }
+    if (segments.length == 0) {
+      respondError(res, "Not found", 404);
+      return;
+    }
+
+    auto name = segments[0];
+
+    if (segments.length == 1 && req.method == HTTPMethod.POST) {
+      res.writeJsonBody(_service.createApiRule(ns, name, req.json), 201);
+      return;
+    }
+    if (segments.length == 1 && req.method == HTTPMethod.PUT) {
+      res.writeJsonBody(_service.updateApiRule(ns, name, req.json), 200);
+      return;
+    }
+    if (segments.length == 1 && req.method == HTTPMethod.GET) {
+      res.writeJsonBody(_service.getApiRule(ns, name), 200);
+      return;
+    }
+    if (segments.length == 1 && req.method == HTTPMethod.DELETE) {
+      res.writeJsonBody(_service.deleteApiRule(ns, name), 200);
+      return;
+    }
+
+    respondError(res, "Not found", 404);
+  }
+
+  // ── Service Bindings ──
+
+  private void routeServiceBindings(HTTPServerRequest req, HTTPServerResponse res, string ns, string[] segments) {
+    if (segments.length == 0 && req.method == HTTPMethod.GET) {
+      res.writeJsonBody(_service.listServiceBindings(ns), 200);
+      return;
+    }
+    if (segments.length == 0) {
+      respondError(res, "Not found", 404);
+      return;
+    }
+
+    auto name = segments[0];
+
+    if (segments.length == 1 && req.method == HTTPMethod.POST) {
+      res.writeJsonBody(_service.createServiceBinding(ns, name, req.json), 201);
+      return;
+    }
+    if (segments.length == 1 && req.method == HTTPMethod.GET) {
+      res.writeJsonBody(_service.getServiceBinding(ns, name), 200);
+      return;
+    }
+    if (segments.length == 1 && req.method == HTTPMethod.DELETE) {
+      res.writeJsonBody(_service.deleteServiceBinding(ns, name), 200);
+      return;
+    }
+
+    respondError(res, "Not found", 404);
+  }
+
+  // ── Helpers ──
+
+  private void validateAuth(HTTPServerRequest req) {
+    if (!_service.config.requireAuthToken)
+      return;
+
+    if (!("Authorization" in req.headers))
+      throw new KYMAuthorizationException("Missing Authorization header");
+
+    auto expected = "Bearer " ~ _service.config.authToken;
+    if (req.headers["Authorization"] != expected)
+      throw new KYMAuthorizationException("Invalid token");
+  }
 }

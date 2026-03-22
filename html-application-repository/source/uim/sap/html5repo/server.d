@@ -218,20 +218,6 @@ class HARServer : SAPServer {
     }
   }
 
-  private string[] normalizedSegments(string subPath) {
-    auto clean = subPath;
-    if (clean.length > 0 && clean[0] == '/') {
-      clean = clean[1 .. $];
-    }
-    if (clean.length > 0 && clean[$ - 1] == '/') {
-      clean = clean[0 .. $ - 1];
-    }
-    if (clean.length == 0) {
-      return null;
-    }
-    return clean.split("/");
-  }
-
   private string joinFrom(string[] segments, size_t startIndex) {
     if (segments.length <= startIndex) {
       throw new HARValidationException("Asset path is required");
