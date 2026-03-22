@@ -17,14 +17,13 @@ struct ARTProgramResult {
   UUID correlationId;
 
   override Json toJson()  {
-    Json info = super.toJson;
-    payload["success"] = success;
-    payload["message"] = message;
-    payload["statusCode"] = statusCode;
-    payload["data"] = data;
-    payload["program"] = program;
-    payload["timestamp"] = timestamp.toISOExtString();
-    payload["correlationId"] = correlationId.toJson;
-    return payload;
+    return super.toJson
+    .set("success", success)
+    .set("message", message)
+    .set("statusCode", statusCode)
+    .set("data", data)
+    .set("program", program)
+    .set("timestamp", timestamp.toISOExtString())
+    .set("correlationId", correlationId);
   }
 }

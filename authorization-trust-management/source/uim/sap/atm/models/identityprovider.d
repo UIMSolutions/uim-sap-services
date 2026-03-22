@@ -58,10 +58,10 @@ ATMIdentityProvider idpFromJson(UUID tenantId, string idpId, Json request) {
     idp.description = request.getString("description");
   }
   if ("enabled" in request && request["enabled"].isBoolean) {
-    idp.enabled = request.getBoolean("enabled");
+    idp.enabled = optionalBoolean("enabled");
   }
   if ("is_default" in request && request["is_default"].isBoolean) {
-    idp.isDefault = request.getBoolean("is_default");
+    idp.isDefault = optionalBoolean("is_default");
   }
   if ("trusted_algorithms" in request && request["trusted_algorithms"].isArray) {
     idp.trustedAlgorithms = stringArrayFromJson(request["trusted_algorithms"]);

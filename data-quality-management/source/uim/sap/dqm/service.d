@@ -57,14 +57,13 @@ class DQMService : SAPService {
     corrections["postal_code_changed"] = original.postalCode != standardized.postalCode;
     corrections["country_changed"] = original.country != standardized.country;
 
-    Json payload = Json.emptyObject;
-    payload["valid"] = true;
-    payload["ambiguous"] = proposals.length > 1;
-    payload["input"] = original.toJson();
-    payload["standardized"] = standardized.toJson();
-    payload["suggestions"] = suggestionList;
-    payload["corrections"] = corrections;
-    return payload;
+    return Json.emptyObject
+      .set("valid", true)
+      .set("ambiguous", proposals.length > 1)
+      .set("input", original.toJson())
+      .set("standardized", standardized.toJson())
+      .set("suggestions", suggestionList)
+      .set("corrections", corrections);
   }
 
   Json geocode(Json request) {
@@ -88,12 +87,11 @@ class DQMService : SAPService {
       alternatives ~= candidate.toJson();
     }
 
-    Json payload = Json.emptyObject;
-    payload["address"] = best.address.toJson();
-    payload["point"] = best.point.toJson();
-    payload["ambiguous"] = matches.length > 1;
-    payload["proposed_addresses"] = alternatives;
-    return payload;
+    return Json.emptyObject
+      .set("address", best.address.toJson())
+      .set("point", best.point.toJson())
+      .set("ambiguous", matches.length > 1)
+      .set("proposed_addresses", alternatives);
   }
 
   Json reverseGeocode(Json request) {
@@ -110,10 +108,9 @@ class DQMService : SAPService {
     auto nearest = _store.nearest(latitude, longitude, limit);
     Json addresses = Json.emptyArray;
     foreach (record; nearest) {
-      Json item = Json.emptyObject
+      addresses ~= Json.emptyObject
         .set("address", record.address.toJson())
         .set("point", record.point.toJson());
-      addresses ~= item;
     }
 
     return Json.emptyObject
@@ -150,12 +147,11 @@ class DQMService : SAPService {
       resources ~= suggestion.address.toJson();
     }
 
-    Json payload = Json.emptyObject;
-    payload["query"] = query;
-    payload["country"] = country;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)resources.length;
-    return payload;
+    return Json.emptyObject
+      .set("query", query)
+      .set("country", country)
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   private double getNumber(Json request, string fieldName) {

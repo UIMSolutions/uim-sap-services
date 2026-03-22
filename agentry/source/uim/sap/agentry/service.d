@@ -81,10 +81,9 @@ class AGTService : SAPService {
 
     auto saved = _store.addVersion(appVersion);
 
-    Json result = Json.emptyObject;
-    result["success"] = true;
-    result["version"] = saved.toJson();
-    return result;
+    return Json.emptyObject
+      .set("success", true)
+      .set("version", saved.toJson());
   }
 
   Json listVersions(UUID tenantId, string appId) {

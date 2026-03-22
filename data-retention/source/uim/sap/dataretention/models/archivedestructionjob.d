@@ -40,7 +40,7 @@ ArchiveDestructionJob parseArchiveDestructionJob(UUID tenantId, string operation
   job.rangeFrom = request.getString("range_from", "");
   job.rangeTo = request.getString("range_to", "");
   job.legalGround = request.getString("legal_ground", "");
-  job.includeDataSubjectReference = request.getBoolean("include_data_subject_reference", true);
+  job.includeDataSubjectReference = optionalBoolean("include_data_subject_reference", true);
   job.status = "scheduled";
   job.createdAt = Clock.currTime();
   return job;

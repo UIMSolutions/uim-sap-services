@@ -178,9 +178,8 @@ class CPSService : SAPService {
       admin.updatedAt = Clock.currTime();
     }
 
-    Json payload = Json.emptyObject;
-    payload["administration"] = admin.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("administration", admin.toJson());
   }
 
   Json upsertContent(UUID tenantId, string contentType, Json request) {
@@ -205,10 +204,9 @@ class CPSService : SAPService {
       throw new CPSValidationException("name is required");
 
     auto saved = _store.upsertContent(item);
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["content"] = saved.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("content", saved.toJson());
   }
 
   Json listContent(UUID tenantId, string contentType) {
@@ -219,10 +217,9 @@ class CPSService : SAPService {
     foreach (item; _store.listContent(tenantId, contentType))
       resources ~= item.toJson();
 
-    Json payload = Json.emptyObject;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)resources.length;
-    return payload;
+    return Json.emptyObject
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json upsertLaunchpadModule(UUID tenantId, Json request) {

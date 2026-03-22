@@ -169,10 +169,11 @@ class ATPService : SAPService {
     backup.tenantId = UUID(tenantId);
     backup.backupId = optionalString(data, "backup_id", "backup-" ~ to!string(now.stdTime));
     backup.mode = optionalString(data, "mode", "on-demand");
-    backup.content = Json.emptyObject;
-    backup.content["catalogs"] = toJsonArray(_store.listCatalogs(tenantId));
-    backup.content["commands"] = toJsonArray(_store.listCommands(tenantId));
-    backup.content["schedules"] = toJsonArray(_store.listSchedules(tenantId));
+    backup.content = Json.emptyObject
+      .set("catalogs", toJsonArray(_store.listCatalogs(tenantId)))
+      .set("commands", toJsonArray(_store.listCommands(tenantId)))
+      .set("schedules", toJsonArray(_store.listSchedules(tenantId)))
+      .set("event_triggers", toJsonArray(_store.listEventTriggers(tenantId)));  
     backup.createdAt = now;
 
     auto saved = _store.upsertBackup(backup);

@@ -124,9 +124,9 @@ class CDCService : SAPService {
     if (profile.isNull)
       throw new CDCNotFoundException(
         "Profile", userId);
-    Json payload = Json.emptyObject;
-    payload["profile"] = profile.get.toJson();
-    return payload;
+    
+    return Json.emptyObject
+      .set("profile", profile.get.toJson());
   }
 
   Json upsertConsent(UUID tenantId, string userId, Json data) {

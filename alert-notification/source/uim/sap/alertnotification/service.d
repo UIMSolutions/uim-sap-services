@@ -155,7 +155,7 @@ class AlertNotificationService : SAPService {
     sub.subscriptionId = UUID(optionalString(request, "subscription_id", createId()));
     sub.name = requiredString(request, "name");
     sub.consumerId = optionalString(request, "consumer_id", "default-consumer");
-    sub.enabled = request.getBoolean("enabled", true);
+    sub.enabled = optionalBoolean("enabled", true);
     sub.condition = buildCondition(request);
     sub.actions = buildActions(request);
     sub.createdAt = Clock.currTime();

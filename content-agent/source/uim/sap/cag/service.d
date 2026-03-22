@@ -305,10 +305,9 @@ HTML";
         dependencyDetails ~= dep.toJson();
     }
 
-    Json payload = Json.emptyObject;
-    payload["item"] = item.toJson();
-    payload["dependency_details"] = dependencyDetails;
-    return payload;
+    return Json.emptyObject
+      .set("item", item.toJson())
+      .set("dependency_details", dependencyDetails);
   }
 
   Json listQueues(UUID tenantId) {
@@ -317,11 +316,10 @@ HTML";
     foreach (queue; _store.listQueues(tenantId))
       resources ~= queue.toJson();
 
-    Json payload = Json.emptyObject;
-    payload["tenant_id"] = tenantId;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)resources.length;
-    return payload;
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json upsertQueue(UUID tenantId, Json data) {
@@ -522,11 +520,10 @@ HTML";
     foreach (item; _store.listActivities(tenantId))
       resources ~= item.toJson();
 
-    Json payload = Json.emptyObject;
-    payload["tenant_id"] = tenantId;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)resources.length;
-    return payload;
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   private string[] resolveDependencies(UUID tenantId, string[] seedIds) {

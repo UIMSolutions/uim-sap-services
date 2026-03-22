@@ -66,7 +66,7 @@ mixin(SAPObjectTemplate!UsageEvent);
     }
 
     eventItem.unit = request.getString("unit", "count");
-    eventItem.billable = request.getBoolean("billable", false);
+    eventItem.billable = optionalBoolean("billable", false);
     eventItem.currency = request.getString("currency", "EUR");
     eventItem.unitPrice = 0.0;
     if ("unit_price" in request) {

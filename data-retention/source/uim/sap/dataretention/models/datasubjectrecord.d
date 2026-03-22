@@ -37,8 +37,8 @@ DataSubjectRecord parseDataSubjectRecord(UUID tenantId, string subjectId, Json r
   record.applicationGroup = request.getString("application_group", "");
   record.legalGround = request.getString("legal_ground", "");
   record.referenceDate = request.getString("reference_date", "");
-  record.blocked = request.getBoolean("blocked", false);
-  record.deleted = request.getBoolean("deleted", false);
+  record.blocked = optionalBoolean("blocked", false);
+  record.deleted = optionalBoolean("deleted", false);
   record.updatedAt = Clock.currTime();
   return record;
 }
