@@ -80,7 +80,7 @@ class PREService : SAPService {
       auto pv = body_["price"];
       if (pv.isFloat)
         p.price = pv.get!double;
-      else if (pv.type == Json.Type.int_)
+      else if (pv.isInteger)
         p.price = cast(double)pv.get!long;
     }
     if ("tags" in body_) {

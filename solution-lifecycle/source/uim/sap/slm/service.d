@@ -423,7 +423,7 @@ class SLMService : SAPService {
   private static int jint(Json j, string key, int fallback = 0) {
     if (key in j) {
       auto v = j[key];
-      if (v.type == Json.Type.int_)
+      if (v.isInteger)
         return v.get!int;
     }
     return fallback;

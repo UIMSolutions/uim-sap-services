@@ -78,11 +78,11 @@ INTMessageLog messageLogFromJson(UUID tenantId, Json request) {
     l.sender = request["sender"].get!string;
   if ("receiver" in request && request["receiver"].isString)
     l.receiver = request["receiver"].get!string;
-  if ("payload_size_bytes" in request && request["payload_size_bytes"].type == Json.Type.int_)
+  if ("payload_size_bytes" in request && request["payload_size_bytes"].isInteger)
     l.payloadSizeBytes = request["payload_size_bytes"].get!long;
   if ("error_message" in request && request["error_message"].isString)
     l.errorMessage = request["error_message"].get!string;
-  if ("duration_ms" in request && request["duration_ms"].type == Json.Type.int_)
+  if ("duration_ms" in request && request["duration_ms"].isInteger)
     l.durationMs = request["duration_ms"].get!long;
 
   l.createdAt = Clock.currTime().toINTOExtString();

@@ -437,42 +437,41 @@ class MOBService : SAPService {
     Json resources = Json.emptyArray;
 
     Json mdk = Json.emptyObject
-    mdk["type"] = "mdk";
-    mdk["name"] = "Mobile Development Kit";
-    mdk["description"] = "Cross-platform development using metadata-driven approach";
-    mdk["platforms"] = jsonArray(["ios", "android", "web"]);
-    mdk["latest_version"] = "23.12.0";
+    .set("type", "mdk")
+    .set("name", "Mobile Development Kit")
+    .set("description", "Cross-platform development using metadata-driven approach")
+    .set("platforms", jsonArray(["ios", "android", "web"]))
+    .set("latest_version", "23.12.0");
+
     resources.appendArrayElement(mdk);
 
-    Json ios = Json.emptyObject;
-    ios["type"] = "ios";
-    ios["name"] = "SAP BTP SDK for iOS";
-    ios["description"] = "Native iOS development with Swift and SwiftUI";
-    ios["platforms"] = jsonArray(["ios"]);
-    ios["latest_version"] = "10.2.0";
+    Json ios = Json.emptyObject
+    .set("type", "ios")
+    .set("name", "SAP BTP SDK for iOS")
+    .set("description", "Native iOS development with Swift and SwiftUI")
+    .set("platforms", jsonArray(["ios"]))
+    .set("latest_version", "10.2.0");
     resources.appendArrayElement(ios);
 
-    Json android = Json.emptyObject;
-    android["type"] = "android";
-    android["name"] = "SAP BTP SDK for Android";
-    android["description"] = "Native Android development with Kotlin and Jetpack Compose";
-    android["platforms"] = jsonArray(["android"]);
-    android["latest_version"] = "7.1.0";
+    Json android = Json.emptyObject
+    .set("type", "android")
+    .set("name", "SAP BTP SDK for Android")
+    .set("description", "Native Android development with Kotlin and Jetpack Compose")
+    .set("platforms", jsonArray(["android"]))
+    .set("latest_version", "7.1.0");
     resources.appendArrayElement(android);
 
-    Json payload = Json.emptyObject;
-    payload["resources"] = resources;
-    payload["total_results"] = 3;
-    return payload;
+    return Json.emptyObject
+    .set("resources", resources)
+    .set("total_results", 3);
   }
 
   Json getSdk(string sdkType) {
     auto sdks = listSdks();
     foreach (size_t i, ref sdk; sdks["resources"]) {
       if (sdk["type"].get!string == sdkType) {
-        Json payload = Json.emptyObject;
-        payload["sdk"] = sdk;
-        return payload;
+        return Json.emptyObject
+        .set("sdk", sdk);
       }
     }
     throw new MOBNotFoundException("SDK", sdkType);

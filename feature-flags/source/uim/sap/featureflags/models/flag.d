@@ -123,7 +123,7 @@ if ("flag_name" in request && request["flag_name"].isString) {
       f.flagId = request["flag_id"].get!string;
     }
 
-    if ("evaluation_count" in request && request["evaluation_count"].type == Json.Type.int_) {
+    if ("evaluation_count" in request && request["evaluation_count"].isInteger) {
       f.evaluationCount = request["evaluation_count"].get!long;
     }
 

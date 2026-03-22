@@ -266,7 +266,7 @@ Document documentFromJson(UUID tenantId, string repositoryId, string folderId, J
     d.description = request["description"].get!string;
   if ("mime_type" in request && request["mime_type"].isString)
     d.mimeType = request["mime_type"].get!string;
-  if ("size_bytes" in request && request["size_bytes"].type == Json.Type.int_)
+  if ("size_bytes" in request && request["size_bytes"].isInteger)
     d.sizeBytes = request["size_bytes"].get!long;
   if ("created_by" in request && request["created_by"].isString)
     d.createdBy = request["created_by"].get!string;
@@ -334,7 +334,7 @@ DocumentVersion versionFromJson(UUID tenantId, string documentId,
 
   if ("comment" in request && request["comment"].isString)
     v.comment = request["comment"].get!string;
-  if ("size_bytes" in request && request["size_bytes"].type == Json.Type.int_)
+  if ("size_bytes" in request && request["size_bytes"].isInteger)
     v.sizeBytes = request["size_bytes"].get!long;
   if ("mime_type" in request && request["mime_type"].isString)
     v.mimeType = request["mime_type"].get!string;
@@ -442,7 +442,7 @@ UIComponentConfig uiConfigFromJson(UUID tenantId, Json request) {
   if ("show_status_management" in request && request["show_status_management"].type == Json
     .Type.bool_)
     cfg.showStatusManagement = request["show_status_management"].get!bool;
-  if ("max_upload_size_mb" in request && request["max_upload_size_mb"].type == Json.Type.int_)
+  if ("max_upload_size_mb" in request && request["max_upload_size_mb"].isInteger)
     cfg.maxUploadSizeMB = cast(int)request["max_upload_size_mb"].get!long;
 
   return cfg;

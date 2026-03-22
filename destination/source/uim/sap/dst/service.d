@@ -123,13 +123,11 @@ class DSTService : SAPService {
     DSTDestination d = new DSTDestination;
     if (!_store.tryGetDestination(tenantId, name, d))
       throw new DSTNotFoundException("Destination", name);
-    auto j = d.toJson();
     // Embed recent logs
-    Json logs = Json.emptyArray;
-    foreach (l; _store.listLogsByDestination(tenantId, name))
-      logs ~= l.toJson();
-    j["audit_logs"] = logs;
-    return j;
+    auto logs = Json._store.listLogsByDestination(tenantId, name).map!(dest => dest.toJson).array;
+
+    return d.toJson()
+     .set("audit_logs", logs);
   }
 
   Json updateDestination(UUID tenantId, string name, Json payload) {

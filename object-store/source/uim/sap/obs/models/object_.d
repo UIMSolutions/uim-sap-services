@@ -65,7 +65,7 @@ OBSObject objectFromJson(string objectId, string bucketId, Json req) {
 
     if ("key" in req && req["key"].isString)
         o.key = req["key"].get!string;
-    if ("size_bytes" in req && req["size_bytes"].type == Json.Type.int_)
+    if ("size_bytes" in req && req["size_bytes"].isInteger)
         o.sizeBytes = cast(size_t) req["size_bytes"].get!long;
     if ("content_type" in req && req["content_type"].isString)
         o.contentType = req["content_type"].get!string;

@@ -24,27 +24,27 @@ struct MOBSecurityPolicy {
   SysTime createdAt;
   SysTime updatedAt;
 
-  override Json toJson()  {
-    return super.toJson()
-    j["app_id"] = appId;
-    j["auth_type"] = cast(string)authType;
-    j["passcode_enabled"] = passcodeEnabled;
-    j["passcode_min_length"] = cast(long)passcodeMinLength;
-    j["passcode_expiry_days"] = cast(long)passcodeExpiryDays;
-    j["max_failed_attempts"] = cast(long)maxFailedAttempts;
-    j["biometric_enabled"] = biometricEnabled;
-    j["jailbreak_detection"] = jailbreakDetection;
-    j["data_encryption"] = dataEncryption;
-    j["certificate_pinning"] = certificatePinning;
+  override Json toJson() {
     Json domains = Json.emptyArray;
     foreach (d; allowedDomains)
       domains.appendArrayElement(Json(d));
-    j["allowed_domains"] = domains;
-    j["session_timeout_mins"] = cast(long)sessionTimeoutMins;
-    j["offline_access_allowed"] = offlineAccessAllowed;
-    j["created_at"] = createdAt.toISOExtString();
-    j["updated_at"] = updatedAt.toISOExtString();
-    return j;
+
+    return super.toJson()
+      .set("app_id", appId)
+      .set("auth_type", cast(string)authType)
+      .set("passcode_enabled", passcodeEnabled)
+      .set("passcode_min_length", cast(long)passcodeMinLength)
+      .set("passcode_expiry_days", cast(long)passcodeExpiryDays)
+      .set("max_failed_attempts", cast(long)maxFailedAttempts)
+      .set("biometric_enabled", biometricEnabled)
+      .set("jailbreak_detection", jailbreakDetection)
+      .set("data_encryption", dataEncryption)
+      .set("certificate_pinning", certificatePinning)
+      .set("allowed_domains", domains)
+      .set("session_timeout_mins", cast(long)sessionTimeoutMins)
+      .set("offline_access_allowed", offlineAccessAllowed)
+      .set("created_at", createdAt.toISOExtString())
+      .set("updated_at", updatedAt.toISOExtString());
   }
 }
 

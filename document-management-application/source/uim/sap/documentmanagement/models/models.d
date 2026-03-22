@@ -217,7 +217,7 @@ Document documentFromJson(string repositoryId, string folderId, Json request) {
     d.description = request["description"].get!string;
   if ("mime_type" in request && request["mime_type"].isString)
     d.mimeType = request["mime_type"].get!string;
-  if ("size_bytes" in request && request["size_bytes"].type == Json.Type.int_)
+  if ("size_bytes" in request && request["size_bytes"].isInteger)
     d.sizeBytes = request["size_bytes"].get!long;
   if ("created_by" in request && request["created_by"].isString)
     d.createdBy = request["created_by"].get!string;
@@ -283,7 +283,7 @@ DocumentVersion versionFromJson(string documentId, int versionNumber, Json reque
 
   if ("comment" in request && request["comment"].isString)
     v.comment = request["comment"].get!string;
-  if ("size_bytes" in request && request["size_bytes"].type == Json.Type.int_)
+  if ("size_bytes" in request && request["size_bytes"].isInteger)
     v.sizeBytes = request["size_bytes"].get!long;
   if ("mime_type" in request && request["mime_type"].isString)
     v.mimeType = request["mime_type"].get!string;

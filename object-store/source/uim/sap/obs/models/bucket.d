@@ -14,10 +14,11 @@ import uim.sap.obs.enumerations;
 @safe:
 
 /// Object store bucket (S3 bucket / Azure Blob container / GCS bucket)
-struct OBSBucket {
+class OBSBucket : SAPTenantObject {
+  mixin(SAPObjectTemplate!OBSBucket);
+
   string bucketId;
   string name;
-  UUID tenantId;
   OBSProvider provider = OBSProvider.awsS3;
   OBSBucketStatus status = OBSBucketStatus.active;
   OBSAccessLevel accessLevel = OBSAccessLevel.private_;
@@ -28,10 +29,8 @@ struct OBSBucket {
   size_t replicationFactor = 3;
   string[string] tags;
   string[string] metadata;
-  SysTime createdAt;
-  SysTime updatedAt;
 
-  override Json toJson()  {
+  override Json toJson() {
     import std.conv : to;
 
     if (tags.length > 0) {
@@ -48,57 +47,55 @@ struct OBSBucket {
     }
 
     return super.toJson()
-    .set("bucket_id", bucketId)
-    .set("name", name)
-    .set("tenant_id", tenantId)
-    .set("provider", cast(string)provider)
-    .set("status", cast(string)status)
-    .set("access_level", cast(string)accessLevel)
-    .set("storage_class", cast(string)storageClass)
-    .set("region", region)
-    .set("versioning_enabled", versioningEnabled)
-    .set("encryption_enabled", encryptionEnabled)
-    .set("replication_factor", replicationFactor.to!long)
-    .set("created_at", createdAt.toISOExtString())
-    .set("updated_at", updatedAt.toISOExtString());
+      .set("bucket_id", bucketId)
+      .set("name", name)
+      .set("provider", cast(string)provider)
+      .set("status", cast(string)status)
+      .set("access_level", cast(string)accessLevel)
+      .set("storage_class", cast(string)storageClass)
+      .set("region", region)
+      .set("versioning_enabled", versioningEnabled)
+      .set("encryption_enabled", encryptionEnabled)
+      .set("replication_factor", replicationFactor.to!long);
   }
-}
 
-OBSBucket bucketFromJson(string bucketId, Json req) {
-  OBSBucket b;
-  b.bucketId = bucketId;
-  b.createdAt = Clock.currTime();
-  b.updatedAt = b.createdAt;
+  static OBSBucket opCall(string bucketId, Json req) {
+    OBSBucket b = new OBSBucket(req);
+    b.bucketId = bucketId;
+    b.createdAt = Clock.currTime();
+    b.updatedAt = b.createdAt;
 
-  if ("name" in req && req["name"].isString)
-    b.name = req["name"].get!string;
-  else
-    b.name = bucketId;
-  if ("tenant_id" in req && req["tenant_id"].isString)
-    b.tenantId = req["tenant_id"].get!string;
-  if ("provider" in req && req["provider"].isString)
-    b.provider = parseProvider(req["provider"].get!string);
-  if ("access_level" in req && req["access_level"].isString)
-    b.accessLevel = parseAccessLevel(req["access_level"].get!string);
-  if ("storage_class" in req && req["storage_class"].isString)
-    b.storageClass = parseStorageClass(req["storage_class"].get!string);
-  if ("region" in req && req["region"].isString)
-    b.region = req["region"].get!string;
-  if ("versioning_enabled" in req && req["versioning_enabled"].type == Json.Type.bool_)
-    b.versioningEnabled = req["versioning_enabled"].get!bool;
-  if ("encryption_enabled" in req && req["encryption_enabled"].type == Json.Type.bool_)
-    b.encryptionEnabled = req["encryption_enabled"].get!bool;
-  if ("tags" in req && req["tags"].type == Json.Type.object) {
-    foreach (string k, v; req["tags"])
-      if (v.isString)
-        b.tags[k] = v.get!string;
+    if ("name" in req && req["name"].isString)
+      b.name = req["name"].get!string;
+    else
+      b.name = bucketId;
+    if ("tenant_id" in req && req["tenant_id"].isString)
+      b.tenantId = req["tenant_id"].get!string;
+    if ("provider" in req && req["provider"].isString)
+      b.provider = parseProvider(req["provider"].get!string);
+    if ("access_level" in req && req["access_level"].isString)
+      b.accessLevel = parseAccessLevel(req["access_level"].get!string);
+    if ("storage_class" in req && req["storage_class"].isString)
+      b.storageClass = parseStorageClass(req["storage_class"].get!string);
+    if ("region" in req && req["region"].isString)
+      b.region = req["region"].get!string;
+    if ("versioning_enabled" in req && req["versioning_enabled"].type == Json.Type.bool_)
+      b.versioningEnabled = req["versioning_enabled"].get!bool;
+    if ("encryption_enabled" in req && req["encryption_enabled"].type == Json.Type.bool_)
+      b.encryptionEnabled = req["encryption_enabled"].get!bool;
+    if ("tags" in req && req["tags"].type == Json.Type.object) {
+      foreach (string k, v; req["tags"])
+        if (v.isString)
+          b.tags[k] = v.get!string;
+    }
+    if ("metadata" in req && req["metadata"].type == Json.Type.object) {
+      foreach (string k, v; req["metadata"])
+        if (v.isString)
+          b.metadata[k] = v.get!string;
+    }
+    return b;
   }
-  if ("metadata" in req && req["metadata"].type == Json.Type.object) {
-    foreach (string k, v; req["metadata"])
-      if (v.isString)
-        b.metadata[k] = v.get!string;
-  }
-  return b;
+
 }
 
 private OBSProvider parseProvider(string s) {

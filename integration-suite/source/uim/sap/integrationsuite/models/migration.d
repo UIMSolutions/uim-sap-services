@@ -67,7 +67,7 @@ INTMigration migrationFromJson(UUID tenantId, Json request) {
     m.scenarioType = request["scenario_type"].get!string;
   if ("complexity" in request && request["complexity"].isString)
     m.complexity = request["complexity"].get!string;
-  if ("estimated_hours" in request && request["estimated_hours"].type == Json.Type.int_)
+  if ("estimated_hours" in request && request["estimated_hours"].isInteger)
     m.estimatedHours = request["estimated_hours"].get!long;
   if ("target_runtime" in request && request["target_runtime"].isString)
     m.targetRuntime = request["target_runtime"].get!string;

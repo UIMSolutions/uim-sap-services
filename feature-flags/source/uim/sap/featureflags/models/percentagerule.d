@@ -59,7 +59,7 @@ class FFLPercentageRule : SAPObject {
         if ("variation_id" in item && item["variation_id"].isString) {
           entry.variationId = item["variation_id"].get!string;
         }
-        if ("weight" in item && item["weight"].type == Json.Type.int_) {
+        if ("weight" in item && item["weight"].isInteger) {
           entry.weight = cast(uint)item["weight"].get!long;
         }
         r.entries ~= entry;

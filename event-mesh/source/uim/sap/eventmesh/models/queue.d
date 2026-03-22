@@ -40,7 +40,7 @@ EVMQueue queueFromJson(UUID tenantId, Json request) {
   if ("queue_name" in request && request["queue_name"].isString) {
     q.queueName = request["queue_name"].get!string;
   }
-  if ("max_depth" in request && request["max_depth"].type == Json.Type.int_) {
+  if ("max_depth" in request && request["max_depth"].isInteger) {
     q.maxDepth = request["max_depth"].get!long;
   }
   if ("enable_dead_letter_queue" in request) {
@@ -48,7 +48,7 @@ EVMQueue queueFromJson(UUID tenantId, Json request) {
       q.enableDeadLetterQueue = request["enable_dead_letter_queue"].get!bool;
     }
   }
-  if ("max_retries" in request && request["max_retries"].type == Json.Type.int_) {
+  if ("max_retries" in request && request["max_retries"].isInteger) {
     q.maxRetries = request["max_retries"].get!long;
   }
 

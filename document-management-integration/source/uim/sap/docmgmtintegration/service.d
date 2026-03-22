@@ -763,7 +763,7 @@ class DocMgmtIntegrationService : SAPService {
     doc.currentVersion = nextVer;
     doc.latestVersionId = savedVer.versionId;
     doc.modifiedAt = Clock.currTime();
-    if ("size_bytes" in request && request["size_bytes"].type == Json.Type.int_)
+    if ("size_bytes" in request && request["size_bytes"].isInteger)
       doc.sizeBytes = request["size_bytes"].get!long;
     _store.updateDocument(doc);
 

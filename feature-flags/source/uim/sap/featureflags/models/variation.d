@@ -43,7 +43,7 @@ class FFLVariation : SAPObject {
     if ("value" in request && request["value"].isString) {
         v.value = request["value"].get!string;
     }
-    if ("weight" in request && request["weight"].type == Json.Type.int_) {
+    if ("weight" in request && request["weight"].isInteger) {
         v.weight = cast(uint) request["weight"].get!long;
     }
     if ("variation_id" in request && request["variation_id"].isString) {

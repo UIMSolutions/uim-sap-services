@@ -25,24 +25,25 @@ struct MOBApplication {
     SysTime updatedAt;
 
     override Json toJson()  {
-        Json j = Json.emptyObject;
-        j["app_id"] = appId;
-        j["name"] = name;
-        j["description"] = description;
-        j["app_type"] = cast(string) appType;
-        j["platform"] = cast(string) platform;
-        j["status"] = cast(string) status;
-        j["sdk_type"] = cast(string) sdkType;
-        j["bundle_id"] = bundleId;
-        j["backend_url"] = backendUrl;
-        j["active_version"] = activeVersion;
+        Json j = Json.emptyObject
+        .set("app_id", appId)
+        .set("name", name)
+        .set("description", description)
+        .set("app_type", cast(string) appType)
+        .set("platform", cast(string) platform)
+        .set("status", cast(string) status)
+        .set("sdk_type", cast(string) sdkType)
+        .set("bundle_id", bundleId)
+        .set("backend_url", backendUrl)
+        .set("active_version", activeVersion)
+        .set("created_at", createdAt.toISOExtString())
+        .set("updated_at", updatedAt.toISOExtString());
+
         if (metadata.length > 0) {
             Json m = Json.emptyObject;
             foreach (k, v; metadata) m[k] = v;
             j["metadata"] = m;
         }
-        j["created_at"] = createdAt.toISOExtString();
-        j["updated_at"] = updatedAt.toISOExtString();
         return j;
     }
 }
