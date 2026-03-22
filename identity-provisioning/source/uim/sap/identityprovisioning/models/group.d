@@ -42,25 +42,23 @@ struct IPVGroup {
   string updatedAt;
 
   override Json toJson()  {
-    return super.toJson()
-    j["tenant_id"] = tenantId;
-    j["group_id"] = groupId;
-    j["external_id"] = externalId;
-    j["group_name"] = groupName;
-    j["display_name"] = displayName;
-    j["description"] = description;
-
-    Json members = Json.emptyArray;
+        Json members = Json.emptyArray;
     foreach (uid; memberUserIds) {
       members ~= Json(uid);
     }
-    j["member_user_ids"] = members;
 
-    j["source_system_id"] = sourceSystemId;
-    j["status"] = status;
-    j["created_at"] = createdAt;
-    j["updated_at"] = updatedAt;
-    return j;
+    return super.toJson()
+    .set("tenant_id", tenantId)
+    .set("group_id", groupId)
+    .set("external_id", externalId)
+    .set("group_name", groupName)
+    .set("display_name", displayName)
+    .set("description", description)
+    .set("member_user_ids", members)
+    .set("source_system_id", sourceSystemId)
+    .set("status", status)
+    .set("created_at", createdAt)
+    .set("updated_at", updatedAt);
   }
 }
 

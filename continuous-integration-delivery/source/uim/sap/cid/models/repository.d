@@ -9,38 +9,37 @@ mixin(ShowModule!());
 // CIDRepository – a connected Git repository
 // ---------------------------------------------------------------------------
 struct CIDRepository {
-    UUID tenantId;
-    string repoId;
-    string name;
-    string description;
-    /// Full clone URL (HTTPS or SSH)
-    string cloneUrl;
-    /// Default branch to build from
-    string defaultBranch;
-    /// Optional reference to a stored credential
-    string credentialId;
-    /// Provider hint: "github" | "gitlab" | "bitbucket" | "other"
-    string provider;
-    /// Webhook secret for push events (optional)
-    string webhookSecret;
-    bool   active;
-    SysTime createdAt;
-    SysTime updatedAt;
+  UUID tenantId;
+  UUID repoId;
+  string name;
+  string description;
+  /// Full clone URL (HTTPS or SSH)
+  string cloneUrl;
+  /// Default branch to build from
+  string defaultBranch;
+  /// Optional reference to a stored credential
+  string credentialId;
+  /// Provider hint: "github" | "gitlab" | "bitbucket" | "other"
+  string provider;
+  /// Webhook secret for push events (optional)
+  string webhookSecret;
+  bool active;
+  SysTime createdAt;
+  SysTime updatedAt;
 
-    override Json toJson()  {
-        Json j = Json.emptyObject;
-        j["tenant_id"]      = tenantId;
-        j["repo_id"]        = repoId;
-        j["name"]           = name;
-        j["description"]    = description;
-        j["clone_url"]      = cloneUrl;
-        j["default_branch"] = defaultBranch;
-        j["credential_id"]  = credentialId;
-        j["provider"]       = provider;
-        j["webhook_secret"] = webhookSecret.length > 0 ? "***" : "";
-        j["active"]         = active;
-        j["created_at"]     = createdAt.toISOExtString();
-        j["updated_at"]     = updatedAt.toISOExtString();
-        return j;
-    }
+  override Json toJson() {
+    return super.toJson()
+      .set("tenant_id", tenantId)
+      .set("repo_id", repoId)
+      .set("name", name)
+      .set("description", description)
+      .set("clone_url", cloneUrl)
+      .set("default_branch", defaultBranch)
+      .set("credential_id", credentialId)
+      .set("provider", provider)
+      .set("webhook_secret", webhookSecret.length > 0 ? "***" : "")
+      .set("active", active)
+      .set("created_at", createdAt.toISOExtString())
+      .set("updated_at", updatedAt.toISOExtString());
+  }
 }

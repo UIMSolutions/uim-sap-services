@@ -32,21 +32,7 @@ struct OBSBucket {
   SysTime updatedAt;
 
   override Json toJson()  {
-    return super.toJson()
-    j["bucket_id"] = bucketId;
-    j["name"] = name;
-    j["tenant_id"] = tenantId;
-    j["provider"] = cast(string)provider;
-    j["status"] = cast(string)status;
-    j["access_level"] = cast(string)accessLevel;
-    j["storage_class"] = cast(string)storageClass;
-    j["region"] = region;
-    j["versioning_enabled"] = versioningEnabled;
-    j["encryption_enabled"] = encryptionEnabled;
-
     import std.conv : to;
-
-    j["replication_factor"] = replicationFactor.to!long;
 
     if (tags.length > 0) {
       Json t = Json.emptyObject;
@@ -60,9 +46,21 @@ struct OBSBucket {
         m[k] = v;
       j["metadata"] = m;
     }
-    j["created_at"] = createdAt.toISOExtString();
-    j["updated_at"] = updatedAt.toISOExtString();
-    return j;
+
+    return super.toJson()
+    .set("bucket_id", bucketId)
+    .set("name", name)
+    .set("tenant_id", tenantId)
+    .set("provider", cast(string)provider)
+    .set("status", cast(string)status)
+    .set("access_level", cast(string)accessLevel)
+    .set("storage_class", cast(string)storageClass)
+    .set("region", region)
+    .set("versioning_enabled", versioningEnabled)
+    .set("encryption_enabled", encryptionEnabled)
+    .set("replication_factor", replicationFactor.to!long)
+    .set("created_at", createdAt.toISOExtString())
+    .set("updated_at", updatedAt.toISOExtString());
   }
 }
 

@@ -7,23 +7,22 @@ mixin(ShowModule!());
 @safe:
 
 struct EVMDeadLetter {
-    UUID tenantId;
-    string deadLetterId;
-    string queueName;
-    string messageId;
-    string reason;
-    long attemptCount;
-    string failedAt;
+  UUID tenantId;
+  string deadLetterId;
+  string queueName;
+  string messageId;
+  string reason;
+  long attemptCount;
+  string failedAt;
 
-    override Json toJson()  {
-        Json j = Json.emptyObject;
-        j["tenant_id"] = tenantId;
-        j["dead_letter_id"] = deadLetterId;
-        j["queue_name"] = queueName;
-        j["message_id"] = messageId;
-        j["reason"] = reason;
-        j["attempt_count"] = attemptCount;
-        j["failed_at"] = failedAt;
-        return j;
-    }
+  override Json toJson() {
+    return super.toJson()
+      .set("tenant_id", tenantId)
+      .set("dead_letter_id", deadLetterId)
+      .set("queue_name", queueName)
+      .set("message_id", messageId)
+      .set("reason", reason)
+      .set("attempt_count", attemptCount)
+      .set("failed_at", failedAt);
+  }
 }

@@ -47,20 +47,19 @@ struct INTMessageLog {
 
   override Json toJson()  {
     return super.toJson()
-    j["tenant_id"] = tenantId;
-    j["log_id"] = logId;
-    j["iflow_id"] = iflowId;
-    j["correlation_id"] = correlationId;
-    j["status"] = status;
-    j["sender"] = sender;
-    j["receiver"] = receiver;
-    j["payload_size_bytes"] = payloadSizeBytes;
-    j["error_message"] = errorMessage;
-    j["duration_ms"] = durationMs;
-    j["started_at"] = startedAt;
-    j["completed_at"] = completedAt;
-    j["created_at"] = createdAt;
-    return j;
+    .set("tenant_id", tenantId)
+    .set("log_id", logId)
+    .set("iflow_id", iflowId)
+    .set("correlation_id", correlationId)
+    .set("status", status)
+    .set("sender", sender)
+    .set("receiver", receiver)
+    .set("payload_size_bytes", payloadSizeBytes)
+    .set("error_message", errorMessage)
+    .set("duration_ms", durationMs)
+    .set("started_at", startedAt)
+    .set("completed_at", completedAt)
+    .set("created_at", createdAt);
   }
 }
 

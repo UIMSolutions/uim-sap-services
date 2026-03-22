@@ -31,23 +31,22 @@ struct INTMigration {
 
   override Json toJson()  {
     return super.toJson()
-    j["tenant_id"] = tenantId;
-    j["migration_id"] = migrationId;
-    j["name"] = name;
-    j["description"] = description;
-    j["source_system"] = sourceSystem;
-    j["source_version"] = sourceVersion;
-    j["scenario_type"] = scenarioType;
-    j["complexity"] = complexity;
-    j["estimated_hours"] = estimatedHours;
-    j["status"] = status;
-    j["target_runtime"] = targetRuntime;
-    j["scenario_details"] = scenarioDetails;
-    j["assessed_at"] = assessedAt;
-    j["completed_at"] = completedAt;
-    j["created_at"] = createdAt;
-    j["updated_at"] = updatedAt;
-    return j;
+    .set("tenant_id", tenantId)
+    .set("migration_id", migrationId)
+    .set("name", name)
+    .set("description", description)
+    .set("source_system", sourceSystem)
+    .set("source_version", sourceVersion)
+    .set("scenario_type", scenarioType)
+    .set("complexity", complexity)
+    .set("estimated_hours", estimatedHours)
+    .set("status", status)
+    .set("target_runtime", targetRuntime)
+    .set("scenario_details", scenarioDetails)
+    .set("assessed_at", assessedAt)
+    .set("completed_at", completedAt)
+    .set("created_at", createdAt)
+    .set("updated_at", updatedAt);
   }
 }
 

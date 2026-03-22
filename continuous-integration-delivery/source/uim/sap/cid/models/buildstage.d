@@ -10,28 +10,27 @@ mixin(ShowModule!());
 // CIDBuildStage – one stage within a build run
 // ---------------------------------------------------------------------------
 struct CIDBuildStage {
-    string buildId;
-    string stageId;
-    /// Stage name: "build" | "test" | "deploy" | custom
-    string name;
-    /// Order within the build (1-based)
-    int ordinal;
-    /// Status: "pending" | "running" | "success" | "failure" | "skipped"
-    string status;
-    long durationSecs;
-    SysTime startedAt;
-    SysTime finishedAt;
+  UUID buildId;
+  UUID stageId;
+  /// Stage name: "build" | "test" | "deploy" | custom
+  string name;
+  /// Order within the build (1-based)
+  int ordinal;
+  /// Status: "pending" | "running" | "success" | "failure" | "skipped"
+  string status;
+  long durationSecs;
+  SysTime startedAt;
+  SysTime finishedAt;
 
-    override Json toJson()  {
-        Json j = Json.emptyObject;
-        j["build_id"]      = buildId;
-        j["stage_id"]      = stageId;
-        j["name"]          = name;
-        j["ordinal"]       = ordinal;
-        j["status"]        = status;
-        j["duration_secs"] = durationSecs;
-        j["started_at"]    = startedAt.toISOExtString();
-        j["finished_at"]   = finishedAt.toISOExtString();
-        return j;
-    }
+  override Json toJson() {
+    return super.toJson()
+      .set("build_id", buildId)
+      .set("stage_id", stageId)
+      .set("name", name)
+      .set("ordinal", ordinal)
+      .set("status", status)
+      .set("duration_secs", durationSecs)
+      .set("started_at", startedAt.toISOExtString())
+      .set("finished_at", finishedAt.toISOExtString());
+  }
 }

@@ -29,16 +29,15 @@ struct IPVJobLog {
 
   override Json toJson()  {
     return super.toJson()
-    j["tenant_id"] = tenantId;
-    j["log_id"] = logId;
-    j["job_id"] = jobId;
-    j["level"] = level;
-    j["entity_type"] = entityType;
-    j["entity_id"] = entityId;
-    j["message"] = message;
-    j["details"] = details;
-    j["timestamp"] = timestamp;
-    return j;
+    .set("tenant_id", tenantId)
+    .set("log_id", logId)
+    .set("job_id", jobId)
+    .set("level", level)
+    .set("entity_type", entityType)
+    .set("entity_id", entityId)
+    .set("message", message)
+    .set("details", details)
+    .set("timestamp", timestamp);
   }
 }
 

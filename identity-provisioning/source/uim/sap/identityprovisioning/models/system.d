@@ -36,23 +36,22 @@ struct IPVSystem {
   string createdAt;
   string updatedAt;
 
-  override Json toJson()  {
+  override Json toJson() {
     return super.toJson()
-    j["tenant_id"] = tenantId;
-    j["system_id"] = systemId;
-    j["system_name"] = systemName;
-    j["description"] = description;
-    j["system_type"] = systemType;
-    j["connector_type"] = connectorType;
-    j["endpoint_url"] = endpointUrl;
-    j["auth_type"] = authType;
-    j["status"] = status;
-    j["user_count"] = userCount;
-    j["group_count"] = groupCount;
-    j["last_sync_at"] = lastSyncAt;
-    j["created_at"] = createdAt;
-    j["updated_at"] = updatedAt;
-    return j;
+      .set("tenant_id", tenantId)
+      .set("system_id", systemId)
+      .set("system_name", systemName)
+      .set("description", description)
+      .set("system_type", systemType)
+      .set("connector_type", connectorType)
+      .set("endpoint_url", endpointUrl)
+      .set("auth_type", authType)
+      .set("status", status)
+      .set("user_count", userCount)
+      .set("group_count", groupCount)
+      .set("last_sync_at", lastSyncAt)
+      .set("created_at", createdAt)
+      .set("updated_at", updatedAt);
   }
 }
 

@@ -55,24 +55,23 @@ struct INTIFlow {
 
   override Json toJson()  {
     return super.toJson()
-    j["tenant_id"] = tenantId;
-    j["iflow_id"] = iflowId;
-    j["name"] = name;
-    j["description"] = description;
-    j["package_id"] = packageId;
-    j["version"] = version_;
-    j["status"] = status;
-    j["runtime"] = runtime;
-    j["sender"] = sender;
-    j["receiver"] = receiver;
-    j["protocol"] = protocol;
-    j["endpoint_url"] = endpointUrl;
-    j["message_count"] = messageCount;
-    j["error_count"] = errorCount;
-    j["deployed_at"] = deployedAt;
-    j["created_at"] = createdAt;
-    j["updated_at"] = updatedAt;
-    return j;
+    .set("tenant_id", tenantId)
+    .set("iflow_id", iflowId)
+    .set("name", name)
+    .set("description", description)
+    .set("package_id", packageId)
+    .set("version", version_)
+    .set("status", status)
+    .set("runtime", runtime)
+    .set("sender", sender)
+    .set("receiver", receiver)
+    .set("protocol", protocol)
+    .set("endpoint_url", endpointUrl)
+    .set("message_count", messageCount)
+    .set("error_count", errorCount)
+    .set("deployed_at", deployedAt)
+    .set("created_at", createdAt)
+    .set("updated_at", updatedAt);
   }
 }
 

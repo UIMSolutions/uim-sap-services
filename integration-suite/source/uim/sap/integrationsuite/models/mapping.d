@@ -87,20 +87,19 @@ struct INTMapping {
 
   override Json toJson()  {
     return super.toJson()
-    j["tenant_id"] = tenantId;
-    j["mapping_id"] = mappingId;
-    j["name"] = name;
-    j["description"] = description;
-    j["source_format"] = sourceFormat;
-    j["target_format"] = targetFormat;
-    j["source_schema"] = sourceSchema;
-    j["target_schema"] = targetSchema;
-    j["status"] = status;
-    j["generation_method"] = generationMethod;
-    j["mapping_rules"] = mappingRules;
-    j["created_at"] = createdAt;
-    j["updated_at"] = updatedAt;
-    return j;
+    .set("tenant_id", tenantId)
+    .set("mapping_id", mappingId)
+    .set("name", name)
+    .set("description", description)
+    .set("source_format", sourceFormat)
+    .set("target_format", targetFormat)
+    .set("source_schema", sourceSchema)
+    .set("target_schema", targetSchema)
+    .set("status", status)
+    .set("generation_method", generationMethod)
+    .set("mapping_rules", mappingRules)
+    .set("created_at", createdAt)
+    .set("updated_at", updatedAt);
   }
 }
 

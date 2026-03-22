@@ -26,25 +26,24 @@ struct INTODataService {
   string updatedAt;
 
   override Json toJson()  {
-    return super.toJson()
-    j["tenant_id"] = tenantId;
-    j["service_id"] = serviceId;
-    j["name"] = name;
-    j["description"] = description;
-    j["service_url"] = serviceUrl;
-    j["odata_version"] = odataVersion;
-    j["backend_system"] = backendSystem;
-
+    
     Json sets = Json.emptyArray;
     foreach (s; entitySets)
       sets ~= Json(s);
-    j["entity_sets"] = sets;
 
-    j["status"] = status;
-    j["query_count"] = queryCount;
-    j["created_at"] = createdAt;
-    j["updated_at"] = updatedAt;
-    return j;
+        return super.toJson()
+    .set("tenant_id", tenantId)
+    .set("service_id", serviceId)
+    .set("name", name)
+    .set("description", description)
+    .set("service_url", serviceUrl)
+    .set("odata_version", odataVersion)
+    .set("backend_system", backendSystem)
+    .set("entity_sets", sets)
+    .set("status", status)
+    .set("query_count", queryCount)
+    .set("created_at", createdAt)
+    .set("updated_at", updatedAt);
   }
 }
 

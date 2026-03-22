@@ -43,29 +43,29 @@ struct OBSMultipartUpload {
   SysTime initiatedAt;
 
   override Json toJson() {
-    return super.toJson()
-    j["upload_id"] = uploadId;
-    j["bucket_id"] = bucketId;
-    j["object_key"] = objectKey;
-    j["status"] = cast(string)status;
-    j["content_type"] = contentType;
+    import std.conv : to;
 
     Json partsArr = Json.emptyArray;
     foreach (ref p; parts)
       partsArr ~= p.toJson();
-    j["parts"] = partsArr;
 
-    import std.conv : to;
-
-    j["total_parts"] = cast(long)parts.length;
+    Json json = super.toJson()
+      .set("upload_id", uploadId)
+      .set("bucket_id", bucketId)
+      .set("object_key", objectKey)
+      .set("status", cast(string)status)
+      .set("content_type", contentType)
+      .set("parts", partsArr)
+      .set("total_parts", cast(long)parts.length)
+      .set("initiated_at", initiatedAt.toISOExtString());
 
     if (userMetadata.length > 0) {
-      Json m = Json.emptyObject;
+      Json meta = Json.emptyObject;
       foreach (k, v; userMetadata)
-        m[k] = v;
-      j["user_metadata"] = m;
+        meta[k] = v;
+      json["user_metadata"] = meta;
     }
-    j["initiated_at"] = initiatedAt.toISOExtString();
-    return j;
+
+    return json;
   }
 }

@@ -43,15 +43,14 @@ struct INTEventTopic {
 
   override Json toJson()  {
     return super.toJson()
-    j["tenant_id"] = tenantId;
-    j["topic_id"] = topicId;
-    j["topic_name"] = topicName;
-    j["description"] = description;
-    j["subscriber_count"] = subscriberCount;
-    j["messages_published"] = messagesPublished;
-    j["created_at"] = createdAt;
-    j["updated_at"] = updatedAt;
-    return j;
+    .set("tenant_id", tenantId)
+    .set("topic_id", topicId)
+    .set("topic_name", topicName)
+    .set("description", description)
+    .set("subscriber_count", subscriberCount)
+    .set("messages_published", messagesPublished)
+    .set("created_at", createdAt)
+    .set("updated_at", updatedAt);
   }
 }
 
