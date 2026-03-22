@@ -138,16 +138,4 @@ class CMGServer {
     if (req.headers["Authorization"] != expected)
       throw new CMGAuthorizationException("Invalid token");
   }
-
-  private string[] normalizedSegments(string subPath) {
-    auto clean = subPath;
-    if (clean.length > 0 && clean[0] == '/')
-      clean = clean[1 .. $];
-    if (clean.length > 0 && clean[$ - 1] == '/')
-      clean = clean[0 .. $ - 1];
-    if (clean.length == 0)
-      return null;
-    return clean.split("/");
-  }
-
 }

@@ -21,3 +21,23 @@ void respondError(HTTPServerResponse res, string message, int statusCode) {
 
   res.writeJsonBody(payload, statusCode);
 }
+
+/**
+  * Helper to normalize URL path segments for easier routing.
+  * It trims leading and trailing slashes and splits the path into segments.
+  * @param subPath The URL path after the base path (e.g. "/v1/tenants/123")
+  * @return An array of path segments (e.g. ["v1", "tenants", "123"]) or null if the path is empty
+  */
+string[] normalizedSegments(string subPath) {
+  auto clean = subPath;
+  if (clean.length > 0 && clean[0] == '/') {
+    clean = clean[1 .. $];
+  }
+  if (clean.length > 0 && clean[$ - 1] == '/') {
+    clean = clean[0 .. $ - 1];
+  }
+  if (clean.length == 0) {
+    return null;
+  }
+  return clean.split("/");
+}
