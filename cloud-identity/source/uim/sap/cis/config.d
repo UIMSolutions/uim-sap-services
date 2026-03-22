@@ -62,7 +62,7 @@ class CISConfig : SAPConfig {
 
   string defaultAuthMethod = "form";
 
-  override void validate() const {
+  override void validate() {
     super.validate();
 
     if (defaultAuthMethod.length == 0) {

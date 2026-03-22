@@ -39,7 +39,7 @@ class CONConfig : SAPConfig {
 
   string connectorLocationId = "default-location";
 
-  override void validate() const {
+  override void validate() {
     super.validate();
 
     if (connectorLocationId.length == 0) {

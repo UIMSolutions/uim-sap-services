@@ -49,7 +49,7 @@ class KYMConfig : SAPConfig {
   size_t defaultReplicas = 1;
 
 
-  override void validate() const {
+  override void validate() {
     super.validate();
 
     if (requireAuthToken && authToken.length == 0)

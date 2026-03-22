@@ -36,7 +36,7 @@ class ISAConfig : SAPConfig {
   string defaultTenant = "default";
 
 
-  override void validate() const {
+  override void validate() {
     super.validate();
 
     if (defaultTenant.length == 0) {

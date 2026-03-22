@@ -48,7 +48,7 @@ class DMAConfig : SAPConfig {
   /// Versioning
   bool versioningEnabled = true;
 
-  override void validate() const {
+  override void validate() {
     super.validate();
 
     if (maxUploadSizeMB <= 0) {

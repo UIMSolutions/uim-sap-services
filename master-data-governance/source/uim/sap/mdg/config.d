@@ -29,7 +29,7 @@ class MDGConfig : SAPConfig {
   string defaultApprover = "mdg-approver";
 
 
-  override void validate() const {
+  override void validate() {
     super.validate();
 
     if (defaultApprover.length == 0) {

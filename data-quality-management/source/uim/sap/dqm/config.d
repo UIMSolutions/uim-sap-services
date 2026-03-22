@@ -40,7 +40,7 @@ class DQMConfig : SAPConfig {
     * Should be a valid ISO 3166-1 alpha-2 country code (e.g. "DE", "US", "FR").
     * This is used to provide better data quality results by applying country-specific rules and reference data.
     */
-  override void validate() const {
+  override void validate() {
     super.validate();
     
     if (defaultCountry.length == 0)

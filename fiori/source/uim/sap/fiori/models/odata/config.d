@@ -37,7 +37,7 @@ class ODataConfig : SAPConfig {
   string sapLanguage = "EN";
   Duration timeout = 30.seconds;
 
-  override void validate() const {
+  override void validate() {
     super.validate();
 
     if (serviceUrl.length == 0) {

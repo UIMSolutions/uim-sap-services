@@ -43,7 +43,7 @@ class RMSConfig : SAPConfig {
 
   int logRetention = 500;
 
-  override void validate() const {
+  override void validate() {
     super.validate();
 
     if (dataDirectory.length == 0) {

@@ -57,7 +57,7 @@ class DSPConfig : SAPConfig {
     * This method checks for non-empty values, positive integers, and logical consistency between related properties.
     * If any validation check fails, a DSPConfigurationException is thrown with a descriptive error message.
     */
-  override void validate() const {
+  override void validate() {
     super.validate();
 
     if (defaultSpaceDiskGb <= 0)

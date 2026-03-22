@@ -32,7 +32,7 @@ struct HanaDBConfig : SAPConfig {
 
     string[string] customHeaders;
 
-    override void validate() const {
+    override void validate() {
         if (host.length == 0) {
             throw new HanaDBConfigurationException("Host cannot be empty");
         }

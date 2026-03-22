@@ -79,7 +79,7 @@ class OBSConfig : SAPConfig {
   /// Credential expiry in seconds
   size_t credentialExpirySecs = 3600;
 
-  override void validate() const {
+  override void validate() {
     super.validate();
 
     if (maxBucketsPerTenant == 0)

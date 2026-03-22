@@ -36,7 +36,7 @@ class CAGConfig : SAPConfig {
 
   string[string] customHeaders;
 
-  override void validate() const {
+  override void validate() {
     super.validate();
 
     if (runtime.length == 0) {

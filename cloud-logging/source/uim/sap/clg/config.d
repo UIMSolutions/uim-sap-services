@@ -40,7 +40,7 @@ class CLGConfig : SAPConfig {
   size_t maxEntries = 10000;
   size_t defaultQueryLimit = 100;
 
-  override void validate() const {
+  override void validate() {
     super.validate();
 
     if (maxEntries == 0) {

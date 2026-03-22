@@ -36,7 +36,7 @@ class HARConfig : SAPConfig {
   long maxUploadBytes = 52_428_800L;
 
 
-  override void validate() const {
+  override void validate() {
     super.validate();
 
     if (dataDirectory.length == 0)

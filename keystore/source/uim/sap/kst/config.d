@@ -43,7 +43,7 @@ class KSTConfig : SAPConfig {
   /// Maximum number of keystores that may be stored (0 = unlimited)
   size_t maxKeystores = 0;
 
-  override void validate() const {
+  override void validate() {
     super.validate();
 
     if (masterKey.length == 0) {

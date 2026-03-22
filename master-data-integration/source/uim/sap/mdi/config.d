@@ -34,7 +34,7 @@ class MDIConfig : SAPConfig {
 
   string defaultObjectType = "business_partner";
 
-  override void validate() const {
+  override void validate() {
     super.validate();
 
     if (defaultObjectType.length == 0) {

@@ -62,7 +62,7 @@ class CPIConfig : SAPConfig {
   uint maxRetries = 2;
 
 
-  override void validate() const {
+  override void validate() {
     if (baseUrl.length == 0) {
       throw new CPIConfigurationException("Base URL cannot be empty");
     }

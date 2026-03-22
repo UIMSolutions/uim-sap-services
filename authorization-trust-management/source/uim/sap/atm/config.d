@@ -65,7 +65,7 @@ class ATMConfig : SAPConfig {
   bool enforceTokenExpiry = true;
   string bootstrapToken;
 
-  override void validate() const {
+  override void validate() {
     super.validate();
 
     if (defaultIdpName.length == 0) {

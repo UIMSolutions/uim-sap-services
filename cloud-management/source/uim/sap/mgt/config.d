@@ -69,7 +69,7 @@ class MGTConfig : SAPConfig {
 
   string[string] customHeaders;
 
-  override void validate() const {
+  override void validate() {
     super.validate();
 
     if (region.length == 0) {

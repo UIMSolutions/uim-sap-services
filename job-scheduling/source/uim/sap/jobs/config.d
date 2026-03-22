@@ -61,7 +61,7 @@ class JobSchedulingConfig : SAPConfig {
   string authToken;
 
 
-  override void validate() const {
+  override void validate() {
     super.validate();
 
     if (schedulerTickMs < 200) {

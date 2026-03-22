@@ -36,7 +36,7 @@ class CPSConfig : SAPConfig {
 
   string defaultTheme = "sap_fiori_3";
 
-  override void validate() const {
+  override void validate() {
     super.validate();
 
     if (defaultTheme.length == 0) {

@@ -45,7 +45,7 @@ class CDCConfig : SAPConfig {
     return buildPath(dataDirectory, cacheFileName);
   }
 
-  override void validate() const {
+  override void validate() {
     super.validate();
 
     if (dataDirectory.length == 0)

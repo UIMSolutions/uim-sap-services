@@ -55,7 +55,7 @@ class PDMConfig : SAPConfig {
   /// Enable multitenancy
   bool multitenancy = true;
 
-  override void validate() const {
+  override void validate() {
     super.validate();
 
     if (maxSubjectsPerTenant == 0) {

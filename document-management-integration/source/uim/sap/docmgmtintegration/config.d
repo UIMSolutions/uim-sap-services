@@ -63,7 +63,7 @@ class DocMgmtIntegrationConfig : SAPConfig {
   /// Multitenancy
   bool multitenancyEnabled = true;
 
-  override void validate() const {
+  override void validate() {
     super.validate();
 
     if (maxUploadSizeMB <= 0) {

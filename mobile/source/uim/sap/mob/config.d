@@ -44,7 +44,7 @@ class MOBConfig : SAPConfig {
 
   string[string] customHeaders;
 
-  override void validate() const {
+  override void validate() {
     super.validate();
 
     if (requireAuthToken && authToken.length == 0)

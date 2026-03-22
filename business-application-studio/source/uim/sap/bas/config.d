@@ -34,7 +34,7 @@ class BASConfig : SAPConfig {
   string[] regions = ["eu10", "us10", "ap10"];
   string[] hyperscalers = ["aws", "azure", "gcp"];
 
-  override void validate() const {
+  override void validate() {
     super.validate();
 
     if (defaultRegion.length == 0) {
