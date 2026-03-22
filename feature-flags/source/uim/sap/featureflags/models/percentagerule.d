@@ -38,15 +38,14 @@ class FFLPercentageRule : SAPObject {
   FFLPercentageEntry[] entries;
 
   override Json toJson() {
-    Json j = Json.emptyObject;
-    j["rule_id"] = ruleId;
-
     Json arr = Json.emptyArray;
     foreach (entry; entries) {
       arr ~= entry.toJson();
     }
-    j["entries"] = arr;
-    return j;
+
+    return super.toJson()
+    .set("rule_id", ruleId)
+    .set("entries", arr);
   }
 
   static FFLPercentageRule opCall(Json request) {

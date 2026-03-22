@@ -16,15 +16,14 @@ struct EVMTopic {
     string updatedAt;
 
     override Json toJson()  {
-        Json j = Json.emptyObject;
-        j["tenant_id"] = tenantId;
-        j["topic_name"] = topicName;
-        j["description"] = description;
-        j["subscriber_count"] = subscriberCount;
-        j["messages_published"] = messagesPublished;
-        j["created_at"] = createdAt;
-        j["updated_at"] = updatedAt;
-        return j;
+        return super.toJson()
+        .set("tenant_id", tenantId)
+        .set("topic_name", topicName)
+        .set("description", description)
+        .set("subscriber_count", subscriberCount)
+        .set("messages_published", messagesPublished)
+        .set("created_at", createdAt)
+        .set("updated_at", updatedAt);
     }
 }
 

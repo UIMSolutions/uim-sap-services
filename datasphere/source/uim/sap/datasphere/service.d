@@ -224,10 +224,9 @@ class DSPService : SAPService {
 
     auto saved = _store.upsertConnection(item);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["connection"] = saved.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("connection", saved.toJson());
   }
 
   Json listConnections(UUID tenantId) {

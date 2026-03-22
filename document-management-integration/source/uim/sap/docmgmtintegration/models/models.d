@@ -47,14 +47,13 @@ struct Tenant {
   SysTime modifiedAt;
 
   override Json toJson()  {
-    Json r = Json.emptyObject;
-    r["tenant_id"] = tenantId;
-    r["name"] = name;
-    r["description"] = description;
-    r["active"] = active;
-    r["created_at"] = createdAt.toISOExtString();
-    r["modified_at"] = modifiedAt.toISOExtString();
-    return r;
+    return super.toJson()
+    .set("tenant_id", tenantId)
+    .set("name", name)
+    .set("description", description)
+    .set("active", active)
+    .set("created_at", createdAt.toISOExtString())
+    .set("modified_at", modifiedAt.toISOExtString());
   }
 }
 

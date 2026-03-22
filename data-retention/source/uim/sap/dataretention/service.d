@@ -160,20 +160,19 @@ class DRMService : SAPService {
       recommendation = "block";
     }
 
-    Json payload = Json.emptyObject;
-    payload["tenant_id"] = tenantId;
-    payload["data_subject_id"] = dataSubjectId;
-    payload["application_group"] = record.applicationGroup;
-    payload["legal_ground"] = record.legalGround;
-    payload["reference_date"] = record.referenceDate;
-    payload["end_of_purpose_date"] = endResidence;
-    payload["retention_completion_date"] = endRetention;
-    payload["end_of_purpose_reached"] = endPurposeReached;
-    payload["retention_completed"] = retentionCompleted;
-    payload["recommended_action"] = recommendation;
-    payload["can_trigger_block"] = endPurposeReached;
-    payload["can_trigger_delete"] = retentionCompleted;
-    return payload;
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("data_subject_id", dataSubjectId)
+      .set("application_group", record.applicationGroup)
+      .set("legal_ground", record.legalGround)
+      .set("reference_date", record.referenceDate)
+      .set("end_of_purpose_date", endResidence)
+      .set("retention_completion_date", endRetention)
+      .set("end_of_purpose_reached", endPurposeReached)
+      .set("retention_completed", retentionCompleted)
+      .set("recommended_action", recommendation)
+      .set("can_trigger_block", endPurposeReached)
+      .set("can_trigger_delete", retentionCompleted);
   }
 
   Json createArchiveJob(UUID tenantId, Json request) {

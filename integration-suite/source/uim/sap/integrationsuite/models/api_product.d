@@ -53,25 +53,23 @@ struct INTApiProduct {
   string createdAt;
   string updatedAt;
 
-  override Json toJson()  {
-    Json j = Json.emptyObject;
-    j["tenant_id"] = tenantId;
-    j["product_id"] = productId;
-    j["name"] = name;
-    j["description"] = description;
-    j["version"] = version_;
-    j["status"] = status;
-
+  override Json toJson() {
     Json ids = Json.emptyArray;
     foreach (id; proxyIds)
       ids ~= Json(id);
-    j["proxy_ids"] = ids;
 
-    j["subscriber_count"] = subscriberCount;
-    j["rate_limit_policy"] = rateLimitPolicy;
-    j["created_at"] = createdAt;
-    j["updated_at"] = updatedAt;
-    return j;
+    return super.toJson
+      .set("tenant_id", tenantId)
+      .set("product_id", productId)
+      .set("name", name)
+      .set("description", description)
+      .set("version", version_)
+      .set("status", status)
+      .set("proxy_ids", ids)
+      .set("subscriber_count", subscriberCount)
+      .set("rate_limit_policy", rateLimitPolicy)
+      .set("created_at", createdAt)
+      .set("updated_at", updatedAt);
   }
 }
 

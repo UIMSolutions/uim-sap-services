@@ -193,10 +193,9 @@ HTML";
     runtimes ~= "cloud-foundry";
     runtimes ~= "kyma";
 
-    Json data = Json.emptyObject;
-    data["resources"] = runtimes;
-    data["total_results"] = cast(long)runtimes.length;
-    return data;
+    return Json.emptyObject
+      .set("resources", runtimes)
+      .set("total_results", cast(long)runtimes.length);
   }
 
   Json testAlertConnector(Json request) {

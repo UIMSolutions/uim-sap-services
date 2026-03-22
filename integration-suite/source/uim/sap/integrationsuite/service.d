@@ -171,9 +171,9 @@ class INTService : SAPService {
     auto p = _store.getApiProduct(tenantId, productId);
     if (p.productId.length == 0)
       throw new INTNotFoundException("API Product", productId);
-    Json r = Json.emptyObject;
-    r["api_product"] = p.toJson();
-    return r;
+    
+    return Json.emptyObject
+      .set("api_product", p.toJson());
   }
 
   Json deleteApiProduct(UUID tenantId, string productId) {

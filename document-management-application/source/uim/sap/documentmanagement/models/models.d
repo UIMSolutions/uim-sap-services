@@ -106,18 +106,17 @@ struct Folder {
   Json properties; // custom metadata / properties
 
   override Json toJson()  {
-    Json r = Json.emptyObject;
-    r["folder_id"] = folderId;
-    r["repository_id"] = repositoryId;
-    r["parent_folder_id"] = parentFolderId;
-    r["name"] = name;
-    r["description"] = description;
-    r["created_by"] = createdBy;
-    r["created_at"] = createdAt.toISOExtString();
-    r["modified_at"] = modifiedAt.toISOExtString();
-    r["properties"] = properties;
-    r["object_type"] = "cmis:folder";
-    return r;
+    return super.toJson()
+    .set("folder_id", folderId)
+    .set("repository_id", repositoryId)
+    .set("parent_folder_id", parentFolderId)
+    .set("name", name)
+    .set("description", description)
+    .set("created_by", createdBy)
+    .set("created_at", createdAt.toISOExtString())
+    .set("modified_at", modifiedAt.toISOExtString())
+    .set("properties", properties)
+    .set("object_type", "cmis:folder");
   }
 
   /// Build a breadcrumb-compatible path segment identifier.

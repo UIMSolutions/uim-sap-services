@@ -102,10 +102,9 @@ class KYMService : SAPService {
         foreach (ref ns; nss)
             resources.appendArrayElement(ns.toJson());
 
-        Json payload = Json.emptyObject;
-        payload["resources"] = resources;
-        payload["total_results"] = cast(long) nss.length;
-        return payload;
+        return Json.emptyObject
+            .set("resources", resources)
+            .set("total_results", cast(long) nss.length);
     }
 
     Json deleteNamespace(string name) {

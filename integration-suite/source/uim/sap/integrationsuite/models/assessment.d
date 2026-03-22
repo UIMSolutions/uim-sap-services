@@ -25,26 +25,25 @@ struct INTAssessment {
   string createdAt;
   string updatedAt;
 
-  override Json toJson()  {
-    Json j = Json.emptyObject;
-    j["tenant_id"] = tenantId;
-    j["assessment_id"] = assessmentId;
-    j["name"] = name;
-    j["description"] = description;
-    j["integration_domain"] = integrationDomain;
-    j["integration_style"] = integrationStyle;
-    j["recommended_technology"] = recommendedTechnology;
-    j["status"] = status;
-    j["findings"] = findings;
-    j["assessor"] = assessor;
-    j["created_at"] = createdAt;
-    j["updated_at"] = updatedAt;
-    return j;
+  override Json toJson() {
+    return super.toJson
+      .set("tenant_id", tenantId)
+      .set("assessment_id", assessmentId)
+      .set("name", name)
+      .set("description", description)
+      .set("integration_domain", integrationDomain)
+      .set("integration_style", integrationStyle)
+      .set("recommended_technology", recommendedTechnology)
+      .set("status", status)
+      .set("findings", findings)
+      .set("assessor", assessor)
+      .set("created_at", createdAt)
+      .set("updated_at", updatedAt);
   }
 }
 
 INTAssessment assessmentFromJson(UUID tenantId, Json request) {
-  INTAssessment a;
+  INTAssessment a = new INTAssessment;
   a.tenantId = UUID(tenantId);
   a.assessmentId = randomUUID().toString();
 
