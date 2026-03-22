@@ -38,13 +38,14 @@ mixin(ShowModule!());
   * usage.createdAt = Clock.currTime();
   * ```
   */
-struct PDMDataUsage {
-  string usageId;
-  string subjectId;
-  UUID tenantId;
+class PDMDataUsage : SAPTenantObject {
+  mixin(SAPObjectTemplate!PDMDataUsage);
+
+  UUID usageId;
+  UUID subjectId;
 
   string applicationName;
-  string applicationId;
+  UUID applicationId;
   PDMDataCategory dataCategory = PDMDataCategory.identification;
   PDMProcessingPurpose purpose = PDMProcessingPurpose.contractual;
   PDMLegalBasis legalBasis = PDMLegalBasis.gdpr;
@@ -55,53 +56,49 @@ struct PDMDataUsage {
 
   SysTime firstUsedAt;
   SysTime lastAccessedAt;
-  SysTime createdAt;
 
-  override Json toJson()  {
+  override Json toJson() {
     return super.toJson()
-    j["usage_id"] = usageId;
-    j["subject_id"] = subjectId;
-    j["tenant_id"] = tenantId;
-    j["application_name"] = applicationName;
-    j["application_id"] = applicationId;
-    j["data_category"] = cast(string)dataCategory;
-    j["purpose"] = cast(string)purpose;
-    j["legal_basis"] = cast(string)legalBasis;
-    j["description"] = description;
-    j["retention_period"] = retentionPeriod;
-    j["active"] = active;
-    j["first_used_at"] = firstUsedAt.toISOExtString();
-    j["last_accessed_at"] = lastAccessedAt.toISOExtString();
-    j["created_at"] = createdAt.toISOExtString();
-    return j;
+      .set("usage_id", usageId)
+      .set("subject_id", subjectId)
+      .set("application_name", applicationName)
+      .set("application_id", applicationId)
+      .set("data_category", cast(string)dataCategory)
+      .set("purpose", cast(string)purpose)
+      .set("legal_basis", cast(string)legalBasis)
+      .set("description", description)
+      .set("retention_period", retentionPeriod)
+      .set("active", active)
+      .set("first_used_at", firstUsedAt.toISOExtString())
+      .set("last_accessed_at", lastAccessedAt.toISOExtString());
   }
-}
 
-PDMDataUsage usageFromJson(string usageId, string subjectId, UUID tenantId, Json req) {
-  PDMDataUsage u;
-  u.usageId = usageId;
-  u.subjectId = subjectId;
-  u.tenantId = UUID(tenantId);
-  u.createdAt = Clock.currTime();
-  u.firstUsedAt = u.createdAt;
-  u.lastAccessedAt = u.createdAt;
+  static PDMDataUsage opCall(UUID usageId, UUID subjectId, UUID tenantId, Json req) {
+    PDMDataUsage u = new PDMDataUsage(req);
+    u.usageId = usageId;
+    u.subjectId = subjectId;
+    u.tenantId = tenantId;
+    u.createdAt = Clock.currTime();
+    u.firstUsedAt = u.createdAt;
+    u.lastAccessedAt = u.createdAt;
 
-  if ("application_name" in req && req["application_name"].isString)
-    u.applicationName = req["application_name"].get!string;
-  if ("application_id" in req && req["application_id"].isString)
-    u.applicationId = req["application_id"].get!string;
-  if ("data_category" in req && req["data_category"].isString)
-    u.dataCategory = parseDataCat(req["data_category"].get!string);
-  if ("purpose" in req && req["purpose"].isString)
-    u.purpose = parsePurpose(req["purpose"].get!string);
-  if ("legal_basis" in req && req["legal_basis"].isString)
-    u.legalBasis = parseBasis(req["legal_basis"].get!string);
-  if ("description" in req && req["description"].isString)
-    u.description = req["description"].get!string;
-  if ("retention_period" in req && req["retention_period"].isString)
-    u.retentionPeriod = req["retention_period"].get!string;
+    if ("application_name" in req && req["application_name"].isString)
+      u.applicationName = req["application_name"].get!string;
+    if ("application_id" in req && req["application_id"].isString)
+      u.applicationId = UUID(req["application_id"].get!string);
+    if ("data_category" in req && req["data_category"].isString)
+      u.dataCategory = parseDataCat(req["data_category"].get!string);
+    if ("purpose" in req && req["purpose"].isString)
+      u.purpose = parsePurpose(req["purpose"].get!string);
+    if ("legal_basis" in req && req["legal_basis"].isString)
+      u.legalBasis = parseBasis(req["legal_basis"].get!string);
+    if ("description" in req && req["description"].isString)
+      u.description = req["description"].get!string;
+    if ("retention_period" in req && req["retention_period"].isString)
+      u.retentionPeriod = req["retention_period"].get!string;
 
-  return u;
+    return u;
+  }
 }
 
 private PDMDataCategory parseDataCat(string s) {

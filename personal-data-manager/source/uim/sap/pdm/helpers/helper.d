@@ -13,32 +13,32 @@ mixin(ShowModule!());
 
 /// Generate a unique subject ID
 string generateSubjectId() {
-  return "sub-" ~ randomUUID();
+  return "sub-" ~ randomUUID().toString;
 }
 
 /// Generate a unique request ID
 string generateRequestId() {
-  return "req-" ~ randomUUID();
+  return "req-" ~ randomUUID().toString;
 }
 
 /// Generate a unique record ID
 string generateRecordId() {
-  return "rec-" ~ randomUUID();
+  return "rec-" ~ randomUUID().toString;
 }
 
 /// Generate a unique notification ID
 string generateNotificationId() {
-  return "ntf-" ~ randomUUID();
+  return "ntf-" ~ randomUUID().toString;
 }
 
 /// Generate a unique tenant ID
 string generateTenantId() {
-  return "tnt-" ~ randomUUID();
+  return "tnt-" ~ randomUUID().toString;
 }
 
 /// Generate a unique usage ID
 string generateUsageId() {
-  return "usg-" ~ randomUUID();
+  return "usg-" ~ randomUUID().toString;
 }
 
 /// Simple email validation
@@ -52,8 +52,8 @@ bool isValidEmail(string email) {
 }
 
 /// Compose a tenant-scoped key
-string tenantKey(UUID tenantId, string resourceId) {
-  return tenantId ~ "/" ~ resourceId;
+string tenantKey(UUID tenantId, UUID resourceId) {
+  return tenantId.toString ~ "/" ~ resourceId.toString;
 }
 
 /// Check if a search term matches a data subject (case-insensitive partial match)
@@ -71,7 +71,7 @@ bool matchesSubject(PDMDataSubject s, string term) {
     return true;
   if (s.companyName.toLower.canFind(t))
     return true;
-  if (s.externalId.toLower.canFind(t))
+  if (s.externalId.toString.toLower.canFind(t))
     return true;
   return false;
 }

@@ -47,11 +47,11 @@ class PDMNotification : SAPTenantObject {
     }
 }
 
-PDMNotification notificationFromJson(string notificationId, string subjectId, UUID tenantId, Json req) {
+PDMNotification notificationFromJson(UUID notificationId, UUID subjectId, UUID tenantId, Json req) {
     PDMNotification n;
     n.notificationId = notificationId;
     n.subjectId = subjectId;
-    n.tenantId = UUID(tenantId);
+    n.tenantId = tenantId;
     n.createdAt = Clock.currTime();
 
     if ("request_id" in req && req["request_id"].isString)

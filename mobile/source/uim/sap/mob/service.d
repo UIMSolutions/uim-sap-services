@@ -273,7 +273,7 @@ class MOBService : SAPService {
   Json setOfflineConfig(string appId, Json request) {
     requireApp(appId);
     auto existing = _store.getOfflineConfig(appId);
-    auto oc = offlineConfigFromJson(appId, request);
+    auto oc = MOBOfflineConfig(appId, request);
     if (existing.appId.length > 0)
       oc.createdAt = existing.createdAt;
     if (oc.syncIntervalSecs == 0)

@@ -37,26 +37,26 @@ class PDMTenant : SAPTenantObject {
         if (metadata.length > 0) {
             Json m = Json.emptyObject;
             foreach (k, v; metadata) m[k] = v;
-            Json["metadata"] = m;
+            json["metadata"] = m;
         }
 
-        return Json;
+        return json;
     }
 
-    static PDMTenant tenantFromJson(UUID tenantId, Json req) {
+    static PDMTenant opCall(UUID tenantId, Json req) {
     PDMTenant t = new PDMTenant(req);
     t.tenantId = UUID(tenantId);
     t.createdAt = Clock.currTime();
     t.updatedAt = t.createdAt;
 
     t.name = "name" in req && req["name"].isString 
-      ? req["name"].get!string : tenantId;
+      ? req["name"].get!string : tenantId.toString;
     if ("description" in req && req["description"].isString)
         t.description = req["description"].get!string;
     if ("contact_email" in req && req["contact_email"].isString)
         t.contactEmail = req["contact_email"].get!string;
     if ("metadata" in req && req["metadata"].type == Json.Type.object) {
-        foreach (string k, v; req["metadata"])
+        foreach (string k, v; req["metadata"].toMap)
             if (v.isString) t.metadata[k] = v.get!string;
     }
 

@@ -23,6 +23,6 @@ bool isValidAppId(string id) pure nothrow {
 }
 
 /// Build composite key for app-scoped resources
-string appKey(string appId, string resourceId) pure nothrow {
+string appKey(string appId, UUID resourceId) pure nothrow {
   return appId ~ "/" ~ resourceId;
 }

@@ -787,7 +787,7 @@ class INTStore : SAPStore {
     //  Helpers
     // =====================================================================
 
-    private string tenantKey(UUID tenantId, string resourceId) {
+    private string tenantKey(UUID tenantId, UUID resourceId) {
         return tenantId ~ ":" ~ resourceId;
     }
 

@@ -29,9 +29,10 @@ class PDMService : SAPService {
     _store = new PDMStore;
 
     // Ensure default tenant exists
-    if (_config.defaultTenantId.length > 0) {
-      PDMTenant t;
-      t.tenantId = _config.defaultTenantId;
+    auto cfg = cast(PDMConfig)_config;
+    if (cfg.defaultTenantId == NULLUUID) {
+      PDMTenant t = new PDMTenant;
+      t.tenantId = cfg.defaultTenantId;
       t.name = "Default Tenant";
       t.createdAt = Clock.currTime();
       t.updatedAt = t.createdAt;
@@ -40,16 +41,14 @@ class PDMService : SAPService {
   }
 
   override Json health() {
-    Json info = super.health();
-    info["subjects"] = cast(long)_store.totalSubjectCount();
-    info["requests"] = cast(long)_store.totalRequestCount();
-    return info;
+    return super.health()
+      .set("subjects", cast(long)_store.totalSubjectCount())
+      .set("requests", cast(long)_store.totalRequestCount());
   }
 
   override Json ready() {
-    Json info = super.ready();
-    info["subjects"] = cast(long)_store.totalSubjectCount();
-    return info;
+    return super.ready()
+      .set("subjects", cast(long)_store.totalSubjectCount());
   }
 
   // ══════════════════════════════════════
@@ -57,8 +56,8 @@ class PDMService : SAPService {
   // ══════════════════════════════════════
 
   Json createTenant(Json req) {
-    UUID tenantId = generateTenantId();
-    PDMTenant t = tenantFromJson(tenantId, req);
+    UUID tenantId = randomUUID(); // generateTenantId();
+    PDMTenant t = PDMTenant(tenantId, req);
     _store.upsertTenant(t);
     return t.toJson();
   }
@@ -77,10 +76,10 @@ class PDMService : SAPService {
     Json arr = Json.emptyArray;
     foreach (ref t; tenants)
       arr ~= t.toJson();
-    Json result = Json.emptyObject;
-    result["tenants"] = arr;
-    result["total"] = cast(long)tenants.length;
-    return result;
+
+    return Json.emptyObject
+      .set("tenants", arr)
+      .set("total", cast(long)tenants.length);
   }
 
   // ══════════════════════════════════════
@@ -89,12 +88,12 @@ class PDMService : SAPService {
 
   Json registerSubject(UUID tenantId, Json req) {
     ensureTenant(tenantId);
-    
+
     PDMConfig cfg = cast(PDMConfig)_config;
     if (_store.subjectCount(tenantId) >= cfg.maxSubjectsPerTenant)
       throw new PDMQuotaExceededException("subjects", cfg.maxSubjectsPerTenant);
 
-    string subjectId = generateSubjectId();
+    UUID subjectId = randomUUID(); // generateSubjectId();
     PDMDataSubject s = PDMDataSubject(subjectId, tenantId, req);
     _store.upsertSubject(s);
     return s.toJson();
@@ -113,24 +112,22 @@ class PDMService : SAPService {
     Json arr = Json.emptyArray;
     foreach (ref s; subjects)
       arr ~= s.toJson();
-    
+
     return Json.emptyObject
-    .set("subjects", arr)
-    .set("total", cast(long)subjects.length);
+      .set("subjects", arr)
+      .set("total", cast(long)subjects.length);
   }
 
   /// Search subjects by term (name, email, company, external ID)
   Json searchSubjects(UUID tenantId, string term) {
     ensureTenant(tenantId);
     auto subjects = _store.searchSubjects(tenantId, term);
-    Json arr = Json.emptyArray;
-    foreach (ref s; subjects)
-      arr ~= s.toJson();
-    
+    auto arr = subjects.map!(s => s.toJson).array;
+
     return Json.emptyObject
-    .set("subjects", arr)
-    .set("total", cast(long)subjects.length)
-    .set("search_term", term);
+      .set("subjects", arr)
+      .set("total", cast(long)subjects.length)
+      .set("search_term", term);
   }
 
   /// Search subjects by type (private or corporate)
@@ -138,14 +135,14 @@ class PDMService : SAPService {
     ensureTenant(tenantId);
     PDMSubjectType st = parseSubjectTypeStr(typeStr);
     auto subjects = _store.searchSubjectsByType(tenantId, st);
-    Json arr = Json.emptyArray;
-    foreach (ref s; subjects)
-      arr ~= s.toJson();
+    auto arr = subjects.map!(s => s.toJson).array;
+
+    arr ~= s.toJson();
 
     return Json.emptyObject
-    .set("subjects", arr)
-    .set("total", cast(long)subjects.length)
-    .set("subject_type", typeStr);
+      .set("subjects", arr)
+      .set("total", cast(long)subjects.length)
+      .set("subject_type", typeStr);
   }
 
   Json updateSubject(UUID tenantId, string subjectId, Json req) {
@@ -182,8 +179,8 @@ class PDMService : SAPService {
     _store.removeSubject(tenantId, subjectId);
 
     return Json.emptyObject
-    .set("status", "deleted")
-    .set("subject_id", subjectId);
+      .set("status", "deleted")
+      .set("subject_id", subjectId);
   }
 
   // ══════════════════════════════════════
@@ -199,7 +196,7 @@ class PDMService : SAPService {
     if (_store.recordCountBySubject(tenantId, subjectId) >= cfg.maxRecordsPerSubject)
       throw new PDMQuotaExceededException("records per subject", cfg.maxRecordsPerSubject);
 
-    string recordId = generateRecordId();
+    UUID recordId = randomUUID; // generateRecordId();
     PDMPersonalDataRecord r = recordFromJson(recordId, subjectId, tenantId, req);
     _store.upsertRecord(r);
     return r.toJson();
@@ -212,14 +209,12 @@ class PDMService : SAPService {
       throw new PDMNotFoundException("DataSubject", subjectId);
 
     auto records = _store.listRecordsBySubject(tenantId, subjectId);
-    Json arr = Json.emptyArray;
-    foreach (ref r; records)
-      arr ~= r.toJson();
-    Json result = Json.emptyObject;
-    result["subject_id"] = subjectId;
-    result["records"] = arr;
-    result["total"] = cast(long)records.length;
-    return result;
+    auto arr = records.map!(r => r.toJson).array;
+
+    return Json.emptyObject
+      .set("subject_id", subjectId)
+      .set("records", arr)
+      .set("total", cast(long)records.length);
   }
 
   /// Generate a personal data report for a subject (for sending via email)
@@ -232,21 +227,17 @@ class PDMService : SAPService {
     auto records = _store.listRecordsBySubject(tenantId, subjectId);
     auto usages = _store.listUsagesBySubject(tenantId, subjectId);
 
-    Json recArr = Json.emptyArray;
-    foreach (ref r; records)
-      recArr ~= r.toJson();
-    Json usageArr = Json.emptyArray;
-    foreach (ref u; usages)
-      usageArr ~= u.toJson();
+    auto recArr = records.map!(r => r.toJson).array;
+    auto usageArr = usages.map!(u => u.toJson).array;
 
     return Json.emptyObject
-    .set("report_type", "personal_data_report")
-    .set("generated_at", Clock.currTime().toISOExtString())
-    .set("subject", subject.toJson())
-    .set("personal_data_records", recArr)
-    .set("data_usages", usageArr)
-    .set("total_records", cast(long)records.length)
-    .set("total_usages", cast(long)usages.length);
+      .set("report_type", "personal_data_report")
+      .set("generated_at", Clock.currTime().toISOExtString())
+      .set("subject", subject.toJson())
+      .set("personal_data_records", recArr)
+      .set("data_usages", usageArr)
+      .set("total_records", cast(long)records.length)
+      .set("total_usages", cast(long)usages.length);
   }
 
   Json deleteRecord(UUID tenantId, string recordId) {
@@ -256,8 +247,8 @@ class PDMService : SAPService {
     _store.removeRecord(tenantId, recordId);
 
     return Json.emptyObject
-    .set("status", "deleted")
-    .set("record_id", recordId);
+      .set("status", "deleted")
+      .set("record_id", recordId);
   }
 
   // ══════════════════════════════════════
@@ -273,8 +264,8 @@ class PDMService : SAPService {
     if (_store.requestCount(tenantId) >= cfg.maxRequestsPerTenant)
       throw new PDMQuotaExceededException("requests", cfg.maxRequestsPerTenant);
 
-    string requestId = generateRequestId();
-    PDMDataRequest r = requestFromJson(requestId, subjectId, tenantId, req);
+    UUID requestId = randomUUID(); // generateRequestId();
+    PDMDataRequest r = PDMDataRequest(requestId, subjectId, tenantId, req);
     _store.upsertRequest(r);
     return r.toJson();
   }
@@ -289,40 +280,34 @@ class PDMService : SAPService {
   Json listRequests(UUID tenantId) {
     ensureTenant(tenantId);
     auto requests = _store.listRequests(tenantId);
-    Json arr = Json.emptyArray;
-    foreach (ref r; requests)
-      arr ~= r.toJson();
-    Json result = Json.emptyObject;
-    result["requests"] = arr;
-    result["total"] = cast(long)requests.length;
-    return result;
+    Json arr = requests.map!(r => r.toJson).array;
+
+    return Json.emptyObject
+      .set("requests", arr)
+      .set("total", cast(long)requests.length);
   }
 
   Json listRequestsBySubject(UUID tenantId, string subjectId) {
     ensureTenant(tenantId);
     auto requests = _store.listRequestsBySubject(tenantId, subjectId);
-    Json arr = Json.emptyArray;
-    foreach (ref r; requests)
-      arr ~= r.toJson();
+    Json arr = requests.map!(r => r.toJson).array;
 
     return Json.emptyObject
-    .set("subject_id", subjectId)
-    .set("requests", arr)
-    .set("total", cast(long)requests.length);
+      .set("subject_id", subjectId)
+      .set("requests", arr)
+      .set("total", cast(long)requests.length);
   }
 
   Json listRequestsByStatus(UUID tenantId, string statusStr) {
     ensureTenant(tenantId);
     PDMRequestStatus st = parseRequestStatusStr(statusStr);
     auto requests = _store.listRequestsByStatus(tenantId, st);
-    Json arr = Json.emptyArray;
-    foreach (ref r; requests)
-      arr ~= r.toJson();
+    Json arr = requests.map!(r => r.toJson).array;
 
     return Json.emptyObject
-    .set("status_filter", statusStr)
-    .set("requests", arr)
-    .set("total", cast(long)requests.length);
+      .set("status_filter", statusStr)
+      .set("requests", arr)
+      .set("total", cast(long)requests.length);
   }
 
   /// Submit a draft request for processing
@@ -445,7 +430,7 @@ class PDMService : SAPService {
   }
 
   /// Send a full data report to the subject via email
-  Json sendDataReport(UUID tenantId, string subjectId) {
+  Json sendDataReport(UUID tenantId, UUID subjectId) {
     ensureTenant(tenantId);
     if (!_store.hasSubject(tenantId, subjectId))
       throw new PDMNotFoundException("DataSubject", subjectId);
@@ -457,7 +442,7 @@ class PDMService : SAPService {
     PDMNotification n;
     n.notificationId = notificationId;
     n.subjectId = subjectId;
-    n.tenantId = UUID(tenantId);
+    n.tenantId = tenantId;
     n.channel = PDMNotificationChannel.email;
     n.recipient = subject.email;
     n.subject = "Your Personal Data Report";
@@ -476,11 +461,11 @@ class PDMService : SAPService {
   Json listNotifications(UUID tenantId, string subjectId) {
     ensureTenant(tenantId);
     auto notifications = _store.listNotificationsBySubject(tenantId, subjectId);
-    Json arr = notifications.map!(notif => n.toJson()).array.toJson;
+    auto arr = notifications.map!(notif => notif.toJson()).array;
 
     return Json.emptyObject
-    .set("notifications", arr)
-    .set("total", cast(long)notifications.length);
+      .set("notifications", arr)
+      .set("total", cast(long)notifications.length);
   }
 
   // ══════════════════════════════════════
@@ -492,22 +477,22 @@ class PDMService : SAPService {
     if (!_store.hasSubject(tenantId, subjectId))
       throw new PDMNotFoundException("DataSubject", subjectId);
 
-    string usageId = generateUsageId();
-    PDMDataUsage u = usageFromJson(usageId, subjectId, tenantId, req);
+    UUID usageId = randomUUID(); // generateUsageId();
+    PDMDataUsage u = PDMDataUsage(usageId, subjectId, tenantId, req);
     _store.upsertUsage(u);
     return u.toJson();
   }
 
-  Json listUsages(UUID tenantId, string subjectId) {
+  Json listUsages(UUID tenantId, UUID subjectId) {
     ensureTenant(tenantId);
     auto usages = _store.listUsagesBySubject(tenantId, subjectId);
-    Json arr = Json.emptyArray;
-    foreach (ref u; usages)
-      arr ~= u.toJson();
-    Json result = Json.emptyObject;
-    result["usages"] = arr;
-    result["total"] = cast(long)usages.length;
-    return result;
+    auto arr = usages.map!(u => u.toJson()).array;
+
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("subject_id", subjectId)
+      .set("usages", arr)
+      .set("total", cast(long)usages.length);
   }
 
   // ══════════════════════════════════════

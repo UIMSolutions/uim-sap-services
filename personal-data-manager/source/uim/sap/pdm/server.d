@@ -134,7 +134,7 @@ class PDMServer {
       }
       if (req.method == HTTPMethod.POST) {
         Json data_ = parseBody(req);
-        res.writeJsonBody(_service.createTenant(body_), 201);
+        res.writeJsonBody(_service.createTenant(data_), 201);
         return;
       }
       respondError(res, "Method not allowed", 405);
@@ -178,7 +178,7 @@ class PDMServer {
       }
       if (req.method == HTTPMethod.POST) {
         Json data_ = parseBody(req);
-        res.writeJsonBody(_service.registerSubject(tenantId, body_), 201);
+        res.writeJsonBody(_service.registerSubject(tenantId, data_), 201);
         return;
       }
       respondError(res, "Method not allowed", 405);
@@ -208,7 +208,7 @@ class PDMServer {
       }
       if (req.method == HTTPMethod.PUT) {
         Json data_ = parseBody(req);
-        res.writeJsonBody(_service.updateSubject(tenantId, subjectId, body_), 200);
+        res.writeJsonBody(_service.updateSubject(tenantId, subjectId, data_), 200);
         return;
       }
       if (req.method == HTTPMethod.DELETE) {
@@ -245,8 +245,8 @@ class PDMServer {
 
     // POST /v1/tenants/{tid}/subjects/{sid}/notify
     if (rest.length == 2 && rest[1] == "notify" && req.method == HTTPMethod.POST) {
-      Json data_ = parseBody(req);
-      res.writeJsonBody(_service.sendNotification(tenantId, subjectId, body_), 200);
+      Json data = parseBody(req);
+      res.writeJsonBody(_service.sendNotification(tenantId, subjectId, data), 200);
       return;
     }
 
@@ -278,8 +278,8 @@ class PDMServer {
         return;
       }
       if (req.method == HTTPMethod.POST) {
-        Json data_ = parseBody(req);
-        res.writeJsonBody(_service.addRecord(tenantId, subjectId, body_), 201);
+        Json data = parseBody(req);
+        res.writeJsonBody(_service.addRecord(tenantId, subjectId, data), 201);
         return;
       }
       respondError(res, "Method not allowed", 405);
@@ -308,8 +308,8 @@ class PDMServer {
         return;
       }
       if (req.method == HTTPMethod.POST) {
-        Json data_ = parseBody(req);
-        res.writeJsonBody(_service.createRequest(tenantId, subjectId, body_), 201);
+        Json data = parseBody(req);
+        res.writeJsonBody(_service.createRequest(tenantId, subjectId, data), 201);
         return;
       }
       respondError(res, "Method not allowed", 405);
@@ -358,12 +358,12 @@ class PDMServer {
         res.writeJsonBody(_service.processRequest(tenantId, requestId), 200);
         return;
       case "complete":
-        Json data_ = parseBody(req);
-        res.writeJsonBody(_service.completeRequest(tenantId, requestId, body_), 200);
+        Json data = parseBody(req);
+        res.writeJsonBody(_service.completeRequest(tenantId, requestId, data), 200);
         return;
       case "reject":
         Json data2 = parseBody(req);
-        res.writeJsonBody(_service.rejectRequest(tenantId, requestId, body2), 200);
+        res.writeJsonBody(_service.rejectRequest(tenantId, requestId, data2), 200);
         return;
       case "cancel":
         res.writeJsonBody(_service.cancelRequest(tenantId, requestId), 200);
@@ -389,8 +389,8 @@ class PDMServer {
         return;
       }
       if (req.method == HTTPMethod.POST) {
-        Json data_ = parseBody(req);
-        res.writeJsonBody(_service.addUsage(tenantId, subjectId, body_), 201);
+        Json data = parseBody(req);
+        res.writeJsonBody(_service.addUsage(tenantId, subjectId, data), 201);
         return;
       }
       respondError(res, "Method not allowed", 405);

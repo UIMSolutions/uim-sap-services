@@ -50,7 +50,7 @@ string[] normalizedSegments(string subPath) {
   */
 Json parseBody(HTTPServerRequest req) {
   try {
-    return req.readJson();
+    return req.json();
   } catch (Exception) {
     return Json.emptyObject;
   }

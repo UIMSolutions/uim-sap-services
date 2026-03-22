@@ -12,86 +12,92 @@ mixin(ShowModule!());
 @safe:
 
 /// Data subject request — a formal request regarding personal data (GDPR Art. 15-22)
-struct PDMDataRequest {
-    UUID requestId;
-    string subjectId;
-    UUID tenantId;
+class PDMDataRequest : SAPTenantObject {
+  mixin(SAPObjectTemplate!PDMDataRequest);
 
-    PDMRequestType requestType = PDMRequestType.access;
-    PDMRequestStatus status = PDMRequestStatus.draft;
+  UUID requestId;
+  UUID subjectId;
 
-    string description;
-    string requestedBy;      // who created the request (operator or subject)
-    string assignedTo;       // processor handling the request
-    string resolution;       // outcome description
+  PDMRequestType requestType = PDMRequestType.access;
+  PDMRequestStatus status = PDMRequestStatus.draft;
 
-    string[] affectedApplications; // applications that hold the subject's data
+  string description;
+  string requestedBy; // who created the request (operator or subject)
+  string assignedTo; // processor handling the request
+  string resolution; // outcome description
 
-    SysTime createdAt;
-    SysTime updatedAt;
-    SysTime deadline;        // regulatory deadline for completion
-    SysTime completedAt;
+  string[] affectedApplications; // applications that hold the subject's data
 
-    override Json toJson()  {
-        Json apps = affectedApplications.map!(app => app.toJson).array.toJson;
+  SysTime deadline; // regulatory deadline for completion
+  SysTime completedAt;
 
-        Json json = super.toJson
-        .set("request_id", requestId)
-        .set("subject_id", subjectId)
-        .set("tenant_id", tenantId)
-        .set("request_type", cast(string) requestType)
-        .set("status", cast(string) status)
-        .set("description", description)
-        .set("requested_by", requestedBy)
-        .set("assigned_to", assignedTo)
-        .set("resolution", resolution)
-        .set("affected_applications", apps)
-        .set("created_at", createdAt.toISOExtString())
-        .set("updated_at", updatedAt.toISOExtString())
-        .set("deadline", deadline.toISOExtString());
+  override Json toJson() {
+    Json apps = affectedApplications.map!(app => app.toJson).array.toJson;
 
-        return status == PDMRequestStatus.completed
-          ? json.set("completed_at", completedAt.toISOExtString()) : json;
-    }
-}
+    Json json = super.toJson
+      .set("request_id", requestId)
+      .set("subject_id", subjectId)
+      .set("request_type", cast(string)requestType)
+      .set("status", cast(string)status)
+      .set("description", description)
+      .set("requested_by", requestedBy)
+      .set("assigned_to", assignedTo)
+      .set("resolution", resolution)
+      .set("affected_applications", apps)
+      .set("deadline", deadline.toISOExtString());
 
-PDMDataRequest requestFromJson(string requestId, string subjectId, UUID tenantId, Json req) {
-    PDMDataRequest r;
+    return status == PDMRequestStatus.completed
+      ? json.set("completed_at", completedAt.toISOExtString()) : json;
+  }
+
+  static PDMDataRequest opCall(UUID requestId, UUID subjectId, UUID tenantId, Json req) {
+    PDMDataRequest r = new PDMDataRequest(req);
     r.requestId = requestId;
     r.subjectId = subjectId;
-    r.tenantId = UUID(tenantId);
+    r.tenantId = tenantId;
     r.createdAt = Clock.currTime();
     r.updatedAt = r.createdAt;
 
     if ("request_type" in req && req["request_type"].isString)
-        r.requestType = parseRequestType(req["request_type"].get!string);
+      r.requestType = parseRequestType(req["request_type"].get!string);
     if ("description" in req && req["description"].isString)
-        r.description = req["description"].get!string;
+      r.description = req["description"].get!string;
     if ("requested_by" in req && req["requested_by"].isString)
-        r.requestedBy = req["requested_by"].get!string;
+      r.requestedBy = req["requested_by"].get!string;
     if ("assigned_to" in req && req["assigned_to"].isString)
-        r.assignedTo = req["assigned_to"].get!string;
+      r.assignedTo = req["assigned_to"].get!string;
     if ("affected_applications" in req && req["affected_applications"].type == Json.Type.array) {
-        foreach (v; req["affected_applications"])
-            if (v.isString) r.affectedApplications ~= v.get!string;
+      foreach (v; req["affected_applications"])
+        if (v.isString)
+          r.affectedApplications ~= v.get!string;
     }
 
     // Default deadline: 30 days from creation (GDPR requirement)
     import std.datetime : dur;
+
     r.deadline = r.createdAt + dur!"days"(30);
 
     return r;
+  }
 }
 
 private PDMRequestType parseRequestType(string s) {
-    switch (s) {
-        case "access": return PDMRequestType.access;
-        case "rectification": return PDMRequestType.rectification;
-        case "erasure": return PDMRequestType.erasure;
-        case "restriction": return PDMRequestType.restriction;
-        case "portability": return PDMRequestType.portability;
-        case "objection": return PDMRequestType.objection;
-        case "information": return PDMRequestType.information;
-        default: return PDMRequestType.access;
-    }
+  switch (s) {
+  case "access":
+    return PDMRequestType.access;
+  case "rectification":
+    return PDMRequestType.rectification;
+  case "erasure":
+    return PDMRequestType.erasure;
+  case "restriction":
+    return PDMRequestType.restriction;
+  case "portability":
+    return PDMRequestType.portability;
+  case "objection":
+    return PDMRequestType.objection;
+  case "information":
+    return PDMRequestType.information;
+  default:
+    return PDMRequestType.access;
+  }
 }
