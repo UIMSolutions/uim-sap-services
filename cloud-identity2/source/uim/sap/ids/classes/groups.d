@@ -153,12 +153,7 @@ class GroupManager {
         auto patchOps = Json.emptyObject;
         patchOps["schemas"] = Json(["urn:ietf:params:scim:api:messages:2.0:PatchOp"]);
         
-        Json[] members;
-        foreach (userId; userIds) {
-            auto member = Json.emptyObject;
-            member["value"] = userId;
-            members ~= member;
-        }
+        Json[] members = userIds.map!(userId => Json.emptyObject.set("value", userId)).array;
         
         patchOps["Operations"] = Json([
             Json(["op": Json("add"), "path": Json("members"), "value": Json(members)])

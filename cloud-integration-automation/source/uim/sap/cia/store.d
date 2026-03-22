@@ -149,7 +149,7 @@ class CIAStore : SAPStore {
         return item;
     }
 
-    CIATask[] listTasks(UUID tenantId, string workflowId) {
+    CIATask[] listTasks(UUID tenantId, UUID workflowId) {
         import std.algorithm : sort;
         CIATask[] items;
         auto prefix = tenantPrefix(tenantId);
@@ -174,14 +174,14 @@ class CIAStore : SAPStore {
         return item;
     }
 
-    CIAParameter[] listParameters(string workflowId) {
+    CIAParameter[] listParameters(UUID workflowId) {
         CIAParameter[] items;
         auto prefix = workflowId ~ "::";
         foreach (k, v; _parameters) if (k.startsWith(prefix)) items ~= v;
         return items.array;
     }
 
-    bool tryGetParameter(string workflowId, string paramKey, out CIAParameter param) {
+    bool tryGetParameter(UUID workflowId, string paramKey, out CIAParameter param) {
         auto k = workflowId ~ "::" ~ paramKey;
         if (k in _parameters) { param = _parameters[k]; return true; }
         return false;
@@ -195,7 +195,7 @@ class CIAStore : SAPStore {
         return item;
     }
 
-    CIATaskLog[] listLogs(UUID tenantId, string workflowId) {
+    CIATaskLog[] listLogs(UUID tenantId, UUID workflowId) {
         import std.algorithm : sort;
         CIATaskLog[] items;
         auto prefix = tenantPrefix(tenantId);

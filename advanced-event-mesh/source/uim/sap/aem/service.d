@@ -104,10 +104,9 @@ class AEMService : SAPService {
     mesh.updatedAt = Clock.currTime();
     auto saved = _store.upsertMesh(mesh);
 
-    Json result = Json.emptyObject;
-    result["success"] = true;
-    result["event_mesh"] = saved.toJson();
-    return result;
+    return Json.emptyObject
+    .set("success", true)
+    .set("event_mesh", saved.toJson());
   }
 
   Json publishEvent(UUID tenantId, string meshId, Json request) {
@@ -174,10 +173,9 @@ class AEMService : SAPService {
     component.updatedAt = Clock.currTime();
     auto saved = _store.upsertComponent(component);
 
-    Json result = Json.emptyObject;
-    result["success"] = true;
-    result["component"] = saved.toJson();
-    return result;
+    return Json.emptyObject
+      .set("success", true)
+      .set("component", saved.toJson());
   }
 
   Json listComponents(UUID tenantId) {
@@ -188,11 +186,10 @@ class AEMService : SAPService {
       resources ~= component.toJson();
     }
 
-    Json result = Json.emptyObject;
-    result["tenant_id"] = tenantId;
-    result["resources"] = resources;
-    result["total_results"] = cast(long)resources.length;
-    return result;
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json addSubscription(UUID tenantId, string componentId, Json request) {
@@ -223,10 +220,9 @@ class AEMService : SAPService {
     subscription.updatedAt = Clock.currTime();
     auto saved = _store.addSubscription(subscription);
 
-    Json result = Json.emptyObject;
-    result["success"] = true;
-    result["subscription"] = saved.toJson();
-    return result;
+    return Json.emptyObject
+      .set("success", true)
+      .set("subscription", saved.toJson());
   }
 
   Json modelEDA(UUID tenantId) {
@@ -236,48 +232,47 @@ class AEMService : SAPService {
     Json edges = Json.emptyArray;
 
     foreach (broker; _store.listBrokers(tenantId)) {
-      Json node = Json.emptyObject;
-      node["id"] = "broker:" ~ broker.brokerServiceId;
-      node["label"] = broker.name;
-      node["type"] = "broker_service";
+      Json node = Json.emptyObject
+      .set("id", "broker:" ~ broker.brokerServiceId)
+      .set("label", broker.name)
+      .set("type", "broker_service");
       nodes ~= node;
     }
 
     foreach (mesh; _store.listMeshes(tenantId)) {
-      Json node = Json.emptyObject;
-      node["id"] = "mesh:" ~ mesh.meshId;
-      node["label"] = mesh.name;
-      node["type"] = "event_mesh";
+      Json node = Json.emptyObject
+      .set("id", "mesh:" ~ mesh.meshId)
+      .set("label", mesh.name)
+      .set("type", "event_mesh");
       nodes ~= node;
 
-      Json edge = Json.emptyObject;
-      edge["from"] = "broker:" ~ mesh.brokerServiceId;
-      edge["to"] = "mesh:" ~ mesh.meshId;
-      edge["relation"] = "hosts";
+      Json edge = Json.emptyObject
+      .set("from", "broker:" ~ mesh.brokerServiceId)
+      .set("to", "mesh:" ~ mesh.meshId)
+      .set("relation", "hosts");
       edges ~= edge;
     }
 
     foreach (component; _store.listComponents(tenantId)) {
-      Json node = Json.emptyObject;
-      node["id"] = "component:" ~ component.componentId;
-      node["label"] = component.name;
-      node["type"] = component.componentType;
+      Json node = Json.emptyObject
+      .set("id", "component:" ~ component.componentId)
+      .set("label", component.name)
+      .set("type", component.componentType);
       nodes ~= node;
     }
 
     foreach (subscription; _store.listSubscriptions(tenantId)) {
-      Json edge = Json.emptyObject;
-      edge["from"] = "mesh:" ~ subscription.meshId;
-      edge["to"] = "component:" ~ subscription.componentId;
-      edge["relation"] = "subscribes:" ~ subscription.topic;
+      Json edge = Json.emptyObject
+      .set("from", "mesh:" ~ subscription.meshId)
+      .set("to", "component:" ~ subscription.componentId)
+      .set("relation", "subscribes:" ~ subscription.topic);
       edges ~= edge;
     }
 
-    Json result = Json.emptyObject;
-    result["tenant_id"] = tenantId;
-    result["nodes"] = nodes;
-    result["edges"] = edges;
-    return result;
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("nodes", nodes)
+      .set("edges", edges);
   }
 
   Json upsertNotificationRule(UUID tenantId, string ruleId, Json request) {
@@ -295,25 +290,20 @@ class AEMService : SAPService {
     rule.updatedAt = Clock.currTime();
     auto saved = _store.upsertNotificationRule(rule);
 
-    Json result = Json.emptyObject;
-    result["success"] = true;
-    result["notification_rule"] = saved.toJson();
-    return result;
+    return Json.emptyObject
+      .set("success", true)
+      .set("notification_rule", saved.toJson());
   }
 
   Json listNotificationRules(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
 
-    Json resources = Json.emptyArray;
-    foreach (rule; _store.listNotificationRules(tenantId)) {
-      resources ~= rule.toJson();
-    }
+    Json resources = _store.listNotificationRules(tenantId).map!(rule => rule.toJson()).array.toJson; 
 
-    Json result = Json.emptyObject;
-    result["tenant_id"] = tenantId;
-    result["resources"] = resources;
-    result["total_results"] = cast(long)resources.length;
-    return result;
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json monitoringDashboard(UUID tenantId) {
@@ -340,25 +330,24 @@ class AEMService : SAPService {
       totalTopics += topicCount;
       totalEventsPublished += broker.eventsPublished;
 
-      Json card = Json.emptyObject;
-      card["broker_service_id"] = broker.brokerServiceId;
-      card["name"] = broker.name;
-      card["status"] = broker.status;
-      card["meshes"] = meshCount;
-      card["topics"] = topicCount;
-      card["events_published"] = broker.eventsPublished;
+      Json card = Json.emptyObject
+      .set("broker_service_id", broker.brokerServiceId)
+      .set("name", broker.name)
+      .set("status", broker.status)
+      .set("meshes", meshCount)
+      .set("topics", topicCount)
+      .set("events_published", broker.eventsPublished);
       brokerCards ~= card;
     }
 
-    Json result = Json.emptyObject;
-    result["tenant_id"] = tenantId;
-    result["broker_services"] = cast(long)brokers.length;
-    result["event_meshes"] = cast(long)meshes.length;
-    result["topics"] = totalTopics;
-    result["events_published"] = totalEventsPublished;
-    result["active_alerts"] = cast(long)alerts.length;
-    result["brokers"] = brokerCards;
-    return result;
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("broker_services", cast(long)brokers.length)
+      .set("event_meshes", cast(long)meshes.length)
+      .set("topics", totalTopics)
+      .set("events_published", totalEventsPublished)
+      .set("active_alerts", cast(long)alerts.length)
+      .set("brokers", brokerCards);
   }
 
   Json listAlerts(UUID tenantId) {
@@ -369,11 +358,10 @@ class AEMService : SAPService {
       resources ~= alert.toJson();
     }
 
-    Json result = Json.emptyObject;
-    result["tenant_id"] = tenantId;
-    result["resources"] = resources;
-    result["total_results"] = cast(long)resources.length;
-    return result;
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   private void checkAndCreateAlerts(UUID tenantId, string meshId, string topic) {
@@ -393,6 +381,7 @@ class AEMService : SAPService {
         alert.message = "Queue depth for topic '" ~ topic ~ "' reached " ~ to!string(depth);
         alert.acknowledged = false;
         alert.createdAt = Clock.currTime();
+        
         _store.appendAlert(alert);
       }
     }

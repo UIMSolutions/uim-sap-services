@@ -26,7 +26,7 @@ class ARTProgramRequest : SAPObject {
       return false;
     }
 
-if ("program" in initData && initData["program"].isString) {
+    if ("program" in initData && initData["program"].isString) {
       program = initData["program"].get!string;
     }
 
@@ -38,16 +38,12 @@ if ("program" in initData && initData["program"].isString) {
       client = initData["client"].get!string;
     }
 
-    if ("language" in initData && initData["language"].isString) {
-      language = initData["language"].get!string;
-    }
+    language = initData.getString("language", "EN");
 
-    if ("parameters" in initData) {
-      parameters = initData["parameters"];
-    }
+    parameters = initData.getObject("parameters", Json.emptyObject);
 
     if ("correlationId" in initData && initData["correlationId"].isString) {
-      correlationId = initData["correlationId"].get!string;
+      correlationId = UUID(initData["correlationId"].get!string);
     }
 
     return true;
@@ -65,7 +61,7 @@ if ("program" in initData && initData["program"].isString) {
     return request;
   }
 
-  override Json toJson()  {
+  override Json toJson() {
     Json info = super.toJson
       .set("program", program)
       .set("user", user)

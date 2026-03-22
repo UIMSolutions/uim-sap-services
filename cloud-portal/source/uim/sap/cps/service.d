@@ -5,13 +5,11 @@
 *****************************************************************************************************************/
 module uim.sap.cps.service;
 
-
 import uim.sap.cps;
 
 mixin(ShowModule!());
 
 @safe:
-
 
 class CPSService : SAPService {
   mixin(SAPServiceTemplate!CPSService);
@@ -101,13 +99,12 @@ class CPSService : SAPService {
       }
     }
 
-    Json payload = Json.emptyObject;
-    payload["entries"] = entries;
-    payload["single_sign_on"] = true;
-    payload["sso_protocols"] = Json.emptyArray;
-    payload["sso_protocols"] ~= "openid-connect";
-    payload["sso_protocols"] ~= "saml2";
-    return payload;
+    return Json.emptyObject
+      .set("entries", entries)
+      .set("single_sign_on", true)
+      .set("sso_protocols", Json.emptyArray)
+      .set("sso_protocols", "openid-connect")
+      .set("sso_protocols", "saml2");
   }
 
   Json listEntryPoints(UUID tenantId) {

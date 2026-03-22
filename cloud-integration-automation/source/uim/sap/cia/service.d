@@ -25,11 +25,10 @@ class CIAService : SAPService {
   // Health / readiness
   // -----------------------------------------------------------------------
   override Json health()  {
-    Json healthInfo = super.health();
-    healthInfo["runtime"] = (cast(CIAConfig)_config).runtime;
-    healthInfo["multitenancy"] = true;
-    healthInfo["domain"] = "cloud-integration-automation";
-    return healthInfo;
+    return super.health()
+    .set("runtime", (cast(CIAConfig)_config).runtime)
+    .set("multitenancy", true)
+    .set("domain", "cloud-integration-automation");
   }
 
   // -----------------------------------------------------------------------

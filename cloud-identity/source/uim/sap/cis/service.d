@@ -52,12 +52,11 @@ class CISService : SAPService {
     Json methods = CIS_AUTH_METHODS.toJson;
     Json protocols = CIS_SSO_PROTOCOLS.toJson;
 
-    Json payload = Json.emptyObject;
-    payload["supported_authentication_methods"] = methods;
-    payload["supported_sso_protocols"] = protocols;
-    payload["api_authentication_supported"] = true;
-    payload["default_authentication_method"] = _config.defaultAuthMethod;
-    return payload;
+    return Json.emptyObject
+      .set("supported_authentication_methods", methods)
+      .set("supported_sso_protocols", protocols)
+      .set("api_authentication_supported", true)
+      .set("default_authentication_method", _config.defaultAuthMethod);
   }
 
   Json login(UUID tenantId, Json request) {
@@ -91,11 +90,10 @@ class CISService : SAPService {
     user.updatedAt = Clock.currTime();
     auto saved = _store.upsertUser(user);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["user"] = saved.toJson();
-    payload["identity_directory"] = true;
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("user", saved.toJson())
+      .set("identity_directory", true);
   }
 
   Json listUsers(UUID tenantId) {
@@ -104,13 +102,12 @@ class CISService : SAPService {
     foreach (user; _store.listUsers(tenantId))
       resources ~= user.toJson();
 
-    Json payload = Json.emptyObject;
     Json schemas = Json.emptyArray;
     schemas ~= "urn:ietf:params:scim:api:messages:2.0:ListResponse";
-    payload["Resources"] = resources;
-    payload["totalResults"] = cast(long)resources.length;
-    payload["schemas"] = schemas;
-    return payload;
+    return Json.emptyObject
+      .set("Resources", resources)
+      .set("totalResults", cast(long)resources.length)
+      .set("schemas", schemas);
   }
 
   Json upsertGroup(UUID tenantId, Json request) {
@@ -122,10 +119,9 @@ class CISService : SAPService {
     group.updatedAt = Clock.currTime();
     auto saved = _store.upsertGroup(group);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["group"] = saved.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("group", saved.toJson());
   }
 
   Json listGroups(UUID tenantId) {
@@ -134,13 +130,12 @@ class CISService : SAPService {
     foreach (group; _store.listGroups(tenantId))
       resources ~= group.toJson();
 
-    Json payload = Json.emptyObject;
     Json schemas = Json.emptyArray;
     schemas ~= "urn:ietf:params:scim:api:messages:2.0:ListResponse";
-    payload["Resources"] = resources;
-    payload["totalResults"] = cast(long)resources.length;
-    payload["schemas"] = schemas;
-    return payload;
+    return Json.emptyObject
+      .set("Resources", resources)
+      .set("totalResults", cast(long)resources.length)
+      .set("schemas", schemas);
   }
 
   Json inviteUser(UUID tenantId, Json request) {
@@ -149,25 +144,23 @@ class CISService : SAPService {
       throw new CISValidationException("email is required");
     }
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["tenant_id"] = tenantId;
-    payload["email"] = request["email"].get!string;
-    payload["invitation_id"] = createId();
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("tenant_id", tenantId)
+      .set("email", request["email"].get!string)
+      .set("invitation_id", createId());
   }
 
   Json setUiText(UUID tenantId, string locale, Json request) {
     validateId(tenantId, "Tenant ID");
     validateId(locale, "Locale");
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["tenant_id"] = tenantId;
-    payload["locale"] = locale;
-    payload["texts"] = request;
-    payload["message"] = "End-user UI texts updated";
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("tenant_id", tenantId)
+      .set("locale", locale)
+      .set("texts", request)
+      .set("message", "End-user UI texts updated");
   }
 
   Json upsertDelegationRule(UUID tenantId, string ruleId, Json request) {
@@ -194,11 +187,11 @@ class CISService : SAPService {
       throw new CISValidationException("target_idp is required");
 
     auto saved = _store.upsertDelegationRule(rule);
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["rule"] = saved.toJson();
-    payload["delegates_authentication"] = true;
-    return payload;
+
+    return Json.emptyObject
+      .set("success", true)
+      .set("rule", saved.toJson())
+      .set("delegates_authentication", true);
   }
 
   Json listDelegationRules(UUID tenantId) {
@@ -207,10 +200,9 @@ class CISService : SAPService {
     foreach (rule; _store.listDelegationRules(tenantId))
       resources ~= rule.toJson();
 
-    Json payload = Json.emptyObject;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)resources.length;
-    return payload;
+    return Json.emptyObject
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json upsertPolicy(UUID tenantId, string policyId, Json request) {
@@ -240,10 +232,9 @@ class CISService : SAPService {
     }
 
     auto saved = _store.upsertPolicy(policy);
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["policy"] = saved.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("policy", saved.toJson());
   }
 
   Json listPolicies(UUID tenantId) {
@@ -252,10 +243,9 @@ class CISService : SAPService {
     foreach (policy; _store.listPolicies(tenantId))
       resources ~= policy.toJson();
 
-    Json payload = Json.emptyObject;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)resources.length;
-    return payload;
+    return Json.emptyObject
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json authorize(UUID tenantId, Json request) {
@@ -282,10 +272,9 @@ class CISService : SAPService {
       }
     }
 
-    Json payload = Json.emptyObject;
-    payload["authorized"] = allowed;
-    payload["instance_id"] = instanceId;
-    return payload;
+    return Json.emptyObject
+      .set("authorized", allowed)
+      .set("instance_id", instanceId);
   }
 
   Json upsertRiskPolicy(UUID tenantId, string policyId, Json request) {
@@ -313,10 +302,9 @@ class CISService : SAPService {
     validateAuthMethod(policy.authenticationMethod);
     auto saved = _store.upsertRiskPolicy(policy);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["risk_policy"] = saved.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("risk_policy", saved.toJson());
   }
 
   Json listRiskPolicies(UUID tenantId) {
@@ -360,11 +348,10 @@ class CISService : SAPService {
       }
     }
 
-    Json payload = Json.emptyObject;
-    payload["tenant_id"] = tenantId;
-    payload["require_two_factor"] = force2FA;
-    payload["evaluated"] = true;
-    return payload;
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("require_two_factor", force2FA)
+      .set("evaluated", true);
   }
 
   Json startProvisioningJob(UUID tenantId, Json request) {
@@ -405,10 +392,9 @@ class CISService : SAPService {
     startLog.createdAt = Clock.currTime();
     _store.appendJobLog(startLog);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["job"] = saved.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("job", saved.toJson());
   }
 
   Json listProvisioningJobs(UUID tenantId) {
@@ -417,10 +403,9 @@ class CISService : SAPService {
     foreach (job; _store.listJobs(tenantId))
       resources ~= job.toJson();
 
-    Json payload = Json.emptyObject;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)resources.length;
-    return payload;
+    return Json.emptyObject
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json listJobLogs(UUID tenantId) {
@@ -429,10 +414,9 @@ class CISService : SAPService {
     foreach (log; _store.listJobLogs(tenantId))
       resources ~= log.toJson();
 
-    Json payload = Json.emptyObject;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)resources.length;
-    return payload;
+    return Json.emptyObject
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json subscribeNotifications(UUID tenantId, Json request) {
@@ -454,10 +438,9 @@ class CISService : SAPService {
     }
 
     auto saved = _store.upsertSubscription(sub);
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["subscription"] = saved.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("subscription", saved.toJson());
   }
 
   Json listNotificationSubscriptions(UUID tenantId) {
@@ -466,10 +449,9 @@ class CISService : SAPService {
     foreach (sub; _store.listSubscriptions(tenantId))
       resources ~= sub.toJson();
 
-    Json payload = Json.emptyObject;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)resources.length;
-    return payload;
+    return Json.emptyObject
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   private void validateUser(CISUser user) {
@@ -487,7 +469,6 @@ class CISService : SAPService {
 
   private bool arrayContains(Json arrayValue, string needle) {
     return needle.length == 0 || !arrayValue.isArray
-    ? false
-    : arrayValue.toArray.any!(item => item.isString && item.get!string == needle);
+      ? false : arrayValue.toArray.any!(item => item.isString && item.get!string == needle);
   }
 }

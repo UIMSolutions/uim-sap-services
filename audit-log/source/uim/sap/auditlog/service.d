@@ -51,11 +51,10 @@ class AuditLogService : SAPService {
     writeResult.eventId = saved.eventId;
     writeResult.recommendedType = isRecommendedAuditEventType(saved.eventType);
 
-    Json result = Json.emptyObject;
-    result["success"] = true;
-    result["write_result"] = writeResult.toJson();
-    result["event"] = saved.toJson();
-    return result;
+    return Json.emptyObject
+      .set("success", true)
+      .set("write_result", writeResult.toJson())
+      .set("event", saved.toJson());
   }
 
   Json listEvents(UUID tenantId) {
@@ -68,12 +67,11 @@ class AuditLogService : SAPService {
       resources ~= eventItem.toJson();
     }
 
-    Json result = Json.emptyObject;
-    result["tenant_id"] = tenantId;
-    result["retention_days"] = policy.retentionDays;
-    result["resources"] = resources;
-    result["total_results"] = cast(long)resources.length;
-    return result;
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("retention_days", policy.retentionDays)
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json retrieveEvents(UUID tenantId, Json request) {
@@ -173,23 +171,21 @@ class AuditLogService : SAPService {
       }
     }
 
-    Json result = Json.emptyObject;
-    result["tenant_id"] = tenantId;
-    result["plan"] = policy.plan;
-    result["retention_days"] = policy.retentionDays;
-    result["total_events"] = cast(long)events.length;
-    result["recommended_events"] = recommendedCount;
-    result["custom_events"] = customCount;
-    result["latest_events"] = latest;
-    return result;
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("plan", policy.plan)
+      .set("retention_days", policy.retentionDays)
+      .set("total_events", cast(long)events.length)
+      .set("recommended_events", recommendedCount)
+      .set("custom_events", customCount)
+      .set("latest_events", latest);
   }
 
   Json getRetentionPolicy(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
     auto policy = ensurePolicy(tenantId);
-    Json result = Json.emptyObject;
-    result["retention_policy"] = policy.toJson();
-    return result;
+    return Json.emptyObject
+      .set("retention_policy", policy.toJson());
   }
 
   Json updateRetentionPolicy(UUID tenantId, Json request) {
@@ -228,10 +224,9 @@ class AuditLogService : SAPService {
     auto saved = _store.upsertPolicy(policy);
     _store.purgeExpired(tenantId, saved.retentionDays);
 
-    Json result = Json.emptyObject;
-    result["success"] = true;
-    result["retention_policy"] = saved.toJson();
-    return result;
+    return Json.emptyObject
+      .set("success", true)
+      .set("retention_policy", saved.toJson());
   }
 
   Json usageAndCost(UUID tenantId) {
@@ -246,14 +241,13 @@ class AuditLogService : SAPService {
       estimatedCost = (cast(double)total / 1000.0) * policy.premiumCostPerThousandEvents;
     }
 
-    Json result = Json.emptyObject;
-    result["tenant_id"] = tenantId;
-    result["plan"] = policy.plan;
-    result["retention_days"] = policy.retentionDays;
-    result["events_in_retention"] = total;
-    result["estimated_premium_cost"] = estimatedCost;
-    result["cost_currency"] = "USD";
-    return result;
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("plan", policy.plan)
+      .set("retention_days", policy.retentionDays)
+      .set("events_in_retention", total)
+      .set("estimated_premium_cost", estimatedCost)
+      .set("cost_currency", "USD");
   }
 
   private AuditLogRetentionPolicy ensurePolicy(UUID tenantId) {

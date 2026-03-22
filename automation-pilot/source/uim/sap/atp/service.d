@@ -55,8 +55,8 @@ class ATPService : SAPService {
     Json catalogs = _store.listCatalogs(tenantId).map!(catalog => catalog.toJson()).array.toJson();
 
     return Json.emptyObject
-    .set("catalogs", catalogs)
-    .set("count", cast(long)catalogs.length);
+      .set("catalogs", catalogs)
+      .set("count", cast(long)catalogs.length);
   }
 
   Json upsertCatalog(UUID tenantId, Json data) {
@@ -76,17 +76,18 @@ class ATPService : SAPService {
 
     auto saved = _store.upsertCatalog(catalog);
     return Json.emptyObject
-    .set("message", "Catalog saved")
-    .set("catalog", saved.toJson());
+      .set("message", "Catalog saved")
+      .set("catalog", saved.toJson());
   }
 
   Json listCommands(UUID tenantId, string catalogId) {
     validateTenant(tenantId);
-    Json commands = _store.listCommands(tenantId, catalogId).map!(command => command.toJson()).array.toJson();
+    Json commands = _store.listCommands(tenantId, catalogId)
+      .map!(command => command.toJson()).array.toJson();
 
     return Json.emptyObject
-    .set("commands", commands)
-    .set("count", cast(long)commands.length);
+      .set("commands", commands)
+      .set("count", cast(long)commands.length);
   }
 
   Json upsertCommand(UUID tenantId, string catalogId, Json data) {
@@ -116,9 +117,9 @@ class ATPService : SAPService {
     catalog.updatedAt = now;
     _store.upsertCatalog(catalog);
 
-return Json.emptyObject
-    .set("message", "Command saved")
-    .set("command", saved.toJson());
+    return Json.emptyObject
+      .set("message", "Command saved")
+      .set("command", saved.toJson());
   }
 
   Json runPredefinedCommand(UUID tenantId, Json data) {
@@ -145,17 +146,19 @@ return Json.emptyObject
     auto saved = _store.upsertExecution(execution);
 
     return Json.emptyObject
-    .set("message", "Execution completed")
-    .set("execution", saved.toJson());
+      .set("message", "Execution completed")
+      .set("execution", saved.toJson());
   }
 
   Json listExecutions(UUID tenantId) {
     validateTenant(tenantId);
-    Json executions = _store.listExecutions(tenantId).map!(execution => execution.toJson()).array.toJson
+    Json executions = _store.listExecutions(tenantId)
+      .map!(execution => execution.toJson())
+      .array.toJson;
 
     return Json.emptyObject
-    .set("executions", executions)
-    .set("count", cast(long)executions.length);
+      .set("executions", executions)
+      .set("count", cast(long)executions.length);
   }
 
   Json backupContent(UUID tenantId, Json data) {
@@ -187,15 +190,16 @@ return Json.emptyObject
       throw new ATPNotFoundException("Backup not found");
 
     return Json.emptyObject
-    .set("message", "Restore simulated")
-    .set("restored_backup_id", backupId)
-    .set("restored_at", Clock.currTime().toISOExtString())
-    .set("content", backup.get.content);
+      .set("message", "Restore simulated")
+      .set("restored_backup_id", backupId)
+      .set("restored_at", Clock.currTime().toISOExtString())
+      .set("content", backup.get.content);
   }
 
   Json listBackups(UUID tenantId) {
     validateTenant(tenantId);
-    Json backups = _store.listBackups(tenantId).map!(backup => backup.toJson()).array.toJson();
+    Json backups = _store.listBackups(tenantId)
+      .map!(backup => backup.toJson()).array.toJson();
 
     return Json.emptyObject
       .set("backups", backups)
@@ -215,7 +219,7 @@ return Json.emptyObject
     input.updatedAt = now;
 
     auto saved = _store.upsertSecretInput(input);
-    
+
     return Json.emptyObject
       .set("message", "Secure input stored")
       .set("secret", saved.toJson());
@@ -254,9 +258,10 @@ return Json.emptyObject
 
   Json listSchedules(UUID tenantId) {
     validateTenant(tenantId);
-    
-    Json schedules = _store.listSchedules(tenantId).map!(schedule => schedule.toJson()).array.toJson();
-    
+
+    Json schedules = _store.listSchedules(tenantId)
+      .map!(schedule => schedule.toJson()).array.toJson();
+
     return Json.emptyObject
       .set("schedules", schedules)
       .set("count", cast(long)schedules.length);
@@ -276,7 +281,7 @@ return Json.emptyObject
     trigger.createdAt = now;
     trigger.updatedAt = now;
     auto saved = _store.upsertEventTrigger(trigger);
-    
+
     return Json.emptyObject
       .set("message", "Event trigger saved")
       .set("trigger", saved.toJson());
@@ -285,7 +290,8 @@ return Json.emptyObject
   Json listEventTriggers(UUID tenantId) {
     validateTenant(tenantId);
 
-    Json triggers = _store.listEventTriggers(tenantId).map!(trigger => trigger.toJson()).array.toJson();
+    Json triggers = _store.listEventTriggers(tenantId)
+      .map!(trigger => trigger.toJson()).array.toJson();
 
     return Json.emptyObject
       .set("triggers", triggers)
@@ -305,9 +311,9 @@ return Json.emptyObject
         continue;
 
       Json runBody = Json.emptyObject
-      .set("command_id", trigger.commandId)
-      .set("trigger_type", "event")
-      .set("input", readObject(data, "payload"));
+        .set("command_id", trigger.commandId)
+        .set("trigger_type", "event")
+        .set("input", readObject(data, "payload"));
 
       auto executed = runPredefinedCommand(tenantId, runBody);
       matched ~= executed["execution"];
@@ -325,10 +331,13 @@ return Json.emptyObject
     auto contentType = optionalString(data, "content_type", "runbook");
 
     Json generated = Json.emptyObject
-        .set("title", "AI Generated " ~ contentType)
-    .set("summary", "Generated by " ~ _config.aiProvider ~ " using provided prompt")
-    .set("draft", "Prompt: " ~ prompt)
-    .set("suggested_steps", ["Validate target resource state", "Execute command sequence safely", "Record outcome and notify stakeholders"].toJson);
+      .set("title", "AI Generated " ~ contentType)
+      .set("summary", "Generated by " ~ _config.aiProvider ~ " using provided prompt")
+      .set("draft", "Prompt: " ~ prompt)
+      .set("suggested_steps", [
+          "Validate target resource state", "Execute command sequence safely",
+          "Record outcome and notify stakeholders"
+        ].toJson);
 
     return Json.emptyObject
       .set("message", "AI content generated")
@@ -392,7 +401,7 @@ return Json.emptyObject
     restart.updatedAt = now;
     _store.upsertCommand(restart);
   }
-  
+
   private ATPCommand requireCommand(UUID tenantId, string commandId) {
     auto command = _store.getCommand(tenantId, commandId);
     if (!command.isNull)

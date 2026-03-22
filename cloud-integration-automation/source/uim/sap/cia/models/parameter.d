@@ -10,7 +10,7 @@ mixin(ShowModule!());
 class CIAParameter : SAPObject {
 mixin(SAPObjectTemplate!CIAParameter);
 
-  string workflowId;
+  UUID workflowId;
   string key;
   string value;
   string description;

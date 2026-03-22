@@ -75,12 +75,11 @@ class AlertNotificationService : SAPService {
       deliveryList ~= delivery.toJson();
     }
 
-    Json result = Json.emptyObject;
-    result["success"] = true;
-    result["event"] = saved.toJson();
-    result["deliveries"] = deliveryList;
-    result["matched_subscriptions"] = cast(long)deliveries.length;
-    return result;
+    Json result = Json.emptyObject
+      .set("success", true)
+      .set("event", saved.toJson())
+      .set("deliveries", deliveryList)
+      .set("matched_subscriptions", cast(long)deliveries.length);
   }
 
   Json listAlerts(UUID tenantId) {
@@ -121,23 +120,19 @@ class AlertNotificationService : SAPService {
       resources ~= eventItem.toJson();
     }
 
-    Json result = Json.emptyObject;
-    result["resources"] = resources;
-    result["total_results"] = cast(long)resources.length;
-    return result;
+    Json result = Json.emptyObject
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json listSubscriptions(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
 
-    Json resources = Json.emptyArray;
-    foreach (sub; _store.listSubscriptions(tenantId)) {
-      resources ~= sub.toJson();
-    }
-    Json result = Json.emptyObject;
-    result["resources"] = resources;
-    result["total_results"] = cast(long)resources.length;
-    return result;
+    Json resources = _store.listSubscriptions(tenantId).map!(sub => sub.toJson()).array.toJson; {
+
+    Json result = Json.emptyObject
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json getSubscription(UUID tenantId, string subscriptionId) {
@@ -159,7 +154,7 @@ class AlertNotificationService : SAPService {
 
     AlertSubscription sub;
     sub.tenantId = UUID(tenantId);
-    sub.subscriptionId = optionalString(request, "subscription_id", createId());
+    sub.subscriptionId = UUID(optionalString(request, "subscription_id", createId()));
     sub.name = requiredString(request, "name");
     sub.consumerId = optionalString(request, "consumer_id", "default-consumer");
     sub.enabled = request.getBoolean("enabled", true);
@@ -169,10 +164,9 @@ class AlertNotificationService : SAPService {
     sub.updatedAt = sub.createdAt;
 
     auto saved = _store.upsertSubscription(sub);
-    Json result = Json.emptyObject;
-    result["success"] = true;
-    result["subscription"] = saved.toJson();
-    return result;
+    return Json.emptyObject
+      .set("success", true)
+      .set("subscription", saved.toJson());
   }
 
   Json deleteSubscription(UUID tenantId, string subscriptionId) {
@@ -183,10 +177,9 @@ class AlertNotificationService : SAPService {
       throw new AlertNotificationNotFoundException("Subscription", tenantId ~ "/" ~ subscriptionId);
     }
 
-    Json result = Json.emptyObject;
-    result["success"] = true;
-    result["subscription_id"] = subscriptionId;
-    return result;
+    return Json.emptyObject
+      .set("success", true)
+      .set("subscription_id", subscriptionId);
   }
 
   Json testSubscription(UUID tenantId, string subscriptionId, Json request) {
@@ -208,8 +201,7 @@ class AlertNotificationService : SAPService {
     eventItem.createdAt = Clock.currTime();
 
     auto matched = matchesCondition(eventItem, sub.condition);
-    Json result = Json.emptyObject
-    result
+    returnJson.emptyObject
       .set("subscription_id", subscriptionId)
       .set("matched", matched)
       .set("event", eventItem.toJson())
@@ -223,10 +215,9 @@ class AlertNotificationService : SAPService {
     foreach (delivery; _store.listDeliveries(tenantId)) {
       resources ~= delivery.toJson();
     }
-    Json result = Json.emptyObject;
-    result["resources"] = resources;
-    result["total_results"] = cast(long)resources.length;
-    return result;
+    return Json.emptyObject
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json tenantOverview(UUID tenantId) {
@@ -242,7 +233,7 @@ class AlertNotificationService : SAPService {
       }
     }
 
-    Json result = Json.emptyObject
+    return Json.emptyObject
       .set("tenant_id", tenantId)
       .set("alerts_total", cast(long)alerts.length)
       .set("subscriptions_total", cast(long)subs.length)
