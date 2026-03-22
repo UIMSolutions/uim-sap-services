@@ -58,7 +58,7 @@ OBSReplicationConfig replicationFromJson(string configId, string bucketId, Json 
     }
     if ("prefix" in req && req["prefix"].isString)
         c.prefix = req["prefix"].get!string;
-    if ("replicate_deletes" in req && req["replicate_deletes"].type == Json.Type.bool_)
+    if ("replicate_deletes" in req && req["replicate_deletes"].isBoolean)
         c.replicateDeletes = req["replicate_deletes"].get!bool;
     return c;
 }

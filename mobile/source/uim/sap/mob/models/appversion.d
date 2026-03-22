@@ -50,7 +50,7 @@ MOBAppVersion appVersionFromJson(string appId, string versionId, Json req) {
     ver.packageSizeBytes = cast(size_t)req["package_size_bytes"].get!long;
   if ("checksum" in req && req["checksum"].isString)
     ver.checksum = req["checksum"].get!string;
-  if ("mandatory_update" in req && req["mandatory_update"].type == Json.Type.bool_)
+  if ("mandatory_update" in req && req["mandatory_update"].isBoolean)
     ver.mandatoryUpdate = req["mandatory_update"].get!bool;
   if ("min_os_version" in req && req["min_os_version"].isString)
     ver.minOsVersion = req["min_os_version"].get!string;

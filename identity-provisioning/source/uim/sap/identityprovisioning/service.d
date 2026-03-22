@@ -205,7 +205,7 @@ class IPVService : SAPService {
       existing.lastName = request["last_name"].get!string;
     if ("display_name" in request && request["display_name"].isString)
       existing.displayName = request["display_name"].get!string;
-    if ("active" in request && request["active"].type == Json.Type.bool_)
+    if ("active" in request && request["active"].isBoolean)
       existing.active = request["active"].get!bool;
     if ("status" in request && request["status"].isString)
       existing.status = request["status"].get!string;

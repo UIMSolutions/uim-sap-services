@@ -783,7 +783,7 @@ class DMAService : SAPService {
       sortBy = toLower(request["sort_by"].get!string);
 
     bool descending = false;
-    if ("descending" in request && request["descending"].type == Json.Type.bool_)
+    if ("descending" in request && request["descending"].isBoolean)
       descending = request["descending"].get!bool;
 
     // Sort documents

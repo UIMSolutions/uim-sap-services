@@ -79,9 +79,9 @@ class OBSBucket : SAPTenantObject {
       b.storageClass = parseStorageClass(req["storage_class"].get!string);
     if ("region" in req && req["region"].isString)
       b.region = req["region"].get!string;
-    if ("versioning_enabled" in req && req["versioning_enabled"].type == Json.Type.bool_)
+    if ("versioning_enabled" in req && req["versioning_enabled"].isBoolean)
       b.versioningEnabled = req["versioning_enabled"].get!bool;
-    if ("encryption_enabled" in req && req["encryption_enabled"].type == Json.Type.bool_)
+    if ("encryption_enabled" in req && req["encryption_enabled"].isBoolean)
       b.encryptionEnabled = req["encryption_enabled"].get!bool;
     if ("tags" in req && req["tags"].type == Json.Type.object) {
       foreach (string k, v; req["tags"])

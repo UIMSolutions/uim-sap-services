@@ -51,7 +51,7 @@ INTApiPolicy apiPolicyFromJson(UUID tenantId, Json request) {
     p.policyType = request["policy_type"].get!string;
   if ("enforcement" in request && request["enforcement"].isString)
     p.enforcement = request["enforcement"].get!string;
-  if ("enabled" in request && request["enabled"].type == Json.Type.bool_)
+  if ("enabled" in request && request["enabled"].isBoolean)
     p.enabled = request["enabled"].get!bool;
   if ("configuration" in request)
     p.configuration = request["configuration"];

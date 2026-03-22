@@ -71,7 +71,7 @@ IPVUser userFromJson(UUID tenantId, Json request) {
     u.lastName = request["last_name"].get!string;
   if ("display_name" in request && request["display_name"].isString)
     u.displayName = request["display_name"].get!string;
-  if ("active" in request && request["active"].type == Json.Type.bool_)
+  if ("active" in request && request["active"].isBoolean)
     u.active = request["active"].get!bool;
   if ("source_system_id" in request && request["source_system_id"].isString)
     u.sourceSystemId = request["source_system_id"].get!string;

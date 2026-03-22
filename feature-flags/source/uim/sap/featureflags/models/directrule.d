@@ -54,7 +54,7 @@ FFLDirectRule directRuleFromJson(Json request) {
   if ("variation_id" in request && request["variation_id"].isString) {
     r.variationId = request["variation_id"].get!string;
   }
-  if ("boolean_value" in request && request["boolean_value"].type == Json.Type.bool_) {
+  if ("boolean_value" in request && request["boolean_value"].isBoolean) {
     r.booleanValue = request["boolean_value"].get!bool;
   }
   if ("rule_id" in request && request["rule_id"].isString) {

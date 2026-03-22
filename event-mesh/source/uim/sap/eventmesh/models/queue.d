@@ -44,7 +44,7 @@ EVMQueue queueFromJson(UUID tenantId, Json request) {
     q.maxDepth = request["max_depth"].get!long;
   }
   if ("enable_dead_letter_queue" in request) {
-    if (request["enable_dead_letter_queue"].type == Json.Type.bool_) {
+    if (request["enable_dead_letter_queue"].isBoolean) {
       q.enableDeadLetterQueue = request["enable_dead_letter_queue"].get!bool;
     }
   }

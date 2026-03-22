@@ -81,9 +81,9 @@ Repository repositoryFromJson(Json request) {
     repo.productName = request["product_name"].get!string;
   if ("product_version" in request && request["product_version"].isString)
     repo.productVersion = request["product_version"].get!string;
-  if ("cmis_compliant" in request && request["cmis_compliant"].type == Json.Type.bool_)
+  if ("cmis_compliant" in request && request["cmis_compliant"].isBoolean)
     repo.cmisCompliant = request["cmis_compliant"].get!bool;
-  if ("encryption_enabled" in request && request["encryption_enabled"].type == Json.Type.bool_)
+  if ("encryption_enabled" in request && request["encryption_enabled"].isBoolean)
     repo.encryptionEnabled = request["encryption_enabled"].get!bool;
 
   return repo;
@@ -289,7 +289,7 @@ DocumentVersion versionFromJson(string documentId, int versionNumber, Json reque
     v.mimeType = request["mime_type"].get!string;
   if ("created_by" in request && request["created_by"].isString)
     v.createdBy = request["created_by"].get!string;
-  if ("is_major" in request && request["is_major"].type == Json.Type.bool_) {
+  if ("is_major" in request && request["is_major"].isBoolean) {
     v.isMajor = request["is_major"].get!bool;
     if (v.isMajor) {
       v.versionLabel = to!string(versionNumber) ~ ".0";

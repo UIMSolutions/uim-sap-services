@@ -68,7 +68,7 @@ IPVNotification notificationFromJson(UUID tenantId, Json request) {
     n.sourceSystemId = request["source_system_id"].get!string;
   if ("callback_url" in request && request["callback_url"].isString)
     n.callbackUrl = request["callback_url"].get!string;
-  if ("active" in request && request["active"].type == Json.Type.bool_)
+  if ("active" in request && request["active"].isBoolean)
     n.active = request["active"].get!bool;
   if ("subscription_id" in request && request["subscription_id"].isString)
     n.subscriptionId = request["subscription_id"].get!string;

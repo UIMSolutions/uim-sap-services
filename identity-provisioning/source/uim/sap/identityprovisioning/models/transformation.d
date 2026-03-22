@@ -73,7 +73,7 @@ IPVTransformation transformationFromJson(UUID tenantId, Json request) {
     t.defaultValue = request["default_value"].get!string;
   if ("priority" in request && request["priority"].isInteger)
     t.priority = request["priority"].get!long;
-  if ("active" in request && request["active"].type == Json.Type.bool_)
+  if ("active" in request && request["active"].isBoolean)
     t.active = request["active"].get!bool;
   if ("transformation_id" in request && request["transformation_id"].isString)
     t.transformationId = request["transformation_id"].get!string;

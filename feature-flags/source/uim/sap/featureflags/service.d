@@ -104,7 +104,7 @@ class FFLService : SAPService {
     if ("description" in request && request["description"].isString) {
       existing.description = request["description"].get!string;
     }
-    if ("enabled" in request && request["enabled"].type == Json.Type.bool_) {
+    if ("enabled" in request && request["enabled"].isBoolean) {
       existing.enabled = request["enabled"].get!bool;
     }
     if ("status" in request && request["status"].isString) {

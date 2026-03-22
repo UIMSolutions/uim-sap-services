@@ -42,7 +42,7 @@ MOBPushConfig pushConfigFromJson(string appId, Json req) {
   pc.createdAt = Clock.currTime();
   pc.updatedAt = pc.createdAt;
 
-  if ("enabled" in req && req["enabled"].type == Json.Type.bool_)
+  if ("enabled" in req && req["enabled"].isBoolean)
     pc.enabled = req["enabled"].get!bool;
   if ("provider" in req && req["provider"].isString)
     pc.provider = parsePushProvider(req["provider"].get!string);
@@ -56,7 +56,7 @@ MOBPushConfig pushConfigFromJson(string appId, Json req) {
     pc.apnsKeyId = req["apns_key_id"].get!string;
   if ("apns_bundle_id" in req && req["apns_bundle_id"].isString)
     pc.apnsBundleId = req["apns_bundle_id"].get!string;
-  if ("sandbox" in req && req["sandbox"].type == Json.Type.bool_)
+  if ("sandbox" in req && req["sandbox"].isBoolean)
     pc.sandbox = req["sandbox"].get!bool;
   return pc;
 }

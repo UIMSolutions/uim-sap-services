@@ -47,7 +47,7 @@ OBSLifecycleRule lifecycleRuleFromJson(string ruleId, string bucketId, Json req)
 
   if ("prefix" in req && req["prefix"].isString)
     r.prefix = req["prefix"].get!string;
-  if ("enabled" in req && req["enabled"].type == Json.Type.bool_)
+  if ("enabled" in req && req["enabled"].isBoolean)
     r.enabled = req["enabled"].get!bool;
   if ("action" in req && req["action"].isString) {
     switch (req["action"].get!string) {

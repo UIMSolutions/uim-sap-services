@@ -47,7 +47,7 @@ MOBOfflineConfig offlineConfigFromJson(string appId, Json req) {
     oc.createdAt = Clock.currTime();
     oc.updatedAt = oc.createdAt;
 
-    if ("enabled" in req && req["enabled"].type == Json.Type.bool_)
+    if ("enabled" in req && req["enabled"].isBoolean)
         oc.enabled = req["enabled"].get!bool;
     if ("sync_strategy" in req && req["sync_strategy"].isString)
         oc.syncStrategy = parseSyncStrategy(req["sync_strategy"].get!string);
@@ -59,9 +59,9 @@ MOBOfflineConfig offlineConfigFromJson(string appId, Json req) {
     }
     if ("max_offline_store_mb" in req && req["max_offline_store_mb"].isInteger)
         oc.maxOfflineStoreMB = cast(size_t) req["max_offline_store_mb"].get!long;
-    if ("encrypt_local_store" in req && req["encrypt_local_store"].type == Json.Type.bool_)
+    if ("encrypt_local_store" in req && req["encrypt_local_store"].isBoolean)
         oc.encryptLocalStore = req["encrypt_local_store"].get!bool;
-    if ("conflict_detection" in req && req["conflict_detection"].type == Json.Type.bool_)
+    if ("conflict_detection" in req && req["conflict_detection"].isBoolean)
         oc.conflictDetection = req["conflict_detection"].get!bool;
     if ("odata_service_url" in req && req["odata_service_url"].isString)
         oc.odataServiceUrl = req["odata_service_url"].get!string;

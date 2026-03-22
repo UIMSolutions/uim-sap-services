@@ -42,7 +42,7 @@ if ("flag_name" in request && request["flag_name"].isString) {
     if ("flag_type" in request && request["flag_type"].isString) {
       flagType = request["flag_type"].get!string;
     }
-    if ("enabled" in request && request["enabled"].type == Json.Type.bool_) {
+    if ("enabled" in request && request["enabled"].isBoolean) {
       enabled = request["enabled"].get!bool;
     }
     if ("status" in request && request["status"].isString) {

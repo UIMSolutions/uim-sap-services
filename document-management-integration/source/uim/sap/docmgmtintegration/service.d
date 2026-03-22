@@ -118,7 +118,7 @@ class DocMgmtIntegrationService : SAPService {
       tenant.name = request["name"].get!string;
     if ("description" in request && request["description"].isString)
       tenant.description = request["description"].get!string;
-    if ("active" in request && request["active"].type == Json.Type.bool_)
+    if ("active" in request && request["active"].isBoolean)
       tenant.active = request["active"].get!bool;
 
     auto saved = _store.updateTenant(tenant);
@@ -909,7 +909,7 @@ class DocMgmtIntegrationService : SAPService {
       sortBy = toLower(request["sort_by"].get!string);
 
     bool descending = false;
-    if ("descending" in request && request["descending"].type == Json.Type.bool_)
+    if ("descending" in request && request["descending"].isBoolean)
       descending = request["descending"].get!bool;
 
     if (sortBy == "name") {

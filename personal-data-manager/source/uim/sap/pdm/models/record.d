@@ -81,7 +81,7 @@ PDMPersonalDataRecord recordFromJson(string recordId, string subjectId, UUID ten
         r.applicationId = req["application_id"].get!string;
     if ("data_store" in req && req["data_store"].isString)
         r.dataStore = req["data_store"].get!string;
-    if ("sensitive" in req && req["sensitive"].type == Json.Type.bool_)
+    if ("sensitive" in req && req["sensitive"].isBoolean)
         r.sensitive = req["sensitive"].get!bool;
     if ("retention_period" in req && req["retention_period"].isString)
         r.retentionPeriod = req["retention_period"].get!string;

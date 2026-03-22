@@ -410,7 +410,7 @@ class SLMService : SAPService {
   private static bool jbool(Json j, string key, bool fallback = false) {
     if (key in j) {
       auto v = j[key];
-      if (v.type == Json.Type.bool_)
+      if (v.isBoolean)
         return v.get!bool;
       if (v.type == Json.Type.true_)
         return true;
