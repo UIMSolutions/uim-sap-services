@@ -108,14 +108,13 @@ class DSPService : SAPService {
     validateTenant(tenantId);
     auto name = requiredString(request, "name");
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["tenant_id"] = tenantId;
-    payload["flow_id"] = optionalString(request, "flow_id", _store.nextId("flow"));
-    payload["name"] = name;
-    payload["status"] = "completed";
-    payload["mode"] = optionalString(request, "mode", "transform");
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("tenant_id", tenantId)
+      .set("flow_id", optionalString(request, "flow_id", _store.nextId("flow")))
+      .set("name", name)
+      .set("status", "completed")
+      .set("mode", optionalString(request, "mode", "transform"));
   }
 
   Json replicateModel(UUID tenantId, Json request) {

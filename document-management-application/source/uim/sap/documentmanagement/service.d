@@ -94,10 +94,9 @@ class DMAService : SAPService {
     _registry.register(connector);
     auto saved = _store.addRepository(repo);
 
-    Json r = Json.emptyObject;
-    r["success"] = true;
-    r["repository"] = saved.toJson();
-    return r;
+    return Json.emptyObject
+      .set("success", true)
+      .set("repository", saved.toJson());
   }
 
   Json disconnectRepository(string repositoryId) {
@@ -109,10 +108,9 @@ class DMAService : SAPService {
     _registry.remove(repositoryId);
     _store.removeRepository(repositoryId);
 
-    Json r = Json.emptyObject;
-    r["success"] = true;
-    r["message"] = "Repository disconnected: " ~ repo.name;
-    return r;
+    return Json.emptyObject
+      .set("success", true)
+      .set("message", "Repository disconnected: " ~ repo.name);
   }
 
   // ===================================================================

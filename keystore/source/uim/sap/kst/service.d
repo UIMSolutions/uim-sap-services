@@ -182,12 +182,12 @@ class KSTService : SAPService {
       throw new KSTNotFoundException("Key entry", alias_);
     }
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["message"] = "Key entry deleted";
-    payload["keystore"] = keystoreName;
-    payload["alias"] = alias_;
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("message", "Key entry deleted")
+      .set("keystore", keystoreName)
+      .set("alias", alias_);
+
   }
 
   // ── Certificate operations ──

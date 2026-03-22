@@ -32,11 +32,10 @@ class CPSService : SAPService {
     site.updatedAt = Clock.currTime();
     auto saved = _store.upsertSite(site);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["site"] = saved.toJson();
-    payload["user_experience"] = "fiori3-or-custom";
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("site", saved.toJson())
+      .set("user_experience", "fiori3-or-custom");
   }
 
   Json listSites(UUID tenantId) {
@@ -159,10 +158,10 @@ class CPSService : SAPService {
       admin.extensions = request["extensions"];
 
     auto saved = _store.upsertAdmin(admin);
-    
+
     return Json.emptyObject
       .set("success", true)
-      .set("administration", saved.toJson());      
+      .set("administration", saved.toJson());
   }
 
   Json getSiteAdministration(UUID tenantId) {
@@ -328,7 +327,7 @@ class CPSService : SAPService {
   private bool containsString(Json values, string needle) {
     if (!values.isArray || needle.length == 0)
       return false;
-    
+
     return values.toArray.any!(item => item.isString && item.get!string == needle);
   }
 }

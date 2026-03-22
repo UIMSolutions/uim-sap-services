@@ -244,10 +244,9 @@ class DocMgmtIntegrationService : SAPService {
     if (folder.folderId.length == 0 || folder.tenantId != tenantId)
       throw new DocMgmtIntegrationNotFoundException("Folder", folderId);
 
-    Json r = Json.emptyObject;
-    r["folder"] = folder.toJson();
-    r["breadcrumbs"] = breadcrumbsJson(folderId);
-    return r;
+    return Json.emptyObject
+      .set("folder", folder.toJson())
+      .set("breadcrumbs", breadcrumbsJson(folderId));
   }
 
   Json updateFolder(UUID tenantId, string folderId, Json request) {

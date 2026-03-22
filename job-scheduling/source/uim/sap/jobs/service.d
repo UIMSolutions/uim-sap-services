@@ -229,6 +229,19 @@ HTML";
   }
 
   Json testCloudAlmConnector(Json request) {
+
+
+    Json payload = Json.emptyObject
+      .set("tenant_id", optionalString(request, "tenant_id", "connector-test"))
+      .set("run_id", optionalString(request, "run_id", "run-test"))
+      .set("job_id", optionalString(request, "job_id", "job-test"))
+      .set("status", optionalString(request, "status", "succeeded"))
+      .set("runtime", optionalString(request, "runtime", "cloud-foundry"))
+      .set("started_at", Clock.currTime().toISOExtString())
+      .set("finished_at", Clock.currTime().toISOExtString());
+
+    sendCloudAlmTelemetry(payload, true);
+
     Json data = Json.emptyObject;
 
     if (_config.cloudAlmEndpoint.length == 0) {
@@ -237,18 +250,6 @@ HTML";
       data["message"] = "JOBS_CLOUD_ALM_ENDPOINT is not configured";
       return data;
     }
-
-    Json payload = Json.emptyObject;
-    payload["tenant_id"] = optionalString(request, "tenant_id", "connector-test");
-    payload["run_id"] = optionalString(request, "run_id", "run-test");
-    payload["job_id"] = optionalString(request, "job_id", "job-test");
-    payload["status"] = optionalString(request, "status", "succeeded");
-    payload["runtime"] = optionalString(request, "runtime", "cloud-foundry");
-    payload["started_at"] = Clock.currTime().toISOExtString();
-    payload["finished_at"] = Clock.currTime().toISOExtString();
-
-    sendCloudAlmTelemetry(payload, true);
-
     data["success"] = true;
     data["connected"] = true;
     data["endpoint"] = _config.cloudAlmEndpoint;

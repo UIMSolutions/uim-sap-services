@@ -159,10 +159,9 @@ class FFLService : SAPService {
       throw new FFLNotFoundException("Flag", tenantId ~ "/" ~ flagName);
     }
 
-    Json result = Json.emptyObject;
-    result["success"] = true;
-    result["message"] = "Flag deleted: " ~ flagName;
-    return result;
+    return Json.emptyObject
+      .set("success", true)
+      .set("message", "Flag deleted: " ~ flagName);
   }
 
   // ─── Toggle (quick enable/disable) ───────────────────────

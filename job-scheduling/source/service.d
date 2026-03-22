@@ -350,10 +350,9 @@ HTML";
 
     auto saved = _store.upsertJob(item);
 
-    Json data = Json.emptyObject;
-    data["success"] = true;
-    data["job"] = saved.toJson();
-    return data;
+    return Json.emptyObject
+      .set("success", true)
+      .set("job", saved.toJson());
   }
 
   Json deleteJob(UUID tenantId, string jobId) {

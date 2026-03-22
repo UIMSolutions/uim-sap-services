@@ -603,10 +603,9 @@ class IPVService : SAPService {
     if (!_store.deleteNotification(tenantId, subscriptionId))
       throw new IPVNotFoundException("Notification subscription", tenantId ~ "/" ~ subscriptionId);
 
-    Json result = Json.emptyObject;
-    result["success"] = true;
-    result["message"] = "Notification subscription deleted";
-    return result;
+    return Json.emptyObject
+      .set("success", true)
+      .set("message", "Notification subscription deleted");
   }
 
   // ─── Dashboard ────────────────────────────────────────────

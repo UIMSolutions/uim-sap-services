@@ -146,19 +146,19 @@ class CONService : SAPService {
 
     auto propagated = destination.identityPropagationEnabled && forwardIdentity && userIdentity.length > 0;
 
-    Json identity = Json.emptyObject;
-    identity["forwarded"] = propagated;
-    identity["principal"] = propagated ? userIdentity : "";
-    identity["mechanism"] = propagated ? "cloud-principal-propagation" : "none";
+    Json identity = Json.emptyObject
+      .set("forwarded", propagated)
+      .set("principal", propagated ? userIdentity : "")
+      .set("mechanism", propagated ? "cloud-principal-propagation" : "none");
 
-    Json route = Json.emptyObject;
-    route["protocol"] = destination.protocol;
-    route["target_host"] = destination.targetHost;
-    route["target_port"] = cast(long)destination.targetPort;
-    route["target_path"] = destination.targetPath;
-    route["connector_location_id"] = _config.connectorLocationId;
-    route["network_path"] = destination.onPremise ? "cloud-connector-tunnel" : "direct";
-    route["firewall_changes_required"] = false;
+    Json route = Json.emptyObject
+      .set("protocol", destination.protocol)
+      .set("target_host", destination.targetHost)
+      .set("target_port", cast(long)destination.targetPort)
+      .set("target_path", destination.targetPath)
+      .set("connector_location_id", _config.connectorLocationId)
+      .set("network_path", destination.onPremise ? "cloud-connector-tunnel" : "direct")
+      .set("firewall_changes_required", false);
 
     return Json.emptyObject
       .set("success", true)

@@ -150,16 +150,15 @@ class ISAService : SAPService {
       suggestions ~= suggestion;
     }
 
-    Json payload = Json.emptyObject;
-    payload["tenant_id"] = tenantId;
-    payload["total_situations"] = cast(long)situations.length;
-    payload["auto_resolved"] = autoResolvedCount;
-    payload["manual_resolved"] = manuallyResolvedCount;
-    payload["open"] = openCount;
-    payload["time_saved_minutes"] = timeSavedMinutes;
-    payload["time_saved_hours"] = timeSavedMinutes / 60.0;
-    payload["automation_suggestions"] = suggestions;
-    return payload;
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("total_situations", cast(long)situations.length)
+      .set("auto_resolved", autoResolvedCount)
+      .set("manual_resolved", manuallyResolvedCount)
+      .set("open", openCount)
+      .set("time_saved_minutes", timeSavedMinutes)
+      .set("time_saved_hours", timeSavedMinutes / 60.0)
+      .set("automation_suggestions", suggestions);
   }
 
   Json analyzeSituations(UUID tenantId, string situationType) {
