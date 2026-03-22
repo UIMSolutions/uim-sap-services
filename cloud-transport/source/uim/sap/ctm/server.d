@@ -183,9 +183,10 @@ class CTMServer {
     }
 
     private static void respondError(HTTPServerResponse res, string message, int status) {
-        Json err = Json.emptyObject;
-        err["error"]  = message;
-        err["status"] = status;
+        Json err = Json.emptyObject
+            .set("error", message)
+            .set("status", status);
+            
         res.writeJsonBody(err, status);
     }
 }

@@ -17,7 +17,7 @@ struct SVMPlatform {
   string status;
   SysTime createdAt;
 
-  Json toJson() const {
+  override Json toJson()  {
     Json payload = Json.emptyObject;
     payload["tenant_id"] = tenantId;
     payload["platform_id"] = platformId;
@@ -43,7 +43,7 @@ struct SVMServiceInstance {
   SysTime createdAt;
   SysTime updatedAt;
 
-  Json toJson() const {
+  override Json toJson()  {
     Json shares = Json.emptyArray;
     foreach (envId; sharedToEnvironments) {
       shares ~= envId;
@@ -74,7 +74,7 @@ struct SVMServiceBinding {
   string credentialsRef;
   SysTime createdAt;
 
-  Json toJson() const {
+  override Json toJson()  {
     Json payload = Json.emptyObject;
     payload["tenant_id"] = tenantId;
     payload["binding_id"] = bindingId;

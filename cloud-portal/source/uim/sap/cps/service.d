@@ -45,10 +45,9 @@ class CPSService : SAPService {
     foreach (site; _store.listSites(tenantId))
       resources ~= site.toJson();
 
-    Json payload = Json.emptyObject;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)resources.length;
-    return payload;
+    return Json.emptyObject
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json getSite(UUID tenantId, string siteId) {

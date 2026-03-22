@@ -64,14 +64,14 @@ private void runInternalSmoke(CDCService service) {
   siteGroup["regions"] ~= "eu-central";
   auto siteGroupResult = service.upsertSiteGroup(tenantId, siteGroup);
 
-  Json profile = Json.emptyObject;
-  profile["user_id"] = userId;
-  profile["email"] = "maria@example.com";
-  profile["first_name"] = "Maria";
-  profile["last_name"] = "Meyer";
-  profile["region"] = "eu-central";
-  profile["site_group_id"] = "brand-emea";
-  profile["password"] = "demo-password";
+  Json profile = Json.emptyObject
+  .set("user_id", userId)
+  .set("email", "maria@example.com")
+  .set("first_name", "Maria")
+  .set("last_name", "Meyer")
+  .set("region", "eu-central")
+  .set("site_group_id", "brand-emea")
+  .set("password", "demo-password");
   auto profileResult = service.upsertProfile(tenantId, profile);
 
   Json consent = Json.emptyObject;

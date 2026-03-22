@@ -14,12 +14,16 @@ class DRMConfig : SAPConfig {
       return false;
     }
 
+    // Network settings
+    basePath(initData.getString("basePath", "/api/data-retention"));
     port(cast(ushort)initData.getInteger("port", 8110));
     host(initData.getString("host", "0.0.0.0"));
-    basePath(initData.getString("basePath", "/api/data-retention"));
+
+    // Service settings
     serviceName(initData.getString("serviceName", "uim-data-retention"));
     serviceVersion(initData.getString("serviceVersion", "1.0.0"));
 
+    // Authentication settings
     requireAuthToken(initData.getBoolean("requireAuthToken", false));
     if (requireAuthToken) {
       authToken(initData.getString("authToken", ""));

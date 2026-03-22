@@ -27,7 +27,7 @@ mixin(SAPObjectTemplate!UsageEvent);
   string occurredAt;
   SysTime createdAt;
 
-  Json toJson() const {
+  override Json toJson()  {
     return super.toJson
     .set("usage_event_id", usageEventId)
     .set("account_id", accountId)
