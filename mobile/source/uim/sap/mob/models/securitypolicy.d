@@ -72,7 +72,7 @@ MOBSecurityPolicy securityPolicyFromJson(string appId, Json req) {
     sp.dataEncryption = req["data_encryption"].get!bool;
   if ("certificate_pinning" in req && req["certificate_pinning"].isBoolean)
     sp.certificatePinning = req["certificate_pinning"].get!bool;
-  if ("allowed_domains" in req && req["allowed_domains"].type == Json.Type.array) {
+  if ("allowed_domains" in req && req["allowed_domains"].isArray) {
     foreach (v; req["allowed_domains"])
       if (v.isString)
         sp.allowedDomains ~= v.get!string;

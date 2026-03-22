@@ -351,7 +351,7 @@ class SLMService : SAPService {
 
   /// Create default components from MTA descriptor payload
   private void _createDefaultComponents(string solutionId, Json payload) {
-    if ("components" in payload && payload["components"].type == Json.Type.array) {
+    if ("components" in payload && payload["components"].isArray) {
       foreach (cp; payload["components"].byValue) {
         SLMComponent c;
         c.solutionId = solutionId;

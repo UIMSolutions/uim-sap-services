@@ -15,8 +15,8 @@ mixin(ShowModule!());
 class PDMPersonalDataRecord : SAPTenantObject {
   mixin(SAPObjectTemplate!PDMPersonalDataRecord);
 
-  string recordId;
-  string subjectId;
+  UUID recordId;
+  UUID subjectId;
 
   PDMDataCategory category = PDMDataCategory.identification;
   PDMProcessingPurpose purpose = PDMProcessingPurpose.contractual;
@@ -48,16 +48,16 @@ class PDMPersonalDataRecord : SAPTenantObject {
   }
 
   /// Redacted version — hides the actual field value
-  Json toRedactedJson() const {
+  Json toRedactedJson() {
     return toJson().set("field_value", "***REDACTED***");
   }
 }
 
-PDMPersonalDataRecord recordFromJson(string recordId, string subjectId, UUID tenantId, Json req) {
+PDMPersonalDataRecord recordFromJson(UUID recordId, UUID subjectId, UUID tenantId, Json req) {
   PDMPersonalDataRecord r = new PDMPersonalDataRecord(req);
   r.recordId = recordId;
   r.subjectId = subjectId;
-  r.tenantId = UUID(tenantId);
+  r.tenantId = tenantId;
   r.createdAt = Clock.currTime();
   r.updatedAt = r.createdAt;
 

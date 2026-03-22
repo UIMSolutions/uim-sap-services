@@ -15,4 +15,8 @@ class PDMNotFoundException : PDMException {
     this(string resource, string id, string file = __FILE__, size_t line = __LINE__) {
         super(resource ~ " not found: " ~ id, file, line);
     }
+
+    this(string resource, UUID id, string file = __FILE__, size_t line = __LINE__) {
+        super(resource ~ " not found: " ~ id.toString(), file, line);
+    }
 }

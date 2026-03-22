@@ -51,7 +51,7 @@ class MOBOfflineConfig : SAPObject {
     oc.syncStrategy = parseSyncStrategy(req["sync_strategy"].get!string);
   if ("sync_interval_secs" in req && req["sync_interval_secs"].isInteger)
     oc.syncIntervalSecs = cast(size_t)req["sync_interval_secs"].get!long;
-  if ("entity_sets" in req && req["entity_sets"].type == Json.Type.array) {
+  if ("entity_sets" in req && req["entity_sets"].isArray) {
     foreach (v; req["entity_sets"])
       if (v.isString)
         oc.entitySets ~= v.get!string;

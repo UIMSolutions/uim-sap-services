@@ -17,12 +17,12 @@ mixin(ShowModule!());
  */
 class PDMStore : SAPStore {
   private {
-    PDMTenant[string] _tenants; // key: tenantId
+    PDMTenant[UUID] _tenants; // key: tenantId
     PDMDataSubject[string] _subjects; // key: tenantId/subjectId
-    PDMPersonalDataRecord[string] _records; // key: tenantId/recordId
-    PDMDataRequest[string] _requests; // key: tenantId/requestId
-    PDMNotification[string] _notifications; // key: tenantId/notificationId
-    PDMDataUsage[string] _usages; // key: tenantId/usageId
+    PDMPersonalDataRecord[UUID] _records; // key: tenantId/recordId
+    PDMDataRequest[UUID] _requests; // key: tenantId/requestId
+    PDMNotification[UUID] _notifications; // key: tenantId/notificationId
+    PDMDataUsage[UUID] _usages; // key: tenantId/usageId
     Mutex _mutex;
   }
 
@@ -83,7 +83,7 @@ class PDMStore : SAPStore {
     }
   }
 
-  PDMDataSubject getSubject(UUID tenantId, string subjectId) {
+  PDMDataSubject getSubject(UUID tenantId, UUID subjectId) {
     synchronized (_mutex) {
       auto key = tenantKey(tenantId, subjectId);
       if (auto p = key in _subjects)
@@ -92,7 +92,7 @@ class PDMStore : SAPStore {
     }
   }
 
-  bool hasSubject(UUID tenantId, string subjectId) {
+  bool hasSubject(UUID tenantId, UUID subjectId) {
     synchronized (_mutex) {
       auto key = tenantKey(tenantId, subjectId);
       return _subjects.hasKey(key);
@@ -131,7 +131,7 @@ class PDMStore : SAPStore {
     }
   }
 
-  bool removeSubject(UUID tenantId, string subjectId) {
+  bool removeSubject(UUID tenantId, UUID subjectId) {
     synchronized (_mutex) {
       auto key = tenantKey(tenantId, subjectId);
       if (key in _subjects) {
@@ -170,7 +170,7 @@ class PDMStore : SAPStore {
     }
   }
 
-  PDMPersonalDataRecord getRecord(UUID tenantId, string recordId) {
+  PDMPersonalDataRecord getRecord(UUID tenantId, UUID recordId) {
     synchronized (_mutex) {
       auto key = tenantKey(tenantId, recordId);
       if (auto p = key in _records)
@@ -179,14 +179,14 @@ class PDMStore : SAPStore {
     }
   }
 
-  bool hasRecord(UUID tenantId, string recordId) {
+  bool hasRecord(UUID tenantId, UUID recordId) {
     synchronized (_mutex) {
       auto key = tenantKey(tenantId, recordId);
       return _records.hasKey(key);
     }
   }
 
-  PDMPersonalDataRecord[] listRecordsBySubject(UUID tenantId, string subjectId) {
+  PDMPersonalDataRecord[] listRecordsBySubject(UUID tenantId, UUID subjectId) {
     synchronized (_mutex) {
       PDMPersonalDataRecord[] result;
       foreach (ref r; _records)
@@ -196,7 +196,7 @@ class PDMStore : SAPStore {
     }
   }
 
-  bool removeRecord(UUID tenantId, string recordId) {
+  bool removeRecord(UUID tenantId, UUID recordId) {
     synchronized (_mutex) {
       auto key = tenantKey(tenantId, recordId);
       if (key in _records) {
@@ -208,7 +208,7 @@ class PDMStore : SAPStore {
   }
 
   /// Remove all records for a data subject (erasure)
-  size_t removeRecordsBySubject(UUID tenantId, string subjectId) {
+  size_t removeRecordsBySubject(UUID tenantId, UUID subjectId) {
     synchronized (_mutex) {
       string[] keysToRemove;
       foreach (key, ref r; _records) {
@@ -221,7 +221,7 @@ class PDMStore : SAPStore {
     }
   }
 
-  size_t recordCountBySubject(UUID tenantId, string subjectId) {
+  size_t recordCountBySubject(UUID tenantId, UUID subjectId) {
     synchronized (_mutex) {
       size_t count = 0;
       foreach (ref r; _records)
@@ -243,7 +243,7 @@ class PDMStore : SAPStore {
     }
   }
 
-  PDMDataRequest getRequest(UUID tenantId, string requestId) {
+  PDMDataRequest getRequest(UUID tenantId, UUID requestId) {
     synchronized (_mutex) {
       auto key = tenantKey(tenantId, requestId);
       if (auto p = key in _requests)
@@ -252,7 +252,7 @@ class PDMStore : SAPStore {
     }
   }
 
-  bool hasRequest(UUID tenantId, string requestId) {
+  bool hasRequest(UUID tenantId, UUID requestId) {
     synchronized (_mutex) {
       auto key = tenantKey(tenantId, requestId);
       return _requests.hasKey(key);
@@ -269,7 +269,7 @@ class PDMStore : SAPStore {
     }
   }
 
-  PDMDataRequest[] listRequestsBySubject(UUID tenantId, string subjectId) {
+  PDMDataRequest[] listRequestsBySubject(UUID tenantId, UUID subjectId) {
     synchronized (_mutex) {
       PDMDataRequest[] result;
       foreach (ref r; _requests)
@@ -326,7 +326,7 @@ class PDMStore : SAPStore {
     }
   }
 
-  PDMNotification[] listNotificationsBySubject(UUID tenantId, string subjectId) {
+  PDMNotification[] listNotificationsBySubject(UUID tenantId, UUID subjectId) {
     synchronized (_mutex) {
       PDMNotification[] result;
       foreach (ref n; _notifications)
@@ -364,7 +364,7 @@ class PDMStore : SAPStore {
     }
   }
 
-  PDMDataUsage[] listUsagesBySubject(UUID tenantId, string subjectId) {
+  PDMDataUsage[] listUsagesBySubject(UUID tenantId, UUID subjectId) {
     synchronized (_mutex) {
       PDMDataUsage[] result;
       foreach (ref u; _usages)

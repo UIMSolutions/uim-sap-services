@@ -103,7 +103,7 @@ class CTMStore : SAPStore {
         return items;
     }
 
-    bool tryGetRequest(UUID tenantId, string requestId, out CTMTransportRequest req) {
+    bool tryGetRequest(UUID tenantId, UUID requestId, out CTMTransportRequest req) {
         auto k = key(tenantId, requestId);
         if (k in _requests) { req = _requests[k]; return true; }
         return false;
@@ -117,7 +117,7 @@ class CTMStore : SAPStore {
         return item;
     }
 
-    CTMContentItem[] listContent(string requestId) {
+    CTMContentItem[] listContent(UUID requestId) {
         CTMContentItem[] items;
         foreach (v; _content) if (v.requestId == requestId) items ~= v;
         return items;
@@ -139,7 +139,7 @@ class CTMStore : SAPStore {
         return items.array;
     }
 
-    bool tryGetQueueEntry(UUID tenantId, string nodeId, string requestId,
+    bool tryGetQueueEntry(UUID tenantId, string nodeId, UUID requestId,
                           out CTMImportQueueEntry entry) {
         auto k = key3(tenantId, nodeId, requestId);
         if (k in _queue) { entry = _queue[k]; return true; }
@@ -162,7 +162,7 @@ class CTMStore : SAPStore {
         return item;
     }
 
-    CTMTransportLog[] listLogs(UUID tenantId, string requestId) {
+    CTMTransportLog[] listLogs(UUID tenantId, UUID requestId) {
         CTMTransportLog[] items;
         auto prefix = tp(tenantId);
         foreach (k, v; _logs)

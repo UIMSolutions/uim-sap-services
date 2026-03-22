@@ -198,7 +198,7 @@ class PDMServer {
       return;
     }
 
-    string subjectId = rest[0];
+    UUID subjectId = rest[0];
 
     // GET|PUT|DELETE /v1/tenants/{tid}/subjects/{sid}
     if (rest.length == 1) {
@@ -270,7 +270,7 @@ class PDMServer {
   // ──────────────────────────────────────
 
   private void routeRecords(HTTPServerRequest req, HTTPServerResponse res,
-    UUID tenantId, string subjectId, string[] rest) {
+    UUID tenantId, UUID subjectId, string[] rest) {
     // GET|POST /v1/tenants/{tid}/subjects/{sid}/records
     if (rest.length == 0) {
       if (req.method == HTTPMethod.GET) {
@@ -300,7 +300,7 @@ class PDMServer {
   // ──────────────────────────────────────
 
   private void routeSubjectRequests(HTTPServerRequest req, HTTPServerResponse res,
-    UUID tenantId, string subjectId, string[] rest) {
+    UUID tenantId, UUID subjectId, string[] rest) {
     // GET|POST /v1/tenants/{tid}/subjects/{sid}/requests
     if (rest.length == 0) {
       if (req.method == HTTPMethod.GET) {
@@ -340,7 +340,7 @@ class PDMServer {
       return;
     }
 
-    string requestId = rest[0];
+    UUID requestId = rest[0];
 
     // GET /v1/tenants/{tid}/requests/{rid}
     if (rest.length == 1 && req.method == HTTPMethod.GET) {
@@ -381,7 +381,7 @@ class PDMServer {
   // ──────────────────────────────────────
 
   private void routeUsages(HTTPServerRequest req, HTTPServerResponse res,
-    UUID tenantId, string subjectId, string[] rest) {
+    UUID tenantId, UUID subjectId, string[] rest) {
     // GET|POST /v1/tenants/{tid}/subjects/{sid}/usages
     if (rest.length == 0) {
       if (req.method == HTTPMethod.GET) {

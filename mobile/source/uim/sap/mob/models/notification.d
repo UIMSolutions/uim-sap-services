@@ -56,7 +56,7 @@ MOBNotification notificationFromJson(string appId, Json req) {
     n.body_ = req["body"].get!string;
   if ("priority" in req && req["priority"].isString)
     n.priority = parsePushPriority(req["priority"].get!string);
-  if ("target_users" in req && req["target_users"].type == Json.Type.array) {
+  if ("target_users" in req && req["target_users"].isArray) {
     foreach (v; req["target_users"])
       if (v.isString)
         n.targetUsers ~= v.get!string;

@@ -61,7 +61,7 @@ class DPIStore : SAPStore {
     return values;
   }
 
-  DPIPersonalDataRecord[] listSubjectRecords(UUID tenantId, string subjectId) {
+  DPIPersonalDataRecord[] listSubjectRecords(UUID tenantId, UUID subjectId) {
     DPIPersonalDataRecord[] values;
     synchronized (_lock) {
       foreach (key, value; _records) {
@@ -72,7 +72,7 @@ class DPIStore : SAPStore {
     return values;
   }
 
-  long deleteSubjectRecords(UUID tenantId, string subjectId) {
+  long deleteSubjectRecords(UUID tenantId, UUID subjectId) {
     long deleted;
     synchronized (_lock) {
       foreach (key, ref value; _records) {

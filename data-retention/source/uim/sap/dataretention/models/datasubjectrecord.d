@@ -30,7 +30,7 @@ struct DataSubjectRecord {
   }
 }
 
-DataSubjectRecord parseDataSubjectRecord(UUID tenantId, string subjectId, Json request) {
+DataSubjectRecord parseDataSubjectRecord(UUID tenantId, UUID subjectId, Json request) {
   DataSubjectRecord record;
   record.tenantId = tenantId;
   record.dataSubjectId = subjectId;

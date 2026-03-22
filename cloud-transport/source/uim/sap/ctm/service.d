@@ -139,12 +139,12 @@ class CTMService : SAPService {
     return _requestDetail(tenantId, req.requestId);
   }
 
-  Json getRequest(UUID tenantId, string requestId) {
+  Json getRequest(UUID tenantId, UUID requestId) {
     return _requestDetail(tenantId, requestId);
   }
 
   /// Forward a transport request along all active routes from its current node
-  Json forwardRequest(UUID tenantId, string requestId) {
+  Json forwardRequest(UUID tenantId, UUID requestId) {
     CTMTransportRequest req;
     if (!_store.tryGetRequest(tenantId, requestId, req))
       throw new CTMNotFoundException("Transport request", requestId);
@@ -179,7 +179,7 @@ class CTMService : SAPService {
   }
 
   /// Reset a failed request so it can be re-imported
-  Json resetRequest(UUID tenantId, string requestId) {
+  Json resetRequest(UUID tenantId, UUID requestId) {
     CTMTransportRequest req;
     if (!_store.tryGetRequest(tenantId, requestId, req))
       throw new CTMNotFoundException("Transport request", requestId);
@@ -272,7 +272,7 @@ class CTMService : SAPService {
   // -----------------------------------------------------------------------
   // CONTENT
   // -----------------------------------------------------------------------
-  Json listContent(UUID tenantId, string requestId) {
+  Json listContent(UUID tenantId, UUID requestId) {
     _requireRequest(tenantId, requestId);
     Json arr = Json.emptyArray;
     foreach (c; _store.listContent(requestId))
@@ -280,7 +280,7 @@ class CTMService : SAPService {
     return arr;
   }
 
-  Json attachContent(UUID tenantId, string requestId, Json payload) {
+  Json attachContent(UUID tenantId, UUID requestId, Json payload) {
     _requireRequest(tenantId, requestId);
     CTMContentItem ci;
     ci.contentId = "content_id" in payload ? payload["content_id"].get!string : createId();
@@ -301,7 +301,7 @@ class CTMService : SAPService {
   // -----------------------------------------------------------------------
   // LOGS (monitoring)
   // -----------------------------------------------------------------------
-  Json listLogs(UUID tenantId, string requestId) {
+  Json listLogs(UUID tenantId, UUID requestId) {
     _requireRequest(tenantId, requestId);
     Json arr = Json.emptyArray;
     foreach (l; _store.listLogs(tenantId, requestId))
@@ -319,14 +319,14 @@ class CTMService : SAPService {
     return n;
   }
 
-  private CTMTransportRequest _requireRequest(UUID tenantId, string requestId) {
+  private CTMTransportRequest _requireRequest(UUID tenantId, UUID requestId) {
     CTMTransportRequest req;
     if (!_store.tryGetRequest(tenantId, requestId, req))
       throw new CTMNotFoundException("Transport request", requestId);
     return req;
   }
 
-  private Json _requestDetail(UUID tenantId, string requestId) {
+  private Json _requestDetail(UUID tenantId, UUID requestId) {
     CTMTransportRequest req;
     if (!_store.tryGetRequest(tenantId, requestId, req))
       throw new CTMNotFoundException("Transport request", requestId);
@@ -346,7 +346,7 @@ class CTMService : SAPService {
     return arr;
   }
 
-  private void _appendLog(UUID tenantId, string requestId, string nodeId,
+  private void _appendLog(UUID tenantId, UUID requestId, string nodeId,
     string action, string level, string message) {
     CTMTransportLog log;
     log.tenantId = UUID(tenantId);

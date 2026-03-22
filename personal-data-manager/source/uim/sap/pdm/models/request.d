@@ -66,8 +66,8 @@ class PDMDataRequest : SAPTenantObject {
       r.requestedBy = req["requested_by"].get!string;
     if ("assigned_to" in req && req["assigned_to"].isString)
       r.assignedTo = req["assigned_to"].get!string;
-    if ("affected_applications" in req && req["affected_applications"].type == Json.Type.array) {
-      foreach (v; req["affected_applications"])
+    if ("affected_applications" in req && req["affected_applications"].isArray) {
+      foreach (v; req["affected_applications"].toArray)
         if (v.isString)
           r.affectedApplications ~= v.get!string;
     }

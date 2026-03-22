@@ -99,7 +99,7 @@ class PDMService : SAPService {
     return s.toJson();
   }
 
-  Json getSubject(UUID tenantId, string subjectId) {
+  Json getSubject(UUID tenantId, UUID subjectId) {
     ensureTenant(tenantId);
     if (!_store.hasSubject(tenantId, subjectId))
       throw new PDMNotFoundException("DataSubject", subjectId);
@@ -145,7 +145,7 @@ class PDMService : SAPService {
       .set("subject_type", typeStr);
   }
 
-  Json updateSubject(UUID tenantId, string subjectId, Json req) {
+  Json updateSubject(UUID tenantId, UUID subjectId, Json req) {
     ensureTenant(tenantId);
     if (!_store.hasSubject(tenantId, subjectId))
       throw new PDMNotFoundException("DataSubject", subjectId);
@@ -170,7 +170,7 @@ class PDMService : SAPService {
     return s.toJson();
   }
 
-  Json deleteSubject(UUID tenantId, string subjectId) {
+  Json deleteSubject(UUID tenantId, UUID subjectId) {
     ensureTenant(tenantId);
     if (!_store.hasSubject(tenantId, subjectId))
       throw new PDMNotFoundException("DataSubject", subjectId);
@@ -187,7 +187,7 @@ class PDMService : SAPService {
   //  Personal Data Records (Inform)
   // ══════════════════════════════════════
 
-  Json addRecord(UUID tenantId, string subjectId, Json req) {
+  Json addRecord(UUID tenantId, UUID subjectId, Json req) {
     ensureTenant(tenantId);
     if (!_store.hasSubject(tenantId, subjectId))
       throw new PDMNotFoundException("DataSubject", subjectId);
@@ -203,10 +203,10 @@ class PDMService : SAPService {
   }
 
   /// Get all personal data records for a data subject (inform)
-  Json getSubjectRecords(UUID tenantId, string subjectId) {
+  Json getSubjectRecords(UUID tenantId, UUID subjectId) {
     ensureTenant(tenantId);
     if (!_store.hasSubject(tenantId, subjectId))
-      throw new PDMNotFoundException("DataSubject", subjectId);
+      throw new PDMNotFoundException("DataSubject", subjectId.toString);
 
     auto records = _store.listRecordsBySubject(tenantId, subjectId);
     auto arr = records.map!(r => r.toJson).array;
@@ -218,10 +218,10 @@ class PDMService : SAPService {
   }
 
   /// Generate a personal data report for a subject (for sending via email)
-  Json generateDataReport(UUID tenantId, string subjectId) {
+  Json generateDataReport(UUID tenantId, UUID subjectId) {
     ensureTenant(tenantId);
     if (!_store.hasSubject(tenantId, subjectId))
-      throw new PDMNotFoundException("DataSubject", subjectId);
+      throw new PDMNotFoundException("DataSubject", subjectId.toString);
 
     auto subject = _store.getSubject(tenantId, subjectId);
     auto records = _store.listRecordsBySubject(tenantId, subjectId);
@@ -240,10 +240,10 @@ class PDMService : SAPService {
       .set("total_usages", cast(long)usages.length);
   }
 
-  Json deleteRecord(UUID tenantId, string recordId) {
+  Json deleteRecord(UUID tenantId, UUID recordId) {
     ensureTenant(tenantId);
     if (!_store.hasRecord(tenantId, recordId))
-      throw new PDMNotFoundException("PersonalDataRecord", recordId);
+      throw new PDMNotFoundException("PersonalDataRecord", recordId.toString);
     _store.removeRecord(tenantId, recordId);
 
     return Json.emptyObject
@@ -255,10 +255,10 @@ class PDMService : SAPService {
   //  Data Subject Requests (Manage)
   // ══════════════════════════════════════
 
-  Json createRequest(UUID tenantId, string subjectId, Json req) {
+  Json createRequest(UUID tenantId, UUID subjectId, Json req) {
     ensureTenant(tenantId);
     if (!_store.hasSubject(tenantId, subjectId))
-      throw new PDMNotFoundException("DataSubject", subjectId);
+      throw new PDMNotFoundException("DataSubject", subjectId.toString);
 
     PDMConfig cfg = cast(PDMConfig)_config;
     if (_store.requestCount(tenantId) >= cfg.maxRequestsPerTenant)
@@ -270,10 +270,10 @@ class PDMService : SAPService {
     return r.toJson();
   }
 
-  Json getRequest(UUID tenantId, string requestId) {
+  Json getRequest(UUID tenantId, UUID requestId) {
     ensureTenant(tenantId);
     if (!_store.hasRequest(tenantId, requestId))
-      throw new PDMNotFoundException("DataRequest", requestId);
+      throw new PDMNotFoundException("DataRequest", requestId.toString());
     return _store.getRequest(tenantId, requestId).toJson();
   }
 
@@ -287,7 +287,7 @@ class PDMService : SAPService {
       .set("total", cast(long)requests.length);
   }
 
-  Json listRequestsBySubject(UUID tenantId, string subjectId) {
+  Json listRequestsBySubject(UUID tenantId, UUID subjectId) {
     ensureTenant(tenantId);
     auto requests = _store.listRequestsBySubject(tenantId, subjectId);
     Json arr = requests.map!(r => r.toJson).array;
@@ -311,10 +311,10 @@ class PDMService : SAPService {
   }
 
   /// Submit a draft request for processing
-  Json submitRequest(UUID tenantId, string requestId) {
+  Json submitRequest(UUID tenantId, UUID requestId) {
     ensureTenant(tenantId);
     if (!_store.hasRequest(tenantId, requestId))
-      throw new PDMNotFoundException("DataRequest", requestId);
+      throw new PDMNotFoundException("DataRequest", requestId.toString);
 
     PDMDataRequest r = _store.getRequest(tenantId, requestId);
     if (r.status != PDMRequestStatus.draft)
@@ -327,10 +327,10 @@ class PDMService : SAPService {
   }
 
   /// Begin processing a submitted request
-  Json processRequest(UUID tenantId, string requestId) {
+  Json processRequest(UUID tenantId, UUID requestId) {
     ensureTenant(tenantId);
     if (!_store.hasRequest(tenantId, requestId))
-      throw new PDMNotFoundException("DataRequest", requestId);
+      throw new PDMNotFoundException("DataRequest", requestId.toString);
 
     PDMDataRequest r = _store.getRequest(tenantId, requestId);
     if (r.status != PDMRequestStatus.submitted)
@@ -349,10 +349,10 @@ class PDMService : SAPService {
   }
 
   /// Complete a request
-  Json completeRequest(UUID tenantId, string requestId, Json req) {
+  Json completeRequest(UUID tenantId, UUID requestId, Json req) {
     ensureTenant(tenantId);
     if (!_store.hasRequest(tenantId, requestId))
-      throw new PDMNotFoundException("DataRequest", requestId);
+      throw new PDMNotFoundException("DataRequest", requestId.toString());
 
     PDMDataRequest r = _store.getRequest(tenantId, requestId);
     if (r.status != PDMRequestStatus.processing)
@@ -368,10 +368,10 @@ class PDMService : SAPService {
   }
 
   /// Reject a request
-  Json rejectRequest(UUID tenantId, string requestId, Json req) {
+  Json rejectRequest(UUID tenantId, UUID requestId, Json req) {
     ensureTenant(tenantId);
     if (!_store.hasRequest(tenantId, requestId))
-      throw new PDMNotFoundException("DataRequest", requestId);
+      throw new PDMNotFoundException("DataRequest", requestId.toString());
 
     PDMDataRequest r = _store.getRequest(tenantId, requestId);
     if (r.status == PDMRequestStatus.completed || r.status == PDMRequestStatus.cancelled)
@@ -386,10 +386,10 @@ class PDMService : SAPService {
   }
 
   /// Cancel a request
-  Json cancelRequest(UUID tenantId, string requestId) {
+  Json cancelRequest(UUID tenantId, UUID requestId) {
     ensureTenant(tenantId);
     if (!_store.hasRequest(tenantId, requestId))
-      throw new PDMNotFoundException("DataRequest", requestId);
+      throw new PDMNotFoundException("DataRequest", requestId.toString());
 
     PDMDataRequest r = _store.getRequest(tenantId, requestId);
     if (r.status == PDMRequestStatus.completed)
@@ -405,7 +405,7 @@ class PDMService : SAPService {
   //  Notifications (Inform via email)
   // ══════════════════════════════════════
 
-  Json sendNotification(UUID tenantId, string subjectId, Json req) {
+  Json sendNotification(UUID tenantId, UUID subjectId, Json req) {
     ensureTenant(tenantId);
     if (!_store.hasSubject(tenantId, subjectId))
       throw new PDMNotFoundException("DataSubject", subjectId);
@@ -458,7 +458,7 @@ class PDMService : SAPService {
     return result;
   }
 
-  Json listNotifications(UUID tenantId, string subjectId) {
+  Json listNotifications(UUID tenantId, UUID subjectId) {
     ensureTenant(tenantId);
     auto notifications = _store.listNotificationsBySubject(tenantId, subjectId);
     auto arr = notifications.map!(notif => notif.toJson()).array;
@@ -472,7 +472,7 @@ class PDMService : SAPService {
   //  Data Usage Tracking
   // ══════════════════════════════════════
 
-  Json addUsage(UUID tenantId, string subjectId, Json req) {
+  Json addUsage(UUID tenantId, UUID subjectId, Json req) {
     ensureTenant(tenantId);
     if (!_store.hasSubject(tenantId, subjectId))
       throw new PDMNotFoundException("DataSubject", subjectId);

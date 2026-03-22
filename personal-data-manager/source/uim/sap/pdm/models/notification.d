@@ -55,7 +55,7 @@ PDMNotification notificationFromJson(UUID notificationId, UUID subjectId, UUID t
     n.createdAt = Clock.currTime();
 
     if ("request_id" in req && req["request_id"].isString)
-        n.requestId = req["request_id"].get!string;
+        n.requestId = UUID(req["request_id"].get!string);
     if ("channel" in req && req["channel"].isString)
         n.channel = parseNotificationChannel(req["channel"].get!string);
     if ("recipient" in req && req["recipient"].isString)
@@ -65,7 +65,7 @@ PDMNotification notificationFromJson(UUID notificationId, UUID subjectId, UUID t
     if ("body" in req && req["body"].isString)
         n.body_ = req["body"].get!string;
     if ("template_id" in req && req["template_id"].isString)
-        n.templateId = req["template_id"].get!string;
+        n.templateId = UUID(req["template_id"].get!string);
 
     return n;
 }
