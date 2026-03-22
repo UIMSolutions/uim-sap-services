@@ -23,11 +23,10 @@ class MDGService : SAPService {
 
     auto saved = _store.upsertBusinessPartner(bp);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["governance_mode"] = "workflow-driven";
-    payload["business_partner"] = saved.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("governance_mode", "workflow-driven")
+      .set("business_partner", saved.toJson());
   }
 
   Json upsertBusinessPartnersBatch(UUID tenantId, Json request) {

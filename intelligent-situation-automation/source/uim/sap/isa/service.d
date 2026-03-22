@@ -65,10 +65,9 @@ class ISAService : SAPService {
       throw new ISAException("could not delete configuration");
     }
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["deleted_id"] = configId;
-    return payload;
+    return Json.emptyObject
+    .set("success", true)
+    .set("deleted_id", configId);
   }
 
   Json getConfiguration(UUID tenantId, string configId) {
@@ -81,7 +80,6 @@ class ISAService : SAPService {
   }
 
   Json listConfigurations(UUID tenantId) {
-    Json payload = Json.emptyObject;
     Json resources = Json.emptyArray;
 
     auto configs = _store.listConfigurations(tenantId);
@@ -89,6 +87,7 @@ class ISAService : SAPService {
       resources ~= cfg.toJson();
     }
 
+    Json payload = Json.emptyObject;
     payload["resources"] = resources;
     payload["total_results"] = cast(long)configs.length;
     return payload;

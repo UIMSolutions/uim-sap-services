@@ -13,7 +13,7 @@ mixin(ShowModule!());
 
 struct INTTradingPartner {
   UUID tenantId;
-  string partnerId;
+  UUID partnerId;
   string name;
   string description;
   string partnerType = "supplier"; // supplier | customer | logistics | bank
@@ -26,22 +26,21 @@ struct INTTradingPartner {
   string createdAt;
   string updatedAt;
 
-  override Json toJson()  {
-    Json j = Json.emptyObject;
-    j["tenant_id"] = tenantId;
-    j["partner_id"] = partnerId;
-    j["name"] = name;
-    j["description"] = description;
-    j["partner_type"] = partnerType;
-    j["identifier_type"] = identifierType;
-    j["identifier"] = identifier;
-    j["contact_email"] = contactEmail;
-    j["contact_phone"] = contactPhone;
-    j["status"] = status;
-    j["agreement_count"] = agreementCount;
-    j["created_at"] = createdAt;
-    j["updated_at"] = updatedAt;
-    return j;
+  override Json toJson() {
+    return super.toJson()
+      .set("tenant_id", tenantId)
+      .set("partner_id", partnerId)
+      .set("name", name)
+      .set("description", description)
+      .set("partner_type", partnerType)
+      .set("identifier_type", identifierType)
+      .set("identifier", identifier)
+      .set("contact_email", contactEmail)
+      .set("contact_phone", contactPhone)
+      .set("status", status)
+      .set("agreement_count", agreementCount)
+      .set("created_at", createdAt)
+      .set("updated_at", updatedAt);
   }
 }
 

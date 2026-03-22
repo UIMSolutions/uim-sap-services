@@ -15,9 +15,10 @@ class HARConfig : SAPConfig {
       return false;
     }
 
-    port(cast(ushort)initData.getInteger("port", 8094));
-    host(initData.getString("host", "0.0.0.0"));
     basePath(initData.getString("basePath", "/api/html5-repo"));
+    host(initData.getString("host", "0.0.0.0"));
+    port(cast(ushort)initData.getInteger("port", 8094));
+    
     serviceName(initData.getString("serviceName", "uim-html5-app-repo"));
     serviceVersion(initData.getString("serviceVersion", "1.0.0"));
 

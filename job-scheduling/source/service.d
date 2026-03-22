@@ -1,4 +1,4 @@
-module uim.sap.jobs.service;
+module service;
 
 import core.thread : Thread;
 import std.array : split;

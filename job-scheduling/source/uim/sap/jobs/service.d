@@ -541,10 +541,9 @@ HTML";
     foreach (item; _store.listCFTaskRuns(tenantId))
       resources ~= item.toJson();
 
-    Json data = Json.emptyObject;
-    data["resources"] = resources;
-    data["total_results"] = cast(long)resources.length;
-    return data;
+    return Json.emptyObject
+    .set("resources", resources)
+    .set("total_results", cast(long)resources.length);
   }
 
   Json listRuns(UUID tenantId) {
