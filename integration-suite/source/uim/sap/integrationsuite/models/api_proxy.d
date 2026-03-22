@@ -58,7 +58,7 @@ struct INTApiProxy {
   string updatedAt;
 
   override Json toJson()  {
-    Json j = Json.emptyObject;
+    return super.toJson()
     j["tenant_id"] = tenantId;
     j["proxy_id"] = proxyId;
     j["name"] = name;

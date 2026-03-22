@@ -42,7 +42,7 @@ struct INTEventTopic {
   string updatedAt;
 
   override Json toJson()  {
-    Json j = Json.emptyObject;
+    return super.toJson()
     j["tenant_id"] = tenantId;
     j["topic_id"] = topicId;
     j["topic_name"] = topicName;

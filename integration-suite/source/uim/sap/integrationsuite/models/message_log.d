@@ -46,7 +46,7 @@ struct INTMessageLog {
   string createdAt;
 
   override Json toJson()  {
-    Json j = Json.emptyObject;
+    return super.toJson()
     j["tenant_id"] = tenantId;
     j["log_id"] = logId;
     j["iflow_id"] = iflowId;

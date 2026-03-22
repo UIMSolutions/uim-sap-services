@@ -12,54 +12,53 @@ mixin(ShowModule!());
 @safe:
 
 struct INTApiPolicy {
-    UUID tenantId;
-    string policyId;
-    string name;
-    string description;
-    string policyType = "security";  // security | traffic | mediation
-    string enforcement = "request";  // request | response | fault
-    bool enabled = true;
-    Json configuration;
-    string createdAt;
-    string updatedAt;
+  UUID tenantId;
+  string policyId;
+  string name;
+  string description;
+  string policyType = "security"; // security | traffic | mediation
+  string enforcement = "request"; // request | response | fault
+  bool enabled = true;
+  Json configuration;
+  string createdAt;
+  string updatedAt;
 
-    override Json toJson()  {
-        Json j = Json.emptyObject;
-        j["tenant_id"] = tenantId;
-        j["policy_id"] = policyId;
-        j["name"] = name;
-        j["description"] = description;
-        j["policy_type"] = policyType;
-        j["enforcement"] = enforcement;
-        j["enabled"] = enabled;
-        j["configuration"] = configuration;
-        j["created_at"] = createdAt;
-        j["updated_at"] = updatedAt;
-        return j;
-    }
+  override Json toJson() {
+    return super.toJson()
+      .set("tenant_id", tenantId)
+      .set("policy_id", policyId)
+      .set("name", name)
+      .set("description", description)
+      .set("policy_type", policyType)
+      .set("enforcement", enforcement)
+      .set("enabled", enabled)
+      .set("configuration", configuration)
+      .set("created_at", createdAt)
+      .set("updated_at", updatedAt);
+  }
 }
 
 INTApiPolicy apiPolicyFromJson(UUID tenantId, Json request) {
-    INTApiPolicy p;
-    p.tenantId = UUID(tenantId);
-    p.policyId = randomUUID().toString();
+  INTApiPolicy p;
+  p.tenantId = UUID(tenantId);
+  p.policyId = randomUUID().toString();
 
-    if ("name" in request && request["name"].isString)
-        p.name = request["name"].get!string;
-    if ("description" in request && request["description"].isString)
-        p.description = request["description"].get!string;
-    if ("policy_type" in request && request["policy_type"].isString)
-        p.policyType = request["policy_type"].get!string;
-    if ("enforcement" in request && request["enforcement"].isString)
-        p.enforcement = request["enforcement"].get!string;
-    if ("enabled" in request && request["enabled"].type == Json.Type.bool_)
-        p.enabled = request["enabled"].get!bool;
-    if ("configuration" in request)
-        p.configuration = request["configuration"];
-    else
-        p.configuration = Json.emptyObject;
+  if ("name" in request && request["name"].isString)
+    p.name = request["name"].get!string;
+  if ("description" in request && request["description"].isString)
+    p.description = request["description"].get!string;
+  if ("policy_type" in request && request["policy_type"].isString)
+    p.policyType = request["policy_type"].get!string;
+  if ("enforcement" in request && request["enforcement"].isString)
+    p.enforcement = request["enforcement"].get!string;
+  if ("enabled" in request && request["enabled"].type == Json.Type.bool_)
+    p.enabled = request["enabled"].get!bool;
+  if ("configuration" in request)
+    p.configuration = request["configuration"];
+  else
+    p.configuration = Json.emptyObject;
 
-    p.createdAt = Clock.currTime().toINTOExtString();
-    p.updatedAt = p.createdAt;
-    return p;
+  p.createdAt = Clock.currTime().toINTOExtString();
+  p.updatedAt = p.createdAt;
+  return p;
 }

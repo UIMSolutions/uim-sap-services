@@ -59,7 +59,7 @@ struct INTDataAsset {
   string updatedAt;
 
   override Json toJson()  {
-    Json j = Json.emptyObject;
+    return super.toJson()
     j["tenant_id"] = tenantId;
     j["asset_id"] = assetId;
     j["name"] = name;

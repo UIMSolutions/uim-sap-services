@@ -26,7 +26,7 @@ struct INTODataService {
   string updatedAt;
 
   override Json toJson()  {
-    Json j = Json.emptyObject;
+    return super.toJson()
     j["tenant_id"] = tenantId;
     j["service_id"] = serviceId;
     j["name"] = name;

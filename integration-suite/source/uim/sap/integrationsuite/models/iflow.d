@@ -54,7 +54,7 @@ struct INTIFlow {
   string updatedAt;
 
   override Json toJson()  {
-    Json j = Json.emptyObject;
+    return super.toJson()
     j["tenant_id"] = tenantId;
     j["iflow_id"] = iflowId;
     j["name"] = name;
