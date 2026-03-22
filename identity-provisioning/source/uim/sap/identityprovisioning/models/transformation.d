@@ -36,20 +36,19 @@ struct IPVTransformation {
 
   override Json toJson()  {
     return super.toJson()
-    j["tenant_id"] = tenantId;
-    j["transformation_id"] = transformationId;
-    j["system_id"] = systemId;
-    j["entity_type"] = entityType;
-    j["source_attribute"] = sourceAttribute;
-    j["target_attribute"] = targetAttribute;
-    j["action"] = action;
-    j["condition"] = condition;
-    j["default_value"] = defaultValue;
-    j["priority"] = priority;
-    j["active"] = active;
-    j["created_at"] = createdAt;
-    j["updated_at"] = updatedAt;
-    return j;
+    .set("tenant_id", tenantId)
+    .set("transformation_id", transformationId)
+    .set("system_id", systemId)
+    .set("entity_type", entityType)
+    .set("source_attribute", sourceAttribute)
+    .set("target_attribute", targetAttribute)
+    .set("action", action)
+    .set("condition", condition)
+    .set("default_value", defaultValue)
+    .set("priority", priority)
+    .set("active", active)
+    .set("created_at", createdAt)
+    .set("updated_at", updatedAt);
   }
 }
 

@@ -340,9 +340,9 @@ class DSPService : SAPService {
   Json upsertTenantAdminState(Json request) {
     DATTenantAdminState state = _store.getTenantState();
     state.tenantName = optionalString(request, "tenant_name", state.tenantName);
-    state.connectivityPrepared = optionalBoolean((request, "connectivity_prepared", state
+    state.connectivityPrepared = optionalBoolean(request, "connectivity_prepared", state
         .connectivityPrepared);
-    state.maintenanceMode = optionalBoolean((request, "maintenance_mode", state.maintenanceMode);
+    state.maintenanceMode = optionalBoolean(request, "maintenance_mode", state.maintenanceMode);
     state.lastMaintenance = optionalString(request, "last_maintenance", state.lastMaintenance);
 
     if ("users" in request)

@@ -59,35 +59,33 @@ struct IPVJob {
   string createdAt;
   string updatedAt;
 
-  override Json toJson()  {
-    return super.toJson()
-    j["tenant_id"] = tenantId;
-    j["job_id"] = jobId;
-    j["job_name"] = jobName;
-    j["source_system_id"] = sourceSystemId;
-
+  override Json toJson() {
     Json targets = Json.emptyArray;
     foreach (tid; targetSystemIds) {
       targets ~= Json(tid);
     }
-    j["target_system_ids"] = targets;
 
-    j["read_mode"] = readMode;
-    j["status"] = status;
-    j["users_read"] = usersRead;
-    j["users_written"] = usersWritten;
-    j["users_skipped"] = usersSkipped;
-    j["users_failed"] = usersFailed;
-    j["groups_read"] = groupsRead;
-    j["groups_written"] = groupsWritten;
-    j["groups_skipped"] = groupsSkipped;
-    j["groups_failed"] = groupsFailed;
-    j["delta_token"] = deltaToken;
-    j["started_at"] = startedAt;
-    j["completed_at"] = completedAt;
-    j["created_at"] = createdAt;
-    j["updated_at"] = updatedAt;
-    return j;
+    return super.toJson()
+      .set("tenant_id", tenantId)
+      .set("job_id", jobId)
+      .set("job_name", jobName)
+      .set("source_system_id", sourceSystemId)
+      .set("target_system_ids", targets)
+      .set("read_mode", readMode)
+      .set("status", status)
+      .set("users_read", usersRead)
+      .set("users_written", usersWritten)
+      .set("users_skipped", usersSkipped)
+      .set("users_failed", usersFailed)
+      .set("groups_read", groupsRead)
+      .set("groups_written", groupsWritten)
+      .set("groups_skipped", groupsSkipped)
+      .set("groups_failed", groupsFailed)
+      .set("delta_token", deltaToken)
+      .set("started_at", startedAt)
+      .set("completed_at", completedAt)
+      .set("created_at", createdAt)
+      .set("updated_at", updatedAt);
   }
 }
 

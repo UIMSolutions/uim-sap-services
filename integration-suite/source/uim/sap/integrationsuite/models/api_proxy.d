@@ -58,27 +58,25 @@ struct INTApiProxy {
   string updatedAt;
 
   override Json toJson()  {
-    return super.toJson()
-    j["tenant_id"] = tenantId;
-    j["proxy_id"] = proxyId;
-    j["name"] = name;
-    j["description"] = description;
-    j["base_path"] = basePath;
-    j["target_url"] = targetUrl;
-    j["version"] = version_;
-    j["status"] = status;
-    j["auth_scheme"] = authScheme;
-    j["call_count"] = callCount;
-    j["error_count"] = errorCount;
-
     Json pols = Json.emptyArray;
     foreach (p; policies)
       pols ~= Json(p);
-    j["policies"] = pols;
 
-    j["created_at"] = createdAt;
-    j["updated_at"] = updatedAt;
-    return j;
+    return super.toJson()
+      .set("tenant_id", tenantId)
+      .set("proxy_id", proxyId)
+      .set("name", name)
+      .set("description", description)
+      .set("base_path", basePath)
+      .set("target_url", targetUrl)
+      .set("version", version_)
+      .set("status", status)
+      .set("auth_scheme", authScheme)
+      .set("call_count", callCount)
+      .set("error_count", errorCount)
+      .set("policies", pols)
+      .set("created_at", createdAt)
+      .set("updated_at", updatedAt);
   }
 }
 

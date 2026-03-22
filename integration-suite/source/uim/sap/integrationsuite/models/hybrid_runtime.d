@@ -67,20 +67,19 @@ struct INTHybridRuntime {
 
   override Json toJson()  {
     return super.toJson()
-    j["tenant_id"] = tenantId;
-    j["runtime_id"] = runtimeId;
-    j["name"] = name;
-    j["description"] = description;
-    j["location"] = location;
-    j["runtime_type"] = runtimeType;
-    j["status"] = status;
-    j["version"] = version_;
-    j["iflow_count"] = iflowCount;
-    j["api_proxy_count"] = apiProxyCount;
-    j["last_heartbeat"] = lastHeartbeat;
-    j["created_at"] = createdAt;
-    j["updated_at"] = updatedAt;
-    return j;
+      .set("tenant_id", tenantId)
+      .set("runtime_id", runtimeId)
+      .set("name", name)
+      .set("description", description)
+      .set("location", location)
+      .set("runtime_type", runtimeType)
+      .set("status", status)
+      .set("version", version_)
+      .set("iflow_count", iflowCount)
+      .set("api_proxy_count", apiProxyCount)
+      .set("last_heartbeat", lastHeartbeat)
+      .set("created_at", createdAt)
+      .set("updated_at", updatedAt);
   }
 }
 

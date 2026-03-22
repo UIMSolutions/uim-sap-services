@@ -29,30 +29,28 @@ struct IPVUser {
   string createdAt;
   string updatedAt;
 
-  override Json toJson()  {
-    return super.toJson()
-    j["tenant_id"] = tenantId;
-    j["user_id"] = userId;
-    j["external_id"] = externalId;
-    j["user_name"] = userName;
-    j["email"] = email;
-    j["first_name"] = firstName;
-    j["last_name"] = lastName;
-    j["display_name"] = displayName;
-    j["active"] = active;
-
+  override Json toJson() {
     Json gids = Json.emptyArray;
     foreach (gid; groupIds) {
       gids ~= Json(gid);
     }
-    j["group_ids"] = gids;
 
-    j["source_system_id"] = sourceSystemId;
-    j["status"] = status;
-    j["last_modified_at"] = lastModifiedAt;
-    j["created_at"] = createdAt;
-    j["updated_at"] = updatedAt;
-    return j;
+    return super.toJson()
+      .set("tenant_id", tenantId)
+      .set("user_id", userId)
+      .set("external_id", externalId)
+      .set("user_name", userName)
+      .set("email", email)
+      .set("first_name", firstName)
+      .set("last_name", lastName)
+      .set("display_name", displayName)
+      .set("active", active)
+      .set("group_ids", gids)
+      .set("source_system_id", sourceSystemId)
+      .set("status", status)
+      .set("last_modified_at", lastModifiedAt)
+      .set("created_at", createdAt)
+      .set("updated_at", updatedAt);
   }
 }
 

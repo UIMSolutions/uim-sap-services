@@ -60,26 +60,25 @@ struct INTDataAsset {
 
   override Json toJson()  {
     return super.toJson()
-    j["tenant_id"] = tenantId;
-    j["asset_id"] = assetId;
-    j["name"] = name;
-    j["description"] = description;
-    j["asset_type"] = assetType;
-    j["format"] = format;
-    j["access_policy"] = accessPolicy;
-    j["provider"] = provider;
-    j["data_space_name"] = dataSpaceName;
-    j["contract_id"] = contractId;
-    j["status"] = status;
-    j["access_count"] = accessCount;
-    j["created_at"] = createdAt;
-    j["updated_at"] = updatedAt;
-    return j;
+    .set("tenant_id", tenantId)
+    .set("asset_id", assetId)
+    .set("name", name)
+    .set("description", description)
+    .set("asset_type", assetType)
+    .set("format", format)
+    .set("access_policy", accessPolicy)
+    .set("provider", provider)
+    .set("data_space_name", dataSpaceName)
+    .set("contract_id", contractId)
+    .set("status", status)
+    .set("access_count", accessCount)
+    .set("created_at", createdAt)
+    .set("updated_at", updatedAt);
   }
 }
 
 INTDataAsset dataAssetFromJson(UUID tenantId, Json request) {
-  INTDataAsset a;
+  INTDataAsset a = new INTDataAsset(request);
   a.tenantId = UUID(tenantId);
   a.assetId = randomUUID().toString();
 

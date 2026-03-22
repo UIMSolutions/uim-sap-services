@@ -56,20 +56,19 @@ struct INTConnector {
 
   override Json toJson()  {
     return super.toJson()
-    j["tenant_id"] = tenantId;
-    j["connector_id"] = connectorId;
-    j["name"] = name;
-    j["description"] = description;
-    j["connector_type"] = connectorType;
-    j["provider"] = provider;
-    j["auth_scheme"] = authScheme;
-    j["status"] = status;
-    j["base_url"] = baseUrl;
-    j["configuration"] = configuration;
-    j["call_count"] = callCount;
-    j["created_at"] = createdAt;
-    j["updated_at"] = updatedAt;
-    return j;
+      .set("tenant_id", tenantId)
+      .set("connector_id", connectorId)
+      .set("name", name)
+      .set("description", description)
+      .set("connector_type", connectorType)
+      .set("provider", provider)
+      .set("auth_scheme", authScheme)
+      .set("status", status)
+      .set("base_url", baseUrl)
+      .set("configuration", configuration)
+      .set("call_count", callCount)
+      .set("created_at", createdAt)
+      .set("updated_at", updatedAt);
   }
 }
 

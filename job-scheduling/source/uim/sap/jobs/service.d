@@ -269,9 +269,9 @@ HTML";
     item.payload = optionalObject(request, "payload");
     item.runtime = optionalString(request, "runtime", "cloud-foundry");
     item.executionMode = optionalString(request, "execution_mode", "sync");
-    item.longRunningTask = optionalBoolean((request, "long_running_task", false);
+    item.longRunningTask = optionalBoolean(request, "long_running_task", false);
     item.oauthToken = optionalString(request, "oauth_token", "");
-    item.active = optionalBoolean((request, "active", true);
+    item.active = optionalBoolean(request, "active", true);
     item.createdAt = Clock.currTime();
     item.updatedAt = item.createdAt;
 
@@ -329,9 +329,9 @@ HTML";
       item.payload = request["payload"];
     item.runtime = optionalString(request, "runtime", item.runtime);
     item.executionMode = optionalString(request, "execution_mode", item.executionMode);
-    item.longRunningTask = optionalBoolean((request, "long_running_task", item.longRunningTask);
+    item.longRunningTask = optionalBoolean(request, "long_running_task", item.longRunningTask);
     item.oauthToken = optionalString(request, "oauth_token", item.oauthToken);
-    item.active = optionalBoolean((request, "active", item.active);
+    item.active = optionalBoolean(request, "active", item.active);
     item.updatedAt = Clock.currTime();
 
     ensureRuntime(item.runtime);
@@ -378,7 +378,7 @@ HTML";
     item.repeatIntervalSeconds = request.getInteger("repeat_interval_seconds", 60);
     item.cron = optionalString(request, "cron", "");
     item.timezone = optionalString(request, "timezone", "UTC");
-    item.active = optionalBoolean((request, "active", true);
+    item.active = optionalBoolean(request, "active", true);
     item.nextRunAt = nextRunFor(item, Clock.currTime());
     item.updatedAt = Clock.currTime();
 
@@ -435,7 +435,7 @@ HTML";
     );
     item.cron = optionalString(request, "cron", item.cron);
     item.timezone = optionalString(request, "timezone", item.timezone);
-    item.active = optionalBoolean((request, "active", item.active);
+    item.active = optionalBoolean(request, "active", item.active);
     item.nextRunAt = nextRunFor(item, Clock.currTime());
     item.updatedAt = Clock.currTime();
 
