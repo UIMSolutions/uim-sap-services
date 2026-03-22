@@ -347,7 +347,7 @@ class IPVStore : SAPStore {
                 return filtered;
             }
         }
-        return [];
+        return null;
     }
 
     IPVJobLog[] listJobLogsByLevel(UUID tenantId, string jobId, string level) {
@@ -361,7 +361,7 @@ class IPVStore : SAPStore {
                 return filtered;
             }
         }
-        return [];
+        return null;
     }
 
     // ─── Notification subscription operations ─────────────────

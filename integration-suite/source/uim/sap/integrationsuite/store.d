@@ -119,7 +119,7 @@ class INTStore : SAPStore {
             if (auto logs = tenantId in _messageLogs)
                 return (*logs).dup;
         }
-        return [];
+        return null;
     }
 
     INTMessageLog[] listMessageLogsByIFlow(UUID tenantId, string iflowId) {

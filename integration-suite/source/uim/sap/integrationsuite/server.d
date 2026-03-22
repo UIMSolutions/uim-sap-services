@@ -711,7 +711,7 @@ class INTServer : SAPServer {
             clean = clean[1 .. $];
         if (clean.length > 0 && clean[$ - 1] == '/')
             clean = clean[0 .. $ - 1];
-        if (clean.length == 0) return [];
+        if (clean.length == 0) return null;
         return clean.split("/");
     }
 

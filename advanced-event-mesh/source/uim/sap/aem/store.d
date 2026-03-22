@@ -140,7 +140,7 @@ class AEMStore : SAPStore {
         return subscriptions.dup;
       }
     }
-    return [];
+    return null;
   }
 
   AEMTopicEvent appendEvent(AEMTopicEvent eventItem) {
@@ -158,7 +158,7 @@ class AEMStore : SAPStore {
         return (*items).dup;
       }
     }
-    return [];
+    return null;
   }
 
   long topicDepth(UUID tenantId, string meshId, string topic) {
@@ -203,7 +203,7 @@ class AEMStore : SAPStore {
         return (*alerts).dup;
       }
     }
-    return [];
+    return null;
   }
 
   private string brokerKey(UUID tenantId, string brokerServiceId) {

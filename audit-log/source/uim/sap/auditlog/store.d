@@ -33,7 +33,7 @@ class AuditLogStore : SAPStore {
                 return (*events).dup;
             }
         }
-        return [];
+        return null;
     }
 
     void purgeExpired(UUID tenantId, int retentionDays) {

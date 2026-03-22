@@ -86,7 +86,7 @@ class AGTStore : SAPStore {
         return (*list).dup;
       }
     }
-    return [];
+    return null;
   }
 
   AGTTestRun addTestRun(AGTTestRun testRun) {
@@ -108,7 +108,7 @@ class AGTStore : SAPStore {
         return (*list).dup;
       }
     }
-    return [];
+    return null;
   }
 
   AGTRuntimeInstance upsertInstance(AGTRuntimeInstance instance) {
