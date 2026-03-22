@@ -54,7 +54,7 @@ class AASServer {
 
     try {
       if (subPath == "/apps") {
-        validateAuth(req);
+        validateAuth(req, _service.config);
         if (req.method == HTTPMethod.GET) {
           res.writeJsonBody(_service.listApps(), 200);
           return;
@@ -67,14 +67,14 @@ class AASServer {
 
       if (subPath.startsWith("/apps/") && req.method == HTTPMethod.GET && !subPath.endsWith(
           "/policies")) {
-        validateAuth(req);
+        validateAuth(req, _service.config);
         auto appId = secondSegment(subPath);
         res.writeJsonBody(_service.getApp(appId), 200);
         return;
       }
 
       if (subPath.startsWith("/apps/") && subPath.endsWith("/policies")) {
-        validateAuth(req);
+        validateAuth(req, _service.config);
         auto appId = secondSegment(subPath);
         if (req.method == HTTPMethod.GET) {
           res.writeJsonBody(_service.listPolicies(appId), 200);
@@ -89,7 +89,7 @@ class AASServer {
       if (subPath.startsWith("/apps/")
         && subPath.endsWith("/metrics/evaluate")
         && req.method == HTTPMethod.POST) {
-        validateAuth(req);
+        validateAuth(req, _service.config);
         auto appId = secondSegment(subPath);
         res.writeJsonBody(_service.evaluate(appId, req.json, false), 200);
         return;
@@ -98,7 +98,8 @@ class AASServer {
       if (subPath.startsWith("/apps/")
         && subPath.endsWith("/metrics/evaluate/apply")
         && req.method == HTTPMethod.POST) {
-        validateAuth(req);
+        validateAuth(req, _service.config);
+
         auto appId = secondSegment(subPath);
         res.writeJsonBody(_service.evaluate(appId, req.json, true), 200);
         return;
@@ -106,7 +107,7 @@ class AASServer {
 
       if (subPath.startsWith("/cf/apps/") && subPath.endsWith("/scale") && req.method == HTTPMethod
         .POST) {
-        validateAuth(req);
+        validateAuth(req, _service.config);
         auto appId = thirdSegment(subPath);
         res.writeJsonBody(_service.triggerCFScale(appId, req.json), 202);
         return;
@@ -123,21 +124,6 @@ class AASServer {
       respondError(res, e.msg, 500);
     } catch (Exception e) {
       respondError(res, e.msg, 500);
-    }
-  }
-
-  private void validateAuth(HTTPServerRequest req) {
-    if (!_service.config.requireAuthToken) {
-      return;
-    }
-
-    if (!("Authorization" in req.headers)) {
-      throw new AASAuthorizationException("Missing Authorization header");
-    }
-
-    auto expected = "Bearer " ~ _service.config.authToken;
-    if (req.headers["Authorization"] != expected) {
-      throw new AASAuthorizationException("Invalid token");
     }
   }
 

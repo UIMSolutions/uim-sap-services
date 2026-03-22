@@ -87,13 +87,7 @@ class ARTRuntimeServer {
   }
 
   private void validateAuth(HTTPServerRequest req) {
-    if (!_runtime.config.requireAuthToken) {
-      return;
-    }
-
-    if (!("Authorization" in req.headers)) {
-      throw new ARTRuntimeAuthenticationException("Missing Authorization header");
-    }
+    validateRequiredAuth(req, _runtime.config.requireAuthToken);
 
     auto auth = req.headers["Authorization"];
     auto expected = "Bearer " ~ _runtime.config.authToken;

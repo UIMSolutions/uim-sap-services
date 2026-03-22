@@ -59,12 +59,12 @@ class CLFServer {
     try {
       if (subPath == "/v2/organizations") {
         if (req.method == HTTPMethod.GET) {
-          validateAuth(req);
+          validateAuth(req, _service.config);
           res.writeJsonBody(_service.listOrganizations());
           return;
         }
         if (req.method == HTTPMethod.POST) {
-          validateAuth(req);
+          validateAuth(req, _service.config);
           res.writeJsonBody(_service.createOrganization(req.json), 201);
           return;
         }
@@ -72,12 +72,12 @@ class CLFServer {
 
       if (subPath == "/v2/spaces") {
         if (req.method == HTTPMethod.GET) {
-          validateAuth(req);
+          validateAuth(req, _service.config);
           res.writeJsonBody(_service.listSpaces());
           return;
         }
         if (req.method == HTTPMethod.POST) {
-          validateAuth(req);
+          validateAuth(req, _service.config);
           res.writeJsonBody(_service.createSpace(req.json), 201);
           return;
         }
@@ -85,38 +85,38 @@ class CLFServer {
 
       if (subPath == "/v2/apps") {
         if (req.method == HTTPMethod.GET) {
-          validateAuth(req);
+          validateAuth(req, _service.config);
           res.writeJsonBody(_service.listApps());
           return;
         }
         if (req.method == HTTPMethod.POST) {
-          validateAuth(req);
+          validateAuth(req, _service.config);
           res.writeJsonBody(_service.createApp(req.json), 201);
           return;
         }
       }
 
       if (subPath.startsWith("/v2/apps/") && req.method == HTTPMethod.GET) {
-        validateAuth(req);
+        validateAuth(req, _service.config);
         auto guid = lastSegment(subPath);
         res.writeJsonBody(_service.getApp(guid));
         return;
       }
 
       if (subPath == "/v2/services" && req.method == HTTPMethod.GET) {
-        validateAuth(req);
+        validateAuth(req, _service.config);
         res.writeJsonBody(_service.listServiceOfferings());
         return;
       }
 
       if (subPath == "/v2/service_instances") {
         if (req.method == HTTPMethod.GET) {
-          validateAuth(req);
+          validateAuth(req, _service.config);
           res.writeJsonBody(_service.listServiceInstances());
           return;
         }
         if (req.method == HTTPMethod.POST) {
-          validateAuth(req);
+          validateAuth(req, _service.config);
           res.writeJsonBody(_service.createServiceInstance(req.json), 201);
           return;
         }
@@ -133,21 +133,6 @@ class CLFServer {
       respondError(res, e.msg, 500);
     } catch (Exception e) {
       respondError(res, e.msg, 500);
-    }
-  }
-
-  private void validateAuth(HTTPServerRequest req) {
-    if (!_service.config.requireAuthToken) {
-      return;
-    }
-
-    if (!("Authorization" in req.headers)) {
-      throw new CLFAuthorizationException("Missing Authorization header");
-    }
-
-    auto expected = "Bearer " ~ _service.config.authToken;
-    if (req.headers["Authorization"] != expected) {
-      throw new CLFAuthorizationException("Invalid token");
     }
   }
 

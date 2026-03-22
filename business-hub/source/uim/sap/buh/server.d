@@ -56,7 +56,7 @@ class BUHServer {
 
     try {
       if (subPath == "/catalog/apis") {
-        validateAuth(req);
+        validateAuth(req, _service.config);
         if (req.method == HTTPMethod.GET) {
           res.writeJsonBody(_service.listApis(), 200);
           return;
@@ -68,14 +68,18 @@ class BUHServer {
       }
 
       if (subPath.startsWith("/catalog/apis/") && req.method == HTTPMethod.GET) {
-        validateAuth(req);
+        validateAuth(req, _service.config);
         auto id = lastSegment(subPath);
         res.writeJsonBody(_service.getApi(id), 200);
         return;
       }
 
       if (subPath == "/catalog/products") {
-        validateAuth(req);
+        validateAuth(req, _service.config);
+         if (req.method == HTTPMethod.GET) {
+          res.writeJsonBody(_service.listProducts(), 200);
+          return;
+        }
         if (req.method == HTTPMethod.GET) {
           res.writeJsonBody(_service.listProducts(), 200);
           return;
@@ -87,7 +91,7 @@ class BUHServer {
       }
 
       if (subPath == "/subscriptions") {
-        validateAuth(req);
+        validateAuth(req, _service.config);
         if (req.method == HTTPMethod.GET) {
           res.writeJsonBody(_service.listSubscriptions(), 200);
           return;
@@ -109,21 +113,6 @@ class BUHServer {
       respondError(res, e.msg, 500);
     } catch (Exception e) {
       respondError(res, e.msg, 500);
-    }
-  }
-
-  private void validateAuth(HTTPServerRequest req) {
-    if (!_service.config.requireAuthToken) {
-      return;
-    }
-
-    if (!("Authorization" in req.headers)) {
-      throw new BUHAuthorizationException("Missing Authorization header");
-    }
-
-    auto expected = "Bearer " ~ _service.config.authToken;
-    if (req.headers["Authorization"] != expected) {
-      throw new BUHAuthorizationException("Invalid token");
     }
   }
 

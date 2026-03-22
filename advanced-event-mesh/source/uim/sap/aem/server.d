@@ -221,20 +221,4 @@ class AEMServer : SAPServer {
       respondError(res, e.msg, 500);
     }
   }
-
-  private void validateAuth(HTTPServerRequest req) {
-    AEMConfig cfg = cast(AEMConfig)_service.config;
-    if (!cfg.requireAuthToken) {
-      return;
-    }
-
-    if (!("Authorization" in req.headers)) {
-      throw new AEMAuthorizationException("Missing Authorization header");
-    }
-
-    auto expected = "Bearer " ~ cfg.authToken;
-    if (req.headers["Authorization"] != expected) {
-      throw new AEMAuthorizationException("Invalid token");
-    }
-  }
 }

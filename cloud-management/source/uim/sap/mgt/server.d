@@ -67,7 +67,7 @@ class MGTServer : SAPServer {
     }
 
     try {
-      validateAuth(req);
+      validateAuth(req, _service.config);
 
       if (subPath == "/v1/environments" && req.method == HTTPMethod.GET) {
         res.writeJsonBody(_service.environments(), 200);
@@ -119,21 +119,6 @@ class MGTServer : SAPServer {
       respondError(res, e.msg, 500);
     } catch (Exception e) {
       respondError(res, e.msg, 500);
-    }
-  }
-
-  private void validateAuth(HTTPServerRequest req) {
-    if (!_service.config.requireAuthToken) {
-      return;
-    }
-
-    if (!("Authorization" in req.headers)) {
-      throw new MGTAuthorizationException("Missing Authorization header");
-    }
-
-    auto expected = "Bearer " ~ _service.config.authToken;
-    if (req.headers["Authorization"] != expected) {
-      throw new MGTAuthorizationException("Invalid token");
     }
   }
 

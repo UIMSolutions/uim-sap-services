@@ -6,20 +6,38 @@ mixin(ShowModule!());
 
 @safe:
 
-void validateTenant(UUID tenantId) {
-  validateTenant(tenantId.toString);
+bool validateTenant(UUID tenantId) {
+  return validateTenant(tenantId.toString);
 }
 
-void validateTenant(string tenantId) {
-  validateId(tenantId, "Tenant ID");
+bool validateTenant(string tenantId) {
+  return validateId(tenantId, "Tenant ID");
 }
 
-void validateId(UUID value, string fieldName) {
-  validateId(value.toString, fieldName);
+bool validateId(UUID value, string fieldName) {
+  return validateId(value.toString, fieldName);
 }
 
-void validateId(string value, string fieldName) {
+bool validateId(string value, string fieldName) {
   if (value.length == 0) {
     throw new SAPValidationException(fieldName ~ " cannot be empty");
   }
+  return true;
+}
+
+bool validateAuth(HTTPServerRequest req, ISAPConfig cfg) {
+  if (!cfg.requireAuthToken) {
+    return;
+  }
+
+  if (!("Authorization" in req.headers)) {
+    throw new SAPAuthenticationException("Missing Authorization header");
+  }
+
+  auto expected = "Bearer " ~ cfg.authToken;
+  if (req.headers["Authorization"] != expected) {
+    throw new SAPAuthenticationException("Invalid Authorization token");
+  }
+
+  return true;
 }

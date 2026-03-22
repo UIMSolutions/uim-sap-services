@@ -75,7 +75,7 @@ class ATPServer {
     }
 
     try {
-      validateAuth(req);
+      validateAuth(req, _service.config);
 
       auto segments = normalizedSegments(subPath);
       if (segments.length >= 3 && segments[0] == "v1" && segments[1] == "tenants") {
@@ -198,13 +198,4 @@ class ATPServer {
     }
   }
 
-  private void validateAuth(HTTPServerRequest req) {
-    if (!_service.config.requireAuthToken)
-      return;
-    if (!("Authorization" in req.headers))
-      throw new ATPAuthorizationException("Missing Authorization header");
-    auto expected = "Bearer " ~ _service.config.authToken;
-    if (req.headers["Authorization"] != expected)
-      throw new ATPAuthorizationException("Invalid token");
-  }
 }
