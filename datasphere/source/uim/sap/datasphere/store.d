@@ -210,7 +210,7 @@ class DSPStore : SAPStore {
                 return (*events).dup;
             }
         }
-        return [];
+        return null;
     }
 
     DATTenantAdminState upsertTenantState(DATTenantAdminState state) {

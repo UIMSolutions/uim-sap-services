@@ -174,7 +174,7 @@ class EVMStore : SAPStore {
                 return (*items).dup;
             }
         }
-        return [];
+        return null;
     }
 
     EVMMessage consumeMessage(UUID tenantId, string queueName) {
@@ -290,7 +290,7 @@ class EVMStore : SAPStore {
                 return (*items).dup;
             }
         }
-        return [];
+        return null;
     }
 
     // --- Key helpers ---

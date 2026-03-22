@@ -155,7 +155,7 @@ mixin(ShowModule!());
       clean = clean[0 .. $ - 1];
     }
     if (clean.length == 0) {
-      return [];
+      return null;
     }
     return clean.split("/");
   }
