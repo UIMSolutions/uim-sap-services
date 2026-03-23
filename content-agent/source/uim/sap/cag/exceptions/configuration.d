@@ -1,5 +1,11 @@
 module uim.sap.cag.exceptions.configuration;
 
+import uim.sap.cag;
+
+mixin(ShowModule!());
+
+@safe:
+
 class CAGConfigurationException : SAPConfigurationException {
   this(string message) {
     super("(CAG) " ~ message);

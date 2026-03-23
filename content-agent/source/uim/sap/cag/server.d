@@ -1,16 +1,15 @@
 module uim.sap.cag.server;
 
-import std.array : split;
-import std.string : startsWith;
 
-import vibe.data.json : Json;
-import vibe.http.common : HTTPMethod;
-import vibe.http.server : HTTPServerRequest, HTTPServerResponse, HTTPServerSettings, listenHTTP;
+import uim.sap.cag;
 
-import uim.sap.cag.exceptions;
-import uim.sap.cag.service;
+mixin(ShowModule!());
 
-class CAGServer {
+@safe:
+
+class CAGServer : SAPServer{
+  mixin(SAPServerTemplate!CAGServer);
+  
   private CAGService _service;
 
   this(CAGService service) {

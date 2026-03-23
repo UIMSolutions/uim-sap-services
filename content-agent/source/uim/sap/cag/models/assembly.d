@@ -1,5 +1,11 @@
 module uim.sap.cag.models.assembly;
 
+import uim.sap.cag;
+
+mixin(ShowModule!());
+
+@safe:
+
 class CAGAssembly : SAPTenantObject {
   mixin(SAPObjectTemplate!CAGAssembly);
 

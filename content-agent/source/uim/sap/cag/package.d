@@ -1,10 +1,14 @@
 module uim.sap.cag;
 
-public import uim.sap.cag.config;
-public import uim.sap.cag.exceptions;
-public import uim.sap.cag.models;
-public import uim.sap.cag.store;
-public import uim.sap.cag.service;
-public import uim.sap.cag.server;
+public {
+  import uim.sap.service;
+  
+  import uim.sap.cag.config;
+  import uim.sap.cag.exceptions;
+  import uim.sap.cag.models;
+  import uim.sap.cag.store;
+  import uim.sap.cag.service;
+  import uim.sap.cag.server;
+}
 
 enum UIM_CAG_VERSION = "1.0.0";

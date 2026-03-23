@@ -34,8 +34,6 @@ class CAGConfig : SAPConfig {
 
   string runtime = "cloud-foundry";
 
-  string[string] customHeaders;
-
   override void validate() {
     super.validate();
 

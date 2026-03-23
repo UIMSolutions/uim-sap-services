@@ -2,6 +2,10 @@ module uim.sap.cag.service;
 
 import uim.sap.cag;
 
+mixin(ShowModule!());
+
+@safe:
+
 class CAGService : SAPService {
   mixin(SAPServiceTemplate!CAGService);
 

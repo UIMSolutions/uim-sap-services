@@ -1,5 +1,11 @@
 module uim.sap.cag.models.contentitem;
 
+import uim.sap.cag;
+
+mixin(ShowModule!());
+
+@safe:
+
 class CAGContentItem : SAPTenantObject {
   mixin(SAPObjectTemplate!CAGContentItem);
 
@@ -17,8 +23,7 @@ class CAGContentItem : SAPTenantObject {
 
     auto related = relatedContent.map!(cont => cont).array; // Convert string[] to Json array
 
-    return Json.emptyObject
-      .set("tenant_id", tenantId)
+    return super.toJson()
       .set("content_id", contentId)
       .set("title", title)
       .set("content_type", contentType)
