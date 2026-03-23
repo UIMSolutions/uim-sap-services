@@ -25,22 +25,19 @@ mixin(ShowModule!());
   * - unit: The unit of measurement for the KPI.
   * - updatedAt: The timestamp when the KPI was last updated.
   */
-struct DATKpi {
-  UUID tenantId;
-  string kpiId;
+class DATKpi : SAPTenantObject {
+  mixin(SAPObjectTemplate!DATKpi);
+
+  UUID kpiId;
   string name;
   string formula;
   string unit;
-  SysTime updatedAt;
 
   override Json toJson()  {
-    Json info = super.toJson;
-    payload["tenant_id"] = tenantId;
-    payload["kpi_id"] = kpiId;
-    payload["name"] = name;
-    payload["formula"] = formula;
-    payload["unit"] = unit;
-    payload["updated_at"] = updatedAt.toISOExtString();
-    return payload;
+    return super.toJson()
+      .set("kpi_id", kpiId)
+      .set("name", name)
+      .set("formula", formula)
+      .set("unit", unit);
   }
 }

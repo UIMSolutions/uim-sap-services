@@ -1,40 +1,31 @@
 module uim.sap.cag.models.contentitem;
 
-struct CAGContentItem {
-  UUID tenantId;
-  string contentId;
+class CAGContentItem : SAPTenantObject {
+  mixin(SAPObjectTemplate!CAGContentItem);
+
+  UUID contentId;
   string title;
   string contentType;
   string contentVersion;
-  string providerId;
+  UUID providerId;
   string[] dependencies;
   string[] relatedContent;
   Json metadata;
-  SysTime createdAt;
-  SysTime updatedAt;
 
   override Json toJson() {
-    Json payload = Json.emptyObject;
-    payload["tenant_id"] = tenantId;
-    payload["content_id"] = contentId;
-    payload["title"] = title;
-    payload["content_type"] = contentType;
-    payload["version"] = contentVersion;
-    payload["provider_id"] = providerId;
+    auto deps = dependencies.map!(dep => dep).array; // Convert string[] to Json array
 
-    Json deps = Json.emptyArray;
-    foreach (value; dependencies)
-      deps ~= value;
-    payload["dependencies"] = deps;
+    auto related = relatedContent.map!(cont => cont).array; // Convert string[] to Json array
 
-    Json related = Json.emptyArray;
-    foreach (value; relatedContent)
-      related ~= value;
-    payload["related_content"] = related;
-
-    payload["metadata"] = metadata;
-    payload["created_at"] = createdAt.toISOExtString();
-    payload["updated_at"] = updatedAt.toISOExtString();
-    return payload;
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("content_id", contentId)
+      .set("title", title)
+      .set("content_type", contentType)
+      .set("version", contentVersion)
+      .set("provider_id", providerId)
+      .set("dependencies", deps)
+      .set("related_content", related)
+      .set("metadata", metadata);
   }
 }

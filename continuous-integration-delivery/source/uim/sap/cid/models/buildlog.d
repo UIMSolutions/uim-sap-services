@@ -9,20 +9,20 @@ mixin(ShowModule!());
 // ---------------------------------------------------------------------------
 // CIDBuildLog – a log entry produced during a build
 // ---------------------------------------------------------------------------
-struct CIDBuildLog {
-  UUID tenantId;
-  string logId;
-  string buildId;
+class CIDBuildLog : SAPTenantObject {
+  mixin(SAPObjectTemplate!CIDBuildLog);
+
+  UUID logId;
+  UUID buildId;
   /// Optional: stage this log belongs to
-  string stageId;
+  UUID stageId;
   /// Level: "info" | "warning" | "error" | "debug"
   string level;
   string message;
   SysTime timestamp;
 
   override Json toJson() {
-    return Json.emptyObject
-      .set("tenant_id", tenantId)
+    return supet.toJson
       .set("log_id", logId)
       .set("build_id", buildId)
       .set("stage_id", stageId)

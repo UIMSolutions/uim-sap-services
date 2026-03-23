@@ -8,8 +8,9 @@ mixin(ShowModule!());
 // ---------------------------------------------------------------------------
 // CIDRepository – a connected Git repository
 // ---------------------------------------------------------------------------
-struct CIDRepository {
-  UUID tenantId;
+class CIDRepository : SAPTenantObject {
+  mixin(SAPObjectTemplate!CIDRepository);
+
   UUID repoId;
   string name;
   string description;
@@ -18,18 +19,15 @@ struct CIDRepository {
   /// Default branch to build from
   string defaultBranch;
   /// Optional reference to a stored credential
-  string credentialId;
+  UUID credentialId;
   /// Provider hint: "github" | "gitlab" | "bitbucket" | "other"
   string provider;
   /// Webhook secret for push events (optional)
   string webhookSecret;
   bool active;
-  SysTime createdAt;
-  SysTime updatedAt;
 
   override Json toJson() {
     return super.toJson()
-      .set("tenant_id", tenantId)
       .set("repo_id", repoId)
       .set("name", name)
       .set("description", description)
@@ -38,8 +36,6 @@ struct CIDRepository {
       .set("credential_id", credentialId)
       .set("provider", provider)
       .set("webhook_secret", webhookSecret.length > 0 ? "***" : "")
-      .set("active", active)
-      .set("created_at", createdAt.toISOExtString())
-      .set("updated_at", updatedAt.toISOExtString());
+      .set("active", active);
   }
 }

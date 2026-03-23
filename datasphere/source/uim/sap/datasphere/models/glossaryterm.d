@@ -22,20 +22,18 @@ mixin(ShowModule!());
   * - definition: A detailed definition of the glossary term.
   * - updatedAt: The timestamp of the last update to this glossary term.
   */
-struct DATGlossaryTerm {
-  UUID tenantId;
-  string termId;
+class DATGlossaryTerm : SAPTenantObject {
+  mixin(SAPObjectTemplate!DATGlossaryTerm);
+
+  UUID termId;
   string term;
   string definition;
   SysTime updatedAt;
 
   override Json toJson()  {
-    Json info = super.toJson;
-    payload["tenant_id"] = tenantId;
-    payload["term_id"] = termId;
-    payload["term"] = term;
-    payload["definition"] = definition;
-    payload["updated_at"] = updatedAt.toISOExtString();
-    return payload;
+    return super.toJson()
+      .set("term_id", termId)
+      .set("term", term)
+      .set("definition", definition);
   }
 }
