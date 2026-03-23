@@ -6,8 +6,9 @@ mixin(ShowModule!());
 
 @safe:
 
+class ARTProgramResult : SAPObject {
+  mixin(SAPObjectTemplate!ARTProgramResult);
 
-struct ARTProgramResult {
   bool success;
   string message;
   int statusCode = 200;
@@ -16,14 +17,14 @@ struct ARTProgramResult {
   SysTime timestamp;
   UUID correlationId;
 
-  override Json toJson()  {
+  override Json toJson() {
     return super.toJson
-    .set("success", success)
-    .set("message", message)
-    .set("statusCode", statusCode)
-    .set("data", data)
-    .set("program", program)
-    .set("timestamp", timestamp.toISOExtString())
-    .set("correlationId", correlationId);
+      .set("success", success)
+      .set("message", message)
+      .set("statusCode", statusCode)
+      .set("data", data)
+      .set("program", program)
+      .set("timestamp", timestamp.toISOExtString())
+      .set("correlationId", correlationId);
   }
 }

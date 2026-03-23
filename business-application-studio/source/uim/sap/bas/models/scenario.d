@@ -6,23 +6,23 @@ mixin(ShowModule!());
 
 @safe:
 
+class BASScenario : SAPObject {
+  mixin(SAPObjectTemplate!BASScenario);
 
-struct BASScenario {
   string scenarioId;
   string name;
   string description;
   string[] supportedSolutions;
 
-  override Json toJson()  {
-    Json info = super.toJson;
-    payload["scenario_id"] = scenarioId;
-    payload["name"] = name;
-    payload["description"] = description;
-
+  override Json toJson() {
     Json solutions = Json.emptyArray;
     foreach (solution; supportedSolutions)
       solutions ~= solution;
-    payload["supported_solutions"] = solutions;
-    return payload;
+
+    return super.toJson()
+      .set("scenario_id", scenarioId)
+      .set("name", name)
+      .set("description", description)
+      .set("supported_solutions", solutions);
   }
 }

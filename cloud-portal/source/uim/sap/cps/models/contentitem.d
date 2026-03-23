@@ -4,22 +4,20 @@ import uim.sap.cps;
 mixin(ShowModule!());
 
 @safe:
-struct CPSContentItem {
-  UUID tenantId;
+class CPSContentItem : SAPTenantObject {
+  mixin(SAPObjectTemplate!CPSContentItem);
+
   string itemType;
-  string itemId;
+  UUID itemId;
   string name;
   Json configuration;
   SysTime updatedAt;
 
-  override Json toJson()  {
-    Json info = super.toJson;
-    payload["tenant_id"] = tenantId;
-    payload["item_type"] = itemType;
-    payload["item_id"] = itemId;
-    payload["name"] = name;
-    payload["configuration"] = configuration;
-    payload["updated_at"] = updatedAt.toISOExtString();
-    return payload;
+  override Json toJson() {
+    return super.toJson()
+      .set("item_type", itemType)
+      .set("item_id", itemId)
+      .set("name", name)
+      .set("configuration", configuration);
   }
 }

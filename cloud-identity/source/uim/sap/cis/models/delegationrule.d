@@ -43,26 +43,23 @@ mixin(ShowModule!());
   * JSON payload expected by the API consumers. The `emailDomain`, `userType`, and `group` fields allow for defining specific criteria for when the delegation rule should be applied, while the `isDefault` field indicates whether this rule should be used as the default delegation mechanism when no other rules match. The `updatedAt` field is essential for tracking changes to the delegation rule and ensuring that the most current version is being applied in authentication scenarios.
   * Delegation rules are a critical component of the authentication flow in the CIS module, enabling flexible and dynamic routing of authentication requests to different identity providers based on user attributes and organizational policies. By defining delegation rules, administrators can ensure that users are authenticated through the appropriate channels, enhancing security and user experience. The combination of criteria such as email domain, user type, and group membership allows for granular control over the delegation process, making it possible to implement complex authentication scenarios that align with the organization's requirements. 
   */
-struct CISDelegationRule {
-  UUID tenantId;
+class CISDelegationRule : SAPTenantObject {
+  mixin(SAPObjectTemplate!CISDelegationRule);
+
   UUID ruleId;
   string targetIdp;
   bool isDefault = false;
   string emailDomain;
   string userType;
   string group;
-  SysTime updatedAt;
 
-  override Json toJson()  {
-    Json info = super.toJson;
-    payload["rule_id"] = ruleId;
-    payload["tenant_id"] = tenantId;
-    payload["target_idp"] = targetIdp;
-    payload["is_default"] = isDefault;
-    payload["email_domain"] = emailDomain;
-    payload["user_type"] = userType;
-    payload["group"] = group;
-    payload["updated_at"] = updatedAt.toISOExtString();
-    return payload;
+  override Json toJson() {
+    return super.toJson
+      .set("rule_id", ruleId)
+      .set("target_idp", targetIdp)
+      .set("is_default", isDefault)
+      .set("email_domain", emailDomain)
+      .set("user_type", userType)
+      .set("group", group);
   }
 }

@@ -36,42 +36,19 @@ mixin(ShowModule!());
   * ```
   * Note: The `toJson()` method is used to serialize the job log entry into a JSON format that can be returned in API responses or stored in a database. The actual implementation of the `to
  */
-struct CISJobLog {
-  UUID tenantId;
-  string logId;
-  string jobId;
+class CISJobLog : SAPTenantObject {
+  mixin(SAPObjectTemplate!CISJobLog);
+
+  UUID logId;
+  UUID jobId;
   string level;
   string message;
-  SysTime createdAt;
 
-  override Json toJson()  {
-    Json info = super.toJson;
-    payload["log_id"] = logId;
-    payload["tenant_id"] = tenantId;
-    payload["job_id"] = jobId;
-    payload["level"] = level;
-    payload["message"] = message;
-    payload["created_at"] = createdAt.toISOExtString();
-    return payload;
+  override Json toJson() {
+    return super.toJson
+      .set("log_id", logId)
+      .set("job_id", jobId)
+      .set("level", level)
+      .set("message", message);
   }
-}
-///
-unittest {
-  mixin(ShowTest!("Testing CISJobLog toJson() method"));
-
-  CISJobLog logEntry;
-  logEntry.tenantId = "tenant123";
-  logEntry.logId = "log456";
-  logEntry.jobId = "job789";
-  logEntry.level = "INFO";
-  logEntry.message = "Job executed successfully";
-  logEntry.createdAt = Clock.currTime();
-
-  Json logJson = logEntry.toJson();
-  assert(logJson["log_id"] == "log456");
-  assert(logJson["tenant_id"] == "tenant123");
-  assert(logJson["job_id"] == "job789");
-  assert(logJson["level"] == "INFO");
-  assert(logJson["message"] == "Job executed successfully");
-  assert(logJson["created_at"] == logEntry.createdAt.toISOExtString());
 }

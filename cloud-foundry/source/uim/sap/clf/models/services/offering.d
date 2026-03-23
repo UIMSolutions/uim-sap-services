@@ -11,18 +11,19 @@ mixin(ShowModule!());
 
 @safe:
 
-struct CLFServiceOffering {
-    string guid;
-    string label;
-    string provider;
-    string description;
+class CLFServiceOffering : SAPObject {
+  mixin(SAPObjectTemplate!CLFServiceOffering);
 
-    override Json toJson()  {
-        Json payload = Json.emptyObject;
-        payload["guid"] = guid;
-        payload["label"] = label;
-        payload["provider"] = provider;
-        payload["description"] = description;
-        return payload;
-    }
+  string guid;
+  string label;
+  string provider;
+  string description;
+
+  override Json toJson() {
+    return super.toJson
+      .set("guid", guid)
+      .set("label", label)
+      .set("provider", provider)
+      .set("description", description);
+  }
 }

@@ -85,7 +85,7 @@ class CISService : SAPService {
 
   Json upsertUser(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
-    auto user = userFromJson(tenantId, request);
+    auto user = CISUser(tenantId, request);
     validateUser(user);
     user.updatedAt = Clock.currTime();
     auto saved = _store.upsertUser(user);
@@ -112,7 +112,7 @@ class CISService : SAPService {
 
   Json upsertGroup(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
-    auto group = groupFromJson(tenantId, request);
+    auto group = CISGroup(tenantId, request);
     if (group.displayName.length == 0) {
       throw new CISValidationException("displayName is required");
     }
@@ -209,7 +209,7 @@ class CISService : SAPService {
     validateId(tenantId, "Tenant ID");
     validateId(policyId, "Policy ID");
 
-    CISAuthorizationPolicy policy;
+    CISAuthorizationPolicy policy = new CISAuthorizationPolicy;
     policy.tenantId = UUID(tenantId);
     policy.policyId = policyId;
     policy.updatedAt = Clock.currTime();
@@ -281,7 +281,7 @@ class CISService : SAPService {
     validateId(tenantId, "Tenant ID");
     validateId(policyId, "Policy ID");
 
-    CISRiskPolicy policy;
+    CISRiskPolicy policy = new CISRiskPolicy(request);
     policy.tenantId = UUID(tenantId);
     policy.policyId = policyId;
     policy.updatedAt = Clock.currTime();
@@ -309,14 +309,11 @@ class CISService : SAPService {
 
   Json listRiskPolicies(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
-    Json resources = Json.emptyArray;
-    foreach (policy; _store.listRiskPolicies(tenantId))
-      resources ~= policy.toJson();
+    auto resources = _store.listRiskPolicies(tenantId).map!(policy => policy.toJson).array;
 
-    Json payload = Json.emptyObject;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)resources.length;
-    return payload;
+    return Json.emptyObject
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json evaluateRisk(UUID tenantId, Json request) {
@@ -383,7 +380,7 @@ class CISService : SAPService {
 
     auto saved = _store.upsertJob(job);
 
-    CISJobLog startLog;
+    CISJobLog startLog = new CISJobLog;
     startLog.tenantId = UUID(tenantId);
     startLog.logId = createId();
     startLog.jobId = saved.jobId;
@@ -399,9 +396,7 @@ class CISService : SAPService {
 
   Json listProvisioningJobs(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
-    Json resources = Json.emptyArray;
-    foreach (job; _store.listJobs(tenantId))
-      resources ~= job.toJson();
+    auto resources = _store.listJobs(tenantId).map!(job => job.toJson).array;
 
     return Json.emptyObject
       .set("resources", resources)
@@ -410,9 +405,7 @@ class CISService : SAPService {
 
   Json listJobLogs(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
-    Json resources = Json.emptyArray;
-    foreach (log; _store.listJobLogs(tenantId))
-      resources ~= log.toJson();
+    auto resources = _store.listJobLogs(tenantId).map!(log => log.toJson).array;
 
     return Json.emptyObject
       .set("resources", resources)
@@ -421,7 +414,7 @@ class CISService : SAPService {
 
   Json subscribeNotifications(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
-    CISNotificationSubscription sub;
+    CISNotificationSubscription sub = new CISNotificationSubscription;
     sub.tenantId = UUID(tenantId);
     sub.subscriptionId = createId();
     sub.updatedAt = Clock.currTime();

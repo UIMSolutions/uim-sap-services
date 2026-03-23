@@ -6,8 +6,10 @@ mixin(ShowModule!());
 
 @safe:
 
-struct CPIRequest {
-    string path;
-    string[string] query;
-    Json payload = Json.emptyObject;
+class CPIRequest : SAPObject {
+  mixin(SAPObjectTemplate!CPIRequest);
+
+  string path;
+  string[string] query;
+  Json payload = Json.emptyObject;
 }

@@ -18,17 +18,18 @@ bool isRecommendedAuditEventType(string eventType) {
   return AUDIT_LOG_RECOMMENDED_EVENT_TYPES.canFind(toLower(eventType));
 }
 
-struct AuditLogWriteResult {
+class AuditLogWriteResult : SAPObject {
+  mixin(SAPObjectTemplate!AuditLogWriteResult);
+
   bool success;
   UUID eventId;
   bool recommendedType;
 
-  override Json toJson()  {
-    Json result = Json.emptyObject;
-    result["success"] = success;
-    result["event_id"] = eventId;
-    result["recommended_type"] = recommendedType;
-    return result;
+  override Json toJson() {
+    return super.toJson
+      .set("success", success)
+      .set("event_id", eventId)
+      .set("recommended_type", recommendedType);
   }
 }
 

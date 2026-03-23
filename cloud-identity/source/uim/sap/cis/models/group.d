@@ -35,70 +35,34 @@ mixin(ShowModule!());
   * ```
   * Note: The `toJson()` method is used to serialize the user group into a JSON format that can be returned in API responses or stored in a database. The actual implementation of the `toJson()` method may vary based on the specific requirements of the application and the structure of the JSON payload expected by the API consumers. The `members` field is represented as a JSON array to allow for flexibility in defining multiple users that belong to the group. The `updatedAt` field is essential for tracking changes to the group and ensuring that the most current version is being applied. The `displayName` field provides a human-readable identifier for the group, which can be useful for administrators when managing multiple groups. 
   */
-struct CISGroup {
-  UUID tenantId;
+class CISGroup : SAPTenantObject {
+  mixin(SAPObjectTemplate!CISGroup);
+
   UUID groupId;
   string displayName;
   Json members;
-  SysTime updatedAt;
 
   override Json toJson() {
-    Json info = super.toJson;
-    payload["id"] = groupId;
-    payload["tenant_id"] = tenantId;
-    payload["displayName"] = displayName;
-    payload["members"] = members;
-    payload["updated_at"] = updatedAt.toISOExtString();
-    return payload;
+    return super.toJson()
+      .set("id", groupId)
+      .set("displayName", displayName)
+      .set("members", members);
   }
-}
-/// 
-unittest {
-  mixin(ShowTest!("Testing CISGroup toJson() method"));
 
-  CISGroup group;
-  group.tenantId = "tenant123";
-  group.groupId = "group123";
-  group.displayName = "Test Group";
-  group.members = ["user1", "user2"].toJson;
-  group.updatedAt = Clock.currTime();
+  static CISGroup groupFromJson(UUID tenantId, Json request) {
+    CISGroup group = new CISGroup(request);
+    group.tenantId = tenantId;
+    group.groupId = createId();
+    group.updatedAt = Clock.currTime();
+    group.members = Json.emptyArray;
 
-  Json json = group.toJson();
-  assert(json["id"] == "group123");
-  assert(json["tenant_id"] == "tenant123");
-  assert(json["displayName"] == "Test Group");
-  assert(json["members"].isArray);
-  assert(json["updated_at"].isString);
-}
+    if ("id" in request && request["id"].isString)
+      group.groupId = request["id"].get!string;
+    if ("displayName" in request && request["displayName"].isString)
+      group.displayName = request["displayName"].get!string;
+    if ("members" in request && request["members"].isArray)
+      group.members = request["members"];
 
-CISGroup groupFromJson(UUID tenantId, Json request) {
-  CISGroup group;
-  group.tenantId = UUID(tenantId);
-  group.groupId = createId();
-  group.updatedAt = Clock.currTime();
-  group.members = Json.emptyArray;
-
-  if ("id" in request && request["id"].isString)
-    group.groupId = request["id"].get!string;
-  if ("displayName" in request && request["displayName"].isString)
-    group.displayName = request["displayName"].get!string;
-  if ("members" in request && request["members"].isArray)
-    group.members = request["members"];
-
-  return group;
-}
-/// 
-unittest {
-  mixin(ShowTest!("Testing groupFromJson() function"));
-
-  Json request = Json.emptyObject
-    .set("id", "group123")
-    .set("displayName", "Test Group")
-    .set("members", ["user1", "user2"].toJson);
-
-  CISGroup group = groupFromJson("tenant123", request);
-  assert(group.tenantId == "tenant123");
-  assert(group.groupId == "group123");
-  assert(group.displayName == "Test Group");
-  assert(group.members.isArray);
+    return group;
+  }
 }

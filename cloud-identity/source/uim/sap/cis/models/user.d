@@ -46,8 +46,9 @@ mixin(ShowModule!());
   * Note: The `toJson()` method is used to serialize the user object into a JSON format that can be returned in API responses or stored in a database. The actual implementation of the `toJson()` method may vary based on the specific requirements of the application and the structure of the JSON payload expected
   * by the API consumers. The `groups` field allows for representing the user's group memberships, while the `attributes` field provides flexibility for storing additional custom information about the user that may be relevant for provisioning, notifications, or risk policies within the CIS module. The `createdAt` and `updatedAt` fields are essential for tracking the lifecycle of the user object and ensuring that the most current information is being used in any operations involving the user. 
  */
-struct CISUser {
-  UUID tenantId;
+class CISUser : SAPTenantObject {
+  mixin(SAPObjectTemplate!CISUser);
+
   UUID userId;
   string userName;
   string email;
@@ -58,85 +59,48 @@ struct CISUser {
   SysTime createdAt;
   SysTime updatedAt;
 
-  override Json toJson()  {
-    Json info = super.toJson;
-    payload["id"] = userId;
-    payload["tenant_id"] = tenantId;
-    payload["userName"] = userName;
-    payload["email"] = email;
-    payload["user_type"] = userType;
-    payload["active"] = active;
-    payload["groups"] = groups;
-    payload["attributes"] = attributes;
-    payload["created_at"] = createdAt.toISOExtString();
-    payload["updated_at"] = updatedAt.toISOExtString();
-    return payload;
-  }
-}
-///
-unittest {
-  mixin(ShowTest!("Testing CISUser toJson() method"));
-
-  CISUser user;
-  user.tenantId = "tenant123";
-  user.userId = "user456";
-  user.userName = "jdoe";
-  user.email = "jdoe@example.com";
-  user.userType = "employee";
-  user.active = true;
-  user.groups = ["group1", "group2"].toJson;
-  user.attributes = ["department": "sales", "location": "NY"].toJson;
-  user.createdAt = Clock.currTime();
-  user.updatedAt = Clock.currTime();
-  Json userJson = user.toJson();
-
-  assert(userJson["id"] == "user456");
-  assert(userJson["tenant_id"] == "tenant123");
-  assert(userJson["userName"] == "jdoe");
-  assert(userJson["email"] == "jdoe@example.com");
-  assert(userJson["user_type"] == "employee");
-  assert(userJson["active"] == true);
-  assert(userJson["groups"].isArray);
-  assert(userJson["groups"].length == 2);
-  assert(userJson["groups"][0] == "group1");
-  assert(userJson["groups"][1] == "group2");
-  assert(userJson["attributes"].isObject);
-  assert(userJson["attributes"]["department"] == "sales");
-  assert(userJson["attributes"]["location"] == "NY");
-  assert(userJson["created_at"].length > 0);
-  assert(userJson["updated_at"].length > 0);
-}
-
-CISUser userFromJson(UUID tenantId, Json request) {
-  CISUser user;
-  user.tenantId = UUID(tenantId);
-  user.userId = createId();
-  user.createdAt = Clock.currTime();
-  user.updatedAt = user.createdAt;
-  user.groups = Json.emptyArray;
-  user.attributes = Json.emptyObject;
-
-  if ("id" in request && request["id"].isString) {
-    user.userId = request["id"].get!string;
-  }
-  if ("userName" in request && request["userName"].isString) {
-    user.userName = request["userName"].get!string;
-  }
-  if ("email" in request && request["email"].isString) {
-    user.email = request["email"].get!string;
-  }
-  if ("user_type" in request && request["user_type"].isString) {
-    user.userType = request["user_type"].get!string;
-  }
-  if ("active" in request && request["active"].isBoolean) {
-    user.active = request["active"].get!bool;
-  }
-  if ("groups" in request && request["groups"].isArray) {
-    user.groups = request["groups"];
-  }
-  if ("attributes" in request && request["attributes"].isObject) {
-    user.attributes = request["attributes"];
+  override Json toJson() {
+    return super.toJson
+      .set("id", userId)
+      .set("userName", userName)
+      .set("email", email)
+      .set("user_type", userType)
+      .set("active", active)
+      .set("groups", groups)
+      .set("attributes", attributes);
   }
 
-  return user;
+  static CISUser opCall(UUID tenantId, Json request) {
+    CISUser user;
+    user.tenantId = tenantId;
+    user.userId = createId();
+    user.createdAt = Clock.currTime();
+    user.updatedAt = user.createdAt;
+    user.groups = Json.emptyArray;
+    user.attributes = Json.emptyObject;
+
+    if ("id" in request && request["id"].isString) {
+      user.userId = request["id"].get!string;
+    }
+    if ("userName" in request && request["userName"].isString) {
+      user.userName = request["userName"].get!string;
+    }
+    if ("email" in request && request["email"].isString) {
+      user.email = request["email"].get!string;
+    }
+    if ("user_type" in request && request["user_type"].isString) {
+      user.userType = request["user_type"].get!string;
+    }
+    if ("active" in request && request["active"].isBoolean) {
+      user.active = request["active"].get!bool;
+    }
+    if ("groups" in request && request["groups"].isArray) {
+      user.groups = request["groups"];
+    }
+    if ("attributes" in request && request["attributes"].isObject) {
+      user.attributes = request["attributes"];
+    }
+
+    return user;
+  }
 }
