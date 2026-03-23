@@ -12,7 +12,9 @@ mixin(ShowModule!());
 @safe:
 
 /// Result of a sign or verify operation
-struct KSTSignResult {
+class KSTSignResult : SAPObject {
+  mixin(SAPObjectTemplate!KSTSignResult);
+
   string keystoreName;
   string keyAlias;
   string algorithm;
@@ -21,13 +23,12 @@ struct KSTSignResult {
   SysTime timestamp;
 
   override Json toJson()  {
-    Json info = super.toJson;
-    payload["keystore"] = keystoreName;
-    payload["key_alias"] = keyAlias;
-    payload["algorithm"] = algorithm;
-    payload["signature"] = signature;
-    payload["verified"] = verified;
-    payload["timestamp"] = timestamp.toISOExtString();
-    return payload;
+    return super.toJson
+    .set("keystore", keystoreName)
+    .set("key_alias", keyAlias)
+    .set("algorithm", algorithm)
+    .set("signature", signature)
+    .set("verified", verified)
+    .set("timestamp", timestamp.toISOExtString());
   }
 }

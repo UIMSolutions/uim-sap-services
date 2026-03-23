@@ -12,7 +12,9 @@ mixin(ShowModule!());
 @safe:
 
 /// Represents an X.509 certificate
-struct KSTCertificate {
+class KSTCertificate : SAPObject {
+  mixin(SAPObjectTemplate!KSTCertificate);
+
   string alias_;
   string subject;
   string issuer;
@@ -22,20 +24,17 @@ struct KSTCertificate {
   string fingerprint;
   KSTFormat format = KSTFormat.PEM;
   string content;
-  SysTime createdAt;
 
   override Json toJson()  {
-    Json info = super.toJson;
-    payload["alias"] = alias_;
-    payload["subject"] = subject;
-    payload["issuer"] = issuer;
-    payload["serial_number"] = serialNumber;
-    payload["not_before"] = notBefore;
-    payload["not_after"] = notAfter;
-    payload["fingerprint"] = fingerprint;
-    payload["format"] = cast(string)format;
-    payload["created_at"] = createdAt.toISOExtString();
-    return payload;
+    return super.toJson
+    .set("alias", alias_)
+    .set("subject", subject)
+    .set("issuer", issuer)
+    .set("serial_number", serialNumber)
+    .set("not_before", notBefore)
+    .set("not_after", notAfter)
+    .set("fingerprint", fingerprint)
+    .set("format", cast(string)format);
   }
 
   Json toJsonWithContent() const {
@@ -43,10 +42,9 @@ struct KSTCertificate {
     payload["content"] = content;
     return payload;
   }
-}
 
-KSTCertificate certificateFromJson(Json request) {
-  KSTCertificate cert;
+  KSTCertificate certificateFromJson(Json request) {
+  KSTCertificate cert  = new KSTCertificate();
   cert.createdAt = Clock.currTime();
 
   if ("alias" in request && request["alias"].isString)
@@ -68,4 +66,7 @@ KSTCertificate certificateFromJson(Json request) {
   if ("content" in request && request["content"].isString)
     cert.content = request["content"].get!string;
   return cert;
+
+}
+
 }

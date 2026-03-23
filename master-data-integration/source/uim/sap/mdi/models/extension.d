@@ -5,22 +5,19 @@ import uim.sap.mdi;
 mixin(ShowModule!());
 
 @safe:
-struct MDIExtension {
-  UUID tenantId;
-  string extensionId;
+class MDIExtension : SAPTenantObject {
+  mixin(SAPObjectTemplate!MDIExtension);
+
+  UUID extensionId;
   string objectType;
   Json fields;
   Json entities;
-  SysTime updatedAt;
 
   override Json toJson()  {
-    Json info = super.toJson;
-    payload["tenant_id"] = tenantId;
-    payload["extension_id"] = extensionId;
-    payload["object_type"] = objectType;
-    payload["fields"] = fields;
-    payload["entities"] = entities;
-    payload["updated_at"] = updatedAt.toISOExtString();
-    return payload;
+    return super.toJson
+      .set("extension_id", extensionId)
+      .set("object_type", objectType)
+      .set("fields", fields)
+      .set("entities", entities);
   }
 }

@@ -10,21 +10,15 @@ class MDIService : SAPService {
   private MDIStore _store;
 
   this(MDIConfig config) {
-    config.validate();
-    _config = config;
+    super(config);
     _store = new MDIStore;
   }
 
-  @property const(MDIConfig) config() const {
-    return _config;
-  }
-
   override Json health() {
-    Json healthInfo = super.health();
-    healthInfo["ok"] = true;
-    healthInfo["serviceName"] = _config.serviceName;
-    healthInfo["serviceVersion"] = _config.serviceVersion;
-    return healthInfo;
+    return super.health()
+    .set("ok", true)
+    .set("serviceName", _config.serviceName)
+    .set("serviceVersion", _config.serviceVersion);
   }
 
 
@@ -43,9 +37,7 @@ class MDIService : SAPService {
 
   Json listClients(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
-    Json resources = Json.emptyArray;
-    foreach (client; _store.listClients(tenantId))
-      resources ~= client.toJson();
+    Json resources = _store.listClients(tenantId).map!(client => client.toJson).array();
 
     Json payload = Json.emptyObject;
     payload["resources"] = resources;
@@ -57,7 +49,7 @@ class MDIService : SAPService {
     validateId(tenantId, "Tenant ID");
     validateId(filterId, "Filter ID");
 
-    MDIFilter filter;
+    MDIFilter filter = new MDIFilter(request);
     filter.tenantId = UUID(tenantId);
     filter.filterId = filterId;
     filter.objectType = _config.defaultObjectType;
@@ -86,9 +78,7 @@ class MDIService : SAPService {
 
   Json listFilters(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
-    Json resources = Json.emptyArray;
-    foreach (filter; _store.listFilters(tenantId))
-      resources ~= filter.toJson();
+    Json resources = _store.listFilters(tenantId).map!(filter => filter.toJson).array();
 
     Json payload = Json.emptyObject;
     payload["resources"] = resources;
@@ -100,7 +90,7 @@ class MDIService : SAPService {
     validateId(tenantId, "Tenant ID");
     validateId(extensionId, "Extension ID");
 
-    MDIExtension extension;
+    MDIExtension extension = new MDIExtension(request);
     extension.tenantId = UUID(tenantId);
     extension.extensionId = extensionId;
     extension.objectType = _config.defaultObjectType;
@@ -120,23 +110,19 @@ class MDIService : SAPService {
 
     auto saved = _store.upsertExtension(extension);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["extension"] = saved.toJson();
-    payload["extensibility"] = true;
-    return payload;
+    return Json.emptyObject
+    .set("success", true)
+    .set("extension", saved.toJson())
+    .set("extensibility", true);
   }
 
   Json listExtensions(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
-    Json resources = Json.emptyArray;
-    foreach (extension; _store.listExtensions(tenantId))
-      resources ~= extension.toJson();
+    Json resources = _store.listExtensions(tenantId).map!(extension => extension.toJson).array();
 
-    Json payload = Json.emptyObject;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)resources.length;
-    return payload;
+    return Json.emptyObject
+    .set("resources", resources)
+    .set("total_results", cast(long)resources.length);
   }
 
   Json replicate(UUID tenantId, Json request) {
@@ -183,24 +169,22 @@ class MDIService : SAPService {
 
     auto saved = _store.upsertJob(job);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["replication"] = saved.toJson();
-    payload["replicated_between"] = Json.emptyObject;
-    payload["replicated_between"]["source"] = source.toJson();
-    payload["replicated_between"]["target"] = target.toJson();
-    return payload;
+    return Json.emptyObject
+    .set("success", true)
+    .set("replication", saved.toJson())
+    .set("replicated_between", Json.emptyObject
+      .set("source", source.toJson())
+      .set("target", target.toJson())
+    );
+
   }
 
   Json listReplications(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
-    Json resources = Json.emptyArray;
-    foreach (job; _store.listJobs(tenantId))
-      resources ~= job.toJson();
+    Json resources = _store.listJobs(tenantId).map!(job => job.toJson).array();
 
-    Json payload = Json.emptyObject;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)resources.length;
-    return payload;
+    return Json.emptyObject
+    .set("resources", resources)
+    .set("total_results", cast(long)resources.length);
   }
 }

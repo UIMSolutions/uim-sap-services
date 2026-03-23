@@ -28,26 +28,23 @@ mixin(ShowModule!());
   * - `systemType`: The type of system the replication client is associated with (e.g., "sap").
   * - `updatedAt`: A timestamp indicating when the replication client was last updated.
  */
-struct MDIReplicationClient {
-  UUID tenantId;
+class MDIReplicationClient : SAPTenantObject {
+  mixin(SAPObjectTemplate!MDIReplicationClient);
+
   UUID clientId;
   string name;
   string systemType;
   SysTime updatedAt;
 
   override Json toJson()  {
-    Json info = super.toJson;
-    payload["tenant_id"] = tenantId;
-    payload["client_id"] = clientId;
-    payload["name"] = name;
-    payload["system_type"] = systemType;
-    payload["updated_at"] = updatedAt.toISOExtString();
-    return payload;
+    return super.toJson
+      .set("client_id", clientId)
+      .set("name", name)
+      .set("system_type", systemType);
   }
-}
 
-MDIReplicationClient clientFromJson(UUID tenantId, Json request) {
-  MDIReplicationClient client;
+static MDIReplicationClient clientFromJson(UUID tenantId, Json request) {
+  MDIReplicationClient client = new MDIReplicationClient();
   client.tenantId = UUID(tenantId);
   client.clientId = createId();
   client.updatedAt = Clock.currTime();
@@ -61,3 +58,6 @@ MDIReplicationClient clientFromJson(UUID tenantId, Json request) {
     client.systemType = request["system_type"].get!string;
   return client;
 }
+
+}
+

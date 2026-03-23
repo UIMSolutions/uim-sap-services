@@ -35,31 +35,28 @@ mixin(ShowModule!());
   * - `filterIds`: A JSON array containing the IDs of filters applied to this replication job.
   * - `createdAt`: A timestamp indicating when the replication job was created.
   * - `updatedAt`: A timestamp indicating when the replication job was last updated.
- */ 
-struct MDIReplicationJob {
-    UUID tenantId;
-    string jobId;
-    string sourceClientId;
-    string targetClientId;
-    string objectType;
-    string mode;
-    string status;
-    Json filterIds;
-    SysTime createdAt;
-    SysTime updatedAt;
+ */
+class MDIReplicationJob : SAPtenantObject {
+  mixin(SAPObjectTemplate!MDIReplicationJob);
 
-    override Json toJson()  {
-        Json payload = Json.emptyObject;
-        payload["tenant_id"] = tenantId;
-        payload["job_id"] = jobId;
-        payload["source_client_id"] = sourceClientId;
-        payload["target_client_id"] = targetClientId;
-        payload["object_type"] = objectType;
-        payload["mode"] = mode;
-        payload["status"] = status;
-        payload["filter_ids"] = filterIds;
-        payload["created_at"] = createdAt.toISOExtString();
-        payload["updated_at"] = updatedAt.toISOExtString();
-        return payload;
-    }
+  UUID jobId;
+  UUID sourceClientId;
+  UUID targetClientId;
+  string objectType;
+  string mode;
+  string status;
+  Json filterIds;
+  SysTime createdAt;
+  SysTime updatedAt;
+
+  override Json toJson() {
+    return super.toJson
+      .set("job_id", jobId)
+      .set("source_client_id", sourceClientId)
+      .set("target_client_id", targetClientId)
+      .set("object_type", objectType)
+      .set("mode", mode)
+      .set("status", status)
+      .set("filter_ids", filterIds);
+  }
 }

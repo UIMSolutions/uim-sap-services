@@ -14,16 +14,16 @@ class MDIConfig : SAPConfig {
       return false;
     }
 
-    // Network configuration
+    // Network settings
     basePath(initData.getString("basePath", "/api/mdi"));
     host(initData.getString("host", "0.0.0.0"));
     port(cast(ushort)initData.getInteger("port", 8092));
 
-    // Service metadata
+    // Service settigs
     serviceName(initData.getString("serviceName", "uim-mdi"));
     serviceVersion(initData.getString("serviceVersion", "1.0.0"));
 
-    // Authentication configuration
+    // Authentication settigs
     requireAuthToken(initData.getBoolean("requireAuthToken", false));
     if (requireAuthToken) {
       authToken(initData.getString("authToken", ""));

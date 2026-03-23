@@ -30,22 +30,22 @@ mixin(ShowModule!());
   * - `active`: A boolean indicating whether the filter is active.  
   * - `updatedAt`: A timestamp indicating when the filter was last updated.
   */
-struct MDIFilter {
-  UUID tenantId;
-  string filterId;
+class MDIFilter : SAPtenantObject {
+  mixin(SAPObjectTemplate!MDIFilter);
+
+  UUID filterId;
   string objectType;
   Json conditions;
   bool active;
   SysTime updatedAt;
 
-  override Json toJson()  {
-    Json info = super.toJson;
-    payload["tenant_id"] = tenantId;
-    payload["filter_id"] = filterId;
-    payload["object_type"] = objectType;
-    payload["conditions"] = conditions;
-    payload["active"] = active;
-    payload["updated_at"] = updatedAt.toISOExtString();
-    return payload;
+  override Json toJson() {
+    return super.toJson
+      .set("tenant_id", tenantId)
+      .set("filter_id", filterId)
+      .set("object_type", objectType)
+      .set("conditions", conditions)
+      .set("active", active)
+      .set("updated_at", updatedAt.toISOExtString());
   }
 }

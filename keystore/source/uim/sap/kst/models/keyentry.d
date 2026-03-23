@@ -12,7 +12,9 @@ mixin(ShowModule!());
 @safe:
 
 /// Represents a cryptographic key entry (private key, secret key, or key pair)
-struct KSTKeyEntry {
+class KSTKeyEntry : SAPObject {
+  mixin(SAPObjectTemplate!KSTKeyEntry);
+
   string alias_;
   KSTEntryType entryType = KSTEntryType.PRIVATE_KEY;
   KSTAlgorithm algorithm = KSTAlgorithm.RSA;
@@ -21,26 +23,21 @@ struct KSTKeyEntry {
   KSTEncryptedPayload encryptedMaterial;
   string[] keyUsage;
   Json metadata;
-  SysTime createdAt;
-  SysTime updatedAt;
 
   override Json toJson()  {
-    Json info = super.toJson;
-    payload["alias"] = alias_;
-    payload["entry_type"] = cast(string)entryType;
-    payload["algorithm"] = cast(string)algorithm;
-    payload["key_size"] = cast(long)keySize;
-    payload["format"] = cast(string)format;
-    payload["key_usage"] = keyUsage.map!(u => Json(u)).array.Json;
-    payload["metadata"] = metadata;
-    payload["created_at"] = createdAt.toISOExtString();
-    payload["updated_at"] = updatedAt.toISOExtString();
-    return payload;
+    return super.toJson
+    .set("alias", alias_)
+    .set("entry_type", cast(string)entryType)
+    .set("algorithm", cast(string)algorithm)
+    .set("key_size", cast(long)keySize)
+    .set("format", cast(string)format)
+    .set("key_usage", keyUsage.map!(u => Json(u)).array.Json)
+    .set("metadata", metadata);
   }
 }
 
 KSTKeyEntry keyEntryFromJson(string alias_, Json request) {
-  KSTKeyEntry entry;
+  KSTKeyEntry entry  = new KSTKeyEntry(request);
   entry.alias_ = alias_;
   entry.createdAt = Clock.currTime();
   entry.updatedAt = entry.createdAt;
@@ -59,9 +56,7 @@ KSTKeyEntry keyEntryFromJson(string alias_, Json request) {
         entry.keyUsage ~= item.get!string;
     }
   }
-  if ("metadata" in request && request["metadata"].isObject)
-    entry.metadata = request["metadata"];
-  else
-    entry.metadata = Json.emptyObject;
+  
+  entry.metadata = request.getObject("metadata", Json.emptyObject);
   return entry;
 }
