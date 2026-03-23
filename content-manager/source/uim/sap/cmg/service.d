@@ -51,7 +51,7 @@ class CMGService : SAPService {
     auto now = Clock.currTime();
 
     CMGContentItem item = new CMGContentItem(item);
-    item.tenantId = UUID(tenantId);
+    item.tenantId = tenantId;
     item.itemId = itemId;
     item.contentType = normalizedType;
     item.title = requiredString(body, "title");
@@ -86,7 +86,7 @@ class CMGService : SAPService {
 
     auto now = Clock.currTime();
     CMGContentProvider provider;
-    provider.tenantId = UUID(tenantId);
+    provider.tenantId = tenantId;
     provider.providerid = requiredUUID(body, "provider_id");
     provider.name = requiredString(body, "name");
     provider.providerType = optionalString(body, "provider_type", "remote-content");
@@ -127,7 +127,7 @@ class CMGService : SAPService {
     foreach (contentType; typesToIntegrate) {
       auto normalizedType = normalizeContentType(contentType);
       CMGContentItem item;
-      item.tenantId = UUID(tenantId);
+      item.tenantId = tenantId;
       item.itemId = providerId ~ "-" ~ normalizedType;
       item.contentType = normalizedType;
       item.title = provider.get.name ~ " " ~ normalizedType ~ " item";

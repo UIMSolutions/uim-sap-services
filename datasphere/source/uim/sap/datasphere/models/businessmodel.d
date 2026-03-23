@@ -26,9 +26,10 @@ mixin(ShowModule!());
   * - measures: An array of measure names included in the business model.
   * - updatedAt: The timestamp of the last update to this business model.
   */
-struct DATBusinessModel {
-  UUID tenantId;
-  string modelId;
+class DATBusinessModel : SAPTenantObject {  
+  mixin(SAPObjectTemplate!DATBusinessModel);
+
+  UUID modelId;
   string name;
   string description;
   string grain;
@@ -37,7 +38,6 @@ struct DATBusinessModel {
   SysTime updatedAt;
 
   override Json toJson()  {
-    Json info = super.toJson;
     Json dimPayload = Json.emptyArray;
     Json measurePayload = Json.emptyArray;
 
@@ -46,14 +46,12 @@ struct DATBusinessModel {
     foreach (measure; measures)
       measurePayload ~= measure;
 
-    payload["tenant_id"] = tenantId;
-    payload["model_id"] = modelId;
-    payload["name"] = name;
-    payload["description"] = description;
-    payload["grain"] = grain;
-    payload["dimensions"] = dimPayload;
-    payload["measures"] = measurePayload;
-    payload["updated_at"] = updatedAt.toISOExtString();
-    return payload;
+    return super.toJson()
+    .set("model_id", modelId)
+    .set("name", name)
+    .set("description", description)
+    .set("grain", grain)
+    .set("dimensions", dimPayload)
+    .set("measures", measurePayload);
   }
 }

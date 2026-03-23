@@ -225,7 +225,7 @@ HTML";
     bool hasExisting = _store.tryGetProvider(tenantId, providerId, existing);
 
     CAGContentProvider provider;
-    provider.tenantId = UUID(tenantId);
+    provider.tenantId = tenantId;
     provider.providerId = providerId;
     provider.name = requiredString(body, "name");
     provider.providerType = optionalString(body, "provider_type", "sap-content-provider");
@@ -269,7 +269,7 @@ HTML";
     bool hasExisting = _store.tryGetContent(tenantId, contentId, existing);
 
     CAGContentItem item;
-    item.tenantId = UUID(tenantId);
+    item.tenantId = tenantId;
     item.contentId = contentId;
     item.title = requiredString(body, "title");
     item.contentType = normalizeContentType(optionalString(body, "content_type", "application"));
@@ -331,7 +331,7 @@ HTML";
     bool hasExisting = _store.tryGetQueue(tenantId, queueId, existing);
 
     CAGTransportQueue queue;
-    queue.tenantId = UUID(tenantId);
+    queue.tenantId = tenantId;
     queue.queueId = queueId;
     queue.name = requiredString(body, "name");
     queue.queueType = normalizeQueueType(requiredString(body, "queue_type"));
@@ -389,7 +389,7 @@ HTML";
     auto assemblyId = _store.nextId("assembly");
 
     CAGAssembly assembly;
-    assembly.tenantId = UUID(tenantId);
+    assembly.tenantId = tenantId;
     assembly.assemblyId = assemblyId;
     assembly.name = name;
     assembly.sourceSubaccount = sourceSubaccount;
@@ -496,7 +496,7 @@ HTML";
 
     auto now = Clock.currTime();
     CAGTransportActivity activity;
-    activity.tenantId = UUID(tenantId);
+    activity.tenantId = tenantId;
     activity.activityId = _store.nextId("activity");
     activity.assemblyId = assemblyId;
     activity.queueId = queue.queueId;

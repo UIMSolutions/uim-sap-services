@@ -53,7 +53,7 @@ class SMGService : SAPService {
     auto existing = _store.getSite(tenantId, siteId);
 
     SMGSite site;
-    site.tenantId = UUID(tenantId);
+    site.tenantId = tenantId;
     site.siteId = siteId;
     site.siteName = requiredString(body, "site_name");
     site.description = optionalString(body, "description", "");
@@ -106,7 +106,7 @@ class SMGService : SAPService {
     auto settings = _store.getSubaccountSettings(tenantId);
     if (settings.isNull) {
       SMGSubaccountSettings defaults;
-      defaults.tenantId = UUID(tenantId);
+      defaults.tenantId = tenantId;
       defaults.defaultSiteId = "";
       defaults.launchpadMode = "standard";
       defaults.themeId = "sap_horizon";
@@ -130,7 +130,7 @@ class SMGService : SAPService {
 
     auto existing = _store.getSubaccountSettings(tenantId);
     SMGSubaccountSettings settings;
-    settings.tenantId = UUID(tenantId);
+    settings.tenantId = tenantId;
     settings.defaultSiteId = optionalString(body, "default_site_id", existing.isNull ? ""
         : existing.get.defaultSiteId);
     settings.launchpadMode = normalizeLaunchpadMode(optionalString(body, "launchpad_mode", existing.isNull ? "standard"

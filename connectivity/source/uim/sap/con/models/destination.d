@@ -42,7 +42,7 @@ mixin(SAPObjectTemplate!CONDestination);
 
 CONDestination destinationFromJson(UUID tenantId, string name, Json request) {
   CONDestination destination;
-  destination.tenantId = UUID(tenantId);
+  destination.tenantId = tenantId;
   destination.name = name;
   destination.createdAt = Clock.currTime();
   destination.updatedAt = destination.createdAt;

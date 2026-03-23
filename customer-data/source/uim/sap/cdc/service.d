@@ -34,7 +34,7 @@ class CDCService : SAPService {
     auto existing = _store.getProfileByTenantUser(tenantId, requiredString(data, "user_id"));
 
     CDCProfile profile = new CDCProfile(data);
-    profile.tenantId = UUID(tenantId);
+    profile.tenantId = tenantId;
     profile.userId = UUID(data.requiredString("user_id"));
     profile.email = data.getString("email", existing.isNull ? "" : existing.get.email);
     profile.phone = data.getString("phone", existing.isNull ? "" : existing.get.phone);
@@ -138,7 +138,7 @@ class CDCService : SAPService {
     auto now = Clock.currTime();
 
     CDCConsent consent;
-    consent.tenantId = UUID(tenantId);
+    consent.tenantId = tenantId;
     consent.userId = userId;
     consent.consentid = requiredUUID(data, "consent_id");
     consent.purpose = requiredString(data, "purpose");
@@ -177,7 +177,7 @@ class CDCService : SAPService {
     auto now = Clock.currTime();
 
     CDCSiteGroup group;
-    group.tenantId = UUID(tenantId);
+    group.tenantId = tenantId;
     group.groupid = requiredUUID(data, "group_id");
     group.name = requiredString(data, "name");
     group.sites = readStringArray(data, "sites");
@@ -247,7 +247,7 @@ class CDCService : SAPService {
     auto now = Clock.currTime();
 
     CDCRiskProvider provider;
-    provider.tenantId = UUID(tenantId);
+    provider.tenantId = tenantId;
     provider.providerid = requiredUUID(data, "provider_id");
     provider.name = requiredString(data, "name");
     provider.providerKind = normalizeProviderKind(requiredString(data, "provider_kind"));

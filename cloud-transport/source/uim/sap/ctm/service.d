@@ -54,7 +54,7 @@ class CTMService : SAPService {
 
   Json createNode(UUID tenantId, Json payload) {
     CTMNode n;
-    n.tenantId = UUID(tenantId);
+    n.tenantId = tenantId;
     n.nodeId = "node_id" in payload ? payload["node_id"].get!string : createId();
     n.name = payload["name"].get!string;
     n.description = jstr(payload, "description");
@@ -100,7 +100,7 @@ class CTMService : SAPService {
       throw new CTMValidationException("Source and target must be different nodes");
 
     CTMRoute r;
-    r.tenantId = UUID(tenantId);
+    r.tenantId = tenantId;
     r.routeId = "route_id" in payload ? payload["route_id"].get!string : createId();
     r.sourceNodeId = srcId;
     r.targetNodeId = tgtId;
@@ -123,7 +123,7 @@ class CTMService : SAPService {
     _requireNode(tenantId, srcNodeId);
 
     CTMTransportRequest req;
-    req.tenantId = UUID(tenantId);
+    req.tenantId = tenantId;
     req.requestId = "request_id" in payload ? payload["request_id"].get!string : createId();
     req.description = jstr(payload, "description");
     req.sourceNodeId = srcNodeId;
@@ -158,7 +158,7 @@ class CTMService : SAPService {
     foreach (route; routes) {
       auto pos = _store.nextQueuePosition(tenantId, route.targetNodeId);
       CTMImportQueueEntry entry;
-      entry.tenantId = UUID(tenantId);
+      entry.tenantId = tenantId;
       entry.nodeId = route.targetNodeId;
       entry.requestId = requestId;
       entry.position = pos;
@@ -349,7 +349,7 @@ class CTMService : SAPService {
   private void _appendLog(UUID tenantId, UUID requestId, string nodeId,
     string action, string level, string message) {
     CTMTransportLog log;
-    log.tenantId = UUID(tenantId);
+    log.tenantId = tenantId;
     log.logId = _store.nextId("log");
     log.requestId = requestId;
     log.nodeId = nodeId;

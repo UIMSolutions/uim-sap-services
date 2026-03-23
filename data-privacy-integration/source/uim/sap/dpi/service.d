@@ -143,7 +143,7 @@ class DPIService : SAPService {
       entries ~= record.toJson();
 
     DPIExport exportItem;
-    exportItem.tenantId = UUID(tenantId);
+    exportItem.tenantId = tenantId;
     exportItem.exportId = createId();
     exportItem.subjectId = subjectId;
     exportItem.records = entries;
