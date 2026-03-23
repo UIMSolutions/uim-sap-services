@@ -36,58 +36,8 @@ enum CmisObjectType : string {
 // Repository
 // ---------------------------------------------------------------------------
 
-/// Describes a connected CMIS-compliant repository.
-struct Repository {
-  string repositoryId;
-  string name;
-  string description;
-  string vendorName;
-  string productName;
-  string productVersion;
-  string rootFolderId;
-  bool cmisCompliant = true;
-  bool encryptionEnabled = false;
-  SysTime connectedAt;
 
-  override Json toJson()  {
-    Json r = Json.emptyObject;
-    r["repository_id"] = repositoryId;
-    r["name"] = name;
-    r["description"] = description;
-    r["vendor_name"] = vendorName;
-    r["product_name"] = productName;
-    r["product_version"] = productVersion;
-    r["root_folder_id"] = rootFolderId;
-    r["cmis_compliant"] = cmisCompliant;
-    r["encryption_enabled"] = encryptionEnabled;
-    r["connected_at"] = connectedAt.toISOExtString();
-    return r;
-  }
-}
 
-Repository repositoryFromJson(Json request) {
-  Repository repo;
-  repo.repositoryId = randomUUID().toString();
-  repo.connectedAt = Clock.currTime();
-  repo.rootFolderId = randomUUID().toString();
-
-  if ("name" in request && request["name"].isString)
-    repo.name = request["name"].get!string;
-  if ("description" in request && request["description"].isString)
-    repo.description = request["description"].get!string;
-  if ("vendor_name" in request && request["vendor_name"].isString)
-    repo.vendorName = request["vendor_name"].get!string;
-  if ("product_name" in request && request["product_name"].isString)
-    repo.productName = request["product_name"].get!string;
-  if ("product_version" in request && request["product_version"].isString)
-    repo.productVersion = request["product_version"].get!string;
-  if ("cmis_compliant" in request && request["cmis_compliant"].isBoolean)
-    repo.cmisCompliant = request["cmis_compliant"].get!bool;
-  if ("encryption_enabled" in request && request["encryption_enabled"].isBoolean)
-    repo.encryptionEnabled = request["encryption_enabled"].get!bool;
-
-  return repo;
-}
 
 // ---------------------------------------------------------------------------
 // Folder
