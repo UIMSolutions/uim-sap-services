@@ -61,7 +61,7 @@ class SDIService : SAPService {
     auto now = Clock.currTime();
 
     SDISite site;
-    site.tenantId = UUID(tenantId);
+    site.tenantId = tenantId;
     site.siteid = requiredUUID(body, "site_id");
     site.name = requiredString(body, "name");
     site.description = optionalString(body, "description", "");

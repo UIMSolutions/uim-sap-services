@@ -6,9 +6,10 @@ mixin(ShowModule!());
 
 @safe:
 
-struct EVMMessage {
-  UUID tenantId;
-  string messageId;
+class EVMMessage : SAPTenantObject {
+  mixin(SAPObjectTemplate!EVMMessage);
+
+  UUID messageId;
   string topicName;
   string queueName;
   string publisher;
@@ -21,7 +22,6 @@ struct EVMMessage {
 
   override Json toJson() {
     return super.toJson()
-      .set("tenant_id", tenantId)
       .set("message_id", messageId)
       .set("topic_name", topicName)
       .set("queue_name", queueName)
@@ -33,11 +33,10 @@ struct EVMMessage {
       .set("published_at", publishedAt)
       .set("consumed_at", consumedAt);
   }
-}
 
-EVMMessage messageFromJson(UUID tenantId, string topicName, Json request) {
-  EVMMessage m;
-  m.tenantId = UUID(tenantId);
+  static EVMMessage messageFromJson(UUID tenantId, string topicName, Json request) {
+  EVMMessage m = new EVMMessage();
+  m.tenantId = tenantId;
   m.messageId = randomUUID().toString();
   m.topicName = topicName;
 
@@ -56,3 +55,6 @@ EVMMessage messageFromJson(UUID tenantId, string topicName, Json request) {
   m.publishedAt = Clock.currTime().toISOExtString();
   return m;
 }
+}
+
+

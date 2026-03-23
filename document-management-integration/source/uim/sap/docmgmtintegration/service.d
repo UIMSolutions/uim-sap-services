@@ -962,7 +962,7 @@ class DocMgmtIntegrationService : SAPService {
     auto cfg = _store.getUIConfig(tenantId);
     // Return defaults if none configured
     if (cfg.tenantId.length == 0) {
-      cfg.tenantId = UUID(tenantId);
+      cfg.tenantId = tenantId;
     }
 
     Json r = Json.emptyObject;

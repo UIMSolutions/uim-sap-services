@@ -271,7 +271,7 @@ HTML";
     validateId(tenantId, "Tenant ID");
 
     Job item;
-    item.tenantId = UUID(tenantId);
+    item.tenantId = tenantId;
     item.jobId = optionalString(request, "job_id", _store.nextId("job"));
     item.name = requiredString(request, "name");
     item.description = optionalString(request, "description", "");
@@ -379,7 +379,7 @@ HTML";
     }
 
     Schedule item;
-    item.tenantId = UUID(tenantId);
+    item.tenantId = tenantId;
     item.scheduleId = optionalString(request, "schedule_id", _store.nextId("schedule"));
     item.jobId = jobId;
     item.format = optionalString(request, "format", "repeat_interval");
@@ -511,7 +511,7 @@ HTML";
     auto durationSeconds = request.getInteger("duration_seconds", 30);
 
     CFTaskRun task;
-    task.tenantId = UUID(tenantId);
+    task.tenantId = tenantId;
     task.taskRunId = _store.nextId("cftask");
     task.taskName = taskName;
     task.durationSeconds = durationSeconds;
@@ -526,7 +526,7 @@ HTML";
       Thread.sleep(dur!"seconds"(durationSeconds));
 
       CFTaskRun update;
-      update.tenantId = UUID(tenantId);
+      update.tenantId = tenantId;
       update.taskRunId = taskRunId;
       update.taskName = taskName;
       update.durationSeconds = durationSeconds;
@@ -664,7 +664,7 @@ HTML";
     bool asyncRun
   ) {
     RunLog run;
-    run.tenantId = UUID(tenantId);
+    run.tenantId = tenantId;
     run.runId = _store.nextId("run");
     run.jobId = jobId;
     run.scheduleId = scheduleId;

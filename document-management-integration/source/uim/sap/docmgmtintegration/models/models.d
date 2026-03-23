@@ -110,7 +110,7 @@ struct Repository {
 Repository repositoryFromJson(UUID tenantId, Json request) {
   Repository repo;
   repo.repositoryId = randomUUID().toString();
-  repo.tenantId = UUID(tenantId);
+  repo.tenantId = tenantId;
   repo.connectedAt = Clock.currTime();
   repo.rootFolderId = randomUUID().toString();
 
@@ -173,7 +173,7 @@ struct Folder {
 Folder folderFromJson(UUID tenantId, string repositoryId, string parentFolderId, Json request) {
   Folder f;
   f.folderId = randomUUID().toString();
-  f.tenantId = UUID(tenantId);
+  f.tenantId = tenantId;
   f.repositoryId = repositoryId;
   f.parentFolderId = parentFolderId;
   f.createdAt = Clock.currTime();
@@ -248,7 +248,7 @@ struct Document {
 Document documentFromJson(UUID tenantId, string repositoryId, string folderId, Json request) {
   Document d;
   d.documentId = randomUUID().toString();
-  d.tenantId = UUID(tenantId);
+  d.tenantId = tenantId;
   d.repositoryId = repositoryId;
   d.folderId = folderId;
   d.createdAt = Clock.currTime();
@@ -319,7 +319,7 @@ DocumentVersion versionFromJson(UUID tenantId, string documentId,
   DocumentVersion v;
   v.versionId = randomUUID().toString();
   v.documentId = documentId;
-  v.tenantId = UUID(tenantId);
+  v.tenantId = tenantId;
   v.versionNumber = versionNumber;
   v.createdAt = Clock.currTime();
   v.createdBy = "system";
@@ -415,7 +415,7 @@ struct UIComponentConfig {
 
 UIComponentConfig uiConfigFromJson(UUID tenantId, Json request) {
   UIComponentConfig cfg;
-  cfg.tenantId = UUID(tenantId);
+  cfg.tenantId = tenantId;
 
   if ("repository_id" in request && request["repository_id"].isString)
     cfg.repositoryId = request["repository_id"].get!string;
@@ -483,7 +483,7 @@ struct IntegrationLink {
 IntegrationLink linkFromJson(UUID tenantId, Json request) {
   IntegrationLink lnk;
   lnk.linkId = randomUUID().toString();
-  lnk.tenantId = UUID(tenantId);
+  lnk.tenantId = tenantId;
   lnk.createdAt = Clock.currTime();
   lnk.createdBy = "system";
 

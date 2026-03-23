@@ -29,7 +29,7 @@ struct EVMTopic {
 
 EVMTopic topicFromJson(UUID tenantId, Json request) {
     EVMTopic t;
-    t.tenantId = UUID(tenantId);
+    t.tenantId = tenantId;
 
     if ("topic_name" in request && request["topic_name"].isString) {
         t.topicName = request["topic_name"].get!string;
