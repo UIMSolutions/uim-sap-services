@@ -74,7 +74,7 @@ struct INTConnector {
 
 INTConnector connectorFromJson(UUID tenantId, Json request) {
   INTConnector c;
-  c.tenantId = UUID(tenantId);
+  c.tenantId = tenantId;
   c.connectorId = randomUUID().toString();
 
   if ("name" in request && request["name"].isString)

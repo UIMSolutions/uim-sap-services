@@ -52,7 +52,7 @@ struct INTMigration {
 
 INTMigration migrationFromJson(UUID tenantId, Json request) {
   INTMigration m;
-  m.tenantId = UUID(tenantId);
+  m.tenantId = tenantId;
   m.migrationId = randomUUID().toString();
 
   if ("name" in request && request["name"].isString)

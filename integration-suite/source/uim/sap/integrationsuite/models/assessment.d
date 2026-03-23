@@ -44,7 +44,7 @@ struct INTAssessment {
 
 INTAssessment assessmentFromJson(UUID tenantId, Json request) {
   INTAssessment a = new INTAssessment;
-  a.tenantId = UUID(tenantId);
+  a.tenantId = tenantId;
   a.assessmentId = randomUUID().toString();
 
   if ("name" in request && request["name"].isString)

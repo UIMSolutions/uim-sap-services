@@ -85,7 +85,7 @@ struct INTHybridRuntime {
 
 INTHybridRuntime hybridRuntimeFromJson(UUID tenantId, Json request) {
   INTHybridRuntime r;
-  r.tenantId = UUID(tenantId);
+  r.tenantId = tenantId;
   r.runtimeId = randomUUID().toString();
 
   if ("name" in request && request["name"].isString)

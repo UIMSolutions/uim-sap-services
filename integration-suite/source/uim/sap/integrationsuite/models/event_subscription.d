@@ -61,7 +61,7 @@ struct INTEventSubscription {
 
 INTEventSubscription eventSubscriptionFromJson(UUID tenantId, Json request) {
   INTEventSubscription s;
-  s.tenantId = UUID(tenantId);
+  s.tenantId = tenantId;
   s.subscriptionId = randomUUID().toString();
 
   if ("topic_name" in request && request["topic_name"].isString)
