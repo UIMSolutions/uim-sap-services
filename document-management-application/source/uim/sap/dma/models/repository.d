@@ -1,4 +1,4 @@
-module uim.sap.documentmanagement.models.repository;
+module uim.sap.dma.models.repository;
 
 /// Describes a connected CMIS-compliant repository.
 class DMARepository : SAPObject {

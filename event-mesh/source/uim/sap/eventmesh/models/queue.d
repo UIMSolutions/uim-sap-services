@@ -6,8 +6,9 @@ mixin(ShowModule!());
 
 @safe:
 
-struct EVMQueue {
-  UUID tenantId;
+class EVMQueue : SAPTenantObject {
+  mixin(SAPObjectTemplate!EVMQueue);
+
   string queueName;
   long maxDepth = 1000;
   long messageCount = 0;
@@ -15,26 +16,21 @@ struct EVMQueue {
   bool enableDeadLetterQueue = true;
   long maxRetries = 3;
   string status = "active";
-  string createdAt;
-  string updatedAt;
 
   override Json toJson() {
     return super.toJson()
-      .set("tenant_id", tenantId)
       .set("queue_name", queueName)
       .set("max_depth", maxDepth)
       .set("message_count", messageCount)
       .set("dead_letter_count", deadLetterCount)
       .set("enable_dead_letter_queue", enableDeadLetterQueue)
       .set("max_retries", maxRetries)
-      .set("status", status)
-      .set("created_at", createdAt)
-      .set("updated_at", updatedAt);
+      .set("status", status);
   }
 }
 
 EVMQueue queueFromJson(UUID tenantId, Json request) {
-  EVMQueue q;
+  EVMQueue q = new EVMQueue(request);
   q.tenantId = tenantId;
 
   if ("queue_name" in request && request["queue_name"].isString) {

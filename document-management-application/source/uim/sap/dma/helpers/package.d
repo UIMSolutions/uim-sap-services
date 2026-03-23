@@ -1,1 +1,1 @@
-module uim.sap.documentmanagement.helpers;
+module uim.sap.dma.helpers;

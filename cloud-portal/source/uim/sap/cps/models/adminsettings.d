@@ -4,24 +4,21 @@ import uim.sap.cps;
 mixin(ShowModule!());
 
 @safe:
-struct CPSAdminSettings {
-  UUID tenantId;
+class CPSAdminSettings : SAPTenantObject {
+  mixin(SAPObjectTemplate!CPSAdminSettings);
+
   Json themes;
   Json transports;
   Json translations;
   Json templates;
   Json extensions;
-  SysTime updatedAt;
 
-  override Json toJson()  {
-    Json info = super.toJson;
-    payload["tenant_id"] = tenantId;
-    payload["themes"] = themes;
-    payload["transports"] = transports;
-    payload["translations"] = translations;
-    payload["templates"] = templates;
-    payload["extensions"] = extensions;
-    payload["updated_at"] = updatedAt.toISOExtString();
-    return payload;
+  override Json toJson() {
+    return super.toJson
+      .set("themes", themes)
+      .set("transports", transports)
+      .set("translations", translations)
+      .set("templates", templates)
+      .set("extensions", extensions);
   }
 }

@@ -6,14 +6,14 @@
  * for the Document Management Service to interact with any compliant
  * storage backend.
  */
-module uim.sap.documentmanagement.repositories;
+module uim.sap.dma.repositories;
 
 import std.datetime : Clock;
 
 import vibe.data.json : Json;
 
-import uim.sap.documentmanagement.exceptions;
-import uim.sap.documentmanagement.models;
+import uim.sap.dma.exceptions;
+import uim.sap.dma.models;
 
 /// Abstract interface for a CMIS-compliant repository backend.
 interface IRepositoryConnector {

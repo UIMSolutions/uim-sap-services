@@ -1,6 +1,6 @@
-module uim.sap.documentmanagement.store;
+module uim.sap.dma.store;
 
-import uim.sap.documentmanagement;
+import uim.sap.dma;
 
 mixin(ShowModule!());
 

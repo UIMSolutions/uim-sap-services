@@ -4,8 +4,9 @@ import uim.sap.cps;
 mixin(ShowModule!());
 
 @safe:
-struct CPSContentProvider {
-  UUID tenantId;
+class CPSContentProvider : SAPTenantObject {
+  mixin(SAPObjectTemplate!CPSContentProvider);
+
   UUID providerId;
   string solutionName;
   bool saasEnabled;
@@ -13,13 +14,10 @@ struct CPSContentProvider {
   SysTime updatedAt;
 
   override Json toJson()  {
-    Json info = super.toJson;
-    payload["tenant_id"] = tenantId;
-    payload["provider_id"] = providerId;
-    payload["solution_name"] = solutionName;
-    payload["saas_enabled"] = saasEnabled;
-    payload["catalogs"] = catalogs;
-    payload["updated_at"] = updatedAt.toISOExtString();
-    return payload;
+    return super.toJson
+      .set("provider_id", providerId)
+      .set("solution_name", solutionName)
+      .set("saas_enabled", saasEnabled)
+      .set("catalogs", catalogs);
   }
 }

@@ -1,4 +1,4 @@
-module uim.sap.documentmanagement.exceptions.payloadtoolarge;
+module uim.sap.dma.exceptions.payloadtoolarge;
 
 
 /// Thrown when the upload exceeds maximum allowed size (maps to HTTP 413).

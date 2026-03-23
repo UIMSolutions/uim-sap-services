@@ -3,11 +3,11 @@
 * License: Subject to the terms of the Apache 2.0 license, as written in the included LICENSE.txt file. 
 * Authors: Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*)
 *****************************************************************************************************************/
-module uim.sap.documentmanagement.config;
+module uim.sap.dma.config;
 
 import std.string : startsWith, toLower;
 
-import uim.sap.documentmanagement.exceptions;
+import uim.sap.dma.exceptions;
 
 class DMAConfig : SAPConfig {
   mixin(SAPConfigTemplate!DMAConfig);

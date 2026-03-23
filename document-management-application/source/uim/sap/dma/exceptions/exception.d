@@ -1,4 +1,4 @@
-module uim.sap.documentmanagement.exceptions.exception;
+module uim.sap.dma.exceptions.exception;
 /// Base exception for all Document Management errors.
 class DMAException : SAPException {
     this(string message) {

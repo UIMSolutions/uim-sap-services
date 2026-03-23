@@ -1,4 +1,4 @@
-module uim.sap.documentmanagement.server;
+module uim.sap.dma.server;
 
 import std.array : split;
 import std.string : startsWith;
@@ -7,8 +7,8 @@ import vibe.data.json : Json;
 import vibe.http.common : HTTPMethod;
 import vibe.http.server : HTTPServerRequest, HTTPServerResponse, HTTPServerSettings, listenHTTP;
 
-import uim.sap.documentmanagement.exceptions;
-import uim.sap.documentmanagement.service;
+import uim.sap.dma.exceptions;
+import uim.sap.dma.service;
 
 /**
  * HTTP server for the Document Management Service.

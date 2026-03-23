@@ -1,4 +1,4 @@
-module uim.sap.documentmanagement.service;
+module uim.sap.dma.service;
 
 import std.algorithm.sorting : sort;
 import std.conv : to;
@@ -8,12 +8,12 @@ import std.uuid : randomUUID;
 
 import vibe.data.json : Json;
 
-import uim.sap.documentmanagement.config;
-import uim.sap.documentmanagement.encryption;
-import uim.sap.documentmanagement.exceptions;
-import uim.sap.documentmanagement.models;
-import uim.sap.documentmanagement.repositories;
-import uim.sap.documentmanagement.store;
+import uim.sap.dma.config;
+import uim.sap.dma.encryption;
+import uim.sap.dma.exceptions;
+import uim.sap.dma.models;
+import uim.sap.dma.repositories;
+import uim.sap.dma.store;
 
 /**
  * Core business logic for the Document Management Service.

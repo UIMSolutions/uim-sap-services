@@ -1,4 +1,4 @@
-module uim.sap.documentmanagement.models.models;
+module uim.sap.dma.models.models;
 
 import std.algorithm.searching : canFind;
 import std.array : appender;

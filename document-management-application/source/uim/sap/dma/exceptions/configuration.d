@@ -1,4 +1,4 @@
-module uim.sap.documentmanagement.exceptions.configuration;
+module uim.sap.dma.exceptions.configuration;
 /// Thrown on configuration problems (startup failure).
 class DMAConfigurationException : DMAException {
     this(string message) {

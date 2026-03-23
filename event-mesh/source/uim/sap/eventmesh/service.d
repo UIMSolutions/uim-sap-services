@@ -34,19 +34,15 @@ class EVMService : SAPService {
 
     auto saved = _store.upsertQueue(queue);
 
-    Json result = Json.emptyObject;
-    result["success"] = true;
-    result["queue"] = saved.toJson();
-    return result;
+    return Json.emptyObject
+      .set("success", true)
+      .set("queue", saved.toJson());
   }
 
   Json listQueues(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
 
-    Json resources = Json.emptyArray;
-    foreach (queue; _store.listQueues(tenantId)) {
-      resources ~= queue.toJson();
-    }
+    auto resources = _store.listQueues(tenantId).map!(q => q.toJson).array;
 
     return Json.emptyObject
       .set("tenant_id", tenantId)
@@ -63,10 +59,9 @@ class EVMService : SAPService {
       throw new EVMNotFoundException("Queue", tenantId ~ "/" ~ queueName);
     }
 
-    Json result = Json.emptyObject;
-    result["queue"] = queue.toJson();
-    result["pending_messages"] = _store.queueDepth(tenantId, queueName);
-    return result;
+    return Json.emptyObject
+      .set("queue", queue.toJson())
+      .set("pending_messages", _store.queueDepth(tenantId, queueName));
   }
 
   Json deleteQueue(UUID tenantId, string queueName) {
@@ -77,10 +72,9 @@ class EVMService : SAPService {
       throw new EVMNotFoundException("Queue", tenantId ~ "/" ~ queueName);
     }
 
-    Json result = Json.emptyObject;
-    result["success"] = true;
-    result["message"] = "Queue deleted: " ~ queueName;
-    return result;
+    return Json.emptyObject
+      .set("success", true)
+      .set("message", "Queue deleted: " ~ queueName);
   }
 
   // --- Topic management ---
@@ -100,25 +94,20 @@ class EVMService : SAPService {
 
     auto saved = _store.upsertTopic(topic);
 
-    Json result = Json.emptyObject;
-    result["success"] = true;
-    result["topic"] = saved.toJson();
-    return result;
+    return Json.emptyObject
+      .set("success", true)
+      .set("topic", saved.toJson());
   }
 
   Json listTopics(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
 
-    Json resources = Json.emptyArray;
-    foreach (topic; _store.listTopics(tenantId)) {
-      resources ~= topic.toJson();
-    }
+    auto resources = _store.listTopics(tenantId).map!(t => t.toJson).array;
 
-    Json result = Json.emptyObject;
-    result["tenant_id"] = tenantId;
-    result["resources"] = resources;
-    result["total_results"] = cast(long)resources.length;
-    return result;
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   // --- Subscription management ---
@@ -146,25 +135,20 @@ class EVMService : SAPService {
 
     auto saved = _store.addSubscription(subscription);
 
-    Json result = Json.emptyObject;
-    result["success"] = true;
-    result["subscription"] = saved.toJson();
-    return result;
+    return Json.emptyObject
+      .set("success", true)
+      .set("subscription", saved.toJson());
   }
 
   Json listSubscriptions(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
 
-    Json resources = Json.emptyArray;
-    foreach (sub; _store.listSubscriptions(tenantId)) {
-      resources ~= sub.toJson();
-    }
+    auto resources = _store.listSubscriptions(tenantId).map!(sub => sub.toJson).array;
 
-    Json result = Json.emptyObject;
-    result["tenant_id"] = tenantId;
-    result["resources"] = resources;
-    result["total_results"] = cast(long)resources.length;
-    return result;
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   // --- Publish events ---
@@ -199,13 +183,12 @@ class EVMService : SAPService {
     topic.updatedAt = Clock.currTime().toISOExtString();
     _store.upsertTopic(topic);
 
-    Json result = Json.emptyObject;
-    result["success"] = true;
-    result["message_id"] = message.messageId;
-    result["topic"] = topicName;
-    result["routed_to_queues"] = routedCount;
-    result["message"] = "Event published successfully";
-    return result;
+    return Json.emptyObject
+      .set("success", true)
+      .set("message_id", message.messageId)
+      .set("topic", topicName)
+      .set("routed_to_queues", routedCount)
+      .set("message", "Event published successfully");
   }
 
   // --- Consume events ---
@@ -221,17 +204,15 @@ class EVMService : SAPService {
 
     auto message = _store.consumeMessage(tenantId, queueName);
     if (message.messageId.length == 0) {
-      Json result = Json.emptyObject;
-      result["success"] = true;
-      result["message"] = Json(null);
-      result["info"] = "No pending messages in queue";
-      return result;
+      return Json.emptyObject
+        .set("success", true)
+        .set("message", Json(null))
+        .set("info", "No pending messages in queue");
     }
 
-    Json result = Json.emptyObject;
-    result["success"] = true;
-    result["message"] = message.toJson();
-    return result;
+    return Json.emptyObject
+      .set("success", true)
+      .set("message", message.toJson());
   }
 
   Json acknowledgeMessage(UUID tenantId, string queueName, string messageId) {
@@ -243,10 +224,9 @@ class EVMService : SAPService {
       throw new EVMNotFoundException("Message", tenantId ~ "/" ~ queueName ~ "/" ~ messageId);
     }
 
-    Json result = Json.emptyObject;
-    result["success"] = true;
-    result["message"] = "Message acknowledged";
-    return result;
+    return Json.emptyObject
+      .set("success", true)
+      .set("message", "Message acknowledged");
   }
 
   Json listQueueMessages(UUID tenantId, string queueName) {
@@ -258,17 +238,12 @@ class EVMService : SAPService {
       throw new EVMNotFoundException("Queue", tenantId ~ "/" ~ queueName);
     }
 
-    Json resources = Json.emptyArray;
-    foreach (msg; _store.listMessages(tenantId, queueName)) {
-      resources ~= msg.toJson();
-    }
+    auto resources = _store.listMessages(tenantId, queueName).map!(msg => msg.toJson).array;
 
-    Json result = Json.emptyObject;
-    result["tenant_id"] = tenantId;
-    result["queue_name"] = queueName;
-    result["resources"] = resources;
-    result["total_results"] = cast(long)resources.length;
-    return result;
+    return Json.emptyObject
+      .set("queue_name", queueName)
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   // --- Webhook management ---
@@ -300,16 +275,12 @@ class EVMService : SAPService {
   Json listWebhooks(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
 
-    Json resources = Json.emptyArray;
-    foreach (wh; _store.listWebhooks(tenantId)) {
-      resources ~= wh.toJson();
-    }
+    auto resources = _store.listWebhooks(tenantId).map!(wh => wh.toJson).array;
 
-    Json result = Json.emptyObject;
-    result["tenant_id"] = tenantId;
-    result["resources"] = resources;
-    result["total_results"] = cast(long)resources.length;
-    return result;
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json deleteWebhook(UUID tenantId, string webhookId) {
@@ -320,10 +291,9 @@ class EVMService : SAPService {
       throw new EVMNotFoundException("Webhook", tenantId ~ "/" ~ webhookId);
     }
 
-    Json result = Json.emptyObject;
-    result["success"] = true;
-    result["message"] = "Webhook deleted";
-    return result;
+    return Json.emptyObject
+      .set("success", true)
+      .set("message", "Webhook deleted");
   }
 
   // --- Dead letter queue ---
@@ -337,17 +307,13 @@ class EVMService : SAPService {
       throw new EVMNotFoundException("Queue", tenantId ~ "/" ~ queueName);
     }
 
-    Json resources = Json.emptyArray;
-    foreach (dl; _store.listDeadLetters(tenantId, queueName)) {
-      resources ~= dl.toJson();
-    }
+    auto resources = _store.listDeadLetters(tenantId, queueName).map!(dl => dl.toJson).array;
 
-    Json result = Json.emptyObject;
-    result["tenant_id"] = tenantId;
-    result["queue_name"] = queueName;
-    result["resources"] = resources;
-    result["total_results"] = cast(long)resources.length;
-    return result;
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("queue_name", queueName)
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   // --- Dashboard ---
@@ -375,16 +341,15 @@ class EVMService : SAPService {
       totalPublished += topic.messagesPublished;
     }
 
-    Json result = Json.emptyObject;
-    result["tenant_id"] = tenantId;
-    result["queues"] = cast(long)queues.length;
-    result["topics"] = cast(long)topics.length;
-    result["subscriptions"] = cast(long)subscriptions.length;
-    result["webhooks"] = cast(long)webhooks.length;
-    result["total_messages"] = totalMessages;
-    result["total_published"] = totalPublished;
-    result["pending_messages"] = totalPending;
-    result["dead_letters"] = totalDeadLetters;
-    return result;
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("queues", cast(long)queues.length)
+      .set("topics", cast(long)topics.length)
+      .set("subscriptions", cast(long)subscriptions.length)
+      .set("webhooks", cast(long)webhooks.length)
+      .set("total_messages", totalMessages)
+      .set("total_published", totalPublished)
+      .set("pending_messages", totalPending)
+      .set("dead_letters", totalDeadLetters);
   }
 }

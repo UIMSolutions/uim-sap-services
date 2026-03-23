@@ -5,7 +5,7 @@
  * internal repositories. Encryption keys are controlled by the service
  * operator, ensuring data is stored in an encrypted format on the backend.
  */
-module uim.sap.documentmanagement.encryption;
+module uim.sap.dma.encryption;
 
 import std.array : appender;
 import std.base64 : Base64;
@@ -13,7 +13,7 @@ import std.conv : to;
 import std.digest.sha : SHA256, sha256Of;
 import std.string : representation;
 
-import uim.sap.documentmanagement.exceptions;
+import uim.sap.dma.exceptions;
 
 /// Manages encryption keys and provides encrypt/decrypt operations.
 class EncryptionManager {

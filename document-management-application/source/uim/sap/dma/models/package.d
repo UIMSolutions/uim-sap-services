@@ -1,3 +1,3 @@
-module uim.sap.documentmanagement.models;
+module uim.sap.dma.models;
 
-public import uim.sap.documentmanagement.models.models;
+public import uim.sap.dma.models.models;

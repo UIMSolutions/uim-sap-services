@@ -5,7 +5,7 @@
 *****************************************************************************************************************/
 module app;
 
-import uim.sap.documentmanagement;
+import uim.sap.dma;
 
 version (unittest) {
 } else {

@@ -1,4 +1,4 @@
-module uim.sap.documentmanagement.exceptions;
+module uim.sap.dma.exceptions;
 
 public {
     import uim.sap.service;
@@ -8,7 +8,7 @@ public {
     import uim.sap.dpi.exceptions.exception;
     import uim.sap.dpi.exceptions.notfound;
     import uim.sap.dpi.exceptions.validation;
-    import uim.sap.documentmanagement.exceptions.authorization;
+    import uim.sap.dma.exceptions.authorization;
 }
 
 
