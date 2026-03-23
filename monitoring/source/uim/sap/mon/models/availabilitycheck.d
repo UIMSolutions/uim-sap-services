@@ -11,7 +11,6 @@ mixin(ShowModule!());
 
 @safe:
 
-
 /**
  * Represents a configuration for an availability check of a service or endpoint.
  * 
@@ -28,10 +27,12 @@ mixin(ShowModule!());
  * - enabled: A boolean indicating whether this availability check is currently enabled.
  * - createdAt: The timestamp when this availability check configuration was created.
  */
-struct MONAvailabilityCheck {
-  string checkId;
+class MONAvailabilityCheck : SAPObject {
+  mixin(SAPObjectTemplate!MONAvailabilityCheck);
+
+  UUID checkId;
   string targetType;
-  string targetId;
+  UUID targetId;
   string endpoint;
   int intervalSeconds;
   int timeoutSeconds;
@@ -40,16 +41,14 @@ struct MONAvailabilityCheck {
   SysTime createdAt;
 
   override Json toJson()  {
-    Json info = super.toJson;
-    payload["check_id"] = checkId;
-    payload["target_type"] = targetType;
-    payload["target_id"] = targetId;
-    payload["endpoint"] = endpoint;
-    payload["interval_seconds"] = intervalSeconds;
-    payload["timeout_seconds"] = timeoutSeconds;
-    payload["expected_status"] = expectedStatus;
-    payload["enabled"] = enabled;
-    payload["created_at"] = createdAt.toISOExtString();
-    return payload;
+    return super.toJson
+    .set("check_id", checkId)
+    .set("target_type", targetType)
+    .set("target_id", targetId)
+    .set("endpoint", endpoint)
+    .set("interval_seconds", intervalSeconds)
+    .set("timeout_seconds", timeoutSeconds)
+    .set("expected_status", expectedStatus)
+    .set("enabled", enabled);
   }
 }

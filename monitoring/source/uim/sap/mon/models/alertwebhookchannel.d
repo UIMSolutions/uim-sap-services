@@ -36,20 +36,19 @@ mixin(ShowModule!());
  *   webhookConfig.method = "POST";
  *   webhookConfig.updatedAt = Clock.currTime();  
  */
-struct MONAlertWebhookChannel {
+class MONAlertWebhookChannel : SAPObject {
+  mixin(SAPObjectTemplate!MONAlertWebhookChannel);
+
   bool enabled;
   string url;
   string secret;
   string method = "POST";
-  SysTime updatedAt;
 
   override Json toJson()  {
-    Json info = super.toJson;
-    payload["enabled"] = enabled;
-    payload["url"] = url;
-    payload["method"] = method;
-    payload["secret"] = secret;
-    payload["updated_at"] = updatedAt.toISOExtString();
-    return payload;
+    return super.toJson
+    .set("enabled", enabled)
+    .set("url", url)
+    .set("method", method)
+    .set("secret", secret);
   }
 }

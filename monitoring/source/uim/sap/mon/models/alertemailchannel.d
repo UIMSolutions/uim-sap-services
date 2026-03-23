@@ -21,24 +21,24 @@ mixin(ShowModule!());
   * - subjectPrefix: A string that will be prefixed to the subject of all alert emails sent through this channel.
   * - updatedAt: The timestamp of the last update to this configuration.
   */
-struct MONAlertEmailChannel {
+class MONAlertEmailChannel : SAPObject {
+  mixin(SAPObjectTemplate!MONAlertEmailChannel);
+
   bool enabled;
   string[] recipients;
   string sender;
   string subjectPrefix;
-  SysTime updatedAt;
 
   override Json toJson()  {
-    Json info = super.toJson;
     Json recipientList = Json.emptyArray;
     foreach (item; recipients) {
       recipientList ~= item;
     }
-    payload["enabled"] = enabled;
-    payload["recipients"] = recipientList;
-    payload["sender"] = sender;
-    payload["subject_prefix"] = subjectPrefix;
-    payload["updated_at"] = updatedAt.toISOExtString();
-    return payload;
+
+    return super.toJson
+    .set("enabled", enabled)
+    .set("recipients", recipientList)
+    .set("sender", sender)
+    .set("subject_prefix", subjectPrefix);
   }
 }

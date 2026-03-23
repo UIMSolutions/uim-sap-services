@@ -40,9 +40,11 @@ mixin(ShowModule!());
   *   jmxCheck.enabled = true;
   *   jmxCheck.createdAt = Clock.currTime();
   */
-struct MONJMXCheck {
-  string checkId;
-  string targetId;
+class MONJMXCheck : SAPObject {
+  mixin(SAPObjectTemplate!MONJMXCheck);
+
+  UUID checkId;
+  UUID targetId;
   string mbean;
   string attribute;
   string comparator;
@@ -51,15 +53,13 @@ struct MONJMXCheck {
   SysTime createdAt;
 
   override Json toJson()  {
-    Json info = super.toJson;
-    payload["check_id"] = checkId;
-    payload["target_id"] = targetId;
-    payload["mbean"] = mbean;
-    payload["attribute"] = attribute;
-    payload["comparator"] = comparator;
-    payload["threshold"] = threshold;
-    payload["enabled"] = enabled;
-    payload["created_at"] = createdAt.toISOExtString();
-    return payload;
+    return super.toJson
+    .set("check_id", checkId)
+    .set("target_id", targetId)
+    .set("mbean", mbean)
+    .set("attribute", attribute)
+    .set("comparator", comparator)
+    .set("threshold", threshold)
+    .set("enabled", enabled);
   }
 }

@@ -11,26 +11,26 @@ mixin(ShowModule!());
 
 @safe:
 
-struct MONCustomCheck {
-  string checkId;
+class MONCustomCheck : SAPObject {
+  mixin(SAPObjectTemplate!MONCustomCheck);
+
+  UUID checkId;
   string name;
   string targetType;
-  string targetId;
+  UUID targetId;
   string endpoint;
   string method;
   int expectedStatus;
   SysTime createdAt;
 
   override Json toJson()  {
-    Json info = super.toJson;
-    payload["check_id"] = checkId;
-    payload["name"] = name;
-    payload["target_type"] = targetType;
-    payload["target_id"] = targetId;
-    payload["endpoint"] = endpoint;
-    payload["method"] = method;
-    payload["expected_status"] = expectedStatus;
-    payload["created_at"] = createdAt.toISOExtString();
-    return payload;
+    return super.toJson
+    .set("check_id", checkId)
+    .set("name", name)
+    .set("target_type", targetType)
+    .set("target_id", targetId)
+    .set("endpoint", endpoint)
+    .set("method", method)
+    .set("expected_status", expectedStatus);
   }
 }

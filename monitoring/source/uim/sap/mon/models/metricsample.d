@@ -23,28 +23,28 @@ mixin(ShowModule!());
   * - unit: The unit of measurement for the metric value (e.g., "milliseconds", "percent").
   * - collectedAt: The timestamp when this metric sample was collected.
   */
-struct MONMetricSample {
+class MONMetricSample : SAPObject {
+  mixin(SAPObjectTemplate!MONMetricSample);
+
   string targetType;
-  string targetId;
+  UUID targetId;
   string metricKind;
   double value;
   string unit;
   SysTime collectedAt;
 
   override Json toJson()  {
-    Json info = super.toJson;
-    payload["target_type"] = targetType;
-    payload["target_id"] = targetId;
-    payload["metric_kind"] = metricKind;
-    payload["value"] = value;
-    payload["unit"] = unit;
-    payload["collected_at"] = collectedAt.toISOExtString();
-    return payload;
+    return super.toJson
+    .set("target_type", targetType)
+    .set("target_id", targetId)
+    .set("metric_kind", metricKind)
+    .set("value", value)
+    .set("unit", unit)
+    .set("collected_at", collectedAt.toISOExtString());
   }
-}
 
-MONMetricSample metricSample(string targetType, string targetId, string metricKind, double value, string unit) {
-  MONMetricSample sample;
+static MONMetricSample metricSample(string targetType, string targetId, string metricKind, double value, string unit) {
+  MONMetricSample sample = new MONMetricSample();
   sample.targetType = targetType;
   sample.targetId = targetId;
   sample.metricKind = metricKind;
@@ -53,3 +53,6 @@ MONMetricSample metricSample(string targetType, string targetId, string metricKi
   sample.collectedAt = Clock.currTime();
   return sample;
 }
+
+}
+

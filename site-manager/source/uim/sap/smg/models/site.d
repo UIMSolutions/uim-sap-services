@@ -35,9 +35,10 @@ mixin(ShowModule!());
   * Methods:
   * - toJson(): Converts the site details into a JSON object for API responses or storage.
   */
-struct SMGSite {
-  UUID tenantId;
-  string siteId;
+class SMGSite : SAPTenantObject {
+  mixin(SAPObjectTemplate!SMGSite);
+
+  UUID siteId;
   string siteName;
   string description;
   string lifecycle;
@@ -48,28 +49,25 @@ struct SMGSite {
   SysTime updatedAt;
 
   override Json toJson()  {
-    Json info = super.toJson;
-    payload["tenant_id"] = tenantId;
-    payload["site_id"] = siteId;
-    payload["site_name"] = siteName;
-    payload["description"] = description;
-    payload["lifecycle"] = lifecycle;
     Json assignedRoleValues = Json.emptyArray;
     foreach (role; assignedRoles)
       assignedRoleValues ~= role;
-    payload["assigned_roles"] = assignedRoleValues;
 
     Json pageValues = Json.emptyArray;
     foreach (page; pages)
       pageValues ~= page;
-    payload["pages"] = pageValues;
 
     Json catalogValues = Json.emptyArray;
     foreach (catalog; catalogs)
       catalogValues ~= catalog;
-    payload["catalogs"] = catalogValues;
-    payload["created_at"] = createdAt.toISOExtString();
-    payload["updated_at"] = updatedAt.toISOExtString();
-    return payload;
+
+    return super.toJson
+    .set("site_id", siteId)
+    .set("site_name", siteName)
+    .set("description", description)
+    .set("lifecycle", lifecycle)
+    .set("assigned_roles", assignedRoleValues)
+    .set("pages", pageValues)
+    .set("catalogs", catalogValues);
   }
 }

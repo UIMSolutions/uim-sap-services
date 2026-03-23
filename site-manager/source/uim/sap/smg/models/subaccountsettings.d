@@ -37,28 +37,26 @@ mixin(ShowModule!());
   * Methods:
   * - toJson(): Converts the subaccount settings into a JSON object for API responses or storage.
   */
-struct SMGSubaccountSettings {
-    UUID tenantId;
-    string defaultSiteId;
-    string launchpadMode;
-    string themeId;
-    bool enableContentApproval;
-    bool enableTransport;
-    bool enforceRoleBasedAccess;
-    string lastChangedBy;
-    SysTime updatedAt;
+class SMGSubaccountSettings : SAPTenantObject {
+  mixin(SAPObjectTemplate!SMGSubaccountSettings);
 
-    override Json toJson()  {
-        Json payload = Json.emptyObject;
-        payload["tenant_id"] = tenantId;
-        payload["default_site_id"] = defaultSiteId;
-        payload["launchpad_mode"] = launchpadMode;
-        payload["theme_id"] = themeId;
-        payload["enable_content_approval"] = enableContentApproval;
-        payload["enable_transport"] = enableTransport;
-        payload["enforce_role_based_access"] = enforceRoleBasedAccess;
-        payload["last_changed_by"] = lastChangedBy;
-        payload["updated_at"] = updatedAt.toISOExtString();
-        return payload;
-    }
+  UUID defaultSiteId;
+  string launchpadMode;
+  UUID themeId;
+  bool enableContentApproval;
+  bool enableTransport;
+  bool enforceRoleBasedAccess;
+  string lastChangedBy;
+  SysTime updatedAt;
+
+  override Json toJson() {
+    return super.toJson
+      .set("default_site_id", defaultSiteId)
+      .set("launchpad_mode", launchpadMode)
+      .set("theme_id", themeId)
+      .set("enable_content_approval", enableContentApproval)
+      .set("enable_transport", enableTransport)
+      .set("enforce_role_based_access", enforceRoleBasedAccess)
+      .set("last_changed_by", lastChangedBy);
+  }
 }
