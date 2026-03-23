@@ -18,7 +18,7 @@ class ATMUserAssignment : SAPTenantObject {
 
   static ATMUserAssignment opCall(UUID tenantId, string userId, Json request) {
     ATMUserAssignment assignment = new ATMUserAssignment(request);
-    assignment.tenantId = UUID(tenantId);
+    assignment.tenantId = tenantId;
     assignment.userId = userId;
     assignment.updatedAt = Clock.currTime();
 

@@ -255,7 +255,7 @@ class AuditLogService : SAPService {
 
     auto policy = _store.getPolicy(tenantId);
     if (policy.tenantId.length == 0) {
-      policy.tenantId = UUID(tenantId);
+      policy.tenantId = tenantId;
       policy.retentionDays = cfg.defaultRetentionDays;
       policy.plan = toLower(cfg.defaultPlan);
       policy.premiumCostPerThousandEvents = cfg.premiumCostPerThousandEvents;

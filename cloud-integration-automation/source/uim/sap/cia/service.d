@@ -243,7 +243,7 @@ HTML";
     import std.datetime : Clock;
 
     CIASystem sys = new CIASystem(payload);
-    sys.tenantId = UUID(tenantId);
+    sys.tenantId = tenantId;
     sys.id = UUID(payload["id"].get!string);
     sys.name = payload["name"].get!string;
     sys.systemType = "system_type" in payload ? payload["system_type"].get!string : "other";
@@ -304,7 +304,7 @@ HTML";
 
     auto wfId = UUID(_store.nextId("wf"));
     CIAWorkflow wf = new CIAWorkflow;
-    wf.tenantId = UUID(tenantId);
+    wf.tenantId = tenantId;
     wf.id = wfId;
     wf.scenarioId = scenarioId;
     wf.scenarioName = sc.name;
@@ -326,7 +326,7 @@ HTML";
       string instr = tmpl.instructions.replace("{{systemList}}", _buildSystemList(tenantId, sysIds));
 
       CIATask task = new CIATask;
-      task.tenantId = UUID(tenantId);
+      task.tenantId = tenantId;
       task.workflowId = wfId;
       task.id = taskId;
       task.order = tmpl.order;
@@ -459,7 +459,7 @@ HTML";
 
     auto resultId = _store.nextId("auto");
     CIAAutomationResult result;
-    result.tenantId = UUID(tenantId);
+    result.tenantId = tenantId;
     result.workflowId = workflowId;
     result.taskId = taskId;
     result.id = resultId;

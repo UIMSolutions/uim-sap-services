@@ -65,7 +65,7 @@ class ATPService : SAPService {
 
     ATPCatalog catalog = new ATPCatalog(data);
 
-    catalog.tenantId = UUID(tenantId);
+    catalog.tenantId = tenantId;
     catalog.catalogid = requiredUUID(data, "catalog_id");
     catalog.name = requiredString(data, "name");
     catalog.scenario = optionalString(data, "scenario", "custom");
@@ -97,7 +97,7 @@ class ATPService : SAPService {
 
     auto now = Clock.currTime();
     ATPCommand command = new ATPCommand(data);
-    command.tenantId = UUID(tenantId);
+    command.tenantId = tenantId;
     command.commandid = requiredUUID(data, "command_id");
     command.catalogId = catalogId;
     command.name = requiredString(data, "name");
@@ -130,7 +130,7 @@ class ATPService : SAPService {
     auto now = Clock.currTime();
 
     ATPExecution execution = new ATPExecution(data);
-    execution.tenantId = UUID(tenantId);
+    execution.tenantId = tenantId;
     execution.executionId = "exec-" ~ to!string(now.stdTime);
     execution.commandId = commandId;
     execution.triggerType = optionalString(data, "trigger_type", "manual");
@@ -166,7 +166,7 @@ class ATPService : SAPService {
     auto now = Clock.currTime();
 
     ATPBackup backup = new ATPBackup(data);
-    backup.tenantId = UUID(tenantId);
+    backup.tenantId = tenantId;
     backup.backupId = optionalString(data, "backup_id", "backup-" ~ to!string(now.stdTime));
     backup.mode = optionalString(data, "mode", "on-demand");
     backup.content = Json.emptyObject
@@ -212,7 +212,7 @@ class ATPService : SAPService {
     auto now = Clock.currTime();
 
     ATPSecretInput input;
-    input.tenantId = UUID(tenantId);
+    input.tenantId = tenantId;
     input.key = requiredString(data, "key");
     auto value = requiredString(data, "value");
     input.maskedValue = maskValue(value);
@@ -240,7 +240,7 @@ class ATPService : SAPService {
     auto now = Clock.currTime();
 
     ATPSchedule schedule = new ATPSchedule(data);
-    schedule.tenantId = UUID(tenantId);
+    schedule.tenantId = tenantId;
     schedule.scheduleid = requiredUUID(data, "schedule_id");
     schedule.targetType = optionalString(data, "target_type", "execution");
     schedule.targetid = requiredUUID(data, "target_id");
@@ -273,7 +273,7 @@ class ATPService : SAPService {
     auto now = Clock.currTime();
 
     ATPEventTrigger trigger = new ATPEventTrigger(data);
-    trigger.tenantId = UUID(tenantId);
+    trigger.tenantId = tenantId;
     trigger.triggerid = requiredUUID(data, "trigger_id");
     trigger.eventSource = requiredString(data, "event_source");
     trigger.eventType = requiredString(data, "event_type");
@@ -364,7 +364,7 @@ class ATPService : SAPService {
     auto now = Clock.currTime();
 
     ATPCatalog catalog = new ATPCatalog;
-    catalog.tenantId = UUID(tenantId);
+    catalog.tenantId = tenantId;
     catalog.catalogId = "btp-devops";
     catalog.name = "BTP DevOps Starter";
     catalog.scenario = "sap-btp-devops";
@@ -375,7 +375,7 @@ class ATPService : SAPService {
     _store.upsertCatalog(catalog);
 
     ATPCommand health = new ATPCommand;
-    health.tenantId = UUID(tenantId);
+    health.tenantId = tenantId;
     health.commandId = "cf-health-check";
     health.catalogId = catalog.catalogId;
     health.name = "Cloud Foundry App Health Check";
@@ -389,7 +389,7 @@ class ATPService : SAPService {
     _store.upsertCommand(health);
 
     ATPCommand restart = new ATPCommand;
-    restart.tenantId = UUID(tenantId);
+    restart.tenantId = tenantId;
     restart.commandId = "restart-app";
     restart.catalogId = catalog.catalogId;
     restart.name = "Restart Application";

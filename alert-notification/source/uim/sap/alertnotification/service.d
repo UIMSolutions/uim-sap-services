@@ -54,7 +54,7 @@ class AlertNotificationService : SAPService {
     validateId(tenantId, "Tenant ID");
 
     AlertEvent eventItem;
-    eventItem.tenantId = UUID(tenantId);
+    eventItem.tenantId = tenantId;
     eventItem.alertId = request.getString("alert_id", createId());
     eventItem.eventType = requiredString(request, "event_type");
     eventItem.category = request.getString("category", "platform");
@@ -151,7 +151,7 @@ class AlertNotificationService : SAPService {
     validateId(tenantId, "Tenant ID");
 
     AlertSubscription sub;
-    sub.tenantId = UUID(tenantId);
+    sub.tenantId = tenantId;
     sub.subscriptionId = UUID(optionalString(request, "subscription_id", createId()));
     sub.name = requiredString(request, "name");
     sub.consumerId = optionalString(request, "consumer_id", "default-consumer");
@@ -187,7 +187,7 @@ class AlertNotificationService : SAPService {
     }
 
     AlertEvent eventItem;
-    eventItem.tenantId = UUID(tenantId);
+    eventItem.tenantId = tenantId;
     eventItem.alertId = optionalString(request, "alert_id", createId());
     eventItem.eventType = requiredString(request, "event_type");
     eventItem.severity = toLower(optionalString(request, "severity", "info"));

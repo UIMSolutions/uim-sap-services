@@ -39,7 +39,7 @@ class ATMTechnicalRole : SAPTenantObject {
 
   static ATMTechnicalRole opCall(UUID tenantId, string roleId, Json request) {
     ATMTechnicalRole role = new ATMTechnicalRole(request);
-    role.tenantId = UUID(tenantId);
+    role.tenantId = tenantId;
     role.roleId = roleId.length > 0 ? roleId : randomUUID().toString();
     role.name = role.roleId;
     role.updatedAt = Clock.currTime();

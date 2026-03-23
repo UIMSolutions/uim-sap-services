@@ -44,7 +44,7 @@ class ATMRoleCollection : SAPTenantObject {
 ATMRoleCollection roleCollectionFromJson(UUID tenantId, string collectionId, Json request) {
   ATMRoleCollection collection = new ATMRoleCollection(request);
   
-  collection.tenantId = UUID(tenantId);
+  collection.tenantId = tenantId;
   collection.collectionId = collectionId.length > 0 ? UUID(collectionId) : randomUUID();
   collection.name = collection.collectionId;
   collection.updatedAt = Clock.currTime();

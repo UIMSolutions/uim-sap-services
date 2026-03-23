@@ -60,7 +60,7 @@ class BASService : SAPService {
 
     auto now = Clock.currTime();
     BASWorkspace workspace;
-    workspace.tenantId = UUID(tenantId);
+    workspace.tenantId = tenantId;
     workspace.workspaceId = optionalString(body, "workspace_id", "ws-" ~ to!string(now.stdTime));
     workspace.name = requiredString(body, "name");
     workspace.scenarioId = scenarioId;
@@ -100,7 +100,7 @@ class BASService : SAPService {
 
     auto now = Clock.currTime();
     BASWizardRun run;
-    run.tenantId = UUID(tenantId);
+    run.tenantId = tenantId;
     run.workspaceId = workspaceId;
     run.runId = "wiz-" ~ to!string(now.stdTime);
     run.templateId = templateId;
@@ -139,7 +139,7 @@ class BASService : SAPService {
 
     auto now = Clock.currTime();
     BASTerminalSession session;
-    session.tenantId = UUID(tenantId);
+    session.tenantId = tenantId;
     session.workspaceId = workspaceId;
     session.sessionId = "term-" ~ to!string(now.stdTime);
     session.shell = optionalString(body, "shell", "bash");
@@ -183,7 +183,7 @@ class BASService : SAPService {
 
     auto now = Clock.currTime();
     BASDeployment deployment;
-    deployment.tenantId = UUID(tenantId);
+    deployment.tenantId = tenantId;
     deployment.workspaceId = workspaceId;
     deployment.deploymentId = optionalString(body, "deployment_id", "dep-" ~ to!string(now.stdTime));
     deployment.target = optionalString(body, "target", "sap-btp-cloud-foundry");

@@ -68,7 +68,7 @@ class AuditLogEvent : SAPTenantObject {
   AuditLogEvent eventFromJson(UUID tenantId, Json request) {
     AuditLogEvent eventItem = new AuditLogEvent(request);
 
-    eventItem.tenantId = UUID(tenantId);
+    eventItem.tenantId = tenantId;
     eventItem.eventId = randomUUID();
     eventItem.eventType = "system_event";
     eventItem.severity = "info";
