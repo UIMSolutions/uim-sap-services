@@ -43,7 +43,7 @@ MDGConsolidationCandidate[] detectDuplicateCandidates(UUID tenantId, MDGBusiness
 
             if (score >= 60) {
                 MDGConsolidationCandidate candidate;
-                candidate.tenantId = UUID(tenantId);
+                candidate.tenantId = tenantId;
                 candidate.primaryBpId = a.bpId;
                 candidate.duplicateBpId = b.bpId;
                 candidate.score = score;

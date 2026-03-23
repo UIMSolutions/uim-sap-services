@@ -111,7 +111,7 @@ class ISAStore : SAPStore {
 
             SituationInstance delayed;
             delayed.id = randomUUID().toString();
-            delayed.tenantId = UUID(tenantId);
+            delayed.tenantId = tenantId;
             delayed.situationType = "delivery_delay";
             delayed.templateId = "tmpl-delivery-delay";
             delayed.entityType = "sales_order";
@@ -127,7 +127,7 @@ class ISAStore : SAPStore {
 
             SituationInstance blockedInvoice;
             blockedInvoice.id = randomUUID().toString();
-            blockedInvoice.tenantId = UUID(tenantId);
+            blockedInvoice.tenantId = tenantId;
             blockedInvoice.situationType = "blocked_invoice";
             blockedInvoice.templateId = "tmpl-invoice-blocked";
             blockedInvoice.entityType = "invoice";
@@ -143,7 +143,7 @@ class ISAStore : SAPStore {
 
             SituationInstance latePayment;
             latePayment.id = randomUUID().toString();
-            latePayment.tenantId = UUID(tenantId);
+            latePayment.tenantId = tenantId;
             latePayment.situationType = "late_payment_risk";
             latePayment.templateId = "tmpl-payment-risk";
             latePayment.entityType = "business_partner";
@@ -160,7 +160,7 @@ class ISAStore : SAPStore {
 
             DataContextReport report;
             report.id = randomUUID().toString();
-            report.tenantId = UUID(tenantId);
+            report.tenantId = tenantId;
             report.title = "Q4 Situation Data Context Import";
             report.entityType = "sales_order";
             report.situationType = "delivery_delay";

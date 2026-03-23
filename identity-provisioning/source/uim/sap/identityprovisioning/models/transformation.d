@@ -54,7 +54,7 @@ struct IPVTransformation {
 
 IPVTransformation transformationFromJson(UUID tenantId, Json request) {
   IPVTransformation t;
-  t.tenantId = UUID(tenantId);
+  t.tenantId = tenantId;
   t.transformationId = randomUUID().toString();
 
   if ("system_id" in request && request["system_id"].isString)

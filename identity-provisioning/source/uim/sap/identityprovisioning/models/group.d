@@ -64,7 +64,7 @@ struct IPVGroup {
 
 IPVGroup groupFromJson(UUID tenantId, Json request) {
   IPVGroup g;
-  g.tenantId = UUID(tenantId);
+  g.tenantId = tenantId;
   g.groupId = randomUUID().toString();
 
   if ("group_name" in request && request["group_name"].isString)

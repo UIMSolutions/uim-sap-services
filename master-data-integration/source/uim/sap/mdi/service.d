@@ -50,7 +50,7 @@ class MDIService : SAPService {
     validateId(filterId, "Filter ID");
 
     MDIFilter filter = new MDIFilter(request);
-    filter.tenantId = UUID(tenantId);
+    filter.tenantId = tenantId;
     filter.filterId = filterId;
     filter.objectType = _config.defaultObjectType;
     filter.conditions = Json.emptyArray;
@@ -91,7 +91,7 @@ class MDIService : SAPService {
     validateId(extensionId, "Extension ID");
 
     MDIExtension extension = new MDIExtension(request);
-    extension.tenantId = UUID(tenantId);
+    extension.tenantId = tenantId;
     extension.extensionId = extensionId;
     extension.objectType = _config.defaultObjectType;
     extension.fields = Json.emptyArray;
@@ -146,7 +146,7 @@ class MDIService : SAPService {
       throw new MDINotFoundException("Target client", targetClientId);
 
     MDIReplicationJob job;
-    job.tenantId = UUID(tenantId);
+    job.tenantId = tenantId;
     job.jobId = createId();
     job.sourceClientId = sourceClientId;
     job.targetClientId = targetClientId;

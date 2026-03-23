@@ -45,7 +45,7 @@ struct IPVJobLog {
 IPVJobLog createJobLog(UUID tenantId, string jobId, string level, string entityType,
   string entityId, string message, string details = "") {
   IPVJobLog log;
-  log.tenantId = UUID(tenantId);
+  log.tenantId = tenantId;
   log.logId = randomUUID().toString();
   log.jobId = jobId;
   log.level = level;

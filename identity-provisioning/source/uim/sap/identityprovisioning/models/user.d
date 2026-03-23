@@ -56,7 +56,7 @@ struct IPVUser {
 
 IPVUser userFromJson(UUID tenantId, Json request) {
   IPVUser u;
-  u.tenantId = UUID(tenantId);
+  u.tenantId = tenantId;
   u.userId = randomUUID().toString();
 
   if ("user_name" in request && request["user_name"].isString)

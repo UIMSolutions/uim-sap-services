@@ -61,7 +61,7 @@ struct IPVNotification {
 
 IPVNotification notificationFromJson(UUID tenantId, Json request) {
   IPVNotification n;
-  n.tenantId = UUID(tenantId);
+  n.tenantId = tenantId;
   n.subscriptionId = randomUUID().toString();
 
   if ("source_system_id" in request && request["source_system_id"].isString)

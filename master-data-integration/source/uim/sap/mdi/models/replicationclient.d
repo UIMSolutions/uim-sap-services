@@ -45,7 +45,7 @@ class MDIReplicationClient : SAPTenantObject {
 
 static MDIReplicationClient clientFromJson(UUID tenantId, Json request) {
   MDIReplicationClient client = new MDIReplicationClient();
-  client.tenantId = UUID(tenantId);
+  client.tenantId = tenantId;
   client.clientId = createId();
   client.updatedAt = Clock.currTime();
   client.systemType = "sap";
