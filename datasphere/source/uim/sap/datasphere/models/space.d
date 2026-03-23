@@ -26,32 +26,28 @@ mixin(ShowModule!());
   * - active: A boolean indicating whether the space is currently active.
   * - updatedAt: The timestamp of the last update to this space.
  */
-struct DATSpace {
-  UUID tenantId;
-  string spaceId;
+class DATSpace : SAPTenantObject {
+  mixin(SAPObjectTemplate!DATSpace);
+
+  UUID spaceId;
   string name;
   int diskGb;
   int memoryGb;
   int priority;
   string[] users;
   bool active;
-  SysTime updatedAt;
 
   override Json toJson()  {
-    Json info = super.toJson;
-    Json usersPayload = Json.emptyArray;
-    foreach (user; users)
-      usersPayload ~= user;
+    auto usersPayload = users.map!(user => user).array;
 
-    payload["tenant_id"] = tenantId;
-    payload["space_id"] = spaceId;
-    payload["name"] = name;
-    payload["disk_gb"] = diskGb;
-    payload["memory_gb"] = memoryGb;
-    payload["priority"] = priority;
-    payload["users"] = usersPayload;
-    payload["active"] = active;
-    payload["updated_at"] = updatedAt.toISOExtString();
-    return payload;
+    return super.toJson
+    .set("space_id", spaceId)
+    .set("name", name)
+    .set("disk_gb", diskGb)
+    .set("memory_gb", memoryGb)
+    .set("priority", priority)
+    .set("users", usersPayload)
+    .set("active", active)
+    .set("updated_at", updatedAt.toISOExtString());
   }
 }

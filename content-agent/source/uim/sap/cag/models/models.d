@@ -4,42 +4,30 @@ import std.datetime : SysTime;
 
 import vibe.data.json : Json;
 
-struct CAGContentProvider {
-  UUID tenantId;
-  string providerId;
+class CAGContentProvider : SAPTenantObject {
+  mixin(SAPObjectTemplate!CAGContentProvider);
+
+  UUID providerId;
   string name;
   string providerType;
   string endpoint;
   string[] supportedTypes;
   bool active;
-  SysTime createdAt;
-  SysTime updatedAt;
 
   override Json toJson() {
-    Json payload = Json.emptyObject;
-    payload["tenant_id"] = tenantId;
-    payload["provider_id"] = providerId;
-    payload["name"] = name;
-    payload["provider_type"] = providerType;
-    payload["endpoint"] = endpoint;
-
     Json types = Json.emptyArray;
     foreach (value; supportedTypes)
       types ~= value;
-    payload["supported_types"] = types;
 
-    payload["active"] = active;
-    payload["created_at"] = createdAt.toISOExtString();
-    payload["updated_at"] = updatedAt.toISOExtString();
-    return payload;
+    return super.toJson()
+      .set("provider_id", providerId)
+      .set("name", name)
+      .set("provider_type", providerType)
+      .set("endpoint", endpoint)
+      .set("supported_types", types)
+      .set("active", active);
   }
 }
-
-
-
-
-
-
 
 struct CAGTransportActivity {
   UUID tenantId;

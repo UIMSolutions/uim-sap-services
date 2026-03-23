@@ -12,11 +12,11 @@ mixin(ShowModule!());
 @safe:
 
 class TKCTask : SAPTenantObject {
-mixin(SAPObjectTemplate!TKCTask);
+  mixin(SAPObjectTemplate!TKCTask);
 
-  string taskId;
-  string providerId;
-  string providerTaskId;
+  UUID taskId;
+  UUID providerId;
+  UUID providerTaskId;
   string title;
   string description;
   string assignee;
@@ -30,29 +30,25 @@ mixin(SAPObjectTemplate!TKCTask);
   SysTime dueAt;
   TKCTaskAction[] actionHistory;
 
-  override Json toJson()  {
-    Json tagValues = Json.emptyArray;
-    foreach (tag; tags)
-      tagValues ~= tag;
+  override Json toJson() {
+    auto tagValues = tags.map!(t => t).toArray();
 
-    Json actionValues = Json.emptyArray;
-    foreach (item; actionHistory)
-      actionValues ~= item.toJson();
+    auto actionValues = actionHistory.map!(item => item.toJson()).toArray();
 
     return super.toJson
-    .set("task_id", taskId)
-    .set("provider_id", providerId)
-    .set("provider_task_id", providerTaskId)
-    .set("title"] = title)
-    .set("description"] = description)
-    .set("assignee"] = assignee)
-    .set("status"] = status)
-    .set("priority"] = priority)
-    .set("native_app_url"] = nativeAppUrl)
-    .set("native_app_name"] = nativeAppName)
-    .set("tags"] = tagValues)
-    .set("attributes", attributes)
-    .set("due_at", hasDueAt ? dueAt.toISOExtString() : null)
-    .set("action_history", actionValues);
+      .set("task_id", taskId)
+      .set("provider_id", providerId)
+      .set("provider_task_id", providerTaskId)
+      .set("title", title)
+      .set("description", description)
+      .set("assignee", assignee)
+      .set("status", status)
+      .set("priority", priority)
+      .set("native_app_url", nativeAppUrl)
+      .set("native_app_name", nativeAppName)
+      .set("tags", tagValues)
+      .set("attributes", attributes)
+      .set("due_at", hasDueAt ? dueAt.toISOExtString() : null)
+      .set("action_history", actionValues);
   }
 }

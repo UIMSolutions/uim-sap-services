@@ -40,15 +40,15 @@ class MONAvailabilityCheck : SAPObject {
   bool enabled;
   SysTime createdAt;
 
-  override Json toJson()  {
+  override Json toJson() {
     return super.toJson
-    .set("check_id", checkId)
-    .set("target_type", targetType)
-    .set("target_id", targetId)
-    .set("endpoint", endpoint)
-    .set("interval_seconds", intervalSeconds)
-    .set("timeout_seconds", timeoutSeconds)
-    .set("expected_status", expectedStatus)
-    .set("enabled", enabled);
+      .set("check_id", checkId)
+      .set("target_type", targetType)
+      .set("target_id", targetId)
+      .set("endpoint", endpoint)
+      .set("interval_seconds", intervalSeconds)
+      .set("timeout_seconds", timeoutSeconds)
+      .set("expected_status", expectedStatus)
+      .set("enabled", enabled);
   }
 }

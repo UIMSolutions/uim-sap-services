@@ -9,7 +9,9 @@ mixin(ShowModule!());
 // ---------------------------------------------------------------------------
 // CIDBuildStage – one stage within a build run
 // ---------------------------------------------------------------------------
-struct CIDBuildStage {
+class CIDBuildStage : SAPObject {
+  mixin(SAPObjectTemplate!CIDBuildStage);
+  
   UUID buildId;
   UUID stageId;
   /// Stage name: "build" | "test" | "deploy" | custom

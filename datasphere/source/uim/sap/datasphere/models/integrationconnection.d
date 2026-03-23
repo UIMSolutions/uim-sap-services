@@ -29,26 +29,23 @@ mixin(ShowModule!());
   * - status: The current status of the connection (e.g., "active", "inactive", "error").
   * - updatedAt: The timestamp of the last update to this connection.  
   */
-struct DATIntegrationConnection {
-  UUID tenantId;
-  string connectionId;
+class DATIntegrationConnection : SAPTenantObject  {
+  mixin(SAPObjectTemplate!DATIntegrationConnection);
+
+  UUID connectionId;
   string name;
   string sourceType;
   string mode;
   bool secure;
   string status;
-  SysTime updatedAt;
 
   override Json toJson()  {
-    Json info = super.toJson;
-    payload["tenant_id"] = tenantId;
-    payload["connection_id"] = connectionId;
-    payload["name"] = name;
-    payload["source_type"] = sourceType;
-    payload["mode"] = mode;
-    payload["secure"] = secure;
-    payload["status"] = status;
-    payload["updated_at"] = updatedAt.toISOExtString();
-    return payload;
+    return super.toJson
+    .set("connection_id", connectionId)
+    .set("name", name)
+    .set("source_type", sourceType)
+    .set("mode", mode)
+    .set("secure", secure)
+    .set("status", status);
   }
 }

@@ -12,7 +12,7 @@ mixin(ShowModule!());
 @safe:
 
 class TKCProvider : SAPObject {
-mixin(SAPObjectTemplate!TKCProvider);
+  mixin(SAPObjectTemplate!TKCProvider);
 
   UUID providerId;
   string name;
@@ -22,13 +22,13 @@ mixin(SAPObjectTemplate!TKCProvider);
   bool hasLastSync;
   SysTime lastSyncAt;
 
-  override Json toJson()  {
+  override Json toJson() {
     return super.toJson
-    .set("provider_id", providerId)
-    .set("name", name)
-    .set("provider_type", providerType)
-    .set("endpoint", endpoint)
-    .set("active", active)
-    .set("last_sync_at", hasLastSync ? lastSyncAt.toISOExtString() : null);
+      .set("provider_id", providerId)
+      .set("name", name)
+      .set("provider_type", providerType)
+      .set("endpoint", endpoint)
+      .set("active", active)
+      .set("last_sync_at", hasLastSync ? lastSyncAt.toISOExtString() : null);
   }
 }

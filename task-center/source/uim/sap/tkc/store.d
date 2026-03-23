@@ -13,8 +13,9 @@ mixin(ShowModule!());
 
 @safe:
 
-
 class TKCStore : SAPStore {
+  mixin(SAPStoreTemplate!TKCStore);
+
   private TKCProvider[string] _providers;
   private TKCTask[string] _tasks;
   private string _cacheFilePath;
@@ -142,7 +143,7 @@ class TKCStore : SAPStore {
   private TKCProvider parseProvider(Json item) {
     enforce(item.isObject, new TKCStoreException("Provider entry must be an object"));
 
-    TKCProvider provider;
+    TKCProvider provider = new TKCProvider(item);
     provider.providerId = readString(item, "provider_id", true);
     provider.name = readString(item, "name", true);
     provider.providerType = readString(item, "provider_type", false, "sap");
@@ -160,7 +161,7 @@ class TKCStore : SAPStore {
   private TKCTask parseTask(Json item) {
     enforce(item.isObject, new TKCStoreException("Task entry must be an object"));
 
-    TKCTask task;
+    TKCTask task = new TKCTask(item);
     task.tenantId = readString(item, "tenant_id", true);
     task.taskId = readString(item, "task_id", true);
     task.providerId = readString(item, "provider_id", true);

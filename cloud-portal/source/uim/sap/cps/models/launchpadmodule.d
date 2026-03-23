@@ -4,8 +4,9 @@ import uim.sap.cps;
 mixin(ShowModule!());
 
 @safe:
-struct CPSLaunchpadModule {
-  UUID tenantId;
+class CPSLaunchpadModule : SAPTenantObject {
+  mixin(SAPObjectTemplate!CPSLaunchpadModule);
+
   UUID moduleId;
   string solutionName;
   bool personalization;
@@ -13,15 +14,12 @@ struct CPSLaunchpadModule {
   bool customThemes;
   SysTime updatedAt;
 
-  override Json toJson()  {
-    Json info = super.toJson;
-    payload["tenant_id"] = tenantId;
-    payload["module_id"] = moduleId;
-    payload["solution_name"] = solutionName;
-    payload["personalization"] = personalization;
-    payload["translation"] = translation;
-    payload["custom_themes"] = customThemes;
-    payload["updated_at"] = updatedAt.toISOExtString();
-    return payload;
+  override Json toJson() {
+    return super.toJson
+      .set("module_id", moduleId)
+      .set("solution_name", solutionName)
+      .set("personalization", personalization)
+      .set("translation", translation)
+      .set("custom_themes", customThemes);
   }
 }
