@@ -71,7 +71,7 @@ class AGTAppVersion : SAPTenantObject {
   static AGTAppVersion opCall(UUID tenantId, string appId, Json request) {
     AGTAppVersion appVersion = new AGTAppVersion(request);
     
-    appVersion.tenantId = UUID(tenantId);
+    appVersion.tenantId = tenantId;
     appVersion.appId = UUID(appId);
     appVersion.versionId = randomUUID();
     appVersion.versionLabel = "1.0.0";

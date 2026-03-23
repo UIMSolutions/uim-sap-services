@@ -55,7 +55,7 @@ class AEMTopicEvent : SAPTenantObject {
 
 AEMTopicEvent eventFromJson(UUID tenantId, string meshId, Json request) {
   AEMTopicEvent e = new AEMTopicEvent();
-  e.tenantId = UUID(tenantId);
+  e.tenantId = tenantId;
   e.meshId = UUID(meshId);
   e.eventId = randomUUID();
   e.publisher = "unknown";

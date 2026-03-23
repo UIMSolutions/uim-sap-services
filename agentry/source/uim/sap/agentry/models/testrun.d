@@ -63,7 +63,7 @@ class AGTTestRun : SAPTenantObject {
 
   static AGTTestRun opCall(UUID tenantId, string appId, Json request) {
     AGTTestRun testRun = new AGTTestRun(request);
-    testRun.tenantId = UUID(tenantId);
+    testRun.tenantId = tenantId;
     testRun.appId = toUUID(appId);
     testRun.testRunId = randomUUID();
     testRun.environment = "qa";

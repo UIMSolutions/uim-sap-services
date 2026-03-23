@@ -61,7 +61,7 @@ class AEMEventMesh : SAPTenantObject {
 
 AEMEventMesh meshFromJson(UUID tenantId, string brokerServiceId, Json request) {
   AEMEventMesh mesh = new AEMEventMesh();
-  mesh.tenantId = UUID(tenantId);
+  mesh.tenantId = tenantId;
   mesh.meshId = randomUUID();
   mesh.brokerServiceId = UUID(brokerServiceId);
   mesh.createdAt = Clock.currTime();

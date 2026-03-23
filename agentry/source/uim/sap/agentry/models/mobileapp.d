@@ -55,7 +55,7 @@ class AGTMobileApp : SAPTenantObject {
 
   static AGTMobileApp opCall(UUID tenantId, Json request, string defaultBackend) {
     AGTMobileApp app = new AGTMobileApp(request);
-    app.tenantId = UUID(tenantId);
+    app.tenantId = tenantId;
     app.appId = randomUUID();
     app.backendSystem = defaultBackend;
     app.createdAt = Clock.currTime();

@@ -56,7 +56,7 @@ class AGTDevice : SAPTenantObject {
   static AGTDevice opCall(UUID tenantId, Json request) {
     AGTDevice device = new AGTDevice(request);
     
-    device.tenantId = UUID(tenantId);
+    device.tenantId = tenantId;
     device.deviceId = randomUUID();
     device.platform = "ios";
     device.lastSyncAt = Clock.currTime();

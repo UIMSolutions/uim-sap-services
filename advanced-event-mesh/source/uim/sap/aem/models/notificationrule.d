@@ -38,7 +38,7 @@ class AEMNotificationRule : SAPTenantObject {
 
 AEMNotificationRule notificationRuleFromJson(UUID tenantId, string ruleId, Json request) {
   AEMNotificationRule rule = new AEMNotificationRule();
-  rule.tenantId = UUID(tenantId);
+  rule.tenantId = tenantId;
   rule.ruleId = ruleId;
   rule.metric = "queue_depth";
   rule.threshold = 100.0;

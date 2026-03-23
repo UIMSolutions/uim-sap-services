@@ -59,7 +59,7 @@ class AEMSubscription : SAPTenantObject {
 
 AEMSubscription subscriptionFromJson(UUID tenantId, string componentId, Json request) {
   AEMSubscription subscription = new AEMSubscription();
-  subscription.tenantId = UUID(tenantId);
+  subscription.tenantId = tenantId;
   subscription.subscriptionId = randomUUID();
   subscription.componentId = UUID(componentId);
   subscription.updatedAt = Clock.currTime();

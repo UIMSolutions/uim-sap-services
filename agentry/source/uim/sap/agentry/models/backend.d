@@ -72,7 +72,7 @@ class AGTBackendSystem : SAPTenantObject {
 
   static AGTBackendSystem opCall(UUID tenantId, Json request) {
     AGTBackendSystem backend = new AGTBackendSystem(request);
-    backend.tenantId = UUID(tenantId);
+    backend.tenantId = tenantId;
     backend.backendId = randomUUID();
     backend.systemType = "s4hana";
     backend.authMode = "oauth2";
