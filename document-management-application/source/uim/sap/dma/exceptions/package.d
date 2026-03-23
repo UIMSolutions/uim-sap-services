@@ -1,8 +1,6 @@
 module uim.sap.dma.exceptions;
 
 public {
-    import uim.sap.service;
-
     import uim.sap.dpi.exceptions.authorization;
     import uim.sap.dpi.exceptions.configuration;
     import uim.sap.dpi.exceptions.exception;

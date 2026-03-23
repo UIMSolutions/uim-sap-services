@@ -13,7 +13,12 @@ import std.conv : to;
 import std.digest.sha : SHA256, sha256Of;
 import std.string : representation;
 
-import uim.sap.dma.exceptions;
+
+import uim.sap.dma;
+
+mixin(ShowModule!());
+
+@safe:
 
 /// Manages encryption keys and provides encrypt/decrypt operations.
 class EncryptionManager {

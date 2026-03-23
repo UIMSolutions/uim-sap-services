@@ -1,5 +1,11 @@
 module uim.sap.dma.models.repository;
 
+import uim.sap.dma;
+
+mixin(ShowModule!());
+
+@safe:
+
 /// Describes a connected CMIS-compliant repository.
 class DMARepository : SAPObject {
   string repositoryId;
