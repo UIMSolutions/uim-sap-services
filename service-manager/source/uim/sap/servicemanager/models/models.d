@@ -18,77 +18,21 @@ struct SVMPlatform {
   SysTime createdAt;
 
   override Json toJson()  {
-    Json payload = Json.emptyObject;
-    payload["tenant_id"] = tenantId;
-    payload["platform_id"] = platformId;
-    payload["name"] = name;
-    payload["runtime_type"] = runtimeType;
-    payload["api_endpoint"] = apiEndpoint;
-    payload["status"] = status;
-    payload["created_at"] = createdAt.toISOExtString();
-    return payload;
+    return super.toJson
+    .set("tenant_id", tenantId)
+    .set("platform_id", platformId)
+    .set("name", name)
+    .set("runtime_type", runtimeType)
+    .set("api_endpoint", apiEndpoint)
+    .set("status", status)
+    .set("created_at", createdAt.toISOExtString());
   }
 }
 
-struct SVMServiceInstance {
-  UUID tenantId;
-  UUID instanceId;
-  string offeringName;
-  string planName;
-  string environmentId;
-  string platformId;
-  string status;
-  string sharedFromEnvironment;
-  string[] sharedToEnvironments;
-  SysTime createdAt;
-  SysTime updatedAt;
 
-  override Json toJson()  {
-    Json shares = Json.emptyArray;
-    foreach (envId; sharedToEnvironments) {
-      shares ~= envId;
-    }
-
-    Json payload = Json.emptyObject;
-    payload["tenant_id"] = tenantId;
-    payload["instance_id"] = instanceId;
-    payload["offering_name"] = offeringName;
-    payload["plan_name"] = planName;
-    payload["environment_id"] = environmentId;
-    payload["platform_id"] = platformId;
-    payload["status"] = status;
-    payload["shared_from_environment"] = sharedFromEnvironment;
-    payload["shared_to_environments"] = shares;
-    payload["created_at"] = createdAt.toISOExtString();
-    payload["updated_at"] = updatedAt.toISOExtString();
-    return payload;
-  }
-}
-
-struct SVMServiceBinding {
-  UUID tenantId;
-  string bindingId;
-  UUID instanceId;
-  string name;
-  string environmentId;
-  string credentialsRef;
-  SysTime createdAt;
-
-  override Json toJson()  {
-    Json payload = Json.emptyObject;
-    payload["tenant_id"] = tenantId;
-    payload["binding_id"] = bindingId;
-    payload["instance_id"] = instanceId;
-    payload["name"] = name;
-    payload["environment_id"] = environmentId;
-    payload["credentials_ref"] = credentialsRef;
-    payload["created_at"] = createdAt.toISOExtString();
-    return payload;
-  }
-}
 
 SVMPlatform parsePlatform(UUID tenantId, Json request) {
-  SVMPlatform platform;
+  SVMPlatform platform = new SVMPlatform(request);
   platform.tenantId = tenantId;
   platform.platformId = request.getString("platform_id", createId());
   platform.name = request.getString("name", "");
@@ -99,35 +43,10 @@ SVMPlatform parsePlatform(UUID tenantId, Json request) {
   return platform;
 }
 
-SVMServiceInstance parseServiceInstance(UUID tenantId, Json request) {
-  SVMServiceInstance instanceItem;
-  instanceItem.tenantId = tenantId;
-  instanceItem.instanceId = request.getString("instance_id", createId());
-  instanceItem.offeringName = request.getString("offering_name", "");
-  instanceItem.planName = request.getString("plan_name", "");
-  instanceItem.environmentId = request.getString("environment_id", "");
-  instanceItem.platformId = request.getString("platform_id", "");
-  instanceItem.status = request.getString("status", "provisioned");
-  instanceItem.sharedFromEnvironment = request.getString("shared_from_environment", "");
-  instanceItem.createdAt = Clock.currTime();
-  instanceItem.updatedAt = instanceItem.createdAt;
 
-  if ("shared_to_environments" in request && request["shared_to_environments"].isArray) {
-    foreach (item; request["shared_to_environments"].toArray) {
-      if (item.isString) {
-        auto value = item.get!string;
-        if (value.length > 0) {
-          instanceItem.sharedToEnvironments ~= value;
-        }
-      }
-    }
-  }
-
-  return instanceItem;
-}
 
 SVMServiceBinding parseServiceBinding(UUID tenantId, Json request) {
-  SVMServiceBinding binding;
+  SVMServiceBinding binding = new SVMServiceBinding(request);
   binding.tenantId = tenantId;
   binding.bindingId = request.getString("binding_id", createId());
   binding.instanceId = request.getString("instance_id", "");

@@ -32,9 +32,21 @@ class SAPServer {
     // Initialization logic for the object
     return true;
   }
-  
+
   bool initialize(Json[string] initData = null) {
     // Initialization logic for the store
     return true;
+  }
+
+  void run() {
+    auto settings = new HTTPServerSettings;
+    settings.port = _service.config.port;
+    settings.bindAddresses = [_service.config.host];
+    listenHTTP(settings, &handleRequest);
+    runApplication();
+  }
+
+  Json toJson() {
+    return Json.emptyObject;
   }
 }

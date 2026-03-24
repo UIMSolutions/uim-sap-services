@@ -25,9 +25,9 @@ class MONService : SAPService {
     _store.appendApplicationMetrics(appId, metrics);
 
     return Json.emptyObject
-    .set("target_type", "application")
-    .set("target_id", appId)
-    .set("metrics", toJsonArray(metrics));
+      .set("target_type", "application")
+      .set("target_id", appId)
+      .set("metrics", toJsonArray(metrics));
   }
 
   Json fetchDatabaseMetrics(string databaseId) {
@@ -35,9 +35,9 @@ class MONService : SAPService {
     _store.appendDatabaseMetrics(databaseId, metrics);
 
     return Json.emptyObject
-    .set("target_type", "database")
-    .set("target_id", databaseId)
-    .set("metrics", toJsonArray(metrics));
+      .set("target_type", "database")
+      .set("target_id", databaseId)
+      .set("metrics", toJsonArray(metrics));
   }
 
   Json metricHistory(string targetType, string targetId) {
@@ -49,10 +49,10 @@ class MONService : SAPService {
     auto history = _store.metricHistory(normalizedType, targetId);
 
     return Json.emptyObject
-    .set("target_type", normalizedType)
-    .set("target_id", targetId)
-    .set("history", toJsonArray(history))
-    .set("total_results", cast(long)history.length);
+      .set("target_type", normalizedType)
+      .set("target_id", targetId)
+      .set("history", toJsonArray(history))
+      .set("total_results", cast(long)history.length);
   }
 
   Json registerAvailabilityCheck(Json request) {
@@ -81,8 +81,8 @@ class MONService : SAPService {
     auto saved = _store.saveAvailabilityCheck(check);
 
     return Json.emptyObject
-    .set("success", true)
-    .set("availability_check", saved.toJson());
+      .set("success", true)
+      .set("availability_check", saved.toJson());
   }
 
   Json setAlertEmailChannel(Json request) {
@@ -110,8 +110,8 @@ class MONService : SAPService {
     auto saved = _store.saveEmailChannel(channel);
 
     return Json.emptyObject
-    .set("success", true)
-    .set("channel", saved.toJson());
+      .set("success", true)
+      .set("channel", saved.toJson());
   }
 
   Json setAlertWebhookChannel(Json request) {
@@ -130,8 +130,8 @@ class MONService : SAPService {
     auto saved = _store.saveWebhookChannel(channel);
 
     return Json.emptyObject
-    .set("success", true)
-    .set("channel", saved.toJson());
+      .set("success", true)
+      .set("channel", saved.toJson());
   }
 
   Json configureJMXCheck(Json request) {
@@ -162,8 +162,8 @@ class MONService : SAPService {
     auto saved = _store.saveJMXCheck(check);
 
     return Json.emptyObject
-    .set("success", true)
-    .set("jmx_check", saved.toJson());
+      .set("success", true)
+      .set("jmx_check", saved.toJson());
   }
 
   Json performJMXOperation(Json request) {
@@ -175,25 +175,17 @@ class MONService : SAPService {
       throw new MONValidationException("target_id, mbean and operation are required");
     }
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["target_id"] = targetId;
-    payload["mbean"] = mbean;
-    payload["operation"] = operation;
-    payload["status"] = "completed";
-    payload["invoked_at"] = Clock.currTime().toISOExtString();
-
     return Json.emptyObject
-    .set("success", true)
-    .set("target_id", targetId)
-    .set("mbean", mbean)
-    .set("operation", operation)
-    .set("status", "completed")
-    .set("invoked_at", Clock.currTime().toISOExtString())
-    .set("result", Json.emptyObject
-      .set("message", "JMX operation executed")
-      .set("return_code", 0)
-      .set("simulated", true));
+      .set("success", true)
+      .set("target_id", targetId)
+      .set("mbean", mbean)
+      .set("operation", operation)
+      .set("status", "completed")
+      .set("invoked_at", Clock.currTime().toISOExtString())
+      .set("result", Json.emptyObject
+          .set("message", "JMX operation executed")
+          .set("return_code", 0)
+          .set("simulated", true));
   }
 
   Json registerCustomCheck(Json request) {
@@ -225,8 +217,8 @@ class MONService : SAPService {
     auto saved = _store.saveCustomCheck(check);
 
     return Json.emptyObject
-    .set("success", true)
-    .set("custom_check", saved.toJson());
+      .set("success", true)
+      .set("custom_check", saved.toJson());
   }
 
   Json overrideDefaultThreshold(string checkName, Json request) {
@@ -237,10 +229,10 @@ class MONService : SAPService {
     auto thresholds = _store.saveThresholdOverride(checkName, request["thresholds"]);
 
     return Json.emptyObject
-    .set("success", true)
-    .set("check_name", checkName)
-    .set("thresholds", thresholds)
-    .set("updated_at", Clock.currTime().toISOExtString());
+      .set("success", true)
+      .set("check_name", checkName)
+      .set("thresholds", thresholds)
+      .set("updated_at", Clock.currTime().toISOExtString());
   }
 
   Json getAlertChannels() {
@@ -250,7 +242,7 @@ class MONService : SAPService {
     payload["webhook"] = _store.hasWebhookChannel() ? _store.getWebhookChannel()
       .toJson() : Json.undefined;
     return payload;
-  } 
+  }
 
   Json getThresholdOverride(string checkName) {
     auto thresholds = _store.getThresholdOverride(checkName);
@@ -258,10 +250,9 @@ class MONService : SAPService {
       throw new MONNotFoundException("Threshold override", checkName);
     }
 
-    Json payload = Json.emptyObject;
-    payload["check_name"] = checkName;
-    payload["thresholds"] = thresholds;
-    return payload;
+    return Json.emptyObject
+      .set("check_name", checkName)
+      .set("thresholds", thresholds);
   }
 
   private Json toJsonArray(MONMetricSample[] metrics) {

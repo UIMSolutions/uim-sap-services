@@ -6,19 +6,13 @@ mixin(ShowModule!());
 
 @safe:
 
-class MDIServer {
+class MDIServer : SAPServer {
+  mixin(SAPServerTemplate!MDIServer);
+
   private MDIService _service;
 
   this(MDIService service) {
     _service = service;
-  }
-
-  void run() {
-    auto settings = new HTTPServerSettings;
-    settings.port = _service.config.port;
-    settings.bindAddresses = [_service.config.host];
-    listenHTTP(settings, &handleRequest);
-    runApplication();
   }
 
   private void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {

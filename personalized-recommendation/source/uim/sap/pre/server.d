@@ -10,19 +10,13 @@ import uim.sap.pre;
 mixin(ShowModule!());
 @safe:
 
-class PREServer {
+class PREServer : SAPServer {
+  mixin(SAPServerTemplate!PREServer);
+
   private PREService _service;
 
   this(PREService service) {
     _service = service;
-  }
-
-  void run() {
-    auto settings = new HTTPServerSettings;
-    settings.port = _service.config.port;
-    settings.bindAddresses = [_service.config.host];
-    listenHTTP(settings, &handleRequest);
-    runApplication();
   }
 
   private void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {

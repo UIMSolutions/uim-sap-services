@@ -50,19 +50,13 @@ mixin(ShowModule!());
  *   Data Usages:
  *     GET|POST  /v1/tenants/{tid}/subjects/{sid}/usages
  */
-class PDMServer {
+class PDMServer : SAPServer {
+  mixin(SAPServerTemplate!PDMServer);
+  
   private PDMService _service;
 
   this(PDMService service) {
     _service = service;
-  }
-
-  void run() {
-    auto settings = new HTTPServerSettings;
-    settings.port = _service.config.port;
-    settings.bindAddresses = [_service.config.host];
-    listenHTTP(settings, &handleRequest);
-    runApplication();
   }
 
   private void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {

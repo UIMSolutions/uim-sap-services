@@ -40,19 +40,13 @@ import uim.sap.kst.service;
  *
  *   POST   /v1/auth/client-cert
  */
-class KSTServer {
+class KSTServer : SAPServer {
+  mixin(SAPServerTemplate!KSTServer);
+
   private KSTService _service;
 
   this(KSTService service) {
     _service = service;
-  }
-
-  void run() {
-    auto settings = new HTTPServerSettings;
-    settings.port = _service.config.port;
-    settings.bindAddresses = [_service.config.host];
-    listenHTTP(settings, &handleRequest);
-    runApplication();
   }
 
   private void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {

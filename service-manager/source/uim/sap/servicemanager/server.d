@@ -13,19 +13,13 @@ mixin(ShowModule!());
 
 @safe:
 
-class SVMServer {
+class SVMServer : SAPServer {
+  mixin(SAPServerTemplate!SVMServer);
+
   private SVMService _service;
 
   this(SVMService service) {
     _service = service;
-  }
-
-  void run() {
-    auto settings = new HTTPServerSettings;
-    settings.port = _service.config.port;
-    settings.bindAddresses = [_service.config.host];
-    listenHTTP(settings, &handleRequest);
-    runApplication();
   }
 
   private void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {
