@@ -64,6 +64,16 @@ class SAPServer {
     subPath = path[basePath.length .. $];
     if (subPath.length == 0)
       subPath = "/";
+
+    if (subPath == "/health" && req.method == HTTPMethod.GET) {
+      res.writeJsonBody(_service.health(), 200);
+      return;
+    }
+
+    if (subPath == "/ready" && req.method == HTTPMethod.GET) {
+      res.writeJsonBody(_service.ready(), 200);
+      return;
+    }
   }
 
   Json toJson() {

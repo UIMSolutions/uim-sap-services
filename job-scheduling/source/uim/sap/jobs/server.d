@@ -20,16 +20,6 @@ class JobSchedulingServer : SAPServer {
     super.handleRequest(req, res);
 
 
-    if (subPath == "/health" && req.method == HTTPMethod.GET) {
-      res.writeJsonBody(_service.health(), 200);
-      return;
-    }
-
-    if (subPath == "/ready" && req.method == HTTPMethod.GET) {
-      res.writeJsonBody(_service.ready(), 200);
-      return;
-    }
-
     if (subPath == "/dashboard" && req.method == HTTPMethod.GET) {
       res.contentType = "text/html; charset=utf-8";
       res.writeBody(_service.dashboardHtml());
