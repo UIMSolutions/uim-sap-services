@@ -4,3 +4,8 @@
 * Authors: Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*)
 *****************************************************************************************************************/
 module uim.sap.con.models;
+
+public {
+  import uim.sap.con.models.destination;
+  import uim.sap.con.models.tenantsummary;
+}

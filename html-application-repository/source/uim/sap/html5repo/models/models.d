@@ -10,10 +10,7 @@ import std.string : toLower;
 
 import vibe.data.json : Json;
 
-enum Visibility {
-  privateAccess,
-  publicAccess
-}
+
 
 struct TenantContext {
   UUID tenantId;
@@ -30,17 +27,6 @@ struct UploadedAsset {
 
 
 
-struct RuntimeAsset {
-  UUID tenantId;
-  string spaceId;
-  string appId;
-  string versionId;
-  string path;
-  string contentType;
-  bool isPublic;
-  string etag;
-  ubyte[] content;
-}
 
 Visibility visibilityFromString(string value) {
   return toLower(value) == "public" ? Visibility.publicAccess : Visibility.privateAccess;
@@ -53,13 +39,6 @@ string visibilityToString(Visibility visibility) {
 private string getString(Json payload, string key, string fallback) {
   if (key in payload && payload[key].isString) {
     return payload[key].get!string;
-  }
-  return fallback;
-}
-
-private bool getBool(Json payload, string key, bool fallback) {
-  if (key in payload && payload[key].isBoolean) {
-    return payload[key].get!bool;
   }
   return fallback;
 }

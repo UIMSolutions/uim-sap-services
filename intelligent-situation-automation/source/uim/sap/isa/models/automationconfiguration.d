@@ -51,7 +51,7 @@ AutomationConfiguration configFromJson(Json payload, UUID tenantId) {
   config.name = getString(payload, "name", "");
   config.description = getString(payload, "description", "");
   config.situationType = getString(payload, "situation_type", "");
-  config.enabled = getBool(payload, "enabled", true);
+  config.enabled = getBoolean(payload, "enabled", true);
   config.avgManualMinutes = getInt(payload, "avg_manual_minutes", 5);
   config.autoResolutionRate = getDouble(payload, "auto_resolution_rate", 0.75);
   config.businessRules = parseRules(payload);
@@ -84,7 +84,7 @@ AutomationConfiguration updateConfigFromJson(AutomationConfiguration current, Js
     updated.situationType = getString(payload, "situation_type", current.situationType);
   }
   if ("enabled" in payload) {
-    updated.enabled = getBool(payload, "enabled", current.enabled);
+    updated.enabled = getBoolean(payload, "enabled", current.enabled);
   }
   if ("avg_manual_minutes" in payload) {
     updated.avgManualMinutes = max(1, getInt(payload, "avg_manual_minutes", current

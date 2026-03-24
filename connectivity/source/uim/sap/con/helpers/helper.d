@@ -22,3 +22,6 @@ ushort defaultPortForProtocol(string protocol) {
         case "odbc": return 1433;
     }
 }
+
+enum string[] CON_SUPPORTED_PROTOCOLS = ["http", "rfc", "tcp", "jdbc", "odbc"];
+

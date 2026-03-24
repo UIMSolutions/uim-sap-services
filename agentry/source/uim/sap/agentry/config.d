@@ -55,3 +55,13 @@ class AGTConfig : SAPConfig {
     }
   }
 }
+///
+unittest {
+  AGTConfig config = new AGTConfig();
+  assert(config.basePath == "/api/agentry");
+  assert(config.host == "0.0.0.0");
+  assert(config.port == 8089);
+  assert(config.serviceName == "uim-agentry");
+  assert(config.serviceVersion == "1.0.0");
+  assert(config.requireAuthToken == false);
+}

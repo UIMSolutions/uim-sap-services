@@ -11,6 +11,17 @@ mixin(ShowModule!());
 
 @safe:
 
+/**
+ * CLFConfig is the configuration class for the Cloud Foundry runtime environment.
+ * It extends the base SAPConfig and provides additional settings specific to CLF.
+ *
+  * Configuration options include:
+  * - Network settings: basePath, host, port  
+  * - Service settings: serviceName, serviceVersion
+  * - Authentication settings: requireAuthToken, authToken
+ * The initialize method populates the configuration from a JSON object, with default values for each setting.
+ * The validate method ensures that required settings are properly set and throws exceptions if validation fails.
+ */   
 class CLFConfig : SAPConfig {
   mixin(SAPConfigTemplate!AgentryConfig);
 

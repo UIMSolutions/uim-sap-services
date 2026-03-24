@@ -36,7 +36,7 @@ class HARService : SAPService {
 
   Json uploadVersion(TenantContext tenant, string appId, string versionId, Json request) {
     auto visibility = visibilityFromString(getString(request, "visibility", "private"));
-    auto activate = getBool(request, "activate", true);
+    auto activate = getBoolean(request, "activate", true);
 
     if (!("files" in request) || !request["files"].isArray) {
       throw new HARValidationException("files array is required");
@@ -199,13 +199,6 @@ class HARService : SAPService {
   private string getString(Json payload, string key, string fallback) {
     if (key in payload && payload[key].isString) {
       return payload[key].get!string;
-    }
-    return fallback;
-  }
-
-  private bool getBool(Json payload, string key, bool fallback) {
-    if (key in payload && payload[key].isBoolean) {
-      return payload[key].get!bool;
     }
     return fallback;
   }

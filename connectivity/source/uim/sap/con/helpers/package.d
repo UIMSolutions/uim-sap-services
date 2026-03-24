@@ -4,3 +4,5 @@
 * Authors: Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*)
 *****************************************************************************************************************/
 module uim.sap.con.helpers;
+
+public import uim.sap.con.helpers.helper;

@@ -55,17 +55,6 @@ private string getString(Json payload, string key, string fallback) {
   }
 }
 
-private bool getBool(Json payload, string key, bool fallback) {
-  if (!(key in payload)) {
-    return fallback;
-  }
-  try {
-    return payload[key].get!bool;
-  } catch (Exception) {
-    return fallback;
-  }
-}
-
 private int getInt(Json payload, string key, int fallback) {
   if (!(key in payload)) {
     return fallback;

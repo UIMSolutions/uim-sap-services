@@ -33,7 +33,7 @@ struct AppVersionInfo {
     item.appId = UUID(getString(payload, "app_id", ""));
     item.versionId = getString(payload, "version", "");
     item.visibility = visibilityFromString(getString(payload, "visibility", "private"));
-    item.active = getBool(payload, "active", false);
+    item.active = getBoolean(payload, "active", false);
     item.createdAt = getString(payload, "created_at", "");
     item.updatedAt = getString(payload, "updated_at", "");
     item.sizeBytes = getLong(payload, "size_bytes", 0L);

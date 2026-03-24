@@ -75,7 +75,7 @@ class MONService : SAPService {
     check.intervalSeconds = getInt(request, "interval_seconds", 60);
     check.timeoutSeconds = getInt(request, "timeout_seconds", 5);
     check.expectedStatus = getInt(request, "expected_status", 200);
-    check.enabled = getBool(request, "enabled", true);
+    check.enabled = getBoolean(request, "enabled", true);
     check.createdAt = Clock.currTime();
 
     auto saved = _store.saveAvailabilityCheck(check);
@@ -101,7 +101,7 @@ class MONService : SAPService {
     }
 
     MONAlertEmailChannel channel;
-    channel.enabled = getBool(request, "enabled", true);
+    channel.enabled = getBoolean(request, "enabled", true);
     channel.recipients = recipients;
     channel.sender = getString(request, "sender", "noreply@uim.local");
     channel.subjectPrefix = getString(request, "subject_prefix", "[UIM-MON]");
@@ -121,7 +121,7 @@ class MONService : SAPService {
     }
 
     MONAlertWebhookChannel channel;
-    channel.enabled = getBool(request, "enabled", true);
+    channel.enabled = getBoolean(request, "enabled", true);
     channel.url = url;
     channel.secret = getString(request, "secret", "");
     channel.method = getString(request, "method", "POST");
@@ -156,7 +156,7 @@ class MONService : SAPService {
     check.attribute = attribute;
     check.comparator = getString(request, "comparator", ">=");
     check.threshold = getDouble(request, "threshold", 0);
-    check.enabled = getBool(request, "enabled", true);
+    check.enabled = getBoolean(request, "enabled", true);
     check.createdAt = Clock.currTime();
 
     auto saved = _store.saveJMXCheck(check);
@@ -296,13 +296,6 @@ class MONService : SAPService {
   private int getInt(Json request, string key, int fallback = 0) {
     if (key in request && request[key].isInteger) {
       return cast(int)request[key].get!long;
-    }
-    return fallback;
-  }
-
-  private bool getBool(Json request, string key, bool fallback = false) {
-    if (key in request && request[key].isBoolean) {
-      return request[key].get!bool;
     }
     return fallback;
   }

@@ -7,6 +7,7 @@ module uim.sap.har;
 
 public import uim.sap.har.config;
 public import uim.sap.har.exceptions;
+public import uim.sap.har.helpers;
 public import uim.sap.har.models;
 public import uim.sap.har.store;
 public import uim.sap.har.cache;
