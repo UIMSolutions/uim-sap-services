@@ -23,19 +23,13 @@ import uim.sap.docmgmtintegration.service;
  *   GET    /api/docmgmt-integration/health                - health probe
  *   GET    /api/docmgmt-integration/ready                 - readiness probe
  */
-class DocMgmtIntegrationServer {
+class DocMgmtIntegrationServer : SAPServer {
+  mixin(SAPServerTemplate!DocMgmtIntegrationServer);
+
   private DocMgmtIntegrationService _service;
 
   this(DocMgmtIntegrationService service) {
     _service = service;
-  }
-
-  void run() {
-    auto settings = new HTTPServerSettings;
-    settings.port = _service.config.port;
-    settings.bindAddresses = [_service.config.host];
-    listenHTTP(settings, &handleRequest);
-    runApplication();
   }
 
   private void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {

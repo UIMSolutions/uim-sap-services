@@ -12,19 +12,13 @@ mixin(ShowModule!());
 @safe:
 
 
-class DPIServer {
+class DPIServer : SAPServer {
+  mixin(SAPServerTemplate!DPIServer);
+
   private DPIService _service;
 
   this(DPIService service) {
     _service = service;
-  }
-
-  void run() {
-    auto settings = new HTTPServerSettings;
-    settings.port = _service.config.port;
-    settings.bindAddresses = [_service.config.host];
-    listenHTTP(settings, &handleRequest);
-    runApplication();
   }
 
   private void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {

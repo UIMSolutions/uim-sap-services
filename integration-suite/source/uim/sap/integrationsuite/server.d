@@ -12,18 +12,12 @@ mixin(ShowModule!());
  * Routes are organised under `/api/is/v1/tenants/{tenantId}/...`
  */
 class INTServer : SAPServer {
+  mixin(SAPServerTemplate!INTServer);
+
   private INTService _service;
 
   this(INTService service) {
     _service = service;
-  }
-
-  void run() {
-    auto settings = new HTTPServerSettings;
-    settings.port = _service.config.port;
-    settings.bindAddresses = [_service.config.host];
-    listenHTTP(settings, &handleRequest);
-    runApplication();
   }
 
   // ---- request dispatcher ----

@@ -63,19 +63,13 @@ import uim.sap.kym.service;
  *     GET    /v1/namespaces/{ns}/service-bindings/{name}
  *     DELETE /v1/namespaces/{ns}/service-bindings/{name}
  */
-class KYMServer {
+class KYMServer : SAPServer {
+  mixin(SAPServerTemplate!KYMServer);
+
   private KYMService _service;
 
   this(KYMService service) {
     _service = service;
-  }
-
-  void run() {
-    auto settings = new HTTPServerSettings;
-    settings.port = _service.config.port;
-    settings.bindAddresses = [_service.config.host];
-    listenHTTP(settings, &handleRequest);
-    runApplication();
   }
 
   private void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {

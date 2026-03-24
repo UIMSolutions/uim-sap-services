@@ -38,19 +38,13 @@ mixin(ShowModule!());
  * - private string[] normalizedSegments(string subPath): Normalizes the URL path segments for easier routing.
  * - private void respondError(HTTPServerResponse res, string message, int statusCode): Sends an error response with a Json data containing the error message and status code.
  */ 
-class CMGServer {
+class CMGServer : SAPServer {
+  mixin(SAPServerTemplate!CMGServer);
+
   private CMGService _service;
 
   this(CMGService service) {
     _service = service;
-  }
-
-  void run() {
-    auto settings = new HTTPServerSettings;
-    settings.port = _service.config.port;
-    settings.bindAddresses = [_service.config.host];
-    listenHTTP(settings, &handleRequest);
-    runApplication();
   }
 
   private void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {
