@@ -11,19 +11,13 @@ mixin(ShowModule!());
 
 @safe:
 
-class BUHServer {
+class BUHServer : SAPServer {
+  mixin(SAPServerTemplate!BUHServer);
+
   private BUHService _service;
 
   this(BUHService service) {
     _service = service;
-  }
-
-  void run() {
-    auto settings = new HTTPServerSettings;
-    settings.port = _service.config.port;
-    settings.bindAddresses = [_service.config.host];
-    listenHTTP(settings, &handleRequest);
-    runApplication();
   }
   
   private void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {

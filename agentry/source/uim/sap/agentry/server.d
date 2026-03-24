@@ -34,19 +34,13 @@ mixin(ShowModule!());
   * - POST /v1/tenants/{tenantId}/backend-systems: Create or update a backend system for a tenant
   * - GET  /v1/tenants/{tenantId}/operations/dashboard: Get operations dashboard data for a tenant
  */
-class AGTServer {
+class AGTServer : SAPServer {
+  mixin(SAPServerTemplate!AGTServer);
+
   protected AGTService _service;
 
   this(AGTService service) {
     _service = service;
-  }
-
-  void run() {
-    auto settings = new HTTPServerSettings;
-    settings.port = _service.config.port;
-    settings.bindAddresses = [_service.config.host];
-    listenHTTP(settings, &handleRequest);
-    runApplication();
   }
 
   private void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {

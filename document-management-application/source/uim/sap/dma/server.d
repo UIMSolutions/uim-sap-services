@@ -16,19 +16,13 @@ import uim.sap.dma.service;
  * Routes all incoming requests to the appropriate DMAService
  * method based on URL path segments and HTTP method.
  */
-class DMAServer {
+class DMAServer : SAPServer {
+  mixin(SAPServerTemplate!DMAServer);
+
   private DMAService _service;
 
   this(DMAService service) {
     _service = service;
-  }
-
-  void run() {
-    auto settings = new HTTPServerSettings;
-    settings.port = _service.config.port;
-    settings.bindAddresses = [_service.config.host];
-    listenHTTP(settings, &handleRequest);
-    runApplication();
   }
 
   private void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {

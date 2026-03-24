@@ -11,7 +11,9 @@ mixin(ShowModule!());
 
 @safe:
 
-class TKCServer : SAPServer{
+class TKCServer : SAPServer {
+  mixin(SAPServerTemplate!TKCServer);
+
   private TKCService _service;
   private string _host;
   private ushort _port;
@@ -30,14 +32,6 @@ class TKCServer : SAPServer{
     _requireAuthToken = cfg.requireAuthToken;
     _authToken = cfg.authToken;
     _customHeaders = cfg.customHeaders;
-  }
-
-  void run() {
-    auto settings = new HTTPServerSettings;
-    settings.port = _service.config.port;
-    settings.bindAddresses = [_service.config.host];
-    listenHTTP(settings, &handleRequest);
-    runApplication();
   }
 
   private void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {

@@ -4,19 +4,15 @@ import uim.sap.mdg;
 
 mixin(ShowModule!());
 
-@safe:class MDGServer {
+@safe:
+
+class MDGServer : SAPServer {
+  mixin(SAPServerTemplate!MDGServer);
+
   private MDGService _service;
 
   this(MDGService service) {
     _service = service;
-  }
-
-  void run() {
-    auto settings = new HTTPServerSettings;
-    settings.port = _service.config.port;
-    settings.bindAddresses = [_service.config.host];
-    listenHTTP(settings, &handleRequest);
-    runApplication();
   }
 
   private void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {

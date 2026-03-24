@@ -10,19 +10,13 @@ import uim.sap.smg;
 mixin(ShowModule!());
 
 @safe:
-class SMGServer {
+class SMGServer : SAPServer {
+  mixin(SAPServerTemplate!SMGServer);
+
   private SMGService _service;
 
   this(SMGService service) {
     _service = service;
-  }
-
-  void run() {
-    auto settings = new HTTPServerSettings;
-    settings.port = _service.config.port;
-    settings.bindAddresses = [_service.config.host];
-    listenHTTP(settings, &handleRequest);
-    runApplication();
   }
 
   private void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {

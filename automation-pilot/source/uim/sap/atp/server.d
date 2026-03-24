@@ -35,19 +35,13 @@ mixin(ShowModule!());
 
 * Note: The server uses a simple token-based authentication mechanism. If `requireAuthToken` is enabled in the configuration, it expects an `Authorization` header with the value `Bearer {authToken}`. 
  */
-class ATPServer {
+class ATPServer : SAPServer {
+  mixin(SAPServerTemplate!ATPServer);
+
   private ATPService _service;
 
   this(ATPService service) {
     _service = service;
-  }
-
-  void run() {
-    auto settings = new HTTPServerSettings;
-    settings.port = _service.config.port;
-    settings.bindAddresses = [_service.config.host];
-    listenHTTP(settings, &handleRequest);
-    runApplication();
   }
 
   private void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {

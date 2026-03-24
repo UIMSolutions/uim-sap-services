@@ -42,19 +42,13 @@ mixin(ShowModule!());
  * Dashboard:
  * - GET  /v1/tenants/{tenantId}/dashboard                           Get dashboard metrics
  */
-class EVMServer {
+class EVMServer : SAPServer {
+  mixin(SAPServerTemplate!EVMServer);
+
   private EVMService _service;
 
   this(EVMService service) {
     _service = service;
-  }
-
-  void run() {
-    auto settings = new HTTPServerSettings;
-    settings.port = _service.config.port;
-    settings.bindAddresses = [_service.config.host];
-    listenHTTP(settings, &handleRequest);
-    runApplication();
   }
 
   private void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {
