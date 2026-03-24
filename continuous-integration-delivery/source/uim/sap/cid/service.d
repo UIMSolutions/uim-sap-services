@@ -23,7 +23,7 @@ class CIDService : SAPService {
   // -----------------------------------------------------------------------
   // Health / readiness
   // -----------------------------------------------------------------------
-  Json health() const {
+  override Json health() {
     return super.health()
     .set("runtime", _config.runtime)
     .set("multitenancy", true)

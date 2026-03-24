@@ -21,7 +21,7 @@ class SMGService : SAPService {
     _store = new SMGStore;
   }
 
-  Json health() const {
+  override Json health() {
     Json payload = Json.emptyObject;
     payload["category"] = "site-manager";
     return payload;
@@ -35,20 +35,18 @@ class SMGService : SAPService {
 
   Json listSites(UUID tenantId) {
     validateTenant(tenantId);
-    Json payload = Json.emptyObject;
-    Json items = Json.emptyArray;
-    foreach (site; _store.listSites(tenantId))
-      items ~= site.toJson();
-    payload["tenant_id"] = tenantId;
-    payload["sites"] = items;
-    payload["count"] = cast(long)items.length;
-    return payload;
+    auto items = _store.listSites(tenantId).map!(site => site.toJson()).array;
+
+    return Json.emptyObject
+        .set("tenant_id", tenantId)
+        .set("sites", items)
+        .set("count", cast(long)items.length);
   }
 
   Json upsertSite(UUID tenantId, Json data) {
     validateTenant(tenantId);
 
-    auto siteid = requiredUUID(body, "site_id");
+    auto siteId = requiredUUID(body, "site_id");
     auto now = Clock.currTime();
     auto existing = _store.getSite(tenantId, siteId);
 

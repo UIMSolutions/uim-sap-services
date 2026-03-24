@@ -21,7 +21,7 @@ class TKCService : SAPService {
     _store = new TKCStore(config.cacheFilePath);
   }
 
-  Json health() const {
+  override Json health() {
     Json payload = super.health();
     payload["domain"] = "task-center";
     return payload;

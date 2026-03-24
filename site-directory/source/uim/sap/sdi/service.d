@@ -37,7 +37,7 @@ class SDIService : SAPService {
     _store = new SDIStore;
   }
 
-  Json health() const {
+  override Json health() {
     Json payload = Json.emptyObject;
     payload["domain"] = "site-directory";
     return payload;

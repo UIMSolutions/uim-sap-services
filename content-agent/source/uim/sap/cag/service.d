@@ -16,7 +16,7 @@ class CAGService : SAPService {
     _store = new CAGStore;
   }
 
-  Json health() const {
+  override Json health() {
     CAGConfig cfg = cast(CAGConfig)_config; 
 
     Json healthInfo = super.health();

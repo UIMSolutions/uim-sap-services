@@ -22,7 +22,7 @@ class CDCService : SAPService {
     _store = new CDCStore(config.cacheFilePath);
   }
 
-  Json health() const {
+  override Json health() {
     return super.health()
       .set("domain", "customer-data");
   }

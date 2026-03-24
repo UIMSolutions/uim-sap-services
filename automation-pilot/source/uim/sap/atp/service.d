@@ -42,7 +42,7 @@ class ATPService : SAPService {
     seedPredefinedCatalogs();
   }
 
-  Json health() const {
+  override Json health() {
     ATPConfig cfg = cast(ATPConfig)_config;
 
     Json healthInfo = super.health();

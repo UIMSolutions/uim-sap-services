@@ -20,7 +20,7 @@ class BASService : SAPService {
     seedReferenceContent();
   }
 
-  Json health() const {
+  override Json health() {
     Json healthInfo = super.health();
     healthInfo["default_region"] = _config.defaultRegion;
     healthInfo["scenarios"] = cast(long)_scenarios.length;

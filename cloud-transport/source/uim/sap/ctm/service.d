@@ -30,7 +30,7 @@ class CTMService : SAPService {
   // -----------------------------------------------------------------------
   // Health / readiness
   // -----------------------------------------------------------------------
-  Json health() const {
+  override Json health() {
     Json healthInfo = super.health();
     healthInfo["runtime"] = _config.runtime;
     healthInfo["multitenancy"] = true;
