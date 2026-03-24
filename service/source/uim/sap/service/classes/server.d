@@ -69,6 +69,7 @@ class SAPServer {
     if (_subPath.length == 0)
       _subPath = "/";
 
+    // ── Health / readiness ────────────────────────────────────────────
     if (_subPath == "/health" && req.method == HTTPMethod.GET) {
       res.writeJsonBody(_service.health(), 200);
       return;

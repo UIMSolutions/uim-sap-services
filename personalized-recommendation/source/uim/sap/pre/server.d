@@ -20,8 +20,7 @@ class PREServer : SAPServer {
   }
 
   override void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {
-    super.handleRequest(req, res);
-
+        super.handleRequest(req, res);
 
     if (!path.startsWith(basePath)) {
       respondError(res, "Not found", 404);

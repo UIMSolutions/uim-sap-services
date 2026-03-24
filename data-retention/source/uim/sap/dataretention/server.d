@@ -23,12 +23,7 @@ class DRMServer : SAPServer {
   }
 
   override void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {
-    foreach (key, value; _service.config.customHeaders) {
-      res.headers[key] = value;
-    }
-
-    auto basePath = _service.config.basePath;
-    auto path = req.path;
+    super.handleRequest(req, res);
 
     if (!matchesBasePath(path, basePath)) {
       respondError(res, "Not found", 404);
