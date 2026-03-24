@@ -15,12 +15,6 @@ class TKCServer : SAPServer {
   mixin(SAPServerTemplate!TKCServer);
 
   private TKCService _service;
-  private string _host;
-  private ushort _port;
-  private string _basePath;
-  private bool _requireAuthToken;
-  private string _authToken;
-  private string[string] _customHeaders;
 
   this(TKCService service) {
     _service = service;

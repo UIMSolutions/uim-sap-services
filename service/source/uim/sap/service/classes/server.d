@@ -38,6 +38,14 @@ class SAPServer {
     return true;
   }
 
+  protected string _host;
+  protected ushort _port;
+  protected string _basePath;
+  protected string _subPath;
+  protected bool _requireAuthToken;
+  protected string _authToken;
+  protected string[string] _customHeaders;
+
   void run() {
     auto settings = new HTTPServerSettings;
     settings.port = _service.config.port;
@@ -46,31 +54,27 @@ class SAPServer {
     runApplication();
   }
 
-  protected string basePath;
-  protected string path;
-  protected string subPath;
-
   void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {
     foreach (key, value; _service.config.customHeaders)
       res.headers[key] = value;
 
-    basePath = _service.config.basePath;
-    path = req.path;
-    if (!path.startsWith(basePath)) {
+    _basePath = _service.config.basePath;
+    auto path = req.path;
+    if (!path.startsWith(_basePath)) {
       respondError(res, "Not found", 404);
       return;
     }
 
-    subPath = path[basePath.length .. $];
-    if (subPath.length == 0)
-      subPath = "/";
+    _subPath = path[_basePath.length .. $];
+    if (_subPath.length == 0)
+      _subPath = "/";
 
-    if (subPath == "/health" && req.method == HTTPMethod.GET) {
+    if (_subPath == "/health" && req.method == HTTPMethod.GET) {
       res.writeJsonBody(_service.health(), 200);
       return;
     }
 
-    if (subPath == "/ready" && req.method == HTTPMethod.GET) {
+    if (_subPath == "/ready" && req.method == HTTPMethod.GET) {
       res.writeJsonBody(_service.ready(), 200);
       return;
     }

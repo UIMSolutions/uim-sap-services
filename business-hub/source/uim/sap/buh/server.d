@@ -84,12 +84,4 @@ class BUHServer : SAPServer {
       respondError(res, e.msg, 500);
     }
   }
-
-  private string lastSegment(string path) {
-    auto parts = path.split("/");
-    if (parts.length == 0) {
-      return "";
-    }
-    return parts[$ - 1];
-  }
 }

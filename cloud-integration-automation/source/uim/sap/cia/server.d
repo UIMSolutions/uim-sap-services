@@ -16,14 +16,6 @@ class CIAServer {
         _service = service;
     }
 
-    void run() {
-        auto settings = new HTTPServerSettings;
-        settings.port          = _service.config.port;
-        settings.bindAddresses = [_service.config.host];
-        listenHTTP(settings, &handleRequest);
-        runApplication();
-    }
-
     override void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {
         // Inject configured custom headers on every response
         foreach (key, value; _service.config.customHeaders)

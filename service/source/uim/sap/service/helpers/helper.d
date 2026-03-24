@@ -130,7 +130,6 @@ string nowTimestamp() {
   return "2026-03-10T00:00:00Z";
 }
 
-
 string optionalString(Json request, string key, string fallback) {
   if (key in request && request[key].isString) {
     auto value = request[key].get!string;
@@ -138,8 +137,6 @@ string optionalString(Json request, string key, string fallback) {
   }
   return fallback;
 }
-
-
 
 string[] stringArray(Json request, string key) {
   string[] values;
@@ -175,14 +172,19 @@ Json optionalObject(Json request, string key) {
   return Json.emptyObject;
 }
 
-   string compositeKey(UUID a, UUID b) {
-    return compositeKey(a.toString(), b.toString());
-  }
+string compositeKey(UUID a, UUID b) {
+  return compositeKey(a.toString(), b.toString());
+}
 
-   string compositeKey(UUID a, string b) {
-    return compositeKey(a.toString(), b);
-  }
+string compositeKey(UUID a, string b) {
+  return compositeKey(a.toString(), b);
+}
 
-   string compositeKey(string a, string b) {
-    return a ~ ":" ~ b;
-  }
+string compositeKey(string a, string b) {
+  return a ~ ":" ~ b;
+}
+
+string lastSegment(string path) {
+  auto parts = path.split("/");
+  return parts.length == 0 ? "" : parts[$ - 1];
+}
