@@ -188,3 +188,7 @@ string lastSegment(string path) {
   auto parts = path.split("/");
   return parts.length == 0 ? "" : parts[$ - 1];
 }
+
+bool matchesBasePath(string path, string basePath) {
+  return path == basePath ? true : path.startsWith(basePath ~ "/");
+}

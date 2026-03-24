@@ -4,8 +4,22 @@ import uim.sap.service;
 
 mixin(ShowModule!());
 
-@safe:
+@safe
 
+/**
+  * SAPServer - Base class for all SAP service HTTP servers
+  * Provides common functionality like:
+  * - Base path handling
+  * - Authentication validation
+  * - Common platform endpoints (health, readiness)
+  * - Error handling
+  * Each service-specific server (e.g. SLMServer, HARServer) will extend this class and implement the service-specific routing logic.
+  * Routes:
+  *   GET  /health
+  *   GET  /ready  
+  *   (other routes are implemented in subclasses)
+
+  */
 class SAPServer {
   this() {
     initialize();

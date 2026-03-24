@@ -13,7 +13,7 @@ mixin(ShowModule!());
 
 class SDIServer : SAPServer {
   mixin(SAPServerTemplate!SDIServer);
-  
+
   private SDIService _service;
 
   this(SDIService service) {
@@ -22,16 +22,6 @@ class SDIServer : SAPServer {
 
   override void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {
     super.handleRequest(req, res);
-
-    if (subPath == "/health" && req.method == HTTPMethod.GET) {
-      res.writeJsonBody(_service.health(), 200);
-      return;
-    }
-    
-    if (subPath == "/ready" && req.method == HTTPMethod.GET) {
-      res.writeJsonBody(_service.ready(), 200);
-      return;
-    }
 
     try {
       validateAuth(req, _service.config);

@@ -7,7 +7,7 @@ mixin(ShowModule!());
 @safe:
 
 class UDMServer : SAPServer {
-mixin(SAPServerTemplate!UDMServer);
+  mixin(SAPServerTemplate!UDMServer);
 
   private UDMService _service;
 
@@ -16,9 +16,7 @@ mixin(SAPServerTemplate!UDMServer);
   }
 
   override void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {
-  super.handleRequest(req, res);
-
-
+    super.handleRequest(req, res);
 
     if (!matchesBasePath(path, basePath)) {
       respondError(res, "Not found", 404);
@@ -99,9 +97,5 @@ mixin(SAPServerTemplate!UDMServer);
     } catch (Exception e) {
       respondError(res, e.msg, 500);
     }
-  }
-
-  private bool matchesBasePath(string path, string basePath) {
-    return path == basePath ? true : path.startsWith(basePath ~ "/");
   }
 }

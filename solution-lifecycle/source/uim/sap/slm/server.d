@@ -25,18 +25,7 @@ class SLMServer {
   // Root dispatcher
   // -----------------------------------------------------------------------
   override void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {
-      super.handleRequest(req, res);
-
-
-
-    if (!path.startsWith(basePath)) {
-      respondError(res, "Not found", 404);
-      return;
-    }
-
-    auto subPath = path[basePath.length .. $];
-    if (subPath.length == 0)
-      subPath = "/";
+    super.handleRequest(req, res);
 
     // ── Dashboard ─────────────────────────────────────────────────────
     if (subPath == "/" && req.method == HTTPMethod.GET) {
