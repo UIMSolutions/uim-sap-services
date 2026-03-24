@@ -49,6 +49,7 @@ class DMAServer : SAPServer {
       res.writeJsonBody(_service.health(), 200);
       return;
     }
+    
     if (subPath == "/ready" && req.method == HTTPMethod.GET) {
       res.writeJsonBody(_service.ready(), 200);
       return;

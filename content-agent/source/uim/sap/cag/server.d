@@ -1,15 +1,14 @@
 module uim.sap.cag.server;
 
-
 import uim.sap.cag;
 
 mixin(ShowModule!());
 
 @safe:
 
-class CAGServer : SAPServer{
+class CAGServer : SAPServer {
   mixin(SAPServerTemplate!CAGServer);
-  
+
   private CAGService _service;
 
   this(CAGService service) {
@@ -18,7 +17,6 @@ class CAGServer : SAPServer{
 
   override void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {
     super.handleRequest(req, res);
-
 
     if (subPath == "/" && req.method == HTTPMethod.GET) {
       res.contentType = "text/html; charset=utf-8";
@@ -30,6 +28,7 @@ class CAGServer : SAPServer{
       res.writeJsonBody(_service.health(), 200);
       return;
     }
+    
     if (subPath == "/ready" && req.method == HTTPMethod.GET) {
       res.writeJsonBody(_service.ready(), 200);
       return;

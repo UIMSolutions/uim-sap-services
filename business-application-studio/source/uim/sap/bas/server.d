@@ -6,7 +6,6 @@ mixin(ShowModule!());
 
 @safe:
 
-
 class BASServer : SAPServer {
   mixin(SAPServerTemplate!BASServer);
 
@@ -18,7 +17,6 @@ class BASServer : SAPServer {
 
   override void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {
     super.handleRequest(req, res);
-
 
     if (subPath == "/health" && req.method == HTTPMethod.GET) {
       res.writeJsonBody(_service.health(), 200);

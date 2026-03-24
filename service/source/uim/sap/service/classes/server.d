@@ -46,8 +46,9 @@ class SAPServer {
     runApplication();
   }
 
-  string basePath;
-  string path;
+  protected string basePath;
+  protected string path;
+  protected string subPath;
 
   void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {
     foreach (key, value; _service.config.customHeaders)
@@ -60,7 +61,7 @@ class SAPServer {
       return;
     }
 
-    auto subPath = path[basePath.length .. $];
+    subPath = path[basePath.length .. $];
     if (subPath.length == 0)
       subPath = "/";
   }

@@ -37,7 +37,7 @@ mixin(ShowModule!());
  * - private void validateAuth(HTTPServerRequest req): Validates the authentication token in the request headers if required by the configuration.
  * - private string[] normalizedSegments(string subPath): Normalizes the URL path segments for easier routing.
  * - private void respondError(HTTPServerResponse res, string message, int statusCode): Sends an error response with a Json data containing the error message and status code.
- */ 
+ */
 class CMGServer : SAPServer {
   mixin(SAPServerTemplate!CMGServer);
 
@@ -50,11 +50,11 @@ class CMGServer : SAPServer {
   override void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {
     super.handleRequest(req, res);
 
-
     if (subPath == "/health" && req.method == HTTPMethod.GET) {
       res.writeJsonBody(_service.health(), 200);
       return;
     }
+    
     if (subPath == "/ready" && req.method == HTTPMethod.GET) {
       res.writeJsonBody(_service.ready(), 200);
       return;
