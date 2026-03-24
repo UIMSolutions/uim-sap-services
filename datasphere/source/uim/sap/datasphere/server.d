@@ -36,14 +36,6 @@ class DSPServer : SAPServer {
   override void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {
     super.handleRequest(req, res);
 
-    if (!path.startsWith(basePath)) {
-      respondError(res, "Not found", 404);
-      return;
-    }
-
-    auto subPath = path[basePath.length .. $];
-    if (subPath.length == 0)
-      subPath = "/";
 
     if (subPath == "/health" && req.method == HTTPMethod.GET) {
       res.writeJsonBody(_service.health(), 200);

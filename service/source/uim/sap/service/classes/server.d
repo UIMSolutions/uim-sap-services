@@ -55,6 +55,14 @@ class SAPServer {
 
     basePath = _service.config.basePath;
     path = req.path;
+    if (!path.startsWith(basePath)) {
+      respondError(res, "Not found", 404);
+      return;
+    }
+
+    auto subPath = path[basePath.length .. $];
+    if (subPath.length == 0)
+      subPath = "/";
   }
 
   Json toJson() {
