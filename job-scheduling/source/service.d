@@ -243,28 +243,28 @@ HTML";
     Json data = Json.emptyObject;
 
     if (_config.cloudAlmEndpoint.length == 0) {
-      data["success"] = false;
-      data["connected"] = false;
-      data["message"] = "JOBS_CLOUD_ALM_ENDPOINT is not configured";
-      return data;
+      return data
+        .set("success", false)
+        .set("connected", false)
+        .set("message", "JOBS_CLOUD_ALM_ENDPOINT is not configured");
     }
 
-    Json payload = Json.emptyObject;
-    payload["tenant_id"] = optionalString(request, "tenant_id", "connector-test");
-    payload["run_id"] = optionalString(request, "run_id", "run-test");
-    payload["job_id"] = optionalString(request, "job_id", "job-test");
-    payload["status"] = optionalString(request, "status", "succeeded");
-    payload["runtime"] = optionalString(request, "runtime", "cloud-foundry");
-    payload["started_at"] = Clock.currTime().toISOExtString();
-    payload["finished_at"] = Clock.currTime().toISOExtString();
+    Json payload = Json.emptyObject
+      .set("tenant_id", optionalString(request, "tenant_id", "connector-test"))
+      .set("run_id", optionalString(request, "run_id", "run-test"))
+      .set("job_id", optionalString(request, "job_id", "job-test"))
+      .set("status", optionalString(request, "status", "succeeded"))
+      .set("runtime", optionalString(request, "runtime", "cloud-foundry"))
+      .set("started_at", Clock.currTime().toISOExtString())
+      .set("finished_at", Clock.currTime().toISOExtString());
 
     sendCloudAlmTelemetry(payload, true);
 
-    data["success"] = true;
-    data["connected"] = true;
-    data["endpoint"] = _config.cloudAlmEndpoint;
-    data["payload"] = payload;
-    return data;
+    return data
+      .set("success", true)
+      .set("connected", true)
+      .set("endpoint", _config.cloudAlmEndpoint)
+      .set("payload", payload);
   }
 
   Json createJob(UUID tenantId, Json request) {
@@ -299,14 +299,11 @@ HTML";
 
   Json listJobs(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
-    Json resources = Json.emptyArray;
-    foreach (item; _store.listJobs(tenantId))
-      resources ~= item.toJson();
+    Json resources = _store.listJobs(tenantId).map!(job => job.toJson()).array;
 
-    Json data = Json.emptyObject;
-    data["resources"] = resources;
-    data["total_results"] = cast(long)resources.length;
-    return data;
+    return Json.emptyObject
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json getJob(UUID tenantId, string jobId) {
@@ -318,9 +315,8 @@ HTML";
       throw new JobSchedulingNotFoundException("Job", jobId);
     }
 
-    Json data = Json.emptyObject;
-    data["job"] = item.toJson();
-    return data;
+    return Json.emptyObject
+      .set("job", item.toJson());
   }
 
   Json updateJob(UUID tenantId, string jobId, Json request) {

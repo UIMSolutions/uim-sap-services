@@ -99,10 +99,9 @@ class KSTService : SAPService {
     foreach (ref ks; keystores)
       resources.appendArrayElement(ks.toJson());
 
-    Json payload = Json.emptyObject;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)keystores.length;
-    return payload;
+    return Json.emptyObject
+      .set("resources", resources)
+      .set("total_results", cast(long)keystores.length);
   }
 
   Json deleteKeystore(string name) {
@@ -110,11 +109,10 @@ class KSTService : SAPService {
       throw new KSTNotFoundException("Keystore", name);
     }
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["message"] = "Keystore deleted";
-    payload["name"] = name;
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("message", "Keystore deleted")
+      .set("name", name);
   }
 
   // ── Key Entry operations ──
@@ -135,10 +133,9 @@ class KSTService : SAPService {
       throw new KSTNotFoundException("Keystore", keystoreName);
     }
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["key"] = entry.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("key", entry.toJson());
   }
 
   Json getKeyEntry(string keystoreName, string alias_, string requestKey) {
@@ -158,9 +155,8 @@ class KSTService : SAPService {
       }
     }
 
-    Json payload = entry.toJson();
-    payload["key_material"] = plaintext;
-    return payload;
+    return entry.toJson()
+      .set("key_material", plaintext);
   }
 
   Json listKeyEntries(string keystoreName) {
@@ -170,10 +166,9 @@ class KSTService : SAPService {
     foreach (ref e; entries)
       resources.appendArrayElement(e.toJson());
 
-    Json payload = Json.emptyObject;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)entries.length;
-    return payload;
+    return Json.emptyObject
+      .set("resources", resources)
+      .set("total_results", cast(long)entries.length);
   }
 
   Json deleteKeyEntry(string keystoreName, string alias_) {
@@ -206,10 +201,9 @@ class KSTService : SAPService {
       throw new KSTNotFoundException("Keystore", keystoreName);
     }
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["certificate"] = cert.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("certificate", cert.toJson());
   }
 
   Json getCertificate(string keystoreName, string alias_, bool includeContent) {
@@ -219,9 +213,8 @@ class KSTService : SAPService {
       throw new KSTNotFoundException("Certificate", alias_);
     }
 
-    Json payload = Json.emptyObject;
-    payload["certificate"] = includeContent ? cert.toJsonWithContent() : cert.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("certificate", includeContent ? cert.toJsonWithContent() : cert.toJson());
   }
 
   Json listCertificates(string keystoreName) {
@@ -231,10 +224,9 @@ class KSTService : SAPService {
     foreach (ref c; certs)
       resources.appendArrayElement(c.toJson());
 
-    Json payload = Json.emptyObject;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)certs.length;
-    return payload;
+    return Json.emptyObject
+      .set("resources", resources)
+      .set("total_results", cast(long)certs.length);
   }
 
   Json deleteCertificate(string keystoreName, string alias_) {
@@ -346,12 +338,11 @@ class KSTService : SAPService {
     auto plaintext = request["plaintext"].get!string;
     auto ciphertext = encryptData(plaintext, keyMaterial);
 
-    Json payload = Json.emptyObject;
-    payload["keystore"] = keystoreName;
-    payload["key_alias"] = alias_;
-    payload["ciphertext"] = ciphertext;
-    payload["algorithm"] = cast(string)entry.algorithm;
-    return payload;
+    return Json.emptyObject
+      .set("keystore", keystoreName)
+      .set("key_alias", alias_)
+      .set("ciphertext", ciphertext)
+      .set("algorithm", cast(string)entry.algorithm);
   }
 
   Json decrypt(string keystoreName, string alias_, Json request, string requestKey) {
@@ -380,11 +371,10 @@ class KSTService : SAPService {
       throw new KSTCryptoException("Unable to decrypt data");
     }
 
-    Json payload = Json.emptyObject;
-    payload["keystore"] = keystoreName;
-    payload["key_alias"] = alias_;
-    payload["plaintext"] = plaintext;
-    return payload;
+    return Json.emptyObject
+      .set("keystore", keystoreName)
+      .set("key_alias", alias_)
+      .set("plaintext", plaintext);
   }
 
   // ── Client certificate authentication ──
@@ -419,10 +409,9 @@ class KSTService : SAPService {
         break;
       }
     }
-
-    Json payload = Json.emptyObject;
-    payload["authenticated"] = found;
-    payload["fingerprint"] = fingerprint;
+    Json payload = Json.emptyObject
+      .set("authenticated", found)
+      .set("fingerprint", fingerprint);
     if (found) {
       payload["matched_alias"] = matchedAlias;
     }
@@ -441,12 +430,12 @@ class KSTService : SAPService {
     if (requestKey.length > 0) {
       return requestKey;
 
-    if ("encryption_key" in request && request["encryption_key"].isString) {
-      auto rk = request["encryption_key"].get!string;
-      if (rk.length > 0)
-        return rk;
-    }
+      if ("encryption_key" in request && request["encryption_key"].isString) {
+        auto rk = request["encryption_key"].get!string;
+        if (rk.length > 0)
+          return rk;
+      }
 
-    return _config.masterKey;
+      return _config.masterKey;
+    }
   }
-}

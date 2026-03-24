@@ -26,28 +26,27 @@ struct MDGBusinessPartner {
   SysTime updatedAt;
 
   override Json toJson()  {
-    Json info = super.toJson;
-    payload["tenant_id"] = tenantId;
-    payload["bp_id"] = bpId;
-    payload["external_id"] = externalId;
-    payload["name"] = name;
-    payload["country"] = country;
-    payload["email"] = email;
-    payload["phone"] = phone;
-    payload["contact_persons"] = contactPersons;
-    payload["relationships"] = relationships;
-    payload["attributes"] = attributes;
-    payload["workflow_state"] = workflowState;
-    payload["approver"] = approver;
-    payload["source_system"] = sourceSystem;
-    payload["created_at"] = createdAt.toISOExtString();
-    payload["updated_at"] = updatedAt.toISOExtString();
-    return payload;
+    return super.toJson
+    .set("tenant_id", tenantId)
+    .set("bp_id", bpId)
+    .set("external_id", externalId)
+    .set("name", name)
+    .set("country", country)
+    .set("email", email)
+    .set("phone", phone)
+    .set("contact_persons", contactPersons)
+    .set("relationships", relationships)
+    .set("attributes", attributes)
+    .set("workflow_state", workflowState)
+    .set("approver", approver)
+    .set("source_system", sourceSystem)
+    .set("created_at", createdAt.toISOExtString())
+    .set("updated_at", updatedAt.toISOExtString());
   }
 }
 
 MDGBusinessPartner businessPartnerFromJson(UUID tenantId, Json request, string defaultApprover) {
-  MDGBusinessPartner bp;
+  MDGBusinessPartner bp = new MDGBusinessPartner(request);
   bp.tenantId = tenantId;
   bp.bpId = randomUUID().toString();
   bp.createdAt = Clock.currTime();

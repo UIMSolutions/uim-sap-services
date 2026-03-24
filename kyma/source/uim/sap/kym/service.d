@@ -67,10 +67,9 @@ class KYMService : SAPService {
     auto ns = namespaceFromJson(name, request);
     auto saved = _store.upsertNamespace(ns);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["namespace"] = saved.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("namespace", saved.toJson());
   }
 
   Json updateNamespace(string name, Json request) {
@@ -79,10 +78,9 @@ class KYMService : SAPService {
     ns.updatedAt = Clock.currTime();
     auto saved = _store.upsertNamespace(ns);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["namespace"] = saved.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("namespace", saved.toJson());
   }
 
   Json getNamespace(string name) {
@@ -90,12 +88,12 @@ class KYMService : SAPService {
     if (ns.name.length == 0)
       throw new KYMNotFoundException("Namespace", name);
 
-    Json payload = Json.emptyObject;
-    payload["namespace"] = ns.toJson();
-    payload["function_count"] = cast(long)_store.functionCount(name);
-    payload["microservice_count"] = cast(long)_store.microserviceCount(name);
-    payload["subscription_count"] = cast(long)_store.subscriptionCount(name);
-    return payload;
+    return Json.emptyObject
+      .set("namespace", ns.toJson())
+      .set("function_count", cast(long)_store.functionCount(name))
+      .set("microservice_count", cast(long)_store.microserviceCount(name))
+      .set("subscription_count", cast(long)_store.subscriptionCount(name));
+
   }
 
   Json listNamespaces() {
@@ -113,11 +111,10 @@ class KYMService : SAPService {
     if (!_store.deleteNamespace(name))
       throw new KYMNotFoundException("Namespace", name);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["message"] = "Namespace and all contained resources deleted";
-    payload["name"] = name;
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("message", "Namespace and all contained resources deleted")
+      .set("name", name);
   }
 
   // ══════════════════════════════════════
@@ -143,10 +140,9 @@ class KYMService : SAPService {
     fn.status = KYMResourceStatus.RUNNING;
     _store.upsertFunction(fn);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["function"] = fn.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("function", fn.toJson());
   }
 
   Json updateFunction(string namespace, string name, Json request) {
@@ -162,10 +158,9 @@ class KYMService : SAPService {
     fn.updatedAt = Clock.currTime();
     _store.upsertFunction(fn);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["function"] = fn.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("function", fn.toJson());
   }
 
   Json getFunction(string namespace, string name) {
@@ -174,9 +169,8 @@ class KYMService : SAPService {
     if (fn.name.length == 0)
       throw new KYMNotFoundException("Function", name);
 
-    Json payload = Json.emptyObject;
-    payload["function"] = fn.toJsonWithSource();
-    return payload;
+    return Json.emptyObject
+      .set("function", fn.toJsonWithSource());
   }
 
   Json listFunctions(string namespace) {
@@ -186,10 +180,9 @@ class KYMService : SAPService {
     foreach (ref fn; fns)
       resources.appendArrayElement(fn.toJson());
 
-    Json payload = Json.emptyObject;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)fns.length;
-    return payload;
+    return Json.emptyObject
+      .set("resources", resources)
+      .set("total_results", cast(long)fns.length);
   }
 
   Json deleteFunction(string namespace, string name) {
@@ -197,12 +190,11 @@ class KYMService : SAPService {
     if (!_store.deleteFunction(namespace, name))
       throw new KYMNotFoundException("Function", name);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["message"] = "Function deleted";
-    payload["namespace"] = namespace;
-    payload["name"] = name;
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("message", "Function deleted")
+      .set("namespace", namespace)
+      .set("name", name);
   }
 
   Json invokeFunction(string namespace, string name, Json request) {
@@ -215,14 +207,13 @@ class KYMService : SAPService {
 
     _store.incrementFunctionInvocations(namespace, name);
 
-    Json payload = Json.emptyObject;
-    payload["function"] = name;
-    payload["namespace"] = namespace;
-    payload["status"] = "invoked";
-    payload["runtime"] = cast(string)fn.runtime;
-    payload["input"] = request;
-    payload["result"] = Json.emptyObject;
-    return payload;
+    return Json.emptyObject
+      .set("function", name)
+      .set("namespace", namespace)
+      .set("status", "invoked")
+      .set("runtime", cast(string)fn.runtime)
+      .set("input", request)
+      .set("result", Json.emptyObject);
   }
 
   // ══════════════════════════════════════
@@ -248,10 +239,9 @@ class KYMService : SAPService {
     ms.status = KYMResourceStatus.RUNNING;
     _store.upsertMicroservice(ms);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["microservice"] = ms.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("microservice", ms.toJson());
   }
 
   Json updateMicroservice(string namespace, string name, Json request) {
@@ -266,10 +256,9 @@ class KYMService : SAPService {
     ms.updatedAt = Clock.currTime();
     _store.upsertMicroservice(ms);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["microservice"] = ms.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("microservice", ms.toJson());
   }
 
   Json getMicroservice(string namespace, string name) {
@@ -278,9 +267,8 @@ class KYMService : SAPService {
     if (ms.name.length == 0)
       throw new KYMNotFoundException("Microservice", name);
 
-    Json payload = Json.emptyObject;
-    payload["microservice"] = ms.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("microservice", ms.toJson());
   }
 
   Json listMicroservices(string namespace) {
@@ -290,10 +278,9 @@ class KYMService : SAPService {
     foreach (ref ms; mss)
       resources.appendArrayElement(ms.toJson());
 
-    Json payload = Json.emptyObject;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)mss.length;
-    return payload;
+    return Json.emptyObject
+      .set("resources", resources)
+      .set("total_results", cast(long)mss.length);
   }
 
   Json deleteMicroservice(string namespace, string name) {
@@ -327,10 +314,9 @@ class KYMService : SAPService {
     ms.updatedAt = Clock.currTime();
     _store.upsertMicroservice(ms);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["microservice"] = ms.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("microservice", ms.toJson());
   }
 
   // ══════════════════════════════════════
@@ -353,11 +339,10 @@ class KYMService : SAPService {
       delivered++;
     }
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["event"] = ev.toJson();
-    payload["subscriptions_matched"] = delivered;
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("event", ev.toJson())
+      .set("subscriptions_matched", delivered);
   }
 
   // ══════════════════════════════════════
@@ -378,10 +363,9 @@ class KYMService : SAPService {
     auto sub = subscriptionFromJson(namespace, request);
     _store.upsertSubscription(sub);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["subscription"] = sub.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("subscription", sub.toJson());
   }
 
   Json getSubscription(string namespace, string id) {
@@ -390,22 +374,17 @@ class KYMService : SAPService {
     if (sub.id.length == 0)
       throw new KYMNotFoundException("Subscription", id);
 
-    Json payload = Json.emptyObject;
-    payload["subscription"] = sub.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("subscription", sub.toJson());
   }
 
   Json listSubscriptions(string namespace) {
     requireNamespace(namespace);
-    auto subs = _store.listSubscriptions(namespace);
-    Json resources = Json.emptyArray;
-    foreach (ref sub; subs)
-      resources.appendArrayElement(sub.toJson());
+    auto resources = _store.listSubscriptions(namespace).map!(sub => resources.appendArrayElement(sub.toJson())).array;
 
-    Json payload = Json.emptyObject;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)subs.length;
-    return payload;
+    return Json.emptyObject
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json deleteSubscription(string namespace, string id) {
@@ -413,12 +392,11 @@ class KYMService : SAPService {
     if (!_store.deleteSubscription(namespace, id))
       throw new KYMNotFoundException("Subscription", id);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["message"] = "Subscription deleted";
-    payload["namespace"] = namespace;
-    payload["id"] = id;
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("message", "Subscription deleted")
+      .set("namespace", namespace)
+      .set("id", id);
   }
 
   // ══════════════════════════════════════
@@ -437,10 +415,9 @@ class KYMService : SAPService {
     auto rule = apiRuleFromJson(namespace, name, request);
     _store.upsertApiRule(rule);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["api_rule"] = rule.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("api_rule", rule.toJson());
   }
 
   Json updateApiRule(string namespace, string name, Json request) {
@@ -454,10 +431,9 @@ class KYMService : SAPService {
     rule.updatedAt = Clock.currTime();
     _store.upsertApiRule(rule);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["api_rule"] = rule.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("api_rule", rule.toJson());
   }
 
   Json getApiRule(string namespace, string name) {
@@ -466,9 +442,8 @@ class KYMService : SAPService {
     if (rule.name.length == 0)
       throw new KYMNotFoundException("API Rule", name);
 
-    Json payload = Json.emptyObject;
-    payload["api_rule"] = rule.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("api_rule", rule.toJson());
   }
 
   Json listApiRules(string namespace) {
@@ -478,10 +453,9 @@ class KYMService : SAPService {
     foreach (ref rule; rules)
       resources.appendArrayElement(rule.toJson());
 
-    Json payload = Json.emptyObject;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)rules.length;
-    return payload;
+    return Json.emptyObject
+      .set("resources", resources)
+      .set("total_results", cast(long)rules.length);
   }
 
   Json deleteApiRule(string namespace, string name) {
@@ -489,12 +463,11 @@ class KYMService : SAPService {
     if (!_store.deleteApiRule(namespace, name))
       throw new KYMNotFoundException("API Rule", name);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["message"] = "API Rule deleted";
-    payload["namespace"] = namespace;
-    payload["name"] = name;
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("message", "API Rule deleted")
+      .set("namespace", namespace)
+      .set("name", name);
   }
 
   // ══════════════════════════════════════
@@ -515,10 +488,9 @@ class KYMService : SAPService {
     auto sb = serviceBindingFromJson(namespace, name, request);
     _store.upsertServiceBinding(sb);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["service_binding"] = sb.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("service_binding", sb.toJson());
   }
 
   Json getServiceBinding(string namespace, string name) {
@@ -527,9 +499,8 @@ class KYMService : SAPService {
     if (sb.name.length == 0)
       throw new KYMNotFoundException("Service Binding", name);
 
-    Json payload = Json.emptyObject;
-    payload["service_binding"] = sb.toJsonWithCredentials();
-    return payload;
+    return Json.emptyObject
+      .set("service_binding", sb.toJsonWithCredentials());
   }
 
   Json listServiceBindings(string namespace) {
@@ -539,10 +510,9 @@ class KYMService : SAPService {
     foreach (ref sb; sbs)
       resources.appendArrayElement(sb.toJson());
 
-    Json payload = Json.emptyObject;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)sbs.length;
-    return payload;
+    return Json.emptyObject
+      .set("resources", resources)
+      .set("total_results", cast(long)sbs.length);
   }
 
   Json deleteServiceBinding(string namespace, string name) {
@@ -550,12 +520,11 @@ class KYMService : SAPService {
     if (!_store.deleteServiceBinding(namespace, name))
       throw new KYMNotFoundException("Service Binding", name);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["message"] = "Service Binding deleted";
-    payload["namespace"] = namespace;
-    payload["name"] = name;
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("message", "Service Binding deleted")
+      .set("namespace", namespace)
+      .set("name", name);
   }
 
   // ── Private helpers ──

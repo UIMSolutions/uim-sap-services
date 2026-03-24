@@ -138,18 +138,13 @@ class MDGService : SAPService {
     validateId(tenantId, "Tenant ID");
 
     auto bps = _store.listBusinessPartners(tenantId);
-    auto candidates = detectDuplicateCandidates(tenantId, bps);
 
-    Json resources = Json.emptyArray;
-    foreach (candidate; candidates) {
-      resources ~= candidate.toJson();
-    }
-
-    Json payload = Json.emptyObject;
-    payload["tenant_id"] = tenantId;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)resources.length;
-    return payload;
+    auto candidates = detectDuplicateCandidates(tenantId, bps).map!(c => c.toJson).array;
+    
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("resources", candidates)
+      .set("total_results", cast(long)candidates.length);
   }
 
   Json mergeDuplicates(UUID tenantId, Json request) {
@@ -186,11 +181,10 @@ class MDGService : SAPService {
     auto saved = _store.upsertBusinessPartner(primary);
     _store.deleteBusinessPartner(tenantId, duplicateId);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["best_record"] = saved.toJson();
-    payload["merged_duplicate_bp_id"] = duplicateId;
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("best_record", saved.toJson())
+      .set("merged_duplicate_bp_id", duplicateId);
   }
 
   Json upsertRule(UUID tenantId, string ruleId, Json request) {
@@ -201,11 +195,10 @@ class MDGService : SAPService {
     validateRule(rule);
     auto saved = _store.upsertRule(rule);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["rule"] = saved.toJson();
-    payload["collaborative_management"] = true;
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("rule", saved.toJson())
+      .set("collaborative_management", true);
   }
 
   Json listRules(UUID tenantId) {
@@ -215,11 +208,10 @@ class MDGService : SAPService {
       resources ~= rule.toJson();
     }
 
-    Json payload = Json.emptyObject;
-    payload["tenant_id"] = tenantId;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)resources.length;
-    return payload;
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json evaluateDataQuality(UUID tenantId) {
@@ -252,14 +244,13 @@ class MDGService : SAPService {
     long passed = evaluated - failed;
     double score = evaluated > 0 ? (cast(double)passed / cast(double)evaluated) * 100.0 : 100.0;
 
-    Json payload = Json.emptyObject;
-    payload["tenant_id"] = tenantId;
-    payload["evaluated_checks"] = evaluated;
-    payload["passed_checks"] = passed;
-    payload["failed_checks"] = failed;
-    payload["quality_score"] = score;
-    payload["violations"] = violations;
-    return payload;
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("evaluated_checks", evaluated)
+      .set("passed_checks", passed)
+      .set("failed_checks", failed)
+      .set("quality_score", score)
+      .set("violations", violations);
   }
 
   private bool passesRule(MDGBusinessPartner bp, MDGQualityRule rule) {

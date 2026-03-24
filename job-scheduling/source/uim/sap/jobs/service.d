@@ -208,28 +208,27 @@ HTML";
       return data;
     }
 
-    Json payload = Json.emptyObject;
-    payload["tenant_id"] = optionalString(request, "tenant_id", "connector-test");
-    payload["alert_id"] = _store.nextId("alert-test");
-    payload["event_type"] = "CONNECTOR_TEST";
-    payload["job_id"] = optionalString(request, "job_id", "job-test");
-    payload["run_id"] = optionalString(request, "run_id", "run-test");
-    payload["status"] = "succeeded";
-    payload["severity"] = "info";
-    payload["message"] = optionalString(request, "message", "Alert connector test");
-    payload["created_at"] = Clock.currTime().toISOExtString();
+    Json payload = Json.emptyObject
+      .set("tenant_id", optionalString(request, "tenant_id", "connector-test"))
+      .set("alert_id", _store.nextId("alert-test"))
+      .set("event_type", "CONNECTOR_TEST")
+      .set("job_id", optionalString(request, "job_id", "job-test"))
+      .set("run_id", optionalString(request, "run_id", "run-test"))
+      .set("status", "succeeded")
+      .set("severity", "info")
+      .set("message", optionalString(request, "message", "Alert connector test"))
+      .set("created_at", Clock.currTime().toISOExtString());
 
     sendAlertNotification(payload, true);
 
-    data["success"] = true;
-    data["connected"] = true;
-    data["endpoint"] = _config.alertEndpoint;
-    data["payload"] = payload;
-    return data;
+    return data
+      .set("success", true)
+      .set("connected", true)
+      .set("endpoint", _config.alertEndpoint)
+      .set("payload", payload);
   }
 
   Json testCloudAlmConnector(Json request) {
-
 
     Json payload = Json.emptyObject
       .set("tenant_id", optionalString(request, "tenant_id", "connector-test"))
@@ -542,8 +541,8 @@ HTML";
       resources ~= item.toJson();
 
     return Json.emptyObject
-    .set("resources", resources)
-    .set("total_results", cast(long)resources.length);
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json listRuns(UUID tenantId) {
@@ -773,13 +772,13 @@ HTML";
 
   private void pushCloudAlm(RunLog run) {
     Json payload = Json.emptyObject
-    .set("tenant_id", run.tenantId)
-    .set("run_id", run.runId)
-    .set("job_id", run.jobId)
-    .set("status", run.status)
-    .set("runtime", run.runtime)
-    .set("started_at", run.startedAt.toISOExtString())
-    .set("finished_at", run.finishedAt.toISOExtString());
+      .set("tenant_id", run.tenantId)
+      .set("run_id", run.runId)
+      .set("job_id", run.jobId)
+      .set("status", run.status)
+      .set("runtime", run.runtime)
+      .set("started_at", run.startedAt.toISOExtString())
+      .set("finished_at", run.finishedAt.toISOExtString());
 
     sendCloudAlmTelemetry(payload, false);
   }
