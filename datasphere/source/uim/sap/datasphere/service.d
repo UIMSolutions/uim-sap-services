@@ -94,14 +94,13 @@ class DSPService : SAPService {
         "source_type must be csv, marketplace, or third_party");
     }
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["tenant_id"] = tenantId;
-    payload["dataset_id"] = optionalString(request, "dataset_id", _store.nextId("dataset"));
-    payload["source_type"] = sourceType;
-    payload["status"] = "enriched";
-    payload["note"] = "Dataset available for modeling and transformation.";
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("tenant_id", tenantId)
+      .set("dataset_id", optionalString(request, "dataset_id", _store.nextId("dataset")))
+      .set("source_type", sourceType)
+      .set("status", "enriched")
+      .set("note", "Dataset available for modeling and transformation.");
   }
 
   Json runDataFlow(UUID tenantId, Json request) {
@@ -130,11 +129,10 @@ class DSPService : SAPService {
     model.updatedAt = Clock.currTime();
     auto saved = _store.upsertDataModel(model);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["model"] = saved.toJson();
-    payload["replication_status"] = "completed";
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("model", saved.toJson())
+      .set("replication_status", "completed");
   }
 
   Json createBusinessModel(UUID tenantId, Json request) {
@@ -153,10 +151,9 @@ class DSPService : SAPService {
 
     auto saved = _store.upsertBusinessModel(item);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["model"] = saved.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("model", saved.toJson());
   }
 
   Json listBusinessModels(UUID tenantId) {
@@ -165,10 +162,9 @@ class DSPService : SAPService {
     foreach (item; _store.listBusinessModels(tenantId))
       resources ~= item.toJson();
 
-    Json payload = Json.emptyObject;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)resources.length;
-    return payload;
+    return Json.emptyObject
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json previewBusinessModel(UUID tenantId, string modelId) {
@@ -195,11 +191,10 @@ class DSPService : SAPService {
     sample ~= rowA;
     sample ~= rowB;
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["model_id"] = modelId;
-    payload["preview"] = sample;
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("model_id", modelId)
+      .set("preview", sample);
   }
 
   Json createConnection(UUID tenantId, Json request) {
@@ -234,23 +229,21 @@ class DSPService : SAPService {
     foreach (item; _store.listConnections(tenantId))
       resources ~= item.toJson();
 
-    Json payload = Json.emptyObject;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)resources.length;
-    return payload;
+    return Json.emptyObject
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json migrateTrustedModels(UUID tenantId, Json request) {
     validateTenant(tenantId);
     auto sourceSystem = requiredString(request, "source_system");
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["tenant_id"] = tenantId;
-    payload["source_system"] = sourceSystem;
-    payload["migration_job_id"] = _store.nextId("migration");
-    payload["status"] = "completed";
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("tenant_id", tenantId)
+      .set("source_system", sourceSystem)
+      .set("migration_job_id", _store.nextId("migration"))
+      .set("status", "completed");
   }
 
   Json createSpace(UUID tenantId, Json request) {
@@ -269,10 +262,9 @@ class DSPService : SAPService {
 
     auto saved = _store.upsertSpace(item);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["space"] = saved.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("space", saved.toJson());
   }
 
   Json listSpaces(UUID tenantId) {
@@ -281,10 +273,9 @@ class DSPService : SAPService {
     foreach (item; _store.listSpaces(tenantId))
       resources ~= item.toJson();
 
-    Json payload = Json.emptyObject;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)resources.length;
-    return payload;
+    return Json.emptyObject
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json updateSpace(UUID tenantId, string spaceId, Json request) {
@@ -308,10 +299,9 @@ class DSPService : SAPService {
 
     auto saved = _store.upsertSpace(item);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["space"] = saved.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("space", saved.toJson());
   }
 
   Json addSpaceUser(UUID tenantId, string spaceId, Json request) {
@@ -330,10 +320,9 @@ class DSPService : SAPService {
     item.updatedAt = Clock.currTime();
     auto saved = _store.upsertSpace(item);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["space"] = saved.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("space", saved.toJson());
   }
 
   Json upsertTenantAdminState(Json request) {
@@ -351,23 +340,21 @@ class DSPService : SAPService {
 
     auto saved = _store.upsertTenantState(state);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["tenant"] = saved.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("tenant", saved.toJson());
   }
 
   Json getTenantAdminState() {
-    Json payload = Json.emptyObject;
     Json monitoring = Json.emptyArray;
     monitoring ~= "spaces";
     monitoring ~= "connections";
     monitoring ~= "audit";
     monitoring ~= "data_flows";
 
-    payload["tenant"] = _store.getTenantState().toJson();
-    payload["monitoring"] = monitoring;
-    return payload;
+    return Json.emptyObject
+      .set("tenant", _store.getTenantState().toJson())
+      .set("monitoring", monitoring);
   }
 
   Json upsertRowPolicy(UUID tenantId, string policyId, Json request) {
@@ -383,10 +370,9 @@ class DSPService : SAPService {
 
     auto saved = _store.upsertRowPolicy(item);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["policy"] = saved.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("policy", saved.toJson());
   }
 
   Json listRowPolicies(UUID tenantId) {
@@ -395,34 +381,32 @@ class DSPService : SAPService {
     foreach (item; _store.listRowPolicies(tenantId))
       resources ~= item.toJson();
 
-    Json payload = Json.emptyObject;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)resources.length;
-    return payload;
+    return Json.emptyObject
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json setFunctionalAccess(UUID tenantId, string roleName, Json request) {
     validateTenant(tenantId);
     validateId(roleName, "Role name");
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["tenant_id"] = tenantId;
-    payload["role"] = roleName;
-    payload["functional_permissions"] = request;
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("tenant_id", tenantId)
+      .set("role", roleName)
+      .set("functional_permissions", request);
+
   }
 
   Json setSpaceAccess(UUID tenantId, string spaceId, Json request) {
     validateTenant(tenantId);
     validateId(spaceId, "Space ID");
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["tenant_id"] = tenantId;
-    payload["space_id"] = spaceId;
-    payload["space_permissions"] = request;
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("tenant_id", tenantId)
+      .set("space_id", spaceId)
+      .set("space_permissions", request);
   }
 
   Json addAuditEvent(UUID tenantId, Json request) {
@@ -439,10 +423,9 @@ class DSPService : SAPService {
 
     auto saved = _store.addAuditEvent(item);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["event"] = saved.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("event", saved.toJson());
   }
 
   Json listAuditEvents(UUID tenantId) {
@@ -451,10 +434,11 @@ class DSPService : SAPService {
     foreach (item; _store.listAuditEvents(tenantId))
       resources ~= item.toJson();
 
-    Json payload = Json.emptyObject;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)resources.length;
-    return payload;
+    return Json.emptyObject
+      .set("resources", resources)
+       .set("tenant_id", tenantId)
+       .set("monitoring", ["audit"])
+       .set("total_results", cast(long)resources.length);
   }
 
   Json publishCatalogAsset(UUID tenantId, Json request) {
@@ -471,10 +455,9 @@ class DSPService : SAPService {
 
     auto saved = _store.upsertAsset(item);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["asset"] = saved.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("asset", saved.toJson());
   }
 
   Json listCatalogAssets(UUID tenantId) {
@@ -483,10 +466,9 @@ class DSPService : SAPService {
     foreach (item; _store.listAssets(tenantId))
       resources ~= item.toJson();
 
-    Json payload = Json.emptyObject;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)resources.length;
-    return payload;
+    return Json.emptyObject
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json createGlossaryTerm(UUID tenantId, Json request) {
@@ -501,10 +483,9 @@ class DSPService : SAPService {
 
     auto saved = _store.upsertTerm(item);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["term"] = saved.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("term", saved.toJson());
   }
 
   Json listGlossaryTerms(UUID tenantId) {
@@ -513,10 +494,9 @@ class DSPService : SAPService {
     foreach (item; _store.listTerms(tenantId))
       resources ~= item.toJson();
 
-    Json payload = Json.emptyObject;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)resources.length;
-    return payload;
+    return Json.emptyObject
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json createKPI(UUID tenantId, Json request) {
@@ -532,10 +512,9 @@ class DSPService : SAPService {
 
     auto saved = _store.upsertKPI(item);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["kpi"] = saved.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("kpi", saved.toJson());
   }
 
   Json listKPIs(UUID tenantId) {
@@ -544,10 +523,9 @@ class DSPService : SAPService {
     foreach (item; _store.listKPIs(tenantId))
       resources ~= item.toJson();
 
-    Json payload = Json.emptyObject;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)resources.length;
-    return payload;
+    return Json.emptyObject
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json listConsumptionConnectors(UUID tenantId) {
@@ -555,39 +533,35 @@ class DSPService : SAPService {
 
     Json connectors = Json.emptyArray;
 
-    Json sac = Json.emptyObject;
-    sac["name"] = "Analytics Cloud";
-    sac["type"] = "analytics";
-    sac["status"] = "available";
-    connectors ~= sac;
+    connectors ~= Json.emptyObject
+    .set("name", "Analytics Cloud")
+    .set("type", "analytics")
+    .set("status", "available");
 
-    Json excel = Json.emptyObject;
-    excel["name"] = "Microsoft Excel";
-    excel["type"] = "spreadsheet";
-    excel["status"] = "available";
-    connectors ~= excel;
+    connectors ~= Json.emptyObject
+    .set("name", "Microsoft Excel")
+    .set("type", "spreadsheet")
+    .set("status", "available");
 
-    Json odata = Json.emptyObject;
-    odata["name"] = "Public OData API";
-    odata["type"] = "odata";
-    odata["status"] = "available";
-    connectors ~= odata;
+    connectors ~= Json.emptyObject
+    .set("name", "Public OData API")
+    .set("type", "odata")
+    .set("status", "available");
 
-    Json payload = Json.emptyObject;
-    payload["tenant_id"] = tenantId;
-    payload["connectors"] = connectors;
-    return payload;
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("connectors", connectors);
   }
 
   Json odataEntity(UUID tenantId, string entitySet) {
     validateTenant(tenantId);
     validateId(entitySet, "Entity set");
 
-    Json row = Json.emptyObject;
-    row["ID"] = "row-1";
-    row["EntitySet"] = entitySet;
-    row["Tenant"] = tenantId;
-    row["Value"] = 42;
+    Json row = Json.emptyObject
+    .set("ID", "row-1")
+    .set("EntitySet", entitySet)
+    .set("Tenant", tenantId)
+    .set("Value", 42);
 
     Json payload = Json.emptyObject;
     payload["@odata.context"] =

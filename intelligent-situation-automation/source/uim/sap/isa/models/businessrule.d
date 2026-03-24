@@ -17,11 +17,10 @@ struct BusinessRule {
   string expected;
 
   override Json toJson()  {
-    Json info = super.toJson;
-    payload["field"] = field;
-    payload["op"] = op;
-    payload["expected"] = expected;
-    return payload;
+    return super.toJson()
+      .set("field", field)
+      .set("op", op)
+      .set("expected", expected);
   }
 }
 

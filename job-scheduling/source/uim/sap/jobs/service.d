@@ -772,14 +772,14 @@ HTML";
   }
 
   private void pushCloudAlm(RunLog run) {
-    Json payload = Json.emptyObject;
-    payload["tenant_id"] = run.tenantId;
-    payload["run_id"] = run.runId;
-    payload["job_id"] = run.jobId;
-    payload["status"] = run.status;
-    payload["runtime"] = run.runtime;
-    payload["started_at"] = run.startedAt.toISOExtString();
-    payload["finished_at"] = run.finishedAt.toISOExtString();
+    Json payload = Json.emptyObject
+    .set("tenant_id", run.tenantId)
+    .set("run_id", run.runId)
+    .set("job_id", run.jobId)
+    .set("status", run.status)
+    .set("runtime", run.runtime)
+    .set("started_at", run.startedAt.toISOExtString())
+    .set("finished_at", run.finishedAt.toISOExtString());
 
     sendCloudAlmTelemetry(payload, false);
   }

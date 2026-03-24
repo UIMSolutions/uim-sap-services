@@ -192,10 +192,10 @@ class CDCService : SAPService {
     group.updatedAt = now;
     auto saved = _store.upsertSiteGroup(
       group);
-    Json payload = Json.emptyObject;
-    payload["message"] = "Global access site group saved";
-    payload["site_group"] = saved.toJson();
-    return payload;
+    
+    return Json.emptyObject
+      .set("message", "Global access site group saved")
+      .set("site_group", saved.toJson());
   }
 
   Json listSiteGroups(UUID tenantId) {
@@ -221,13 +221,15 @@ class CDCService : SAPService {
 
     auto siteGroup = _store.getSiteGroup(tenantId, profile
         .get.siteGroupId);
-    Json payload = Json.emptyObject;
-    payload["tenant_id"] = tenantId;
-    payload["user_id"] = userId;
-    payload["site"] = site;
-    payload["data_region"] = profile.get.region;
-    payload["site_group_id"] = profile.get.siteGroupId;
-    payload["route"] = "regional-data-center";
+    
+    Json payload = Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("user_id", userId)
+      .set("site", site)
+      .set("data_region", profile.get.region)
+      .set("site_group_id", profile.get.siteGroupId)
+      .set("route", "regional-data-center");
+
     if (!siteGroup.isNull) {
       payload["site_group"] = siteGroup.get.toJson();
       payload["site_allowed"] = site

@@ -11,10 +11,9 @@ struct HanaDBQueryRequest {
     Json parameters = Json.emptyArray;
 
     override Json toJson()  {
-        Json payload = Json.emptyObject;
-        payload["statement"] = Json(statement);
-        payload["parameters"] = parameters;
-        return payload;
+      return super.toJson()
+        .set("statement", Json(statement))
+        .set("parameters", parameters);
     }
 }
 

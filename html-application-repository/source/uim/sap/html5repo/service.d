@@ -93,36 +93,29 @@ class HARService : SAPService {
 
   Json listFiles(TenantContext tenant, string appId, string versionId) {
     auto files = _store.listFiles(tenant.tenantId, tenant.spaceId, appId, versionId);
-    Json list = Json.emptyArray;
-    foreach (path; files) {
-      list ~= path;
-    }
+    Json list = files.map!(f => f.toJson).array; 
 
-    Json payload = Json.emptyObject;
-    payload["tenant_id"] = tenant.tenantId;
-    payload["space_id"] = tenant.spaceId;
-    payload["app_id"] = appId;
-    payload["version"] = versionId;
-    payload["files"] = list;
-    payload["total_files"] = cast(long)files.length;
-    return payload;
+    return Json.emptyObject
+      .set("tenant_id", tenant.tenantId)
+      .set("space_id", tenant.spaceId)
+      .set("app_id", appId)
+      .set("version", versionId)
+      .set("files", list)
+      .set("total_files", cast(long)files.length);
   }
 
   Json listApplications(TenantContext tenant) {
     auto apps = _store.listApplications(tenant.tenantId, tenant.spaceId, _config
         .allowPublicCrossSpace);
-    Json list = Json.emptyArray;
-    foreach (item; apps) {
-      list ~= item;
-    }
 
-    Json payload = Json.emptyObject;
-    payload["tenant_id"] = tenant.tenantId;
-    payload["space_id"] = tenant.spaceId;
-    payload["applications"] = list;
-    payload["total_results"] = cast(long)apps.length;
-    payload["cross_space_public_enabled"] = _config.allowPublicCrossSpace;
-    return payload;
+    Json list = apps.map!(f => f.toJson).array; 
+
+    return Json.emptyObject
+      .set("tenant_id", tenant.tenantId)
+      .set("space_id", tenant.spaceId)
+      .set("applications", list)
+      .set("total_results", cast(long)apps.length)
+      .set("cross_space_public_enabled", _config.allowPublicCrossSpace);
   }
 
   Json deleteVersion(TenantContext tenant, string appId, string versionId) {
@@ -195,13 +188,12 @@ class HARService : SAPService {
     }
 
     auto info = _store.tryGetVersionInfo(tenant.tenantId, tenant.spaceId, appId, activeVersionId);
-    Json payload = Json.emptyObject;
-    payload["tenant_id"] = tenant.tenantId;
-    payload["space_id"] = tenant.spaceId;
-    payload["app_id"] = appId;
-    payload["active_version"] = activeVersionId;
-    payload["visibility"] = visibilityToString(info.visibility);
-    return payload;
+    return Json.emptyObject
+      .set("tenant_id", tenant.tenantId)
+      .set("space_id", tenant.spaceId)
+      .set("app_id", appId)
+      .set("active_version", activeVersionId)
+      .set("visibility", visibilityToString(info.visibility));
   }
 
   private string getString(Json payload, string key, string fallback) {

@@ -67,10 +67,9 @@ class CPSService : SAPService {
     if (!_store.deleteSite(tenantId, siteId))
       throw new CPSNotFoundException("Site", tenantId ~ "/" ~ siteId);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["site_id"] = siteId;
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("site_id", siteId);
   }
 
   Json resolveNavigation(UUID tenantId, Json request) {
@@ -110,28 +109,25 @@ class CPSService : SAPService {
     Json resources = Json.emptyArray;
 
     foreach (site; _store.listSites(tenantId)) {
-      Json item = Json.emptyObject;
-      item["type"] = "site";
-      item["site_id"] = site.siteId;
-      item["name"] = site.name;
-      item["apps"] = site.apps;
-      resources ~= item;
+      resources ~= Json.emptyObject
+        .set("type", "site")
+        .set("site_id", site.siteId)
+        .set("name", site.name)
+        .set("apps", site.apps);
     }
 
     foreach (provider; _store.listProviders(tenantId)) {
-      Json item = Json.emptyObject;
-      item["type"] = "content-provider";
-      item["provider_id"] = provider.providerId;
-      item["solution_name"] = provider.solutionName;
-      item["catalogs"] = provider.catalogs;
-      resources ~= item;
+      resources ~= Json.emptyObject
+      .set("type", "content-provider")
+      .set("provider_id", provider.providerId)
+      .set("solution_name", provider.solutionName)
+      .set("catalogs", provider.catalogs);
     }
 
-    Json payload = Json.emptyObject;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)resources.length;
-    payload["central_entry_point"] = true;
-    return payload;
+    return Json.emptyObject
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length)
+      .set("central_entry_point", true);
   }
 
   Json upsertSiteAdministration(UUID tenantId, Json request) {

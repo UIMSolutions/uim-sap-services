@@ -72,15 +72,14 @@ class CISService : SAPService {
       userName = request["userName"].get!string;
     }
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["tenant_id"] = tenantId;
-    payload["method"] = method;
-    payload["sso_protocol"] = "openid-connect";
-    payload["token_type"] = "Bearer";
-    payload["access_token"] = createId();
-    payload["subject"] = userName;
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("tenant_id", tenantId)
+      .set("method", method)
+      .set("sso_protocol", "openid-connect")
+      .set("token_type", "Bearer")
+      .set("access_token", createId())
+      .set("subject", userName);
   }
 
   Json upsertUser(UUID tenantId, Json request) {
@@ -98,9 +97,7 @@ class CISService : SAPService {
 
   Json listUsers(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
-    Json resources = Json.emptyArray;
-    foreach (user; _store.listUsers(tenantId))
-      resources ~= user.toJson();
+    auto resources = _store.listUsers(tenantId).map!(user => user.toJson).array;
 
     Json schemas = Json.emptyArray;
     schemas ~= "urn:ietf:params:scim:api:messages:2.0:ListResponse";
@@ -126,9 +123,7 @@ class CISService : SAPService {
 
   Json listGroups(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
-    Json resources = Json.emptyArray;
-    foreach (group; _store.listGroups(tenantId))
-      resources ~= group.toJson();
+    auto resources = _store.listGroups(tenantId).map!(group => group.toJson).array;
 
     Json schemas = Json.emptyArray;
     schemas ~= "urn:ietf:params:scim:api:messages:2.0:ListResponse";
@@ -196,9 +191,7 @@ class CISService : SAPService {
 
   Json listDelegationRules(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
-    Json resources = Json.emptyArray;
-    foreach (rule; _store.listDelegationRules(tenantId))
-      resources ~= rule.toJson();
+    auto resources = _store.listDelegationRules(tenantId).map!(rule => rule.toJson).array;
 
     return Json.emptyObject
       .set("resources", resources)
@@ -239,9 +232,7 @@ class CISService : SAPService {
 
   Json listPolicies(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
-    Json resources = Json.emptyArray;
-    foreach (policy; _store.listPolicies(tenantId))
-      resources ~= policy.toJson();
+    auto resources = _store.listPolicies(tenantId).map!(policy => policy.toJson).array;
 
     return Json.emptyObject
       .set("resources", resources)

@@ -31,12 +31,11 @@ class DRMService : SAPService {
     resources ~= endpoint("POST", "/v1/tenants/{tenantId}/archive-jobs", "Create archiving job");
     resources ~= endpoint("POST", "/v1/tenants/{tenantId}/destruction-jobs", "Create destruction job");
 
-    Json payload = Json.emptyObject;
-    payload["service"] = "data-retention-manager";
-    payload["version"] = UIM_DATA_RETENTION_VERSION;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)resources.length;
-    return payload;
+    return Json.emptyObject
+    .set("service", "data-retention-manager")
+    .set("version", UIM_DATA_RETENTION_VERSION)
+    .set("resources", resources)
+    .set("total_results", cast(long)resources.length);
   }
 
   Json upsertBusinessPurpose(UUID tenantId, Json request) {
@@ -48,10 +47,9 @@ class DRMService : SAPService {
 
     auto saved = _store.upsertPurposeRule(rule);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["business_purpose"] = withComputedEndPurpose(saved).toJson();
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("business_purpose", withComputedEndPurpose(saved).toJson());
   }
 
   Json listBusinessPurposes(UUID tenantId) {
@@ -62,11 +60,10 @@ class DRMService : SAPService {
       resources ~= withComputedEndPurpose(rule).toJson();
     }
 
-    Json payload = Json.emptyObject;
-    payload["tenant_id"] = tenantId;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)resources.length;
-    return payload;
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json upsertRetentionRule(UUID tenantId, Json request) {
@@ -87,10 +84,9 @@ class DRMService : SAPService {
     validateDataSubject(record);
     auto saved = _store.upsertDataSubject(record);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["data_subject"] = saved.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("data_subject", saved.toJson());
   }
 
   Json listDataSubjects(UUID tenantId) {
@@ -101,11 +97,10 @@ class DRMService : SAPService {
       resources ~= record.toJson();
     }
 
-    Json payload = Json.emptyObject;
-    payload["tenant_id"] = tenantId;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)resources.length;
-    return payload;
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json evaluateDataSubject(UUID tenantId, string dataSubjectId) {
@@ -191,11 +186,10 @@ class DRMService : SAPService {
       resources ~= job.toJson();
     }
 
-    Json payload = Json.emptyObject;
-    payload["tenant_id"] = tenantId;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)resources.length;
-    return payload;
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   private Json createOperationJob(UUID tenantId, string operation, Json request) {
@@ -266,11 +260,10 @@ class DRMService : SAPService {
   }
 
   private Json endpoint(string method, string path, string description) {
-    Json row = Json.emptyObject;
-    row["method"] = method;
-    row["path"] = path;
-    row["description"] = description;
-    return row;
+    return Json.emptyObject
+      .set("method", method)
+      .set("path", path)
+      .set("description", description);
   }
 
   private BusinessPurposeRule withComputedEndPurpose(BusinessPurposeRule rule) {

@@ -19,22 +19,17 @@ class SituationInstance : SAPTenantObject {
   SysTime resolvedAt;
 
   override Json toJson()  {
-    Json info = super.toJson;
-    payload["id"] = id;
-    payload["situation_type"] = situationType;
-    payload["template_id"] = templateId;
-    payload["entity_type"] = entityType;
-    payload["entity_id"] = entityId;
-    payload["status"] = situationStatusToString(status);
-    payload["resolution_flow"] = resolutionFlow;
-    payload["data_context"] = dataContext;
-    payload["occurred_at"] = occurredAt.toISOExtString();
-    if (resolvedAt != SysTime.init) {
-      payload["resolved_at"] = resolvedAt.toISOExtString();
-    } else {
-      payload["resolved_at"] = "";
-    }
-    return payload;
+    return super.toJson()
+      .set("id", id)
+      .set("situation_type", situationType)
+      .set("template_id", templateId)
+      .set("entity_type", entityType)
+      .set("entity_id", entityId)
+      .set("status", situationStatusToString(status))
+      .set("resolution_flow", resolutionFlow)
+      .set("data_context", dataContext)
+      .set("occurred_at", occurredAt.toISOExtString())
+      .set("resolved_at", resolvedAt != SysTime.init ? resolvedAt.toISOExtString() : "");    
   }
 }
 
@@ -49,12 +44,7 @@ SituationInstance situationFromJson(Json payload, UUID tenantId) {
   instance.status = situationStatusFromString(getString(payload, "status", "open"));
   instance.resolutionFlow = getString(payload, "resolution_flow", "manual_review");
   instance.occurredAt = Clock.currTime();
-
-  if ("data_context" in payload && payload["data_context"].isObject) {
-    instance.dataContext = payload["data_context"];
-  } else {
-    instance.dataContext = Json.emptyObject;
-  }
+  instance.dataContext = payload.getObject("data_context", Json.emptyObject);
 
   if (instance.status != SituationStatus.open) {
     instance.resolvedAt = Clock.currTime();

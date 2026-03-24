@@ -39,21 +39,18 @@ struct DATDataModel {
   string status;
   SysTime updatedAt;
 
-  override Json toJson()  {
-    Json info = super.toJson;
-    Json sourcePayload = Json.emptyArray;
-    foreach (source; sources)
-      sourcePayload ~= source;
+  override Json toJson() {
+    auto sourcePayload = sources.map!(s => s.toJson).array;
 
-    payload["tenant_id"] = tenantId;
-    payload["model_id"] = modelId;
-    payload["name"] = name;
-    payload["model_type"] = modelType;
-    payload["sql_definition"] = sqlDefinition;
-    payload["data_flow_definition"] = dataFlowDefinition;
-    payload["sources"] = sourcePayload;
-    payload["status"] = status;
-    payload["updated_at"] = updatedAt.toISOExtString();
-    return payload;
+    return super.toJson
+      .set("tenant_id", tenantId)
+      .set("model_id", modelId)
+      .set("name", name)
+      .set("model_type", modelType)
+      .set("sql_definition", sqlDefinition)
+      .set("data_flow_definition", dataFlowDefinition)
+      .set("sources", sourcePayload)
+      .set("status", status)
+      .set("updated_at", updatedAt.toISOExtString());
   }
 }

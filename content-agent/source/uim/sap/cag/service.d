@@ -483,20 +483,20 @@ HTML";
     if (!queue.active)
       throw new CAGValidationException("queue is inactive");
 
-    Json exportPayload = Json.emptyObject;
-    exportPayload["assembly_id"] = assembly.assemblyId;
-    exportPayload["mtar_name"] = assembly.mtarName;
-    exportPayload["source_subaccount"] = assembly.sourceSubaccount;
-    exportPayload["target_subaccount"] = assembly.targetSubaccount;
-    exportPayload["queue_id"] = queue.queueId;
-    exportPayload["queue_type"] = queue.queueType;
-    exportPayload["queue_endpoint"] = queue.endpoint;
-    exportPayload["runtime"] = _config.runtime;
-
     Json contentIds = Json.emptyArray;
     foreach (id; assembly.resolvedContentIds)
       contentIds ~= id;
-    exportPayload["content_ids"] = contentIds;
+
+    Json exportPayload = Json.emptyObject
+      .set("assembly_id", assembly.assemblyId)
+      .set("mtar_name", assembly.mtarName)
+      .set("source_subaccount", assembly.sourceSubaccount)
+      .set("target_subaccount", assembly.targetSubaccount)
+      .set("queue_id", queue.queueId)
+      .set("queue_type", queue.queueType)
+      .set("queue_endpoint", queue.endpoint)
+      .set("runtime", _config.runtime)
+      .set("content_ids", contentIds);
 
     auto now = Clock.currTime();
     CAGTransportActivity activity;
@@ -512,10 +512,9 @@ HTML";
 
     auto saved = _store.upsertActivity(activity);
 
-    Json payload = Json.emptyObject;
-    payload["message"] = "Assembly exported successfully";
-    payload["activity"] = saved.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("message", "Assembly exported successfully")
+      .set("activity", saved.toJson());
   }
 
   Json listActivities(UUID tenantId) {

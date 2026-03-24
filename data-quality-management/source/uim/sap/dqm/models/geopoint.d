@@ -1,15 +1,14 @@
 module uim.sap.dqm.models.geopoint;
 
 struct DQMGeoPoint {
-    double latitude;
-    double longitude;
-    string accuracy = "rooftop";
+  double latitude;
+  double longitude;
+  string accuracy = "rooftop";
 
-    override Json toJson()  {
-        Json payload = Json.emptyObject;
-        payload["latitude"] = latitude;
-        payload["longitude"] = longitude;
-        payload["accuracy"] = accuracy;
-        return payload;
-    }
+  overreturn() {
+    return super.toJson()
+      .set("latitude", latitude)
+      .set("longitude", longitude)
+      .set("accuracy", accuracy);
+  }
 }
