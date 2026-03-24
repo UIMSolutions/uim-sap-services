@@ -30,7 +30,7 @@ class ARTRuntimeServer {
     // runApplication();
   }
 
-  private void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {
+  override void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {
     foreach (key, value; _runtime.config.customHeaders) {
       res.headers[key] = value;
     }

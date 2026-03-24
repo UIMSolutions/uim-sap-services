@@ -26,7 +26,7 @@ void runCDCServer(
   });
 }
 
-private void handleRequest(
+override void handleRequest(
   CDCService service,
   string basePath,
   bool requireAuthToken,

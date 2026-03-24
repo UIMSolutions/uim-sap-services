@@ -32,7 +32,7 @@ class DSTServer {
     // -----------------------------------------------------------------------
     // Root dispatcher
     // -----------------------------------------------------------------------
-    private void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {
+    override void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {
         foreach (key, value; _service.config.customHeaders)
             res.headers[key] = value;
 

@@ -24,7 +24,7 @@ class CIAServer {
         runApplication();
     }
 
-    private void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {
+    override void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {
         // Inject configured custom headers on every response
         foreach (key, value; _service.config.customHeaders)
             res.headers[key] = value;

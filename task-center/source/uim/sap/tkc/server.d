@@ -34,7 +34,7 @@ class TKCServer : SAPServer {
     _customHeaders = cfg.customHeaders;
   }
 
-  private void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {
+  override void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {
     foreach (key, value; _customHeaders)
       res.headers[key] = value;
 
