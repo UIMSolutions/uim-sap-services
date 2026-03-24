@@ -20,13 +20,10 @@ class ARTRuntimeHealth : SAPObject {
   size_t registeredPrograms;
 
   override override Json toJson() {
-    Json payload = super.toJson();
-
-    payload["ok"] = ok;
-    payload["runtimeName"] = runtimeName;
-    payload["runtimeVersion"] = runtimeVersion;
-    payload["registeredPrograms"] = cast(long)registeredPrograms;
-
-    return payload;
+    return super.toJson
+    .set("ok", ok)
+    .set("runtimeName", runtimeName)
+    .set("runtimeVersion", runtimeVersion)
+    .set("registeredPrograms", cast(long)registeredPrograms);
   }
 }

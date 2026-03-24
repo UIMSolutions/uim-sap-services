@@ -56,15 +56,14 @@ struct CISRiskPolicy {
   SysTime updatedAt;
 
   override Json toJson()  {
-    Json info = super.toJson;
-    payload["policy_id"] = policyId;
-    payload["tenant_id"] = tenantId;
-    payload["ip_ranges"] = ipRanges;
-    payload["groups"] = groups;
-    payload["user_type"] = userType;
-    payload["authentication_method"] = authenticationMethod;
-    payload["require_two_factor"] = requireTwoFactor;
-    payload["updated_at"] = updatedAt.toISOExtString();
-    return payload;
+    return super.toJson
+    .set("policy_id", policyId.toJson)
+    .set("tenant_id", tenantId.toJson)
+    .set("ip_ranges", ipRanges)
+    .set("groups", groups)
+    .set("user_type", userType.toJson)
+    .set("authentication_method", authenticationMethod.toJson)
+    .set("require_two_factor", requireTwoFactor.toJson)
+    .set("updated_at", updatedAt.toISOExtString().toJson);
   }
 }

@@ -39,9 +39,10 @@ mixin(ShowModule!());
   * Json response = connector.toJson(); // Convert connector to JSON for API response
   * For more information on connectors and their management, refer to the SAP Integration Suite documentation.
   */
-struct INTConnector {
-  UUID tenantId;
-  string connectorId;
+class INTConnector : SAPTenantObject {
+  mixin(SAPObjectTemplate!INTConnector);
+
+  UUID connectorId;
   string name;
   string description;
   string connectorType = "prebuilt"; // prebuilt | custom
@@ -51,12 +52,9 @@ struct INTConnector {
   string baseUrl;
   Json configuration;
   long callCount = 0;
-  string createdAt;
-  string updatedAt;
 
   override Json toJson()  {
     return super.toJson()
-      .set("tenant_id", tenantId)
       .set("connector_id", connectorId)
       .set("name", name)
       .set("description", description)
@@ -66,9 +64,7 @@ struct INTConnector {
       .set("status", status)
       .set("base_url", baseUrl)
       .set("configuration", configuration)
-      .set("call_count", callCount)
-      .set("created_at", createdAt)
-      .set("updated_at", updatedAt);
+      .set("call_count", callCount);
   }
 }
 

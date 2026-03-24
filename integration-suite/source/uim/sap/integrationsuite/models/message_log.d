@@ -30,10 +30,11 @@ mixin(ShowModule!());
   * - iflowId: The ID of the integration flow that processed the message.
   * - correlationId: A unique identifier that correlates related messages across different systems and processes
 */
-struct INTMessageLog {
-  UUID tenantId;
+class INTMessageLog : SAPTenantObject {
+  mixin(SAPObjectTemplate!INTMessageLog);
+
   UUID logId;
-  string iflowId;
+  UUID iflowId;
   string correlationId;
   string status = "processing"; // processing | completed | failed | retry
   string sender;
@@ -47,7 +48,6 @@ struct INTMessageLog {
 
   override Json toJson()  {
     return super.toJson()
-    .set("tenant_id", tenantId)
     .set("log_id", logId)
     .set("iflow_id", iflowId)
     .set("correlation_id", correlationId)
@@ -58,13 +58,11 @@ struct INTMessageLog {
     .set("error_message", errorMessage)
     .set("duration_ms", durationMs)
     .set("started_at", startedAt)
-    .set("completed_at", completedAt)
-    .set("created_at", createdAt);
+    .set("completed_at", completedAt);
   }
-}
 
-INTMessageLog messageLogFromJson(UUID tenantId, Json request) {
-  INTMessageLog l;
+  static INTMessageLog messageLogFromJson(UUID tenantId, Json request) {
+  INTMessageLog l = new INTMessageLog(request);
   l.tenantId = tenantId;
   l.logId = randomUUID().toString();
 
@@ -89,3 +87,6 @@ INTMessageLog messageLogFromJson(UUID tenantId, Json request) {
   l.startedAt = l.createdAt;
   return l;
 }
+
+}
+

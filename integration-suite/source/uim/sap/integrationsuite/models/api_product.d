@@ -40,9 +40,10 @@ mixin(ShowModule!());
   *   // Serializing an API Product to JSON for response
   *   Json response = product.toJson();
   */
-struct INTApiProduct {
-  UUID tenantId;
-  string productId;
+class INTApiProduct : SAPTenantObject {
+  mixin(SAPObjectTemplate!INTApiProduct);
+
+  UUID productId;
   string name;
   string description;
   string version_ = "1.0.0";
@@ -54,12 +55,9 @@ struct INTApiProduct {
   string updatedAt;
 
   override Json toJson() {
-    Json ids = Json.emptyArray;
-    foreach (id; proxyIds)
-      ids ~= Json(id);
+    auto ids = proxyIds.map!(id => id.toJson).array;
 
     return super.toJson
-      .set("tenant_id", tenantId)
       .set("product_id", productId)
       .set("name", name)
       .set("description", description)
@@ -67,9 +65,7 @@ struct INTApiProduct {
       .set("status", status)
       .set("proxy_ids", ids)
       .set("subscriber_count", subscriberCount)
-      .set("rate_limit_policy", rateLimitPolicy)
-      .set("created_at", createdAt)
-      .set("updated_at", updatedAt);
+      .set("rate_limit_policy", rateLimitPolicy);
   }
 }
 

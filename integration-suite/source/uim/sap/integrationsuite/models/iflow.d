@@ -34,12 +34,13 @@ mixin(ShowModule!());
   * 
   * For more information on iFlows and their management, refer to the SAP Integration Suite documentation.
   */
-struct INTIFlow {
-  UUID tenantId;
-  string iflowId;
+class INTIFlow : SAPTenantObject {
+  mixin(SAPObjectTemplate!INTIFlow);
+
+  UUID iflowId;
   string name;
   string description;
-  string packageId;
+  UUID packageId;
   string version_ = "1.0.0";
   string status = "draft"; // draft | active | error | deployed
   string runtime = "cloud"; // cloud | hybrid
@@ -50,56 +51,51 @@ struct INTIFlow {
   long messageCount = 0;
   long errorCount = 0;
   string deployedAt;
-  string createdAt;
-  string updatedAt;
 
-  override Json toJson()  {
+  override Json toJson() {
     return super.toJson()
-    .set("tenant_id", tenantId)
-    .set("iflow_id", iflowId)
-    .set("name", name)
-    .set("description", description)
-    .set("package_id", packageId)
-    .set("version", version_)
-    .set("status", status)
-    .set("runtime", runtime)
-    .set("sender", sender)
-    .set("receiver", receiver)
-    .set("protocol", protocol)
-    .set("endpoint_url", endpointUrl)
-    .set("message_count", messageCount)
-    .set("error_count", errorCount)
-    .set("deployed_at", deployedAt)
-    .set("created_at", createdAt)
-    .set("updated_at", updatedAt);
+      .set("iflow_id", iflowId)
+      .set("name", name)
+      .set("description", description)
+      .set("package_id", packageId)
+      .set("version", version_)
+      .set("status", status)
+      .set("runtime", runtime)
+      .set("sender", sender)
+      .set("receiver", receiver)
+      .set("protocol", protocol)
+      .set("endpoint_url", endpointUrl)
+      .set("message_count", messageCount)
+      .set("error_count", errorCount)
+      .set("deployed_at", deployedAt);
   }
-}
 
-INTIFlow iflowFromJson(UUID tenantId, Json request) {
-  INTIFlow f;
-  f.tenantId = tenantId;
-  f.iflowId = randomUUID().toString();
+  static INTIFlow iflowFromJson(UUID tenantId, Json request) {
+    INTIFlow f = new INTIFlow(request);
+    f.tenantId = tenantId;
+    f.iflowId = randomUUID().toString();
 
-  if ("name" in request && request["name"].isString)
-    f.name = request["name"].get!string;
-  if ("description" in request && request["description"].isString)
-    f.description = request["description"].get!string;
-  if ("package_id" in request && request["package_id"].isString)
-    f.packageId = request["package_id"].get!string;
-  if ("version" in request && request["version"].isString)
-    f.version_ = request["version"].get!string;
-  if ("runtime" in request && request["runtime"].isString)
-    f.runtime = request["runtime"].get!string;
-  if ("sender" in request && request["sender"].isString)
-    f.sender = request["sender"].get!string;
-  if ("receiver" in request && request["receiver"].isString)
-    f.receiver = request["receiver"].get!string;
-  if ("protocol" in request && request["protocol"].isString)
-    f.protocol = request["protocol"].get!string;
-  if ("endpoint_url" in request && request["endpoint_url"].isString)
-    f.endpointUrl = request["endpoint_url"].get!string;
+    if ("name" in request && request["name"].isString)
+      f.name = request["name"].get!string;
+    if ("description" in request && request["description"].isString)
+      f.description = request["description"].get!string;
+    if ("package_id" in request && request["package_id"].isString)
+      f.packageId = request["package_id"].get!string;
+    if ("version" in request && request["version"].isString)
+      f.version_ = request["version"].get!string;
+    if ("runtime" in request && request["runtime"].isString)
+      f.runtime = request["runtime"].get!string;
+    if ("sender" in request && request["sender"].isString)
+      f.sender = request["sender"].get!string;
+    if ("receiver" in request && request["receiver"].isString)
+      f.receiver = request["receiver"].get!string;
+    if ("protocol" in request && request["protocol"].isString)
+      f.protocol = request["protocol"].get!string;
+    if ("endpoint_url" in request && request["endpoint_url"].isString)
+      f.endpointUrl = request["endpoint_url"].get!string;
 
-  f.createdAt = Clock.currTime().toINTOExtString();
-  f.updatedAt = f.createdAt;
-  return f;
+    f.createdAt = Clock.currTime().toINTOExtString();
+    f.updatedAt = f.createdAt;
+    return f;
+  }
 }

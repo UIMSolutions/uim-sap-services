@@ -14,23 +14,20 @@ class ATMIdentityProvider : SAPTenantObject {
   string[] trustedAlgorithms;
 
   override Json toJson()  {
-    Json info = super.toJson;
+    Json trusted = trustedAlgorithms.map!(a => a.toJson).array.toJson;
 
-    Json trusted = trustedAlgorithms.map!(a => a.toJson).array.toJson; {
-
-    payload["tenant_id"] = tenantId.toJson;
-    payload["idp_id"] = idpId.toJson;
-    payload["name"] = name.toJson;
-    payload["provider_type"] = providerType.toJson;
-    payload["issuer"] = issuer.toJson;
-    payload["audience"] = audience.toJson;
-    payload["description"] = description.toJson;
-    payload["enabled"] = enabled.toJson;
-    payload["is_default"] = isDefault.toJson;
-    payload["trusted_algorithms"] = trusted.toJson;
-    payload["updated_at"] = updatedAt.toISOExtString().toJson;
-
-    return payload;
+    return super.toJson
+    .set("tenant_id", tenantId.toJson)
+    .set("idp_id", idpId.toJson)
+    .set("name", name.toJson)
+    .set("provider_type", providerType.toJson)
+    .set("issuer", issuer.toJson)
+    .set("audience", audience.toJson)
+    .set("description", description.toJson)
+    .set("enabled", enabled.toJson)
+    .set("is_default", isDefault.toJson)
+    .set("trusted_algorithms", trusted.toJson)
+    .set("updated_at", updatedAt.toISOExtString().toJson);
   }
 }
 

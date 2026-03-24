@@ -70,9 +70,10 @@ mixin(ShowModule!());
   * 
   * For more information on data mappings and their management, refer to the SAP Integration Suite documentation.
   */
-struct INTMapping {
-  UUID tenantId;
-  string mappingId;
+class INTMapping : SAPTenantObject {
+  mixin(SAPObjectTemplate!INTMapping);
+
+  UUID mappingId;
   string name;
   string description;
   string sourceFormat = "xml"; // xml | json | csv | idoc | edifact
@@ -82,12 +83,9 @@ struct INTMapping {
   string status = "draft"; // draft | published | deprecated
   string generationMethod = "manual"; // manual | crowdsource | ml
   Json mappingRules;
-  string createdAt;
-  string updatedAt;
 
   override Json toJson()  {
     return super.toJson()
-    .set("tenant_id", tenantId)
     .set("mapping_id", mappingId)
     .set("name", name)
     .set("description", description)
@@ -97,14 +95,12 @@ struct INTMapping {
     .set("target_schema", targetSchema)
     .set("status", status)
     .set("generation_method", generationMethod)
-    .set("mapping_rules", mappingRules)
-    .set("created_at", createdAt)
-    .set("updated_at", updatedAt);
+    .set("mapping_rules", mappingRules);
   }
 }
 
 INTMapping mappingFromJson(UUID tenantId, Json request) {
-  INTMapping m;
+  INTMapping m = new INTMapping(request);
   m.tenantId = tenantId;
   m.mappingId = randomUUID().toString();
 

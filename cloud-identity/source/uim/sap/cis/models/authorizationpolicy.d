@@ -54,15 +54,14 @@ struct CISAuthorizationPolicy {
   SysTime updatedAt;
 
   override Json toJson()  {
-    Json info = super.toJson;
-    payload["policy_id"] = policyId;
-    payload["tenant_id"] = tenantId;
-    payload["name"] = name;
-    payload["resource_type"] = resourceType;
-    payload["instance_id"] = instanceId;
-    payload["allowed_groups"] = allowedGroups;
-    payload["allowed_user_types"] = allowedUserTypes;
-    payload["updated_at"] = updatedAt.toISOExtString();
-    return payload;
+    return super.toJson
+    .set("policy_id", policyId.toJson)
+    .set("tenant_id", tenantId.toJson)
+    .set("name", name.toJson)
+    .set("resource_type", resourceType.toJson)
+    .set("instance_id", instanceId.toJson)
+    .set("allowed_groups", allowedGroups)
+    .set("allowed_user_types", allowedUserTypes)
+    .set("updated_at", updatedAt.toISOExtString().toJson);
   }
 }
