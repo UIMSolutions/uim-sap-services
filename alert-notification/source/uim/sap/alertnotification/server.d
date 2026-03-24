@@ -33,19 +33,13 @@ mixin(ShowModule!());
   * The server also handles authentication by validating the Authorization header against a configured token, if required.
   * Error handling is implemented to return appropriate HTTP status codes and messages for various exceptions that may occur during request processing.
   */
-class AlertNotificationServer {
+class AlertNotificationServer : SAPServer {
+  mixin(SAPServerTemplate!AlertNotificationServer);
+
   private AlertNotificationService _service;
 
   this(AlertNotificationService service) {
     _service = service;
-  }
-
-  void run() {
-    auto settings = new HTTPServerSettings;
-    settings.port = _service.config.port;
-    settings.bindAddresses = [_service.config.host];
-    listenHTTP(settings, &handleRequest);
-    runApplication();
   }
 
   private void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {

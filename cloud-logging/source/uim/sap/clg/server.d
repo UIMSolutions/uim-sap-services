@@ -11,19 +11,13 @@ mixin(ShowModule!());
 
 @safe:
 
-class CLGServer {
+class CLGServer : SAPServer {
+  mixin(SAPServerTemplate!CLGServer);
+
   private CLGService _service;
 
   this(CLGService service) {
     _service = service;
-  }
-
-  void run() {
-    auto settings = new HTTPServerSettings;
-    settings.port = _service.config.port;
-    settings.bindAddresses = [_service.config.host];
-    listenHTTP(settings, &handleRequest);
-    runApplication();
   }
 
   private void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {

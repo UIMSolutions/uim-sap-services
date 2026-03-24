@@ -11,19 +11,13 @@ mixin(ShowModule!());
 
 @safe:
 
-class AuditLogServer {
+class AuditLogServer : SAPServer {
+  mixin(SAPServerTemplate!AuditLogServer);
+
   private AuditLogService _service;
 
   this(AuditLogService service) {
     _service = service;
-  }
-
-  void run() {
-    auto settings = new HTTPServerSettings;
-    settings.port = _service.config.port;
-    settings.bindAddresses = [_service.config.host];
-    listenHTTP(settings, &handleRequest);
-    runApplication();
   }
 
   private void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {

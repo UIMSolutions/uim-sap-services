@@ -12,18 +12,12 @@ mixin(ShowModule!());
 @safe:
 
 class CPSServer : SAPServer {
+  mixin(SAPServerTemplate!CPSServer);
+
   private CPSService _service;
 
   this(CPSService service) {
     _service = service;
-  }
-
-  void run() {
-    auto settings = new HTTPServerSettings;
-    settings.port = _service.config.port;
-    settings.bindAddresses = [_service.config.host];
-    listenHTTP(settings, &handleRequest);
-    runApplication();
   }
 
   private void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {
