@@ -20,9 +20,9 @@ class CMGConfig : SAPConfig {
     }
 
     // Network configuration
-    port(cast(ushort)initData.getInteger("port", 8095));
-    host(initData.getString("host", "0.0.0.0"));
     basePath(initData.getString("basePath", "/api/cmg"));
+    host(initData.getString("host", "0.0.0.0"));
+    port(cast(ushort)initData.getInteger("port", 8095));
     
     // Service metadata
     serviceName(initData.getString("serviceName", "uim-cmg"));

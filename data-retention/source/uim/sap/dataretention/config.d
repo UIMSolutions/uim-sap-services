@@ -16,8 +16,8 @@ class DRMConfig : SAPConfig {
 
     // Network settings
     basePath(initData.getString("basePath", "/api/data-retention"));
-    port(cast(ushort)initData.getInteger("port", 8110));
     host(initData.getString("host", "0.0.0.0"));
+    port(cast(ushort)initData.getInteger("port", 8110));
 
     // Service settings
     serviceName(initData.getString("serviceName", "uim-data-retention"));

@@ -14,13 +14,16 @@ class DSTConfig : SAPConfig {
       return false;
     }
 
-    port(cast(ushort)initData.getInteger("port", 8104));
+    // Network settings
     basePath(initData.getString("basePath", "/api/destination"));
+    host(initData.getString("host", "0.0.0.0"));
+    port(cast(ushort)initData.getInteger("port", 8104));
+
+    // Service settings
     serviceName(initData.getString("serviceName", "uim-dst"));
     serviceVersion(initData.getString("serviceVersion", "1.0.0"));
-    host(initData.getString("host", "0.0.0.0"));
 
-    // Authentication configuration
+    // Authentication settings
     requireAuthToken(initData.getBoolean("requireAuthToken", false));
     if (requireAuthToken) {
       authToken(initData.getString("authToken", ""));

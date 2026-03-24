@@ -12,16 +12,16 @@ class CIDConfig : SAPConfig {
       return false;
     }
 
-    // Network configuration
-    port(cast(ushort)initData.getInteger("port", 8102));
-    host(initData.getString("host", "0.0.0.0"));
+    // Network settings 
     basePath(initData.getString("basePath", "/api/cicd"));
+    host(initData.getString("host", "0.0.0.0"));
+    port(cast(ushort)initData.getInteger("port", 8102));
 
-    // Service metadata
+    // Service settings
     serviceName(initData.getString("serviceName", "uim-cid"));
     serviceVersion(initData.getString("serviceVersion", "1.0.0"));
 
-    // Authentication configuration
+    // Authentication settings
     requireAuthToken(initData.getBoolean("requireAuthToken", false));
     if (requireAuthToken) {
       authToken(initData.getString("authToken", ""));

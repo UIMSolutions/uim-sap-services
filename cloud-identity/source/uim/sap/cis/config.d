@@ -45,13 +45,16 @@ class CISConfig : SAPConfig {
       return false;
     }
 
+    // Network settings
     basePath(initData.getString("basePath", "/api/cis"));
     host(initData.getString("host", "0.0.0.0"));
     port(cast(ushort)initData.getInteger("port", 8088));
+
+    // Service settings 
     serviceName(initData.getString("serviceName", "uim-cis"));
     serviceVersion(initData.getString("serviceVersion", "1.0.0"));
 
-    // Authentication configuration
+    // Authentication settings
     requireAuthToken(initData.getBoolean("requireAuthToken", false));
     if (requireAuthToken) {
       authToken(initData.getString("authToken", ""));

@@ -19,16 +19,16 @@ class CLFConfig : SAPConfig {
       return false;
     }
 
-    // Network configuration
+    // Network settings
     basePath(initData.getString("basePath", "/api/cf"));
     host(initData.getString("host", "0.0.0.0"));
     port(cast(ushort)initData.getInteger("port", 8082));
 
-    // Service metadata
+    // Service settings
     serviceName(initData.getString("serviceName", "uim-clf"));
     serviceVersion(initData.getString("serviceVersion", "1.0.0"));
 
-    // Authentication configuration
+    // Authentication settings
     requireAuthToken(initData.getBoolean("requireAuthToken", false));
     if (requireAuthToken) {
       authToken(initData.getString("authToken", ""));
