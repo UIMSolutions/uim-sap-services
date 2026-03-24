@@ -25,7 +25,7 @@ mixin(SAPServerTemplate!UDMServer);
       return;
     }
 
-    string subPath = "/";
+    subPath = "/";
     if (path.length > basePath.length) {
       subPath = path[basePath.length .. $];
     }

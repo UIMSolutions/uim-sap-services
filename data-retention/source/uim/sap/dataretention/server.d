@@ -30,7 +30,7 @@ class DRMServer : SAPServer {
       return;
     }
 
-    string subPath = "/";
+    subPath = "/";
     if (path.length > basePath.length) {
       subPath = path[basePath.length .. $];
     }

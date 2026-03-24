@@ -38,13 +38,80 @@ class SAPServer {
     return true;
   }
 
+  // -- host --
   protected string _host;
+  string host() const {
+    return _host;
+  }
+
+  void host(string value) {
+    _host = value;
+  }
+
+  // -- port --
   protected ushort _port;
+
+  ushort port() const {
+    return _port;
+  }
+
+  void port(ushort value) {
+    _port = value;
+  }
+
+  // -- basePath --
   protected string _basePath;
+
+  string basePath() const {
+    return _basePath;
+  }
+
+  void basePath(string value) {
+    _basePath = value;
+  }
+
+  // -- subPath --
   protected string _subPath;
+
+  string subPath() const {
+    return _subPath;
+  }
+
+  void subPath(string value) {
+    _subPath = value;
+  }
+
+  // -- requireAuthToken --
   protected bool _requireAuthToken;
+
+  bool requireAuthToken() const {
+    return _requireAuthToken;
+  }
+
+  void requireAuthToken(bool value) {
+    _requireAuthToken = value;
+  }
+
+  // -- authToken --
   protected string _authToken;
+
+  string authToken() const {
+    return _authToken;
+  }
+
+  void authToken(string value) {
+    _authToken = value;
+  }
+
+  // -- customHeaders --
   protected string[string] _customHeaders;
+  string[string] customHeaders() {
+    return _customHeaders;
+  }
+
+  void customHeaders(string[string] value) {
+    _customHeaders = value;
+  }
 
   void run() {
     auto settings = new HTTPServerSettings;
@@ -69,6 +136,9 @@ class SAPServer {
     if (_subPath.length == 0)
       _subPath = "/";
 
+    // ---------------------------------------------------------------
+    // Platform endpoints (no auth required)
+    // ---------------------------------------------------------------
     // ── Health / readiness ────────────────────────────────────────────
     if (_subPath == "/health" && req.method == HTTPMethod.GET) {
       res.writeJsonBody(_service.health(), 200);
