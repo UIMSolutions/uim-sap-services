@@ -20,8 +20,7 @@ class SMGServer : SAPServer {
   }
 
   override void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {
-    foreach (key, value; _service.config.customHeaders)
-      res.headers[key] = value;
+    super.handleRequest(req, res);
 
     auto basePath = _service.config.basePath;
     auto path = req.path;

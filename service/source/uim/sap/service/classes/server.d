@@ -47,8 +47,7 @@ class SAPServer {
   }
 
   void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {
-    foreach (key, value; _service.config.customHeaders)
-      res.headers[key] = value;
+    super.handleRequest(req, res);
   }
 
   Json toJson() {
