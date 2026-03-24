@@ -75,8 +75,6 @@ class KYMServer : SAPServer {
   override void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {
     super.handleRequest(req, res);
 
-    auto basePath = _service.config.basePath;
-    auto path = req.path;
 
     if (!path.startsWith(basePath)) {
       respondError(res, "Not found", 404);

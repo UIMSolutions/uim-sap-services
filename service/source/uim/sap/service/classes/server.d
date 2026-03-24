@@ -46,8 +46,15 @@ class SAPServer {
     runApplication();
   }
 
+  string basePath;
+  string path;
+
   void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {
-    super.handleRequest(req, res);
+    foreach (key, value; _service.config.customHeaders)
+      res.headers[key] = value;
+
+    basePath = _service.config.basePath;
+    path = req.path;
   }
 
   Json toJson() {
