@@ -100,32 +100,30 @@ private Json asJson(DocumentTranslateSyncResponse resp) {
 }
 
 private Json asJson(AsyncJob job) {
-  Json payload = Json.emptyObject;
-  payload["id"] = job.id;
-  payload["status"] = cast(string)job.status;
-  payload["provider"] = job.provider;
-  payload["sourceLanguage"] = job.sourceLanguage;
-  payload["targetLanguage"] = job.targetLanguage;
-  payload["translatedContent"] = job.translatedContent;
-  payload["error"] = job.error;
-  payload["createdAt"] = ts(job.createdAt);
-  payload["updatedAt"] = ts(job.updatedAt);
-  return payload;
+  return Json.emptyObject
+  .set("id", job.id)
+  .set("status", cast(string)job.status)
+  .set("provider", job.provider)
+  .set("sourceLanguage", job.sourceLanguage)
+  .set("targetLanguage", job.targetLanguage)
+  .set("translatedContent", job.translatedContent)
+  .set("error", job.error)
+  .set("createdAt", ts(job.createdAt))
+  .set("updatedAt", ts(job.updatedAt));
 }
 
 private Json asJson(Project p) {
-  Json payload = Json.emptyObject;
-  payload["id"] = p.id;
-  payload["name"] = p.name;
-  payload["kind"] = p.kind;
-  payload["sourceLanguage"] = p.sourceLanguage;
-  payload["createdAt"] = ts(p.createdAt);
-
   Json[] langs;
   foreach (lang; p.targetLanguages)
     langs ~= Json(lang);
-  payload["targetLanguages"] = langs;
-  return payload;
+
+  return Json.emptyObject
+  .set("id", p.id)
+  .set("name", p.name)
+  .set("kind", p.kind)
+  .set("sourceLanguage", p.sourceLanguage)
+  .set("createdAt", ts(p.createdAt))
+  .set("targetLanguages", langs);
 }
 
 private Json asJson(LanguageAsset a) {

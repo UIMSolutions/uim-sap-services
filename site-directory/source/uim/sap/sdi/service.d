@@ -49,11 +49,10 @@ class SDIService : SAPService {
     foreach (site; _store.listSites(tenantId))
       tiles ~= site.toTileJson();
 
-    Json payload = Json.emptyObject;
-    payload["tenant_id"] = tenantId;
-    payload["tiles"] = tiles;
-    payload["count"] = cast(long)tiles.length;
-    return payload;
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("tiles", tiles)
+      .set("count", cast(long)tiles.length);
   }
 
   Json createSite(UUID tenantId, Json data) {
@@ -78,19 +77,17 @@ class SDIService : SAPService {
     if (saved.isDefault)
       _store.setDefaultSite(tenantId, saved.siteId);
 
-    Json payload = Json.emptyObject;
-    payload["message"] = "Site created";
-    payload["site"] = saved.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("message", "Site created")
+      .set("site", saved.toJson());
   }
 
   Json getSite(UUID tenantId, string siteId) {
     validateTenant(tenantId);
     auto site = requireSite(tenantId, siteId);
 
-    Json payload = Json.emptyObject;
-    payload["site"] = site.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("site", site.toJson());
   }
 
   Json deleteSite(UUID tenantId, string siteId) {
@@ -98,10 +95,9 @@ class SDIService : SAPService {
     if (!_store.deleteSite(tenantId, siteId))
       throw new SDINotFoundException("Site not found");
 
-    Json payload = Json.emptyObject;
-    payload["message"] = "Site deleted";
-    payload["site_id"] = siteId;
-    return payload;
+    return Json.emptyObject
+      .set("message", "Site deleted")
+      .set("site_id", siteId);
   }
 
   Json importSite(UUID tenantId, string siteId, Json data) {
@@ -122,22 +118,20 @@ class SDIService : SAPService {
 
     auto saved = _store.upsertSite(existing);
 
-    Json payload = Json.emptyObject;
-    payload["message"] = "Site imported";
-    payload["site"] = saved.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("message", "Site imported")
+      .set("site", saved.toJson());
   }
 
   Json exportSite(UUID tenantId, string siteId) {
     validateTenant(tenantId);
     auto site = requireSite(tenantId, siteId);
 
-    Json payload = Json.emptyObject;
-    payload["site"] = site.toJson();
-    payload["export_bundle"] = site.importBundle.isNull ? Json.emptyObject
-      : site.importBundle;
-    payload["exported_at"] = Clock.currTime().toISOExtString();
-    return payload;
+    return Json.emptyObject
+      .set("site", site.toJson())
+      .set("export_bundle", site.importBundle.isNull ? Json.emptyObject
+          : site.importBundle)
+      .set("exported_at", Clock.currTime().toISOExtString());
   }
 
   Json updateAlias(UUID tenantId, string siteId, Json data) {
@@ -150,10 +144,9 @@ class SDIService : SAPService {
 
     auto saved = _store.upsertSite(site);
 
-    Json payload = Json.emptyObject;
-    payload["message"] = "Site alias updated";
-    payload["site"] = saved.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("message", "Site alias updated")
+      .set("site", saved.toJson());
   }
 
   Json setDefaultSite(UUID tenantId, string siteId) {
@@ -164,31 +157,28 @@ class SDIService : SAPService {
     _store.upsertSite(site);
     _store.setDefaultSite(tenantId, siteId);
 
-    Json payload = Json.emptyObject;
-    payload["message"] = "Default site selected";
-    payload["site_id"] = siteId;
-    return payload;
+    return Json.emptyObject
+      .set("message", "Default site selected")
+      .set("site_id", siteId);
   }
 
   Json openRuntimeSite(UUID tenantId, string siteId) {
     validateTenant(tenantId);
     auto site = requireSite(tenantId, siteId);
 
-    Json payload = Json.emptyObject;
-    payload["message"] = "Runtime site opened";
-    payload["runtime_url"] = site.runtimeUrl;
-    payload["open_target"] = "browser";
-    return payload;
+    return Json.emptyObject
+      .set("message", "Runtime site opened")
+      .set("runtime_url", site.runtimeUrl)
+      .set("open_target", "browser");
   }
 
   Json getSiteSettings(UUID tenantId, string siteId) {
     validateTenant(tenantId);
     auto site = requireSite(tenantId, siteId);
 
-    Json payload = Json.emptyObject;
-    payload["settings"] = site.settings.toJson();
-    payload["roles"] = toJsonArray(site.roles);
-    return payload;
+    return Json.emptyObject
+      .set("settings", site.settings.toJson())
+      .set("roles", toJsonArray(site.roles));
   }
 
   Json updateSiteSettings(UUID tenantId, string siteId, Json data) {
@@ -199,10 +189,9 @@ class SDIService : SAPService {
     site.updatedAt = Clock.currTime();
     auto saved = _store.upsertSite(site);
 
-    Json payload = Json.emptyObject;
-    payload["message"] = "Site settings updated";
-    payload["settings"] = saved.settings.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("message", "Site settings updated")
+      .set("settings", saved.settings.toJson());
   }
 
   Json assignRoles(UUID tenantId, string siteId, Json data) {
@@ -213,11 +202,10 @@ class SDIService : SAPService {
     site.updatedAt = Clock.currTime();
     auto saved = _store.upsertSite(site);
 
-    Json payload = Json.emptyObject;
-    payload["message"] = "Roles assigned";
-    payload["roles"] = toJsonArray(saved.roles);
-    payload["role_count"] = cast(long)saved.roles.length;
-    return payload;
+    return Json.emptyObject
+      .set("message", "Roles assigned")
+      .set("roles", toJsonArray(saved.roles))
+      .set("role_count", cast(long)saved.roles.length);
   }
 
   private SDISite requireSite(UUID tenantId, string siteId) {

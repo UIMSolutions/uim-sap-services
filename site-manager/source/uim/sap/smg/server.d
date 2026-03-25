@@ -47,8 +47,7 @@ class SMGServer : SAPServer {
             return;
           }
           if (req.method == HTTPMethod.PUT) {
-            Json payload = req.json;
-            payload["site_id"] = siteId;
+            Json payload = req.json.set("site_id", siteId);
             res.writeJsonBody(_service.upsertSite(tenantId, payload), 200);
             return;
           }
