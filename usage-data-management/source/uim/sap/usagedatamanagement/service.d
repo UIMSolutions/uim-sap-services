@@ -61,12 +61,11 @@ class UDMService : SAPService {
     endpoints ~= endpoint("POST", "/v1/tenants/{tenantId}/reports/subaccount-usage", "Daily aggregated usage per entity and metric");
     endpoints ~= endpoint("POST", "/v1/tenants/{tenantId}/reports/monthly-subaccount-costs", "Monthly distributed costs per subaccount and billable metric");
 
-    Json payload = Json.emptyObject;
-    payload["service"] = "usage-data-management";
-    payload["version"] = UIM_USAGE_DATA_MANAGEMENT_VERSION;
-    payload["endpoints"] = endpoints;
-    payload["total_results"] = cast(long)endpoints.length;
-    return payload;
+    return Json.emptyObject
+    .set("service", "usage-data-management")
+    .set("version", UIM_USAGE_DATA_MANAGEMENT_VERSION)
+    .set("endpoints", endpoints)
+    .set("total_results", cast(long)endpoints.length);
   }
 
   Json ingestUsageEvent(UUID tenantId, Json request) {
@@ -103,11 +102,10 @@ class UDMService : SAPService {
       resources ~= eventItem.toJson();
     }
 
-    Json payload = Json.emptyObject;
-    payload["tenant_id"] = tenantId;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)resources.length;
-    return payload;
+    return Json.emptyObject
+    .set("tenant_id", tenantId)
+    .set("resources", resources)
+    .set("total_results", cast(long)resources.length);
   }
 
   Json listTenants() {
@@ -119,10 +117,9 @@ class UDMService : SAPService {
       resources ~= row;
     }
 
-    Json payload = Json.emptyObject;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)resources.length;
-    return payload;
+    return Json.emptyObject
+    .set("resources", resources)
+    .set("total_results", cast(long)resources.length);
   }
 
   Json monthlyUsageReport(UUID tenantId, Json request) {
@@ -171,14 +168,13 @@ class UDMService : SAPService {
       resources ~= item;
     }
 
-    Json payload = Json.emptyObject;
-    payload["tenant_id"] = tenantId;
-    payload["interval"] = "monthly";
-    payload["month"] = month;
-    payload["entity_type"] = entityType;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)resources.length;
-    return payload;
+    return Json.emptyObject
+    .set("tenant_id", tenantId)
+    .set("interval", "monthly")
+    .set("month", month)
+    .set("entity_type", entityType)
+    .set("resources", resources)
+    .set("total_results", cast(long)resources.length);
   }
 
   Json subaccountUsageReport(UUID tenantId, Json request) {
@@ -235,15 +231,14 @@ class UDMService : SAPService {
       resources ~= item;
     }
 
-    Json payload = Json.emptyObject;
-    payload["tenant_id"] = tenantId;
-    payload["interval"] = "daily";
-    payload["from_date"] = fromDate;
-    payload["to_date"] = toDate;
-    payload["entity_type"] = entityType;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)resources.length;
-    return payload;
+    return Json.emptyObject
+    .set("tenant_id", tenantId)
+    .set("interval", "daily")
+    .set("from_date", fromDate)
+    .set("to_date", toDate)
+    .set("entity_type", entityType)
+    .set("resources", resources)
+    .set("total_results", cast(long)resources.length);
   }
 
   Json monthlySubaccountCostsReport(UUID tenantId, Json request) {
@@ -301,14 +296,13 @@ class UDMService : SAPService {
       resources ~= item;
     }
 
-    Json payload = Json.emptyObject;
-    payload["tenant_id"] = tenantId;
-    payload["interval"] = "monthly";
-    payload["month"] = month;
-    payload["commercial_model"] = "CPEA";
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)resources.length;
-    return payload;
+    return Json.emptyObject
+    .set("tenant_id", tenantId)
+    .set("interval", "monthly")
+    .set("month", month)
+    .set("commercial_model", "CPEA")
+    .set("resources", resources)
+    .set("total_results", cast(long)resources.length);
   }
 
   private Json endpoint(string method, string path, string description) {

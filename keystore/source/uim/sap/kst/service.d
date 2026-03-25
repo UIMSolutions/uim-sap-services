@@ -61,10 +61,9 @@ class KSTService : SAPService {
     auto ks = keystoreFromJson(name, request);
     auto saved = _store.upsertKeystore(ks);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["keystore"] = saved.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("keystore", saved.toJson());
   }
 
   Json updateKeystore(string name, Json request) {
@@ -77,8 +76,8 @@ class KSTService : SAPService {
     auto saved = _store.upsertKeystore(ks);
 
     return Json.emptyObject
-    .set("success", true)
-    .set("keystore", saved.toJson());
+      .set("success", true)
+      .set("keystore", saved.toJson());
   }
 
   Json getKeystore(string name) {
@@ -88,7 +87,7 @@ class KSTService : SAPService {
     }
 
     return Json.emptyObject
-    .set("keystore", ks.toJsonDetailed());
+      .set("keystore", ks.toJsonDetailed());
   }
 
   Json listKeystores() {

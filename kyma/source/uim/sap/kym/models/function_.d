@@ -7,7 +7,9 @@ mixin(ShowModule!());
 @safe:
 
 /// A serverless Function deployed in a namespace
-struct KYMFunction {
+class KYMFunction : SAPObject {
+  mixin(SAPObjectTemplate!KYMFunction);
+
     string name;
     string namespace;
     KYMFunctionRuntime runtime = KYMFunctionRuntime.NODEJS20;
@@ -26,37 +28,31 @@ struct KYMFunction {
     string memoryLimit = "256Mi";
     Json labels;
     long invocationCount = 0;
-    SysTime createdAt;
-    SysTime updatedAt;
 
     override Json toJson()  {
-        Json payload = Json.emptyObject;
-        payload["name"] = name;
-        payload["namespace"] = namespace;
-        payload["runtime"] = cast(string) runtime;
-        payload["handler"] = handler;
-        payload["timeout_secs"] = cast(long) timeoutSecs;
-        payload["min_replicas"] = cast(long) minReplicas;
-        payload["max_replicas"] = cast(long) maxReplicas;
-        payload["scale_policy"] = cast(string) scalePolicy;
-        payload["status"] = cast(string) status;
-        payload["cpu_request"] = cpuRequest;
-        payload["memory_request"] = memoryRequest;
-        payload["cpu_limit"] = cpuLimit;
-        payload["memory_limit"] = memoryLimit;
-        payload["labels"] = labels;
-        payload["invocation_count"] = invocationCount;
-        payload["env"] = env;
-        payload["created_at"] = createdAt.toISOExtString();
-        payload["updated_at"] = updatedAt.toISOExtString();
-        return payload;
+        return super.toJson()
+        .set("name", name)
+        .set("namespace", namespace)
+        .set("runtime", cast(string) runtime)
+        .set("handler", handler)
+        .set("timeout_secs", cast(long) timeoutSecs)
+        .set("min_replicas", cast(long) minReplicas)
+        .set("max_replicas", cast(long) maxReplicas)
+        .set("scale_policy", cast(string) scalePolicy)
+        .set("status", cast(string) status)
+        .set("cpu_request", cpuRequest)
+        .set("memory_request", memoryRequest)
+        .set("cpu_limit", cpuLimit)
+        .set("memory_limit", memoryLimit)
+        .set("labels", labels)
+        .set("invocation_count", invocationCount)
+        .set("env", env);
     }
 
     Json toJsonWithSource() const {
-        Json payload = toJson();
-        payload["source"] = source;
-        payload["deps"] = deps;
-        return payload;
+        return toJson()
+        .set("source", source)
+        .set("deps", deps);
     }
 }
 

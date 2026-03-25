@@ -129,19 +129,18 @@ private Json asJson(Project p) {
 }
 
 private Json asJson(LanguageAsset a) {
-  Json payload = Json.emptyObject;
-  payload["id"] = a.id;
-  payload["name"] = a.name;
-  payload["domain"] = a.domain;
-  payload["sourceLanguage"] = a.sourceLanguage;
-  payload["targetLanguage"] = a.targetLanguage;
-  payload["createdAt"] = ts(a.createdAt);
-
   Json[] segs;
   foreach (s; a.segments)
     segs ~= Json(s);
-  payload["segments"] = segs;
-  return payload;
+
+  return Json.emptyObject
+  .set("id", a.id)
+  .set("name", a.name)
+  .set("domain", a.domain)
+  .set("sourceLanguage", a.sourceLanguage)
+  .set("targetLanguage", a.targetLanguage)
+  .set("createdAt", ts(a.createdAt))
+  .set("segments", segs);
 }
 
 private string landingPage() {
@@ -379,8 +378,8 @@ void main() {
   router.get("/api/v1/language-data", (HTTPServerRequest req, HTTPServerResponse res) @trusted {
     Json[] items = languageAssets.list().map!(asset => asset.toJson).array;
 
-    Json payload = Json.emptyObject;
-    payload["assets"] = items;
+    Json payload = Json.emptyObject
+      .set("assets", items);
     writeJson(res, payload);
   });
 

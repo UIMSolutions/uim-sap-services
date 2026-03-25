@@ -81,13 +81,12 @@ class MOBService : SAPService {
     requireApp(appId);
     auto app = _store.getApp(appId);
 
-    Json payload = Json.emptyObject;
-    payload["application"] = app.toJson();
-    payload["user_count"] = cast(long)_store.userCount(appId);
-    payload["version_count"] = cast(long)_store.versionCount(appId);
-    payload["push_configured"] = _store.hasPushConfig(appId);
-    payload["offline_configured"] = _store.hasOfflineConfig(appId);
-    return payload;
+    return Json.emptyObject
+      .set("application", app.toJson())
+      .set("user_count", cast(long)_store.userCount(appId))
+      .set("version_count", cast(long)_store.versionCount(appId))
+      .set("push_configured", _store.hasPushConfig(appId))
+      .set("offline_configured", _store.hasOfflineConfig(appId));
   }
 
   Json listApps() {
@@ -96,9 +95,9 @@ class MOBService : SAPService {
     foreach (ref app; apps)
       resources.appendArrayElement(app.toJson());
 
-    Json payload = Json.emptyObject;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)apps.length;
+    return Json.emptyObject
+      .set("resources", resources)
+      .set("total_results", cast(long)apps.length);
     return payload;
   }
 
@@ -137,18 +136,15 @@ class MOBService : SAPService {
     if (ver.versionId.length == 0)
       throw new MOBNotFoundException("Version", versionId);
 
-    Json payload = Json.emptyObject;
-    payload["version"] = ver.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("version", ver.toJson());
   }
 
   Json listVersions(string appId) {
     requireApp(appId);
-    auto vers = _store.listVersions(appId);
-    Json resources = Json.emptyArray;
-    foreach (ref v; vers)
-      resources.appendArrayElement(v.toJson());
-
+    auto versions = _store.listVersions(appId);
+    auto resources = versions.map!(v => resources.appendArrayElement(v.toJson())).array;
+    
     return Json.emptyObject
       .set("resources", resources)
       .set("total_results", cast(long)vers.length);
@@ -158,7 +154,6 @@ class MOBService : SAPService {
     requireApp(appId);
     if (!_store.deleteVersion(appId, versionId))
       throw new MOBNotFoundException("Version", versionId);
-
     return Json.emptyObject
       .set("success", true)
       .set("message", "Version deleted")
@@ -169,10 +164,11 @@ class MOBService : SAPService {
   Json activateVersion(string appId, string versionId) {
     requireApp(appId);
     auto ver = _store.getVersion(appId, versionId);
-    if (ver.versionId.length == 0)
+    if (
+      ver.versionId.length == 0)
       throw new MOBNotFoundException("Version", versionId);
-
-    ver.status = MOBVersionStatus.ACTIVE;
+    ver.status = MOBVersionStatus
+      .ACTIVE;
     ver.activatedAt = Clock.currTime();
     _store.upsertVersion(ver);
 
@@ -180,9 +176,7 @@ class MOBService : SAPService {
     auto app = _store.getApp(appId);
     app.activeVersion = versionId;
     app.updatedAt = Clock.currTime();
-    _store.upsertApp(app);
-
-    // Deprecate previous active versions
+    _store.upsertApp(app); // Deprecate previous active versions
     auto allVersions = _store.listVersions(appId);
     foreach (ref v; allVersions) {
       if (v.versionId != versionId && v.status == MOBVersionStatus.ACTIVE) {
@@ -209,7 +203,6 @@ class MOBService : SAPService {
       pc.createdAt = existing.createdAt;
     pc.updatedAt = Clock.currTime();
     _store.upsertPushConfig(pc);
-
     return Json.emptyObject
       .set("success", true)
       .set("push_config", pc.toJson());
@@ -219,7 +212,6 @@ class MOBService : SAPService {
     requireApp(appId);
     if (!_store.hasPushConfig(appId))
       throw new MOBNotFoundException("Push configuration", appId);
-
     return Json.emptyObject
       .set("push_config", _store.getPushConfig(appId).toJson());
   }
@@ -231,11 +223,12 @@ class MOBService : SAPService {
 
     auto pc = _store.getPushConfig(appId);
     if (!pc.enabled)
-      throw new MOBValidationException("Push notifications are disabled for app " ~ appId);
-
-    if (!("title" in request) || !request["title"].isString)
-      throw new MOBValidationException("title (string) is required");
-
+      throw new MOBValidationException(
+        "Push notifications are disabled for app " ~ appId);
+    if (
+      !("title" in request) || !request["title"].isString)
+      throw new MOBValidationException(
+        "title (string) is required");
     auto n = notificationFromJson(appId, request);
 
     // Simulate delivery to connected users
@@ -248,7 +241,6 @@ class MOBService : SAPService {
     }
 
     _store.recordNotification(n);
-
     return Json.emptyObject
       .set("success", true)
       .set("notification", n.toJson());
@@ -257,251 +249,195 @@ class MOBService : SAPService {
   Json listNotifications(string appId) {
     requireApp(appId);
     auto notifs = _store.listNotifications(appId);
-    Json resources = Json.emptyArray;
-    foreach (ref n; notifs)
-      resources.appendArrayElement(n.toJson());
+    Json resources = notifs.map!(
+      n => resources.appendArrayElement(n.toJson()).array; return Json.emptyObject
+        .set("resources", resources)
+        .set("total_results", cast(long)notifs.length);}
 
-    return Json.emptyObject
-      .set("resources", resources)
-      .set("total_results", cast(long)notifs.length);
-  }
+    // ══════════════════════════════════════
+    //  Offline Configuration
+    // ══════════════════════════════════════
 
-  // ══════════════════════════════════════
-  //  Offline Configuration
-  // ══════════════════════════════════════
+    Json setOfflineConfig(string appId, Json request) {
+      requireApp(appId); auto existing = _store.getOfflineConfig(
+        appId); auto oc = MOBOfflineConfig(appId, request); if (existing.appId.length > 0)
+        oc.createdAt = existing
+          .createdAt; if (oc.syncIntervalSecs == 0) oc.syncIntervalSecs = _config
+          .defaultSyncIntervalSecs; oc.updatedAt = Clock.currTime(); _store.upsertOfflineConfig(oc);
+      return Json.emptyObject
+        .set("success", true)
+        .set("offline_config", oc.toJson());}
 
-  Json setOfflineConfig(string appId, Json request) {
-    requireApp(appId);
-    auto existing = _store.getOfflineConfig(appId);
-    auto oc = MOBOfflineConfig(appId, request);
-    if (existing.appId.length > 0)
-      oc.createdAt = existing.createdAt;
-    if (oc.syncIntervalSecs == 0)
-      oc.syncIntervalSecs = _config.defaultSyncIntervalSecs;
-    oc.updatedAt = Clock.currTime();
-    _store.upsertOfflineConfig(oc);
+      Json getOfflineConfig(string appId) {
+        requireApp(appId); if (!_store.hasOfflineConfig(appId))
+          throw new MOBNotFoundException("Offline configuration", appId); return Json.emptyObject
+            .set("offline_config", _store.getOfflineConfig(appId)
+                .toJson());}
 
-    return Json.emptyObject
-      .set("success", true)
-      .set("offline_config", oc.toJson());
-  }
+        // ══════════════════════════════════════
+        //  Security Policies
+        // ══════════════════════════════════════
 
-  Json getOfflineConfig(string appId) {
-    requireApp(appId);
-    if (!_store.hasOfflineConfig(appId))
-      throw new MOBNotFoundException("Offline configuration", appId);
+        Json setSecurityPolicy(string appId, Json request) {
+          requireApp(appId); auto existing = _store.getSecurityPolicy(
+            appId); auto sp = securityPolicyFromJson(appId, request); if (existing.appId.length > 0)
+            sp.createdAt = existing
+              .createdAt; sp.updatedAt = Clock.currTime(); _store.upsertSecurityPolicy(sp);
+          return Json.emptyObject
+            .set("success", true)
+            .set("security_policy", sp.toJson());}
 
-    return Json.emptyObject
-      .set("offline_config", _store.getOfflineConfig(appId).toJson());
-  }
+          Json getSecurityPolicy(string appId) {
+            requireApp(appId); if (!_store.hasSecurityPolicy(appId))
+              throw new MOBNotFoundException("Security policy", appId); return Json.emptyObject
+                .set("security_policy", _store.getSecurityPolicy(appId)
+                    .toJson());}
 
-  // ══════════════════════════════════════
-  //  Security Policies
-  // ══════════════════════════════════════
+            // ══════════════════════════════════════
+            //  User Management
+            // ══════════════════════════════════════
 
-  Json setSecurityPolicy(string appId, Json request) {
-    requireApp(appId);
-    auto existing = _store.getSecurityPolicy(appId);
-    auto sp = securityPolicyFromJson(appId, request);
-    if (existing.appId.length > 0)
-      sp.createdAt = existing.createdAt;
-    sp.updatedAt = Clock.currTime();
-    _store.upsertSecurityPolicy(sp);
+            Json registerUser(string appId, string userId, Json request) {
+              requireApp(appId); if (_store.getUser(appId, userId).userId.length > 0)
+                throw new MOBConflictException("User connection", userId); if (
+                  _store.userCount(
+                    appId) >= _config.maxUsersPerApp)
+                  throw new MOBQuotaExceededException(
+                    "users for app " ~ appId, _config
+                      .maxUsersPerApp); auto uc = userConnectionFromJson(appId, userId, request);
+                    _store.upsertUser(uc); return Json.emptyObject
+                    .set("success", true)
+                    .set("user", uc.toJson());}
 
-    return Json.emptyObject
-      .set("success", true)
-      .set("security_policy", sp.toJson());
-  }
+                    Json getUser(string appId, string userId) {
+                      requireApp(appId); auto uc = _store.getUser(appId, userId); if (
+                        uc.userId.length == 0)
+                        throw new MOBNotFoundException(
+                          "User connection", userId); return Json.emptyObject
+                          .set("user", uc.toJson());}
 
-  Json getSecurityPolicy(string appId) {
-    requireApp(appId);
-    if (!_store.hasSecurityPolicy(appId))
-      throw new MOBNotFoundException("Security policy", appId);
+                      Json listUsers(string appId) {
+                        requireApp(appId); auto users = _store.listUsers(
+                          appId); Json resources = Json.emptyArray; foreach (ref u;
+                          users)
+                          resources.appendArrayElement(u.toJson()); return Json.emptyObject
+                            .set("resources", resources)
+                            .set("total_results", cast(long)users
+                                .length);}
 
-    return Json.emptyObject
-      .set("security_policy", _store.getSecurityPolicy(appId).toJson());
-  }
+                        Json lockUser(string appId, string userId) {
+                          requireApp(appId); auto uc = _store.getUser(appId, userId);
+                            if (uc.userId.length == 0) throw new MOBNotFoundException(
+                              "User connection", userId); uc.status = MOBConnectionStatus.LOCKED;
+                            _store.upsertUser(uc); return Json.emptyObject
+                            .set("success", true)
+                            .set("message", "User locked")
+                            .set("user", uc.toJson());}
 
-  // ══════════════════════════════════════
-  //  User Management
-  // ══════════════════════════════════════
+                            Json unlockUser(string appId, string userId) {
+                              requireApp(appId); auto uc = _store.getUser(appId, userId);
+                                if (uc.userId.length == 0) throw new MOBNotFoundException(
+                                  "User connection", userId); uc.status = MOBConnectionStatus
+                                .ACTIVE; _store.upsertUser(uc); return Json.emptyObject
+                                .set("success", true)
+                                .set("message", "User unlocked")
+                                .set("user", uc.toJson());}
 
-  Json registerUser(string appId, string userId, Json request) {
-    requireApp(appId);
-    if (_store.getUser(appId, userId).userId.length > 0)
-      throw new MOBConflictException("User connection", userId);
-    if (_store.userCount(appId) >= _config.maxUsersPerApp)
-      throw new MOBQuotaExceededException("users for app " ~ appId, _config.maxUsersPerApp);
+                                Json wipeUser(string appId, string userId) {
+                                  requireApp(appId); auto uc = _store.getUser(appId, userId);
+                                    if (uc.userId.length == 0) throw new MOBNotFoundException(
+                                      "User connection", userId); uc.status = MOBConnectionStatus
+                                    .WIPED; _store.upsertUser(uc); return Json.emptyObject
+                                    .set("success", true)
+                                    .set("message", "User data wiped")
+                                    .set("user", uc.toJson());}
 
-    auto uc = userConnectionFromJson(appId, userId, request);
-    _store.upsertUser(uc);
+                                    Json deleteUser(string appId, string userId) {
+                                      requireApp(appId); if (!_store.deleteUser(appId, userId))
+                                        throw new MOBNotFoundException("User connection", userId);
 
-    return Json.emptyObject
-      .set("success", true)
-      .set("user", uc.toJson());
-  }
+                                          return Json.emptyObject
+                                          .set("success", true)
+                                          .set("message", "User connection deleted")
+                                          .set("app_id", appId)
+                                          .set("user_id", userId);}
 
-  Json getUser(string appId, string userId) {
-    requireApp(appId);
-    auto uc = _store.getUser(appId, userId);
-    if (uc.userId.length == 0)
-      throw new MOBNotFoundException("User connection", userId);
+                                          // ══════════════════════════════════════
+                                          //  Usage Analytics
+                                          // ══════════════════════════════════════
 
-    return Json.emptyObject
-      .set("user", uc.toJson());
-  }
+                                          Json getAppAnalytics(string appId) {
+                                            requireApp(appId); return _store.appUsageReport(appId)
+                                              .toJson();}
 
-  Json listUsers(string appId) {
-    requireApp(appId);
-    auto users = _store.listUsers(appId);
-    Json resources = Json.emptyArray;
-    foreach (ref u; users)
-      resources.appendArrayElement(u.toJson());
+                                            // ══════════════════════════════════════
+                                            //  SDK Information
+                                            // ══════════════════════════════════════
 
-    return Json.emptyObject
-      .set("resources", resources)
-      .set("total_results", cast(long)users.length);
-  }
+                                            Json listSdks() {
+                                              Json resources = Json.emptyArray; Json mdk = Json.emptyObject
+                                                .set("type", "mdk")
+                                                .set("name", "Mobile Development Kit")
+                                                .set("description", "Cross-platform development using metadata-driven approach")
+                                                .set("platforms", jsonArray([
+                                                    "ios", "android",
+                                                    "web"
+                                                  ]))
+                                                .set("latest_version", "23.12.0");
 
-  Json lockUser(string appId, string userId) {
-    requireApp(appId);
-    auto uc = _store.getUser(appId, userId);
-    if (uc.userId.length == 0)
-      throw new MOBNotFoundException("User connection", userId);
+                                              resources.appendArrayElement(mdk); Json ios = Json.emptyObject
+                                                .set("type", "ios")
+                                                .set("name", "SAP BTP SDK for iOS")
+                                                .set("description", "Native iOS development with Swift and SwiftUI")
+                                                .set("platforms", jsonArray([
+                                                    "ios"
+                                                  ]))
+                                                .set("latest_version", "10.2.0"); resources.appendArrayElement(
+                                                  ios); Json android = Json.emptyObject
+                                                .set("type", "android")
+                                                .set("name", "SAP BTP SDK for Android")
+                                                .set("description", "Native Android development with Kotlin and Jetpack Compose")
+                                                .set("platforms", jsonArray([
+                                                    "android"
+                                                  ]))
+                                                .set("latest_version", "7.1.0"); resources.appendArrayElement(
+                                                  android); return Json.emptyObject
+                                                .set("resources", resources)
+                                                .set("total_results", 3);}
 
-    uc.status = MOBConnectionStatus.LOCKED;
-    _store.upsertUser(uc);
+                                              Json getSdk(string sdkType) {
+                                                auto sdks = listSdks(); foreach (size_t i, ref sdk;
+                                                  sdks["resources"]) {
+                                                  if (sdk["type"].get!string == sdkType) {
+                                                    return Json.emptyObject
+                                                      .set("sdk", sdk);}
+                                                  }
+                                                  throw new MOBNotFoundException("SDK", sdkType);
+                                                }
 
-    return Json.emptyObject
-      .set("success", true)
-      .set("message", "User locked")
-      .set("user", uc.toJson());
-  }
+                                                // ── Private helpers ──
 
-  Json unlockUser(string appId, string userId) {
-    requireApp(appId);
-    auto uc = _store.getUser(appId, userId);
-    if (uc.userId.length == 0)
-      throw new MOBNotFoundException("User connection", userId);
+                                                private void requireApp(string appId) {
+                                                  if (!_store.hasApp(appId))
+                                                    throw new MOBNotFoundException("Application", appId);
+                                                }
 
-    uc.status = MOBConnectionStatus.ACTIVE;
-    _store.upsertUser(uc);
+                                                private void validateAppId(string appId) {
+                                                  if (!isValidAppId(appId))
+                                                    throw new MOBValidationException(
+                                                      "Invalid app ID '" ~ appId ~ "': must be alphanumeric with hyphens/dots/underscores, 1-253 chars"
+                                                    );}
 
-    return Json.emptyObject
-      .set("success", true)
-      .set("message", "User unlocked")
-      .set("user", uc.toJson());
-  }
+                                                  private static bool isTargeted(string userId, const string[] targets) {
+                                                    foreach (t; targets)
+                                                      if (t == userId)
+                                                        return true; return false;
+                                                  }
 
-  Json wipeUser(string appId, string userId) {
-    requireApp(appId);
-    auto uc = _store.getUser(appId, userId);
-    if (uc.userId.length == 0)
-      throw new MOBNotFoundException("User connection", userId);
-
-    uc.status = MOBConnectionStatus.WIPED;
-    _store.upsertUser(uc);
-
-    return Json.emptyObject
-      .set("success", true)
-      .set("message", "User data wiped")
-      .set("user", uc.toJson());
-  }
-
-  Json deleteUser(string appId, string userId) {
-    requireApp(appId);
-    if (!_store.deleteUser(appId, userId))
-      throw new MOBNotFoundException("User connection", userId);
-
-    return Json.emptyObject
-      .set("success", true)
-      .set("message", "User connection deleted")
-      .set("app_id", appId)
-      .set("user_id", userId);
-  }
-
-  // ══════════════════════════════════════
-  //  Usage Analytics
-  // ══════════════════════════════════════
-
-  Json getAppAnalytics(string appId) {
-    requireApp(appId);
-    return _store.appUsageReport(appId).toJson();
-  }
-
-  // ══════════════════════════════════════
-  //  SDK Information
-  // ══════════════════════════════════════
-
-  Json listSdks() {
-    Json resources = Json.emptyArray;
-
-    Json mdk = Json.emptyObject
-    .set("type", "mdk")
-    .set("name", "Mobile Development Kit")
-    .set("description", "Cross-platform development using metadata-driven approach")
-    .set("platforms", jsonArray(["ios", "android", "web"]))
-    .set("latest_version", "23.12.0");
-
-    resources.appendArrayElement(mdk);
-
-    Json ios = Json.emptyObject
-    .set("type", "ios")
-    .set("name", "SAP BTP SDK for iOS")
-    .set("description", "Native iOS development with Swift and SwiftUI")
-    .set("platforms", jsonArray(["ios"]))
-    .set("latest_version", "10.2.0");
-    resources.appendArrayElement(ios);
-
-    Json android = Json.emptyObject
-    .set("type", "android")
-    .set("name", "SAP BTP SDK for Android")
-    .set("description", "Native Android development with Kotlin and Jetpack Compose")
-    .set("platforms", jsonArray(["android"]))
-    .set("latest_version", "7.1.0");
-    resources.appendArrayElement(android);
-
-    return Json.emptyObject
-    .set("resources", resources)
-    .set("total_results", 3);
-  }
-
-  Json getSdk(string sdkType) {
-    auto sdks = listSdks();
-    foreach (size_t i, ref sdk; sdks["resources"]) {
-      if (sdk["type"].get!string == sdkType) {
-        return Json.emptyObject
-        .set("sdk", sdk);
-      }
-    }
-    throw new MOBNotFoundException("SDK", sdkType);
-  }
-
-  // ── Private helpers ──
-
-  private void requireApp(string appId) {
-    if (!_store.hasApp(appId))
-      throw new MOBNotFoundException("Application", appId);
-  }
-
-  private void validateAppId(string appId) {
-    if (!isValidAppId(appId))
-      throw new MOBValidationException(
-        "Invalid app ID '" ~ appId ~ "': must be alphanumeric with hyphens/dots/underscores, 1-253 chars"
-      );
-  }
-
-  private static bool isTargeted(string userId, const string[] targets) {
-    foreach (t; targets)
-      if (t == userId)
-        return true;
-    return false;
-  }
-
-  private static Json jsonArray(string[] items) {
-    Json arr = Json.emptyArray;
-    foreach (s; items)
-      arr.appendArrayElement(Json(s));
-    return arr;
-  }
-}
+                                                  private static Json jsonArray(
+                                                    string[] items) {
+                                                    Json arr = Json.emptyArray; foreach (s;
+                                                      items)
+                                                      arr.appendArrayElement(Json(s));
+                                                        return arr;}
+                                                  }

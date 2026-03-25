@@ -124,7 +124,7 @@ class CDCService : SAPService {
     if (profile.isNull)
       throw new CDCNotFoundException(
         "Profile", userId);
-    
+
     return Json.emptyObject
       .set("profile", profile.get.toJson());
   }
@@ -149,7 +149,7 @@ class CDCService : SAPService {
     consent.updatedAt = now;
 
     auto saved = _store.upsertConsent(consent);
-    
+
     return Json.emptyObject
       .set("message", "Consent preference saved")
       .set("transparency_note", "Consent state is visible and auditable for the end user")
@@ -164,7 +164,7 @@ class CDCService : SAPService {
     Json consents = Json.emptyArray;
     foreach (consent; _store.listConsents(tenantId, userId))
       consents ~= consent.toJson();
-    
+
     return Json.emptyObject
       .set("tenant_id", tenantId)
       .set("user_id", userId)
@@ -192,7 +192,7 @@ class CDCService : SAPService {
     group.updatedAt = now;
     auto saved = _store.upsertSiteGroup(
       group);
-    
+
     return Json.emptyObject
       .set("message", "Global access site group saved")
       .set("site_group", saved.toJson());
@@ -203,7 +203,7 @@ class CDCService : SAPService {
     Json groups = Json.emptyArray;
     foreach (group; _store.listSiteGroups(tenantId))
       groups ~= group.toJson();
-      
+
     return Json.emptyObject
       .set("tenant_id", tenantId)
       .set("count", cast(long)groups.length)
@@ -221,7 +221,7 @@ class CDCService : SAPService {
 
     auto siteGroup = _store.getSiteGroup(tenantId, profile
         .get.siteGroupId);
-    
+
     Json payload = Json.emptyObject
       .set("tenant_id", tenantId)
       .set("user_id", userId)
@@ -230,322 +230,318 @@ class CDCService : SAPService {
       .set("site_group_id", profile.get.siteGroupId)
       .set("route", "regional-data-center");
 
-    if (!siteGroup.isNull) {
-      payload["site_group"] = siteGroup.get.toJson();
-      payload["site_allowed"] = site
-        .length == 0 || siteGroup.get.sites.canFind(site);
-      payload["region_allowed"] = siteGroup.get.regions.canFind(
-        profile.get.region);
-    } else {
-      payload["site_allowed"] = true;
-      payload["region_allowed"] = true;
-    }
-
-    return payload;
+    return !siteGroup.isNull
+      ? payload
+      .set("site_group", siteGroup.get.toJson())
+      .set("site_allowed", site.length == 0 || siteGroup.get.sites.canFind(site))
+      .set("region_allowed", siteGroup.get.regions.canFind(profile.get.region)) : payload
+      .set("site_allowed", true)
+      .set("region_allowed", true);
   }
+}
 
-  Json upsertRiskProvider(UUID tenantId, Json data) {
-    validateTenant(tenantId);
-    auto now = Clock.currTime();
+Json upsertRiskProvider(UUID tenantId, Json data) {
+  validateTenant(tenantId);
+  auto now = Clock.currTime();
 
-    CDCRiskProvider provider;
-    provider.tenantId = tenantId;
-    provider.providerid = requiredUUID(data, "provider_id");
-    provider.name = requiredString(data, "name");
-    provider.providerKind = normalizeProviderKind(requiredString(data, "provider_kind"));
-    provider.enabled = optionalBoolean("enabled", true);
-    provider.config = optionalObject(data, "config", Json.emptyObject);
-    provider.createdAt = now;
-    provider.updatedAt = now;
-    auto saved = _store.upsertRiskProvider(
-      provider);
+  CDCRiskProvider provider;
+  provider.tenantId = tenantId;
+  provider.providerid = requiredUUID(data, "provider_id");
+  provider.name = requiredString(data, "name");
+  provider.providerKind = normalizeProviderKind(requiredString(data, "provider_kind"));
+  provider.enabled = optionalBoolean("enabled", true);
+  provider.config = optionalObject(data, "config", Json.emptyObject);
+  provider.createdAt = now;
+  provider.updatedAt = now;
+  auto saved = _store.upsertRiskProvider(
+    provider);
 
-    return Json.emptyObject
-      .set("message", "Risk provider configured")
-      .set("provider", saved.toJson());
-  }
+  return Json.emptyObject
+    .set("message", "Risk provider configured")
+    .set("provider", saved.toJson());
+}
 
-  Json listRiskProviders(UUID tenantId) {
-    validateTenant(tenantId);
-    Json providers = _store.listRiskProviders(tenantId)
-      .map!(provider => provider.toJson()).array.toJson;
+Json listRiskProviders(UUID tenantId) {
+  validateTenant(tenantId);
+  Json providers = _store.listRiskProviders(tenantId)
+    .map!(provider => provider.toJson()).array.toJson;
 
-    return Json.emptyObject
-      .set("tenant_id", tenantId)
-      .set("count", cast(long)providers.length)
-      .set("providers", providers);
-  }
+  return Json.emptyObject
+    .set("tenant_id", tenantId)
+    .set("count", cast(long)providers.length)
+    .set("providers", providers);
+}
 
-  Json authenticate(UUID tenantId, Json data) {
-    validateTenant(tenantId);
-    auto userid = requiredUUID(data, "user_id");
-    auto password = requiredString(data, "password");
-    auto ipAddress = optionalString(data, "ip_address", "");
+Json authenticate(UUID tenantId, Json data) {
+  validateTenant(tenantId);
+  auto userid = requiredUUID(data, "user_id");
+  auto password = requiredString(data, "password");
+  auto ipAddress = optionalString(data, "ip_address", "");
 
-    auto profileOpt = _store.getProfileByTenantUser(tenantId, userId);
-    if (profileOpt.isNull)
-      throw new CDCNotFoundException("Profile", userId);
+  auto profileOpt = _store.getProfileByTenantUser(tenantId, userId);
+  if (profileOpt.isNull)
+    throw new CDCNotFoundException("Profile", userId);
 
-    auto profile = profileOpt.get;
-    auto now = Clock.currTime();
+  auto profile = profileOpt.get;
+  auto now = Clock.currTime();
 
-    if (profile.hasLockedUntil && now < profile.lockedUntil) {
-      return deniedAuthPayload(tenantId, userId, ipAddress, "deny_locked", "high", 100, Json
-          .emptyObject);
-    }
-
-    auto providerSignals = readObject(data, "provider_signals", Json
+  if (profile.hasLockedUntil && now < profile.lockedUntil) {
+    return deniedAuthPayload(tenantId, userId, ipAddress, "deny_locked", "high", 100, Json
         .emptyObject);
-    auto riskScore = evaluateRiskScore(profile, ipAddress, providerSignals);
-    auto riskLevel = riskLevelForScore(riskScore);
+  }
 
-    if (profile.passwordSecret != password) {
-      profile.failedLoginAttempts += 1;
-      profile.updatedAt = now;
+  auto providerSignals = readObject(data, "provider_signals", Json
+      .emptyObject);
+  auto riskScore = evaluateRiskScore(profile, ipAddress, providerSignals);
+  auto riskLevel = riskLevelForScore(riskScore);
 
-      if (profile.failedLoginAttempts >= 5) {
-        profile.hasLockedUntil = true;
-        profile.lockedUntil = now + dur!"minutes"(
-          30);
-      }
+  if (profile.passwordSecret != password) {
+    profile.failedLoginAttempts += 1;
+    profile.updatedAt = now;
 
-      _store.upsertProfile(profile);
-      return deniedAuthPayload(
-        tenantId,
-        userId,
-        ipAddress,
-        "deny_invalid_credentials",
-        riskLevel,
-        riskScore,
-        providerSignals
-      );
+    if (profile.failedLoginAttempts >= 5) {
+      profile.hasLockedUntil = true;
+      profile.lockedUntil = now + dur!"minutes"(
+        30);
     }
 
-    if (riskLevel == "high") {
-      profile.updatedAt = now;
-      _store.upsertProfile(
-        profile);
-      Json payload = deniedAuthPayload(
-        tenantId,
-        userId,
-        ipAddress,
-        "challenge",
-        riskLevel,
-        riskScore,
-        providerSignals
-      );
-      payload["step_up_required"] = true;
-      payload["recommended_providers"] = supportedRiskProviderKinds();
-      return payload;
-    }
+    _store.upsertProfile(profile);
+    return deniedAuthPayload(
+      tenantId,
+      userId,
+      ipAddress,
+      "deny_invalid_credentials",
+      riskLevel,
+      riskScore,
+      providerSignals
+    );
+  }
 
-    profile.failedLoginAttempts = 0;
-    profile.hasLockedUntil = false;
+  if (riskLevel == "high") {
     profile.updatedAt = now;
     _store.upsertProfile(
       profile);
-    auto event = appendAuthEvent(
+    Json payload = deniedAuthPayload(
       tenantId,
       userId,
-      "internal-password",
       ipAddress,
-      "allow",
+      "challenge",
       riskLevel,
       riskScore,
-      providerSignals,
-      now
+      providerSignals
     );
-
-    return super.toJson
-      .set("decision", "allow")
-      .set("risk_level", riskLevel)
-      .set("risk_score", riskScore)
-      .set("session", Json.emptyObject)
-      .set("session", "sess-" ~ userId ~ "-" ~ to!string(now.stdTime))
-      .set("session", 3600)
-      .set("profile", profile.toJson())
-      .set("auth_event", event.toJson());
-  }
-
-  Json listAuthEvents(UUID tenantId, size_t limit) {
-    validateTenant(tenantId);
-    auto safeLimit = limit == 0 ? 100 : limit;
-    Json events = Json.emptyArray;
-    foreach (event; _store.listAuthEvents(tenantId, safeLimit))
-      events ~= event.toJson();
-    
-    return Json.emptyObject
-    .set("tenant_id", tenantId)
-    .set("count", cast(long)events.length)
-    .set("events", events);
-  }
-
-  private Json deniedAuthPayload(
-    UUID tenantId,
-    string userId,
-    string ipAddress,
-    string decision,
-    string riskLevel,
-    long riskScore,
-    Json providerSignals
-  ) {
-    auto now = Clock.currTime();
-    auto event = appendAuthEvent(
-      tenantId,
-      userId,
-      "internal-password",
-      ipAddress,
-      decision,
-      riskLevel,
-      riskScore,
-      providerSignals,
-      now
-    );
-    Json payload = Json.emptyObject;
-    payload["decision"] = decision;
-    payload["risk_level"] = riskLevel;
-    payload["risk_score"] = riskScore;
-    payload["auth_event"] = event.toJson();
-    payload["message"] = decision == "challenge"
-      ? "Step-up authentication required" : "Authentication blocked by account protection";
+    payload["step_up_required"] = true;
+    payload["recommended_providers"] = supportedRiskProviderKinds();
     return payload;
   }
 
-  private CDCAuthEvent appendAuthEvent(
-    UUID tenantId,
-    string userId,
-    string providerId,
-    string ipAddress,
-    string decision,
-    string riskLevel,
-    long riskScore,
-    Json signals,
-    SysTime now
-  ) {
-    CDCAuthEvent event;
-    event.tenantId = UUID(
-      tenantId);
-    event.eventId = "evt-" ~ to!string(
-      now.stdTime);
-    event.userId = userId;
-    event.providerId = providerId;
-    event.ipAddress = ipAddress;
-    event.decision = decision;
-    event.riskLevel = riskLevel;
-    event.riskScore = riskScore;
-    event.providerSignals = signals;
-    event.createdAt = now;
-    return _store.appendAuthEvent(
-      event);
-  }
+  profile.failedLoginAttempts = 0;
+  profile.hasLockedUntil = false;
+  profile.updatedAt = now;
+  _store.upsertProfile(
+    profile);
+  auto event = appendAuthEvent(
+    tenantId,
+    userId,
+    "internal-password",
+    ipAddress,
+    "allow",
+    riskLevel,
+    riskScore,
+    providerSignals,
+    now
+  );
 
-  private long evaluateRiskScore(CDCProfile profile, string ipAddress, Json providerSignals) {
-    long score = 0;
-    if (
-      profile.failedLoginAttempts >= 3)
-      score += 30;
-    if (
-      profile.hasLockedUntil)
+  return super.toJson
+    .set("decision", "allow")
+    .set("risk_level", riskLevel)
+    .set("risk_score", riskScore)
+    .set("session", Json.emptyObject)
+    .set("session", "sess-" ~ userId ~ "-" ~ to!string(now.stdTime))
+    .set("session", 3600)
+    .set("profile", profile.toJson())
+    .set("auth_event", event.toJson());
+}
+
+Json listAuthEvents(UUID tenantId, size_t limit) {
+  validateTenant(tenantId);
+  auto safeLimit = limit == 0 ? 100 : limit;
+  Json events = Json.emptyArray;
+  foreach (event; _store.listAuthEvents(tenantId, safeLimit))
+    events ~= event.toJson();
+
+  return Json.emptyObject
+    .set("tenant_id", tenantId)
+    .set("count", cast(long)events.length)
+    .set("events", events);
+}
+
+private Json deniedAuthPayload(
+  UUID tenantId,
+  string userId,
+  string ipAddress,
+  string decision,
+  string riskLevel,
+  long riskScore,
+  Json providerSignals
+) {
+  auto now = Clock.currTime();
+  auto event = appendAuthEvent(
+    tenantId,
+    userId,
+    "internal-password",
+    ipAddress,
+    decision,
+    riskLevel,
+    riskScore,
+    providerSignals,
+    now
+  );
+
+  return Json.emptyObject
+    .set("decision", decision)
+    .set("risk_level", riskLevel)
+    .set("risk_score", riskScore)
+    .set("auth_event", event.toJson())
+    .set("message", decision == "challenge"
+        ? "Step-up authentication required" : "Authentication blocked by account protection");
+}
+
+private CDCAuthEvent appendAuthEvent(
+  UUID tenantId,
+  string userId,
+  string providerId,
+  string ipAddress,
+  string decision,
+  string riskLevel,
+  long riskScore,
+  Json signals,
+  SysTime now
+) {
+  CDCAuthEvent event;
+  event.tenantId = UUID(
+    tenantId);
+  event.eventId = "evt-" ~ to!string(
+    now.stdTime);
+  event.userId = userId;
+  event.providerId = providerId;
+  event.ipAddress = ipAddress;
+  event.decision = decision;
+  event.riskLevel = riskLevel;
+  event.riskScore = riskScore;
+  event.providerSignals = signals;
+  event.createdAt = now;
+  return _store.appendAuthEvent(
+    event);
+}
+
+private long evaluateRiskScore(CDCProfile profile, string ipAddress, Json providerSignals) {
+  long score = 0;
+  if (
+    profile.failedLoginAttempts >= 3)
+    score += 30;
+  if (
+    profile.hasLockedUntil)
+    score += 40;
+
+  if (ipAddress.length == 0)
+    score += 5;
+
+  if ("recaptcha_score" in providerSignals && providerSignals["recaptcha_score"]
+    .isFloat) {
+    if (providerSignals["recaptcha_score"]
+      .get!double < 0.5)
       score += 40;
-
-    if (ipAddress.length == 0)
-      score += 5;
-
-    if ("recaptcha_score" in providerSignals && providerSignals["recaptcha_score"]
-      .isFloat) {
-      if (providerSignals["recaptcha_score"]
-        .get!double < 0.5)
-        score += 40;
-    }
-
-    if ("akamai_risk" in providerSignals && providerSignals["akamai_risk"]
-      .isBoolean) {
-      if (
-        providerSignals["akamai_risk"]
-        .get!bool)
-        score += 30;
-    }
-
-    if ("arkose_result" in providerSignals && providerSignals["arkose_result"]
-      .isString) {
-      if (toLower(
-          providerSignals["arkose_result"].get!string) == "suspicious")
-        score += 35;
-    }
-
-    if ("transunion_score" in providerSignals && providerSignals["transunion_score"]
-      .isInteger) {
-      if (
-        providerSignals["transunion_score"].get!long > 700)
-        score += 20;
-    }
-
-    if ("impossible_travel" in providerSignals && providerSignals["impossible_travel"]
-      .isBoolean) {
-      if (
-        providerSignals["impossible_travel"]
-        .get!bool)
-        score += 25;
-    }
-
-    if (score > 100)
-      score = 100;
-    return score;
   }
 
-  private string riskLevelForScore(
-    long score) {
-    if (score >= 70)
-      return "high";
-    if (score >= 30)
-      return "medium";
-    return "low";
-  }
-
-  private Json supportedRiskProviderKinds() {
-    Json values = Json.emptyArray;
-    values ~= "google-recaptcha";
-    values ~= "akamai";
-    values ~= "arkose-labs";
-    values ~= "transunion";
-    values ~= "custom";
-    return values;
-  }
-
-  private void validateRegion(
-    string value) const {
-    if (value.length == 0)
-      throw new CDCValidationException(
-        "region is required");
-  }
-
-  private string normalizeConsentStatus(
-    string value) const {
-    auto normalized = toLower(value);
-    if (normalized != "granted" && normalized != "withdrawn" && normalized != "pending") {
-      throw new CDCValidationException("status must be one of granted|withdrawn|pending");
-    }
-    return normalized;
-  }
-
-  private string normalizeProviderKind(
-    string value) const {
-    auto normalized = toLower(value);
+  if ("akamai_risk" in providerSignals && providerSignals["akamai_risk"]
+    .isBoolean) {
     if (
-      normalized != "google-recaptcha" && normalized != "akamai" && normalized != "arkose-labs" &&
-      normalized != "transunion" && normalized != "custom"
-      ) {
-      throw new CDCValidationException(
-        "provider_kind must be one of google-recaptcha|akamai|arkose-labs|transunion|custom"
-      );
-    }
-    return normalized;
+      providerSignals["akamai_risk"]
+      .get!bool)
+      score += 30;
   }
 
-  private bool readrequestgetBoolean(Json data, string key, bool fallback) const {
-    if (!(key in data) || data[key].isNull)
-      return fallback;
-    requiredBooleanType(data, key);
-    return data[key].get!bool;
+  if ("arkose_result" in providerSignals && providerSignals["arkose_result"]
+    .isString) {
+    if (toLower(
+        providerSignals["arkose_result"].get!string) == "suspicious")
+      score += 35;
   }
+
+  if ("transunion_score" in providerSignals && providerSignals["transunion_score"]
+    .isInteger) {
+    if (
+      providerSignals["transunion_score"].get!long > 700)
+      score += 20;
+  }
+
+  if ("impossible_travel" in providerSignals && providerSignals["impossible_travel"]
+    .isBoolean) {
+    if (
+      providerSignals["impossible_travel"]
+      .get!bool)
+      score += 25;
+  }
+
+  if (score > 100)
+    score = 100;
+  return score;
+}
+
+private string riskLevelForScore(
+  long score) {
+  if (score >= 70)
+    return "high";
+  if (score >= 30)
+    return "medium";
+  return "low";
+}
+
+private Json supportedRiskProviderKinds() {
+  return [
+    "google-recaptcha",
+    "akamai",
+    "arkose-labs",
+    "transunion",
+    "custom"
+  ].toJson;
+}
+
+private void validateRegion(
+  string value) const {
+  if (value.length == 0)
+    throw new CDCValidationException(
+      "region is required");
+}
+
+private string normalizeConsentStatus(
+  string value) const {
+  auto normalized = toLower(value);
+  if (normalized != "granted" && normalized != "withdrawn" && normalized != "pending") {
+    throw new CDCValidationException("status must be one of granted|withdrawn|pending");
+  }
+  return normalized;
+}
+
+private string normalizeProviderKind(
+  string value) const {
+  auto normalized = toLower(value);
+  if (
+    normalized != "google-recaptcha" && normalized != "akamai" && normalized != "arkose-labs" &&
+    normalized != "transunion" && normalized != "custom"
+    ) {
+    throw new CDCValidationException(
+      "provider_kind must be one of google-recaptcha|akamai|arkose-labs|transunion|custom"
+    );
+  }
+  return normalized;
+}
+
+private bool readrequestgetBoolean(Json data, string key, bool fallback) const {
+  if (!(key in data) || data[key].isNull)
+    return fallback;
+  requiredBooleanType(data, key);
+  return data[key].get!bool;
+}
 }

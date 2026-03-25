@@ -16,14 +16,13 @@ struct KYMEvent {
     SysTime timestamp;
 
     override Json toJson()  {
-        Json payload = Json.emptyObject;
-        payload["id"] = id;
-        payload["event_type"] = eventType;
-        payload["source"] = source;
-        payload["namespace"] = namespace;
-        payload["data"] = data;
-        payload["timestamp"] = timestamp.toISOExtString();
-        return payload;
+        return super.toJson()
+        .set("id", id)
+        .set("event_type", eventType)
+        .set("source", source)
+        .set("namespace", namespace)
+        .set("data", data)
+        .set("timestamp", timestamp.toISOExtString());
     }
 }
 

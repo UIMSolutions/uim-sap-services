@@ -63,11 +63,10 @@ class MDGService : SAPService {
       resources ~= bp.toJson();
     }
 
-    Json payload = Json.emptyObject;
-    payload["tenant_id"] = tenantId;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)resources.length;
-    return payload;
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json updateWorkflowState(UUID tenantId, string bpId, Json request) {
@@ -95,10 +94,9 @@ class MDGService : SAPService {
 
     auto saved = _store.upsertBusinessPartner(bp);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["business_partner"] = saved.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("business_partner", saved.toJson());
   }
 
   Json ingestBusinessPartners(UUID tenantId, Json request) {
@@ -126,12 +124,11 @@ class MDGService : SAPService {
       ++ingested;
     }
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["tenant_id"] = tenantId;
-    payload["source"] = source;
-    payload["ingested"] = ingested;
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("tenant_id", tenantId)
+      .set("source", source)
+      .set("ingested", ingested);
   }
 
   Json detectDuplicates(UUID tenantId) {

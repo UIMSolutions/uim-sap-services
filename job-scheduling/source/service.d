@@ -210,33 +210,31 @@ HTML";
   }
 
   Json testAlertConnector(Json request) {
-    Json data = Json.emptyObject;
-
     if (_config.alertEndpoint.length == 0) {
-      data["success"] = false;
-      data["connected"] = false;
-      data["message"] = "JOBS_ALERT_ENDPOINT is not configured";
-      return data;
+      return Json.emptyObject
+        .set("success", false)
+        .set("connected", false)
+        .set("message", "JOBS_ALERT_ENDPOINT is not configured");
     }
 
-    Json payload = Json.emptyObject;
-    payload["tenant_id"] = optionalString(request, "tenant_id", "connector-test");
-    payload["alert_id"] = _store.nextId("alert-test");
-    payload["event_type"] = "CONNECTOR_TEST";
-    payload["job_id"] = optionalString(request, "job_id", "job-test");
-    payload["run_id"] = optionalString(request, "run_id", "run-test");
-    payload["status"] = "succeeded";
-    payload["severity"] = "info";
-    payload["message"] = optionalString(request, "message", "Alert connector test");
-    payload["created_at"] = Clock.currTime().toISOExtString();
+    Json payload = Json.emptyObject
+      .set("tenant_id", optionalString(request, "tenant_id", "connector-test"))
+      .set("alert_id", _store.nextId("alert-test"))
+      .set("event_type", "CONNECTOR_TEST")
+      .set("job_id", optionalString(request, "job_id", "job-test"))
+      .set("run_id", optionalString(request, "run_id", "run-test"))
+      .set("status", "succeeded")
+      .set("severity", "info")
+      .set("message", optionalString(request, "message", "Alert connector test"))
+      .set("created_at", Clock.currTime().toISOExtString());
 
     sendAlertNotification(payload, true);
 
-    data["success"] = true;
-    data["connected"] = true;
-    data["endpoint"] = _config.alertEndpoint;
-    data["payload"] = payload;
-    return data;
+    return Json.emptyObject
+      .set("success", true)
+      .set("connected", true)
+      .set("endpoint", _config.alertEndpoint)
+      .set("payload", payload);
   }
 
   Json testCloudAlmConnector(Json request) {
@@ -291,10 +289,9 @@ HTML";
 
     auto saved = _store.upsertJob(item);
 
-    Json data = Json.emptyObject;
-    data["success"] = true;
-    data["job"] = saved.toJson();
-    return data;
+    return Json.emptyObject
+      .set("success", true)
+      .set("job", saved.toJson());
   }
 
   Json listJobs(UUID tenantId) {
@@ -359,10 +356,9 @@ HTML";
       throw new JobSchedulingNotFoundException("Job", jobId);
     }
 
-    Json data = Json.emptyObject;
-    data["success"] = true;
-    data["job_id"] = jobId;
-    return data;
+    return Json.emptyObject
+      .set("success", true)
+      .set("job_id", jobId);
   }
 
   Json createSchedule(UUID tenantId, Json request) {
@@ -390,10 +386,9 @@ HTML";
 
     auto saved = _store.upsertSchedule(item);
 
-    Json data = Json.emptyObject;
-    data["success"] = true;
-    data["schedule"] = saved.toJson();
-    return data;
+    return Json.emptyObject
+      .set("success", true)
+      .set("schedule", saved.toJson());
   }
 
   Json listSchedules(UUID tenantId) {
@@ -417,9 +412,8 @@ HTML";
       throw new JobSchedulingNotFoundException("Schedule", scheduleId);
     }
 
-    Json data = Json.emptyObject;
-    data["schedule"] = item.toJson();
-    return data;
+    return Json.emptyObject
+      .set("schedule", item.toJson());
   }
 
   Json updateSchedule(UUID tenantId, string scheduleId, Json request) {
@@ -447,10 +441,9 @@ HTML";
 
     auto saved = _store.upsertSchedule(item);
 
-    Json data = Json.emptyObject;
-    data["success"] = true;
-    data["schedule"] = saved.toJson();
-    return data;
+    return Json.emptyObject
+      .set("success", true)
+      .set("schedule", saved.toJson());
   }
 
   Json deleteSchedule(UUID tenantId, string scheduleId) {
@@ -461,10 +454,9 @@ HTML";
       throw new JobSchedulingNotFoundException("Schedule", scheduleId);
     }
 
-    Json data = Json.emptyObject;
-    data["success"] = true;
-    data["schedule_id"] = scheduleId;
-    return data;
+    return Json.emptyObject
+      .set("success", true)
+      .set("schedule_id", scheduleId);
   }
 
   Json runJobNow(UUID tenantId, string jobId, Json request) {
@@ -494,10 +486,9 @@ HTML";
         run = *refreshed;
     }
 
-    Json data = Json.emptyObject;
-    data["success"] = true;
-    data["run"] = run.toJson();
-    return data;
+    return Json.emptyObject
+      .set("success", true)
+      .set("run", run.toJson());
   }
 
   Json runCFTask(UUID tenantId, Json request) {
@@ -558,10 +549,9 @@ HTML";
     foreach (item; _store.listRuns(tenantId))
       resources ~= item.toJson();
 
-    Json data = Json.emptyObject;
-    data["resources"] = resources;
-    data["total_results"] = cast(long)resources.length;
-    return data;
+    return Json.emptyObject
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json listAlerts(UUID tenantId) {
@@ -585,13 +575,13 @@ HTML";
     auto alerts = _store.listAlerts(tenantId);
     auto tasks = _store.listCFTaskRuns(tenantId);
 
-    Json data = Json.emptyObject;
-    data["tenant_id"] = tenantId;
-    data["jobs"] = cast(long)jobs.length;
-    data["schedules"] = cast(long)schedules.length;
-    data["runs"] = cast(long)runs.length;
-    data["alerts"] = cast(long)alerts.length;
-    data["cf_tasks"] = cast(long)tasks.length;
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("jobs", cast(long)jobs.length)
+      .set("schedules", cast(long)schedules.length)
+      .set("runs", cast(long)runs.length)
+      .set("alerts", cast(long)alerts.length)
+      .set("cf_tasks", cast(long)tasks.length);
     return data;
   }
 
@@ -778,14 +768,14 @@ HTML";
   }
 
   private void pushCloudAlm(RunLog run) {
-    Json payload = Json.emptyObject;
-    payload["tenant_id"] = run.tenantId;
-    payload["run_id"] = run.runId;
-    payload["job_id"] = run.jobId;
-    payload["status"] = run.status;
-    payload["runtime"] = run.runtime;
-    payload["started_at"] = run.startedAt.toISOExtString();
-    payload["finished_at"] = run.finishedAt.toISOExtString();
+    Json payload = Json.emptyObject
+    .set("tenant_id", run.tenantId)
+    .set("run_id", run.runId)
+    .set("job_id", run.jobId)
+    .set("status", run.status)
+    .set("runtime", run.runtime)
+    .set("started_at", run.startedAt.toISOExtString())
+    .set("finished_at", run.finishedAt.toISOExtString());
 
     sendCloudAlmTelemetry(payload, false);
   }
