@@ -12,37 +12,35 @@ mixin(ShowModule!());
 @safe:
 
 /// A single recommendation result returned to the caller.
-struct PRERecommendation {
-  string recommendationId;
-  string userId;
-  string itemId;
-  UUID tenantId;
+class PRERecommendation : SAPTenantObject {
+  mixin(SAPObjectTemplate!PRERecommendation);
+
+  UUID recommendationId;
+  UUID userId;
+  UUID itemId;
   string modelId;
   PRERecommendationType recommendationType;
   double score = 0.0;
   size_t rank;
   string[string] context;
   string explanation;
-  string createdAt;
 }
 
-Json recommendationToJson(const ref PRERecommendation r) {
-  Json j = Json.emptyObject;
-  j["recommendationId"] = r.recommendationId;
-  j["userId"] = r.userId;
-  j["itemId"] = r.itemId;
-  j["tenantId"] = r.tenantId;
-  j["modelId"] = r.modelId;
-  j["recommendationType"] = r.recommendationType.to!string;
-  j["score"] = r.score;
-  j["rank"] = cast(long)r.rank;
-  {
-    Json obj = Json.emptyObject;
-    foreach (k, v; r.context)
-      obj[k] = v;
-    j["context"] = obj;
-  }
-  j["explanation"] = r.explanation;
-  j["createdAt"] = r.createdAt;
-  return j;
+Json toJson() {
+  Json obj = Json.emptyObject;
+  foreach (k, v; r.context)
+    obj[k] = v;
+
+  return super.toJson
+    .set("recommendationId", r.recommendationId)
+    .set("userId", r.userId)
+    .set("itemId", r.itemId)
+    .set("tenantId", r.tenantId)
+    .set("modelId", r.modelId)
+    .set("recommendationType", r.recommendationType.to!string)
+    .set("score", r.score)
+    .set("rank", cast(long)r.rank)
+    .set("context", obj)
+    .set("explanation", r.explanation)
+    .set("createdAt", r.createdAt);
 }

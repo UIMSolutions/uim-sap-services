@@ -530,12 +530,10 @@ HTML";
     CIAWorkflow wf = new CIAWorkflow;
     if (!_store.tryGetWorkflow(tenantId, wfId, wf))
       throw new CIANotFoundException("Workflow not found: " ~ wfId);
-    auto j = wf.toJson();
-    Json tasks = Json.emptyArray;
-    foreach (t; _store.listTasks(tenantId, wfId))
-      tasks ~= t.toJson();
-    j["tasks"] = tasks;
-    return j;
+    Json tasks = _store.listTasks(tenantId, wfId).map!(t => t.toJson()).array;
+
+    return wf.toJson()
+    .set("tasks", tasks);
   }
 
   private string _buildSystemList(UUID tenantId, string[] systemIds) {
@@ -544,10 +542,9 @@ HTML";
     string[] parts;
     foreach (sid; systemIds) {
       CIASystem sys = new CIASystem;
-      if (_store.tryGetSystem(tenantId, sid, sys))
-        parts ~= sys.name ~ " (" ~ sys.systemType ~ ")";
-      else
-        parts ~= sid;
+      parts ~= _store.tryGetSystem(tenantId, sid, sys)
+        ? sys.name ~ " (" ~ sys.systemType ~ ")"
+        : sid;
     }
     return parts.join(", ");
   }

@@ -21,16 +21,16 @@ mixin(ShowModule!());
 class FFLPercentageEntry : SAPObject {
   mixin(SAPObjectTemplate!FFLPercentageEntry);
 
-  string variationId;
+  UUID variationId;
   uint weight = 0;
 
   override Json toJson() {
     return super.toJson()
-    j["variation_id"] = variationId;
-    j["weight"] = cast(long)weight;
-    return j;
+      .set("variation_id", variationId)
+      .set("weight", cast(long)weight);
   }
 }
+
 class FFLPercentageRule : SAPObject {
   mixin(SAPObjectTemplate!FFLPercentageRule);
 
@@ -38,40 +38,35 @@ class FFLPercentageRule : SAPObject {
   FFLPercentageEntry[] entries;
 
   override Json toJson() {
-    Json arr = Json.emptyArray;
-    foreach (entry; entries) {
-      arr ~= entry.toJson();
-    }
+    Json arr = entries.map!(e => e.toJson)().array;
 
     return super.toJson()
-    .set("rule_id", ruleId)
-    .set("entries", arr);
+      .set("rule_id", ruleId)
+      .set("entries", arr);
   }
 
   static FFLPercentageRule opCall(Json request) {
-  FFLPercentageRule r;
-  r.ruleId = randomUUID().toString();
+    FFLPercentageRule r;
+    r.ruleId = randomUUID().toString();
 
-  if ("entries" in request && request["entries"].isArray) {
-    () @trusted {
-      foreach (item; request["entries"]) {
-        FFLPercentageEntry entry;
-        if ("variation_id" in item && item["variation_id"].isString) {
-          entry.variationId = item["variation_id"].get!string;
+    if ("entries" in request && request["entries"].isArray) {
+      () @trusted {
+        foreach (item; request["entries"]) {
+          FFLPercentageEntry entry;
+          if ("variation_id" in item && item["variation_id"].isString) {
+            entry.variationId = item["variation_id"].get!string;
+          }
+          if ("weight" in item && item["weight"].isInteger) {
+            entry.weight = cast(uint)item["weight"].get!long;
+          }
+          r.entries ~= entry;
         }
-        if ("weight" in item && item["weight"].isInteger) {
-          entry.weight = cast(uint)item["weight"].get!long;
-        }
-        r.entries ~= entry;
-      }
-    }();
+      }();
+    }
+    if ("rule_id" in request && request["rule_id"].isString) {
+      r.ruleId = request["rule_id"].get!string;
+    }
+
+    return r;
   }
-  if ("rule_id" in request && request["rule_id"].isString) {
-    r.ruleId = request["rule_id"].get!string;
-  }
-
-  return r;
 }
-}
-
-

@@ -91,10 +91,11 @@ struct SLMComponent {
 // ---------------------------------------------------------------------------
 // SLMDeployment – a deployment/update operation record
 // ---------------------------------------------------------------------------
-struct SLMDeployment {
-  UUID tenantId;
-  string deploymentId;
-  string solutionId;
+class SLMDeployment : SAPTenantObject {
+  mixin(SAPObjectTemplate!SLMDeployment);
+
+  UUID deploymentId;
+  UUID solutionId;
   /// MTA archive reference (file path or URL)
   string mtaArchiveRef;
   string mtaVersion;
@@ -108,113 +109,22 @@ struct SLMDeployment {
   SysTime startedAt;
   SysTime finishedAt;
 
-  Json toJson() {
-    Json j = Json.emptyObject;
-    j["tenant_id"] = tenantId;
-    j["deployment_id"] = deploymentId;
-    j["solution_id"] = solutionId;
-    j["mta_archive_ref"] = mtaArchiveRef;
-    j["mta_version"] = mtaVersion;
-    j["action"] = action;
-    j["status"] = status;
-    j["triggered_by"] = triggeredBy;
-    j["error_message"] = errorMessage;
-    j["started_at"] = startedAt.toISOExtString();
-    j["finished_at"] = finishedAt.toISOExtString();
-    return j;
-  }
-}
-
-// ---------------------------------------------------------------------------
-// SLMSubscription – a multitenant subscription from a consumer subaccount
-// ---------------------------------------------------------------------------
-struct SLMSubscription {
-  UUID tenantId;
-  string subscriptionId;
-  string solutionId;
-  /// The subscribing (consumer) subaccount
-  string consumerSubaccountId;
-  string consumerTenantId;
-  /// Status: "subscribed" | "unsubscribing" | "unsubscribed" | "error"
-  string status;
-  /// License entitlement reference
-  string entitlementId;
-  string subscribedBy;
-  SysTime subscribedAt;
-  SysTime unsubscribedAt;
-
-  Json toJson() {
-    Json j = Json.emptyObject;
-    j["tenant_id"] = tenantId;
-    j["subscription_id"] = subscriptionId;
-    j["solution_id"] = solutionId;
-    j["consumer_subaccount_id"] = consumerSubaccountId;
-    j["consumer_tenant_id"] = consumerTenantId;
-    j["status"] = status;
-    j["entitlement_id"] = entitlementId;
-    j["subscribed_by"] = subscribedBy;
-    j["subscribed_at"] = subscribedAt.toISOExtString();
-    j["unsubscribed_at"] = unsubscribedAt.toISOExtString();
-    return j;
-  }
-}
-
-// ---------------------------------------------------------------------------
-// SLMLicense – license information associated with a solution
-// ---------------------------------------------------------------------------
-struct SLMLicense {
-  UUID tenantId;
-  string licenseId;
-  string solutionId;
-  /// Plan: e.g., "standard", "enterprise"
-  string plan;
-  /// Quota limit (e.g., number of users or API calls)
-  long quotaLimit;
-  long quotaUsed;
-  string status; // "active" | "expired" | "suspended"
-  SysTime validFrom;
-  SysTime validUntil;
-
-  Json toJson() {
+  override Json toJson() {
     return super.toJson()
-     .set("tenant_id", tenantId)
-     .set("license_id", licenseId)
-     .set("solution_id", solutionId)
-     .set("plan", plan)
-     .set("quota_limit", quotaLimit)
-     .set("quota_used", quotaUsed)
-     .set("status", status)
-     .set("valid_from", validFrom.toISOExtString())
-     .set("valid_until", validUntil.toISOExtString());
+      .set("deployment_id", deploymentId)
+      .set("solution_id", solutionId)
+      .set("mta_archive_ref", mtaArchiveRef)
+      .set("mta_version", mtaVersion)
+      .set("action", action)
+      .set("status", status)
+      .set("triggered_by", triggeredBy)
+      .set("error_message", errorMessage)
+      .set("started_at", startedAt.toISOExtString())
+      .set("finished_at", finishedAt.toISOExtString());
   }
 }
 
-// ---------------------------------------------------------------------------
-// SLMOperationLog – audit/monitoring log for solution operations
-// ---------------------------------------------------------------------------
-struct SLMOperationLog {
-  UUID tenantId;
-  string logId;
-  string solutionId;
-  string deploymentId;
-  /// Action: "deployed" | "updated" | "deleted" | "subscribed" | "unsubscribed" |
-  ///         "component-started" | "component-stopped" | "error"
-  string action;
-  string message;
-  /// Level: "info" | "warning" | "error"
-  string level;
-  SysTime timestamp;
 
-  Json toJson() {
-    Json j = Json.emptyObject;
-    j["tenant_id"] = tenantId;
-    j["log_id"] = logId;
-    j["solution_id"] = solutionId;
-    j["deployment_id"] = deploymentId;
-    j["action"] = action;
-    j["message"] = message;
-    j["level"] = level;
-    j["timestamp"] = timestamp.toISOExtString();
-    return j;
-  }
-}
+
+
+

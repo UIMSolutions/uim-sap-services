@@ -178,9 +178,8 @@ class PREService : SAPService {
       throw new PRENotFoundException("User not found: " ~ userId);
     }
 
-    Json j = Json.emptyObject;
-    j["deleted"] = userId;
-    return j;
+    return Json.emptyObject
+    .set("deleted", userId);
   }
 
   // ──────────────────────────────────────

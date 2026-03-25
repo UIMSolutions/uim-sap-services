@@ -44,7 +44,7 @@ Json scenarioToJson(const ref PREScenario s) {
 }
 
 PREScenario scenarioFromJson(Json j) {
-  PREScenario s;
+  PREScenario s = new PREScenario(j);
   s.scenarioId = j.getString("scenarioId", "");
   s.tenantId = j.getString("tenantId", "");
   s.name = j["name"].get!string;

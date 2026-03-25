@@ -17,7 +17,7 @@ import uim.sap.obs.enumerations;
 class OBSBucket : SAPTenantObject {
   mixin(SAPObjectTemplate!OBSBucket);
 
-  string bucketId;
+  UUID bucketId;
   string name;
   OBSProvider provider = OBSProvider.awsS3;
   OBSBucketStatus status = OBSBucketStatus.active;
@@ -59,9 +59,9 @@ class OBSBucket : SAPTenantObject {
       .set("replication_factor", replicationFactor.to!long);
   }
 
-  static OBSBucket opCall(string bucketId, Json req) {
+  static OBSBucket opCall(UUID bucketId, Json req) {
     OBSBucket b = new OBSBucket(req);
-    b.bucketId = bucketId;
+    b.bucketId = UUID(bucketId);
     b.createdAt = Clock.currTime();
     b.updatedAt = b.createdAt;
 

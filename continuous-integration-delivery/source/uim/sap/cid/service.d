@@ -25,9 +25,9 @@ class CIDService : SAPService {
   // -----------------------------------------------------------------------
   override Json health() {
     return super.health()
-    .set("runtime", _config.runtime)
-    .set("multitenancy", true)
-    .set("domain", "continuous-integration-delivery");
+      .set("runtime", _config.runtime)
+      .set("multitenancy", true)
+      .set("domain", "continuous-integration-delivery");
   }
 
   // -----------------------------------------------------------------------
@@ -51,13 +51,13 @@ class CIDService : SAPService {
     CIDRepository r;
     r.tenantId = tenantId;
     r.repoId = "repo_id" in payload ? payload["repo_id"].get!string : createId();
-    r.name = jstr(payload, "name", r.repoId);
-    r.description = jstr(payload, "description");
+    r.name = payload.getString("name", r.repoId);
+    r.description = payload.getString("description");
     r.cloneUrl = payload["clone_url"].get!string;
-    r.defaultBranch = jstr(payload, "default_branch", "main");
-    r.credentialId = jstr(payload, "credential_id");
-    r.provider = jstr(payload, "provider", "github");
-    r.webhookSecret = jstr(payload, "webhook_secret");
+    r.defaultBranch = payload.getString("default_branch", "main");
+    r.credentialId = payload.getString("credential_id");
+    r.provider = payload.getString("provider", "github");
+    r.webhookSecret = payload.getString("webhook_secret");
     r.active = jbool(payload, "active", true);
     r.createdAt = Clock.currTime();
     r.updatedAt = r.createdAt;
@@ -75,24 +75,24 @@ class CIDService : SAPService {
   }
 
   Json getRepository(UUID tenantId, string repoId) {
-    CIDRepository r;
+    CIDRepository r = new CIDRepository;
     if (!_store.tryGetRepo(tenantId, repoId, r))
       throw new CIDNotFoundException("Repository", repoId);
-    auto j = r.toJson();
+
     // Embed pipelines using this repository
-    Json pipelines = Json.emptyArray;
-    foreach (p; _store.listPipelines(tenantId))
-      if (p.repositoryId == repoId)
-        pipelines ~= p.toJson();
-    j["pipelines"] = pipelines;
-    return j;
+    auto pipelines = _store.listPipelines(tenantId).filter!(p => p.repositoryId == repoId)
+      .map!(p => p.toJson())
+      .array;
+
+    return r.toJson()
+      .set("pipelines", pipelines);
   }
 
   Json removeRepository(UUID tenantId, string repoId) {
     if (!_store.removeRepo(tenantId, repoId))
       throw new CIDNotFoundException("Repository", repoId);
     _appendLog(tenantId, "", "", "info", "Repository removed: " ~ repoId);
-    
+
     return Json.emptyObject
       .set("deleted", repoId);
   }
@@ -108,15 +108,15 @@ class CIDService : SAPService {
     if (!("name" in payload) || payload["name"].get!string.length == 0)
       throw new CIDValidationException("Credential name is required");
 
-    CIDCredential c;
+    CIDCredential c = new CIDCredential;
     c.tenantId = tenantId;
     c.credentialId = "credential_id" in payload ? payload["credential_id"].get!string : createId();
     c.name = payload["name"].get!string;
-    c.description = jstr(payload, "description");
-    c.credentialType = jstr(payload, "credential_type", "token");
-    c.username = jstr(payload, "username");
-    c.token = jstr(payload, "token");
-    c.sshKey = jstr(payload, "ssh_key");
+    c.description = payload.getString("description");
+    c.credentialType = payload.getString("credential_type", "token");
+    c.username = payload.getString("username");
+    c.token = payload.getString("token");
+    c.sshKey = payload.getString("ssh_key");
     c.createdAt = Clock.currTime();
     c.updatedAt = c.createdAt;
 
@@ -150,7 +150,7 @@ class CIDService : SAPService {
     if (!("name" in payload) || payload["name"].get!string.length == 0)
       throw new CIDValidationException("Pipeline name is required");
 
-    auto repoId = jstr(payload, "repository_id");
+    auto repoId = payload.getString("repository_id");
     if (repoId.length > 0)
       _requireRepo(tenantId, repoId);
 
@@ -158,13 +158,13 @@ class CIDService : SAPService {
     p.tenantId = tenantId;
     p.pipelineId = "pipeline_id" in payload ? payload["pipeline_id"].get!string : createId();
     p.name = payload["name"].get!string;
-    p.description = jstr(payload, "description");
+    p.description = payload.getString("description");
     p.repositoryId = repoId;
-    p.branch = jstr(payload, "branch", "main");
-    p.pipelineType = jstr(payload, "pipeline_type", "custom");
-    p.deployTarget = jstr(payload, "deploy_target", "cloud-foundry");
-    p.deployEndpoint = jstr(payload, "deploy_endpoint");
-    p.deployCredentialId = jstr(payload, "deploy_credential_id");
+    p.branch = payload.getString("branch", "main");
+    p.pipelineType = payload.getString("pipeline_type", "custom");
+    p.deployTarget = payload.getString("deploy_target", "cloud-foundry");
+    p.deployEndpoint = payload.getString("deploy_endpoint");
+    p.deployCredentialId = payload.getString("deploy_credential_id");
     p.autoTrigger = jbool(payload, "auto_trigger", false);
     p.active = jbool(payload, "active", true);
     p.createdAt = Clock.currTime();
@@ -184,24 +184,23 @@ class CIDService : SAPService {
     return p.toJson();
   }
 
-  Json getPipeline(UUID tenantId, string pipelineId) {
-    CIDPipeline p;
+  Json getPipeline(UUID tenantId, UUID pipelineId) {
+    CIDPipeline p = new CIDPipeline;
     if (!_store.tryGetPipeline(tenantId, pipelineId, p))
       throw new CIDNotFoundException("Pipeline", pipelineId);
-    auto j = p.toJson();
+
     // Embed recent builds
-    Json builds = Json.emptyArray;
-    foreach (b; _store.listBuildsByPipeline(tenantId, pipelineId))
-      builds ~= b.toJson();
-    j["builds"] = builds;
-    return j;
+    auto builds = _store.listBuildsByPipeline(tenantId, pipelineId).map!(b => b.toJson()).array;
+
+    return p.toJson()
+      .set("builds", builds);
   }
 
-  Json removePipeline(UUID tenantId, string pipelineId) {
+  Json removePipeline(UUID tenantId, UUID pipelineId) {
     if (!_store.removePipeline(tenantId, pipelineId))
       throw new CIDNotFoundException("Pipeline", pipelineId);
     _appendLog(tenantId, "", "", "info", "Pipeline removed: " ~ pipelineId);
-    
+
     return Json.emptyObject
       .set("deleted", pipelineId);
   }
@@ -214,7 +213,7 @@ class CIDService : SAPService {
   }
 
   /// Trigger a new build for the given pipeline
-  Json triggerBuild(UUID tenantId, string pipelineId, Json payload) {
+  Json triggerBuild(UUID tenantId, UUID pipelineId, Json payload) {
     CIDPipeline p;
     if (!_store.tryGetPipeline(tenantId, pipelineId, p))
       throw new CIDNotFoundException("Pipeline", pipelineId);
@@ -237,10 +236,10 @@ class CIDService : SAPService {
     build.buildId = _store.nextId("build");
     build.pipelineId = pipelineId;
     build.buildNumber = nextNumber;
-    build.commitHash = jstr(payload, "commit_hash", "HEAD");
-    build.branch = jstr(payload, "branch", p.branch);
+    build.commitHash = payload.getString("commit_hash", "HEAD");
+    build.branch = payload.getString("branch", p.branch);
     build.status = "pending";
-    build.triggeredBy = jstr(payload, "triggered_by", "manual");
+    build.triggeredBy = payload.getString("triggered_by", "manual");
     build.createdAt = now;
     build.startedAt = now;
     _store.upsertBuild(build);

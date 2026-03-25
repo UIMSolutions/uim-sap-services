@@ -12,35 +12,39 @@ mixin(ShowModule!());
 @safe:
 
 /// A recorded user–item interaction used for training and inference.
-struct PREInteraction {
-  string interactionId;
-  string userId;
-  string itemId;
+class PREInteraction : SAPObject {
+  mixin(SAPObjectTemplate!PREInteraction);
+
+  UUID interactionId;
+  UUID userId;
+  UUID itemId;
   UUID tenantId;
   PREInteractionType interactionType = PREInteractionType.view;
   double weight = 1.0;
   string[string] context;
   string timestamp;
-}
 
-Json interactionToJson(const ref PREInteraction i) {
+  override Json toJson() {
   Json obj = Json.emptyObject;
-  foreach (k, v; i.context)
+  foreach (k, v; context)
     obj[k] = v;
 
-  return Json.emptyObject
-    .set("interactionId", i.interactionId)
-    .set("userId", i.userId)
-    .set("itemId", i.itemId)
-    .set("tenantId", i.tenantId)
-    .set("interactionType", i.interactionType.to!string)
-    .set("weight", i.weight)
+  return super.toJson()
+    .set("interactionId", interactionId)
+    .set("userId", userId)
+    .set("itemId", itemId)
+    .set("tenantId", tenantId)
+    .set("interactionType", interactionType.to!string)
+    .set("weight", weight)
     .set("context", obj)
-    .set("timestamp", i.timestamp)
+    .set("timestamp", timestamp);
+}
 }
 
+
+
 PREInteraction interactionFromJson(Json j) {
-  PREInteraction i;
+  PREInteraction i = new PREInteraction(j);
   i.interactionId = j.getString("interactionId", "");
   i.userId = j["userId"].get!string;
   i.itemId = j["itemId"].get!string;

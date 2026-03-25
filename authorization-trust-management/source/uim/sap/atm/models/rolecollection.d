@@ -24,20 +24,18 @@ class ATMRoleCollection : SAPTenantObject {
   UUID collectionId;
   string name;
   string description;
-  string[] technicalRoleIds;
+  UUID[] technicalRoleIds;
   SysTime updatedAt;
 
   override Json toJson() {
-    Json info = super.toJson;
     Json roleRefs = technicalRoleIds.map!(r => r.toJson).array.toJson).array.toJson;
-
-    payload["tenant_id"] = tenantId;
-    payload["collection_id"] = collectionId;
-    payload["name"] = name;
-    payload["description"] = description;
-    payload["technical_role_ids"] = roleRefs;
-
-    return payload;
+    
+    return super.toJson()
+      .set("tenant_id", tenantId)
+      .set("collection_id", collectionId)
+      .set("name", name)
+      .set("description", description)
+      .set("technical_role_ids", roleRefs);
   }
 }
 

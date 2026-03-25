@@ -120,7 +120,7 @@ class BASService : SAPService {
       .set("wizard_run", saved.toJson());
   }
 
-  Json listWizardRuns(UUID tenantId, string workspaceId) {
+  Json listWizardRuns(UUID tenantId, UUID workspaceId) {
     requireWorkspace(tenantId, workspaceId);
 
     Json runs = Json.emptyArray;
@@ -132,7 +132,7 @@ class BASService : SAPService {
       .set("count", cast(long)runs.length);
   }
 
-  Json createTerminalSession(UUID tenantId, string workspaceId, Json data) {
+  Json createTerminalSession(UUID tenantId, UUID workspaceId, Json data) {
     auto workspace = requireWorkspace(tenantId, workspaceId);
     if (!workspace.terminalEnabled)
       throw new BASValidationException("Terminal access is disabled for workspace");
@@ -153,7 +153,7 @@ class BASService : SAPService {
       .set("session", saved.toJson());
   }
 
-  Json listTerminalSessions(UUID tenantId, string workspaceId) {
+  Json listTerminalSessions(UUID tenantId, UUID workspaceId) {
     requireWorkspace(tenantId, workspaceId);
 
     Json sessions = Json.emptyArray;
@@ -165,7 +165,7 @@ class BASService : SAPService {
       .set("count", cast(long)sessions.length);
   }
 
-  Json runLocalTest(UUID tenantId, string workspaceId, Json data) {
+  Json runLocalTest(UUID tenantId, UUID workspaceId, Json data) {
     auto workspace = requireWorkspace(tenantId, workspaceId);
     if (!workspace.debugEnabled)
       throw new BASValidationException("Debug mode is disabled for workspace");
@@ -178,7 +178,7 @@ class BASService : SAPService {
       .set("duration_ms", 820);
   }
 
-  Json createDeployment(UUID tenantId, string workspaceId, Json data) {
+  Json createDeployment(UUID tenantId, UUID workspaceId, Json data) {
     requireWorkspace(tenantId, workspaceId);
 
     auto now = Clock.currTime();
@@ -198,7 +198,7 @@ class BASService : SAPService {
       .set("deployment", saved.toJson());
   }
 
-  Json listDeployments(UUID tenantId, string workspaceId) {
+  Json listDeployments(UUID tenantId, UUID workspaceId) {
     requireWorkspace(tenantId, workspaceId);
 
     Json deployments = Json.emptyArray;
@@ -212,39 +212,34 @@ class BASService : SAPService {
 
   Json availability() const {
 
-    Json regions = Json.emptyArray;
-    foreach (region; _config.regions)
-      regions ~= region;
+    auto regions = _config.regions.map!(r => r.toJson).array;
 
-    Json hyperscalers = Json.emptyArray;
-    foreach (provider; _config.hyperscalers)
-      hyperscalers ~= provider;
+    auto hyperscalers = _config.hyperscalers.map!(r => r.toJson).array;
 
-    Json payload = Json.emptyObject;
-    payload["multi_cloud"] = true;
-    payload["browser_access"] = true;
-    payload["regions"] = regions;
-    payload["hyperscalers"] = hyperscalers;
-    payload["desktop_like_experience"] = true;
-    return payload;
+    return Json.emptyObject
+      .set("multi_cloud", true)
+      .set("browser_access", true)
+      .set("regions", regions)
+      .set("hyperscalers", hyperscalers)
+      .set("desktop_like_experience", true);
   }
 
   private void seedReferenceContent() {
-    BASScenario fiori;
+    BASScenario fiori = new BASScenario;
     fiori.scenarioId = "fiori";
     fiori.name = "Fiori";
     fiori.description = "Build Fiori applications with guided tooling and templates.";
     fiori.supportedSolutions = ["SAPUI5", "Fiori elements", "CAP"];
     _scenarios ~= fiori;
 
-    BASScenario s4;
+    BASScenario s4 = new BASScenario;
     s4.scenarioId = "s4hana-extension";
     s4.name = "S/4HANA Extension";
     s4.description = "Develop side-by-side and key-user extension apps for S/4HANA.";
     s4.supportedSolutions = ["RAP", "CAP", "ABAP Environment"];
     _scenarios ~= s4;
 
-    BASScenario workflow;
+    BASScenario workflow = new BASScenario;
     workflow.scenarioId = "workflow";
     workflow.name = "Workflow";
     workflow.description = "Create process automation and approval workflow applications.";
@@ -253,7 +248,7 @@ class BASService : SAPService {
     ];
     _scenarios ~= workflow;
 
-    BASTemplate fioriTemplate;
+    BASTemplate fioriTemplate = new BASTemplate;
     fioriTemplate.templateId = "tpl-fiori-elements";
     fioriTemplate.scenarioId = "fiori";
     fioriTemplate.name = "Fiori Elements List Report";
@@ -261,7 +256,7 @@ class BASService : SAPService {
     fioriTemplate.graphicalEditor = true;
     _templates ~= fioriTemplate;
 
-    BASTemplate s4Template;
+    BASTemplate s4Template = new BASTemplate;
     s4Template.templateId = "tpl-s4-cap-extension";
     s4Template.scenarioId = "s4hana-extension";
     s4Template.name = "CAP Service Extension";
@@ -269,7 +264,7 @@ class BASService : SAPService {
     s4Template.graphicalEditor = false;
     _templates ~= s4Template;
 
-    BASTemplate workflowTemplate;
+    BASTemplate workflowTemplate = new BASTemplate;
     workflowTemplate.templateId = "tpl-workflow-approval";
     workflowTemplate.scenarioId = "workflow";
     workflowTemplate.name = "Workflow Approval App";
@@ -278,14 +273,16 @@ class BASService : SAPService {
     _templates ~= workflowTemplate;
   }
 
-  private BASWorkspace requireWorkspace(UUID tenantId, string workspaceId) {
+  private BASWorkspace requireWorkspace(UUID tenantId, UUID workspaceId) {
     validateTenant(tenantId);
+
     if (workspaceId.length == 0)
       throw new BASValidationException("workspace_id is required");
 
     auto workspace = _store.getWorkspace(tenantId, workspaceId);
     if (workspace.isNull)
       throw new BASNotFoundException("Workspace not found");
+
     return workspace.get;
   }
 
