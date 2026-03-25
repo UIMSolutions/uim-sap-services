@@ -14,7 +14,7 @@ mixin(ShowModule!());
 class ATMServer : SAPServer {
   mixin(SAPServerTemplate!ATMServer);
 
-  private ATMService _service;
+  protected ATMService _service;
 
   this(ATMService service) {
     _service = service;

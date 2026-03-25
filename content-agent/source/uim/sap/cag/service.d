@@ -553,13 +553,6 @@ HTML";
     return ordered.array;
   }
 
-
-
-  private void validateTenant(UUID tenantId) const {
-    if (tenantId.length == 0)
-      throw new CAGValidationException("tenant_id is required");
-  }
-
   private string normalizeContentType(string value) const {
     auto normalized = toLower(value);
     if (normalized != "application"

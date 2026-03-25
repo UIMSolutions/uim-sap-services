@@ -18,7 +18,7 @@ mixin(ShowModule!());
 class AlertNotificationService : SAPService {
   mixin(SAPServiceTemplate!AlertNotificationService);
 
-  private AlertNotificationStore _store;
+  protected AlertNotificationStore _store;
 
   this(AlertNotificationConfig config) {
     super(config);
@@ -40,10 +40,7 @@ class AlertNotificationService : SAPService {
   }
 
   Json listDeliveryOptions() {
-    Json resources = Json.emptyArray;
-    foreach (option; ALERT_DELIVERY_OPTIONS) {
-      resources ~= option;
-    }
+    auto resources = ALERT_DELIVERY_OPTIONS.map!(option => option).array;
 
     return Json.emptyObject
       .set("resources", resources)
@@ -69,12 +66,9 @@ class AlertNotificationService : SAPService {
     auto saved = _store.appendAlert(eventItem);
     auto deliveries = fanOut(saved);
 
-    Json deliveryList = Json.emptyArray;
-    foreach (delivery; deliveries) {
-      deliveryList ~= delivery.toJson();
-    }
+    auto deliveryList = deliveries.map!(delivery => delivery.toJson()).array;
 
-    Json result = Json.emptyObject
+    return Json.emptyObject
       .set("success", true)
       .set("event", saved.toJson())
       .set("deliveries", deliveryList)
@@ -84,11 +78,8 @@ class AlertNotificationService : SAPService {
   Json listAlerts(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
 
-    Json resources = Json.emptyArray;
-    foreach (eventItem; _store.listAlerts(tenantId)) {
-      resources ~= eventItem.toJson();
-    }
-    
+    auto resources = _store.listAlerts(tenantId).map!(eventItem => eventItem.toJson()).array;
+
     return Json.emptyObject
     .set("resources", resources)
     .set("total_results", cast(long)resources.length);
@@ -127,9 +118,9 @@ class AlertNotificationService : SAPService {
   Json listSubscriptions(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
 
-    Json resources = _store.listSubscriptions(tenantId).map!(sub => sub.toJson()).array.toJson; {
+    auto resources = _store.listSubscriptions(tenantId).map!(sub => sub.toJson()).array;
 
-    Json result = Json.emptyObject
+    return Json.emptyObject
       .set("resources", resources)
       .set("total_results", cast(long)resources.length);
   }
@@ -199,7 +190,7 @@ class AlertNotificationService : SAPService {
     eventItem.createdAt = Clock.currTime();
 
     auto matched = matchesCondition(eventItem, sub.condition);
-    returnJson.emptyObject
+    return Json.emptyObject
       .set("subscription_id", subscriptionId)
       .set("matched", matched)
       .set("event", eventItem.toJson())

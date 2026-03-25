@@ -156,11 +156,6 @@ class CMGService : SAPService {
       .set("count", cast(long)imported.length);
   }
 
-  private void validateTenant(UUID tenantId) const {
-    if (tenantId.length == 0)
-      throw new CMGValidationException("tenant_id is required");
-  }
-
   private string normalizeContentType(string value) const {
     auto normalized = toLower(value);
     if (normalized == "shell_plugins")

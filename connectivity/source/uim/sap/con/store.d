@@ -10,8 +10,10 @@ import core.sync.mutex : Mutex;
 import uim.sap.con.models;
 
 class CONStore : SAPStore {
-  private CONDestination[string] _destinations;
-  private Mutex _lock;
+  mixin(SAPStoreTemplate!CONStore);
+
+  protected CONDestination[string] _destinations;
+  protected Mutex _lock;
 
   this() {
     _lock = new Mutex;
@@ -125,12 +127,5 @@ class CONStore : SAPStore {
     return 0;
   }
 
-  private bool containsTenant(string[] values, UUID tenantId) {
-    foreach (value; values) {
-      if (value == tenantId) {
-        return true;
-      }
-    }
-    return false;
-  }
+
 }

@@ -319,12 +319,6 @@ class UDMService : SAPService {
     return row;
   }
 
-  private void validateTenant(UUID tenantId) {
-    if (tenantId.length == 0) {
-      throw new UDMValidationException("tenantId cannot be empty");
-    }
-  }
-
   private string normalizeEntityType(string value) {
     auto lowered = toLower(value);
     if (lowered == "account" || lowered == "directory" || lowered == "region" || lowered == "subaccount") {

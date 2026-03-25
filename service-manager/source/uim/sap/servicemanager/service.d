@@ -309,10 +309,4 @@ class SVMService : SAPService {
     row["description"] = description;
     return row;
   }
-
-  private void validateTenant(UUID tenantId) {
-    if (tenantId.length == 0) {
-      throw new SVMValidationException("tenantId cannot be empty");
-    }
-  }
 }

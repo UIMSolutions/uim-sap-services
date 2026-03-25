@@ -249,11 +249,6 @@ class TKCService : SAPService {
 
   }
 
-  private void validateTenant(UUID tenantId) const {
-    if (tenantId.length == 0)
-      throw new TKCValidationException("tenant_id is required");
-  }
-
   private string normalizeStatus(string value) const {
     auto normalized = toLower(value);
     if (normalized == "in-process")

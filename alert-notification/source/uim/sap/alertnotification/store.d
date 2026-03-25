@@ -14,10 +14,10 @@ mixin(ShowModule!());
 @safe:
 
 class AlertNotificationStore : SAPStore {
-  private AlertEvent[string] _alerts;
-  private AlertSubscription[string] _subscriptions;
-  private AlertDelivery[string] _deliveries;
-  private Mutex _lock;
+  protected AlertEvent[string] _alerts;
+  protected AlertSubscription[string] _subscriptions;
+  protected AlertDelivery[string] _deliveries;
+  protected Mutex _lock;
 
   this() {
     _lock = new Mutex;

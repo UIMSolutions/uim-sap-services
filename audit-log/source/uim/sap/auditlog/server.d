@@ -14,7 +14,7 @@ mixin(ShowModule!());
 class AuditLogServer : SAPServer {
   mixin(SAPServerTemplate!AuditLogServer);
 
-  private AuditLogService _service;
+  protected AuditLogService _service;
 
   this(AuditLogService service) {
     _service = service;

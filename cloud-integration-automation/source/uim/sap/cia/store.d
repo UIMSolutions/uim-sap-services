@@ -10,216 +10,251 @@ mixin(ShowModule!());
 // CIAStore – thread-safe in-memory store for all CIA entities
 // ---------------------------------------------------------------------------
 class CIAStore : SAPStore {
-    private CIARole[string]              _roles;
-    private CIAUser[string]              _users;
-    private CIASystem[string]            _systems;
-    private CIAScenario[string]          _scenarios;
-    private CIAWorkflow[string]          _workflows;
-    private CIATask[string]              _tasks;
-    private CIAParameter[string]         _parameters;
-    private CIATaskLog[string]           _logs;
-    private CIAAutomationResult[string]  _automationResults;
-    private long _counter = 0;
+  mixin(SAPStoreTemplate!CIAStore);
 
-    // -----------------------------------------------------------------------
-    // ID generation
-    // -----------------------------------------------------------------------
-    string nextId(string prefix) {
-        _counter += 1;
-        return prefix ~ "-" ~ to!string(_counter);
-    }
+  protected CIARole[string] _roles;
+  protected CIAUser[string] _users;
+  protected CIASystem[string] _systems;
+  protected CIAScenario[string] _scenarios;
+  protected CIAWorkflow[string] _workflows;
+  protected CIATask[string] _tasks;
+  protected CIAParameter[string] _parameters;
+  protected CIATaskLog[string] _logs;
+  protected CIAAutomationResult[string] _automationResults;
+  protected long _counter = 0;
 
-    // -----------------------------------------------------------------------
-    // Keys
-    // -----------------------------------------------------------------------
-    private static string tenantPrefix(UUID tenantId) {
-        return tenantId ~ "::";
-    }
+  // -----------------------------------------------------------------------
+  // ID generation
+  // -----------------------------------------------------------------------
+  string nextId(string prefix) {
+    _counter += 1;
+    return prefix ~ "-" ~ to!string(_counter);
+  }
 
-    private static string key(UUID tenantId, string id) {
-        return tenantId ~ "::" ~ id;
-    }
+  // -----------------------------------------------------------------------
+  // Keys
+  // -----------------------------------------------------------------------
+  private static string tenantPrefix(UUID tenantId) {
+    return tenantId ~ "::";
+  }
 
-    // -----------------------------------------------------------------------
-    // Roles  (global, not tenant-scoped for simplicity)
-    // -----------------------------------------------------------------------
-    CIARole upsertRole(CIARole item) {
-        _roles[item.id] = item;
-        return item;
-    }
+  private static string key(UUID tenantId, string id) {
+    return tenantId ~ "::" ~ id;
+  }
 
-    CIARole[] listRoles() {
-        CIARole[] items;
-        foreach (v; _roles) items ~= v;
-        return items;
-    }
+  // -----------------------------------------------------------------------
+  // Roles  (global, not tenant-scoped for simplicity)
+  // -----------------------------------------------------------------------
+  CIARole upsertRole(CIARole item) {
+    _roles[item.id] = item;
+    return item;
+  }
 
-    bool tryGetRole(string id, out CIARole role) {
-        if (id in _roles) { role = _roles[id]; return true; }
-        return false;
-    }
+  CIARole[] listRoles() {
+    CIARole[] items;
+    foreach (v; _roles)
+      items ~= v;
+    return items;
+  }
 
-    // -----------------------------------------------------------------------
-    // Users
-    // -----------------------------------------------------------------------
-    CIAUser upsertUser(CIAUser item) {
-        _users[key(item.tenantId, item.id)] = item;
-        return item;
+  bool tryGetRole(string id, out CIARole role) {
+    if (id in _roles) {
+      role = _roles[id];
+      return true;
     }
+    return false;
+  }
 
-    CIAUser[] listUsers(UUID tenantId) {
-        CIAUser[] items;
-        auto prefix = tenantPrefix(tenantId);
-        foreach (k, v; _users) if (k.startsWith(prefix)) items ~= v;
-        return items.array;
-    }
+  // -----------------------------------------------------------------------
+  // Users
+  // -----------------------------------------------------------------------
+  CIAUser upsertUser(CIAUser item) {
+    _users[key(item.tenantId, item.id)] = item;
+    return item;
+  }
 
-    bool tryGetUser(UUID tenantId, string id, out CIAUser user) {
-        auto k = key(tenantId, id);
-        if (k in _users) { user = _users[k]; return true; }
-        return false;
-    }
+  CIAUser[] listUsers(UUID tenantId) {
+    CIAUser[] items;
+    auto prefix = tenantPrefix(tenantId);
+    foreach (k, v; _users)
+      if (k.startsWith(prefix))
+        items ~= v;
+    return items.array;
+  }
 
-    // -----------------------------------------------------------------------
-    // Systems (landscape)
-    // -----------------------------------------------------------------------
-    CIASystem upsertSystem(CIASystem item) {
-        _systems[key(item.tenantId, item.id)] = item;
-        return item;
+  bool tryGetUser(UUID tenantId, string id, out CIAUser user) {
+    auto k = key(tenantId, id);
+    if (k in _users) {
+      user = _users[k];
+      return true;
     }
+    return false;
+  }
 
-    CIASystem[] listSystems(UUID tenantId) {
-        CIASystem[] items;
-        auto prefix = tenantPrefix(tenantId);
-        foreach (k, v; _systems) if (k.startsWith(prefix)) items ~= v;
-        return items.array;
-    }
+  // -----------------------------------------------------------------------
+  // Systems (landscape)
+  // -----------------------------------------------------------------------
+  CIASystem upsertSystem(CIASystem item) {
+    _systems[key(item.tenantId, item.id)] = item;
+    return item;
+  }
 
-    bool tryGetSystem(UUID tenantId, string id, out CIASystem system) {
-        auto k = key(tenantId, id);
-        if (k in _systems) { system = _systems[k]; return true; }
-        return false;
-    }
+  CIASystem[] listSystems(UUID tenantId) {
+    CIASystem[] items;
+    auto prefix = tenantPrefix(tenantId);
+    foreach (k, v; _systems)
+      if (k.startsWith(prefix))
+        items ~= v;
+    return items.array;
+  }
 
-    // -----------------------------------------------------------------------
-    // Scenarios
-    // -----------------------------------------------------------------------
-    CIAScenario upsertScenario(CIAScenario item) {
-        _scenarios[item.id] = item;
-        return item;
+  bool tryGetSystem(UUID tenantId, string id, out CIASystem system) {
+    auto k = key(tenantId, id);
+    if (k in _systems) {
+      system = _systems[k];
+      return true;
     }
+    return false;
+  }
 
-    CIAScenario[] listScenarios() {
-        CIAScenario[] items;
-        foreach (v; _scenarios) items ~= v;
-        return items;
-    }
+  // -----------------------------------------------------------------------
+  // Scenarios
+  // -----------------------------------------------------------------------
+  CIAScenario upsertScenario(CIAScenario item) {
+    _scenarios[item.id] = item;
+    return item;
+  }
 
-    bool tryGetScenario(string id, out CIAScenario scenario) {
-        if (id in _scenarios) { scenario = _scenarios[id]; return true; }
-        return false;
-    }
+  CIAScenario[] listScenarios() {
+    CIAScenario[] items;
+    foreach (v; _scenarios)
+      items ~= v;
+    return items;
+  }
 
-    // -----------------------------------------------------------------------
-    // Workflows
-    // -----------------------------------------------------------------------
-    CIAWorkflow upsertWorkflow(CIAWorkflow item) {
-        _workflows[key(item.tenantId, item.id)] = item;
-        return item;
+  bool tryGetScenario(string id, out CIAScenario scenario) {
+    if (id in _scenarios) {
+      scenario = _scenarios[id];
+      return true;
     }
+    return false;
+  }
 
-    CIAWorkflow[] listWorkflows(UUID tenantId) {
-        CIAWorkflow[] items;
-        auto prefix = tenantPrefix(tenantId);
-        foreach (k, v; _workflows) if (k.startsWith(prefix)) items ~= v;
-        return items.array;
-    }
+  // -----------------------------------------------------------------------
+  // Workflows
+  // -----------------------------------------------------------------------
+  CIAWorkflow upsertWorkflow(CIAWorkflow item) {
+    _workflows[key(item.tenantId, item.id)] = item;
+    return item;
+  }
 
-    bool tryGetWorkflow(UUID tenantId, string id, out CIAWorkflow workflow) {
-        auto k = key(tenantId, id);
-        if (k in _workflows) { workflow = _workflows[k]; return true; }
-        return false;
-    }
+  CIAWorkflow[] listWorkflows(UUID tenantId) {
+    CIAWorkflow[] items;
+    auto prefix = tenantPrefix(tenantId);
+    foreach (k, v; _workflows)
+      if (k.startsWith(prefix))
+        items ~= v;
+    return items.array;
+  }
 
-    // -----------------------------------------------------------------------
-    // Tasks
-    // -----------------------------------------------------------------------
-    CIATask upsertTask(CIATask item) {
-        _tasks[key(item.tenantId, item.id)] = item;
-        return item;
+  bool tryGetWorkflow(UUID tenantId, string id, out CIAWorkflow workflow) {
+    auto k = key(tenantId, id);
+    if (k in _workflows) {
+      workflow = _workflows[k];
+      return true;
     }
+    return false;
+  }
 
-    CIATask[] listTasks(UUID tenantId, UUID workflowId) {
-        import std.algorithm : sort;
-        CIATask[] items;
-        auto prefix = tenantPrefix(tenantId);
-        foreach (k, v; _tasks)
-            if (k.startsWith(prefix) && v.workflowId == workflowId)
-                items ~= v;
-        items.sort!((a, b) => a.order < b.order);
-        return items.array;
-    }
+  // -----------------------------------------------------------------------
+  // Tasks
+  // -----------------------------------------------------------------------
+  CIATask upsertTask(CIATask item) {
+    _tasks[key(item.tenantId, item.id)] = item;
+    return item;
+  }
 
-    bool tryGetTask(UUID tenantId, string id, out CIATask task) {
-        auto k = key(tenantId, id);
-        if (k in _tasks) { task = _tasks[k]; return true; }
-        return false;
-    }
+  CIATask[] listTasks(UUID tenantId, UUID workflowId) {
+    import std.algorithm : sort;
 
-    // -----------------------------------------------------------------------
-    // Parameters (keyed by workflowId + paramKey)
-    // -----------------------------------------------------------------------
-    CIAParameter upsertParameter(CIAParameter item) {
-        _parameters[item.workflowId ~ "::" ~ item.key] = item;
-        return item;
-    }
+    CIATask[] items;
+    auto prefix = tenantPrefix(tenantId);
+    foreach (k, v; _tasks)
+      if (k.startsWith(prefix) && v.workflowId == workflowId)
+        items ~= v;
+    items.sort!((a, b) => a.order < b.order);
+    return items.array;
+  }
 
-    CIAParameter[] listParameters(UUID workflowId) {
-        CIAParameter[] items;
-        auto prefix = workflowId ~ "::";
-        foreach (k, v; _parameters) if (k.startsWith(prefix)) items ~= v;
-        return items.array;
+  bool tryGetTask(UUID tenantId, string id, out CIATask task) {
+    auto k = key(tenantId, id);
+    if (k in _tasks) {
+      task = _tasks[k];
+      return true;
     }
+    return false;
+  }
 
-    bool tryGetParameter(UUID workflowId, string paramKey, out CIAParameter param) {
-        auto k = workflowId ~ "::" ~ paramKey;
-        if (k in _parameters) { param = _parameters[k]; return true; }
-        return false;
-    }
+  // -----------------------------------------------------------------------
+  // Parameters (keyed by workflowId + paramKey)
+  // -----------------------------------------------------------------------
+  CIAParameter upsertParameter(CIAParameter item) {
+    _parameters[item.workflowId ~ "::" ~ item.key] = item;
+    return item;
+  }
 
-    // -----------------------------------------------------------------------
-    // Logs
-    // -----------------------------------------------------------------------
-    CIATaskLog upsertLog(CIATaskLog item) {
-        _logs[key(item.tenantId, item.id)] = item;
-        return item;
-    }
+  CIAParameter[] listParameters(UUID workflowId) {
+    CIAParameter[] items;
+    auto prefix = workflowId ~ "::";
+    foreach (k, v; _parameters)
+      if (k.startsWith(prefix))
+        items ~= v;
+    return items.array;
+  }
 
-    CIATaskLog[] listLogs(UUID tenantId, UUID workflowId) {
-        import std.algorithm : sort;
-        CIATaskLog[] items;
-        auto prefix = tenantPrefix(tenantId);
-        foreach (k, v; _logs)
-            if (k.startsWith(prefix) && v.workflowId == workflowId)
-                items ~= v;
-        items.sort!((a, b) => a.timestamp < b.timestamp);
-        return items.array;
+  bool tryGetParameter(UUID workflowId, string paramKey, out CIAParameter param) {
+    auto k = workflowId ~ "::" ~ paramKey;
+    if (k in _parameters) {
+      param = _parameters[k];
+      return true;
     }
+    return false;
+  }
 
-    // -----------------------------------------------------------------------
-    // Automation Results
-    // -----------------------------------------------------------------------
-    CIAAutomationResult upsertAutomationResult(CIAAutomationResult item) {
-        _automationResults[key(item.tenantId, item.id)] = item;
-        return item;
-    }
+  // -----------------------------------------------------------------------
+  // Logs
+  // -----------------------------------------------------------------------
+  CIATaskLog upsertLog(CIATaskLog item) {
+    _logs[key(item.tenantId, item.id)] = item;
+    return item;
+  }
 
-    CIAAutomationResult[] listAutomationResults(UUID tenantId, string taskId) {
-        CIAAutomationResult[] items;
-        auto prefix = tenantPrefix(tenantId);
-        foreach (k, v; _automationResults)
-            if (k.startsWith(prefix) && v.taskId == taskId)
-                items ~= v;
-        return items.array;
-    }
+  CIATaskLog[] listLogs(UUID tenantId, UUID workflowId) {
+    import std.algorithm : sort;
+
+    CIATaskLog[] items;
+    auto prefix = tenantPrefix(tenantId);
+    foreach (k, v; _logs)
+      if (k.startsWith(prefix) && v.workflowId == workflowId)
+        items ~= v;
+    items.sort!((a, b) => a.timestamp < b.timestamp);
+    return items.array;
+  }
+
+  // -----------------------------------------------------------------------
+  // Automation Results
+  // -----------------------------------------------------------------------
+  CIAAutomationResult upsertAutomationResult(CIAAutomationResult item) {
+    _automationResults[key(item.tenantId, item.id)] = item;
+    return item;
+  }
+
+  CIAAutomationResult[] listAutomationResults(UUID tenantId, string taskId) {
+    CIAAutomationResult[] items;
+    auto prefix = tenantPrefix(tenantId);
+    foreach (k, v; _automationResults)
+      if (k.startsWith(prefix) && v.taskId == taskId)
+        items ~= v;
+    return items.array;
+  }
 }

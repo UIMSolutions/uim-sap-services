@@ -14,12 +14,12 @@ mixin(ShowModule!());
 @safe:
 
 class ATMStore : SAPStore {
-  private ATMIdentityProvider[string] _idps;
-  private ATMTechnicalRole[string] _technicalRoles;
-  private ATMRoleCollection[string] _roleCollections;
-  private ATMUserAssignment[string] _userAssignments;
+  protected ATMIdentityProvider[string] _idps;
+  protected ATMTechnicalRole[string] _technicalRoles;
+  protected ATMRoleCollection[string] _roleCollections;
+  protected ATMUserAssignment[string] _userAssignments;
 
-  private Mutex _lock;
+  protected Mutex _lock;
 
   this() {
     _lock = new Mutex;

@@ -1,6 +1,7 @@
 module uim.sap.service.helpers;
 
 public {
+  import uim.sap.service.helpers.contains;
   import uim.sap.service.helpers.convert;
   import uim.sap.service.helpers.helper;
   import uim.sap.service.helpers.network;

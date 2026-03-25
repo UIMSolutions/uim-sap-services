@@ -229,11 +229,6 @@ class SDIService : SAPService {
     return site.get;
   }
 
-  private void validateTenant(UUID tenantId) const {
-    if (tenantId.length == 0)
-      throw new SDIValidationException("tenant_id is required");
-  }
-
   private SDISiteSettings settingsFromJson(Json data) const {
     if (!("settings" in data) || data["settings"].isNull) {
       SDISiteSettings defaults;

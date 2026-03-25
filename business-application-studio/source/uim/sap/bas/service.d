@@ -9,9 +9,9 @@ mixin(ShowModule!());
 class BASService : SAPService {
   mixin(SAPServiceTemplate!BASService);
 
-  private BASStore _store;
-  private BASScenario[] _scenarios;
-  private BASTemplate[] _templates;
+  protected BASStore _store;
+  protected BASScenario[] _scenarios;
+  protected BASTemplate[] _templates;
 
   this(BASConfig config) {
     super(config);
@@ -299,10 +299,4 @@ class BASService : SAPService {
     }
     return false;
   }
-
-  private void validateTenant(UUID tenantId) const {
-    if (tenantId.length == 0)
-      throw new BASValidationException("tenant_id is required");
-  }
-
 }

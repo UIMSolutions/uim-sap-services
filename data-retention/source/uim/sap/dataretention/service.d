@@ -205,12 +205,6 @@ class DRMService : SAPService {
       .set("job", saved.toJson());
   }
 
-  private void validateTenant(UUID tenantId) {
-    if (tenantId.length == 0) {
-      throw new DRMValidationException("tenantId cannot be empty");
-    }
-  }
-
   private void validateBusinessPurpose(BusinessPurposeRule rule) {
     if (rule.applicationGroup.length == 0) {
       throw new DRMValidationException("application_group is required");

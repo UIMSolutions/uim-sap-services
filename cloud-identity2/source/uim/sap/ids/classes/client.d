@@ -24,10 +24,10 @@ import std.conv : to;
  * Main Cloud Identity Services Client
  */
 class IdentityClient {
-  private IdentityConfig config;
-  private IdentityAuthManager authManager;
-  private UserManager userManager;
-  private GroupManager groupManager;
+  protected IdentityConfig config;
+  protected IdentityAuthManager authManager;
+  protected UserManager userManager;
+  protected GroupManager groupManager;
 
   /**
      * Constructor
@@ -35,7 +35,7 @@ class IdentityClient {
   this(IdentityConfig config) {
     super(config);
 
-    OAuth2Credentials creds;
+    OAuth2Credentials creds = new OAuth2Credentials;
     creds.clientId = config.clientId;
     creds.clientSecret = config.clientSecret;
 

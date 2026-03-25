@@ -14,8 +14,8 @@ mixin(ShowModule!());
 alias ARTProgramHandler = ARTProgramResult delegate(ARTProgramRequest request);
 
 class ARTRuntime {
-  private ARTRuntimeConfig _config;
-  private ARTProgramHandler[string] _programs;
+  protected ARTRuntimeConfig _config;
+  protected ARTProgramHandler[string] _programs;
 
   this(ARTRuntimeConfig config) {
     super(config);

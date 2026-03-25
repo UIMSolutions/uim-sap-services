@@ -171,10 +171,6 @@ class CONService : SAPService {
       .set("message", "Connectivity route prepared");
   }
 
-  private void validateTenant(UUID tenantId) {
-    validateName(tenantId, "Tenant ID");
-  }
-
   private void validateName(string value, string fieldName) {
     if (value.length == 0) {
       throw new CONValidationException(fieldName ~ " cannot be empty");
