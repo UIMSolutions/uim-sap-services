@@ -76,10 +76,9 @@ class KSTService : SAPService {
     ks.updatedAt = Clock.currTime();
     auto saved = _store.upsertKeystore(ks);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["keystore"] = saved.toJson();
-    return payload;
+    return Json.emptyObject
+    .set("success", true)
+    .set("keystore", saved.toJson());
   }
 
   Json getKeystore(string name) {
@@ -88,9 +87,8 @@ class KSTService : SAPService {
       throw new KSTNotFoundException("Keystore", name);
     }
 
-    Json payload = Json.emptyObject;
-    payload["keystore"] = ks.toJsonDetailed();
-    return payload;
+    return Json.emptyObject
+    .set("keystore", ks.toJsonDetailed());
   }
 
   Json listKeystores() {

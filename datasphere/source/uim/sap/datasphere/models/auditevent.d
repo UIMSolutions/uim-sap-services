@@ -25,24 +25,21 @@ mixin(ShowModule!());
   * - details: Additional details about the event, such as parameters or context information.
   * - createdAt: The timestamp when the audit event was created.
  */
-struct DATAuditEvent {
-  UUID tenantId;
-  string eventId;
+class DATAuditEvent : SAPTenantObject {
+  mixin(SAPObjectTemplate!DATAuditEvent);
+
+  UUID eventId;
   string operation;
   string layer;
   string actor;
   string details;
-  SysTime createdAt;
-
-  override Json toJson()  {
-    Json info = super.toJson;
-    payload["tenant_id"] = tenantId;
-    payload["event_id"] = eventId;
-    payload["operation"] = operation;
-    payload["layer"] = layer;
-    payload["actor"] = actor;
-    payload["details"] = details;
-    payload["created_at"] = createdAt.toISOExtString();
-    return payload;
+  
+  override Json toJson() {
+    return super.toJson
+    .set("event_id", eventId)
+    .set("operation", operation)
+    .set("layer", layer)
+    .set("actor", actor)
+    .set("details", details);
   }
 }

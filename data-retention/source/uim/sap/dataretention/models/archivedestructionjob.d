@@ -1,8 +1,9 @@
 module uim.sap.dataretention.models.archivedestructionjob;
 
-struct ArchiveDestructionJob {
-  UUID tenantId;
-  string jobId;
+class ArchiveDestructionJob : SAPTenantObject {
+  mixin(SAPObjectTemplate!ArchiveDestructionJob);
+
+  UUID jobId;
   string operation;
   string applicationGroup;
   string entityType;
@@ -11,27 +12,23 @@ struct ArchiveDestructionJob {
   string legalGround;
   bool includeDataSubjectReference;
   string status;
-  SysTime createdAt;
 
   override Json toJson() {
-    Json payload = Json.emptyObject;
-    payload["tenant_id"] = tenantId;
-    payload["job_id"] = jobId;
-    payload["operation"] = operation;
-    payload["application_group"] = applicationGroup;
-    payload["entity_type"] = entityType;
-    payload["range_from"] = rangeFrom;
-    payload["range_to"] = rangeTo;
-    payload["legal_ground"] = legalGround;
-    payload["include_data_subject_reference"] = includeDataSubjectReference;
-    payload["status"] = status;
-    payload["created_at"] = createdAt.toISOExtString();
-    return payload;
+    return super.toJson
+    .set("job_id", jobId)
+    .set("operation", operation)
+    .set("application_group", applicationGroup)
+    .set("entity_type", entityType)
+    .set("range_from", rangeFrom)
+    .set("range_to", rangeTo)
+    .set("legal_ground", legalGround)
+    .set("include_data_subject_reference", includeDataSubjectReference)
+    .set("status", status);
   }
 }
 
 ArchiveDestructionJob parseArchiveDestructionJob(UUID tenantId, string operation, Json request) {
-  ArchiveDestructionJob job;
+  ArchiveDestructionJob job = new ArchiveDestructionJob;
   job.tenantId = tenantId;
   job.jobId = request.getString("job_id", createId());
   job.operation = operation;

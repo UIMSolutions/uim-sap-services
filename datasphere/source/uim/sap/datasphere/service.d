@@ -41,8 +41,8 @@ class DSPService : SAPService {
 
   override Json health() {
     Json capabilities = [
-      "data_modeling", "business_modeling", "data_integration", 
-      "space_management", "administration", "data_protection_and_privacy", 
+      "data_modeling", "business_modeling", "data_integration",
+      "space_management", "administration", "data_protection_and_privacy",
       "data_governance", "consumption"
     ].toJson;
 
@@ -51,12 +51,11 @@ class DSPService : SAPService {
     return healthInfo;
   }
 
-
   Json createDataModel(UUID tenantId, Json request) {
     validateTenant(tenantId);
     auto modelName = requiredString(request, "name");
 
-    DATDataModel item;
+    DATDataModel item = new DATDataModel;
     item.tenantId = tenantId;
     item.modelId = optionalString(request, "model_id", _store.nextId("dmodel"));
     item.name = modelName;
@@ -76,14 +75,11 @@ class DSPService : SAPService {
 
   Json listDataModels(UUID tenantId) {
     validateTenant(tenantId);
-    Json resources = Json.emptyArray;
-    foreach (item; _store.listDataModels(tenantId))
-      resources ~= item.toJson();
+    auto resources = _store.listDataModels(tenantId).map!(item => item.toJson()).array;
 
-    Json payload = Json.emptyObject;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)resources.length;
-    return payload;
+    return Json.emptyObject
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json createExternalDataset(UUID tenantId, Json request) {
@@ -120,7 +116,7 @@ class DSPService : SAPService {
     validateTenant(tenantId);
     auto modelId = requiredString(request, "model_id");
 
-    DATDataModel model;
+    DATDataModel model = new DATDataModel;
     if (!_store.getDataModel(tenantId, modelId, model)) {
       throw new DSPNotFoundException("Data model", modelId);
     }
@@ -139,7 +135,7 @@ class DSPService : SAPService {
     validateTenant(tenantId);
     auto modelName = requiredString(request, "name");
 
-    DATBusinessModel item;
+    DATBusinessModel item = new DATBusinessModel;
     item.tenantId = tenantId;
     item.modelId = optionalString(request, "model_id", _store.nextId("bmodel"));
     item.name = modelName;
@@ -206,7 +202,7 @@ class DSPService : SAPService {
       throw new DSPValidationException("mode must be federate, replicate, or transform_load");
     }
 
-    DATIntegrationConnection item;
+    DATIntegrationConnection item = new DATIntegrationConnection;
     item.tenantId = tenantId;
     item.connectionId = optionalString(request, "connection_id", _store.nextId("conn"));
     item.name = name;
@@ -249,7 +245,7 @@ class DSPService : SAPService {
   Json createSpace(UUID tenantId, Json request) {
     validateTenant(tenantId);
 
-    DATSpace item;
+    DATSpace item = new DATSpace(request);
     item.tenantId = tenantId;
     item.spaceId = optionalString(request, "space_id", _store.nextId("space"));
     item.name = requiredString(request, "name");
@@ -282,7 +278,7 @@ class DSPService : SAPService {
     validateTenant(tenantId);
     validateId(spaceId, "Space ID");
 
-    DATSpace item;
+    DATSpace item = new DATSpace(request);
     if (!_store.getSpace(tenantId, spaceId, item)) {
       throw new DSPNotFoundException("Space", spaceId);
     }
@@ -310,7 +306,7 @@ class DSPService : SAPService {
 
     auto user = requiredString(request, "user");
 
-    DATSpace item;
+    DATSpace item = new DATSpace(request);
     if (!_store.getSpace(tenantId, spaceId, item)) {
       throw new DSPNotFoundException("Space", spaceId);
     }
@@ -361,7 +357,7 @@ class DSPService : SAPService {
     validateTenant(tenantId);
     validateId(policyId, "Policy ID");
 
-    DATRowPolicy item;
+    DATRowPolicy item = new DATRowPolicy(request);
     item.tenantId = tenantId;
     item.policyId = policyId;
     item.dataset = requiredString(request, "dataset");
@@ -412,7 +408,7 @@ class DSPService : SAPService {
   Json addAuditEvent(UUID tenantId, Json request) {
     validateTenant(tenantId);
 
-    DATAuditEvent item;
+    DATAuditEvent item = new DATAuditEvent(request);
     item.tenantId = tenantId;
     item.eventId = optionalString(request, "event_id", _store.nextId("audit"));
     item.operation = requiredString(request, "operation");
@@ -436,15 +432,15 @@ class DSPService : SAPService {
 
     return Json.emptyObject
       .set("resources", resources)
-       .set("tenant_id", tenantId)
-       .set("monitoring", ["audit"])
-       .set("total_results", cast(long)resources.length);
+      .set("tenant_id", tenantId)
+      .set("monitoring", ["audit"])
+      .set("total_results", cast(long)resources.length);
   }
 
   Json publishCatalogAsset(UUID tenantId, Json request) {
     validateTenant(tenantId);
 
-    DATGovernanceAsset item;
+    DATGovernanceAsset item = new DATGovernanceAsset(request);
     item.tenantId = tenantId;
     item.assetId = optionalString(request, "asset_id", _store.nextId("asset"));
     item.title = requiredString(request, "title");
@@ -474,7 +470,7 @@ class DSPService : SAPService {
   Json createGlossaryTerm(UUID tenantId, Json request) {
     validateTenant(tenantId);
 
-    DATGlossaryTerm item;
+    DATGlossaryTerm item = new DATGlossaryTerm(request);
     item.tenantId = tenantId;
     item.termId = optionalString(request, "term_id", _store.nextId("term"));
     item.term = requiredString(request, "term");
@@ -502,7 +498,7 @@ class DSPService : SAPService {
   Json createKPI(UUID tenantId, Json request) {
     validateTenant(tenantId);
 
-    DATKpi item;
+    DATKpi item = new DATKpi(request);
     item.tenantId = tenantId;
     item.kpiId = optionalString(request, "kpi_id", _store.nextId("kpi"));
     item.name = requiredString(request, "name");
@@ -534,19 +530,19 @@ class DSPService : SAPService {
     Json connectors = Json.emptyArray;
 
     connectors ~= Json.emptyObject
-    .set("name", "Analytics Cloud")
-    .set("type", "analytics")
-    .set("status", "available");
+      .set("name", "Analytics Cloud")
+      .set("type", "analytics")
+      .set("status", "available");
 
     connectors ~= Json.emptyObject
-    .set("name", "Microsoft Excel")
-    .set("type", "spreadsheet")
-    .set("status", "available");
+      .set("name", "Microsoft Excel")
+      .set("type", "spreadsheet")
+      .set("status", "available");
 
     connectors ~= Json.emptyObject
-    .set("name", "Public OData API")
-    .set("type", "odata")
-    .set("status", "available");
+      .set("name", "Public OData API")
+      .set("type", "odata")
+      .set("status", "available");
 
     return Json.emptyObject
       .set("tenant_id", tenantId)
@@ -558,10 +554,10 @@ class DSPService : SAPService {
     validateId(entitySet, "Entity set");
 
     Json row = Json.emptyObject
-    .set("ID", "row-1")
-    .set("EntitySet", entitySet)
-    .set("Tenant", tenantId)
-    .set("Value", 42);
+      .set("ID", "row-1")
+      .set("EntitySet", entitySet)
+      .set("Tenant", tenantId)
+      .set("Value", 42);
 
     Json payload = Json.emptyObject;
     payload["@odata.context"] =
@@ -573,6 +569,4 @@ class DSPService : SAPService {
     payload["value"] = [row];
     return payload;
   }
-
-  
 }

@@ -26,24 +26,21 @@ mixin(ShowModule!());
   * 
   * Note: This struct is a simplified representation and may need to be extended with additional fields or methods depending on the specific requirements of the governance assets being modeled.
  */
-struct DATGovernanceAsset {
-  UUID tenantId;
+class DATGovernanceAsset : SAPTenantObject {
+  mixin(SAPObjectTemplate!DATGovernanceAsset);
+
   string assetId;
   string title;
   string assetType;
   string quality;
   bool published;
-  SysTime updatedAt;
 
   override Json toJson()  {
-    Json info = super.toJson;
-    payload["tenant_id"] = tenantId;
-    payload["asset_id"] = assetId;
-    payload["title"] = title;
-    payload["asset_type"] = assetType;
-    payload["quality"] = quality;
-    payload["published"] = published;
-    payload["updated_at"] = updatedAt.toISOExtString();
-    return payload;
+    return super.toJson
+    .set("asset_id", assetId)
+    .set("title", title)
+    .set("asset_type", assetType)
+    .set("quality", quality)
+    .set("published", published);
   }
 }

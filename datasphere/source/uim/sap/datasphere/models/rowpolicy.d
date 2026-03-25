@@ -26,20 +26,17 @@ mixin(ShowModule!());
     * 
     * Note: The actual implementation of how the expression is evaluated and enforced is beyond the scope of this struct and would be handled by the underlying data access layer in Datasphere.
     */
-struct DATRowPolicy {
-    UUID tenantId;
-    string policyId;
+class DATRowPolicy : SAPTenantObject {
+    mixin(SAPObjectTemplate!DATRowPolicy);
+
+    UUID policyId;
     string dataset;
     string expression;
-    SysTime updatedAt;
 
     override Json toJson()  {
-        Json payload = Json.emptyObject;
-        payload["tenant_id"] = tenantId;
-        payload["policy_id"] = policyId;
-        payload["dataset"] = dataset;
-        payload["expression"] = expression;
-        payload["updated_at"] = updatedAt.toISOExtString();
-        return payload;
+      return super.toJson
+        .set("policy_id", policyId)
+        .set("dataset", dataset)
+        .set("expression", expression);
     }
 }

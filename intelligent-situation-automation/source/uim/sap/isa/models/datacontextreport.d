@@ -4,9 +4,10 @@ import uim.sap.isa;
 mixin(ShowModule!());
 
 @safe:
-struct DataContextReport {
+class DataContextReport : SAPTenantObject {
+  mixin(SAPObjectTemplate!DataContextReport);
+
   string id;
-  UUID tenantId;
   string title;
   string entityType;
   string situationType;
@@ -14,14 +15,12 @@ struct DataContextReport {
   SysTime importedAt;
 
   override Json toJson()  {
-    Json info = super.toJson;
-    payload["id"] = id;
-    payload["tenant_id"] = tenantId;
-    payload["title"] = title;
-    payload["entity_type"] = entityType;
-    payload["situation_type"] = situationType;
-    payload["imported_from"] = importedFrom;
-    payload["imported_at"] = importedAt.toISOExtString();
-    return payload;
+    return super.toJson
+    .set("id", id)
+    .set("title", title)
+    .set("entity_type", entityType)
+    .set("situation_type", situationType)
+    .set("imported_from", importedFrom)
+    .set("imported_at", importedAt.toISOExtString());
   }
 }

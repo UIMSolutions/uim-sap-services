@@ -35,12 +35,11 @@ class CMGService : SAPService {
     Json items = _store.listItems(tenantId, normalizedType)
       .map!(item => item.toJson()).array.toJson();
 
-    Json payload = Json.emptyObject;
-    payload["tenant_id"] = tenantId;
-    payload["content_type"] = normalizedType;
-    payload["items"] = items;
-    payload["count"] = cast(long)items.length;
-    return payload;
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("content_type", normalizedType)
+      .set("items", items)
+      .set("count", cast(long)items.length);
   }
 
   Json upsertManualContent(UUID tenantId, string contentType, Json data) {
@@ -73,7 +72,8 @@ class CMGService : SAPService {
   Json listProviders(UUID tenantId) {
     validateTenant(tenantId);
 
-    Json providers = _store.listProviders(tenantId).map!(provider => provider.toJson()).array.toJson(); 
+    Json providers = _store.listProviders(tenantId)
+      .map!(provider => provider.toJson()).array.toJson();
 
     return Json.emptyObject
       .set("tenant_id", tenantId)
@@ -96,7 +96,7 @@ class CMGService : SAPService {
     provider.createdAt = now;
     provider.updatedAt = now;
     auto saved = _store.upsertProvider(provider);
-    
+
     return Json.emptyObject
       .set("message", "Content provider registered")
       .set("provider", saved.toJson());

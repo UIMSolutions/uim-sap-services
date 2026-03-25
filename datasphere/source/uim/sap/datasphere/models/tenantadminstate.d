@@ -39,24 +39,22 @@ mixin(ShowModule!());
     */
 
 struct DATTenantAdminState {
-    string tenantName;
-    bool connectivityPrepared;
-    bool maintenanceMode;
-    string lastMaintenance;
-    string[] users;
-    Json custom;
+  string tenantName;
+  bool connectivityPrepared;
+  bool maintenanceMode;
+  string lastMaintenance;
+  string[] users;
+  Json custom;
 
-    override Json toJson()  {
-        Json payload = Json.emptyObject;
-        Json usersPayload = Json.emptyArray;
-        foreach (user; users) usersPayload ~= user;
+  override Json toJson() {
+    auto usersPayload = users.map!(user => user).array;
 
-        payload["tenant_name"] = tenantName;
-        payload["connectivity_prepared"] = connectivityPrepared;
-        payload["maintenance_mode"] = maintenanceMode;
-        payload["last_maintenance"] = lastMaintenance;
-        payload["users"] = usersPayload;
-        payload["custom"] = custom;
-        return payload;
-    }
+    return Json.emptyObject
+      .set("tenant_name", tenantName)
+      .set("connectivity_prepared", connectivityPrepared)
+      .set("maintenance_mode", maintenanceMode)
+      .set("last_maintenance", lastMaintenance)
+      .set("users", usersPayload)
+      .set("custom", custom);
+  }
 }

@@ -9,9 +9,10 @@ import uim.sap.isa;
 mixin(ShowModule!());
 
 @safe:
-struct AutomationConfiguration {
+class AutomationConfiguration : SAPTenantObject {
+  mixin(SAPObjectTemplate!AutomationConfiguration);
+
   string id;
-  UUID tenantId;
   string name;
   string description;
   string situationType;
@@ -19,28 +20,22 @@ struct AutomationConfiguration {
   int avgManualMinutes;
   double autoResolutionRate;
   BusinessRule[] businessRules;
-  SysTime createdAt;
-  SysTime updatedAt;
 
   override Json toJson()  {
-    Json info = super.toJson;
     Json rules = Json.emptyArray;
     foreach (rule; businessRules) {
       rules ~= rule.toJson();
     }
 
-    payload["id"] = id;
-    payload["tenant_id"] = tenantId;
-    payload["name"] = name;
-    payload["description"] = description;
-    payload["situation_type"] = situationType;
-    payload["enabled"] = enabled;
-    payload["avg_manual_minutes"] = avgManualMinutes;
-    payload["auto_resolution_rate"] = autoResolutionRate;
-    payload["business_rules"] = rules;
-    payload["created_at"] = createdAt.toISOExtString();
-    payload["updated_at"] = updatedAt.toISOExtString();
-    return payload;
+    return super.toJson
+    .set("id", id)
+    .set("name", name)
+    .set("description", description)
+    .set("situation_type", situationType)
+    .set("enabled", enabled)
+    .set("avg_manual_minutes", avgManualMinutes)
+    .set("auto_resolution_rate", autoResolutionRate)
+    .set("business_rules", rules);
   }
 }
 
