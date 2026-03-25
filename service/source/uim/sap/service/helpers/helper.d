@@ -154,7 +154,7 @@ string[] stringArray(Json request, string key) {
 }
 
 bool contains(string[] values, string expected) {
-  return values.any!(v => v == expected);
+  return values.canFind(expected);
 }
 
 int optionalInt(Json request, string key, int fallback) {

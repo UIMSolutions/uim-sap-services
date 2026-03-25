@@ -228,27 +228,6 @@ class TKCStore : SAPStore {
     return SysTime.fromISOExtString(item[key].get!string);
   }
 
-  private string[] readStringArray(Json item, string key) {
-    string[] values;
-    if (!(key in item) || item[key].isNull)
-      return values;
-    if (!item[key].isArray)
-      throw new TKCStoreException(key ~ " must be an array in cache item");
-    foreach (entry; item[key]) {
-      if (entry.isString)
-        values ~= entry.get!string;
-    }
-    return values;
-  }
-
-  private Json readObject(Json item, string key) const {
-    if (!(key in item) || item[key].isNull)
-      return Json.emptyObject;
-    if (!item[key].isObject)
-      throw new TKCStoreException(key ~ " must be an object in cache item");
-    return item[key];
-  }
-
   private string scopedProviderKey(string providerId) const {
     return providerId;
   }

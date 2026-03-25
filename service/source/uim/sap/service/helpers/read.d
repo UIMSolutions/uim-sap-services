@@ -35,11 +35,12 @@ string[] readStringArray(Json data, string key) {
   return values;
 }
 
-Json readObject(Json data, string key) {
+Json readObject(Json data, string key, Json fallback = Json.emptyObject) {
   if (!(key in data) || data[key].isNull) {
-    return Json.emptyObject;
+    return fallback;
   }
 
   requiredObjectType(data, key);
   return data[key];
 }
+

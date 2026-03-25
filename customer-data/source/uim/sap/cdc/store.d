@@ -378,29 +378,6 @@ class CDCStore : SAPStore {
     return item[key].get!long;
   }
 
-  private string[] readStringArray(Json item, string key) {
-    string[] values;
-    if (!(key in item) || item[key].isNull)
-      return values;
-    if (!item[key].isArray) {
-      throw new CDCStoreException(key ~ " must be an array in cache item");
-    }
-    foreach (entry; item[key]) {
-      if (entry.isString)
-        values ~= entry.get!string;
-    }
-    return values;
-  }
-
-  private Json readObject(Json item, string key) {
-    if (!(key in item) || item[key].isNull)
-      return Json.emptyObject;
-    if (!item[key].isObject) {
-      throw new CDCStoreException(key ~ " must be an object in cache item");
-    }
-    return item[key];
-  }
-
   private string scopedProfileKey(UUID tenantId, string region, string userId) {
     return tenantId ~ ":profile:" ~ region ~ ":" ~ userId;
   }

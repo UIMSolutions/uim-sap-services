@@ -370,30 +370,6 @@ class TKCService : SAPService {
     }
   }
 
-  private string[] readStringArray(Json data, string key) const {
-    string[] values;
-    if (!(key in data) || data[key].isNull)
-      return values;
-    if (!data[key].isArray) {
-      throw new TKCValidationException(key ~ " must be an array");
-    }
-    foreach (item; data[key]) {
-      if (item.type != Json.Type.string)
-        throw new TKCValidationException(key ~ " must contain strings");
-      values ~= item.get!string;
-    }
-    return values;
-  }
-
-  private Json readObject(Json data, string key) const {
-    if (!(key in data) || data[key].isNull)
-      return Json.emptyObject;
-    if (!data[key].isObject) {
-      throw new TKCValidationException(key ~ " must be an object");
-    }
-    return data[key];
-  }
-
   private SysTime parseIsoTime(string value, string key) const {
     try {
       return SysTime.fromISOExtString(value);

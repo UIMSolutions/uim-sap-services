@@ -45,9 +45,8 @@ class ATPService : SAPService {
   override Json health() {
     ATPConfig cfg = cast(ATPConfig)_config;
 
-    Json healthInfo = super.health();
-    healthInfo["ai_provider"] = cfg.aiProvider;
-    return healthInfo;
+    return super.health()
+      .set("ai_provider", cfg.aiProvider);
   }
 
   Json listCatalogs(UUID tenantId) {
@@ -105,7 +104,7 @@ class ATPService : SAPService {
     command.commandType = optionalString(data, "command_type", "script");
     command.steps = readStringArray(data, "steps");
     command.allowPrivateEnvironment = data.getBoolean("allow_private_environment", false);
-    command.defaults = readObject(data, "defaults");
+    command.defaults = data.readObject("defaults", Json.emptyObject);
     command.createdAt = now;
     command.updatedAt = now;
 
@@ -135,7 +134,7 @@ class ATPService : SAPService {
     execution.commandId = commandId;
     execution.triggerType = optionalString(data, "trigger_type", "manual");
     execution.status = "SUCCESS";
-    execution.input = readObject(data, "input");
+    execution.input = data.readObject("input", Json.emptyObject);
     execution.result = Json.emptyObject;
     execution.result["message"] = "Command executed";
     execution.result["steps_executed"] = toJsonArray(command.steps);
@@ -173,11 +172,11 @@ class ATPService : SAPService {
       .set("catalogs", toJsonArray(_store.listCatalogs(tenantId)))
       .set("commands", toJsonArray(_store.listCommands(tenantId)))
       .set("schedules", toJsonArray(_store.listSchedules(tenantId)))
-      .set("event_triggers", toJsonArray(_store.listEventTriggers(tenantId)));  
+      .set("event_triggers", toJsonArray(_store.listEventTriggers(tenantId)));
     backup.createdAt = now;
 
     auto saved = _store.upsertBackup(backup);
-    
+
     return Json.emptyObject
       .set("message", "Backup completed")
       .set("backup", saved.toJson());
@@ -415,20 +414,6 @@ class ATPService : SAPService {
     throw new ATPNotFoundException("Command not found");
   }
 
-  private string[] readStringArray(Json data, string key) const {
-    string[] values;
-    if (!(key in data) || data[key].isNull)
-      return values;
-    requiredArrayType(data, key);
-
-    foreach (item; data[key]) {
-      if (!item.isString)
-        throw new ATPValidationException(key ~ " must contain strings");
-      values ~= item.get!string;
-    }
-    return values;
-  }
-
   private string maskValue(string value) const {
     if (value.length <= 4)
       return "****";
@@ -439,11 +424,4 @@ class ATPService : SAPService {
     return values.any!(v => toLower(v) == toLower(value));
   }
 
-  private Json toJsonArray(string[] values) const {
-    return values.map!(v => v.toJson()).array.toJson;
-  }
-
-  private Json toJsonArray(T)(T[] values) const {
-    return values.map!(v => v.toJson()).array.toJson;
-  }
 }

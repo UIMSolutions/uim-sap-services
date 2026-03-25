@@ -234,22 +234,6 @@ class SDIService : SAPService {
       throw new SDIValidationException("tenant_id is required");
   }
 
-  private string[] readStringArray(Json data, string key) const {
-    string[] values;
-    if (!(key in data) || data[key].isNull)
-      return values;
-    if (!data[key].isArray)
-      throw new SDIValidationException(key ~ " must be an array");
-    foreach (item; data[key]) {
-      if (item.type != Json.Type.string)
-        throw new SDIValidationException(key ~ " must contain strings");
-
-      values ~= item.get!string;
-    }
-
-    return values;
-  }
-
   private SDISiteSettings settingsFromJson(Json data) const {
     if (!("settings" in data) || data["settings"].isNull) {
       SDISiteSettings defaults;

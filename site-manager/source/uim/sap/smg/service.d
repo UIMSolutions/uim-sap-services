@@ -156,25 +156,6 @@ class SMGService : SAPService {
     return payload;
   }
 
-  private string[] readStringArray(Json data, string key) const {
-    string[] values;
-    if (!(key in data) || data[key].isNull) {
-      return values;
-    }
-
-    if (!data[key].isArray) {
-      throw new SMGValidationException(key ~ " must be an array");
-    }
-
-    foreach (item; data[key]) {
-      if (item.type != Json.Type.string)
-        throw new SMGValidationException(key ~ " must contain strings");
-
-      values ~= item.get!string;
-    }
-    return values;
-  }
-
   private string normalizeLifecycle(string value) const {
     auto normalized = toLower(value);
     if (normalized != "draft" && normalized != "published" && normalized != "archived") {

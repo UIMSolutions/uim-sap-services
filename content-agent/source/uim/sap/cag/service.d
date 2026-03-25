@@ -266,7 +266,7 @@ HTML";
 
   Json upsertContent(UUID tenantId, Json data) {
     validateTenant(tenantId);
-    auto contentid = requiredUUID(body, "content_id");
+    auto contentid = requiredUUID(data, "content_id");
     auto now = Clock.currTime();
 
     CAGContentItem existing;
@@ -275,13 +275,13 @@ HTML";
     CAGContentItem item;
     item.tenantId = tenantId;
     item.contentId = contentId;
-    item.title = requiredString(body, "title");
-    item.contentType = normalizeContentType(optionalString(body, "content_type", "application"));
-    item.contentVersion = optionalString(body, "version", "1.0.0");
-    item.providerId = optionalString(body, "provider_id", "manual");
-    item.dependencies = readStringArray(body, "dependencies");
-    item.relatedContent = readStringArray(body, "related_content");
-    item.metadata = readObject(body, "metadata");
+    item.title = requiredString(data, "title");
+    item.contentType = normalizeContentType(optionalString(data, "content_type", "application"));
+    item.contentVersion = optionalString(data, "version", "1.0.0");
+    item.providerId = optionalString(data, "provider_id", "manual");
+    item.dependencies = readStringArray(data, "dependencies");
+    item.relatedContent = readStringArray(data, "related_content");
+    item.metadata = readObject(data, "metadata");
     item.createdAt = hasExisting ? existing.createdAt : now;
     item.updatedAt = now;
 
@@ -316,9 +316,7 @@ HTML";
 
   Json listQueues(UUID tenantId) {
     validateTenant(tenantId);
-    Json resources = Json.emptyArray;
-    foreach (queue; _store.listQueues(tenantId))
-      resources ~= queue.toJson();
+    Json resources = _store.listQueues(tenantId).map!(queue => queue.toJson()).array;  
 
     return Json.emptyObject
       .set("tenant_id", tenantId)
@@ -337,9 +335,9 @@ HTML";
     CAGTransportQueue queue;
     queue.tenantId = tenantId;
     queue.queueId = queueId;
-    queue.name = requiredString(body, "name");
-    queue.queueType = normalizeQueueType(requiredString(body, "queue_type"));
-    queue.endpoint = optionalString(body, "endpoint", "");
+    queue.name = requiredString(data, "name");
+    queue.queueType = normalizeQueueType(requiredString(data, "queue_type"));
+    queue.endpoint = optionalString(data, "endpoint", "");
     queue.active = optionalBoolean(data, "active", true);
     queue.createdAt = hasExisting ? existing.createdAt : now;
     queue.updatedAt = now;
@@ -555,12 +553,7 @@ HTML";
     return ordered.array;
   }
 
-  private bool contains(string[] items, string value) const {
-    foreach (item; items)
-      if (item == value)
-        return true;
-    return false;
-  }
+
 
   private void validateTenant(UUID tenantId) const {
     if (tenantId.length == 0)
@@ -593,28 +586,5 @@ HTML";
       throw new CAGValidationException("queue_type must be ctsplus or cloud-transport-management");
     }
     return normalized;
-  }
-
-
-  private string[] readStringArray(Json data, string key) const {
-    string[] values;
-    if (!(key in data) || data[key].isNull)
-      return values;
-    if (!data[key].isArray)
-      throw new CAGValidationException(key ~ " must be an array");
-    foreach (item; data[key]) {
-      if (!item.isString)
-        throw new CAGValidationException(key ~ " must contain strings");
-      values ~= item.get!string;
-    }
-    return values;
-  }
-
-  private Json readObject(Json data, string key) const {
-    if (!(key in data) || data[key].isNull)
-      return Json.emptyObject;
-    if (!data[key].isObject)
-      throw new CAGValidationException(key ~ " must be an object");
-    return data[key];
   }
 }

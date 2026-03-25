@@ -548,30 +548,4 @@ class CDCService : SAPService {
     requiredBooleanType(data, key);
     return data[key].get!bool;
   }
-
-  private string[] readStringArray(Json data, string key) const {
-    string[] values;
-    if (!(key in data) || data[key]
-      .isNull)
-      return values;
-    requiredArrayType(data, key);
-    foreach (item; data[key]) {
-      if (!item.isString)
-        throw new CDCValidationException(
-          key ~ " must contain strings");
-      values ~= item
-        .get!string;
-    }
-    return values;
-  }
-
-  private Json readObject(Json data, string key, Json fallback) const {
-    if (!(key in data) || data[key]
-      .isNull) {
-      return fallback;
-    }
-
-    requiredObjectType(data, key);
-    return data[key];
-  }
 }
