@@ -82,6 +82,11 @@ class UDMService : SAPService {
     if (eventItem.accountId.length == 0) {
       throw new UDMValidationException("account_id is required");
     }
+
+    if ("tenant_id" in request || !request["tenant_id"].isString || request["tenant_id"].get!string != tenantId
+      .toString) {
+      throw new UDMValidationException("tenant_id in path and body must match");
+    }
     if (eventItem.subaccountId.length == 0) {
       throw new UDMValidationException("subaccount_id is required");
     }
@@ -97,313 +102,308 @@ class UDMService : SAPService {
     validateTenant(tenantId);
 
     Json resources = _store.listEvents(tenantId).map!(eventItem => eventItem.toJson()).array;
-    {
 
-      return Json.emptyObject
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
+  }
+
+  Json listTenants() {
+    Json resources = Json.emptyArray;
+    foreach (tenantId; _store.listTenants()) {
+      resources ~= Json.emptyObject
         .set("tenant_id", tenantId)
-        .set("resources", resources)
-        .set("total_results", cast(long)resources.length);
+        .set("events_total", _store.countEvents(tenantId));
     }
 
-    Json listTenants() {
-      Json resources = Json.emptyArray;
-      foreach (tenantId; _store.listTenants()) {
-        Json row = Json.emptyObject;
-        row["tenant_id"] = tenantId;
-        row["events_total"] = _store.countEvents(tenantId);
-        resources ~= row;
+    return Json.emptyObject
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
+  }
+
+  Json monthlyUsageReport(UUID tenantId, Json request) {
+    validateTenant(tenantId);
+
+    auto month = request.getString("month", currentMonth());
+    validateMonth(month);
+
+    auto entityType = normalizeEntityType(request.getString("entity_type", "account"));
+    auto metricFilter = normalizedMetricFilter(request);
+
+    MonthlyUsageAggregate[string] aggregate;
+
+    foreach (eventItem; _store.listEvents(tenantId)) {
+      if (monthFromTimestamp(eventItem.occurredAt) != month) {
+        continue;
+      }
+      if (!metricAllowed(eventItem.metric, metricFilter)) {
+        continue;
       }
 
-      return Json.emptyObject
-        .set("resources", resources)
-        .set("total_results", cast(long)resources.length);
-    }
+      auto entityId = entityValue(eventItem, entityType);
+      auto key = entityId ~ "|" ~ toLower(eventItem.metric);
 
-    Json monthlyUsageReport(UUID tenantId, Json request) {
-      validateTenant(tenantId);
-
-      auto month = request.getString("month", currentMonth());
-      validateMonth(month);
-
-      auto entityType = normalizeEntityType(request.getString("entity_type", "account"));
-      auto metricFilter = normalizedMetricFilter(request);
-
-      MonthlyUsageAggregate[string] aggregate;
-
-      foreach (eventItem; _store.listEvents(tenantId)) {
-        if (monthFromTimestamp(eventItem.occurredAt) != month) {
-          continue;
-        }
-        if (!metricAllowed(eventItem.metric, metricFilter)) {
-          continue;
-        }
-
-        auto entityId = entityValue(eventItem, entityType);
-        auto key = entityId ~ "|" ~ toLower(eventItem.metric);
-
-        if (auto existing = key in aggregate) {
-          existing.quantity += eventItem.quantity;
-        } else {
-          MonthlyUsageAggregate row;
-          row.entityType = entityType;
-          row.entityId = entityId;
-          row.metric = eventItem.metric;
-          row.unit = eventItem.unit;
-          row.quantity = eventItem.quantity;
-          aggregate[key] = row;
-        }
-      }
-
-      Json resources = Json.emptyArray;
-      foreach (_, row; aggregate) {
-        Json item = Json.emptyObject;
-        item["entity_type"] = row.entityType;
-        item["entity_id"] = row.entityId;
-        item["metric"] = row.metric;
-        item["unit"] = row.unit;
-        item["total_quantity"] = row.quantity;
-        resources ~= item;
-      }
-
-      return Json.emptyObject
-        .set("tenant_id", tenantId)
-        .set("interval", "monthly")
-        .set("month", month)
-        .set("entity_type", entityType)
-        .set("resources", resources)
-        .set("total_results", cast(long)resources.length);
-    }
-
-    Json subaccountUsageReport(UUID tenantId, Json request) {
-      validateTenant(tenantId);
-
-      auto fromDate = request.getString("from_date", "");
-      auto toDate = request.getString("to_date", "");
-      if (fromDate.length == 0 || toDate.length == 0) {
-        throw new UDMValidationException("from_date and to_date are required");
-      }
-      validateDate(fromDate);
-      validateDate(toDate);
-
-      auto entityType = normalizeEntityType(request.getString("entity_type", "subaccount"));
-      auto metricFilter = normalizedMetricFilter(request);
-
-      DailyUsageAggregate[string] aggregate;
-
-      foreach (eventItem; _store.listEvents(tenantId)) {
-        auto day = dayFromTimestamp(eventItem.occurredAt);
-        if (!dateInRange(day, fromDate, toDate)) {
-          continue;
-        }
-        if (!metricAllowed(eventItem.metric, metricFilter)) {
-          continue;
-        }
-
-        auto entityId = entityValue(eventItem, entityType);
-        auto key = day ~ "|" ~ entityId ~ "|" ~ toLower(eventItem.metric);
-
-        if (auto existing = key in aggregate) {
-          existing.quantity += eventItem.quantity;
-        } else {
-          DailyUsageAggregate row;
-          row.day = day;
-          row.entityType = entityType;
-          row.entityId = entityId;
-          row.metric = eventItem.metric;
-          row.unit = eventItem.unit;
-          row.quantity = eventItem.quantity;
-          aggregate[key] = row;
-        }
-      }
-
-      Json resources = Json.emptyArray;
-      foreach (_, row; aggregate) {
-        Json item = Json.emptyObject;
-        item["day"] = row.day;
-        item["entity_type"] = row.entityType;
-        item["entity_id"] = row.entityId;
-        item["metric"] = row.metric;
-        item["unit"] = row.unit;
-        item["total_quantity"] = row.quantity;
-        resources ~= item;
-      }
-
-      return Json.emptyObject
-        .set("tenant_id", tenantId)
-        .set("interval", "daily")
-        .set("from_date", fromDate)
-        .set("to_date", toDate)
-        .set("entity_type", entityType)
-        .set("resources", resources)
-        .set("total_results", cast(long)resources.length);
-    }
-
-    Json monthlySubaccountCostsReport(UUID tenantId, Json request) {
-      validateTenant(tenantId);
-
-      auto month = request.getString("month", currentMonth());
-      validateMonth(month);
-
-      auto metricFilter = normalizedMetricFilter(request);
-      auto requiredCurrency = request.getString("currency", "");
-
-      MonthlyCostAggregate[string] aggregate;
-
-      foreach (eventItem; _store.listEvents(tenantId)) {
-        if (monthFromTimestamp(eventItem.occurredAt) != month) {
-          continue;
-        }
-        if (!eventItem.billable) {
-          continue;
-        }
-        if (!metricAllowed(eventItem.metric, metricFilter)) {
-          continue;
-        }
-        if (requiredCurrency.length > 0 && eventItem.currency != requiredCurrency) {
-          continue;
-        }
-
-        auto key = eventItem.subaccountId ~ "|" ~ toLower(eventItem.metric) ~ "|" ~ eventItem
-          .currency;
-        auto rowCost = eventItem.quantity * eventItem.unitPrice;
-
-        if (auto existing = key in aggregate) {
-          existing.quantity += eventItem.quantity;
-          existing.totalCost += rowCost;
-        } else {
-          MonthlyCostAggregate row;
-          row.subaccountId = eventItem.subaccountId;
-          row.metric = eventItem.metric;
-          row.currency = eventItem.currency;
-          row.quantity = eventItem.quantity;
-          row.unitPrice = eventItem.unitPrice;
-          row.totalCost = rowCost;
-          aggregate[key] = row;
-        }
-      }
-
-      Json resources = Json.emptyArray;
-      foreach (_, row; aggregate) {
-        Json item = Json.emptyObject;
-        item["subaccount_id"] = row.subaccountId;
-        item["metric"] = row.metric;
-        item["currency"] = row.currency;
-        item["total_quantity"] = row.quantity;
-        item["unit_price"] = row.unitPrice;
-        item["total_cost"] = row.totalCost;
-        resources ~= item;
-      }
-
-      return Json.emptyObject
-        .set("tenant_id", tenantId)
-        .set("interval", "monthly")
-        .set("month", month)
-        .set("commercial_model", "CPEA")
-        .set("resources", resources)
-        .set("total_results", cast(long)resources.length);
-    }
-
-    private Json endpoint(string method, string path, string description) {
-      Json row = Json.emptyObject;
-      row["method"] = method;
-      row["path"] = path;
-      row["description"] = description;
-      return row;
-    }
-
-    private string normalizeEntityType(string value) {
-      auto lowered = toLower(value);
-      if (lowered == "account" || lowered == "directory" || lowered == "region" || lowered == "subaccount") {
-        return lowered;
-      }
-      throw new UDMValidationException(
-        "entity_type must be one of: account, directory, region, subaccount");
-    }
-
-    private string entityValue(const UsageEvent eventItem, string entityType) {
-      switch (entityType) {
-      case "account":
-        return fallback(eventItem.accountId, "unknown-account");
-      case "directory":
-        return fallback(eventItem.directoryId, "unknown-directory");
-      case "region":
-        return fallback(eventItem.region, "unknown-region");
-      case "subaccount":
-        return fallback(eventItem.subaccountId, "unknown-subaccount");
-      default:
-        throw new UDMValidationException("Unsupported entity_type: " ~ entityType);
+      if (auto existing = key in aggregate) {
+        existing.quantity += eventItem.quantity;
+      } else {
+        MonthlyUsageAggregate row;
+        row.entityType = entityType;
+        row.entityId = entityId;
+        row.metric = eventItem.metric;
+        row.unit = eventItem.unit;
+        row.quantity = eventItem.quantity;
+        aggregate[key] = row;
       }
     }
 
-    private string fallback(string value, string replacement) {
-      return value.length > 0 ? value : replacement;
+    Json resources = Json.emptyArray;
+    foreach (_, row; aggregate) {
+      resources ~= Json.emptyObject
+        .set("entity_type", row.entityType)
+        .set("entity_id", row.entityId)
+        .set("metric", row.metric)
+        .set("unit", row.unit)
+        .set("total_quantity", row.quantity);
     }
 
-    private void validateMonth(string value) {
-      if (value.length != 7 || value[4] != '-') {
-        throw new UDMValidationException("month must be in YYYY-MM format");
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("interval", "monthly")
+      .set("month", month)
+      .set("entity_type", entityType)
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
+  }
+
+  Json subaccountUsageReport(UUID tenantId, Json request) {
+    validateTenant(tenantId);
+
+    auto fromDate = request.getString("from_date", "");
+    auto toDate = request.getString("to_date", "");
+    if (fromDate.length == 0 || toDate.length == 0) {
+      throw new UDMValidationException("from_date and to_date are required");
+    }
+    validateDate(fromDate);
+    validateDate(toDate);
+
+    auto entityType = normalizeEntityType(request.getString("entity_type", "subaccount"));
+    auto metricFilter = normalizedMetricFilter(request);
+
+    DailyUsageAggregate[string] aggregate;
+
+    foreach (eventItem; _store.listEvents(tenantId)) {
+      auto day = dayFromTimestamp(eventItem.occurredAt);
+      if (!dateInRange(day, fromDate, toDate)) {
+        continue;
+      }
+      if (!metricAllowed(eventItem.metric, metricFilter)) {
+        continue;
+      }
+
+      auto entityId = entityValue(eventItem, entityType);
+      auto key = day ~ "|" ~ entityId ~ "|" ~ toLower(eventItem.metric);
+
+      if (auto existing = key in aggregate) {
+        existing.quantity += eventItem.quantity;
+      } else {
+        DailyUsageAggregate row;
+        row.day = day;
+        row.entityType = entityType;
+        row.entityId = entityId;
+        row.metric = eventItem.metric;
+        row.unit = eventItem.unit;
+        row.quantity = eventItem.quantity;
+        aggregate[key] = row;
       }
     }
 
-    private void validateDate(string value) {
-      if (value.length != 10 || value[4] != '-' || value[7] != '-') {
-        throw new UDMValidationException("date must be in YYYY-MM-DD format");
+    Json resources = Json.emptyArray;
+    foreach (_, row; aggregate) {
+      resources ~= Json.emptyObject
+        .set("day", row.day)
+        .set("entity_type", row.entityType)
+        .set("entity_id", row.entityId)
+        .set("metric", row.metric)
+        .set("unit", row.unit)
+        .set("total_quantity", row.quantity);
+    }
+
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("interval", "daily")
+      .set("from_date", fromDate)
+      .set("to_date", toDate)
+      .set("entity_type", entityType)
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
+  }
+
+  Json monthlySubaccountCostsReport(UUID tenantId, Json request) {
+    validateTenant(tenantId);
+
+    auto month = request.getString("month", currentMonth());
+    validateMonth(month);
+
+    auto metricFilter = normalizedMetricFilter(request);
+    auto requiredCurrency = request.getString("currency", "");
+
+    MonthlyCostAggregate[string] aggregate;
+
+    foreach (eventItem; _store.listEvents(tenantId)) {
+      if (monthFromTimestamp(eventItem.occurredAt) != month) {
+        continue;
+      }
+      if (!eventItem.billable) {
+        continue;
+      }
+      if (!metricAllowed(eventItem.metric, metricFilter)) {
+        continue;
+      }
+      if (requiredCurrency.length > 0 && eventItem.currency != requiredCurrency) {
+        continue;
+      }
+
+      auto key = eventItem.subaccountId ~ "|" ~ toLower(eventItem.metric) ~ "|" ~ eventItem
+        .currency;
+      auto rowCost = eventItem.quantity * eventItem.unitPrice;
+
+      if (auto existing = key in aggregate) {
+        existing.quantity += eventItem.quantity;
+        existing.totalCost += rowCost;
+      } else {
+        MonthlyCostAggregate row;
+        row.subaccountId = eventItem.subaccountId;
+        row.metric = eventItem.metric;
+        row.currency = eventItem.currency;
+        row.quantity = eventItem.quantity;
+        row.unitPrice = eventItem.unitPrice;
+        row.totalCost = rowCost;
+        aggregate[key] = row;
       }
     }
 
-    private string currentMonth() {
-      auto now = Clock.currTime().toISOExtString();
-      return monthFromTimestamp(now);
+    Json resources = Json.emptyArray;
+    foreach (_, row; aggregate) {
+      resources ~= Json.emptyObject
+        .set("subaccount_id", row.subaccountId)
+        .set("metric", row.metric)
+        .set("currency", row.currency)
+        .set("total_quantity", row.quantity)
+        .set("unit_price", row.unitPrice)
+        .set("total_cost", row.totalCost);
     }
 
-    private string monthFromTimestamp(string value) {
-      if (value.length >= 7) {
-        return value[0 .. 7];
-      }
-      return "";
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("interval", "monthly")
+      .set("month", month)
+      .set("commercial_model", "CPEA")
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
+  }
+
+  private Json endpoint(string method, string path, string description) {
+    Json row = Json.emptyObject;
+    row["method"] = method;
+    row["path"] = path;
+    row["description"] = description;
+    return row;
+  }
+
+  private string normalizeEntityType(string value) {
+    auto lowered = toLower(value);
+    if (lowered == "account" || lowered == "directory" || lowered == "region" || lowered == "subaccount") {
+      return lowered;
     }
+    throw new UDMValidationException(
+      "entity_type must be one of: account, directory, region, subaccount");
+  }
 
-    private string dayFromTimestamp(string value) {
-      if (value.length >= 10) {
-        return value[0 .. 10];
-      }
-      return "";
-    }
-
-    private bool dateInRange(string day, string fromDate, string toDate) {
-      return day.length == 10 && day >= fromDate && day <= toDate;
-    }
-
-    private bool metricAllowed(string metric, string[] filter) {
-      if (filter.length == 0) {
-        return true;
-      }
-
-      auto normalized = toLower(metric);
-      foreach (allowed; filter) {
-        if (allowed == normalized) {
-          return true;
-        }
-      }
-      return false;
-    }
-
-    private string[] normalizedMetricFilter(Json request) {
-      string[] filter;
-      if (!("metrics" in request) || !request["metrics"].isArray) {
-        return filter;
-      }
-
-      foreach (item; request["metrics"].toArray) {
-        if (!item.isString) {
-          continue;
-        }
-        auto metric = toLower(item.get!string);
-        if (metric.length > 0) {
-          filter ~= metric;
-        }
-      }
-
-      return sort(filter).array;
+  private string entityValue(const UsageEvent eventItem, string entityType) {
+    switch (entityType) {
+    case "account":
+      return fallback(eventItem.accountId, "unknown-account");
+    case "directory":
+      return fallback(eventItem.directoryId, "unknown-directory");
+    case "region":
+      return fallback(eventItem.region, "unknown-region");
+    case "subaccount":
+      return fallback(eventItem.subaccountId, "unknown-subaccount");
+    default:
+      throw new UDMValidationException("Unsupported entity_type: " ~ entityType);
     }
   }
+
+  private string fallback(string value, string replacement) {
+    return value.length > 0 ? value : replacement;
+  }
+
+  private void validateMonth(string value) {
+    if (value.length != 7 || value[4] != '-') {
+      throw new UDMValidationException("month must be in YYYY-MM format");
+    }
+  }
+
+  private void validateDate(string value) {
+    if (value.length != 10 || value[4] != '-' || value[7] != '-') {
+      throw new UDMValidationException("date must be in YYYY-MM-DD format");
+    }
+  }
+
+  private string currentMonth() {
+    auto now = Clock.currTime().toISOExtString();
+    return monthFromTimestamp(now);
+  }
+
+  private string monthFromTimestamp(string value) {
+    if (value.length >= 7) {
+      return value[0 .. 7];
+    }
+    return "";
+  }
+
+  private string dayFromTimestamp(string value) {
+    if (value.length >= 10) {
+      return value[0 .. 10];
+    }
+    return "";
+  }
+
+  private bool dateInRange(string day, string fromDate, string toDate) {
+    return day.length == 10 && day >= fromDate && day <= toDate;
+  }
+
+  private bool metricAllowed(string metric, string[] filter) {
+    if (filter.length == 0) {
+      return true;
+    }
+
+    auto normalized = toLower(metric);
+    foreach (allowed; filter) {
+      if (allowed == normalized) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private string[] normalizedMetricFilter(Json request) {
+    string[] filter;
+    if (!("metrics" in request) || !request["metrics"].isArray) {
+      return filter;
+    }
+
+    foreach (item; request["metrics"].toArray) {
+      if (!item.isString) {
+        continue;
+      }
+      auto metric = toLower(item.get!string);
+      if (metric.length > 0) {
+        filter ~= metric;
+      }
+    }
+
+    return sort(filter).array;
+  }
+}

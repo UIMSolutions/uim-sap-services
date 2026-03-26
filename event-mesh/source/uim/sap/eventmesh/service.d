@@ -255,6 +255,7 @@ class EVMService : SAPService {
     if (webhook.queueName.length == 0) {
       throw new EVMValidationException("queue_name is required");
     }
+    
     if (webhook.callbackUrl.length == 0) {
       throw new EVMValidationException("callback_url is required");
     }
@@ -266,10 +267,9 @@ class EVMService : SAPService {
 
     auto saved = _store.upsertWebhook(webhook);
 
-    Json result = Json.emptyObject;
-    result["success"] = true;
-    result["webhook"] = saved.toJson();
-    return result;
+    return Json.emptyObject
+      .set("success", true)
+      .set("webhook", saved.toJson());
   }
 
   Json listWebhooks(UUID tenantId) {
@@ -336,11 +336,8 @@ class EVMService : SAPService {
       totalPending += _store.queueDepth(tenantId, queue.queueName);
     }
 
-    long totalPublished = 0;
-    foreach (topic; topics) {
-      totalPublished += topic.messagesPublished;
-    }
-
+    long totalPublished = topics.map!(t => t.messagesPublished).sum;
+ 
     return Json.emptyObject
       .set("tenant_id", tenantId)
       .set("queues", cast(long)queues.length)

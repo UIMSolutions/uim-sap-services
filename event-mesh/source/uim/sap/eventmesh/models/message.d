@@ -9,14 +9,38 @@ mixin(ShowModule!());
 class EVMMessage : SAPTenantObject {
   mixin(SAPObjectTemplate!EVMMessage);
 
+  override bool initialize(Json[string] initData = null) {
+    if (!super.initialize(initData)) {
+      return false;
+    }
+
+    if ("message_id" in initData && initData["message_id"].isString) {
+      messageId = UUID(initData["message_id"].get!string);
+    } else {
+      messageId = randomUUID();
+    }
+    topicName = initData.getString("topic_name", "");
+    queueName = initData.getString("queue_name", "");
+    status = initData.getString("status", "pending");
+    retryCount = initData.getLong("retry_count", 0);
+    consumedAt = initData.getString("consumed_at", "");
+
+    publisher = initData.getString("publisher", "");
+    source = initData.getString("source", "");
+    payload = initData.get("payload", Json.emptyObject);
+    publishedAt = initData.getString("published_at", Clock.currTime().toISOExtString());
+
+    return true;
+  }
+
   UUID messageId;
   string topicName;
   string queueName;
   string publisher;
   string source;
-  Json payload = Json.emptyObject;
-  string status = "pending";
-  long retryCount = 0;
+  Json payload;
+  string status;
+  long retryCount;
   string publishedAt;
   string consumedAt;
 
@@ -35,26 +59,10 @@ class EVMMessage : SAPTenantObject {
   }
 
   static EVMMessage messageFromJson(UUID tenantId, string topicName, Json request) {
-  EVMMessage m = new EVMMessage();
-  m.tenantId = tenantId;
-  m.messageId = randomUUID().toString();
-  m.topicName = topicName;
+    EVMMessage message = new EVMMessage(request);
+    message.tenantId = tenantId;
+    message.topicName = topicName;
 
-  if ("publisher" in request && request["publisher"].isString) {
-    m.publisher = request["publisher"].get!string;
+    return message;
   }
-  if ("source" in request && request["source"].isString) {
-    m.source = request["source"].get!string;
-  }
-  if ("payload" in request) {
-    m.payload = request["payload"];
-  } else {
-    m.payload = Json.emptyObject;
-  }
-
-  m.publishedAt = Clock.currTime().toISOExtString();
-  return m;
 }
-}
-
-

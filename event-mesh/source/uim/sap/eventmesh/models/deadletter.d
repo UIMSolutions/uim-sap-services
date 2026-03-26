@@ -6,11 +6,25 @@ mixin(ShowModule!());
 
 @safe:
 
-struct EVMDeadLetter {
-  UUID tenantId;
+class EVMDeadLetter : SAPTenantObject {
+  mixin(SAPObjectTemplate!EVMDeadLetter);
+  
+  override bool initialize(Json[string] initData = null) {
+    if (!super.initialize(initData)) {
+      return false;
+    }
+
+    queueName = initData.getString("queue_name", "");
+    reason = initData.getString("reason", "");
+    attemptCount = initData.getLong("attempt_count", 0);
+    failedAt = initData.getString("failed_at", "");
+
+    return true;
+  }
+
   UUID deadLetterId;
-  string queueName;
   UUID messageId;
+  string queueName;
   string reason;
   long attemptCount;
   string failedAt;

@@ -4,9 +4,7 @@ import uim.sap.service;
 
 mixin(ShowModule!());
 
-@safe
-
-/**
+@safe /**
   * SAPServer - Base class for all SAP service HTTP servers
   * Provides common functionality like:
   * - Base path handling
@@ -42,6 +40,10 @@ class SAPServer {
     initialize(initData);
   }
 
+  this(ISAPService service) {
+    _service = service;
+  }
+
   bool initialize(Json[] initData) {
     // Initialization logic for the object
     return true;
@@ -52,6 +54,7 @@ class SAPServer {
     return true;
   }
 
+  protected ISAPService _service;
   // -- host --
   protected string _host;
   string host() const {
