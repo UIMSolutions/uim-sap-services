@@ -14,8 +14,8 @@ mixin(ShowModule!());
 /** A user identity that is provisioned between systems. */
 struct IPVUser {
   UUID tenantId;
-  string userId;
-  string externalId; // ID in the external system
+  UUID userId;
+  UUID externalId; // ID in the external system
   string userName;
   string email;
   string firstName;

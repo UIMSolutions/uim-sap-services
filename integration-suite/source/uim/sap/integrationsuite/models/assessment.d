@@ -13,7 +13,7 @@ mixin(ShowModule!());
 
 struct INTAssessment {
   UUID tenantId;
-  string assessmentId;
+  UUID assessmentId;
   string name;
   string description;
   string integrationDomain = "process"; // process | data | analytics | user | thing

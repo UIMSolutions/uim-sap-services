@@ -7,8 +7,8 @@ mixin(ShowModule!());
 @safe:
 struct MDGBusinessPartner {
   UUID tenantId;
-  string bpId;
-  string externalId;
+  UUID bpId;
+  UUID externalId;
   string name;
   string country;
   string email;

@@ -7,7 +7,7 @@ mixin(ShowModule!());
 class DataContextReport : SAPTenantObject {
   mixin(SAPObjectTemplate!DataContextReport);
 
-  string id;
+  UUID id;
   string title;
   string entityType;
   string situationType;

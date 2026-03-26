@@ -8,8 +8,8 @@ mixin(ShowModule!());
 
 /// Application version for OTA updates
 struct MOBAppVersion {
-  string versionId; // e.g. "1.2.0"
-  string appId;
+  UUID versionId; // e.g. "1.2.0"
+  UUID appId;
   MOBVersionStatus status = MOBVersionStatus.DRAFT;
   string releaseNotes;
   string packageUrl; // download URL for MDK bundle

@@ -21,8 +21,8 @@ mixin(ShowModule!());
  */
 struct IPVTransformation {
   UUID tenantId;
-  string transformationId;
-  string systemId; // which system this rule belongs to
+  UUID transformationId;
+  UUID systemId; // which system this rule belongs to
   string entityType = "user"; // "user" | "group"
   string sourceAttribute; // attribute name in the source
   string targetAttribute; // attribute name in the target

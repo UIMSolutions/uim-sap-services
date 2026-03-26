@@ -22,7 +22,7 @@ mixin(ShowModule!());
  */
 struct IPVSystem {
   UUID tenantId;
-  string systemId;
+  UUID systemId;
   string systemName;
   string description;
   string systemType = "source"; // "source" | "target" | "proxy"

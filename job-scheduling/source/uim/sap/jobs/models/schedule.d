@@ -13,8 +13,8 @@ mixin(ShowModule!());
 
 struct Schedule {
     UUID tenantId;
-    string scheduleId;
-    string jobId;
+    UUID scheduleId;
+    UUID jobId;
     string format;
     string humanExpression;
     string repeatAt;

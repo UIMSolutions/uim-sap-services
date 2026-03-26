@@ -8,7 +8,7 @@ mixin(ShowModule!());
 
 /// A trained recommendation model.
 struct PREModel {
-  string modelId;
+  UUID modelId;
   UUID tenantId;
   string name;
   string description;

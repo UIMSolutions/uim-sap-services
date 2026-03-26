@@ -8,8 +8,8 @@ mixin(ShowModule!());
 
 /// Individual push notification
 struct MOBNotification {
-  string id;
-  string appId;
+  UUID id;
+  UUID appId;
   string title;
   string body_;
   MOBPushPriority priority = MOBPushPriority.NORMAL;

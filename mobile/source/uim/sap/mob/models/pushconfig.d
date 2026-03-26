@@ -8,14 +8,14 @@ mixin(ShowModule!());
 
 /// Push notification configuration per application
 struct MOBPushConfig {
-  string appId;
+  UUID appId;
   bool enabled;
   MOBPushProvider provider = MOBPushProvider.FCM;
   string serverKey; // FCM server key or APNs certificate ref
-  string senderId; // FCM sender ID
-  string apnsTeamId;
-  string apnsKeyId;
-  string apnsBundleId;
+  UUID senderId; // FCM sender ID
+  UUID apnsTeamId;
+  UUID apnsKeyId;
+  UUID apnsBundleId;
   bool sandbox; // use APNs sandbox environment
   SysTime createdAt;
   SysTime updatedAt;

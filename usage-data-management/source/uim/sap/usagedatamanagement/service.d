@@ -13,7 +13,7 @@ mixin(ShowModule!());
 
 private struct MonthlyUsageAggregate {
   string entityType;
-  string entityId;
+  UUID entityId;
   string metric;
   string unit;
   double quantity;
@@ -22,7 +22,7 @@ private struct MonthlyUsageAggregate {
 private struct DailyUsageAggregate {
   string day;
   string entityType;
-  string entityId;
+  UUID entityId;
   string metric;
   string unit;
   double quantity;

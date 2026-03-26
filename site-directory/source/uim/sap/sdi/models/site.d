@@ -8,7 +8,7 @@ mixin(ShowModule!());
 
 struct SDISite {
   UUID tenantId;
-  string siteId;
+  UUID siteId;
   string name;
   string description;
   string siteAlias;

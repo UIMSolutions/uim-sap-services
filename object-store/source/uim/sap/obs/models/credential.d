@@ -15,8 +15,8 @@ import uim.sap.obs.enumerations;
 
 /// Secure credentials to access a bucket
 struct OBSCredential {
-  string credentialId;
-  string bucketId;
+  UUID credentialId;
+  UUID bucketId;
   UUID tenantId;
   OBSCredentialType credType = OBSCredentialType.accessKey;
   OBSProvider provider;

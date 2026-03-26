@@ -39,10 +39,10 @@ mixin(ShowModule!());
  */
 struct IPVJob {
   UUID tenantId;
-  string jobId;
+  UUID jobId;
   string jobName;
-  string sourceSystemId;
-  string[] targetSystemIds;
+  UUID sourceSystemId;
+  UUID[] targetSystemIds;
   string readMode = "full"; // "full" | "delta"
   string status = "pending"; // "pending" | "running" | "completed" | "failed" | "cancelled"
   long usersRead = 0;

@@ -13,7 +13,7 @@ mixin(ShowModule!());
 
 struct INTApiPolicy {
   UUID tenantId;
-  string policyId;
+  UUID policyId;
   string name;
   string description;
   string policyType = "security"; // security | traffic | mediation

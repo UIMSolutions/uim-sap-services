@@ -13,10 +13,10 @@ mixin(ShowModule!());
 
 struct AlertEvent {
     UUID tenantId;
-    string alertId;
+    UUID alertId;
     string eventType;
-    string jobId;
-    string runId;
+    UUID jobId;
+    UUID runId;
     string status;
     string severity;
     string message;

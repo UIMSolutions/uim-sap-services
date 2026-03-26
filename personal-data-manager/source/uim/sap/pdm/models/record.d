@@ -25,7 +25,7 @@ class PDMPersonalDataRecord : SAPTenantObject {
   string fieldName; // e.g. "email", "phone_number", "address"
   string fieldValue; // the actual personal data value
   string applicationName; // which application stores this data
-  string applicationId;
+  UUID applicationId;
   string dataStore; // e.g. "HANA", "PostgreSQL", "S3"
 
   bool sensitive; // special category data (health, biometric, etc.)

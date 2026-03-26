@@ -15,8 +15,8 @@ import uim.sap.obs.enumerations;
 
 /// Lifecycle rule for automatic object transitions or expiration
 struct OBSLifecycleRule {
-  string ruleId;
-  string bucketId;
+  UUID ruleId;
+  UUID bucketId;
   string prefix; // object key prefix filter
   bool enabled = true;
   OBSLifecycleAction action = OBSLifecycleAction.transition;
