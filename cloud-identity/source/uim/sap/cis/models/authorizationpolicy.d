@@ -43,25 +43,23 @@ mixin(ShowModule!());
   * `resourceType` and `instanceId` fields help specify the exact resources that the policy governs, while the `updatedAt` field is essential for tracking changes to the policy and ensuring that the most current version is being applied. 
   * The `name` field provides a human-readable identifier for the policy, which can be useful for administrators when managing multiple policies. The combination of `resourceType` and `instanceId` allows for fine-grained control over which resources the policy applies to, enabling scenarios such as allowing access to a specific application or database instance. The `allowedGroups` and `allowedUserTypes` fields enable targeting specific user segments for access control, enhancing the security and manageability of the authorization policies within the CIS module. 
   */
-struct CISAuthorizationPolicy {
-  UUID tenantId;
+class CISAuthorizationPolicy : SAPTenantObject {
+  mixin(SAPObjectTemplate!CISAuthorizationPolicy);
+
   UUID policyId;
   string name;
   string resourceType;
   UUID instanceId;
   Json allowedGroups;
   Json allowedUserTypes;
-  SysTime updatedAt;
 
-  override Json toJson()  {
+  override Json toJson() {
     return super.toJson
-    .set("policy_id", policyId.toJson)
-    .set("tenant_id", tenantId.toJson)
-    .set("name", name.toJson)
-    .set("resource_type", resourceType.toJson)
-    .set("instance_id", instanceId.toJson)
-    .set("allowed_groups", allowedGroups)
-    .set("allowed_user_types", allowedUserTypes)
-    .set("updated_at", updatedAt.toISOExtString().toJson);
+      .set("policy_id", policyId.toJson)
+      .set("name", name.toJson)
+      .set("resource_type", resourceType.toJson)
+      .set("instance_id", instanceId.toJson)
+      .set("allowed_groups", allowedGroups)
+      .set("allowed_user_types", allowedUserTypes);
   }
 }

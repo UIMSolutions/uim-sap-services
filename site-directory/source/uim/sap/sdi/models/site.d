@@ -21,34 +21,31 @@ struct SDISite {
   SysTime updatedAt;
 
   override Json toJson()  {
-    Json info = super.toJson;
-    payload["tenant_id"] = tenantId;
-    payload["site_id"] = siteId;
-    payload["name"] = name;
-    payload["description"] = description;
-    payload["alias"] = siteAlias;
-    payload["runtime_url"] = runtimeUrl;
-    payload["is_default"] = isDefault;
-
     Json roleValues = Json.emptyArray;
     foreach (role; roles)
       roleValues ~= role;
-    payload["roles"] = roleValues;
 
-    payload["settings"] = settings.toJson();
-    payload["created_at"] = createdAt.toISOExtString();
-    payload["updated_at"] = updatedAt.toISOExtString();
-    return payload;
+    return super.toJson
+    .set("tenant_id", tenantId)
+    .set("site_id", siteId)
+    .set("name", name)
+    .set("description", description)
+    .set("alias", siteAlias)
+    .set("runtime_url", runtimeUrl)
+    .set("is_default", isDefault)
+    .set("roles", roleValues)
+    .set("settings", settings.toJson())
+    .set("created_at", createdAt.toISOExtString())
+    .set("updated_at", updatedAt.toISOExtString());
   }
 
   Json toTileJson() const {
-    Json payload = Json.emptyObject;
-    payload["site_id"] = siteId;
-    payload["title"] = name;
-    payload["alias"] = siteAlias;
-    payload["runtime_url"] = runtimeUrl;
-    payload["is_default"] = isDefault;
-    payload["role_count"] = cast(long)roles.length;
-    return payload;
+    return Json.emptyObject
+      .set("site_id", siteId)
+      .set("title", name)
+      .set("alias", siteAlias)
+      .set("runtime_url", runtimeUrl)
+      .set("is_default", isDefault)
+      .set("role_count", cast(long)roles.length);
   }
 }

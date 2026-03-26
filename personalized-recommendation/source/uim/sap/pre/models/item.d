@@ -12,7 +12,7 @@ mixin(ShowModule!());
 @safe:
 
 /// A catalog item that can be recommended.
-struct PREItem {
+class PREItem {
   UUID itemId;
   UUID tenantId;
   string title;

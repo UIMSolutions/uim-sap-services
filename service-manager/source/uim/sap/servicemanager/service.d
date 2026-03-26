@@ -51,13 +51,12 @@ class SVMService : SAPService {
   Json marketplaceOfferings() {
     Json resources = Json.emptyArray;
     foreach (offering; SVM_OFFERINGS) {
-      Json item = Json.emptyObject;
-      item["offering_name"] = offering;
-      item["provider"] = "SAP BTP";
-      item["plans"] = Json.emptyArray;
-      item["plans"] ~= "standard";
-      item["plans"] ~= "enterprise";
-      resources ~= item;
+      resources ~= Json.emptyObject
+      .set("offering_name", offering)
+      .set("provider", "SAP BTP")
+      .set("plans", Json.emptyArray)
+      .set("plans", "standard")
+      .set("plans", "enterprise");
     }
 
     return Json.emptyObject
@@ -69,10 +68,9 @@ class SVMService : SAPService {
   Json serviceOfferings(UUID tenantId) {
     validateTenant(tenantId);
 
-    auto payload = marketplaceOfferings();
-    payload["tenant_id"] = tenantId;
-    payload["catalog_scope"] = "account";
-    return payload;
+    return marketplaceOfferings()
+    .set("tenant_id", tenantId)
+    .set("catalog_scope", "account");
   }
 
   Json upsertPlatform(UUID tenantId, Json request) {
@@ -303,10 +301,9 @@ class SVMService : SAPService {
   }
 
   private Json endpoint(string method, string path, string description) {
-    Json row = Json.emptyObject;
-    row["method"] = method;
-    row["path"] = path;
-    row["description"] = description;
-    return row;
+    return Json.emptyObject
+      .set("method", method)
+      .set("path", path)
+      .set("description", description);
   }
 }

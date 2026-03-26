@@ -34,11 +34,36 @@ mixin(ShowModule!());
   * - deltaToken: An opaque token used for delta read mode to track changes since the last run.
   * - startedAt: The timestamp when the job started execution.
   * - completedAt: The timestamp when the job completed execution (if applicable).
-  * - createdAt: The timestamp when the job was created.
-  * - updatedAt: The timestamp when the job was last updated.
  */
-struct IPVJob {
-  UUID tenantId;
+class IPVJob : SAPTenantObject {
+  mixin(SAPObjectTemplate!IPVJob);
+
+  override bool initialize(Json[string] initData = null) {
+    if (!super.initialize(initData)) {
+      return false;
+    }
+
+    if ("job_id" in initData && initData["job_id"].isString) {
+      jobId = UUID(initData["job_id"].get!string);
+    }
+
+    jobName = initData.getString("job_name", "");
+    sourceSystemId = initData.getString("source_system_id", "");
+    readMode = initData.getString("read_mode", "full");
+    deltaToken = initData.getString("delta_token", "");
+
+    if ("target_system_ids" in initData && initData["target_system_ids"].isArray) {
+      () @trusted {
+        foreach (item; initData["target_system_ids"]) {
+          if (item.isString)
+            targetSystemIds ~= item.get!string;
+        }
+      }();
+    }
+
+    return true;
+  }
+
   UUID jobId;
   string jobName;
   UUID sourceSystemId;
@@ -56,65 +81,58 @@ struct IPVJob {
   string deltaToken; // opaque token for delta read mode
   string startedAt;
   string completedAt;
-  string createdAt;
-  string updatedAt;
 
   override Json toJson() {
-    Json targets = Json.emptyArray;
-    foreach (tid; targetSystemIds) {
-      targets ~= Json(tid);
+    auto targets = targetSystemIds.map!(tid => tid.toJson()).array;
+    {
+
+      return super.toJson()
+        .set("job_id", jobId)
+        .set("job_name", jobName)
+        .set("source_system_id", sourceSystemId)
+        .set("target_system_ids", targets)
+        .set("read_mode", readMode)
+        .set("status", status)
+        .set("users_read", usersRead)
+        .set("users_written", usersWritten)
+        .set("users_skipped", usersSkipped)
+        .set("users_failed", usersFailed)
+        .set("groups_read", groupsRead)
+        .set("groups_written", groupsWritten)
+        .set("groups_skipped", groupsSkipped)
+        .set("groups_failed", groupsFailed)
+        .set("delta_token", deltaToken)
+        .set("started_at", startedAt)
+        .set("completed_at", completedAt);
     }
 
-    return super.toJson()
-      .set("tenant_id", tenantId)
-      .set("job_id", jobId)
-      .set("job_name", jobName)
-      .set("source_system_id", sourceSystemId)
-      .set("target_system_ids", targets)
-      .set("read_mode", readMode)
-      .set("status", status)
-      .set("users_read", usersRead)
-      .set("users_written", usersWritten)
-      .set("users_skipped", usersSkipped)
-      .set("users_failed", usersFailed)
-      .set("groups_read", groupsRead)
-      .set("groups_written", groupsWritten)
-      .set("groups_skipped", groupsSkipped)
-      .set("groups_failed", groupsFailed)
-      .set("delta_token", deltaToken)
-      .set("started_at", startedAt)
-      .set("completed_at", completedAt)
-      .set("created_at", createdAt)
-      .set("updated_at", updatedAt);
-  }
-}
+    IPVJob jobFromJson(UUID tenantId, Json request) {
+      IPVJob j = new IPVJob(request);
+      j.tenantId = tenantId;
+      j.jobId = randomUUID().toString();
 
-IPVJob jobFromJson(UUID tenantId, Json request) {
-  IPVJob j;
-  j.tenantId = tenantId;
-  j.jobId = randomUUID().toString();
+      if ("job_name" in request && request["job_name"].isString)
+        j.jobName = request["job_name"].get!string;
+      if ("source_system_id" in request && request["source_system_id"].isString)
+        j.sourceSystemId = request["source_system_id"].get!string;
+      if ("read_mode" in request && request["read_mode"].isString)
+        j.readMode = request["read_mode"].get!string;
+      if ("delta_token" in request && request["delta_token"].isString)
+        j.deltaToken = request["delta_token"].get!string;
+      if ("job_id" in request && request["job_id"].isString)
+        j.jobId = request["job_id"].get!string;
 
-  if ("job_name" in request && request["job_name"].isString)
-    j.jobName = request["job_name"].get!string;
-  if ("source_system_id" in request && request["source_system_id"].isString)
-    j.sourceSystemId = request["source_system_id"].get!string;
-  if ("read_mode" in request && request["read_mode"].isString)
-    j.readMode = request["read_mode"].get!string;
-  if ("delta_token" in request && request["delta_token"].isString)
-    j.deltaToken = request["delta_token"].get!string;
-  if ("job_id" in request && request["job_id"].isString)
-    j.jobId = request["job_id"].get!string;
-
-  if ("target_system_ids" in request && request["target_system_ids"].isArray) {
-    () @trusted {
-      foreach (item; request["target_system_ids"]) {
-        if (item.isString)
-          j.targetSystemIds ~= item.get!string;
+      if ("target_system_ids" in request && request["target_system_ids"].isArray) {
+        () @trusted {
+          foreach (item; request["target_system_ids"]) {
+            if (item.isString)
+              j.targetSystemIds ~= item.get!string;
+          }
+        }();
       }
-    }();
-  }
 
-  j.createdAt = Clock.currTime().toISOExtString();
-  j.updatedAt = j.createdAt;
-  return j;
-}
+      j.createdAt = Clock.currTime().toISOExtString();
+      j.updatedAt = j.createdAt;
+      return j;
+    }
+  }

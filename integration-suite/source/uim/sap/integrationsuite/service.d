@@ -652,9 +652,9 @@ class INTService : SAPService {
     auto m = _store.getMigration(tenantId, migrationId);
     if (m.migrationId.length == 0)
       throw new INTNotFoundException("Migration", migrationId);
-    Json r = Json.emptyObject;
-    r["migration"] = m.toJson();
-    return r;
+    
+    return Json.emptyObject
+      .set("migration", m.toJson());
   }
 
   Json completeMigration(UUID tenantId, string migrationId) {
@@ -668,11 +668,10 @@ class INTService : SAPService {
     m.updatedAt = m.completedAt;
     _store.upsertMigration(m);
 
-    Json r = Json.emptyObject;
-    r["success"] = true;
-    r["message"] = "Migration completed";
-    r["migration"] = m.toJson();
-    return r;
+    return Json.emptyObject
+      .set("success", true)
+      .set("message", "Migration completed")
+      .set("migration", m.toJson());
   }
 
   Json deleteMigration(UUID tenantId, string migrationId) {
@@ -830,11 +829,10 @@ class INTService : SAPService {
     p.updatedAt = p.installedAt;
     _store.upsertContentPack(p);
 
-    Json r = Json.emptyObject;
-    r["success"] = true;
-    r["message"] = "Content pack installed";
-    r["content_pack"] = p.toJson();
-    return r;
+    return Json.emptyObject
+      .set("success", true)
+      .set("message", "Content pack installed")
+      .set("content_pack", p.toJson());
   }
 
   Json deleteContentPack(UUID tenantId, string packId) {
@@ -851,26 +849,25 @@ class INTService : SAPService {
   Json dashboard(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
 
-    Json r = Json.emptyObject;
-    r["tenant_id"] = tenantId;
-    r["iflows"] = cast(long)_store.listIFlows(tenantId).length;
-    r["message_logs"] = cast(long)_store.listMessageLogs(tenantId).length;
-    r["api_proxies"] = cast(long)_store.listApiProxies(tenantId).length;
-    r["api_products"] = cast(long)_store.listApiProducts(tenantId).length;
-    r["api_policies"] = cast(long)_store.listApiPolicies(tenantId).length;
-    r["event_topics"] = cast(long)_store.listEventTopics(tenantId).length;
-    r["event_subscriptions"] = cast(long)_store.listEventSubscriptions(tenantId).length;
-    r["connectors"] = cast(long)_store.listConnectors(tenantId).length;
-    r["mappings"] = cast(long)_store.listMappings(tenantId).length;
-    r["trading_partners"] = cast(long)_store.listTradingPartners(tenantId).length;
-    r["agreements"] = cast(long)_store.listAgreements(tenantId).length;
-    r["odata_services"] = cast(long)_store.listODataServices(tenantId).length;
-    r["assessments"] = cast(long)_store.listAssessments(tenantId).length;
-    r["migrations"] = cast(long)_store.listMigrations(tenantId).length;
-    r["hybrid_runtimes"] = cast(long)_store.listHybridRuntimes(tenantId).length;
-    r["data_assets"] = cast(long)_store.listDataAssets(tenantId).length;
-    r["content_packs"] = cast(long)_store.listContentPacks(tenantId).length;
-    return r;
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("iflows", cast(long)_store.listIFlows(tenantId).length)
+      .set("message_logs", cast(long)_store.listMessageLogs(tenantId).length)
+      .set("api_proxies", cast(long)_store.listApiProxies(tenantId).length)
+      .set("api_products", cast(long)_store.listApiProducts(tenantId).length)
+      .set("api_policies", cast(long)_store.listApiPolicies(tenantId).length)
+      .set("event_topics", cast(long)_store.listEventTopics(tenantId).length)
+      .set("event_subscriptions", cast(long)_store.listEventSubscriptions(tenantId).length)
+      .set("connectors", cast(long)_store.listConnectors(tenantId).length)
+      .set("mappings", cast(long)_store.listMappings(tenantId).length)
+      .set("trading_partners", cast(long)_store.listTradingPartners(tenantId).length)
+      .set("agreements", cast(long)_store.listAgreements(tenantId).length)
+      .set("odata_services", cast(long)_store.listODataServices(tenantId).length)
+      .set("assessments", cast(long)_store.listAssessments(tenantId).length)
+      .set("migrations", cast(long)_store.listMigrations(tenantId).length)
+      .set("hybrid_runtimes", cast(long)_store.listHybridRuntimes(tenantId).length)
+      .set("data_assets", cast(long)_store.listDataAssets(tenantId).length)
+      .set("content_packs", cast(long)_store.listContentPacks(tenantId).length);
   }
 
   // =================================================================
@@ -878,17 +875,15 @@ class INTService : SAPService {
   // =================================================================
 
   private Json listResult(UUID tenantId, Json resources) {
-    Json r = Json.emptyObject;
-    r["tenant_id"] = tenantId;
-    r["resources"] = resources;
-    r["total_results"] = cast(long)resources.length;
-    return r;
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   private Json deleteResult(string message) {
-    Json r = Json.emptyObject;
-    r["success"] = true;
-    r["message"] = message;
-    return r;
+    return Json.emptyObject
+      .set("success", true)
+      .set("message", message);
   }
 }

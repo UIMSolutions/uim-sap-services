@@ -63,10 +63,10 @@ class SMGService : SAPService {
     site.updatedAt = now;
 
     auto saved = _store.upsertSite(site);
-    Json payload = Json.emptyObject;
-    payload["message"] = "Site saved";
-    payload["site"] = saved.toJson();
-    return payload;
+    
+    return Json.emptyObject
+      .set("message", "Site saved")
+      .set("site", saved.toJson());
   }
 
   Json getSite(UUID tenantId, string siteId) {
@@ -78,9 +78,8 @@ class SMGService : SAPService {
     if (site.isNull)
       throw new SMGNotFoundException("Site not found");
 
-    Json payload = Json.emptyObject;
-    payload["site"] = site.get.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("site", site.get.toJson());
   }
 
   Json deleteSite(UUID tenantId, string siteId) {
@@ -92,10 +91,9 @@ class SMGService : SAPService {
     if (!removed)
       throw new SMGNotFoundException("Site not found");
 
-    Json payload = Json.emptyObject;
-    payload["message"] = "Site deleted";
-    payload["site_id"] = siteId;
-    return payload;
+    return Json.emptyObject
+      .set("message", "Site deleted")
+      .set("site_id", siteId);
   }
 
   Json getSubaccountSettings(UUID tenantId) {
@@ -117,9 +115,8 @@ class SMGService : SAPService {
       settings = _store.getSubaccountSettings(tenantId);
     }
 
-    Json payload = Json.emptyObject;
-    payload["settings"] = settings.get.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("settings", settings.get.toJson());
   }
 
   Json upsertSubaccountSettings(UUID tenantId, Json data) {
@@ -150,10 +147,10 @@ class SMGService : SAPService {
     }
 
     auto saved = _store.upsertSubaccountSettings(settings);
-    Json payload = Json.emptyObject;
-    payload["message"] = "Subaccount settings saved";
-    payload["settings"] = saved.toJson();
-    return payload;
+    
+    return Json.emptyObject
+      .set("message", "Subaccount settings saved")
+      .set("settings", saved.toJson());
   }
 
   private string normalizeLifecycle(string value) const {

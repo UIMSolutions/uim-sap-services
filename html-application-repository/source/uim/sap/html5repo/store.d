@@ -183,14 +183,13 @@ class HARsitoryStore : SAPStore {
           continue;
         }
 
-        Json item = Json.emptyObject;
-        item["tenant_id"] = tenantId;
-        item["space_id"] = currentSpace;
-        item["app_id"] = appId;
-        item["active_version"] = active;
-        item["active_visibility"] = visibilityToString(activeInfo.visibility);
-        item["version_count"] = cast(long)versions.length;
-        result ~= item;
+        result ~= Json.emptyObject
+        .set("tenant_id", tenantId)
+        .set("space_id", currentSpace)
+        .set("app_id", appId)
+        .set("active_version", active)
+        .set("active_visibility", visibilityToString(activeInfo.visibility))
+        .set("version_count", cast(long)versions.length);
       }
     }
 
@@ -281,7 +280,7 @@ class HARsitoryStore : SAPStore {
       throw new HARNotFoundException("Asset", cleanPath);
     }
 
-    RuntimeAsset asset;
+    RuntimeAsset asset = new RuntimeAsset;
     asset.tenantId = tenantId;
     asset.spaceId = spaceId;
     asset.appId = appId;

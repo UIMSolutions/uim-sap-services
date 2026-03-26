@@ -57,14 +57,16 @@ class IPVService : SAPService {
     validateId(tenantId, "Tenant ID");
 
     auto system = systemFromJson(tenantId, request);
-    if (system.systemName.length == 0){
-      throw new IPVValidationException("system_name is required");}
+    if (system.systemName.length == 0) {
+      throw new IPVValidationException("system_name is required");
+    }
     if (system.systemType != "source" && system.systemType != "target" && system.systemType != "proxy")
       throw new IPVValidationException("system_type must be 'source', 'target', or 'proxy'");
 
     auto existing = _store.getSystem(tenantId, system.systemName);
-    if (existing.systemName.length > 0){
-      throw new IPVValidationException("System already exists: " ~ system.systemName);}
+    if (existing.systemName.length > 0) {
+      throw new IPVValidationException("System already exists: " ~ system.systemName);
+    }
 
     auto saved = _store.upsertSystem(system);
 
@@ -76,17 +78,15 @@ class IPVService : SAPService {
   Json listSystems(UUID tenantId, string systemType = "") {
     validateId(tenantId, "Tenant ID");
 
-    IPVSystem[] systems = systemType.length > 0 
-      ? _store.listSystemsByType(tenantId, systemType)
-      : _store.listSystems(tenantId);
+    IPVSystem[] systems = systemType.length > 0
+      ? _store.listSystemsByType(tenantId, systemType) : _store.listSystems(tenantId);
 
     Json resources = systems.map!(s => s.toJson()).array.toJson;
 
-    Json result = Json.emptyObject;
-    result["tenant_id"] = tenantId;
-    result["resources"] = resources;
-    result["total_results"] = cast(long)resources.length;
-    return result;
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json getSystem(UUID tenantId, string systemName) {
@@ -123,10 +123,9 @@ class IPVService : SAPService {
     existing.updatedAt = Clock.currTime().toISOExtString();
     auto saved = _store.upsertSystem(existing);
 
-    Json result = Json.emptyObject;
-    result["success"] = true;
-    result["system"] = saved.toJson();
-    return result;
+    return Json.emptyObject
+      .set("success", true)
+      .set("system", saved.toJson());
   }
 
   Json deleteSystem(UUID tenantId, string systemName) {
@@ -327,11 +326,10 @@ class IPVService : SAPService {
       resources ~= t.toJson();
     }
 
-    Json result = Json.emptyObject;
-    result["tenant_id"] = tenantId;
-    result["resources"] = resources;
-    result["total_results"] = cast(long)resources.length;
-    return result;
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json getTransformation(UUID tenantId, string transformationId) {
@@ -342,9 +340,8 @@ class IPVService : SAPService {
     if (t.transformationId.length == 0)
       throw new IPVNotFoundException("Transformation", tenantId ~ "/" ~ transformationId);
 
-    Json result = Json.emptyObject;
-    result["transformation"] = t.toJson();
-    return result;
+    return Json.emptyObject
+      .set("transformation", t.toJson());
   }
 
   Json deleteTransformation(UUID tenantId, string transformationId) {
@@ -354,10 +351,9 @@ class IPVService : SAPService {
     if (!_store.deleteTransformation(tenantId, transformationId))
       throw new IPVNotFoundException("Transformation", tenantId ~ "/" ~ transformationId);
 
-    Json result = Json.emptyObject;
-    result["success"] = true;
-    result["message"] = "Transformation deleted";
-    return result;
+    return Json.emptyObject
+      .set("success", true)
+      .set("message", "Transformation deleted");
   }
 
   // ─── Provisioning Jobs ────────────────────────────────────
@@ -415,11 +411,10 @@ class IPVService : SAPService {
 
       notifySubscribers(tenantId, job.sourceSystemId, "job.failed", job.jobId);
 
-      Json result = Json.emptyObject;
-      result["success"] = false;
-      result["job"] = job.toJson();
-      result["message"] = "Job failed: " ~ e.msg;
-      return result;
+      return Json.emptyObject
+        .set("success", false)
+        .set("job", job.toJson())
+        .set("message", "Job failed: " ~ e.msg);
     }
 
     // Reload job with updated stats
@@ -437,10 +432,9 @@ class IPVService : SAPService {
 
     notifySubscribers(tenantId, job.sourceSystemId, "job.completed", job.jobId);
 
-    Json result = Json.emptyObject;
-    result["success"] = true;
-    result["job"] = job.toJson();
-    return result;
+    return Json.emptyObject
+      .set("success", true)
+      .set("job", job.toJson());
   }
 
   Json listJobs(UUID tenantId) {
@@ -492,10 +486,9 @@ class IPVService : SAPService {
 
     notifySubscribers(tenantId, job.sourceSystemId, "job.cancelled", jobId);
 
-    Json result = Json.emptyObject;
-    result["success"] = true;
-    result["job"] = job.toJson();
-    return result;
+    return Json.emptyObject
+      .set("success", true)
+      .set("job", job.toJson());
   }
 
   // ─── Job Logging ──────────────────────────────────────────
@@ -519,12 +512,12 @@ class IPVService : SAPService {
       resources ~= log.toJson();
     }
 
-    Json result = Json.emptyObject;
-    result["tenant_id"] = tenantId;
-    result["job_id"] = jobId;
-    result["resources"] = resources;
-    result["total_results"] = cast(long)resources.length;
-    return result;
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("job_id", jobId)
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
+
   }
 
   /** Export job logs as a flat JSON array (for download). */
@@ -543,15 +536,14 @@ class IPVService : SAPService {
       resources ~= log.toJson();
     }
 
-    Json result = Json.emptyObject;
-    result["tenant_id"] = tenantId;
-    result["job_id"] = jobId;
-    result["job_name"] = job.jobName;
-    result["job_status"] = job.status;
-    result["exported_at"] = Clock.currTime().toISOExtString();
-    result["logs"] = resources;
-    result["total_logs"] = cast(long)resources.length;
-    return result;
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("job_id", jobId)
+      .set("job_name", job.jobName)
+      .set("job_status", job.status)
+      .set("exported_at", Clock.currTime().toISOExtString())
+      .set("logs", resources)
+      .set("total_logs", cast(long)resources.length);
   }
 
   // ─── Notification Subscriptions ───────────────────────────
@@ -569,25 +561,21 @@ class IPVService : SAPService {
 
     auto saved = _store.upsertNotification(notification);
 
-    Json result = Json.emptyObject;
-    result["success"] = true;
-    result["subscription"] = saved.toJson();
-    return result;
+    return Json.emptyObject
+      .set("success", true)
+      .set("subscription", saved.toJson());
   }
 
   Json listNotifications(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
 
-    Json resources = Json.emptyArray;
-    foreach (n; _store.listNotifications(tenantId)) {
-      resources ~= n.toJson();
-    }
+    auto resources = _store.listNotifications(tenantId), map!(notification => notification.toJson())
+      .array;
 
-    Json result = Json.emptyObject;
-    result["tenant_id"] = tenantId;
-    result["resources"] = resources;
-    result["total_results"] = cast(long)resources.length;
-    return result;
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json deleteNotification(UUID tenantId, string subscriptionId) {
@@ -635,20 +623,19 @@ class IPVService : SAPService {
         ++runningJobs;
     }
 
-    Json result = Json.emptyObject;
-    result["tenant_id"] = tenantId;
-    result["total_systems"] = cast(long)systems.length;
-    result["source_systems"] = sourceSystems;
-    result["target_systems"] = targetSystems;
-    result["total_users"] = cast(long)users.length;
-    result["total_groups"] = cast(long)groups.length;
-    result["total_jobs"] = cast(long)jobs.length;
-    result["completed_jobs"] = completedJobs;
-    result["failed_jobs"] = failedJobs;
-    result["running_jobs"] = runningJobs;
-    result["total_transformations"] = cast(long)transformations.length;
-    result["total_notifications"] = cast(long)notifications.length;
-    return result;
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("total_systems", cast(long)systems.length)
+      .set("source_systems", sourceSystems)
+      .set("target_systems", targetSystems)
+      .set("total_users", cast(long)users.length)
+      .set("total_groups", cast(long)groups.length)
+      .set("total_jobs", cast(long)jobs.length)
+      .set("completed_jobs", completedJobs)
+      .set("failed_jobs", failedJobs)
+      .set("running_jobs", runningJobs)
+      .set("total_transformations", cast(long)transformations.length)
+      .set("total_notifications", cast(long)notifications.length);
   }
 
   // ─── Private provisioning engine ──────────────────────────

@@ -222,96 +222,88 @@ class ISAService : SAPService {
     foreach (entityType, count; entityTypeCounts) {
       Json templates = templatesByEntity[entityType].map!(t => Json.emptyObject.set("template_id", t))
         .array;
-      {
 
-        topEntityTypes ~= Json.emptyObject
-          .set("entity_type", entityType)
-          .set("count", count)
-          .set("templates", templates);
-      }
+      topEntityTypes ~= Json.emptyObject
+        .set("entity_type", entityType)
+        .set("count", count)
+        .set("templates", templates);
+    }
 
-      Json reportItems = reports.map!(report => report.toJson()).array;
-      {
+    Json reportItems = reports.map!(report => report.toJson()).array;
 
-        return Json.emptyObject
-          .set("tenant_id", tenantId)
-          .set("top_entity_types", topEntityTypes)
-          .set("relationships", relationships)
-          .set("data_context_reports", reportItems);
-      }
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("top_entity_types", topEntityTypes)
+      .set("relationships", relationships)
+      .set("data_context_reports", reportItems);
+  }
 
-      Json contextReports(UUID tenantId) {
-        Json payload = Json.emptyObject;
-        Json resources = Json.emptyArray;
+  Json contextReports(UUID tenantId) {
+    auto resources = _store.listReports(tenantId).map!(report => report.toJson()).array;
 
-        foreach (report; _store.listReports(tenantId)) {
-          resources ~= report.toJson();
-        }
+    return Json.emptyObject
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
+  }
 
-        payload["resources"] = resources;
-        payload["total_results"] = cast(long)resources.length;
-        return payload;
-      }
+  private void validateConfiguration(AutomationConfiguration cfg) {
+    if (cfg.name.length == 0) {
+      throw new ISAValidationException("name is required");
+    }
+    if (cfg.situationType.length == 0) {
+      throw new ISAValidationException("situation_type is required");
+    }
+    if (cfg.businessRules.length == 0) {
+      throw new ISAValidationException("at least one business rule is required");
+    }
+  }
 
-      private void validateConfiguration(AutomationConfiguration cfg) {
-        if (cfg.name.length == 0) {
-          throw new ISAValidationException("name is required");
-        }
-        if (cfg.situationType.length == 0) {
-          throw new ISAValidationException("situation_type is required");
-        }
-        if (cfg.businessRules.length == 0) {
-          throw new ISAValidationException("at least one business rule is required");
-        }
-      }
-
-      private double estimatedSavedMinutes(AutomationConfiguration[] configs, string situationType) {
-        foreach (cfg; configs) {
-          if (cfg.situationType == situationType && cfg.enabled) {
-            return cfg.avgManualMinutes * cfg.autoResolutionRate;
-          }
-        }
-        return 3.0;
-      }
-
-      private Json[] automationSuggestions(UUID tenantId) {
-        auto situations = _store.listSituations(tenantId);
-        auto configs = _store.listConfigurations(tenantId);
-
-        long[string] frequency;
-        foreach (entry; situations) {
-          if (entry.status == SituationStatus.autoResolved) {
-            continue;
-          }
-          frequency[entry.situationType] = frequency.get(entry.situationType, 0) + 1;
-        }
-
-        Json[] suggestions;
-        foreach (situationType, count; frequency) {
-          if (count < 1) {
-            continue;
-          }
-
-          bool covered = false;
-          foreach (cfg; configs) {
-            if (cfg.situationType == situationType && cfg.enabled) {
-              covered = true;
-              break;
-            }
-          }
-
-          if (covered) {
-            continue;
-          }
-
-          Json suggestion = Json.emptyObject;
-          suggestion["situation_type"] = situationType;
-          suggestion["occurrences"] = count;
-          suggestion["suggested_flow"] = "rule_based_auto_resolution";
-          suggestion["potential_time_saved_minutes"] = cast(double)max(1, cast(int)count * 4);
-          suggestions ~= suggestion;
-        }
-
-        return suggestions;
+  private double estimatedSavedMinutes(AutomationConfiguration[] configs, string situationType) {
+    foreach (cfg; configs) {
+      if (cfg.situationType == situationType && cfg.enabled) {
+        return cfg.avgManualMinutes * cfg.autoResolutionRate;
       }
     }
+    return 3.0;
+  }
+
+  private Json[] automationSuggestions(UUID tenantId) {
+    auto situations = _store.listSituations(tenantId);
+    auto configs = _store.listConfigurations(tenantId);
+
+    long[string] frequency;
+    foreach (entry; situations) {
+      if (entry.status == SituationStatus.autoResolved) {
+        continue;
+      }
+      frequency[entry.situationType] = frequency.get(entry.situationType, 0) + 1;
+    }
+
+    Json[] suggestions;
+    foreach (situationType, count; frequency) {
+      if (count < 1) {
+        continue;
+      }
+
+      bool covered = false;
+      foreach (cfg; configs) {
+        if (cfg.situationType == situationType && cfg.enabled) {
+          covered = true;
+          break;
+        }
+      }
+
+      if (covered) {
+        continue;
+      }
+
+      suggestions ~= Json.emptyObject
+        .set("situation_type", situationType)
+        .set("occurrences", count)
+        .set("suggested_flow", "rule_based_auto_resolution")
+        .set("potential_time_saved_minutes", cast(double)max(1, cast(int)count * 4));
+    }
+
+    return suggestions;
+  }
+}

@@ -411,9 +411,8 @@ HTML";
       throw new JobSchedulingNotFoundException("Schedule", scheduleId);
     }
 
-    Json data = Json.emptyObject;
-    data["schedule"] = item.toJson();
-    return data;
+    return Json.emptyObject
+      .set("schedule", item.toJson());
   }
 
   Json updateSchedule(UUID tenantId, string scheduleId, Json request) {

@@ -16,8 +16,32 @@ mixin(ShowModule!());
  *  `level` values: "info", "warning", "error"
  *  `entityType` values: "user", "group", "system", "job"
  */
-struct IPVJobLog {
-  UUID tenantId;
+class IPVJobLog : SAPTenantObject {
+  mixin(SAPObjectTemplate!IPVJobLog);
+
+  override bool initialize(Json[string] initData = null) {
+    if (!super.initialize(initData)) {
+      return false;
+    }
+
+    if ("log_id" in initData && initData["log_id"].isString) {
+      logId = UUID(initData["log_id"].get!string);
+    }
+
+    if ("job_id" in initData && initData["job_id"].isString) {
+      jobId = UUID(initData["job_id"].get!string);
+    }
+
+    level = initData.getString("level", "info");
+    entityType = initData.getString("entity_type", "");
+    entityId = UUID(initData.getString("entity_id", ""));
+    message = initData.getString("message", "");
+    details = initData.getString("details", "");
+    timestamp = initData.getString("timestamp", Clock.currTime().toISOExtString());
+
+    return true;
+  }
+
   UUID logId;
   UUID jobId;
   string level = "info"; // "info" | "warning" | "error"
@@ -27,24 +51,24 @@ struct IPVJobLog {
   string details;
   string timestamp;
 
-  override Json toJson()  {
+  override Json toJson() {
     return super.toJson()
-    .set("tenant_id", tenantId)
-    .set("log_id", logId)
-    .set("job_id", jobId)
-    .set("level", level)
-    .set("entity_type", entityType)
-    .set("entity_id", entityId)
-    .set("message", message)
-    .set("details", details)
-    .set("timestamp", timestamp);
+      .set("log_id", logId)
+      .set("job_id", jobId)
+      .set("level", level)
+      .set("entity_type", entityType)
+      .set("entity_id", entityId)
+      .set("message", message)
+      .set("details", details)
+      .set("timestamp", timestamp);
   }
 }
 
 /** Factory helper to create a new log entry. */
 IPVJobLog createJobLog(UUID tenantId, string jobId, string level, string entityType,
-  string entityId, string message, string details = "") {
-  IPVJobLog log;
+  UUID entityId, string message, string details = "") {
+  IPVJobLog log = new IPVJobLog;
+  
   log.tenantId = tenantId;
   log.logId = randomUUID().toString();
   log.jobId = jobId;
@@ -54,5 +78,6 @@ IPVJobLog createJobLog(UUID tenantId, string jobId, string level, string entityT
   log.message = message;
   log.details = details;
   log.timestamp = Clock.currTime().toISOExtString();
+
   return log;
 }
