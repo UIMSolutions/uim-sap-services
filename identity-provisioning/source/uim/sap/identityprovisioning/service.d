@@ -68,10 +68,9 @@ class IPVService : SAPService {
 
     auto saved = _store.upsertSystem(system);
 
-    Json result = Json.emptyObject;
-    result["success"] = true;
-    result["system"] = saved.toJson();
-    return result;
+    return Json.emptyObject
+      .set("success", true)
+      .set("system", saved.toJson());
   }
 
   Json listSystems(UUID tenantId, string systemType = "") {
@@ -98,9 +97,8 @@ class IPVService : SAPService {
     if (system.systemName.length == 0)
       throw new IPVNotFoundException("System", tenantId ~ "/" ~ systemName);
 
-    Json result = Json.emptyObject;
-    result["system"] = system.toJson();
-    return result;
+    return Json.emptyObject
+      .set("system", system.toJson());
   }
 
   Json updateSystem(UUID tenantId, string systemName, Json request) {
@@ -138,10 +136,9 @@ class IPVService : SAPService {
     if (!_store.deleteSystem(tenantId, systemName))
       throw new IPVNotFoundException("System", tenantId ~ "/" ~ systemName);
 
-    Json result = Json.emptyObject;
-    result["success"] = true;
-    result["message"] = "System deleted: " ~ systemName;
-    return result;
+    return Json.emptyObject
+      .set("success", true)
+      .set("message", "System deleted: " ~ systemName);
   }
 
   // ─── User CRUD ────────────────────────────────────────────
@@ -155,10 +152,9 @@ class IPVService : SAPService {
 
     auto saved = _store.upsertUser(user);
 
-    Json result = Json.emptyObject;
-    result["success"] = true;
-    result["user"] = saved.toJson();
-    return result;
+    return Json.emptyObject
+      .set("success", true)
+      .set("user", saved.toJson());
   }
 
   Json listUsers(UUID tenantId) {
@@ -169,14 +165,13 @@ class IPVService : SAPService {
       resources ~= user.toJson();
     }
 
-    Json result = Json.emptyObject;
-    result["tenant_id"] = tenantId;
-    result["resources"] = resources;
-    result["total_results"] = cast(long)resources.length;
-    return result;
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
-  Json getUser(UUID tenantId, string userId) {
+  Json getUser(UUID tenantId, UUID userId) {
     validateId(tenantId, "Tenant ID");
     validateId(userId, "User ID");
 
@@ -184,12 +179,11 @@ class IPVService : SAPService {
     if (user.userId.length == 0)
       throw new IPVNotFoundException("User", tenantId ~ "/" ~ userId);
 
-    Json result = Json.emptyObject;
-    result["user"] = user.toJson();
-    return result;
+    return Json.emptyObject
+      .set("user", user.toJson());
   }
 
-  Json updateUser(UUID tenantId, string userId, Json request) {
+  Json updateUser(UUID tenantId, UUID userId, Json request) {
     validateId(tenantId, "Tenant ID");
     validateId(userId, "User ID");
 
@@ -231,7 +225,7 @@ class IPVService : SAPService {
     return result;
   }
 
-  Json deleteUser(UUID tenantId, string userId) {
+  Json deleteUser(UUID tenantId, UUID userId) {
     validateId(tenantId, "Tenant ID");
     validateId(userId, "User ID");
 

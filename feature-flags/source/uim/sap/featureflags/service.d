@@ -70,11 +70,10 @@ class FFLService : SAPService {
       resources ~= flag.toJson();
     }
 
-    Json result = Json.emptyObject;
-    result["tenant_id"] = tenantId;
-    result["resources"] = resources;
-    result["total_results"] = cast(long)resources.length;
-    return result;
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json getFlag(UUID tenantId, string flagName) {
@@ -86,9 +85,8 @@ class FFLService : SAPService {
       throw new FFLNotFoundException("Flag", tenantId ~ "/" ~ flagName);
     }
 
-    Json result = Json.emptyObject;
-    result["flag"] = flag.toJson();
-    return result;
+    return Json.emptyObject
+      .set("flag", flag.toJson());
   }
 
   Json updateFlag(UUID tenantId, string flagName, Json request) {
@@ -222,10 +220,9 @@ class FFLService : SAPService {
       eval = evaluateString(flag, identifier, eval);
     }
 
-    Json result = Json.emptyObject;
-    result["success"] = true;
-    result["evaluation"] = eval.toJson();
-    return result;
+    return Json.emptyObject
+      .set("success", true)
+      .set("evaluation", eval.toJson());
   }
 
   // ─── Export / Import ──────────────────────────────────────
@@ -239,10 +236,9 @@ class FFLService : SAPService {
     data.serviceVersion = _config.serviceVersion;
     data.flags = _store.listFlags(tenantId);
 
-    Json result = Json.emptyObject;
-    result["success"] = true;
-    result["export"] = data.toJson();
-    return result;
+    return Json.emptyObject
+      .set("success", true)
+      .set("export", data.toJson());
   }
 
   Json importFlags(UUID tenantId, Json request) {
@@ -268,12 +264,11 @@ class FFLService : SAPService {
 
     auto imported = _store.importFlags(tenantId, flags);
 
-    Json result = Json.emptyObject;
-    result["success"] = true;
-    result["tenant_id"] = tenantId;
-    result["imported_count"] = imported;
-    result["message"] = "Flags imported successfully";
-    return result;
+    return Json.emptyObject
+      .set("success", true)
+      .set("tenant_id", tenantId)
+      .set("imported_count", imported)
+      .set("message", "Flags imported successfully");
   }
 
   // ─── Dashboard ────────────────────────────────────────────

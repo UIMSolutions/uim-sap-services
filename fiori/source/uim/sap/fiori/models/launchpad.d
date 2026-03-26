@@ -13,79 +13,88 @@ import vibe.data.json;
  * Fiori Launchpad Tile
  */
 struct LaunchpadTile {
-    UUID id;
-    string title;
-    string subtitle;
-    string icon;
-    string info;
-    string infoState;  // Neutral, Positive, Negative, Critical
-    string targetUrl;
-    string semanticObject;
-    string action;
-    Json properties;
-    
-    /**
+  UUID id;
+  string title;
+  string subtitle;
+  string icon;
+  string info;
+  string infoState; // Neutral, Positive, Negative, Critical
+  string targetUrl;
+  string semanticObject;
+  string action;
+  Json properties;
+
+  /**
      * Convert to JSON
      */
-    override Json toJson()  {
-        Json json = Json.emptyObject;
-        json["id"] = id;
-        json["title"] = title;
-        if (subtitle.length > 0) json["subtitle"] = subtitle;
-        if (icon.length > 0) json["icon"] = icon;
-        if (info.length > 0) json["info"] = info;
-        if (infoState.length > 0) json["infoState"] = infoState;
-        if (targetUrl.length > 0) json["targetUrl"] = targetUrl;
-        if (semanticObject.length > 0) json["semanticObject"] = semanticObject;
-        if (action.length > 0) json["action"] = action;
-        return json;
-    }
+  override Json toJson() {
+    Json json = Json.emptyObject
+      .set("id", id)
+      .set("title", title);
+
+    if (subtitle.length > 0)
+      json["subtitle"] = subtitle;
+    if (icon.length > 0)
+      json["icon"] = icon;
+    if (info.length > 0)
+      json["info"] = info;
+    if (infoState.length > 0)
+      json["infoState"] = infoState;
+    if (targetUrl.length > 0)
+      json["targetUrl"] = targetUrl;
+    if (semanticObject.length > 0)
+      json["semanticObject"] = semanticObject;
+    if (action.length > 0)
+      json["action"] = action;
+
+    return json;
+  }
 }
 
 /**
  * Fiori Launchpad Group
  */
 struct LaunchpadGroup {
-    UUID id;
-    string title;
-    bool isPreset;
-    bool isVisible;
-    LaunchpadTile[] tiles;
-    
-    /**
+  UUID id;
+  string title;
+  bool isPreset;
+  bool isVisible;
+  LaunchpadTile[] tiles;
+
+  /**
      * Add tile to group
      */
-    void addTile(LaunchpadTile tile) pure @safe {
-        tiles ~= tile;
-    }
+  void addTile(LaunchpadTile tile) pure @safe {
+    tiles ~= tile;
+  }
 }
 
 /**
  * Fiori Launchpad Catalog
  */
 struct LaunchpadCatalog {
-    string id;
-    string title;
-    string description;
-    LaunchpadTile[] tiles;
+  string id;
+  string title;
+  string description;
+  LaunchpadTile[] tiles;
 }
 
 /**
  * User personalization settings
  */
 struct PersonalizationSettings {
-    string theme;
-    string language;
-    string dateFormat;
-    string timeFormat;
-    string numberFormat;
-    Json customSettings;
+  string theme;
+  string language;
+  string dateFormat;
+  string timeFormat;
+  string numberFormat;
+  Json customSettings;
 }
 
 /**
  * Semantic object
  */
 struct SemanticObject {
-    string name;
-    string[] actions;
+  string name;
+  string[] actions;
 }

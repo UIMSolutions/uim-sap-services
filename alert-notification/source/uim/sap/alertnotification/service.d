@@ -339,6 +339,7 @@ class AlertNotificationService : SAPService {
     if (!("sources" in condition)) {
       condition["sources"] = Json.emptyArray;
     }
+    
     if (!("tags" in condition)) {
       condition["tags"] = Json.emptyArray;
     }
@@ -351,11 +352,10 @@ class AlertNotificationService : SAPService {
       actions = request["actions"];
     }
     if (actions.length == 0) {
-      Json fallback = Json.emptyObject;
-      fallback["action_type"] = "email";
-      fallback["target"] = "ops@example.com";
-      fallback["enabled"] = true;
-      actions ~= fallback;
+      actions ~= Json.emptyObject
+      .set("action_type", "email")
+      .set("target", "ops@example.com")
+      .set("enabled", true);
     }
     return actions;
   }

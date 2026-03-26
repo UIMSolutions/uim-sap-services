@@ -148,16 +148,4 @@ class DSTServer {
 
     respondError(res, "Not found", 404);
   }
-
-  // -----------------------------------------------------------------------
-  // Helpers
-  // -----------------------------------------------------------------------
-  private static string[] segments(string path) {
-    auto parts = path.split("/");
-    string[] segs;
-    foreach (p; parts)
-      if (p.length > 0)
-        segs ~= p;
-    return segs;
-  }
 }

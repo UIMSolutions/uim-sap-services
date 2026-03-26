@@ -177,13 +177,13 @@ class UserManager {
   User activate(string userId) {
     auto patchOps = Json.emptyObject
       .set("schemas", Json(["urn:ietf:params:scim:api:messages:2.0:PatchOp"]))
-      .set("Operations", Json([
-          Json([
+      .set("Operations", [
+          [
             "op": Json("replace"),
             "path": Json("active"),
             "value": Json(true)
-          ])
-        ]));
+          ].toJson
+        ].toJson);
 
     return patch(userId, patchOps);
   }
@@ -193,10 +193,10 @@ class UserManager {
      */
   User deactivate(string userId) {
     auto patchOps = Json.emptyObject;
-    patchOps["schemas"] = Json(["urn:ietf:params:scim:api:messages:2.0:PatchOp"]);
-    patchOps["Operations"] = Json([
+    .set("schemas", Json(["urn:ietf:params:scim:api:messages:2.0:PatchOp"]));
+    .set("Operations", Json([
       Json(["op": Json("replace"), "path": Json("active"), "value": Json(false)])
-    ]);
+    ]));
 
     return patch(userId, patchOps);
   }

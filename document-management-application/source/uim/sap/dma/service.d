@@ -1,19 +1,10 @@
 module uim.sap.dma.service;
 
-import std.algorithm.sorting : sort;
-import std.conv : to;
-import std.datetime : Clock;
-import std.string : toLower;
-import std.uuid : randomUUID;
+import uim.sap.dma;
 
-import vibe.data.json : Json;
+mixin(ShowModule!());
 
-import uim.sap.dma.config;
-import uim.sap.dma.encryption;
-import uim.sap.dma.exceptions;
-import uim.sap.dma.models;
-import uim.sap.dma.repositories;
-import uim.sap.dma.store;
+@safe:
 
 /**
  * Core business logic for the Document Management Service.
@@ -36,7 +27,7 @@ class DMAService : SAPService {
 
   this(DMAConfig config) {
     super(config);
-    
+
     _store = new DMAStore;
     _encryption = new EncryptionManager(config.encryptionEnabled, config.encryptionKey);
     _registry = new RepositoryRegistry;
@@ -65,10 +56,9 @@ class DMAService : SAPService {
   Json listRepositories() {
     Json resources = _store.listRepositories().map!(repo => repo.toJson()).array.toJson();
 
-    Json r = Json.emptyObject;
-    r["resources"] = resources;
-    r["total_results"] = cast(long)resources.length;
-    return r;
+    return Json.emptyObject
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length) ;
   }
 
   Json getRepository(string repositoryId) {
@@ -76,9 +66,9 @@ class DMAService : SAPService {
     auto repo = _store.getRepository(repositoryId);
     if (repo.repositoryId.length == 0)
       throw new DMANotFoundException("Repository", repositoryId);
-    Json r = Json.emptyObject;
-    r["repository"] = repo.toJson();
-    return r;
+    
+    return Json.emptyObject
+      .set("repository", repo.toJson());
   }
 
   Json connectRepository(Json request) {
@@ -130,10 +120,9 @@ class DMAService : SAPService {
 
     auto saved = _store.addFolder(folder);
 
-    Json r = Json.emptyObject;
-    r["success"] = true;
-    r["folder"] = saved.toJson();
-    return r;
+    return Json.emptyObject
+      .set("success", true)
+      .set("folder", saved.toJson());
   }
 
   Json getFolder(string folderId) {
@@ -142,10 +131,9 @@ class DMAService : SAPService {
     if (folder.folderId.length == 0)
       throw new DMANotFoundException("Folder", folderId);
 
-    Json r = Json.emptyObject;
-    r["folder"] = folder.toJson();
-    r["breadcrumbs"] = breadcrumbsJson(folderId);
-    return r;
+    return Json.emptyObject
+      .set("folder", folder.toJson())
+      .set("breadcrumbs", breadcrumbsJson(folderId));
   }
 
   Json updateFolder(string folderId, Json request) {
@@ -163,10 +151,9 @@ class DMAService : SAPService {
 
     auto saved = _store.updateFolder(folder);
 
-    Json r = Json.emptyObject;
-    r["success"] = true;
-    r["folder"] = saved.toJson();
-    return r;
+    return Json.emptyObject
+      .set("success", true)
+      .set("folder", saved.toJson());
   }
 
   Json deleteFolder(string folderId) {
@@ -184,10 +171,9 @@ class DMAService : SAPService {
     removeDocumentsInFolder(folder.repositoryId, folderId);
     _store.removeFolder(folderId);
 
-    Json r = Json.emptyObject;
-    r["success"] = true;
-    r["message"] = "Folder deleted: " ~ folder.name;
-    return r;
+    return Json.emptyObject
+      .set("success", true)
+      .set("message", "Folder deleted: " ~ folder.name);
   }
 
   Json listFolderContents(string repositoryId, string folderId) {
@@ -203,16 +189,14 @@ class DMAService : SAPService {
     foreach (d; _store.listDocuments(repositoryId, folderId))
       documents ~= d.toJson();
 
-    Json r = Json.emptyObject;
-    r["repository_id"] = repositoryId;
-    r["folder_id"] = folderId;
-    r["folders"] = folders;
-    r["documents"] = documents;
-    r["total_folders"] = cast(long)folders.length;
-    r["total_documents"] = cast(long)documents.length;
-    if (folderId.length > 0)
-      r["breadcrumbs"] = breadcrumbsJson(folderId);
-    return r;
+    return Json.emptyObject
+      .set("repository_id", repositoryId)
+      .set("folder_id", folderId)
+      .set("folders", folders)
+      .set("documents", documents)
+      .set("total_folders", cast(long)folders.length)
+      .set("total_documents", cast(long)documents.length)
+      .set("breadcrumbs", folderId.length > 0 ? breadcrumbsJson(folderId) : Json.null);
   }
 
   Json moveFolder(string folderId, Json request) {
@@ -239,10 +223,9 @@ class DMAService : SAPService {
     folder.parentFolderId = targetParentId;
     auto saved = _store.updateFolder(folder);
 
-    Json r = Json.emptyObject;
-    r["success"] = true;
-    r["folder"] = saved.toJson();
-    return r;
+    return Json.emptyObject
+      .set("success", true)
+      .set("folder", saved.toJson());
   }
 
   Json copyFolder(string folderId, Json request) {
@@ -270,10 +253,9 @@ class DMAService : SAPService {
       _store.copyDocument(doc.documentId, saved.folderId);
     }
 
-    Json r = Json.emptyObject;
-    r["success"] = true;
-    r["folder"] = saved.toJson();
-    return r;
+    return Json.emptyObject
+      .set("success", true)
+      .set("folder", saved.toJson());
   }
 
   // ===================================================================
@@ -325,10 +307,9 @@ class DMAService : SAPService {
       saved = _store.updateDocument(saved);
     }
 
-    Json r = Json.emptyObject;
-    r["success"] = true;
-    r["document"] = saved.toJson();
-    return r;
+    return Json.emptyObject
+      .set("success", true)
+      .set("document", saved.toJson());
   }
 
   Json getDocument(string documentId) {
@@ -337,11 +318,10 @@ class DMAService : SAPService {
     if (doc.documentId.length == 0)
       throw new DMANotFoundException("Document", documentId);
 
-    Json r = Json.emptyObject;
-    r["document"] = doc.toJson();
-    r["viewable"] = isViewableExtension(doc.name);
-    r["breadcrumbs"] = breadcrumbsJson(doc.folderId);
-    return r;
+    return Json.emptyObject
+      .set("document", doc.toJson())
+      .set("viewable", isViewableExtension(doc.name))
+      .set("breadcrumbs", breadcrumbsJson(doc.folderId));
   }
 
   Json updateDocument(string documentId, Json request) {
@@ -371,10 +351,9 @@ class DMAService : SAPService {
 
     auto saved = _store.updateDocument(doc);
 
-    Json r = Json.emptyObject;
-    r["success"] = true;
-    r["document"] = saved.toJson();
-    return r;
+    return Json.emptyObject
+      .set("success", true)
+      .set("document", saved.toJson());
   }
 
   Json deleteDocument(string documentId) {
@@ -389,10 +368,9 @@ class DMAService : SAPService {
 
     _store.removeDocument(documentId);
 
-    Json r = Json.emptyObject;
-    r["success"] = true;
-    r["message"] = "Document deleted: " ~ doc.name;
-    return r;
+    return Json.emptyObject
+      .set("success", true)
+      .set("message", "Document deleted: " ~ doc.name);
   }
 
   Json moveDocument(string documentId, Json request) {
@@ -409,10 +387,9 @@ class DMAService : SAPService {
 
     auto moved = _store.moveDocument(documentId, targetFolderId);
 
-    Json r = Json.emptyObject;
-    r["success"] = true;
-    r["document"] = moved.toJson();
-    return r;
+    return Json.emptyObject
+      .set("success", true)
+      .set("document", moved.toJson());
   }
 
   Json copyDocument(string documentId, Json request) {
@@ -429,10 +406,9 @@ class DMAService : SAPService {
 
     auto copied = _store.copyDocument(documentId, targetFolderId);
 
-    Json r = Json.emptyObject;
-    r["success"] = true;
-    r["document"] = copied.toJson();
-    return r;
+    return Json.emptyObject
+      .set("success", true)
+      .set("document", copied.toJson());
   }
 
   // ===================================================================
@@ -447,13 +423,13 @@ class DMAService : SAPService {
 
     bool viewable = isViewableExtension(doc.name);
 
-    Json r = Json.emptyObject;
-    r["document_id"] = documentId;
-    r["name"] = doc.name;
-    r["mime_type"] = doc.mimeType;
-    r["size_bytes"] = doc.sizeBytes;
-    r["viewable"] = viewable;
-    r["viewer_type"] = viewable ? viewerType(doc.name) : "download";
+    Json r = Json.emptyObject
+      .set("document_id", documentId)
+      .set("name", doc.name)
+      .set("mime_type", doc.mimeType)
+      .set("size_bytes", doc.sizeBytes)
+      .set("viewable", viewable)
+      .set("viewer_type", viewable ? viewerType(doc.name) : "download");
 
     // Retrieve content if viewable
     if (viewable && doc.latestVersionId.length > 0) {
@@ -488,14 +464,13 @@ class DMAService : SAPService {
       }
     }
 
-    Json r = Json.emptyObject;
-    r["document_id"] = documentId;
-    r["name"] = doc.name;
-    r["mime_type"] = doc.mimeType;
-    r["size_bytes"] = doc.sizeBytes;
-    r["encrypted"] = doc.encrypted;
-    r["content"] = content;
-    return r;
+    return Json.emptyObject
+      .set("document_id", documentId)
+      .set("name", doc.name)
+      .set("mime_type", doc.mimeType)
+      .set("size_bytes", doc.sizeBytes)
+      .set("encrypted", doc.encrypted)
+      .set("content", content);
   }
 
   // ===================================================================
@@ -508,21 +483,20 @@ class DMAService : SAPService {
     if (doc.documentId.length == 0)
       throw new DMANotFoundException("Document", documentId);
 
-    Json r = Json.emptyObject;
-    r["document_id"] = documentId;
-    r["name"] = doc.name;
-    r["description"] = doc.description;
-    r["mime_type"] = doc.mimeType;
-    r["size_bytes"] = doc.sizeBytes;
-    r["created_by"] = doc.createdBy;
-    r["modified_by"] = doc.modifiedBy;
-    r["created_at"] = doc.createdAt.toISOExtString();
-    r["modified_at"] = doc.modifiedAt.toISOExtString();
-    r["status"] = cast(string)doc.status;
-    r["encrypted"] = doc.encrypted;
-    r["current_version"] = doc.currentVersion;
-    r["properties"] = doc.properties;
-    return r;
+    return Json.emptyObject
+      .set("document_id", documentId)
+      .set("name", doc.name)
+      .set("description", doc.description)
+      .set("mime_type", doc.mimeType)
+      .set("size_bytes", doc.sizeBytes)
+      .set("created_by", doc.createdBy)
+      .set("modified_by", doc.modifiedBy)
+      .set("created_at", doc.createdAt.toISOExtString())
+      .set("modified_at", doc.modifiedAt.toISOExtString())
+      .set("status", cast(string)doc.status)
+      .set("encrypted", doc.encrypted)
+      .set("current_version", doc.currentVersion)
+      .set("properties", doc.properties);
   }
 
   Json updateDocumentMetadata(string documentId, Json request) {
@@ -538,12 +512,11 @@ class DMAService : SAPService {
 
     auto saved = _store.updateDocument(doc);
 
-    Json r = Json.emptyObject;
-    r["success"] = true;
-    r["document_id"] = documentId;
-    r["properties"] = saved.properties;
-    r["description"] = saved.description;
-    return r;
+    return Json.emptyObject
+      .set("success", true)
+      .set("document_id", documentId)
+      .set("properties", saved.properties)
+      .set("description", saved.description);
   }
 
   Json getFolderProperties(string folderId) {
@@ -576,12 +549,11 @@ class DMAService : SAPService {
 
     auto saved = _store.updateFolder(folder);
 
-    Json r = Json.emptyObject;
-    r["success"] = true;
-    r["folder_id"] = folderId;
-    r["properties"] = saved.properties;
-    r["description"] = saved.description;
-    return r;
+    return Json.emptyObject
+      .set("success", true)
+      .set("folder_id", folderId)
+      .set("properties", saved.properties)
+      .set("description", saved.description);
   }
 
   // ===================================================================
@@ -596,11 +568,10 @@ class DMAService : SAPService {
     foreach (v; _store.listVersions(documentId))
       resources ~= v.toJson();
 
-    Json r = Json.emptyObject;
-    r["document_id"] = documentId;
-    r["resources"] = resources;
-    r["total_results"] = cast(long)resources.length;
-    return r;
+    return Json.emptyObject
+      .set("document_id", documentId)
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json createVersion(string documentId, Json request) {
@@ -646,11 +617,10 @@ class DMAService : SAPService {
       doc.sizeBytes = request["size_bytes"].get!long;
     _store.updateDocument(doc);
 
-    Json r = Json.emptyObject;
-    r["success"] = true;
-    r["version"] = savedVer.toJson();
-    r["document"] = doc.toJson();
-    return r;
+    return Json.emptyObject
+      .set("success", true)
+      .set("version", savedVer.toJson())
+      .set("document", doc.toJson());
   }
 
   Json getVersion(string documentId, string versionId) {
@@ -662,9 +632,8 @@ class DMAService : SAPService {
     if (ver.versionId.length == 0)
       throw new DMANotFoundException("Version", versionId);
 
-    Json r = Json.emptyObject;
-    r["version"] = ver.toJson();
-    return r;
+    return Json.emptyObject
+      .set("version", ver.toJson());
   }
 
   // ===================================================================
@@ -689,11 +658,10 @@ class DMAService : SAPService {
     doc.checkedOutBy = actor;
     auto saved = _store.updateDocument(doc);
 
-    Json r = Json.emptyObject;
-    r["success"] = true;
-    r["document"] = saved.toJson();
-    r["message"] = "Document checked out by " ~ actor;
-    return r;
+    return Json.emptyObject
+      .set("success", true)
+      .set("document", saved.toJson())
+      .set("message", "Document checked out by " ~ actor);
   }
 
   Json checkInDocument(string documentId, Json request) {

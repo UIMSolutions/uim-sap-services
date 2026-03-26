@@ -94,7 +94,7 @@ class IdentityClient {
   package IdentityResponse makeRequest(
     HTTPMethod method,
     string url,
-    Json payload = Json.emptyObject;,
+    Json payload = Json.emptyObject,
     string[string] queryParams = null
   ) {
     IdentityResponse response;

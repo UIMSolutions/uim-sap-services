@@ -179,6 +179,7 @@ class DSPService : SAPService {
       rowA[dimension] = dimension ~ "-A";
       rowB[dimension] = dimension ~ "-B";
     }
+    
     foreach (measure; model.measures) {
       rowA[measure] = 100;
       rowB[measure] = 250;

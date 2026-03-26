@@ -64,3 +64,12 @@ bool validateAuth(HTTPServerRequest req, ISAPConfig cfg) {
   //   if (token != _service.config.authToken)
   //     throw new PDMAuthorizationException("Invalid bearer token");
   // }
+
+  string[] segments(string path) {
+    auto parts = path.split("/");
+    string[] segs;
+    foreach (p; parts)
+      if (p.length > 0)
+        segs ~= p;
+    return segs;
+  }
