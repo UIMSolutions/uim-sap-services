@@ -79,7 +79,7 @@ class AsyncJobStore {
     }
 
     string enqueue(DocumentTranslateAsyncRequest req) {
-        auto id = randomUUID().toString();
+        auto Id = randomUUID();
         auto now = nowUtc();
 
         _mutex.lock();
@@ -151,7 +151,7 @@ class ProjectStore {
     }
 
     Project create(string name, string kind, string sourceLanguage, string[] targetLanguages) {
-        auto id = randomUUID().toString();
+        auto Id = randomUUID();
         auto project = Project(id, name, kind, sourceLanguage, targetLanguages, nowUtc());
 
         _mutex.lock();
@@ -177,7 +177,7 @@ class LanguageAssetStore {
     }
 
     LanguageAsset create(string name, string domain, string sourceLanguage, string targetLanguage, string[] segments) {
-        auto id = randomUUID().toString();
+        auto Id = randomUUID();
         auto asset = LanguageAsset(id, name, domain, sourceLanguage, targetLanguage, segments, nowUtc());
 
         _mutex.lock();

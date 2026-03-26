@@ -242,7 +242,7 @@ class DMAService : SAPService {
 
     // Create a copy of the folder
     Folder copy = folder;
-    copy.folderId = randomUUID().toString();
+    copy.folderId = randomUUID();
     copy.parentFolderId = targetParentId;
     copy.createdAt = Clock.currTime();
     copy.modifiedAt = copy.createdAt;

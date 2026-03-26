@@ -41,7 +41,7 @@ struct KYMSubscription {
 
 KYMSubscription subscriptionFromJson(string namespace, Json request) {
     KYMSubscription sub;
-    sub.id = randomUUID().toString();
+    sub.Id = randomUUID();
     sub.namespace = namespace;
     sub.createdAt = Clock.currTime();
     sub.updatedAt = sub.createdAt;

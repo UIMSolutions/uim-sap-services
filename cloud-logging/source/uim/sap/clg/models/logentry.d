@@ -65,7 +65,7 @@ return true;
 
     static CLGLogEntry opCall(Json payload) {
         CLGLogEntry entry = new CLGLogEntry(payload);
-        entry.id = randomUUID().toString();
+        entry.Id = randomUUID();
         entry.timestamp = Clock.currTime();
 
         return entry;

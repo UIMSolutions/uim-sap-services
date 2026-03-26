@@ -65,7 +65,7 @@ struct IPVGroup {
 IPVGroup groupFromJson(UUID tenantId, Json request) {
   IPVGroup g;
   g.tenantId = tenantId;
-  g.groupId = randomUUID().toString();
+  g.groupId = randomUUID();
 
   if ("group_name" in request && request["group_name"].isString)
     g.groupName = request["group_name"].get!string;
@@ -91,7 +91,7 @@ IPVGroup groupFromJson(UUID tenantId, Json request) {
     }();
   }
 
-  g.createdAt = Clock.currTime().toISOExtString();
+  g.createdAt = Clock.currTime();
   g.updatedAt = g.createdAt;
   return g;
 }

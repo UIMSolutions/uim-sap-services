@@ -72,7 +72,7 @@ class INTApiProduct : SAPTenantObject {
 INTApiProduct apiProductFromJson(UUID tenantId, Json request) {
   INTApiProduct p;
   p.tenantId = tenantId;
-  p.productId = randomUUID().toString();
+  p.productId = randomUUID();
 
   if ("name" in request && request["name"].isString)
     p.name = request["name"].get!string;

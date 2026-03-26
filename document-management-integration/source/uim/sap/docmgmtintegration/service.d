@@ -363,7 +363,7 @@ class DocMgmtIntegrationService : SAPService {
       ensureFolder(targetParentId);
 
     Folder copy = folder;
-    copy.folderId = randomUUID().toString();
+    copy.folderId = randomUUID();
     copy.parentFolderId = targetParentId;
     copy.createdAt = Clock.currTime();
     copy.modifiedAt = copy.createdAt;

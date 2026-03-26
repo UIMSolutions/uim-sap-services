@@ -34,7 +34,7 @@ EVMTopic topicFromJson(UUID tenantId, Json request) {
     t.description = request["description"].get!string;
   }
 
-  t.createdAt = Clock.currTime().toISOExtString();
+  t.createdAt = Clock.currTime();
   t.updatedAt = t.createdAt;
   return t;
 }

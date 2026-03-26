@@ -30,7 +30,7 @@ class BUHProduct : SAPObject {
 
   static BUHProduct opCall(Json payload) {
     BUHProduct product = new BUHProduct;
-    product.id = randomUUID().toString();
+    product.Id = randomUUID();
     product.createdAt = Clock.currTime();
 
     if ("name" in payload && payload["name"].isString) {

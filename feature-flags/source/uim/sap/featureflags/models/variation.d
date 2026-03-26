@@ -35,7 +35,7 @@ class FFLVariation : SAPObject {
 
     static FFLVariation opCall(Json request) {
     FFLVariation v;
-    v.variationId = randomUUID().toString();
+    v.variationId = randomUUID();
 
     if ("name" in request && request["name"].isString) {
         v.name = request["name"].get!string;

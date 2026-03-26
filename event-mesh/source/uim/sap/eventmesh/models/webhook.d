@@ -31,7 +31,7 @@ class EVMWebhook : SAPTenantObject {
   static EVMWebhook webhookFromJson(UUID tenantId, Json request) {
     EVMWebhook w = new EVMWebhook(request);
     w.tenantId = tenantId;
-    w.webhookId = randomUUID().toString();
+    w.webhookId = randomUUID();
 
     if ("queue_name" in request && request["queue_name"].isString) {
       w.queueName = request["queue_name"].get!string;
@@ -43,7 +43,7 @@ class EVMWebhook : SAPTenantObject {
       w.method = request["method"].get!string;
     }
 
-    w.createdAt = Clock.currTime().toISOExtString();
+    w.createdAt = Clock.currTime();
     w.updatedAt = w.createdAt;
     return w;
   }

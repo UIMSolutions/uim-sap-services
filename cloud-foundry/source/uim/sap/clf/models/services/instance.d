@@ -57,7 +57,7 @@ class CLFServiceInstance : SAPObject {
   CLFServiceInstance opCall(Json payload) {
     CLFServiceInstance instance = new CLFServiceInstance(payload);
 
-    instance.guid = randomUUID().toString();
+    instance.guId = randomUUID();
     instance.createdAt = Clock.currTime();
     return instance;
   }

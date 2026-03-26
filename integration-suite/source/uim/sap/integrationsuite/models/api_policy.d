@@ -41,7 +41,7 @@ struct INTApiPolicy {
 INTApiPolicy apiPolicyFromJson(UUID tenantId, Json request) {
   INTApiPolicy p;
   p.tenantId = tenantId;
-  p.policyId = randomUUID().toString();
+  p.policyId = randomUUID();
 
   if ("name" in request && request["name"].isString)
     p.name = request["name"].get!string;

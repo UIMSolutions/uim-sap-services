@@ -50,7 +50,7 @@ class DPIPersonalDataRecord : SAPTenantObject {
     if ("created_at" in initData && initData["created_at"].isString) {
       record.createdAt = initData["created_at"].get!string;
     } else {
-      record.createdAt = Clock.currTime().toISOExtString();
+      record.createdAt = Clock.currTime();
     }
 
     if ("updated_at" in initData && initData["updated_at"].isString) {

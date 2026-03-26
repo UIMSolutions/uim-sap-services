@@ -36,14 +36,14 @@ class InternalRepositoryConnector : IRepositoryConnector {
 
     this(string tenant, string name, bool encryptionEnabled) {
         import std.uuid : randomUUID;
-        _repo.repositoryId = randomUUID().toString();
+        _repo.repositoryId = randomUUID();
         _repo.tenantId = tenant;
         _repo.name = name;
         _repo.description = "Internal in-memory document repository";
         _repo.vendorName = "UI Manufaktur";
         _repo.productName = "UIM Document Store";
         _repo.productVersion = "1.0.0";
-        _repo.rootFolderId = randomUUID().toString();
+        _repo.rootFolderId = randomUUID();
         _repo.cmisCompliant = true;
         _repo.encryptionEnabled = encryptionEnabled;
         _repo.connectedAt = Clock.currTime();

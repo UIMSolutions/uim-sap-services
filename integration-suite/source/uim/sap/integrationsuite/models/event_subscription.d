@@ -57,7 +57,7 @@ class INTEventSubscription : SAPTenantObject {
   static INTEventSubscription eventSubscriptionFromJson(UUID tenantId, Json request) {
     INTEventSubscription s = new INTEventSubscription(request);
     s.tenantId = tenantId;
-    s.subscriptionId = randomUUID().toString();
+    s.subscriptionId = randomUUID();
 
     if ("topic_name" in request && request["topic_name"].isString)
       s.topicName = request["topic_name"].get!string;

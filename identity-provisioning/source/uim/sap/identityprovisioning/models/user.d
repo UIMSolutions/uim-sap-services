@@ -57,7 +57,7 @@ struct IPVUser {
 IPVUser userFromJson(UUID tenantId, Json request) {
   IPVUser u;
   u.tenantId = tenantId;
-  u.userId = randomUUID().toString();
+  u.userId = randomUUID();
 
   if ("user_name" in request && request["user_name"].isString)
     u.userName = request["user_name"].get!string;
@@ -89,7 +89,7 @@ IPVUser userFromJson(UUID tenantId, Json request) {
     }();
   }
 
-  u.createdAt = Clock.currTime().toISOExtString();
+  u.createdAt = Clock.currTime();
   u.updatedAt = u.createdAt;
   u.lastModifiedAt = u.createdAt;
   return u;

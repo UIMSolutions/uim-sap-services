@@ -41,7 +41,7 @@ class AutomationConfiguration : SAPTenantObject {
 
 AutomationConfiguration configFromJson(Json payload, UUID tenantId) {
   AutomationConfiguration config;
-  config.id = randomUUID().toString();
+  config.Id = randomUUID();
   config.tenantId = tenantId;
   config.name = getString(payload, "name", "");
   config.description = getString(payload, "description", "");

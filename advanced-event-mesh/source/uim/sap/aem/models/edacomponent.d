@@ -68,7 +68,7 @@ FromJson` function ensures that the `tenantId` is set and that a unique `compone
 AEMEDAComponent componentFromJson(UUID tenantId, Json request) {
   AEMEDAComponent component = new AEMEDAComponent();
   component.tenantId = tenantId;
-  component.componentId = randomUUID().toString();
+  component.componentId = randomUUID();
   component.updatedAt = Clock.currTime();
 
   if ("component_id" in request && request["component_id"].isString) {

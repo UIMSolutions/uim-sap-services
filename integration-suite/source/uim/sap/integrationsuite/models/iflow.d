@@ -73,7 +73,7 @@ class INTIFlow : SAPTenantObject {
   static INTIFlow iflowFromJson(UUID tenantId, Json request) {
     INTIFlow f = new INTIFlow(request);
     f.tenantId = tenantId;
-    f.iflowId = randomUUID().toString();
+    f.iflowId = randomUUID();
 
     if ("name" in request && request["name"].isString)
       f.name = request["name"].get!string;

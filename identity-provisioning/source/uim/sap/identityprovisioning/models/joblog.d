@@ -68,9 +68,9 @@ class IPVJobLog : SAPTenantObject {
 IPVJobLog createJobLog(UUID tenantId, string jobId, string level, string entityType,
   UUID entityId, string message, string details = "") {
   IPVJobLog log = new IPVJobLog;
-  
+
   log.tenantId = tenantId;
-  log.logId = randomUUID().toString();
+  log.logId = randomUUID();
   log.jobId = jobId;
   log.level = level;
   log.entityType = entityType;

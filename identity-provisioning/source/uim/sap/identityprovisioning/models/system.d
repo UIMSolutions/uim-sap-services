@@ -58,7 +58,7 @@ struct IPVSystem {
 IPVSystem systemFromJson(UUID tenantId, Json request) {
   IPVSystem s;
   s.tenantId = tenantId;
-  s.systemId = randomUUID().toString();
+  s.systemId = randomUUID();
 
   if ("system_name" in request && request["system_name"].isString)
     s.systemName = request["system_name"].get!string;
@@ -77,7 +77,7 @@ IPVSystem systemFromJson(UUID tenantId, Json request) {
   if ("system_id" in request && request["system_id"].isString)
     s.systemId = request["system_id"].get!string;
 
-  s.createdAt = Clock.currTime().toISOExtString();
+  s.createdAt = Clock.currTime();
   s.updatedAt = s.createdAt;
   return s;
 }

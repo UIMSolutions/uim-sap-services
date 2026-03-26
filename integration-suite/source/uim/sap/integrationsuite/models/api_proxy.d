@@ -83,7 +83,7 @@ struct INTApiProxy {
 INTApiProxy apiProxyFromJson(UUID tenantId, Json request) {
   INTApiProxy p;
   p.tenantId = tenantId;
-  p.proxyId = randomUUID().toString();
+  p.proxyId = randomUUID();
 
   if ("name" in request && request["name"].isString)
     p.name = request["name"].get!string;

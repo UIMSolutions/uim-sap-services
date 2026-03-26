@@ -126,7 +126,7 @@ if ("partner_id" in request && request["partner_id"].isString)
   static INTAgreement opCall(UUID tenantId, Json request) {
   INTAgreement agreement = new INTAgreement(request);
   agreement.tenantId = tenantId;
-  agreement.agreementId = randomUUID().toString();
+  agreement.agreementId = randomUUID();
 
   agreement.createdAt = Clock.currTime().toINTOExtString();
   agreement.updatedAt = agreement.createdAt;

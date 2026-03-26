@@ -215,7 +215,7 @@ class RMSStore : SAPStore {
 
     auto team = state.teams[teamId];
     auto copy = team;
-    copy.id = randomUUID().toString();
+    copy.Id = randomUUID();
     copy.name = newName.length > 0 ? newName : team.name ~ " (Copy)";
 
     state.teams[copy.id] = copy;
@@ -360,7 +360,7 @@ class RMSStore : SAPStore {
     }
 
     DeterminationLog logEntry;
-    logEntry.id = randomUUID().toString();
+    logEntry.Id = randomUUID();
     logEntry.timestamp = nowIso();
     logEntry.tenantId = tenant.tenantId;
     logEntry.spaceId = tenant.spaceId;
@@ -833,12 +833,7 @@ class RMSStore : SAPStore {
     return fallback;
   }
 
-  private long getLong(Json payload, string key, long fallback) {
-    if (key in payload && payload[key].isInteger) {
-      return payload[key].get!long;
-    }
-    return fallback;
-  }
+
 
   private string[] getStringArray(Json payload, string key) {
     string[] values;

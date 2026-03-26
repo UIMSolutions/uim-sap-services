@@ -40,7 +40,7 @@ class DMAFolder : SAPObject {
 
   static DMAFolder folderFromJson(string repositoryId, string parentFolderId, Json request) {
     DMAFolder f = new DMAFolder(request);
-    f.folderId = randomUUID().toString();
+    f.folderId = randomUUID();
     f.repositoryId = repositoryId;
     f.parentFolderId = parentFolderId;
     f.createdAt = Clock.currTime();

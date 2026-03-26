@@ -71,7 +71,7 @@ class INTConnector : SAPTenantObject {
 INTConnector connectorFromJson(UUID tenantId, Json request) {
   INTConnector c;
   c.tenantId = tenantId;
-  c.connectorId = randomUUID().toString();
+  c.connectorId = randomUUID();
 
   if ("name" in request && request["name"].isString)
     c.name = request["name"].get!string;

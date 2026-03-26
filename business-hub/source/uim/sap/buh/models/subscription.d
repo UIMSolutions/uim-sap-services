@@ -48,7 +48,7 @@ class BUHSubscription : SAPObject {
 
   BUHSubscription subscriptionFromJson(Json payload) {
     BUHSubscription subscription = new BUHSubscription(payload);
-    subscription.id = randomUUID().toString();
+    subscription.Id = randomUUID();
     subscription.createdAt = Clock.currTime();
 
     return subscription;

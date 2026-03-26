@@ -100,7 +100,7 @@ struct INTContentPack {
 INTContentPack contentPackFromJson(UUID tenantId, Json request) {
   INTContentPack p;
   p.tenantId = tenantId;
-  p.packId = randomUUID().toString();
+  p.packId = randomUUID();
 
   if ("name" in request && request["name"].isString)
     p.name = request["name"].get!string;

@@ -36,7 +36,7 @@ class CLFOrg : SAPObject {
 
   static CLFOrg opCall(Json payload) {
     CLFOrg org = new CLFOrg(payload);
-    org.guid = randomUUID().toString();
+    org.guId = randomUUID();
     org.createdAt = Clock.currTime();
     return org;
 }

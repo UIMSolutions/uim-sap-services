@@ -55,7 +55,7 @@ struct IPVTransformation {
 IPVTransformation transformationFromJson(UUID tenantId, Json request) {
   IPVTransformation t;
   t.tenantId = tenantId;
-  t.transformationId = randomUUID().toString();
+  t.transformationId = randomUUID();
 
   if ("system_id" in request && request["system_id"].isString)
     t.systemId = request["system_id"].get!string;
@@ -78,7 +78,7 @@ IPVTransformation transformationFromJson(UUID tenantId, Json request) {
   if ("transformation_id" in request && request["transformation_id"].isString)
     t.transformationId = request["transformation_id"].get!string;
 
-  t.createdAt = Clock.currTime().toISOExtString();
+  t.createdAt = Clock.currTime();
   t.updatedAt = t.createdAt;
   return t;
 }

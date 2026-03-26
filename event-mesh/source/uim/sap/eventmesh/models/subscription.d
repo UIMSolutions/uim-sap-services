@@ -39,7 +39,7 @@ class EVMSubscription : SAPTenantObject {
       s.deliveryMode = request["delivery_mode"].get!string;
     }
 
-    s.createdAt = Clock.currTime().toISOExtString();
+    s.createdAt = Clock.currTime();
     s.updatedAt = s.createdAt;
     return s;
   }

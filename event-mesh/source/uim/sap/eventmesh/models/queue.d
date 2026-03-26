@@ -48,7 +48,7 @@ EVMQueue queueFromJson(UUID tenantId, Json request) {
     q.maxRetries = request["max_retries"].get!long;
   }
 
-  q.createdAt = Clock.currTime().toISOExtString();
+  q.createdAt = Clock.currTime();
   q.updatedAt = q.createdAt;
   return q;
 }

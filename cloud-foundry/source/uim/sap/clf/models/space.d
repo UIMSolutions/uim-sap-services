@@ -26,7 +26,7 @@ class CLFSpace : SAPObject {
 
   static CLFSpace opCall(Json payload) {
     CLFSpace space = new CLFSpace(payload);
-    space.guid = randomUUID().toString();
+    space.guId = randomUUID();
     space.createdAt = Clock.currTime();
     if ("name" in payload && payload["name"].isString) {
       space.name = payload["name"].get!string;

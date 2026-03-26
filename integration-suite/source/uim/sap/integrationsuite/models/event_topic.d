@@ -57,7 +57,7 @@ struct INTEventTopic {
 INTEventTopic eventTopicFromJson(UUID tenantId, Json request) {
   INTEventTopic t;
   t.tenantId = tenantId;
-  t.topicId = randomUUID().toString();
+  t.topicId = randomUUID();
 
   if ("topic_name" in request && request["topic_name"].isString)
     t.topicName = request["topic_name"].get!string;

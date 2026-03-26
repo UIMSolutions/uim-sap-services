@@ -62,7 +62,7 @@ struct IPVNotification {
 IPVNotification notificationFromJson(UUID tenantId, Json request) {
   IPVNotification n;
   n.tenantId = tenantId;
-  n.subscriptionId = randomUUID().toString();
+  n.subscriptionId = randomUUID();
 
   if ("source_system_id" in request && request["source_system_id"].isString)
     n.sourceSystemId = request["source_system_id"].get!string;
@@ -82,7 +82,7 @@ IPVNotification notificationFromJson(UUID tenantId, Json request) {
     }();
   }
 
-  n.createdAt = Clock.currTime().toISOExtString();
+  n.createdAt = Clock.currTime();
   n.updatedAt = n.createdAt;
   return n;
 }

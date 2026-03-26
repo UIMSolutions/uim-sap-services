@@ -32,7 +32,7 @@ class CLFApp : SAPObject {
 
   static CLFApp opCall(Json payload) {
   CLFApp app = new CLFApp(payload);
-  app.guid = randomUUID().toString();
+  app.guId = randomUUID();
   app.createdAt = Clock.currTime();
   if ("name" in payload && payload["name"].isString) {
     app.name = payload["name"].get!string;

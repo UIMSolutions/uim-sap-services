@@ -64,7 +64,7 @@ class INTMessageLog : SAPTenantObject {
   static INTMessageLog messageLogFromJson(UUID tenantId, Json request) {
   INTMessageLog l = new INTMessageLog(request);
   l.tenantId = tenantId;
-  l.logId = randomUUID().toString();
+  l.logId = randomUUID();
 
   if ("iflow_id" in request && request["iflow_id"].isString)
     l.iflowId = request["iflow_id"].get!string;

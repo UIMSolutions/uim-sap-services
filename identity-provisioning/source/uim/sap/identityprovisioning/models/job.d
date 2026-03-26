@@ -109,7 +109,7 @@ class IPVJob : SAPTenantObject {
     IPVJob jobFromJson(UUID tenantId, Json request) {
       IPVJob j = new IPVJob(request);
       j.tenantId = tenantId;
-      j.jobId = randomUUID().toString();
+      j.jobId = randomUUID();
 
       if ("job_name" in request && request["job_name"].isString)
         j.jobName = request["job_name"].get!string;
@@ -131,7 +131,7 @@ class IPVJob : SAPTenantObject {
         }();
       }
 
-      j.createdAt = Clock.currTime().toISOExtString();
+      j.createdAt = Clock.currTime();
       j.updatedAt = j.createdAt;
       return j;
     }

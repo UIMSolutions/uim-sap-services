@@ -80,7 +80,7 @@ struct INTDataAsset {
 INTDataAsset dataAssetFromJson(UUID tenantId, Json request) {
   INTDataAsset a = new INTDataAsset(request);
   a.tenantId = tenantId;
-  a.assetId = randomUUID().toString();
+  a.assetId = randomUUID();
 
   if ("name" in request && request["name"].isString)
     a.name = request["name"].get!string;

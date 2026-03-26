@@ -301,7 +301,7 @@ class DocMgmtIntegrationStore : SAPStore {
             if (auto d = documentId in _documents) {
                 import std.uuid : randomUUID;
                 Document copy = *d;
-                copy.documentId = randomUUID().toString();
+                copy.documentId = randomUUID();
                 copy.folderId = targetFolderId;
                 copy.createdAt = Clock.currTime();
                 copy.modifiedAt = copy.createdAt;

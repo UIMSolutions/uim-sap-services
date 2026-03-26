@@ -35,9 +35,9 @@ class DMARepository : SAPObject {
 
   static DMARepository repositoryFromJson(Json request) {
   DMARepository repo = new DMARepository(request);
-  repo.repositoryId = randomUUID().toString();
+  repo.repositoryId = randomUUID();
   repo.connectedAt = Clock.currTime();
-  repo.rootFolderId = randomUUID().toString();
+  repo.rootFolderId = randomUUID();
 
   if ("name" in request && request["name"].isString)
     repo.name = request["name"].get!string;

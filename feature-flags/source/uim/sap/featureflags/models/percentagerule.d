@@ -47,7 +47,7 @@ class FFLPercentageRule : SAPObject {
 
   static FFLPercentageRule opCall(Json request) {
     FFLPercentageRule r;
-    r.ruleId = randomUUID().toString();
+    r.ruleId = randomUUID();
 
     if ("entries" in request && request["entries"].isArray) {
       () @trusted {

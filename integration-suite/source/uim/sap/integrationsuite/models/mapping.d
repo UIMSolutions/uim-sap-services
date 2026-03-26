@@ -102,7 +102,7 @@ class INTMapping : SAPTenantObject {
 INTMapping mappingFromJson(UUID tenantId, Json request) {
   INTMapping m = new INTMapping(request);
   m.tenantId = tenantId;
-  m.mappingId = randomUUID().toString();
+  m.mappingId = randomUUID();
 
   if ("name" in request && request["name"].isString)
     m.name = request["name"].get!string;

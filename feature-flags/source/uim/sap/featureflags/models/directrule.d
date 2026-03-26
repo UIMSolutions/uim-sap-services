@@ -40,7 +40,7 @@ struct FFLDirectRule {
 
 FFLDirectRule directRuleFromJson(Json request) {
   FFLDirectRule r;
-  r.ruleId = randomUUID().toString();
+  r.ruleId = randomUUID();
 
   if ("identifiers" in request && request["identifiers"].isArray) {
     () @trusted {

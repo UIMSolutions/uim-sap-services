@@ -48,7 +48,7 @@ class INTMigration : SAPTenantObject {
   static INTMigration migrationFromJson(UUID tenantId, Json request) {
     INTMigration m = new INTMigration(request);
     m.tenantId = tenantId;
-    m.migrationId = randomUUID().toString();
+    m.migrationId = randomUUID();
 
     if ("name" in request && request["name"].isString)
       m.name = request["name"].get!string;

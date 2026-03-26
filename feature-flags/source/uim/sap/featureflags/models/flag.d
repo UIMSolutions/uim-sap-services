@@ -97,7 +97,7 @@ if ("flag_name" in request && request["flag_name"].isString) {
   static FFLFlag opCall(UUID tenantId, Json request) {
     FFLFlag f = new FFLFlag(request);
     f.tenantId = tenantId;
-    f.flagId = randomUUID().toString();
+    f.flagId = randomUUID();
 
     // Parse variations
     if ("variations" in request && request["variations"].isArray) {
@@ -127,7 +127,7 @@ if ("flag_name" in request && request["flag_name"].isString) {
       f.evaluationCount = request["evaluation_count"].get!long;
     }
 
-    f.createdAt = Clock.currTime().toISOExtString();
+    f.createdAt = Clock.currTime();
     f.updatedAt = f.createdAt;
     return f;
   }

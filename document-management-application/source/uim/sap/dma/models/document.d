@@ -54,7 +54,7 @@ class DMADocument : SAPObject {
 
   static DMADocument documentFromJson(string repositoryId, string folderId, Json request) {
   DMADocument d = new DMADocument(request);
-  d.documentId = randomUUID().toString();
+  d.documentId = randomUUID();
   d.repositoryId = repositoryId;
   d.folderId = folderId;
   d.createdAt = Clock.currTime();
@@ -64,7 +64,7 @@ class DMADocument : SAPObject {
   d.modifiedBy = "system";
   d.status = DocumentStatus.draft;
   d.currentVersion = 1;
-  d.latestVersionId = randomUUID().toString();
+  d.latestVersionId = randomUUID();
 
   if ("name" in request && request["name"].isString)
     d.name = request["name"].get!string;

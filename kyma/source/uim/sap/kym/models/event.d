@@ -28,7 +28,7 @@ struct KYMEvent {
 
 KYMEvent eventFromJson(string namespace, Json request) {
     KYMEvent ev;
-    ev.id = randomUUID().toString();
+    ev.Id = randomUUID();
     ev.namespace = namespace;
     ev.timestamp = Clock.currTime();
 

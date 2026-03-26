@@ -373,7 +373,7 @@ class AEMService : SAPService {
       if (toLower(rule.metric) == "queue_depth" && depth >= rule.threshold) {
         AEMMonitoringAlert alert;
         alert.tenantId = tenantId;
-        alert.alertId = randomUUID().toString();
+        alert.alertId = randomUUID();
         alert.metric = "queue_depth";
         alert.currentValue = depth;
         alert.threshold = rule.threshold;

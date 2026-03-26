@@ -59,7 +59,7 @@ struct Tenant {
 
 Tenant tenantFromJson(Json request) {
   Tenant t;
-  t.tenantId = randomUUID().toString();
+  t.tenantId = randomUUID();
   t.createdAt = Clock.currTime();
   t.modifiedAt = t.createdAt;
   t.active = true;
@@ -109,10 +109,10 @@ struct Repository {
 
 Repository repositoryFromJson(UUID tenantId, Json request) {
   Repository repo;
-  repo.repositoryId = randomUUID().toString();
+  repo.repositoryId = randomUUID();
   repo.tenantId = tenantId;
   repo.connectedAt = Clock.currTime();
-  repo.rootFolderId = randomUUID().toString();
+  repo.rootFolderId = randomUUID();
 
   if ("name" in request && request["name"].isString)
     repo.name = request["name"].get!string;
@@ -172,7 +172,7 @@ struct Folder {
 
 Folder folderFromJson(UUID tenantId, string repositoryId, string parentFolderId, Json request) {
   Folder f;
-  f.folderId = randomUUID().toString();
+  f.folderId = randomUUID();
   f.tenantId = tenantId;
   f.repositoryId = repositoryId;
   f.parentFolderId = parentFolderId;
@@ -247,7 +247,7 @@ struct Document {
 
 Document documentFromJson(UUID tenantId, string repositoryId, string folderId, Json request) {
   Document d;
-  d.documentId = randomUUID().toString();
+  d.documentId = randomUUID();
   d.tenantId = tenantId;
   d.repositoryId = repositoryId;
   d.folderId = folderId;
@@ -258,7 +258,7 @@ Document documentFromJson(UUID tenantId, string repositoryId, string folderId, J
   d.modifiedBy = "system";
   d.status = DocumentStatus.draft;
   d.currentVersion = 1;
-  d.latestVersionId = randomUUID().toString();
+  d.latestVersionId = randomUUID();
 
   if ("name" in request && request["name"].isString)
     d.name = request["name"].get!string;
@@ -317,7 +317,7 @@ struct DocumentVersion {
 DocumentVersion versionFromJson(UUID tenantId, string documentId,
   int versionNumber, Json request) {
   DocumentVersion v;
-  v.versionId = randomUUID().toString();
+  v.versionId = randomUUID();
   v.documentId = documentId;
   v.tenantId = tenantId;
   v.versionNumber = versionNumber;
@@ -482,7 +482,7 @@ struct IntegrationLink {
 
 IntegrationLink linkFromJson(UUID tenantId, Json request) {
   IntegrationLink lnk;
-  lnk.linkId = randomUUID().toString();
+  lnk.linkId = randomUUID();
   lnk.tenantId = tenantId;
   lnk.createdAt = Clock.currTime();
   lnk.createdBy = "system";
