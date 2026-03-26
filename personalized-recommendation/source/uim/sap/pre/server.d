@@ -378,11 +378,4 @@ class PREServer : SAPServer {
     if (token != _service.config.authToken)
       throw new PREAuthorizationException("Invalid bearer token");
   }
-
-  private static string[] normalizedSegments(string path) {
-    import std.algorithm : filter;
-    import std.array : array;
-
-    return path.split("/").filter!(s => s.length > 0).array;
-  }
 }

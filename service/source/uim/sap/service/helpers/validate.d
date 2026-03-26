@@ -53,3 +53,14 @@ bool validateAuth(HTTPServerRequest req, ISAPConfig cfg) {
   // Auth is valid
   return true;
 }
+
+  // private void validateAuth(HTTPServerRequest req) {
+  //   if (!_service.config.requireAuthToken)
+  //     return;
+  //   auto authHeader = req.headers.get("Authorization", "");
+  //   if (!authHeader.startsWith("Bearer "))
+  //     throw new PDMAuthorizationException("Missing bearer token");
+  //   auto token = authHeader[7 .. $];
+  //   if (token != _service.config.authToken)
+  //     throw new PDMAuthorizationException("Invalid bearer token");
+  // }

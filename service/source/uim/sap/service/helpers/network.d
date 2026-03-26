@@ -42,6 +42,15 @@ string[] normalizedSegments(string subPath) {
   return clean.split("/");
 }
 
+  // private static string[] normalizedSegments(string path) {
+  //   auto parts = path.split("/");
+  //   string[] segs;
+  //   foreach (p; parts)
+  //     if (p.length > 0)
+  //       segs ~= p;
+  //   return segs;
+  // }
+
 /**
   * Helper to safely parse JSON body from an HTTP request.
   * If parsing fails, it returns an empty JSON object instead of throwing an error.

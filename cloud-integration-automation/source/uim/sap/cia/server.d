@@ -215,39 +215,4 @@ class CIAServer : SAPServer {
 
     respondError(res, "Not found", 404);
   }
-
-  // -----------------------------------------------------------------------
-  // Auth helper
-  // -----------------------------------------------------------------------
-  private void validateAuth(HTTPServerRequest req) {
-    if (!_service.config.requireAuthToken)
-      return;
-    auto authHeader = req.headers.get("Authorization", "");
-    if (authHeader.length == 0)
-      throw new CIAAuthorizationException("Missing Authorization header");
-    if (authHeader.length < 8 || authHeader[0 .. 7] != "Bearer ")
-      throw new CIAAuthorizationException("Authorization header must use Bearer scheme");
-    auto token = authHeader[7 .. $];
-    if (token != _service.config.authToken)
-      throw new CIAAuthorizationException("Invalid auth token");
-  }
-
-  // -----------------------------------------------------------------------
-  // Helpers
-  // -----------------------------------------------------------------------
-  private static string[] normalizedSegments(string path) {
-    auto parts = path.split("/");
-    string[] segs;
-    foreach (p; parts)
-      if (p.length > 0)
-        segs ~= p;
-    return segs;
-  }
-
-  private static void respondError(HTTPServerResponse res, string message, int status) {
-    Json err = Json.emptyObject;
-    err["error"] = message;
-    err["status"] = status;
-    res.writeJsonBody(err, status);
-  }
 }

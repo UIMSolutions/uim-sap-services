@@ -150,21 +150,6 @@ class DSTServer {
   }
 
   // -----------------------------------------------------------------------
-  // Auth
-  // -----------------------------------------------------------------------
-  private void validateAuth(HTTPServerRequest req) {
-    if (!_service.config.requireAuthToken)
-      return;
-    auto authHeader = req.headers.get("Authorization", "");
-    if (authHeader.length == 0)
-      throw new DSTAuthorizationException("Missing Authorization header");
-    if (authHeader.length < 8 || authHeader[0 .. 7] != "Bearer ")
-      throw new DSTAuthorizationException("Authorization must use Bearer scheme");
-    if (authHeader[7 .. $] != _service.config.authToken)
-      throw new DSTAuthorizationException("Invalid auth token");
-  }
-
-  // -----------------------------------------------------------------------
   // Helpers
   // -----------------------------------------------------------------------
   private static string[] segments(string path) {
@@ -174,12 +159,5 @@ class DSTServer {
       if (p.length > 0)
         segs ~= p;
     return segs;
-  }
-
-  private static void respondError(HTTPServerResponse res, string message, int status) {
-    Json err = Json.emptyObject;
-    err["error"] = message;
-    err["status"] = status;
-    res.writeJsonBody(err, status);
   }
 }

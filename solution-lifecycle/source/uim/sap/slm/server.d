@@ -204,11 +204,4 @@ class SLMServer {
         segs ~= p;
     return segs;
   }
-
-  private static void respondError(HTTPServerResponse res, string message, int status) {
-    Json err = Json.emptyObject;
-    err["error"] = message;
-    err["status"] = status;
-    res.writeJsonBody(err, status);
-  }
 }

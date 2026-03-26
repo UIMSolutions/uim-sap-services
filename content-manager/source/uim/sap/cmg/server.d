@@ -35,8 +35,6 @@ mixin(ShowModule!());
  * - void run(): Starts the HTTP server and listens for incoming requests.
  * - override void handleRequest(HTTPServerRequest req, HTTPServerResponse res): Handles incoming HTTP requests, routes them to the appropriate service methods, and returns responses.
  * - private void validateAuth(HTTPServerRequest req): Validates the authentication token in the request headers if required by the configuration.
- * - private string[] normalizedSegments(string subPath): Normalizes the URL path segments for easier routing.
- * - private void respondError(HTTPServerResponse res, string message, int statusCode): Sends an error response with a Json data containing the error message and status code.
  */
 class CMGServer : SAPServer {
   mixin(SAPServerTemplate!CMGServer);

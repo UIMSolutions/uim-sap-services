@@ -22,6 +22,15 @@ class CDCService : SAPService {
     _store = new CDCStore(config.cacheFilePath);
   }
 
+  override bool initialize(Json[string] initData = null) {
+    if (!super.initialize(initData)) {
+      return false;
+    }
+
+    // _store.load();
+    return true;
+  }
+
   override Json health() {
     return super.health()
       .set("domain", "customer-data");
@@ -67,8 +76,7 @@ class CDCService : SAPService {
     validateRegion(profile.region);
     auto saved = _store.upsertProfile(profile);
 
-    Json payload = Json.emptyObject;
-    return payload
+    return Json.emptyObject
       .set("message", "Profile upserted")
       .set("profile", saved.toJson());
   }

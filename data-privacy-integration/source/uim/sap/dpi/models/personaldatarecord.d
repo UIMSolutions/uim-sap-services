@@ -27,11 +27,46 @@ import uim.sap.dpi;
 class DPIPersonalDataRecord : SAPTenantObject {
   mixin(SAPObjectTemplate!DPIPersonalDataRecord);
 
+  override bool initialize(Json[string] initData = null) {
+    if (!super.initialize(initData)) {
+      return false;
+    }
+
+    if ("record_id" in request && request["record_id"].isString){
+      record.recordId = UUID(request["record_id"].get!string);}
+      else {
+        record.recordId = randomUUID;
+      }
+
+    if ("subject_id" in request && request["subject_id"].isString)
+      record.subjectId = UUID(request["subject_id"].get!string);
+
+    category = initData.getString("category", "");
+    source = initData.getString("source", "");
+    payload = initData.getObject("payload", Json.emptyObject);
+    deleted = initData.getBool("deleted", false);
+
+
+    if ("created_at" in initData && initData["created_at"].isString) {
+      record.createdAt = initData["created_at"].get!string;
+    } else {
+      record.createdAt = Clock.currTime().toISOExtString();
+    }
+
+    if ("updated_at" in initData && initData["updated_at"].isString) {
+      record.updatedAt = initData["updated_at"].get!string;
+    } else {    
+      record.updatedAt = record.createdAt;
+    }
+
+    return true;
+  }
+
   UUID recordId;
   UUID subjectId;
   string category;
   string source;
-  Json payload = Json.emptyObject;
+  Json payload;
   bool deleted;
 
   override Json toJson() {
@@ -47,22 +82,6 @@ class DPIPersonalDataRecord : SAPTenantObject {
   DPIPersonalDataRecord opCall(UUID tenantId, Json request) {
     DPIPersonalDataRecord record = new DPIPersonalDataRecord(request);
     record.tenantId = tenantId;
-    record.recordId = randomUUID;
-    record.createdAt = Clock.currTime();
-    record.updatedAt = record.createdAt;
-    record.payload = Json.emptyObject;
-    record.deleted = false;
-
-    if ("record_id" in request && request["record_id"].isString)
-      record.recordId = UUID(request["record_id"].get!string);
-    if ("subject_id" in request && request["subject_id"].isString)
-      record.subjectId = UUID(request["subject_id"].get!string);
-    if ("category" in request && request["category"].isString)
-      record.category = request["category"].get!string;
-    if ("source" in request && request["source"].isString)
-      record.source = request["source"].get!string;
-    if ("payload" in request && request["payload"].isObject)
-      record.payload = request["payload"];
 
     return record;
   }
