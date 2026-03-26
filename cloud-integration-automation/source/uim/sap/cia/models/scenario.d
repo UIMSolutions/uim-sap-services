@@ -11,7 +11,7 @@ mixin(ShowModule!());
 class CIAScenario : SAPObject {
   mixin(SAPObjectTemplate!CIAScenario);
 
-  string id;
+  UUID id;
   string name;
   string description;
   /// Tags such as "cloud-to-cloud", "on-prem-to-cloud"

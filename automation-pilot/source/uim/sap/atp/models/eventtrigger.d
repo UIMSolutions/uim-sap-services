@@ -24,10 +24,10 @@ mixin(ShowModule!());
 class ATPEventTrigger : SAPTenantObject {
   mixin(SAPObjectTemplate!ATPEventTrigger);
 
-  string triggerId;
+  UUID triggerId;
   string eventSource;
   string eventType;
-  string commandId;
+  UUID commandId;
   bool active;
 
   override Json toJson() {

@@ -14,7 +14,7 @@ mixin(ShowModule!());
 class CMGContentProvider : SAPTenantObject {
   mixin(SAPObjectTemplate!CMGContentProvider);
 
-  string providerId;
+  UUID providerId;
   string name;
   string providerType;
   string endpoint;

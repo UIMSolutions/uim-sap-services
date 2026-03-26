@@ -14,9 +14,9 @@ import std.datetime : SysTime;
  * Role assignment
  */
 struct RoleAssignment {
-    string roleId;
+    UUID roleId;
     string roleName;
-    string userId;
+    UUID userId;
     string userName;
     SysTime assignedAt;
     string assignedBy;
@@ -26,7 +26,7 @@ struct RoleAssignment {
  * Role definition
  */
 struct Role {
-    string id;
+    UUID id;
     string name;
     string description;
     string[] permissions;

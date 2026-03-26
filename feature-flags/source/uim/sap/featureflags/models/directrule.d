@@ -19,9 +19,9 @@ mixin(ShowModule!());
  *  flag) instead of the default.
  */
 struct FFLDirectRule {
-  string ruleId;
+  UUID ruleId;
   string[] identifiers; // targeted identifier values
-  string variationId; // for String flags — which variation to serve
+  UUID variationId; // for String flags — which variation to serve
   bool booleanValue = true; // for Boolean flags — override value
 
   override Json toJson()  {

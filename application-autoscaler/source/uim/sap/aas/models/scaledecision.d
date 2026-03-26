@@ -33,7 +33,7 @@ import uim.sap.aas;
 class AASScaleDecision : SAPObject {
   mixin(SAPObjectTemplate!AASScaleDecision);
 
-  string appId;
+  UUID appId;
   uint currentInstances;
   uint desiredInstances;
   string direction;

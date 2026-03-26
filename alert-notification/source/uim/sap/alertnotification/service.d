@@ -28,10 +28,9 @@ class AlertNotificationService : SAPService {
   Json listBuiltInEvents() {
     Json resources = Json.emptyArray;
     foreach (eventType; ALERT_BUILT_IN_EVENTS) {
-      Json item = Json.emptyObject;
-      item["event_type"] = eventType;
-      item["provider"] = "SAP BTP";
-      resources ~= item;
+      resources ~= Json.emptyObject
+        .set("event_type", eventType)
+        .set("provider", "SAP BTP");
     }
 
     return Json.emptyObject

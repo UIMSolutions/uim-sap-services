@@ -9,7 +9,7 @@ mixin(ShowModule!());
 class BASScenario : SAPObject {
   mixin(SAPObjectTemplate!BASScenario);
 
-  string scenarioId;
+  UUID scenarioId;
   string name;
   string description;
   string[] supportedSolutions;

@@ -52,14 +52,9 @@ class ARTProgramRequest : SAPObject {
   string program;
   string user;
   string client;
-  string language = "EN";
-  Json parameters = Json.emptyObject;
+  string language;
+  Json parameters;
   UUID correlationId;
-
-  static ARTProgramRequest opCall(Json payload) {
-    ARTProgramRequest request = new ARTProgramRequest(payload);
-    return request;
-  }
 
   override Json toJson() {
     Json info = super.toJson
@@ -69,5 +64,10 @@ class ARTProgramRequest : SAPObject {
       .set("language", language)
       .set("parameters", parameters)
       .set("correlationId", correlationId);
+  }
+
+  static ARTProgramRequest opCall(Json payload) {
+    ARTProgramRequest request = new ARTProgramRequest(payload);
+    return request;
   }
 }

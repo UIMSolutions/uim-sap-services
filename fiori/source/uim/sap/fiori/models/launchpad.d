@@ -13,7 +13,7 @@ import vibe.data.json;
  * Fiori Launchpad Tile
  */
 struct LaunchpadTile {
-    string id;
+    UUID id;
     string title;
     string subtitle;
     string icon;

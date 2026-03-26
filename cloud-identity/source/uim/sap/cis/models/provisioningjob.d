@@ -42,9 +42,10 @@ mixin(ShowModule!());
   * Json jobJson = job.toJson();
   * ```
   * Note: The `toJson()` method is used to serialize the provisioning job into a JSON format that can be returned in API responses or stored in a database. The actual implementation of the `toJson()` method may vary based on the specific requirements of the application and the structure of the JSON payload expected by the
+  */
 struct CISProvisioningJob {
   UUID tenantId;
-  string jobId;
+  UUID jobId;
   string sourceSystem;
   string targetSystem;
   string mode;

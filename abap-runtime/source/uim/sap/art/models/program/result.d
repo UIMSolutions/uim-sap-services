@@ -9,10 +9,28 @@ mixin(ShowModule!());
 class ARTProgramResult : SAPObject {
   mixin(SAPObjectTemplate!ARTProgramResult);
 
+  override bool initialize(Json[string] initData = null) {
+    if (!super.initialize(initData)) {
+      return false;
+    }
+
+    success = initData.getBool("success", false);
+    message = initData.getString("message", "");
+    statusCode = initData.getInt("statusCode", 200);
+    data = initData.getObject("data", Json.emptyObject);
+    program = initData.getString("program", "");
+    timestamp = initData.getTime("timestamp", Clock.currTime());
+    if ("correlationId" in initData && initData["correlationId"].isString) {
+      correlationId = UUID(initData["correlationId"].get!string);
+    }
+
+    return true;
+  }
+
   bool success;
   string message;
-  int statusCode = 200;
-  Json data = Json.emptyObject;
+  int statusCode;
+  Json data;
   string program;
   SysTime timestamp;
   UUID correlationId;

@@ -78,14 +78,14 @@ Tenant tenantFromJson(Json request) {
 
 /// Describes a connected CMIS-compliant repository, scoped to a tenant.
 struct Repository {
-  string repositoryId;
+  UUID repositoryId;
   UUID tenantId;
   string name;
   string description;
   string vendorName;
   string productName;
   string productVersion;
-  string rootFolderId;
+  UUID rootFolderId;
   bool cmisCompliant = true;
   bool encryptionEnabled = false;
   SysTime connectedAt;
@@ -138,10 +138,10 @@ Repository repositoryFromJson(UUID tenantId, Json request) {
 
 /// A folder (container) in the document hierarchy, scoped to a tenant.
 struct Folder {
-  string folderId;
+  UUID folderId;
   UUID tenantId;
-  string repositoryId;
-  string parentFolderId; // empty string = root-level
+  UUID repositoryId;
+  UUID parentFolderId; // empty string = root-level
   string name;
   string description;
   string createdBy;
@@ -283,8 +283,8 @@ Document documentFromJson(UUID tenantId, string repositoryId, string folderId, J
 
 /// A specific version of a document.
 struct DocumentVersion {
-  string versionId;
-  string documentId;
+  UUID versionId;
+  UUID documentId;
   UUID tenantId;
   int versionNumber;
   string versionLabel;

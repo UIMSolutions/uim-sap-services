@@ -8,9 +8,9 @@ mixin(ShowModule!());
 
 struct EVMDeadLetter {
   UUID tenantId;
-  string deadLetterId;
+  UUID deadLetterId;
   string queueName;
-  string messageId;
+  UUID messageId;
   string reason;
   long attemptCount;
   string failedAt;

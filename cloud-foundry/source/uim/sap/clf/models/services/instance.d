@@ -38,10 +38,10 @@ class CLFServiceInstance : SAPObject {
     return true;
   }
 
-  string guid;
+  UUID guid;
   string name;
-  string serviceGuid;
-  string spaceGuid;
+  UUID serviceGuid;
+  UUID spaceGuid;
   string status = "create succeeded";
   SysTime createdAt;
 

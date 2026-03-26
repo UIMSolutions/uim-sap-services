@@ -198,7 +198,7 @@ class CISService : SAPService {
       .set("total_results", cast(long)resources.length);
   }
 
-  Json upsertPolicy(UUID tenantId, string policyId, Json request) {
+  Json upsertPolicy(UUID tenantId, UUID policyId, Json request) {
     validateId(tenantId, "Tenant ID");
     validateId(policyId, "Policy ID");
 
@@ -268,7 +268,7 @@ class CISService : SAPService {
       .set("instance_id", instanceId);
   }
 
-  Json upsertRiskPolicy(UUID tenantId, string policyId, Json request) {
+  Json upsertRiskPolicy(UUID tenantId, UUID policyId, Json request) {
     validateId(tenantId, "Tenant ID");
     validateId(policyId, "Policy ID");
 

@@ -43,6 +43,34 @@ FromJson` function ensures that the `tenantId` and `brokerServiceId` are set and
 class AEMEventMesh : SAPTenantObject {
   mixin(SAPObjectTemplate!AEMEventMesh);
 
+  override bool initialize(Json[string] initData = null) {
+    if (!super.initialize(initData)) {
+      return false;
+    }
+
+    if ("mesh_id" in initData && initData["mesh_id"].isString) {
+      meshId = UUID(initData["mesh_id"].get!string);
+    }
+
+    if ("broker_service_id" in initData && initData["broker_service_id"].isString) {
+      brokerServiceId = UUID(initData["broker_service_id"].get!string);
+    }
+
+    if ("name" in initData && initData["name"].isString) {
+      name = initData["name"].get!string;
+    }
+    
+    if ("topics" in initData && initData["topics"].isArray) {
+      foreach (topicJson; initData["topics"].toArray) {
+        if (topicJson.isString) {
+          topics ~= topicJson.get!string;
+        }
+      }
+    }
+
+    return true;
+  }
+
   UUID meshId;
   UUID brokerServiceId;
   string name;
@@ -52,34 +80,21 @@ class AEMEventMesh : SAPTenantObject {
     auto topicsJson = topics.map!(topic => topic).array;
 
     return super.toJson()
-      .set("mesh_id", meshId.toJson)
-      .set("broker_service_id", brokerServiceId.toJson)
+      .set("mesh_id", meshId)
+      .set("broker_service_id", brokerServiceId)
       .set("name", name)
       .set("topics", topicsJson);
   }
 }
 
-AEMEventMesh meshFromJson(UUID tenantId, string brokerServiceId, Json request) {
-  AEMEventMesh mesh = new AEMEventMesh();
+AEMEventMesh meshFromJson(UUID tenantId, UUID brokerServiceId, Json request) {
+  AEMEventMesh mesh = new AEMEventMesh(request);
+
   mesh.tenantId = tenantId;
   mesh.meshId = randomUUID();
-  mesh.brokerServiceId = UUID(brokerServiceId);
+  mesh.brokerServiceId = brokerServiceId;
   mesh.createdAt = Clock.currTime();
   mesh.updatedAt = mesh.createdAt;
-
-  if ("mesh_id" in request && request["mesh_id"].isString) {
-    mesh.meshId = UUID(request["mesh_id"].get!string);
-  }
-  if ("name" in request && request["name"].isString) {
-    mesh.name = request["name"].get!string;
-  }
-  if ("topics" in request && request["topics"].isArray) {
-    foreach (topicJson; request["topics"].toArray) {
-      if (topicJson.isString) {
-        mesh.topics ~= topicJson.get!string;
-      }
-    }
-  }
 
   return mesh;
 }

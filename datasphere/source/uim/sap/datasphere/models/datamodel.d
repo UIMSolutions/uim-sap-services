@@ -30,7 +30,7 @@ mixin(ShowModule!());
  */
 struct DATDataModel {
   UUID tenantId;
-  string modelId;
+  UUID modelId;
   string name;
   string modelType;
   string sqlDefinition;

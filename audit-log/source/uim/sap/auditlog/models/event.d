@@ -13,27 +13,14 @@ class AuditLogEvent : SAPTenantObject {
       return false;
     }
 
-    if ("event_id" in initData && initData["event_id"].isString) {
-      eventId = initData["event_id"].get!string;
-    }
-    if ("event_type" in initData && initData["event_type"].isString) {
-      eventType = toLower(initData["event_type"].get!string);
-    }
-    if ("severity" in initData && initData["severity"].isString) {
-      severity = toLower(initData["severity"].get!string);
-    }
-    if ("category" in initData && initData["category"].isString) {
-      category = toLower(initData["category"].get!string);
-    }
-    if ("message" in initData && initData["message"].isString) {
-      message = initData["message"].get!string;
-    }
-    if ("source_service" in initData && initData["source_service"].isString) {
-      sourceService = initData["source_service"].get!string;
-    }
-    if ("actor" in initData && initData["actor"].isString) {
-      actor = initData["actor"].get!string;
-    }
+    eventId = initData.getString("event_id", "");
+    eventType = toLower(initData.getString("event_type", ""));
+    severity = toLower(initData.getString("severity", ""));
+    category = toLower(initData.getString("category", ""));
+    message = initData.getString("message", "");
+    sourceService = initData.getString("source_service", "");
+    actor = initData.getString("actor", "");
+    
     if ("details" in initData && initData["details"].isObject) {
       details = initData["details"];
     }

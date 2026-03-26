@@ -14,9 +14,9 @@ mixin(ShowModule!());
 class CDCAuthEvent : SAPTenantObject {
   mixin(SAPObjectTemplate!CDCAuthEvent);
 
-  string eventId;
-  string userId;
-  string providerId;
+  UUID eventId;
+  UUID userId;
+  UUID providerId;
   string ipAddress;
   string decision;
   string riskLevel;

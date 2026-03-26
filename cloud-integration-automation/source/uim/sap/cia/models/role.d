@@ -10,7 +10,7 @@ mixin(ShowModule!());
 class CIARole : SAPObject {
 mixin(SAPObjectTemplate!CIARole);
 
-  string id;
+  UUID id;
   string name; // e.g. "Basis Administrator", "Cloud Admin"
   string description;
 

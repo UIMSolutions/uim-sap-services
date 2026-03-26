@@ -14,7 +14,7 @@ mixin(ShowModule!());
 class CMGContentItem : SAPTenantObject {
   mixin(SAPObjectTemplate!CMGContentItem);
 
-    string itemId;
+    UUID itemId;
     string contentType;
     string title;
     string description;

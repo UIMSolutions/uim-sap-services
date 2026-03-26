@@ -2,9 +2,9 @@ module uim.sap.html5repo.models.versioninfo;
 
 struct AppVersionInfo {
   UUID tenantId;
-  string spaceId;
-  string appId;
-  string versionId;
+  UUID spaceId;
+  UUID appId;
+  UUID versionId;
   Visibility visibility;
   bool active;
   string createdAt;

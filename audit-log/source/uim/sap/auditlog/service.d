@@ -29,8 +29,8 @@ class AuditLogService : SAPService {
     }
 
     return Json.emptyObject
-    .set("resources", resources)
-    .set("total_results", cast(long)resources.length);
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json writeEvent(UUID tenantId, Json request) {
@@ -128,140 +128,138 @@ class AuditLogService : SAPService {
       download = request["download"].get!bool;
     }
 
-    Json result = Json.emptyObject;
-    result["tenant_id"] = tenantId;
-    result["within_days"] = withinDays;
-    result["retention_days"] = policy.retentionDays;
-    result["resources"] = preview;
-    result["total_results"] = cast(long)preview.length;
-    result["download_ready"] = download;
-    if (download) {
-      result["download_format"] = "csv";
-      result["download_content"] = toCsv(filtered);
-    }
-    return result;
-  }
-
-  Json viewer(UUID tenantId) {
-    validateId(tenantId, "Tenant ID");
-    auto policy = ensurePolicy(tenantId);
-    _store.purgeExpired(tenantId, policy.retentionDays);
-
-    auto events = _store.listEvents(tenantId);
-    sort!((a, b) => a.createdAt > b.createdAt)(events);
-
-    Json latest = Json.emptyArray;
-    long maxItems = 100;
-    long i = 0;
-    foreach (eventItem; events) {
-      if (i >= maxItems) {
-        break;
-      }
-      latest ~= eventItem.toJson();
-      ++i;
-    }
-
-    long recommendedCount = 0;
-    long customCount = 0;
-    foreach (eventItem; events) {
-      if (isRecommendedAuditEventType(eventItem.eventType)) {
-        ++recommendedCount;
-      } else {
-        ++customCount;
-      }
-    }
-
-    return Json.emptyObject
+    Json result = Json.emptyObject
       .set("tenant_id", tenantId)
-      .set("plan", policy.plan)
+      .set("within_days", withinDays)
       .set("retention_days", policy.retentionDays)
-      .set("total_events", cast(long)events.length)
-      .set("recommended_events", recommendedCount)
-      .set("custom_events", customCount)
-      .set("latest_events", latest);
+      .set("resources", preview)
+      .set("total_results", cast(long)preview.length)
+      .set("download_ready", download);
+
+    return download
+      ? result.set("download_format", "csv").set("download_content", toCsv(filtered)) : result;
+}
+
+Json viewer(UUID tenantId) {
+  validateId(tenantId, "Tenant ID");
+  auto policy = ensurePolicy(tenantId);
+  _store.purgeExpired(tenantId, policy.retentionDays);
+
+  auto events = _store.listEvents(tenantId);
+  sort!((a, b) => a.createdAt > b.createdAt)(events);
+
+  Json latest = Json.emptyArray;
+  long maxItems = 100;
+  long i = 0;
+  foreach (eventItem; events) {
+    if (i >= maxItems) {
+      break;
+    }
+    latest ~= eventItem.toJson();
+    ++i;
   }
 
-  Json getRetentionPolicy(UUID tenantId) {
-    validateId(tenantId, "Tenant ID");
-    auto policy = ensurePolicy(tenantId);
-    return Json.emptyObject
-      .set("retention_policy", policy.toJson());
+  long recommendedCount = 0;
+  long customCount = 0;
+  foreach (eventItem; events) {
+    if (isRecommendedAuditEventType(eventItem.eventType)) {
+      ++recommendedCount;
+    } else {
+      ++customCount;
+    }
   }
 
-  Json updateRetentionPolicy(UUID tenantId, Json request) {
-    validateId(tenantId, "Tenant ID");
-    auto policy = ensurePolicy(tenantId);
+  return Json.emptyObject
+    .set("tenant_id", tenantId)
+    .set("plan", policy.plan)
+    .set("retention_days", policy.retentionDays)
+    .set("total_events", cast(long)events.length)
+    .set("recommended_events", recommendedCount)
+    .set("custom_events", customCount)
+    .set("latest_events", latest);
+}
 
-    int nextDays = policy.retentionDays;
-    if ("retention_days" in request && request["retention_days"].isInteger) {
-      nextDays = cast(int)request["retention_days"].get!long;
-    }
-    if (nextDays <= 0) {
-      throw new AuditLogValidationException("retention_days must be greater than zero");
-    }
+Json getRetentionPolicy(UUID tenantId) {
+  validateId(tenantId, "Tenant ID");
+  auto policy = ensurePolicy(tenantId);
+  return Json.emptyObject
+    .set("retention_policy", policy.toJson());
+}
 
-    auto nextPlan = policy.plan;
-    if ("plan" in request && request["plan"].isString) {
-      nextPlan = toLower(request["plan"].get!string);
-    }
-    if (nextPlan != "default" && nextPlan != "premium") {
-      throw new AuditLogValidationException("plan must be 'default' or 'premium'");
-    }
+Json updateRetentionPolicy(UUID tenantId, Json request) {
+  validateId(tenantId, "Tenant ID");
+  auto policy = ensurePolicy(tenantId);
 
-    if (nextPlan == "default" && nextDays > 90) {
-      throw new AuditLogValidationException("retention above 90 days requires premium plan");
-    }
+  int nextDays = policy.retentionDays;
+  if ("retention_days" in request && request["retention_days"].isInteger) {
+    nextDays = cast(int)request["retention_days"].get!long;
+  }
+  if (nextDays <= 0) {
+    throw new AuditLogValidationException("retention_days must be greater than zero");
+  }
 
-    policy.plan = nextPlan;
-    policy.retentionDays = nextDays;
+  auto nextPlan = policy.plan;
+  if ("plan" in request && request["plan"].isString) {
+    nextPlan = toLower(request["plan"].get!string);
+  }
+  if (nextPlan != "default" && nextPlan != "premium") {
+    throw new AuditLogValidationException("plan must be 'default' or 'premium'");
+  }
+
+  if (nextPlan == "default" && nextDays > 90) {
+    throw new AuditLogValidationException("retention above 90 days requires premium plan");
+  }
+
+  policy.plan = nextPlan;
+  policy.retentionDays = nextDays;
+  policy.updatedAt = Clock.currTime();
+
+  if ("premium_cost_per_1000_events" in request
+    && request["premium_cost_per_1000_events"].isFloat) {
+    policy.premiumCostPerThousandEvents = request["premium_cost_per_1000_events"].get!double;
+  }
+
+  auto saved = _store.upsertPolicy(policy);
+  _store.purgeExpired(tenantId, saved.retentionDays);
+
+  return Json.emptyObject
+    .set("success", true)
+    .set("retention_policy", saved.toJson());
+}
+
+Json usageAndCost(UUID tenantId) {
+  validateId(tenantId, "Tenant ID");
+  auto policy = ensurePolicy(tenantId);
+  _store.purgeExpired(tenantId, policy.retentionDays);
+
+  auto events = _store.listEvents(tenantId);
+  long total = cast(long)events.length;
+  double estimatedCost = 0.0;
+  if (policy.plan == "premium") {
+    estimatedCost = (cast(double)total / 1000.0) * policy.premiumCostPerThousandEvents;
+  }
+
+  return Json.emptyObject
+    .set("tenant_id", tenantId)
+    .set("plan", policy.plan)
+    .set("retention_days", policy.retentionDays)
+    .set("events_in_retention", total)
+    .set("estimated_premium_cost", estimatedCost)
+    .set("cost_currency", "USD");
+}
+
+private AuditLogRetentionPolicy ensurePolicy(UUID tenantId) {
+  auto cfg = cast(AuditLogConfig)config;
+
+  auto policy = _store.getPolicy(tenantId);
+  if (policy.tenantId.length == 0) {
+    policy.tenantId = tenantId;
+    policy.retentionDays = cfg.defaultRetentionDays;
+    policy.plan = toLower(cfg.defaultPlan);
+    policy.premiumCostPerThousandEvents = cfg.premiumCostPerThousandEvents;
     policy.updatedAt = Clock.currTime();
-
-    if ("premium_cost_per_1000_events" in request
-      && request["premium_cost_per_1000_events"].isFloat) {
-      policy.premiumCostPerThousandEvents = request["premium_cost_per_1000_events"].get!double;
-    }
-
-    auto saved = _store.upsertPolicy(policy);
-    _store.purgeExpired(tenantId, saved.retentionDays);
-
-    return Json.emptyObject
-      .set("success", true)
-      .set("retention_policy", saved.toJson());
+    policy = _store.upsertPolicy(policy);
   }
-
-  Json usageAndCost(UUID tenantId) {
-    validateId(tenantId, "Tenant ID");
-    auto policy = ensurePolicy(tenantId);
-    _store.purgeExpired(tenantId, policy.retentionDays);
-
-    auto events = _store.listEvents(tenantId);
-    long total = cast(long)events.length;
-    double estimatedCost = 0.0;
-    if (policy.plan == "premium") {
-      estimatedCost = (cast(double)total / 1000.0) * policy.premiumCostPerThousandEvents;
-    }
-
-    return Json.emptyObject
-      .set("tenant_id", tenantId)
-      .set("plan", policy.plan)
-      .set("retention_days", policy.retentionDays)
-      .set("events_in_retention", total)
-      .set("estimated_premium_cost", estimatedCost)
-      .set("cost_currency", "USD");
-  }
-
-  private AuditLogRetentionPolicy ensurePolicy(UUID tenantId) {
-    auto cfg = cast(AuditLogConfig)config;
-
-    auto policy = _store.getPolicy(tenantId);
-    if (policy.tenantId.length == 0) {
-      policy.tenantId = tenantId;
-      policy.retentionDays = cfg.defaultRetentionDays;
-      policy.plan = toLower(cfg.defaultPlan);
-      policy.premiumCostPerThousandEvents = cfg.premiumCostPerThousandEvents;
-      policy.updatedAt = Clock.currTime();
-      policy = _store.upsertPolicy(policy);
-    }
-    return policy;
-  }
+  return policy;
+}
 }

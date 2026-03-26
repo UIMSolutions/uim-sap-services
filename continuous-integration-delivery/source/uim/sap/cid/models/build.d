@@ -12,8 +12,8 @@ mixin(ShowModule!());
 class CIDBuild : SAPTenantObject {
   mixin(SAPObjectTemplate!CIDBuild);
 
-  string buildId;
-  string pipelineId;
+  UUID buildId;
+  UUID pipelineId;
   /// Build number (sequential per pipeline)
   int buildNumber;
   /// Git commit hash that triggered this build

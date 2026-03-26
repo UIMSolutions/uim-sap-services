@@ -29,7 +29,7 @@ mixin(ShowModule!());
 class DATGovernanceAsset : SAPTenantObject {
   mixin(SAPObjectTemplate!DATGovernanceAsset);
 
-  string assetId;
+  UUID assetId;
   string title;
   string assetType;
   string quality;

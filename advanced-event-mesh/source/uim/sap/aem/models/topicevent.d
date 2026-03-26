@@ -22,15 +22,16 @@ class AEMTopicEvent : SAPTenantObject {
     if ("event_id" in initData && initData["event_id"].isString) {
       eventId = UUID(initData["event_id"].get!string);
     }
+
+    if ("mesh_id" in initData && initData["mesh_id"].isString) {
+      meshId = UUID(initData["mesh_id"].get!string);
+    }
+
     if ("topic" in initData && initData["topic"].isString) {
       topic = initData["topic"].get!string;
     }
-    if ("publisher" in initData && initData["publisher"].isString) {
-      publisher = initData["publisher"].get!string;
-    }
-    if ("payload" in initData) {
-      payload = initData["payload"];
-    }
+    publisher = initData.getString("publisher", "unknown");
+    payload = initData.getObject("payload", Json.emptyObject);
 
     return true;
   }
@@ -39,7 +40,7 @@ class AEMTopicEvent : SAPTenantObject {
   UUID eventId;
   string topic;
   string publisher;
-  Json payload = Json.emptyObject;
+  Json payload;
   SysTime publishedAt;
 
   override override Json toJson() {
@@ -53,14 +54,13 @@ class AEMTopicEvent : SAPTenantObject {
   }
 }
 
-AEMTopicEvent eventFromJson(UUID tenantId, string meshId, Json request) {
-  AEMTopicEvent e = new AEMTopicEvent();
-  e.tenantId = tenantId;
-  e.meshId = UUID(meshId);
-  e.eventId = randomUUID();
-  e.publisher = "unknown";
-  e.payload = Json.emptyObject;
-  e.publishedAt = Clock.currTime();
+AEMTopicEvent eventFromJson(UUID tenantId, UUID meshId, Json request) {
+  AEMTopicEvent event = new AEMTopicEvent(request);
 
-  return e;
+  event.tenantId = tenantId;
+  event.meshId = meshId;
+  event.eventId = randomUUID();
+  event.publishedAt = Clock.currTime();
+
+  return event;
 }
