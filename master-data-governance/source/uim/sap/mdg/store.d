@@ -22,7 +22,7 @@ class MDGStore : SAPStore {
     }
   }
 
-  bool deleteBusinessPartner(UUID tenantId, string bpId) {
+  bool deleteBusinessPartner(UUID tenantId, UUID bpId) {
     synchronized (_lock) {
       auto key = bpKey(tenantId, bpId);
       if (!(key in _businessPartners)) {
@@ -33,7 +33,7 @@ class MDGStore : SAPStore {
     }
   }
 
-  MDGBusinessPartner getBusinessPartner(UUID tenantId, string bpId) {
+  MDGBusinessPartner getBusinessPartner(UUID tenantId, UUID bpId) {
     synchronized (_lock) {
       auto key = bpKey(tenantId, bpId);
       if (key in _businessPartners) {
@@ -85,16 +85,16 @@ class MDGStore : SAPStore {
     return values;
   }
 
-  private string bpKey(UUID tenantId, string bpId) {
-    return tenantId ~ ":bp:" ~ bpId;
+  private string bpKey(UUID tenantId, UUID bpId) {
+    return tenantId.toString ~ ":bp:" ~ bpId.toString;
   }
 
   private string ruleKey(UUID tenantId, string ruleId) {
-    return tenantId ~ ":rule:" ~ ruleId;
+    return tenantId.toString ~ ":rule:" ~ ruleId;
   }
 
   private bool belongsToTenant(string key, UUID tenantId) {
-    return key.length > tenantId.length + 1 && key[0 .. tenantId.length] == tenantId && key[tenantId
-      .length] == ':';
+    return key.length > tenantId.toString.length + 1 && key[0 .. tenantId.toString.length] == tenantId.toString && key[tenantId
+      .toString.length] == ':';
   }
 }

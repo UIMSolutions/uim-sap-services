@@ -12,4 +12,5 @@ public {
   import uim.sap.service.classes.store;
 
   import uim.sap.service.classes.objects;
+  import uim.sap.service.classes.tenants;
 }

@@ -154,16 +154,16 @@ class MDGService : SAPService {
       throw new MDGValidationException("duplicate_bp_id is required");
     }
 
-    auto primaryId = request["primary_bp_id"].get!string;
-    auto duplicateId = request["duplicate_bp_id"].get!string;
+    auto primaryId = UUID(request["primary_bp_id"].get!string);
+    auto duplicateId = UUID(request["duplicate_bp_id"].get!string);
 
     auto primary = _store.getBusinessPartner(tenantId, primaryId);
     auto duplicate = _store.getBusinessPartner(tenantId, duplicateId);
-    if (primary.bpId.length == 0) {
-      throw new MDGNotFoundException("Primary business partner", tenantId.toString ~ "/" ~ primaryId);
+    if (primary.bpId == NULLUUID) {
+      throw new MDGNotFoundException("Primary business partner", tenantId.toString ~ "/" ~ primaryId.toString);
     }
-    if (duplicate.bpId.length == 0) {
-      throw new MDGNotFoundException("Duplicate business partner", tenantId.toString ~ "/" ~ duplicateId);
+    if (duplicate.bpId == NULLUUID) {
+      throw new MDGNotFoundException("Duplicate business partner", tenantId.toString ~ "/" ~ duplicateId.toString);
     }
 
     if (primary.email.length == 0)
@@ -213,7 +213,7 @@ class MDGService : SAPService {
 
   Json evaluateDataQuality(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
-    
+
     auto rules = _store.listRules(tenantId);
     auto bps = _store.listBusinessPartners(tenantId);
 
