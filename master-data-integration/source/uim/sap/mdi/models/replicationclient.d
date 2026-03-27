@@ -51,11 +51,11 @@ static MDIReplicationClient clientFromJson(UUID tenantId, Json request) {
   client.systemType = "sap";
 
   if ("client_id" in request && request["client_id"].isString)
-    client.clientId = request["client_id"].get!string;
+    client.clientId = request["client_id"].getString;
   if ("name" in request && request["name"].isString)
-    client.name = request["name"].get!string;
+    client.name = request["name"].getString;
   if ("system_type" in request && request["system_type"].isString)
-    client.systemType = request["system_type"].get!string;
+    client.systemType = request["system_type"].getString;
   return client;
 }
 

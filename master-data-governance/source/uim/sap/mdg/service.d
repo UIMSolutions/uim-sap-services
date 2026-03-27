@@ -89,7 +89,7 @@ class MDGService : SAPService {
 
     bp.workflowState = nextState;
     if ("approver" in request && request["approver"].isString) {
-      bp.approver = request["approver"].get!string;
+      bp.approver = request["approver"].getString;
     }
     bp.updatedAt = Clock.currTime();
 

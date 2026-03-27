@@ -171,10 +171,10 @@ class CPIClient {
         if ("message" in errorObj) {
           auto msg = errorObj["message"];
           if (msg.isString) {
-            return msg.get!string;
+            return msg.getString;
           }
           if (msg.isObject && "value" in msg) {
-            return msg["value"].get!string;
+            return msg["value"].getString;
           }
         }
       }

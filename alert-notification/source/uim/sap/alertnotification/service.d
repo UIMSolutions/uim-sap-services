@@ -266,10 +266,10 @@ class AlertNotificationService : SAPService {
         delivery.createdAt = Clock.currTime();
 
         if ("action_type" in actionJson && actionJson["action_type"].isString) {
-          delivery.actionType = actionJson["action_type"].get!string;
+          delivery.actionType = actionJson["action_type"].getString;
         }
         if ("target" in actionJson && actionJson["target"].isString) {
-          delivery.target = actionJson["target"].get!string;
+          delivery.target = actionJson["target"].getString;
         }
 
         auto saved = _store.appendDelivery(delivery);

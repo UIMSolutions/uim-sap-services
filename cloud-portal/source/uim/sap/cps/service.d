@@ -85,7 +85,7 @@ class CPSService : SAPService {
           continue;
         string requiredRole;
         if ("required_role" in app && app["required_role"].isString)
-          requiredRole = app["required_role"].get!string;
+          requiredRole = app["required_role"].getString;
         if (requiredRole.length == 0 || containsString(roles, requiredRole)) {
           Json entry = Json.emptyObject;
           entry["site_id"] = site.siteId;
@@ -188,9 +188,9 @@ class CPSService : SAPService {
     item.updatedAt = Clock.currTime();
 
     if ("item_id" in request && request["item_id"].isString)
-      item.itemId = request["item_id"].get!string;
+      item.itemId = request["item_id"].getString;
     if ("name" in request && request["name"].isString)
-      item.name = request["name"].get!string;
+      item.name = request["name"].getString;
     if ("configuration" in request && request["configuration"].isObject)
       item.configuration = request["configuration"];
 
@@ -228,9 +228,9 @@ class CPSService : SAPService {
     launchpadModule.updatedAt = Clock.currTime();
 
     if ("module_id" in request && request["module_id"].isString)
-      launchpadModule.moduleId = request["module_id"].get!string;
+      launchpadModule.moduleId = request["module_id"].getString;
     if ("solution_name" in request && request["solution_name"].isString)
-      launchpadModule.solutionName = request["solution_name"].get!string;
+      launchpadModule.solutionName = request["solution_name"].getString;
     if ("personalization" in request && request["personalization"].isBoolean)
       launchpadModule.personalization = request["personalization"].get!bool;
     if ("translation" in request && request["translation"].isBoolean)
@@ -270,9 +270,9 @@ class CPSService : SAPService {
     provider.updatedAt = Clock.currTime();
 
     if ("provider_id" in request && request["provider_id"].isString)
-      provider.providerId = request["provider_id"].get!string;
+      provider.providerId = request["provider_id"].getString;
     if ("solution_name" in request && request["solution_name"].isString)
-      provider.solutionName = request["solution_name"].get!string;
+      provider.solutionName = request["solution_name"].getString;
     if ("saas_enabled" in request && request["saas_enabled"].isBoolean)
       provider.saasEnabled = request["saas_enabled"].get!bool;
     if ("catalogs" in request && request["catalogs"].isArray)

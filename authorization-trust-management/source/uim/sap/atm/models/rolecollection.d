@@ -9,10 +9,10 @@ class ATMRoleCollection : SAPTenantObject {
     }
 
     if ("name" in request && request["name"].isString) {
-      collection.name = request["name"].get!string;
+      collection.name = request["name"].getString;
     }
     if ("description" in request && request["description"].isString) {
-      collection.description = request["description"].get!string;
+      collection.description = request["description"].getString;
     }
     if ("technical_role_ids" in request && request["technical_role_ids"].isArray) {
       collection.technicalRoleIds = stringArrayFromJson(request["technical_role_ids"]);

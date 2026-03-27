@@ -26,16 +26,16 @@ override bool initialize(Json[string] initData = null) {
 return false;
 }
         if ("tenant" in initData && initData["tenant"].isString) {
-            tenant = initData["tenant"].get!string;
+            tenant = initData["tenant"].getString;
         }
         if ("source" in initData && initData["source"].isString) {
-            source = initData["source"].get!string;
+            source = initData["source"].getString;
         }
         if ("level" in initData && initData["level"].isString) {
             level = initData(payload["level"].get!string);
         }
         if ("message" in initData && initData["message"].isString) {
-            message = initData["message"].get!string;
+            message = initData["message"].getString;
         }
         if ("attributes" in initData) {
             attributes = initData["attributes"];

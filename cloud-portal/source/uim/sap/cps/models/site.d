@@ -41,11 +41,11 @@ class CPSSite : SAPTenantObject {
     site.updatedAt = site.createdAt;
 
     if ("site_id" in request && request["site_id"].isString)
-      site.siteId = request["site_id"].get!string;
+      site.siteId = request["site_id"].getString;
     if ("name" in request && request["name"].isString)
-      site.name = request["name"].get!string;
+      site.name = request["name"].getString;
     if ("design" in request && request["design"].isString)
-      site.design = request["design"].get!string;
+      site.design = request["design"].getString;
     if ("pages" in request && request["pages"].isArray)
       site.pages = request["pages"];
     if ("apps" in request && request["apps"].isArray)

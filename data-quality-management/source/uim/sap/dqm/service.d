@@ -127,11 +127,11 @@ class DQMService : SAPService {
       throw new DQMValidationException("query is required");
     }
 
-    auto query = request["query"].get!string;
+    auto query = request["query"].getString;
     DQMConfig cfg = cast(DQMConfig)_config;
     auto country = cfg.defaultCountry;
     if ("country" in request && request["country"].isString && request["country"].get!string.length > 0) {
-      country = request["country"].get!string;
+      country = request["country"].getString;
     }
 
     size_t limit = 5;

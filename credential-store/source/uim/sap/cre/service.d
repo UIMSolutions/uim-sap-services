@@ -240,7 +240,7 @@ class CREService : SAPService {
 
   private string resolveEncryptionKey(Json request, string requestKey) {
     if ("encryption_key" in request && request["encryption_key"].isString) {
-      auto bodyKey = request["encryption_key"].get!string;
+      auto bodyKey = request["encryption_key"].getString;
       if (bodyKey.length > 0) {
         return bodyKey;
       }

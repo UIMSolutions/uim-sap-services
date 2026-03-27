@@ -411,7 +411,7 @@ class ATMService : SAPService {
       return fallback;
     }
     if (claims[key].isString) {
-      return claims[key].get!string;
+      return claims[key].getString;
     }
     return fallback;
   }
@@ -422,13 +422,13 @@ class ATMService : SAPService {
     }
 
     if (claims[key].isString) {
-      return claims[key].get!string;
+      return claims[key].getString;
     }
 
     if (claims[key].isArray) {
       foreach (item; claims[key].toArray) {
         if (item.isString) {
-          return item.get!string;
+          return item.getString;
         }
       }
     }
@@ -462,7 +462,7 @@ class ATMService : SAPService {
     string[] scopes;
 
     if ("scope" in claims && claims["scope"].isString) {
-      auto scopeString = claims["scope"].get!string;
+      auto scopeString = claims["scope"].getString;
       foreach (scopeName; scopeString.split(" ")) {
         auto trimmed = scopeName.strip();
         if (trimmed.length > 0 && !scopes.canFind(trimmed)) {

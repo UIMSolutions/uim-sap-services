@@ -18,10 +18,10 @@ class MDGQualityRule : SAPTenantObject {
       ruleId = UUID(initData["rule_id"].get!string);
     }
     if ("name" in initData && initData["name"].isString) {
-      name = initData["name"].get!string;
+      name = initData["name"].getString;
     }
     if ("field" in initData && initData["field"].isString) {
-      field = initData["field"].get!string;
+      field = initData["field"].getString;
     }
     if ("rule_type" in initData && initData["rule_type"].isString) {
       ruleType = toLower(initData["rule_type"].get!string);

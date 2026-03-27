@@ -245,7 +245,7 @@ HTML";
     CIASystem sys = new CIASystem(payload);
     sys.tenantId = tenantId;
     sys.id = UUID(payload["id"].get!string);
-    sys.name = payload["name"].get!string;
+    sys.name = payload["name"].getString;
     sys.systemType = "system_type" in payload ? payload["system_type"].get!string : "other";
     sys.host = "host" in payload ? payload["host"].get!string : "";
     sys.description = "description" in payload ? payload["description"].get!string : "";
@@ -291,7 +291,7 @@ HTML";
 
   /// Plan a new workflow from a scenario and return it with generated tasks
   Json planWorkflow(UUID tenantId, Json payload) {
-    auto scenarioId = payload["scenario_id"].get!string;
+    auto scenarioId = payload["scenario_id"].getString;
     CIAScenario sc = new CIAScenario;
     if (!_store.tryGetScenario(scenarioId, sc))
       throw new CIANotFoundException("Scenario not found: " ~ scenarioId);
@@ -300,7 +300,7 @@ HTML";
     string[] sysIds;
     if ("system_ids" in payload && payload["system_ids"].isArray)
       foreach (s; payload["system_ids"].toArray)
-        sysIds ~= s.get!string;
+        sysIds ~= s.getString;
 
     auto wfId = UUID(_store.nextId("wf"));
     CIAWorkflow wf = new CIAWorkflow;
@@ -410,9 +410,9 @@ HTML";
       throw new CIANotFoundException("Task not found: " ~ taskId);
 
     if ("role_id" in payload && payload["role_id"].get!string.length > 0)
-      task.assignedRoleId = payload["role_id"].get!string;
+      task.assignedRoleId = payload["role_id"].getString;
     if ("user_id" in payload && payload["user_id"].get!string.length > 0)
-      task.assignedUserId = payload["user_id"].get!string;
+      task.assignedUserId = payload["user_id"].getString;
     task.updatedAt = Clock.currTime();
     _store.upsertTask(task);
 
@@ -433,7 +433,7 @@ HTML";
     static immutable validStatuses = [
       "pending", "in-progress", "done", "skipped", "failed"
     ];
-    auto newStatus = payload["status"].get!string;
+    auto newStatus = payload["status"].getString;
     if (!canFind(validStatuses, newStatus))
       throw new CIAValidationException("Invalid task status: " ~ newStatus);
 
@@ -498,8 +498,8 @@ HTML";
     _requireWorkflow(tenantId, workflowId);
     CIAParameter param;
     param.workflowId = workflowId;
-    param.key = payload["key"].get!string;
-    param.value = payload["value"].get!string;
+    param.key = payload["key"].getString;
+    param.value = payload["value"].getString;
     param.description = "description" in payload ? payload["description"].get!string : "";
     param.sensitive = "sensitive" in payload ? payload["sensitive"].get!bool : false;
     return _store.upsertParameter(param).toJson();

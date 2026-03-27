@@ -56,7 +56,7 @@ class CTMService : SAPService {
     CTMNode n;
     n.tenantId = tenantId;
     n.nodeId = "node_id" in payload ? payload["node_id"].get!string : createId();
-    n.name = payload["name"].get!string;
+    n.name = payload["name"].getString;
     n.description = jstr(payload, "description");
     n.runtime = jstr(payload, "runtime", "cloud-foundry");
     n.globalAccountId = jstr(payload, "global_account_id");
@@ -92,8 +92,8 @@ class CTMService : SAPService {
   }
 
   Json createRoute(UUID tenantId, Json payload) {
-    auto srcId = payload["source_node_id"].get!string;
-    auto tgtId = payload["target_node_id"].get!string;
+    auto srcId = payload["source_node_id"].getString;
+    auto tgtId = payload["target_node_id"].getString;
     _requireNode(tenantId, srcId);
     _requireNode(tenantId, tgtId);
     if (srcId == tgtId)
@@ -119,7 +119,7 @@ class CTMService : SAPService {
 
   /// Create a new transport request (can be triggered from CI/CD)
   Json createRequest(UUID tenantId, Json payload) {
-    auto srcNodeId = payload["source_node_id"].get!string;
+    auto srcNodeId = payload["source_node_id"].getString;
     _requireNode(tenantId, srcNodeId);
 
     CTMTransportRequest req;
@@ -210,7 +210,7 @@ class CTMService : SAPService {
     string[] selectedIds;
     if ("request_ids" in payload && payload["request_ids"].isArray)
       foreach (v; payload["request_ids"].toArray)
-        selectedIds ~= v.get!string;
+        selectedIds ~= v.getString;
 
     auto queue = _store.listQueue(tenantId, nodeId);
     int imported = 0;
@@ -286,7 +286,7 @@ class CTMService : SAPService {
     ci.contentId = "content_id" in payload ? payload["content_id"].get!string : createId();
     ci.requestId = requestId;
     ci.contentType = jstr(payload, "content_type", "mta");
-    ci.name = payload["name"].get!string;
+    ci.name = payload["name"].getString;
     ci.version = jstr(payload, "version", "1.0.0");
     ci.description = jstr(payload, "description");
     ci.reference = jstr(payload, "reference");
@@ -365,7 +365,7 @@ class CTMService : SAPService {
   // -----------------------------------------------------------------------
   private static string jstr(Json j, string key, string fallback = "") {
     if (key in j && j[key].isString)
-      return j[key].get!string;
+      return j[key].getString;
     return fallback;
   }
 

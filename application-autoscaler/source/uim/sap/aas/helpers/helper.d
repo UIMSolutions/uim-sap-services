@@ -48,7 +48,7 @@ private bool tryGetString(Json payload, string key, out string value) {
     return false;
   }
   try {
-    value = payload[key].get!string;
+    value = payload[key].getString;
     return true;
   } catch (Exception) {
     return false;

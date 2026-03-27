@@ -49,7 +49,7 @@ private string getString(Json payload, string key, string fallback) {
     return fallback;
   }
   try {
-    return payload[key].get!string;
+    return payload[key].getString;
   } catch (Exception) {
     return fallback;
   }

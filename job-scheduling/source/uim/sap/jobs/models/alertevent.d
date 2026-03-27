@@ -23,7 +23,7 @@ class AlertEvent : SAPTenantObject {
       alertId = UUID(request["alert_id"].get!string);
     }
     if ("event_type" in request && request["event_type"].isString) {
-      eventType = request["event_type"].get!string;
+      eventType = request["event_type"].getString;
     }
     if ("job_id" in request && request["job_id"].isString) {
       jobId = UUID(request["job_id"].get!string);
@@ -32,13 +32,13 @@ class AlertEvent : SAPTenantObject {
       runId = UUID(request["run_id"].get!string);
     }
     if ("status" in request && request["status"].isString) {
-      status = request["status"].get!string;
+      status = request["status"].getString;
     }
     if ("severity" in request && request["severity"].isString) {
-      severity = request["severity"].get!string;
+      severity = request["severity"].getString;
     }
     if ("message" in request && request["message"].isString) {
-      message = request["message"].get!string;
+      message = request["message"].getString;
     }
 
     return true;

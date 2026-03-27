@@ -143,7 +143,7 @@ class CONService : SAPService {
 
     string userIdentity = cloudIdentityHeader;
     if (userIdentity.length == 0 && "user_identity" in request && request["user_identity"].isString) {
-      userIdentity = request["user_identity"].get!string;
+      userIdentity = request["user_identity"].getString;
     }
 
     auto propagated = destination.identityPropagationEnabled && forwardIdentity && userIdentity.length > 0;

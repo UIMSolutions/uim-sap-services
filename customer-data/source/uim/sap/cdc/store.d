@@ -351,7 +351,7 @@ class CDCStore : SAPStore {
     if (item[key].type != Json.Type.string) {
       throw new CDCStoreException(key ~ " must be a string in cache item");
     }
-    auto value = item[key].get!string;
+    auto value = item[key].getString;
     if (required && value.length == 0) {
       throw new CDCStoreException(key ~ " cannot be empty in cache item");
     }

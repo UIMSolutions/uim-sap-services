@@ -32,17 +32,17 @@ DQMAddress addressFromJson(Json request, string defaultCountry) {
   address.country = defaultCountry;
 
   if ("line1" in request && request["line1"].isString)
-    address.line1 = request["line1"].get!string;
+    address.line1 = request["line1"].getString;
   if ("line2" in request && request["line2"].isString)
-    address.line2 = request["line2"].get!string;
+    address.line2 = request["line2"].getString;
   if ("city" in request && request["city"].isString)
-    address.city = request["city"].get!string;
+    address.city = request["city"].getString;
   if ("postal_code" in request && request["postal_code"].isString)
-    address.postalCode = request["postal_code"].get!string;
+    address.postalCode = request["postal_code"].getString;
   if ("region" in request && request["region"].isString)
-    address.region = request["region"].get!string;
+    address.region = request["region"].getString;
   if ("country" in request && request["country"].isString)
-    address.country = request["country"].get!string;
+    address.country = request["country"].getString;
 
   return address;
 }

@@ -156,7 +156,7 @@ class MDIService : SAPService {
     if ("object_type" in request && request["object_type"].isString)
       job.objectType = toLower(request["object_type"].get!string);
     if ("mode" in request && request["mode"].isString)
-      job.mode = request["mode"].get!string;
+      job.mode = request["mode"].getString;
     if ("filter_ids" in request && request["filter_ids"].isArray)
       job.filterIds = request["filter_ids"];
 

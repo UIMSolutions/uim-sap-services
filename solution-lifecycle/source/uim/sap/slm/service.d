@@ -61,9 +61,9 @@ class SLMService : SAPService {
     sol.solutionId = jstr(payload, "solution_id");
     if (sol.solutionId.length == 0)
       sol.solutionId = _store.nextId("sol");
-    sol.name = payload["name"].get!string;
+    sol.name = payload["name"].getString;
     sol.description = jstr(payload, "description");
-    sol.mtaId = payload["mta_id"].get!string;
+    sol.mtaId = payload["mta_id"].getString;
     sol.mtaVersion = jstr(payload, "mta_version", "1.0.0");
     sol.status = "deploying";
     sol.globalAccountId = jstr(payload, "global_account_id");
@@ -264,7 +264,7 @@ class SLMService : SAPService {
     if (sub.subscriptionId.length == 0)
       sub.subscriptionId = _store.nextId("sub");
     sub.solutionId = solutionId;
-    sub.consumerSubaccountId = payload["consumer_subaccount_id"].get!string;
+    sub.consumerSubaccountId = payload["consumer_subaccount_id"].getString;
     sub.consumerTenantId = jstr(payload, "consumer_tenant_id");
     sub.status = "subscribed";
     sub.entitlementId = jstr(payload, "entitlement_id");
@@ -358,7 +358,7 @@ class SLMService : SAPService {
         c.componentId = jstr(cp, "component_id");
         if (c.componentId.length == 0)
           c.componentId = _store.nextId("comp");
-        c.name = cp["name"].get!string;
+        c.name = cp["name"].getString;
         c.componentType = jstr(cp, "component_type", "module");
         c.status = "started";
         c.url = jstr(cp, "url");
@@ -403,7 +403,7 @@ class SLMService : SAPService {
   // -----------------------------------------------------------------------
   private static string jstr(Json j, string key, string fallback = "") {
     if (key in j && j[key].type == Json.Type.string)
-      return j[key].get!string;
+      return j[key].getString;
     return fallback;
   }
 

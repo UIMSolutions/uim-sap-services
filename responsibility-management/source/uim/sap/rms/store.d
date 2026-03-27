@@ -566,7 +566,7 @@ class RMSStore : SAPStore {
       if ("functions" in item && item["functions"].isArray) {
         foreach (fn; item["functions"]) {
           if (fn.isString) {
-            member.functions ~= fn.get!string;
+            member.functions ~= fn.getString;
           }
         }
       }
@@ -803,7 +803,7 @@ class RMSStore : SAPStore {
 
   private string jsonToString(Json value) {
     if (value.isString)
-      return value.get!string;
+      return value.getString;
     if (value.isInteger)
       return to!string(value.get!long);
     if (value.isFloat)
@@ -815,7 +815,7 @@ class RMSStore : SAPStore {
 
   private string getString(Json payload, string key, string fallback) {
     if (key in payload && payload[key].isString) {
-      return payload[key].get!string;
+      return payload[key].getString;
     }
     return fallback;
   }
@@ -834,7 +834,7 @@ class RMSStore : SAPStore {
     }
     foreach (item; payload[key]) {
       if (item.isString) {
-        values ~= item.get!string;
+        values ~= item.getString;
       }
     }
     return values;

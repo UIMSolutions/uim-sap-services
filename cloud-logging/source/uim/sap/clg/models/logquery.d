@@ -34,13 +34,13 @@ return false;
 }
 
         if ("tenant" in payload && payload["tenant"].isString) {
-            query.tenant = payload["tenant"].get!string;
+            query.tenant = payload["tenant"].getString;
         }
         if ("source" in payload && payload["source"].isString) {
-            query.source = payload["source"].get!string;
+            query.source = payload["source"].getString;
         }
         if ("contains" in payload && payload["contains"].isString) {
-            query.contains = payload["contains"].get!string;
+            query.contains = payload["contains"].getString;
         }
         if ("level" in payload && payload["level"].isString) {
             query.level = new CLGLogLevel(parseLevel(payload["level"].get!string));

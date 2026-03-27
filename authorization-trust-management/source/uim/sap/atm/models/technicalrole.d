@@ -8,15 +8,14 @@ class ATMTechnicalRole : SAPTenantObject {
       return false;
     }
 
-    if ("name" in request && request["name"].isString) {
-      role.name = request["name"].get!string;
-    }
+    name = request.getString("name", roleId.toString);
     if ("description" in request && request["description"].isString) {
-      role.description = request["description"].get!string;
+      role.description = request["description"].getString;
     }
     if ("permissions" in request && request["permissions"].isArray) {
       role.permissions = stringArrayFromJson(request["permissions"]);
     }
+    updatedAt = "updatedAt" in request ? SysTime.fromISOExtString(request["updatedAt"].get!string) : Clock.currTime();
 
     return true;
   }
@@ -41,8 +40,6 @@ class ATMTechnicalRole : SAPTenantObject {
     ATMTechnicalRole role = new ATMTechnicalRole(request);
     role.tenantId = tenantId;
     role.roleId = roleId.length > 0 ? roleId : randomUUID().toString();
-    role.name = role.roleId;
-    role.updatedAt = Clock.currTime();
 
     return role;
   }

@@ -93,7 +93,7 @@ class MONService : SAPService {
     string[] recipients;
     foreach (entry; request["recipients"]) {
       if (entry.isString) {
-        recipients ~= entry.get!string;
+        recipients ~= entry.getString;
       }
     }
     if (recipients.length == 0) {
@@ -280,7 +280,7 @@ class MONService : SAPService {
 
   private string getString(Json request, string key, string fallback = "") {
     if (key in request && request[key].isString) {
-      return request[key].get!string;
+      return request[key].getString;
     }
     return fallback;
   }

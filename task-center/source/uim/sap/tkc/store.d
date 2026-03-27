@@ -207,7 +207,7 @@ class TKCStore : SAPStore {
     }
     if (!item[key].isString)
       throw new TKCStoreException(key ~ " must be a string in cache item");
-    auto value = item[key].get!string;
+    auto value = item[key].getString;
     if (required && value.length == 0)
       throw new TKCStoreException(key ~ " cannot be empty in cache item");
     return value.length > 0 ? value : fallback;

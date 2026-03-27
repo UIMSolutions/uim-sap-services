@@ -151,7 +151,7 @@ class HanaDBClient {
     if ("columns" in payload && payload["columns"].isArray) {
       foreach (col; payload["columns"]) {
         if (col.isString) {
-          resultSet.columns ~= col.get!string;
+          resultSet.columns ~= col.getString;
         }
       }
     }
@@ -182,11 +182,11 @@ class HanaDBClient {
         if ("message" in err) {
           auto messageNode = err["message"];
           if (messageNode.isString) {
-            return messageNode.get!string;
+            return messageNode.getString;
           }
 
           if (messageNode.isObject && "value" in messageNode) {
-            return messageNode["value"].get!string;
+            return messageNode["value"].getString;
           }
         }
       }

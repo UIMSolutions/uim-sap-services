@@ -53,7 +53,7 @@ class CIDService : SAPService {
     r.repoId = "repo_id" in payload ? payload["repo_id"].get!string : createId();
     r.name = payload.getString("name", r.repoId);
     r.description = payload.getString("description");
-    r.cloneUrl = payload["clone_url"].get!string;
+    r.cloneUrl = payload["clone_url"].getString;
     r.defaultBranch = payload.getString("default_branch", "main");
     r.credentialId = payload.getString("credential_id");
     r.provider = payload.getString("provider", "github");
@@ -111,7 +111,7 @@ class CIDService : SAPService {
     CIDCredential c = new CIDCredential;
     c.tenantId = tenantId;
     c.credentialId = "credential_id" in payload ? payload["credential_id"].get!string : createId();
-    c.name = payload["name"].get!string;
+    c.name = payload["name"].getString;
     c.description = payload.getString("description");
     c.credentialType = payload.getString("credential_type", "token");
     c.username = payload.getString("username");
@@ -157,7 +157,7 @@ class CIDService : SAPService {
     CIDPipeline p;
     p.tenantId = tenantId;
     p.pipelineId = "pipeline_id" in payload ? payload["pipeline_id"].get!string : createId();
-    p.name = payload["name"].get!string;
+    p.name = payload["name"].getString;
     p.description = payload.getString("description");
     p.repositoryId = repoId;
     p.branch = payload.getString("branch", "main");
@@ -173,7 +173,7 @@ class CIDService : SAPService {
     // Parse stages from payload or use defaults based on pipeline type
     if ("stages" in payload && payload["stages"].isArray) {
       foreach (s; payload["stages"].toArray)
-        p.stages ~= s.get!string;
+        p.stages ~= s.getString;
     } else {
       p.stages = defaultStages(p.pipelineType);
     }
@@ -428,7 +428,7 @@ class CIDService : SAPService {
   // -----------------------------------------------------------------------
   private static string jstr(Json j, string key, string fallback = "") {
     if (key in j && j[key].isString)
-      return j[key].get!string;
+      return j[key].getString;
     return fallback;
   }
 

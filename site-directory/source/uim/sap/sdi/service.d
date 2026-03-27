@@ -106,9 +106,9 @@ class SDIService : SAPService {
 
     existing.importBundle = body;
     if ("name" in body && body["name"].isString)
-      existing.name = body["name"].get!string;
+      existing.name = body["name"].getString;
     if ("description" in body && body["description"].isString)
-      existing.description = body["description"].get!string;
+      existing.description = body["description"].getString;
     if ("roles" in body && body["roles"].isArray)
       existing.roles = readStringArray(body, "roles");
     if ("settings" in body && body["settings"].isObject)
@@ -229,9 +229,9 @@ class SDIService : SAPService {
   private SDISiteSettings settingsFromObject(Json settingsBody) const {
     SDISiteSettings settings;
     if ("theme" in settingsBody && settingsBody["theme"].isString)
-      settings.theme = settingsBody["theme"].get!string;
+      settings.theme = settingsBody["theme"].getString;
     if ("home_page" in settingsBody && settingsBody["home_page"].isString)
-      settings.homePage = settingsBody["home_page"].get!string;
+      settings.homePage = settingsBody["home_page"].getString;
     if ("allow_personalization" in settingsBody && settingsBody["allow_personalization"].isBoolean)
       settings.allowPersonalization = settingsBody["allow_personalization"].get!bool;
     if ("enable_notifications" in settingsBody && settingsBody["enable_notifications"].isBoolean)

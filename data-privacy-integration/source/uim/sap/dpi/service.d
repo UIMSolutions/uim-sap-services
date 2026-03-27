@@ -59,7 +59,7 @@ class DPIService : SAPService {
     rule.updatedAt = Clock.currTime();
 
     if ("data_category" in request && request["data_category"].isString)
-      rule.dataCategory = request["data_category"].get!string;
+      rule.dataCategory = request["data_category"].getString;
     if ("retention_days" in request && request["retention_days"].isInteger)
       rule.retentionDays = cast(int)request["retention_days"].get!long;
     if ("active" in request && request["active"].isBoolean)
@@ -94,7 +94,7 @@ class DPIService : SAPService {
       throw new DPIValidationException("data_category is required");
     }
 
-    auto category = request["data_category"].get!string;
+    auto category = request["data_category"].getString;
     auto deleted = _store.retentionDelete(tenantId, category);
 
     return Json.emptyObject
@@ -166,7 +166,7 @@ class DPIService : SAPService {
       throw new DPIValidationException("payload object is required");
     }
 
-    auto recordId = request["record_id"].get!string;
+    auto recordId = request["record_id"].getString;
     auto records = _store.listRecords(tenantId);
     bool corrected;
     foreach (record; records) {
@@ -196,7 +196,7 @@ class DPIService : SAPService {
       throw new DPIValidationException("subject_id is required");
     }
 
-    auto subjectId = request["subject_id"].get!string;
+    auto subjectId = request["subject_id"].getString;
     auto deleted = _store.deleteSubjectRecords(tenantId, subjectId);
 
     return Json.emptyObject
@@ -227,7 +227,7 @@ class DPIService : SAPService {
 
     string text;
     if ("content" in request && request["content"].isString) {
-      text = request["content"].get!string;
+      text = request["content"].getString;
     }
 
     if (inputType == "image") {
@@ -240,7 +240,7 @@ class DPIService : SAPService {
     } else {
       UUID tenantId = "default";
       if ("tenant_id" in request && request["tenant_id"].isString) {
-        tenantId = request["tenant_id"].get!string;
+        tenantId = request["tenant_id"].getString;
       }
       output = pseudonymizeText(tenantId, text);
     }

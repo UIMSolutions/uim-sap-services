@@ -59,7 +59,7 @@ class DSTService : SAPService {
     if (!("url" in payload) || payload["url"].get!string.length == 0)
       throw new DSTValidationException("Destination URL is required");
 
-    auto name = payload["name"].get!string;
+    auto name = payload["name"].getString;
 
     // Check for duplicate name
     DSTDestination existing;
@@ -79,7 +79,7 @@ class DSTService : SAPService {
     d.tenantId = tenantId;
     d.name = name;
     d.description = jstr(payload, "description");
-    d.url = payload["url"].get!string;
+    d.url = payload["url"].getString;
     d.protocol = protocol;
     d.authenticationType = authType;
     d.proxyType = proxyType;
@@ -100,7 +100,7 @@ class DSTService : SAPService {
     if ("properties" in payload && payload["properties"].isObject) {
       foreach (string k, v; payload["properties"])
         if (v.isString)
-          d.properties[k] = v.get!string;
+          d.properties[k] = v.getString;
     }
 
     // Validate certificate reference if given
@@ -137,42 +137,42 @@ class DSTService : SAPService {
 
     // Apply partial update
     if ("description" in payload)
-      d.description = payload["description"].get!string;
+      d.description = payload["description"].getString;
     if ("url" in payload)
-      d.url = payload["url"].get!string;
+      d.url = payload["url"].getString;
     if ("protocol" in payload) {
-      auto p = payload["protocol"].get!string;
+      auto p = payload["protocol"].getString;
       _validateProtocol(p);
       d.protocol = p;
     }
     if ("authentication_type" in payload) {
-      auto a = payload["authentication_type"].get!string;
+      auto a = payload["authentication_type"].getString;
       _validateAuthType(a);
       d.authenticationType = a;
     }
     if ("proxy_type" in payload) {
-      auto pt = payload["proxy_type"].get!string;
+      auto pt = payload["proxy_type"].getString;
       _validateProxyType(pt);
       d.proxyType = pt;
     }
     if ("environment" in payload)
-      d.environment = payload["environment"].get!string;
+      d.environment = payload["environment"].getString;
     if ("user" in payload)
-      d.user = payload["user"].get!string;
+      d.user = payload["user"].getString;
     if ("password" in payload)
-      d.password = payload["password"].get!string;
+      d.password = payload["password"].getString;
     if ("token_service_url" in payload)
-      d.tokenServiceUrl = payload["token_service_url"].get!string;
+      d.tokenServiceUrl = payload["token_service_url"].getString;
     if ("client_id" in payload)
-      d.clientId = payload["client_id"].get!string;
+      d.clientId = payload["client_id"].getString;
     if ("client_secret" in payload)
-      d.clientSecret = payload["client_secret"].get!string;
+      d.clientSecret = payload["client_secret"].getString;
     if ("certificate_name" in payload)
-      d.certificateName = payload["certificate_name"].get!string;
+      d.certificateName = payload["certificate_name"].getString;
     if ("location_id" in payload)
-      d.locationId = payload["location_id"].get!string;
+      d.locationId = payload["location_id"].getString;
     if ("sap_client" in payload)
-      d.sapClient = payload["sap_client"].get!string;
+      d.sapClient = payload["sap_client"].getString;
     if ("active" in payload)
       d.active = jbool(payload, "active", d.active);
 
@@ -180,7 +180,7 @@ class DSTService : SAPService {
       string[string] newProps;
       foreach (string k, v; payload["properties"])
         if (v.isString)
-          newProps[k] = v.get!string;
+          newProps[k] = v.getString;
       d.properties = newProps;
     }
 
@@ -284,7 +284,7 @@ class DSTService : SAPService {
     if (!("content" in payload) || payload["content"].get!string.length == 0)
       throw new DSTValidationException("Certificate content is required");
 
-    auto name = payload["name"].get!string;
+    auto name = payload["name"].getString;
 
     // Check duplicate
     DSTCertificate existing;
@@ -296,7 +296,7 @@ class DSTService : SAPService {
     c.name = name;
     c.description = jstr(payload, "description");
     c.certType = jstr(payload, "cert_type", "PEM");
-    c.content = payload["content"].get!string;
+    c.content = payload["content"].getString;
     c.issuer = jstr(payload, "issuer");
     c.subject = jstr(payload, "subject");
     c.expiresAt = jstr(payload, "expires_at");
@@ -422,7 +422,7 @@ class DSTService : SAPService {
   // -----------------------------------------------------------------------
   private static string jstr(Json j, string key, string fallback = "") {
     if (key in j && j[key].isString)
-      return j[key].get!string;
+      return j[key].getString;
     return fallback;
   }
 
