@@ -11,24 +11,23 @@ mixin(ShowModule!());
 
 @safe:
 
-struct CFTaskRun {
-    UUID tenantId;
-    string taskRunId;
-    string taskName;
-    int durationSeconds;
-    string status;
-    SysTime startedAt;
-    SysTime finishedAt;
+class CFTaskRun : SAPTenantObject {
+  mixin(SAPtenantObject!CFTaskRun);
 
-    override Json toJson()  {
-        Json data = Json.emptyObject;
-        data["tenant_id"] = tenantId;
-        data["task_run_id"] = taskRunId;
-        data["task_name"] = taskName;
-        data["duration_seconds"] = durationSeconds;
-        data["status"] = status;
-        data["started_at"] = startedAt.toISOExtString();
-        data["finished_at"] = finishedAt.toISOExtString();
-        return data;
-    }
+  UUID taskRunId;
+  string taskName;
+  int durationSeconds;
+  string status;
+  SysTime startedAt;
+  SysTime finishedAt;
+
+  override Json toJson() {
+    return super.toJson()
+      .set("task_run_id", taskRunId)
+      .set("task_name", taskName)
+      .set("duration_seconds", durationSeconds)
+      .set("status", status)
+      .set("started_at", startedAt.toISOExtString())
+      .set("finished_at", finishedAt.toISOExtString());
+  }
 }

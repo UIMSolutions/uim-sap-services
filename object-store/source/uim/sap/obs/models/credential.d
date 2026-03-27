@@ -14,13 +14,14 @@ import uim.sap.obs.enumerations;
 @safe:
 
 /// Secure credentials to access a bucket
-struct OBSCredential {
+class OBSCredential : SAPTenantObject {
+  mixin(SAPtenantObject!OBSCredential);
+
   UUID credentialId;
   UUID bucketId;
-  UUID tenantId;
   OBSCredentialType credType = OBSCredentialType.accessKey;
   OBSProvider provider;
-  string accessKeyId;
+  UUID accessKeyId;
   string secretAccessKey;
   string sessionToken; // temporary STS token
   string endpoint; // provider endpoint URL
@@ -28,37 +29,37 @@ struct OBSCredential {
   SysTime issuedAt;
   SysTime expiresAt;
 
-  override Json toJson()  {
-    Json json = super.toJson;
-    .set("credential_id", credentialId)
-    .set("bucket_id", bucketId)
-    .set("tenant_id", tenantId)
-    .set("credential_type", cast(string)credType)
-    .set("provider", cast(string)provider)
-    .set("access_key_id", accessKeyId)
-    .set("secret_access_key", secretAccessKey)
-    .set("endpoint", endpoint)
-    .set("region", region)
-    .set("issued_at", issuedAt.toISOExtString())
-    .set("expires_at", expiresAt.toISOExtString());
+  override Json toJson() {
+    Json json = super.toJson()
+      .set("credential_id", credentialId)
+      .set("bucket_id", bucketId)
+      .set("tenant_id", tenantId)
+      .set("credential_type", cast(string)credType)
+      .set("provider", cast(string)provider)
+      .set("access_key_id", accessKeyId)
+      .set("secret_access_key", secretAccessKey)
+      .set("endpoint", endpoint)
+      .set("region", region)
+      .set("issued_at", issuedAt.toISOExtString())
+      .set("expires_at", expiresAt.toISOExtString());
 
     return sessionToken.length > 0
       ? json.set("session_token", sessionToken) : json;
   }
 
   /// Redacted version for listing (no secrets)
-  Json toRedactedJson() const {
+  Json toRedactedJson() {
     return Json.emptyObject
-    .set("credential_id", credentialId)
-    .set("bucket_id", bucketId)
-    .set("tenant_id", tenantId)
-    .set("credential_type", cast(string)credType)
-    .set("provider", cast(string)provider)
-    .set("access_key_id", accessKeyId)
-    .set("secret_access_key", "***REDACTED***")
-    .set("endpoint", endpoint)
-    .set("region", region)
-    .set("issued_at", issuedAt.toISOExtString())
-    .set("expires_at", expiresAt.toISOExtString());
+      .set("credential_id", credentialId)
+      .set("bucket_id", bucketId)
+      .set("tenant_id", tenantId)
+      .set("credential_type", cast(string)credType)
+      .set("provider", cast(string)provider)
+      .set("access_key_id", accessKeyId)
+      .set("secret_access_key", "***REDACTED***")
+      .set("endpoint", endpoint)
+      .set("region", region)
+      .set("issued_at", issuedAt.toISOExtString())
+      .set("expires_at", expiresAt.toISOExtString());
   }
 }

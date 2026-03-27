@@ -11,8 +11,39 @@ mixin(ShowModule!());
 
 @safe:
 
-struct INTTradingPartner {
-  UUID tenantId;
+class INTTradingPartner : SAPTenantObject {
+  mixin(SAPtenantObject!INTTradingPartner);
+
+  override bool initialize(Json[string] initData) {
+    if (!super.initialize(initData)) {
+      return false;
+    }
+
+    if ("name" in request && request["name"].isString) {
+      name = request["name"].get!string;
+    }
+    if ("description" in request && request["description"].isString) {
+      description = request["description"].get!string;
+    }
+    if ("partner_type" in request && request["partner_type"].isString) {
+      partnerType = request["partner_type"].get!string;
+    }
+    if ("identifier_type" in request && request["identifier_type"].isString) {
+      identifierType = request["identifier_type"].get!string;
+    }
+    if ("identifier" in request && request["identifier"].isString) {
+      identifier = request["identifier"].get!string;
+    }
+    if ("contact_email" in request && request["contact_email"].isString) {
+      contactEmail = request["contact_email"].get!string;
+    }
+    if ("contact_phone" in request && request["contact_phone"].isString) {
+      contactPhone = request["contact_phone"].get!string;
+    }
+
+    return true;
+  }
+
   UUID partnerId;
   string name;
   string description;
@@ -23,12 +54,9 @@ struct INTTradingPartner {
   string contactPhone;
   string status = "active"; // active | inactive | suspended
   long agreementCount = 0;
-  string createdAt;
-  string updatedAt;
 
   override Json toJson() {
     return super.toJson()
-      .set("tenant_id", tenantId)
       .set("partner_id", partnerId)
       .set("name", name)
       .set("description", description)
@@ -38,31 +66,14 @@ struct INTTradingPartner {
       .set("contact_email", contactEmail)
       .set("contact_phone", contactPhone)
       .set("status", status)
-      .set("agreement_count", agreementCount)
-      .set("created_at", createdAt)
-      .set("updated_at", updatedAt);
+      .set("agreement_count", agreementCount);
   }
 }
 
 INTTradingPartner tradingPartnerFromJson(UUID tenantId, Json request) {
-  INTTradingPartner tp;
+  INTTradingPartner tp = new INTTradingPartner(request);
   tp.tenantId = tenantId;
   tp.partnerId = randomUUID();
-
-  if ("name" in request && request["name"].isString)
-    tp.name = request["name"].get!string;
-  if ("description" in request && request["description"].isString)
-    tp.description = request["description"].get!string;
-  if ("partner_type" in request && request["partner_type"].isString)
-    tp.partnerType = request["partner_type"].get!string;
-  if ("identifier_type" in request && request["identifier_type"].isString)
-    tp.identifierType = request["identifier_type"].get!string;
-  if ("identifier" in request && request["identifier"].isString)
-    tp.identifier = request["identifier"].get!string;
-  if ("contact_email" in request && request["contact_email"].isString)
-    tp.contactEmail = request["contact_email"].get!string;
-  if ("contact_phone" in request && request["contact_phone"].isString)
-    tp.contactPhone = request["contact_phone"].get!string;
 
   tp.createdAt = Clock.currTime().toINTOExtString();
   tp.updatedAt = tp.createdAt;

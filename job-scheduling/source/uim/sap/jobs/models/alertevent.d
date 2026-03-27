@@ -11,28 +11,55 @@ mixin(ShowModule!());
 
 @safe:
 
-struct AlertEvent {
-    UUID tenantId;
-    UUID alertId;
-    string eventType;
-    UUID jobId;
-    UUID runId;
-    string status;
-    string severity;
-    string message;
-    SysTime createdAt;
+class AlertEvent : SAPTenantObject {
+  mixin(SAPtenantObject!AlertEvent);
 
-    override Json toJson()  {
-        Json data = Json.emptyObject;
-        data["tenant_id"] = tenantId;
-        data["alert_id"] = alertId;
-        data["event_type"] = eventType;
-        data["job_id"] = jobId;
-        data["run_id"] = runId;
-        data["status"] = status;
-        data["severity"] = severity;
-        data["message"] = message;
-        data["created_at"] = createdAt.toISOExtString();
-        return data;
+  override bool initialize(Json[string] initData) {
+    if (!super.initialize(initData)) {
+      return false;
     }
+
+    if ("alert_id" in request && request["alert_id"].isString) {
+      alertId = UUID(request["alert_id"].get!string);
+    }
+    if ("event_type" in request && request["event_type"].isString) {
+      eventType = request["event_type"].get!string;
+    }
+    if ("job_id" in request && request["job_id"].isString) {
+      jobId = UUID(request["job_id"].get!string);
+    }
+    if ("run_id" in request && request["run_id"].isString) {
+      runId = UUID(request["run_id"].get!string);
+    }
+    if ("status" in request && request["status"].isString) {
+      status = request["status"].get!string;
+    }
+    if ("severity" in request && request["severity"].isString) {
+      severity = request["severity"].get!string;
+    }
+    if ("message" in request && request["message"].isString) {
+      message = request["message"].get!string;
+    }
+
+    return true;
+  }
+
+  UUID alertId;
+  string eventType;
+  UUID jobId;
+  UUID runId;
+  string status;
+  string severity;
+  string message;
+
+  override Json toJson() {
+    return super.toJson()
+      .set("alert_id", alertId)
+      .set("event_type", eventType)
+      .set("job_id", jobId)
+      .set("run_id", runId)
+      .set("status", status)
+      .set("severity", severity)
+      .set("message", message);
+  }
 }

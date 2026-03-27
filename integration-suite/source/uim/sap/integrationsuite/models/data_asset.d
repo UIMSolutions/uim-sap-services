@@ -42,9 +42,10 @@ mixin(ShowModule!());
   *
   * For more information on data assets and their management, refer to the SAP Integration Suite documentation.
   */
-struct INTDataAsset {
-  UUID tenantId;
-  string assetId;
+class INTDataAsset : SAPTenantObject {
+  mixin(SAPtenantObject!INTDataAsset);
+
+  UUID assetId;
   string name;
   string description;
   string assetType = "dataset"; // dataset | api | stream
@@ -55,29 +56,23 @@ struct INTDataAsset {
   string contractId;
   string status = "available"; // available | consumed | retired
   long accessCount = 0;
-  string createdAt;
-  string updatedAt;
 
-  override Json toJson()  {
+  override Json toJson() {
     return super.toJson()
-    .set("tenant_id", tenantId)
-    .set("asset_id", assetId)
-    .set("name", name)
-    .set("description", description)
-    .set("asset_type", assetType)
-    .set("format", format)
-    .set("access_policy", accessPolicy)
-    .set("provider", provider)
-    .set("data_space_name", dataSpaceName)
-    .set("contract_id", contractId)
-    .set("status", status)
-    .set("access_count", accessCount)
-    .set("created_at", createdAt)
-    .set("updated_at", updatedAt);
+      .set("asset_id", assetId)
+      .set("name", name)
+      .set("description", description)
+      .set("asset_type", assetType)
+      .set("format", format)
+      .set("access_policy", accessPolicy)
+      .set("provider", provider)
+      .set("data_space_name", dataSpaceName)
+      .set("contract_id", contractId)
+      .set("status", status)
+      .set("access_count", accessCount);
   }
-}
 
-INTDataAsset dataAssetFromJson(UUID tenantId, Json request) {
+  static INTDataAsset dataAssetFromJson(UUID tenantId, Json request) {
   INTDataAsset a = new INTDataAsset(request);
   a.tenantId = tenantId;
   a.assetId = randomUUID();
@@ -103,3 +98,6 @@ INTDataAsset dataAssetFromJson(UUID tenantId, Json request) {
   a.updatedAt = a.createdAt;
   return a;
 }
+}
+
+

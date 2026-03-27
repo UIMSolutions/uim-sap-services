@@ -11,32 +11,32 @@ mixin(ShowModule!());
 
 @safe:
 
-struct RunLog {
-    UUID tenantId;
-    string runId;
-    string jobId;
-    string scheduleId;
-    string runtime;
-    bool asyncRun;
-    string status;
-    int responseCode;
-    string message;
-    SysTime startedAt;
-    SysTime finishedAt;
+class RunLog : SAPTenantObject {
+  mixin(SAPtenantObject!RunLog);
 
-    override Json toJson()  {
-        Json data = Json.emptyObject;
-        data["tenant_id"] = tenantId;
-        data["run_id"] = runId;
-        data["job_id"] = jobId;
-        data["schedule_id"] = scheduleId;
-        data["runtime"] = runtime;
-        data["async_run"] = asyncRun;
-        data["status"] = status;
-        data["response_code"] = responseCode;
-        data["message"] = message;
-        data["started_at"] = startedAt.toISOExtString();
-        data["finished_at"] = finishedAt.toISOExtString();
-        return data;
-    }
+  UUID runId;
+  UUID jobId;
+  UUID scheduleId;
+  string runtime;
+  bool asyncRun;
+  string status;
+  int responseCode;
+  string message;
+  SysTime startedAt;
+  SysTime finishedAt;
+
+  override Json toJson() {
+    return super.toJson()
+      .set("tenant_id", tenantId)
+      .set("run_id", runId)
+      .set("job_id", jobId)
+      .set("schedule_id", scheduleId)
+      .set("runtime", runtime)
+      .set("async_run", asyncRun)
+      .set("status", status)
+      .set("response_code", responseCode)
+      .set("message", message)
+      .set("started_at", startedAt.toISOExtString())
+      .set("finished_at", finishedAt.toISOExtString());
+  }
 }

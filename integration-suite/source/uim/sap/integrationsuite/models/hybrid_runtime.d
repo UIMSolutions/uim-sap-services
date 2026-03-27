@@ -50,9 +50,10 @@ mixin(ShowModule!());
   *
   * For more information on hybrid runtimes and their management, refer to the SAP Integration Suite documentation.
   */
-struct INTHybridRuntime {
-  UUID tenantId;
-  string runtimeId;
+class INTHybridRuntime : SAPTenantObject {
+  mixin(SAPtenantObject!INTHybridRuntime);
+
+  UUID runtimeId;
   string name;
   string description;
   string location; // e.g. datacenter name or region
@@ -62,12 +63,9 @@ struct INTHybridRuntime {
   long iflowCount = 0;
   long apiProxyCount = 0;
   string lastHeartbeat;
-  string createdAt;
-  string updatedAt;
 
-  override Json toJson()  {
+  override Json toJson() {
     return super.toJson()
-      .set("tenant_id", tenantId)
       .set("runtime_id", runtimeId)
       .set("name", name)
       .set("description", description)
@@ -81,25 +79,25 @@ struct INTHybridRuntime {
       .set("created_at", createdAt)
       .set("updated_at", updatedAt);
   }
-}
 
-INTHybridRuntime hybridRuntimeFromJson(UUID tenantId, Json request) {
-  INTHybridRuntime r;
-  r.tenantId = tenantId;
-  r.runtimeId = randomUUID();
+  static INTHybridRuntime hybridRuntimeFromJson(UUID tenantId, Json request) {
+    INTHybridRuntime r = new INTHybridRuntime(request);
+    r.tenantId = tenantId;
+    r.runtimeId = randomUUID();
 
-  if ("name" in request && request["name"].isString)
-    r.name = request["name"].get!string;
-  if ("description" in request && request["description"].isString)
-    r.description = request["description"].get!string;
-  if ("location" in request && request["location"].isString)
-    r.location = request["location"].get!string;
-  if ("runtime_type" in request && request["runtime_type"].isString)
-    r.runtimeType = request["runtime_type"].get!string;
-  if ("version" in request && request["version"].isString)
-    r.version_ = request["version"].get!string;
+    if ("name" in request && request["name"].isString)
+      r.name = request["name"].get!string;
+    if ("description" in request && request["description"].isString)
+      r.description = request["description"].get!string;
+    if ("location" in request && request["location"].isString)
+      r.location = request["location"].get!string;
+    if ("runtime_type" in request && request["runtime_type"].isString)
+      r.runtimeType = request["runtime_type"].get!string;
+    if ("version" in request && request["version"].isString)
+      r.version_ = request["version"].get!string;
 
-  r.createdAt = Clock.currTime().toINTOExtString();
-  r.updatedAt = r.createdAt;
-  return r;
+    r.createdAt = Clock.currTime().toINTOExtString();
+    r.updatedAt = r.createdAt;
+    return r;
+  }
 }

@@ -27,8 +27,40 @@ mixin(ShowModule!());
   * - createdAt: The timestamp when the subscription was created.
   * - updatedAt: The timestamp when the subscription was last updated.
  */
-struct IPVNotification {
-  UUID tenantId;
+class IPVNotification : SAPTenantObject {
+  mixin(SAPtenantObject!IPVNotification);
+
+  override bool initialize(Json[string] initData) {
+    if (!super.initialize(initData)) {
+      return false;
+    }
+
+    if ("source_system_id" in request && request["source_system_id"].isString) {
+      sourceSystemId = request["source_system_id"].get!string;
+    }
+    if ("callback_url" in request && request["callback_url"].isString) {
+      callbackUrl = request["callback_url"].get!string;
+    }
+    if ("active" in request && request["active"].isBoolean) {
+      active = request["active"].get!bool;
+    }
+    if ("subscription_id" in request && request["subscription_id"].isString) {
+      subscriptionId = request["subscription_id"].get!string;
+    }
+    else {
+      subscriptionId = randomUUID();
+    }
+
+    if ("event_types" in request && request["event_types"].isArray) {
+      foreach (item; request["event_types"].toArray) {
+        if (item.isString) {
+          eventTypes ~= item.get!string;
+        }
+      }
+    }
+    return true;
+  }
+
   UUID subscriptionId;
   UUID sourceSystemId;
   string callbackUrl;
@@ -36,14 +68,9 @@ struct IPVNotification {
   bool active = true;
   long deliveredCount = 0;
   long failedCount = 0;
-  string createdAt;
-  string updatedAt;
 
   override Json toJson() {
-    Json events = Json.emptyArray;
-    foreach (evt; eventTypes) {
-      events ~= Json(evt);
-    }
+    auto events = eventTypes.map!(e => e.toJson).array;
 
     return super.toJson()
       .set("tenant_id", tenantId)
@@ -57,32 +84,13 @@ struct IPVNotification {
       .set("created_at", createdAt)
       .set("updated_at", updatedAt);
   }
-}
 
-IPVNotification notificationFromJson(UUID tenantId, Json request) {
-  IPVNotification n;
-  n.tenantId = tenantId;
-  n.subscriptionId = randomUUID();
+  static IPVNotification notificationFromJson(UUID tenantId, Json request) {
+    IPVNotification n = new IPVNotification(request);
+    n.tenantId = tenantId;
 
-  if ("source_system_id" in request && request["source_system_id"].isString)
-    n.sourceSystemId = request["source_system_id"].get!string;
-  if ("callback_url" in request && request["callback_url"].isString)
-    n.callbackUrl = request["callback_url"].get!string;
-  if ("active" in request && request["active"].isBoolean)
-    n.active = request["active"].get!bool;
-  if ("subscription_id" in request && request["subscription_id"].isString)
-    n.subscriptionId = request["subscription_id"].get!string;
-
-  if ("event_types" in request && request["event_types"].isArray) {
-    () @trusted {
-      foreach (item; request["event_types"]) {
-        if (item.isString)
-          n.eventTypes ~= item.get!string;
-      }
-    }();
+    n.createdAt = Clock.currTime();
+    n.updatedAt = n.createdAt;
+    return n;
   }
-
-  n.createdAt = Clock.currTime();
-  n.updatedAt = n.createdAt;
-  return n;
 }

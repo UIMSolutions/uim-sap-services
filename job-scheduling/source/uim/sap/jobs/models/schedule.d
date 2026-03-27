@@ -11,34 +11,34 @@ mixin(ShowModule!());
 
 @safe:
 
-struct Schedule {
-    UUID tenantId;
-    UUID scheduleId;
-    UUID jobId;
-    string format;
-    string humanExpression;
-    string repeatAt;
-    int repeatIntervalSeconds;
-    string cron;
-    string timezone;
-    bool active;
-    SysTime nextRunAt;
-    SysTime updatedAt;
+class Schedule : SAPTenantObject {
+  mixin(SAPtenantObject!Schedule);
 
-    override Json toJson()  {
-        Json data = Json.emptyObject;
-        data["tenant_id"] = tenantId;
-        data["schedule_id"] = scheduleId;
-        data["job_id"] = jobId;
-        data["format"] = format;
-        data["human_expression"] = humanExpression;
-        data["repeat_at"] = repeatAt;
-        data["repeat_interval_seconds"] = repeatIntervalSeconds;
-        data["cron"] = cron;
-        data["timezone"] = timezone;
-        data["active"] = active;
-        data["next_run_at"] = nextRunAt.toISOExtString();
-        data["updated_at"] = updatedAt.toISOExtString();
-        return data;
-    }
+  UUID scheduleId;
+  UUID jobId;
+  string format;
+  string humanExpression;
+  string repeatAt;
+  int repeatIntervalSeconds;
+  string cron;
+  string timezone;
+  bool active;
+  SysTime nextRunAt;
+  SysTime updatedAt;
+
+  override Json toJson() {
+    return super.toJson()
+      .set("tenant_id", tenantId)
+      .set("schedule_id", scheduleId)
+      .set("job_id", jobId)
+      .set("format", format)
+      .set("human_expression", humanExpression)
+      .set("repeat_at", repeatAt)
+      .set("repeat_interval_seconds", repeatIntervalSeconds)
+      .set("cron", cron)
+      .set("timezone", timezone)
+      .set("active", active)
+      .set("next_run_at", nextRunAt.toISOExtString())
+      .set("updated_at", updatedAt.toISOExtString());
+  }
 }
