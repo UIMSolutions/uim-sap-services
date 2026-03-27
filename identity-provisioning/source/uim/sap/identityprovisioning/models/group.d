@@ -28,8 +28,69 @@ mixin(ShowModule!());
   * - createdAt: The timestamp when the group was created.
   * - updatedAt: The timestamp when the group was last updated.
   */
-struct IPVGroup {
-  UUID tenantId;
+class IPVGroup : SAPTenantObject {
+  mixin(SAPtenantObject!IPVGroup);
+
+  override bool initialize(Json[string] initData) {
+    if (!super.initialize(initData)) {
+      return false;
+    }
+
+    if ("external_id" in initData && initData["external_id"].isString)
+      externalId = initData["external_id"].getString;
+    if ("group_name" in initData && initData["group_name"].isString)
+      groupName = initData["group_name"].getString;
+    if ("display_name" in initData && initData["display_name"].isString)
+      displayName = initData["display_name"].getString;
+    if ("description" in initData && initData["description"].isString)
+      description = initData["description"].getString;
+    if ("source_system_id" in initData && initData["source_system_id"].isString)
+      sourceSystemId = initData["source_system_id"].getString;
+    if ("status" in initData && initData["status"].isString)
+      status = initData["status"].getString;
+    if ("group_id" in initData && initData["group_id"].isString)
+      groupId = initData["group_id"].getString;
+
+    if ("member_user_ids" in initData && initData["member_user_ids"].isArray) {
+      foreach (item; initData["member_user_ids"].toArray) {
+        if (item.isString)
+          memberUserIds ~= item.getString;
+      }
+    }
+
+    createdAt = Clock.currTime();
+    updatedAt = createdAt;
+
+    groupId = randomUUID();
+
+    if ("group_name" in initData && initData["group_name"].isString)
+      groupName = initData["group_name"].getString;
+    if ("external_id" in initData && initData["external_id"].isString)
+      externalId = initData["external_id"].getString;
+    if ("display_name" in initData && initData["display_name"].isString)
+      displayName = initData["display_name"].getString;
+    if ("description" in initData && initData["description"].isString)
+      description = initData["description"].getString;
+    if ("source_system_id" in initData && initData["source_system_id"].isString)
+      sourceSystemId = initData["source_system_id"].getString;
+    if ("status" in initData && initData["status"].isString)
+      status = initData["status"].getString;
+    if ("group_id" in initData && initData["group_id"].isString)
+      groupId = initData["group_id"].getString;
+
+    if ("member_user_ids" in initData && initData["member_user_ids"].isArray) {
+      foreach (item; initData["member_user_ids"].toArray) {
+        if (item.isString)
+          memberUserIds ~= item.getString;
+      }
+    }
+
+    createdAt = Clock.currTime();
+    updatedAt = createdAt;
+    
+    return true;
+  }
+
   UUID groupId;
   UUID externalId;
   string groupName;
@@ -38,60 +99,25 @@ struct IPVGroup {
   string[] memberUserIds;
   UUID sourceSystemId;
   string status = "synced"; // "synced" | "pending" | "error" | "skipped"
-  string createdAt;
-  string updatedAt;
 
-  override Json toJson()  {
-        Json members = Json.emptyArray;
-    foreach (uid; memberUserIds) {
-      members ~= Json(uid);
-    }
+  override Json toJson() {
+    auto members = memberUserIds.map!(uid => uid.toString()).array;
 
     return super.toJson()
-    .set("tenant_id", tenantId)
-    .set("group_id", groupId)
-    .set("external_id", externalId)
-    .set("group_name", groupName)
-    .set("display_name", displayName)
-    .set("description", description)
-    .set("member_user_ids", members)
-    .set("source_system_id", sourceSystemId)
-    .set("status", status)
-    .set("created_at", createdAt)
-    .set("updated_at", updatedAt);
+      .set("group_id", groupId)
+      .set("external_id", externalId)
+      .set("group_name", groupName)
+      .set("display_name", displayName)
+      .set("description", description)
+      .set("member_user_ids", members)
+      .set("source_system_id", sourceSystemId)
+      .set("status", status);
   }
 }
 
 IPVGroup groupFromJson(UUID tenantId, Json request) {
-  IPVGroup g;
+  IPVGroup g = new IPVGroup(request);
   g.tenantId = tenantId;
-  g.groupId = randomUUID();
 
-  if ("group_name" in request && request["group_name"].isString)
-    g.groupName = request["group_name"].getString;
-  if ("external_id" in request && request["external_id"].isString)
-    g.externalId = request["external_id"].getString;
-  if ("display_name" in request && request["display_name"].isString)
-    g.displayName = request["display_name"].getString;
-  if ("description" in request && request["description"].isString)
-    g.description = request["description"].getString;
-  if ("source_system_id" in request && request["source_system_id"].isString)
-    g.sourceSystemId = request["source_system_id"].getString;
-  if ("status" in request && request["status"].isString)
-    g.status = request["status"].getString;
-  if ("group_id" in request && request["group_id"].isString)
-    g.groupId = request["group_id"].getString;
-
-  if ("member_user_ids" in request && request["member_user_ids"].isArray) {
-    () @trusted {
-      foreach (item; request["member_user_ids"]) {
-        if (item.isString)
-          g.memberUserIds ~= item.getString;
-      }
-    }();
-  }
-
-  g.createdAt = Clock.currTime();
-  g.updatedAt = g.createdAt;
   return g;
 }

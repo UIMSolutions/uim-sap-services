@@ -28,8 +28,9 @@ mixin(ShowModule!());
   * - status: The current status of the data model (e.g., "active", "inactive", "error").
   * - updatedAt: The timestamp of the last update to this data model.
  */
-struct DATDataModel {
-  UUID tenantId;
+class DATDataModel : SAPTenantObject {
+  mixin(SAPtenantObject!DATDataModel);
+
   UUID modelId;
   string name;
   string modelType;
@@ -37,20 +38,17 @@ struct DATDataModel {
   string dataFlowDefinition;
   string[] sources;
   string status;
-  SysTime updatedAt;
 
   override Json toJson() {
     auto sourcePayload = sources.map!(s => s.toJson).array;
 
     return super.toJson
-      .set("tenant_id", tenantId)
       .set("model_id", modelId)
       .set("name", name)
       .set("model_type", modelType)
       .set("sql_definition", sqlDefinition)
       .set("data_flow_definition", dataFlowDefinition)
       .set("sources", sourcePayload)
-      .set("status", status)
-      .set("updated_at", updatedAt.toISOExtString());
+      .set("status", status);
   }
 }

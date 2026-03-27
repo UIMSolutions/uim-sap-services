@@ -12,10 +12,11 @@ mixin(ShowModule!());
 @safe:
 
 /// Tracks the status of a model-training job.
-struct PRETrainingJob {
+class PRETrainingJob : SAPTenantObject {
+  mixin(SAPtenantObject!PRETrainingJob);
+
   string jobId;
   string modelId;
-  UUID tenantId;
   PRETrainingStatus status = PRETrainingStatus.queued;
   size_t itemsProcessed;
   size_t usersProcessed;
@@ -23,20 +24,19 @@ struct PRETrainingJob {
   string startedAt;
   string completedAt;
   string errorMessage;
-  string createdAt;
-}
 
-Json trainingJobToJson(const ref PRETrainingJob t) {
-  return Json.emptyObject
-    .set("jobId", t.jobId)
-    .set("modelId", t.modelId)
-    .set("tenantId", t.tenantId)
-    .set("status", t.status.to!string)
-    .set("itemsProcessed", cast(long)t.itemsProcessed)
-    .set("usersProcessed", cast(long)t.usersProcessed)
-    .set("interactionsProcessed", cast(long)t.interactionsProcessed)
-    .set("startedAt", t.startedAt)
-    .set("completedAt", t.completedAt)
-    .set("errorMessage", t.errorMessage)
-    .set("createdAt", t.createdAt);
+  override Json toJson() {
+    return super.toJson
+      .set("jobId", jobId)
+      .set("modelId", modelId)
+      .set("tenantId", tenantId)
+      .set("status", status.to!string)
+      .set("itemsProcessed", cast(long)itemsProcessed)
+      .set("usersProcessed", cast(long)usersProcessed)
+      .set("interactionsProcessed", cast(long)interactionsProcessed)
+      .set("startedAt", startedAt)
+      .set("completedAt", completedAt)
+      .set("errorMessage", errorMessage)
+      .set("createdAt", createdAt);
+  }
 }

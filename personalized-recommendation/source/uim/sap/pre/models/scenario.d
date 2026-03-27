@@ -12,50 +12,80 @@ mixin(ShowModule!());
 @safe:
 
 /// A business scenario that ties a model to a recommendation use-case.
-struct PREScenario {
+class PREScenario : SAPTenantObject {
+  mixin(SAPtenantObject!PREScenario);
+
+  override bool initialize(Json[string] initData) {
+    if (!super.initialize(initData)) {
+      return false;
+    }
+    if ("scenarioId" in initData && initData["scenarioId"].isString) {
+      scenarioId = initData["scenarioId"].getString;
+    }
+    if ("name" in initData && initData["name"].isString) {
+      name = initData["name"].getString;
+    }
+    if ("description" in initData && initData["description"].isString) {
+      description = initData["description"].getString;
+    }
+    if ("scenarioType" in initData && initData["scenarioType"].isString) {
+      scenarioType = PREScenarioType.fromString(initData["scenarioType"].getString);
+    }
+    if ("modelId" in initData && initData["modelId"].isString) {
+      modelId = initData["modelId"].getString;
+    }
+    if ("active" in initData && initData["active"].isBool) {
+      active = initData["active"].getBool;
+    }
+    if ("config" in initData && initData["config"].isObject) {
+      foreach (k, v; initData["config"].toObject) {
+        if (v.isString) {
+          config[k] = v.getString;
+        }
+      }
+    }
+
+    scenarioId = initData.getString("scenarioId", "");
+    tenantId = initData.getString("tenantId", "");
+    name = initData.getString("name", "");
+    description = initData.getString("description", "");
+    if ("modelId" in initData)
+      modelId = initData["modelId"].getString;
+    if ("active" in initData)
+      active = initData["active"].get!bool;
+    if ("config" in initData) {
+      foreach (string k, v; initData["config"].toMap)
+        config[k] = v.getString;
+    }
+
+    return true;
+  }
+
   string scenarioId;
-  UUID tenantId;
   string name;
   string description;
   PREScenarioType scenarioType = PREScenarioType.ecommerce;
   string modelId;
   bool active = true;
   string[string] config;
-  string createdAt;
-  string updatedAt;
-}
 
-Json scenarioToJson(const ref PREScenario s) {
-  Json obj = Json.emptyObject;
-  foreach (k, v; s.config)
-    obj[k] = v;
+  override Json toJson() {
+    Json obj = Json.emptyObject;
+    foreach (k, v; config)
+      obj[k] = v;
 
-  return Json.emptyObject
-  .set("scenarioId", s.scenarioId)
-  .set("tenantId", s.tenantId)
-  .set("name", s.name)
-  .set("description", s.description)
-  .set("scenarioType", s.scenarioType.to!string)
-  .set("modelId", s.modelId)
-  .set("active", s.active)
-  .set("config", obj)
-  .set("createdAt", s.createdAt)
-  .set("updatedAt", s.updatedAt);
-}
-
-PREScenario scenarioFromJson(Json j) {
-  PREScenario s = new PREScenario(j);
-  s.scenarioId = j.getString("scenarioId", "");
-  s.tenantId = j.getString("tenantId", "");
-  s.name = j["name"].getString;
-  s.description = j.getString("description", "");
-  if ("modelId" in j)
-    s.modelId = j["modelId"].getString;
-  if ("active" in j)
-    s.active = j["active"].get!bool;
-  if ("config" in j) {
-    foreach (string k, v; j["config"].toMap)
-      s.config[k] = v.getString;
+    return super.toJson
+      .set("scenarioId", scenarioId)
+      .set("name", name)
+      .set("description", description)
+      .set("scenarioType", scenarioType.to!string)
+      .set("modelId", modelId)
+      .set("active", active)
+      .set("config", obj);
   }
-  return s;
+
+  PREScenario scenarioFromJson(Json initData) {
+    PREScenario scenario = new PREScenario(initData);
+    return scenario;
+  }
 }

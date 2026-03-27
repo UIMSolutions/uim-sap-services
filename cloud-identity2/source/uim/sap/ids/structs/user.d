@@ -283,7 +283,7 @@ struct User {
 
     if ("emails" in json && json["emails"].isArray) {
       foreach (emailJson; json["emails"]) {
-        Email email;
+        Email email = new Email;
         if ("value" in emailJson)
           email.value = emailJson["value"].getString;
         if ("type" in emailJson)
