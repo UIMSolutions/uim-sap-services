@@ -7,7 +7,9 @@ mixin(ShowModule!());
 @safe:
 
 /// An API rule exposes a function or microservice via an HTTP endpoint
-struct KYMApiRule {
+class KYMApiRule : SAPObject {
+    mixin(SAPObjectTemplate!KYMApiRule);
+
     string name;
     string namespace;
     string host;
@@ -17,23 +19,20 @@ struct KYMApiRule {
     string serviceName;
     ushort servicePort = 80;
     bool active = true;
-    SysTime createdAt;
-    SysTime updatedAt;
 
     override Json toJson()  {
-        Json payload = Json.emptyObject;
-        payload["name"] = name;
-        payload["namespace"] = namespace;
-        payload["host"] = host;
-        payload["path"] = path;
-        payload["methods"] = methods.map!(m => Json(m)).array.Json;
-        payload["access_strategy"] = cast(string) accessStrategy;
-        payload["service_name"] = serviceName;
-        payload["service_port"] = cast(long) servicePort;
-        payload["active"] = active;
-        payload["created_at"] = createdAt.toISOExtString();
-        payload["updated_at"] = updatedAt.toISOExtString();
-        return payload;
+      return super.toJson
+        .set("name", name)
+        .set("namespace", namespace)
+        .set("host", host)
+        .set("path", path)
+        .set("methods", methods.map!(m => Json(m)).array.Json)
+        .set("access_strategy", cast(string) accessStrategy)
+        .set("service_name", serviceName)
+        .set("service_port", cast(long) servicePort)
+        .set("active", active)
+        .set("created_at", createdAt.toISOExtString())
+        .set("updated_at", updatedAt.toISOExtString());
     }
 }
 

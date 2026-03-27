@@ -16,11 +16,10 @@ class MDIService : SAPService {
 
   override Json health() {
     return super.health()
-    .set("ok", true)
-    .set("serviceName", _config.serviceName)
-    .set("serviceVersion", _config.serviceVersion);
+      .set("ok", true)
+      .set("serviceName", _config.serviceName)
+      .set("serviceVersion", _config.serviceVersion);
   }
-
 
   Json upsertClient(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
@@ -29,20 +28,19 @@ class MDIService : SAPService {
       throw new MDIValidationException("name is required");
     auto saved = _store.upsertClient(client);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["client"] = saved.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("client", saved.toJson());
   }
 
   Json listClients(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
-    Json resources = _store.listClients(tenantId).map!(client => client.toJson).array();
+    
+    auto resources = _store.listClients(tenantId).map!(client => client.toJson).array;
 
-    Json payload = Json.emptyObject;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)resources.length;
-    return payload;
+    return Json.emptyObject
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json upsertFilter(UUID tenantId, string filterId, Json request) {
@@ -69,21 +67,19 @@ class MDIService : SAPService {
 
     auto saved = _store.upsertFilter(filter);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["filter"] = saved.toJson();
-    payload["managed_by"] = "sap-business-data-orchestration-compatible";
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("filter", saved.toJson())
+      .set("managed_by", "sap-business-data-orchestration-compatible");
   }
 
   Json listFilters(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
     Json resources = _store.listFilters(tenantId).map!(filter => filter.toJson).array();
 
-    Json payload = Json.emptyObject;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)resources.length;
-    return payload;
+    return Json.emptyObject
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json upsertExtension(UUID tenantId, string extensionId, Json request) {
@@ -111,9 +107,9 @@ class MDIService : SAPService {
     auto saved = _store.upsertExtension(extension);
 
     return Json.emptyObject
-    .set("success", true)
-    .set("extension", saved.toJson())
-    .set("extensibility", true);
+      .set("success", true)
+      .set("extension", saved.toJson())
+      .set("extensibility", true);
   }
 
   Json listExtensions(UUID tenantId) {
@@ -121,8 +117,8 @@ class MDIService : SAPService {
     Json resources = _store.listExtensions(tenantId).map!(extension => extension.toJson).array();
 
     return Json.emptyObject
-    .set("resources", resources)
-    .set("total_results", cast(long)resources.length);
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json replicate(UUID tenantId, Json request) {
@@ -135,8 +131,8 @@ class MDIService : SAPService {
       throw new MDIValidationException("target_client_id is required");
     }
 
-    auto sourceClientId = request["source_client_id"].get!string;
-    auto targetClientId = request["target_client_id"].get!string;
+    auto sourceClientId = UUID(request["source_client_id"].get!string);
+    auto targetClientId = UUID(request["target_client_id"].get!string);
 
     auto source = _store.getClient(tenantId, sourceClientId);
     auto target = _store.getClient(tenantId, targetClientId);
@@ -145,7 +141,7 @@ class MDIService : SAPService {
     if (target.clientId.length == 0)
       throw new MDINotFoundException("Target client", targetClientId);
 
-    MDIReplicationJob job;
+    MDIReplicationJob job = new MDIReplicationJob;
     job.tenantId = tenantId;
     job.jobId = createId();
     job.sourceClientId = sourceClientId;
@@ -170,21 +166,22 @@ class MDIService : SAPService {
     auto saved = _store.upsertJob(job);
 
     return Json.emptyObject
-    .set("success", true)
-    .set("replication", saved.toJson())
-    .set("replicated_between", Json.emptyObject
-      .set("source", source.toJson())
-      .set("target", target.toJson())
-    );
+      .set("success", true)
+      .set("replication", saved.toJson())
+      .set("replicated_between", Json.emptyObject
+          .set("source", source.toJson())
+          .set("target", target.toJson())
+      );
 
   }
 
   Json listReplications(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
-    Json resources = _store.listJobs(tenantId).map!(job => job.toJson).array();
+
+    auto resources = _store.listJobs(tenantId).map!(job => job.toJson).array;
 
     return Json.emptyObject
-    .set("resources", resources)
-    .set("total_results", cast(long)resources.length);
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 }

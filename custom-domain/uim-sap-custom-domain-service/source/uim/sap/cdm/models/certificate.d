@@ -34,8 +34,8 @@ struct Certificate {
             json["domain"].get!string,
             json["certificateData"].get!string,
             json["privateKey"].get!string,
-            DateTime.fromISOExtString(json["expirationDate"].str),
-            json["isActive"].bool
+            DateTime.fromISOExtString(json["expirationDate"].getString),
+            json["isActive"].get!bool
         );
     }
 }

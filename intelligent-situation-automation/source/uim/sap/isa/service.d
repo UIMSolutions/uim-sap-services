@@ -79,17 +79,13 @@ class ISAService : SAPService {
   }
 
   Json listConfigurations(UUID tenantId) {
-    Json resources = Json.emptyArray;
 
     auto configs = _store.listConfigurations(tenantId);
-    foreach (cfg; configs) {
-      resources ~= cfg.toJson();
-    }
+    auto resources = configs.map!(cfg => cfg.toJson()).array;
 
-    Json payload = Json.emptyObject;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)configs.length;
-    return payload;
+    return Json.emptyObject
+      .set("resources", resources)
+      .set("total_results", cast(long)configs.length);
   }
 
   Json createSituation(UUID tenantId, Json request) {
@@ -138,10 +134,7 @@ class ISAService : SAPService {
       }
     }
 
-    Json suggestions = Json.emptyArray;
-    foreach (suggestion; automationSuggestions(tenantId)) {
-      suggestions ~= suggestion;
-    }
+    auto suggestions = automationSuggestions(tenantId).map!(suggestion => suggestion.toJson()).array;
 
     return Json.emptyObject
       .set("tenant_id", tenantId)
@@ -170,7 +163,7 @@ class ISAService : SAPService {
     }
 
     if (situationType.length > 0) {
-      Json filtered = Json.emptyArray;
+      auto filtered = situations.filter!(entry => entry.situationType == situationType).map!(entry => entry.toJson()).array;
       Json flows = Json.emptyObject;
 
       foreach (entry; situations) {

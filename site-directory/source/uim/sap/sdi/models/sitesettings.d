@@ -18,12 +18,11 @@ struct SDISiteSettings {
   bool enableNotifications = true;
 
   override Json toJson()  {
-    Json info = super.toJson;
-    payload["theme"] = theme;
-    payload["home_page"] = homePage;
-    payload["allow_personalization"] = allowPersonalization;
-    payload["enable_notifications"] = enableNotifications;
-    return payload;
+    return super.toJson()
+      .set("theme", theme)
+      .set("home_page", homePage)
+      .set("allow_personalization", allowPersonalization)
+      .set("enable_notifications", enableNotifications);
   }
 }
 

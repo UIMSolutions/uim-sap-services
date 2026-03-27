@@ -24,8 +24,8 @@ struct Kpi {
         return Kpi(
             json["name"].get!string,
             json["value"].toDouble(),
-            DateTime.fromISOExtString(json["timestamp"].str),
-            json["description"].str
+            DateTime.fromISOExtString(json["timestamp"].getString),
+            json["description"].get!string
         );
     }
 }

@@ -38,9 +38,8 @@ class SDIService : SAPService {
   }
 
   override Json health() {
-    Json payload = Json.emptyObject;
-    payload["domain"] = "site-directory";
-    return payload;
+    return super.health()
+      .set("domain", "site-directory");
   }
 
   Json listSiteTiles(UUID tenantId) {
@@ -59,7 +58,7 @@ class SDIService : SAPService {
     validateTenant(tenantId);
     auto now = Clock.currTime();
 
-    SDISite site;
+    SDISite site = new SDISite(data);
     site.tenantId = tenantId;
     site.siteid = requiredUUID(body, "site_id");
     site.name = requiredString(body, "name");

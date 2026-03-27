@@ -265,7 +265,7 @@ class KSTService : SAPService {
     auto data = request["data"].get!string;
     auto signature = signData(data, keyMaterial);
 
-    KSTSignResult result;
+    KSTSignResult result = new KSTSignResult;
     result.keystoreName = keystoreName;
     result.keyAlias = alias_;
     result.algorithm = cast(string)entry.algorithm;
@@ -302,7 +302,7 @@ class KSTService : SAPService {
     auto sig = request["signature"].get!string;
     auto valid = verifySignature(data, keyMaterial, sig);
 
-    KSTSignResult result;
+    KSTSignResult result = new KSTSignResult;
     result.keystoreName = keystoreName;
     result.keyAlias = alias_;
     result.algorithm = cast(string)entry.algorithm;
@@ -409,10 +409,8 @@ class KSTService : SAPService {
     Json payload = Json.emptyObject
       .set("authenticated", found)
       .set("fingerprint", fingerprint);
-    if (found) {
-      payload["matched_alias"] = matchedAlias;
-    }
-    return payload;
+    
+    return found ? payload.set("matched_alias", matchedAlias) : payload;
   }
 
   // ── Private helpers ──

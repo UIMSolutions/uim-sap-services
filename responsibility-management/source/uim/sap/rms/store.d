@@ -419,24 +419,18 @@ class RMSStore : SAPStore {
   Json exportData(TenantContext tenant) {
     auto state = stateFor(tenant);
 
-    Json payload = Json.emptyObject;
-    payload["tenant_id"] = tenant.tenantId;
-    payload["space_id"] = tenant.spaceId;
-    payload["exported_at"] = nowIso();
+    Json payload = Json.emptyObject
+      .set("tenant_id", tenant.tenantId)
+      .set("space_id", tenant.spaceId)
+      .set("exported_at", nowIso());
 
-    Json teamTypes = Json.emptyArray;
-    foreach (item; state.teamTypes.byValue)
-      teamTypes ~= item.toJson();
+    auto teamTypes = state.teamTypes.byValue.map!(item => item.toJson).array;
     payload["team_types"] = teamTypes;
 
-    Json functions = Json.emptyArray;
-    foreach (item; state.functions.byValue)
-      functions ~= item.toJson();
+    auto functions = state.functions.byValue.map!(item => item.toJson).array;
     payload["functions"] = functions;
 
-    Json teams = Json.emptyArray;
-    foreach (item; state.teams.byValue)
-      teams ~= item.toJson();
+    auto teams = state.teams.byValue.map!(item => item.toJson).array;
     payload["teams"] = teams;
 
     Json rules = Json.emptyArray;
@@ -563,7 +557,7 @@ class RMSStore : SAPStore {
       if (!item.isObject)
         continue;
 
-      TeamMember member;
+      TeamMember member = new TeamMember;
       member.userId = getString(item, "user_id", "");
       member.displayName = getString(item, "display_name", member.userId);
       member.isOwner = getBoolean(item, "is_owner", false);
@@ -832,8 +826,6 @@ class RMSStore : SAPStore {
     }
     return fallback;
   }
-
-
 
   private string[] getStringArray(Json payload, string key) {
     string[] values;

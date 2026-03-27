@@ -47,12 +47,11 @@ class MDGService : SAPService {
       ++processed;
     }
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["processed"] = processed;
-    payload["resources"] = resources;
-    payload["message"] = "Multiple business partners processed";
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("processed", processed)
+      .set("resources", resources)
+      .set("message", "Multiple business partners processed");
   }
 
   Json listBusinessPartners(UUID tenantId) {

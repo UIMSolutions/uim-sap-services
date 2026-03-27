@@ -11,7 +11,9 @@ mixin(ShowModule!());
 
 @safe:
 
-class ARTRuntimeServer {
+class ARTRuntimeServer : SAPServer {
+  mixin(SAPServer!ARTRuntimeServer);
+  
   private ARTRuntime _runtime;
 
   this(ARTRuntime runtime) {
@@ -23,9 +25,7 @@ class ARTRuntimeServer {
   }
 
   override void handleRequest(HTTPServerRequest req, HTTPServerResponse res) {
-    foreach (key, value; _runtime.config.customHeaders) {
-      res.headers[key] = value;
-    }
+    super.handleRequest(req, res);
 
     auto basePath = _runtime.config.basePath;
     auto path = req.path;

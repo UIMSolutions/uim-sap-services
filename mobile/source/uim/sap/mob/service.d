@@ -56,10 +56,9 @@ class MOBService : SAPService {
     auto app = applicationFromJson(appId, request);
     _store.upsertApp(app);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["application"] = app.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("application", app.toJson());
   }
 
   Json updateApp(string appId, Json request) {
@@ -71,10 +70,9 @@ class MOBService : SAPService {
     app.activeVersion = existing.activeVersion;
     _store.upsertApp(app);
 
-    Json payload = Json.emptyObject;
-    payload["success"] = true;
-    payload["application"] = app.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("success", true)
+      .set("application", app.toJson());
   }
 
   Json getApp(string appId) {
@@ -98,7 +96,6 @@ class MOBService : SAPService {
     return Json.emptyObject
       .set("resources", resources)
       .set("total_results", cast(long)apps.length);
-    return payload;
   }
 
   Json deleteApp(string appId) {
@@ -147,7 +144,7 @@ class MOBService : SAPService {
     
     return Json.emptyObject
       .set("resources", resources)
-      .set("total_results", cast(long)vers.length);
+      .set("total_results", cast(long)versions.length);
   }
 
   Json deleteVersion(string appId, string versionId) {

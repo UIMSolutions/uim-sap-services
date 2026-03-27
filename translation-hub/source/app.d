@@ -40,13 +40,13 @@ private Json errorPayload(string msg, string details = "") {
 
 private SoftwareTranslateRequest parseSoftwareRequest(Json data) {
   SoftwareTranslateRequest req;
-  req.sourceLanguage = body["sourceLanguage"].str;
-  req.targetLanguage = body["targetLanguage"].str;
-  req.provider = body["provider"].type == JSONType.null_ ? "sap-nmt" : body["provider"].str;
-  req.domain = body["domain"].type == JSONType.null_ ? "sap" : body["domain"].str;
+  req.sourceLanguage = data["sourceLanguage"].getString;
+  req.targetLanguage = data["targetLanguage"].getString;
+  req.provider = data["provider"].isNull ? "sap-nmt" : data["provider"].getString;
+  req.domain = data["domain"].isNull ? "sap" : data["domain"].getString;
 
-  foreach (item; body["texts"].array) {
-    req.texts ~= item.str;
+  foreach (item; data["texts"].array) {
+    req.texts ~= item.getString;
   }
 
   return req;
@@ -54,49 +54,44 @@ private SoftwareTranslateRequest parseSoftwareRequest(Json data) {
 
 private DocumentTranslateSyncRequest parseDocumentSyncRequest(Json json) {
   return DocumentTranslateSyncRequest(
-    json["sourceLanguage"].get!string,
-    json["targetLanguage"].get!string,
-    json["fileName"].get!string,
-    json["content"].get!string,
-    json["provider"].type == JSONType.null_ ? "sap-nmt" : json["provider"].str
+    json.getString("sourceLanguage"),
+    json.getString("targetLanguage"),
+    json.getString("fileName"),
+    json.getString("content"),
+    json["provider"].isNull ? "sap-nmt" : json.getString("provider")
   );
 }
 
 private DocumentTranslateAsyncRequest parseDocumentAsyncRequest(Json json) {
   return DocumentTranslateAsyncRequest(
-    json["sourceLanguage"].get!string,
-    json["targetLanguage"].get!string,
-    json["fileName"].get!string,
-    json["content"].get!string,
-    json["provider"].type == JSONType.null_ ? "sap-nmt" : json["provider"].str
+    json.getString("sourceLanguage"),
+    json.getString("targetLanguage"),
+    json.getString("fileName"),
+    json.getString("content"),
+    json["provider"].isNull ? "sap-nmt" : json.getString("provider")
   );
 }
 
 private Json asJson(SoftwareTranslateResponse resp) {
-  Json payload = Json.emptyObject;
-  payload["sourceLanguage"] = resp.sourceLanguage;
-  payload["targetLanguage"] = resp.targetLanguage;
-  payload["provider"] = resp.provider;
-  payload["qualityIndex"] = resp.qualityIndex;
-  payload["qualityHint"] = resp.qualityHint;
-  payload["timestamp"] = ts(resp.timestamp);
+  auto items = resp.translatedTexts.map!(text => Json(text)).array;
 
-  Json[] items;
-  foreach (text; resp.translatedTexts) {
-    items ~= Json(text);
-  }
-  payload["translatedTexts"] = items;
-  return payload;
+  return Json.emptyObject
+    .set("sourceLanguage", resp.sourceLanguage)
+    .set("targetLanguage", resp.targetLanguage)
+    .set("provider", resp.provider)
+    .set("qualityIndex", resp.qualityIndex)
+    .set("qualityHint", resp.qualityHint)
+    .set("timestamp", ts(resp.timestamp))
+    .set("translatedTexts", items);
 }
 
 private Json asJson(DocumentTranslateSyncResponse resp) {
-  Json payload = Json.emptyObject;
-  payload["requestId"] = resp.requestId;
-  payload["provider"] = resp.provider;
-  payload["targetLanguage"] = resp.targetLanguage;
-  payload["translatedContent"] = resp.translatedContent;
-  payload["timestamp"] = ts(resp.timestamp);
-  return payload;
+  return Json.emptyObject
+    .set("requestId", resp.requestId)
+    .set("provider", resp.provider)
+    .set("targetLanguage", resp.targetLanguage)
+    .set("translatedContent", resp.translatedContent)
+    .set("timestamp", ts(resp.timestamp));
 }
 
 private Json asJson(AsyncJob job) {
@@ -246,10 +241,11 @@ version (unittest) {
   });
 
   router.get("/health", (HTTPServerRequest req, HTTPServerResponse res) @trusted {
-    Json payload = Json.emptyObject;
-    payload["status"] = "ok";
-    payload["service"] = cfg.serviceName;
-    payload["version"] = "0.1.0";
+    Json payload = Json.emptyObject
+    .set("status", "ok")
+    .set("service", cfg.serviceName)
+    .set("version", "0.1.0");
+
     writeJson(res, payload);
   });
 
@@ -265,8 +261,8 @@ version (unittest) {
 
   router.post("/api/v1/software/translate", (HTTPServerRequest req, HTTPServerResponse res) @trusted {
     try {
-      auto body = parseBody(req);
-      auto request = parseSoftwareRequest(body);
+      auto data = parseBody(req);
+      auto request = parseSoftwareRequest(data);
       if (request.texts.length == 0) {
         writeJson(res, errorPayload("invalid_request", "texts must not be empty"), 400);
         return;
@@ -280,13 +276,13 @@ version (unittest) {
 
   router.post("/api/v1/quality/estimate", (HTTPServerRequest req, HTTPServerResponse res) @trusted {
     try {
-      auto body = parseBody(req);
+      auto data = parseBody(req);
       string[] texts;
-      foreach (item; body["texts"].array)
-        texts ~= item.str;
-      auto provider = body["provider"].type == JSONType.null_ ? "sap-nmt" : body["provider"].str;
-      auto target = body["targetLanguage"].type == JSONType.null_ ? "de"
-        : body["targetLanguage"].str;
+      foreach (item; data["texts"].array)
+        texts ~= item.getString;
+      auto provider = data["provider"].isNull ? "sap-nmt" : data["provider"].getString;
+      auto target = data["targetLanguage"].isNull ? "de"
+        : data["targetLanguage"].getString;
 
       Json payload = Json.emptyObject;
       payload["qualityIndex"] = translationService.estimateQuality(texts, target, provider);
@@ -309,12 +305,13 @@ version (unittest) {
 
   router.post("/api/v1/document/translate/async", (HTTPServerRequest req, HTTPServerResponse res) @trusted {
     try {
-      auto body = parseBody(req);
-      auto request = parseDocumentAsyncRequest(body);
+      auto data = parseBody(req);
+      auto request = parseDocumentAsyncRequest(data);
       auto jobId = asyncJobs.enqueue(request);
-      Json payload = Json.emptyObject;
-      payload["jobId"] = jobId;
-      payload["status"] = "queued";
+      Json payload = Json.emptyObject
+        .set("jobId", jobId)
+        .set("status", "queued");
+
       writeJson(res, payload, 202);
     } catch (Exception ex) {
       writeJson(res, errorPayload("invalid_request", ex.msg), 400);
@@ -334,12 +331,12 @@ version (unittest) {
   router.post("/api/v1/projects", (HTTPServerRequest req, HTTPServerResponse res) @trusted {
     try {
       auto bodyData = parseBody(req);
-      auto name = bodyData["name"].str;
-      auto kind = bodyData["kind"].str.toLower();
-      auto sourceLanguage = bodyData["sourceLanguage"].str;
+      auto name = bodyData["name"].getString;
+      auto kind = bodyData["kind"].getString.toLower();
+      auto sourceLanguage = bodyData["sourceLanguage"].getString;
       string[] targetLanguages;
       foreach (item; bodyData["targetLanguages"].array)
-        targetLanguages ~= item.str;
+        targetLanguages ~= item.getString;
 
       auto p = projects.create(name, kind, sourceLanguage, targetLanguages);
       writeJson(res, asJson(p), 201);
@@ -351,21 +348,22 @@ version (unittest) {
   router.get("/api/v1/projects", (HTTPServerRequest req, HTTPServerResponse res) @trusted {
     Json[] items = projects.list().map!(p => asJson(p)).array;
 
-    Json payload = Json.emptyObject;
-    payload["projects"] = items;
+    Json payload = Json.emptyObject
+      .set("projects", items);
+
     writeJson(res, payload);
   });
 
   router.post("/api/v1/language-data", (HTTPServerRequest req, HTTPServerResponse res) @trusted {
     try {
       auto bodyData = parseBody(req);
-      auto name = bodyData["name"].str;
-      auto domain = bodyData["domain"].str;
-      auto source = bodyData["sourceLanguage"].str;
-      auto target = bodyData["targetLanguage"].str;
+      auto name = bodyData["name"].getString;
+      auto domain = bodyData["domain"].getString;
+      auto source = bodyData["sourceLanguage"].getString;
+      auto target = bodyData["targetLanguage"].getString;
       string[] segments;
       foreach (item; bodyData["segments"].array)
-        segments ~= item.str;
+        segments ~= item.getString;
 
       auto asset = languageAssets.create(name, domain, source, target, segments);
       writeJson(res, asJson(asset), 201);
@@ -379,6 +377,7 @@ version (unittest) {
 
     Json payload = Json.emptyObject
       .set("assets", items);
+
     writeJson(res, payload);
   });
 

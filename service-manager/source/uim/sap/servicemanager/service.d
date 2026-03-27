@@ -10,14 +10,14 @@ mixin(ShowModule!());
 @safe:
 
 private enum string[] SVM_OFFERINGS = [
-  "hana-cloud",
-  "destination",
-  "connectivity",
-  "alert-notification",
-  "audit-log",
-  "event-mesh",
-  "identity-authentication"
-];
+    "hana-cloud",
+    "destination",
+    "connectivity",
+    "alert-notification",
+    "audit-log",
+    "event-mesh",
+    "identity-authentication"
+  ];
 
 class SVMService : SAPService {
   mixin(SAPServiceTemplate!SVMService);
@@ -40,23 +40,22 @@ class SVMService : SAPService {
     resources ~= endpoint("GET|POST", "/v1/tenants/{tenantId}/service-bindings", "Manage service bindings");
     resources ~= endpoint("POST", "/v1/tenants/{tenantId}/runtime/instances/{instanceId}/actions/{action}", "Runtime instance management actions");
 
-    Json payload = Json.emptyObject;
-    payload["service"] = "service-manager";
-    payload["version"] = UIM_SERVICE_MANAGER_VERSION;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)resources.length;
-    return payload;
+    return Json.emptyObject
+      .set("service", "service-manager")
+      .set("version", UIM_SERVICE_MANAGER_VERSION)
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json marketplaceOfferings() {
     Json resources = Json.emptyArray;
     foreach (offering; SVM_OFFERINGS) {
       resources ~= Json.emptyObject
-      .set("offering_name", offering)
-      .set("provider", "SAP BTP")
-      .set("plans", Json.emptyArray)
-      .set("plans", "standard")
-      .set("plans", "enterprise");
+        .set("offering_name", offering)
+        .set("provider", "SAP BTP")
+        .set("plans", Json.emptyArray)
+        .set("plans", "standard")
+        .set("plans", "enterprise");
     }
 
     return Json.emptyObject
@@ -69,8 +68,8 @@ class SVMService : SAPService {
     validateTenant(tenantId);
 
     return marketplaceOfferings()
-    .set("tenant_id", tenantId)
-    .set("catalog_scope", "account");
+      .set("tenant_id", tenantId)
+      .set("catalog_scope", "account");
   }
 
   Json upsertPlatform(UUID tenantId, Json request) {

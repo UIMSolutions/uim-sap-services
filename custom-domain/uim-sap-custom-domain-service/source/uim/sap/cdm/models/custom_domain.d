@@ -36,10 +36,10 @@ struct CustomDomain {
         return CustomDomain(
             json["domainName"].get!string,
             json["owner"].get!string,
-            DomainStatus.valueOf(json["status"].str),
-            DateTime.fromISOExtString(json["createdAt"].str),
-            DateTime.fromISOExtString(json["updatedAt"].str),
-            json["sslCertificates"].array.map!(x => x.str).array
+            DomainStatus.valueOf(json["status"].getString),
+            DateTime.fromISOExtString(json["createdAt"].getString),
+            DateTime.fromISOExtString(json["updatedAt"].getString),
+            json["sslCertificates"].array.map!(x => x.getString).array
         );
     }
 }
