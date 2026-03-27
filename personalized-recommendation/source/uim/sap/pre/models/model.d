@@ -56,15 +56,15 @@ PREModel modelFromJson(Json j) {
   PREModel m = new PREModel(j);
   m.modelId = j.getString("modelId", "");
   m.tenantId = j.getString("tenantId", "");
-  m.name = j["name"].get!string;
+  m.name = j["name"].getString;
   m.description = j.getString("description", "");
   if ("hyperparameters" in j) {
     foreach (string k, v; j["hyperparameters"].toMap)
-      m.hyperparameters[k] = v.get!string;
+      m.hyperparameters[k] = v.getString;
   }
   if ("metrics" in j) {
     foreach (string k, v; j["metrics"].toMap)
-      m.metrics[k] = v.get!string;
+      m.metrics[k] = v.getString;
   }
   // m.itemCount = j.getLong("itemCount", 0);
   // m.userCount = j.getLong("userCount", 0);

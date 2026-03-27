@@ -45,12 +45,12 @@ Json userToJson(const ref PREUser u) {
 
 PREUser userFromJson(Json j) {
   PREUser u;
-  u.userId = j["userId"].get!string;
+  u.userId = j["userId"].getString;
   u.tenantId = j.getString("tenantId", "");
   u.displayName = j.getString("displayName", "");
   foreach (p; j["preferences"].toMap)
-    u.preferences ~= p.get!string;
+    u.preferences ~= p.getString;
   foreach (string k, v; j["context"].toMap)
-    u.context[k] = v.get!string;
+    u.context[k] = v.getString;
   return u;
 }

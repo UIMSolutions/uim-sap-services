@@ -67,9 +67,9 @@ KYMFunction functionFromJson(string namespace, string name, Json request) {
   if ("runtime" in request && request["runtime"].isString)
     fn.runtime = parseRuntime(request["runtime"].get!string);
   if ("source" in request && request["source"].isString)
-    fn.source = request["source"].get!string;
+    fn.source = request["source"].getString;
   if ("handler" in request && request["handler"].isString)
-    fn.handler = request["handler"].get!string;
+    fn.handler = request["handler"].getString;
   if ("deps" in request)
     fn.deps = request["deps"];
   else
@@ -87,13 +87,13 @@ KYMFunction functionFromJson(string namespace, string name, Json request) {
   if ("scale_policy" in request && request["scale_policy"].isString)
     fn.scalePolicy = parseScalePolicy(request["scale_policy"].get!string);
   if ("cpu_request" in request && request["cpu_request"].isString)
-    fn.cpuRequest = request["cpu_request"].get!string;
+    fn.cpuRequest = request["cpu_request"].getString;
   if ("memory_request" in request && request["memory_request"].isString)
-    fn.memoryRequest = request["memory_request"].get!string;
+    fn.memoryRequest = request["memory_request"].getString;
   if ("cpu_limit" in request && request["cpu_limit"].isString)
-    fn.cpuLimit = request["cpu_limit"].get!string;
+    fn.cpuLimit = request["cpu_limit"].getString;
   if ("memory_limit" in request && request["memory_limit"].isString)
-    fn.memoryLimit = request["memory_limit"].get!string;
+    fn.memoryLimit = request["memory_limit"].getString;
   if ("labels" in request && request["labels"].isObject)
     fn.labels = request["labels"];
   else

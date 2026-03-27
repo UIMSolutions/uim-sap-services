@@ -46,7 +46,7 @@ struct OBSReplicationConfig {
   c.updatedAt = c.createdAt;
 
   if ("destination_region" in req && req["destination_region"].isString)
-    c.destinationRegion = req["destination_region"].get!string;
+    c.destinationRegion = req["destination_region"].getString;
   if ("destination_provider" in req && req["destination_provider"].isString) {
     switch (req["destination_provider"].get!string) {
     case "azure_blob":
@@ -61,7 +61,7 @@ struct OBSReplicationConfig {
     }
   }
   if ("prefix" in req && req["prefix"].isString)
-    c.prefix = req["prefix"].get!string;
+    c.prefix = req["prefix"].getString;
   if ("replicate_deletes" in req && req["replicate_deletes"].isBoolean)
     c.replicateDeletes = req["replicate_deletes"].get!bool;
   return c;

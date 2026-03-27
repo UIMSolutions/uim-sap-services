@@ -47,11 +47,11 @@ class KYMServiceBinding : SAPObject {
     sb.status = KYMResourceStatus.RUNNING;
 
     if ("service_instance_name" in request && request["service_instance_name"].isString)
-      sb.serviceInstanceName = request["service_instance_name"].get!string;
+      sb.serviceInstanceName = request["service_instance_name"].getString;
     if ("consumer_name" in request && request["consumer_name"].isString)
-      sb.consumerName = request["consumer_name"].get!string;
+      sb.consumerName = request["consumer_name"].getString;
     if ("consumer_kind" in request && request["consumer_kind"].isString)
-      sb.consumerKind = request["consumer_kind"].get!string;
+      sb.consumerKind = request["consumer_kind"].getString;
     if ("parameters" in request && request["parameters"].isObject)
       sb.parameters = request["parameters"];
     else

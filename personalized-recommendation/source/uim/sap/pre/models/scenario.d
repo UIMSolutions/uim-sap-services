@@ -47,15 +47,15 @@ PREScenario scenarioFromJson(Json j) {
   PREScenario s = new PREScenario(j);
   s.scenarioId = j.getString("scenarioId", "");
   s.tenantId = j.getString("tenantId", "");
-  s.name = j["name"].get!string;
+  s.name = j["name"].getString;
   s.description = j.getString("description", "");
   if ("modelId" in j)
-    s.modelId = j["modelId"].get!string;
+    s.modelId = j["modelId"].getString;
   if ("active" in j)
     s.active = j["active"].get!bool;
   if ("config" in j) {
     foreach (string k, v; j["config"].toMap)
-      s.config[k] = v.get!string;
+      s.config[k] = v.getString;
   }
   return s;
 }

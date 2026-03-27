@@ -16,7 +16,7 @@ class KYMNamespace : SAPObject {
     }
 
     if ("description" in initData && initData["description"].isString) {
-      description = initData["description"].get!string;
+      description = initData["description"].getString;
     }
     if ("labels" in initData && initData["labels"].isObject) {
       labels = initData["labels"];

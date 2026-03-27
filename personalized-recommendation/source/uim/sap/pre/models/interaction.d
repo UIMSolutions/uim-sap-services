@@ -46,8 +46,8 @@ class PREInteraction : SAPObject {
 PREInteraction interactionFromJson(Json j) {
   PREInteraction i = new PREInteraction(j);
   i.interactionId = j.getString("interactionId", "");
-  i.userId = j["userId"].get!string;
-  i.itemId = j["itemId"].get!string;
+  i.userId = j["userId"].getString;
+  i.itemId = j["itemId"].getString;
   i.tenantId = j.getString("tenantId", "");
   if ("weight" in j) {
     auto wv = j["weight"];
@@ -58,7 +58,7 @@ PREInteraction interactionFromJson(Json j) {
   }
   if ("context" in j) {
     foreach (string k, v; j["context"].toMap)
-      i.context[k] = v.get!string;
+      i.context[k] = v.getString;
   }
   return i;
 }

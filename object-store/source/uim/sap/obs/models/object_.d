@@ -64,11 +64,11 @@ OBSObject objectFromJson(string objectId, string bucketId, Json req) {
     o.updatedAt = o.createdAt;
 
     if ("key" in req && req["key"].isString)
-        o.key = req["key"].get!string;
+        o.key = req["key"].getString;
     if ("size_bytes" in req && req["size_bytes"].isInteger)
         o.sizeBytes = cast(size_t) req["size_bytes"].get!long;
     if ("content_type" in req && req["content_type"].isString)
-        o.contentType = req["content_type"].get!string;
+        o.contentType = req["content_type"].getString;
     else
         o.contentType = "application/octet-stream";
     if ("storage_class" in req && req["storage_class"].isString) {
@@ -81,7 +81,7 @@ OBSObject objectFromJson(string objectId, string bucketId, Json req) {
     }
     if ("user_metadata" in req && req["user_metadata"].type == Json.Type.object) {
         foreach (string k, v; req["user_metadata"])
-            if (v.isString) o.userMetadata[k] = v.get!string;
+            if (v.isString) o.userMetadata[k] = v.getString;
     }
     return o;
 }

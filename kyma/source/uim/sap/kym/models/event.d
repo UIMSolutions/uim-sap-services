@@ -33,9 +33,9 @@ KYMEvent eventFromJson(string namespace, Json request) {
     ev.timestamp = Clock.currTime();
 
     if ("event_type" in request && request["event_type"].isString)
-        ev.eventType = request["event_type"].get!string;
+        ev.eventType = request["event_type"].getString;
     if ("source" in request && request["source"].isString)
-        ev.source = request["source"].get!string;
+        ev.source = request["source"].getString;
     if ("data" in request)
         ev.data = request["data"];
     else

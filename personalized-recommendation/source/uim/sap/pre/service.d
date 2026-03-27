@@ -69,13 +69,13 @@ class PREService : SAPService {
     }
 
     if ("title" in body_)
-      p.title = body_["title"].get!string;
+      p.title = body_["title"].getString;
     if ("description" in body_)
-      p.description = body_["description"].get!string;
+      p.description = body_["description"].getString;
     if ("category" in body_)
-      p.category = body_["category"].get!string;
+      p.category = body_["category"].getString;
     if ("imageUrl" in body_)
-      p.imageUrl = body_["imageUrl"].get!string;
+      p.imageUrl = body_["imageUrl"].getString;
     if ("price" in body_) {
       auto pv = body_["price"];
       if (pv.isFloat)
@@ -86,12 +86,12 @@ class PREService : SAPService {
     if ("tags" in body_) {
       p.tags = [];
       foreach (t; body_["tags"].toMap)
-        p.tags ~= t.get!string;
+        p.tags ~= t.getString;
     }
     if ("attributes" in body_) {
       string[string] attrs;
       foreach (string k, v; body_["attributes"].toMap)
-        attrs[k] = v.get!string;
+        attrs[k] = v.getString;
       p.attributes = attrs;
     }
     p.updatedAt = nowTimestamp();
@@ -156,16 +156,16 @@ class PREService : SAPService {
     }
 
     if ("displayName" in body_)
-      p.displayName = body_["displayName"].get!string;
+      p.displayName = body_["displayName"].getString;
     if ("preferences" in body_) {
       p.preferences = [];
       foreach (pr; body_["preferences"])
-        p.preferences ~= pr.get!string;
+        p.preferences ~= pr.getString;
     }
     if ("context" in body_) {
       string[string] ctx;
       foreach (string k, v; body_["context"])
-        ctx[k] = v.get!string;
+        ctx[k] = v.getString;
       p.context = ctx;
     }
     p.updatedAt = nowTimestamp();

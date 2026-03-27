@@ -66,11 +66,11 @@ class OBSBucket : SAPTenantObject {
     b.updatedAt = b.createdAt;
 
     if ("name" in req && req["name"].isString)
-      b.name = req["name"].get!string;
+      b.name = req["name"].getString;
     else
       b.name = bucketId;
     if ("tenant_id" in req && req["tenant_id"].isString)
-      b.tenantId = req["tenant_id"].get!string;
+      b.tenantId = req["tenant_id"].getString;
     if ("provider" in req && req["provider"].isString)
       b.provider = parseProvider(req["provider"].get!string);
     if ("access_level" in req && req["access_level"].isString)
@@ -78,7 +78,7 @@ class OBSBucket : SAPTenantObject {
     if ("storage_class" in req && req["storage_class"].isString)
       b.storageClass = parseStorageClass(req["storage_class"].get!string);
     if ("region" in req && req["region"].isString)
-      b.region = req["region"].get!string;
+      b.region = req["region"].getString;
     if ("versioning_enabled" in req && req["versioning_enabled"].isBoolean)
       b.versioningEnabled = req["versioning_enabled"].get!bool;
     if ("encryption_enabled" in req && req["encryption_enabled"].isBoolean)
@@ -86,12 +86,12 @@ class OBSBucket : SAPTenantObject {
     if ("tags" in req && req["tags"].type == Json.Type.object) {
       foreach (string k, v; req["tags"])
         if (v.isString)
-          b.tags[k] = v.get!string;
+          b.tags[k] = v.getString;
     }
     if ("metadata" in req && req["metadata"].type == Json.Type.object) {
       foreach (string k, v; req["metadata"])
         if (v.isString)
-          b.metadata[k] = v.get!string;
+          b.metadata[k] = v.getString;
     }
     return b;
   }

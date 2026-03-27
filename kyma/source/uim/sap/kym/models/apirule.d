@@ -44,13 +44,13 @@ KYMApiRule apiRuleFromJson(string namespace, string name, Json request) {
     rule.updatedAt = rule.createdAt;
 
     if ("host" in request && request["host"].isString)
-        rule.host = request["host"].get!string;
+        rule.host = request["host"].getString;
     if ("path" in request && request["path"].isString)
-        rule.path = request["path"].get!string;
+        rule.path = request["path"].getString;
     if ("methods" in request && request["methods"].isArray) {
         foreach (item; request["methods"].toArray) {
             if (item.isString)
-                rule.methods ~= item.get!string;
+                rule.methods ~= item.getString;
         }
     } else {
         rule.methods = ["GET"];
@@ -58,7 +58,7 @@ KYMApiRule apiRuleFromJson(string namespace, string name, Json request) {
     if ("access_strategy" in request && request["access_strategy"].isString)
         rule.accessStrategy = parseAccessStrategy(request["access_strategy"].get!string);
     if ("service_name" in request && request["service_name"].isString)
-        rule.serviceName = request["service_name"].get!string;
+        rule.serviceName = request["service_name"].getString;
     if ("service_port" in request && request["service_port"].isInteger)
         rule.servicePort = cast(ushort) request["service_port"].get!long;
     if ("active" in request && request["active"].isBool)

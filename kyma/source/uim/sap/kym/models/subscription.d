@@ -16,15 +16,15 @@ class KYMSubscription : SAPObject {
     }
 
     if ("event_type" in initData && initData["event_type"].isString)
-      eventType = initData["event_type"].get!string;
+      eventType = initData["event_type"].getString;
     if ("source" in initData && initData["source"].isString)
-      source = initData["source"].get!string;
+      source = initData["source"].getString;
     if ("trigger_type" in initData && initData["trigger_type"].isString)
       triggerType = parseTriggerType(initData["trigger_type"].get!string);
     if ("consumer_name" in initData && initData["consumer_name"].isString)
-      consumerName = initData["consumer_name"].get!string;
+      consumerName = initData["consumer_name"].getString;
     if ("consumer_kind" in initData && initData["consumer_kind"].isString)
-      consumerKind = initData["consumer_kind"].get!string;
+      consumerKind = initData["consumer_kind"].getString;
     if ("active" in initData && initData["active"].isBool)
       active = initData["active"].get!bool;
     if ("filters" in initData && initData["filters"].isObject)

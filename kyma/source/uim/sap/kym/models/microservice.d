@@ -63,11 +63,11 @@ KYMMicroservice microserviceFromJson(string namespace, string name, Json request
   ms.status = KYMResourceStatus.DEPLOYING;
 
   if ("image" in request && request["image"].isString)
-    ms.image = request["image"].get!string;
+    ms.image = request["image"].getString;
   if ("port" in request && request["port"].isInteger)
     ms.port = cast(ushort)request["port"].get!long;
   if ("protocol" in request && request["protocol"].isString) {
-    auto p = request["protocol"].get!string;
+    auto p = request["protocol"].getString;
     if (p == "grpc")
       ms.protocol = KYMProtocol.GRPC;
     else if (p == "tcp")
@@ -84,13 +84,13 @@ KYMMicroservice microserviceFromJson(string namespace, string name, Json request
   if ("scale_policy" in request && request["scale_policy"].isString)
     ms.scalePolicy = parseScalePolicy(request["scale_policy"].get!string);
   if ("cpu_request" in request && request["cpu_request"].isString)
-    ms.cpuRequest = request["cpu_request"].get!string;
+    ms.cpuRequest = request["cpu_request"].getString;
   if ("memory_request" in request && request["memory_request"].isString)
-    ms.memoryRequest = request["memory_request"].get!string;
+    ms.memoryRequest = request["memory_request"].getString;
   if ("cpu_limit" in request && request["cpu_limit"].isString)
-    ms.cpuLimit = request["cpu_limit"].get!string;
+    ms.cpuLimit = request["cpu_limit"].getString;
   if ("memory_limit" in request && request["memory_limit"].isString)
-    ms.memoryLimit = request["memory_limit"].get!string;
+    ms.memoryLimit = request["memory_limit"].getString;
   if ("env" in request && request["env"].isObject)
     ms.env = request["env"];
   else
@@ -100,8 +100,8 @@ KYMMicroservice microserviceFromJson(string namespace, string name, Json request
   else
     ms.labels = Json.emptyObject;
   if ("health_path" in request && request["health_path"].isString)
-    ms.healthPath = request["health_path"].get!string;
+    ms.healthPath = request["health_path"].getString;
   if ("ready_path" in request && request["ready_path"].isString)
-    ms.readyPath = request["ready_path"].get!string;
+    ms.readyPath = request["ready_path"].getString;
   return ms;
 }

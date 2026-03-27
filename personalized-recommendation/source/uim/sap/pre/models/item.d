@@ -53,18 +53,18 @@ Json itemToJson(const ref PREItem i) {
 
 PREItem itemFromJson(Json json) {
   PREItem i;
-  i.itemId = json["itemId"].get!string;
+  i.itemId = json["itemId"].getString;
   i.tenantId = json.getString("tenantId", "");
   i.title = json.getString("title", "");
   i.description = json.getString("description", "");
   i.category = json.getString("category", "");
   if ("tags" in json) {
     foreach (t; json["tags"])
-      i.tags ~= t.get!string;
+      i.tags ~= t.getString;
   }
   if ("attributes" in json) {
     foreach (string k, v; json["attributes"].toMap)
-      i.attributes[k] = v.get!string;
+      i.attributes[k] = v.getString;
   }
   i.imageUrl = json.getString("imageUrl", "");
   if ("price" in json) {
