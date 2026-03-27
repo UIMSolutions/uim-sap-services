@@ -17,7 +17,7 @@ class MDGService : SAPService {
 
   Json upsertBusinessPartner(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
-    auto bp = businessPartnerFromJson(tenantId, request, _config.defaultApprover);
+    MDGBusinessPartner bp = MDGBusinessPartner(tenantId, request, _config.defaultApprover);
     validateBusinessPartner(bp);
     bp.updatedAt = Clock.currTime();
 
@@ -39,8 +39,9 @@ class MDGService : SAPService {
     long processed = 0;
 
     foreach (item; request["business_partners"].toArray) {
-      auto bp = businessPartnerFromJson(tenantId, item, _config.defaultApprover);
+      MDGBusinessPartner bp = MDGBusinessPartner(tenantId, item, _config.defaultApprover);
       validateBusinessPartner(bp);
+
       bp.updatedAt = Clock.currTime();
       auto saved = _store.upsertBusinessPartner(bp);
       resources ~= saved.toJson();
@@ -71,13 +72,14 @@ class MDGService : SAPService {
   Json updateWorkflowState(UUID tenantId, string bpId, Json request) {
     validateId(tenantId, "Tenant ID");
     validateId(bpId, "Business partner ID");
-    if (!("workflow_state" in request) || request["workflow_state"].type != Json.Type.string) {
+
+    if (!("workflow_state" in request) || request["workflow_state"].isString) {
       throw new MDGValidationException("workflow_state is required");
     }
 
     auto bp = _store.getBusinessPartner(tenantId, bpId);
     if (bp.bpId.length == 0) {
-      throw new MDGNotFoundException("Business partner", tenantId ~ "/" ~ bpId);
+      throw new MDGNotFoundException("Business partner", tenantId.toString ~ "/" ~ bpId);
     }
 
     auto nextState = normalizeWorkflowState(request["workflow_state"].get!string);
@@ -101,7 +103,7 @@ class MDGService : SAPService {
   Json ingestBusinessPartners(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
 
-    if (!("source" in request) || request["source"].type != Json.Type.string) {
+    if (!("source" in request) || request["source"].isString) {
       throw new MDGValidationException("source must be provided as 'file' or 'api'");
     }
     auto source = toLower(request["source"].get!string);
@@ -116,7 +118,8 @@ class MDGService : SAPService {
 
     long ingested = 0;
     foreach (item; items.toArray) {
-      auto bp = businessPartnerFromJson(tenantId, item, _config.defaultApprover);
+      MDGBusinessPartner bp = MDGBusinessPartner(tenantId, item, (cast(MDGConfig)_config)
+          .defaultApprover);
       bp.sourceSystem = source;
       validateBusinessPartner(bp);
       _store.upsertBusinessPartner(bp);
@@ -134,9 +137,8 @@ class MDGService : SAPService {
     validateId(tenantId, "Tenant ID");
 
     auto bps = _store.listBusinessPartners(tenantId);
-
     auto candidates = detectDuplicateCandidates(tenantId, bps).map!(c => c.toJson).array;
-    
+
     return Json.emptyObject
       .set("tenant_id", tenantId)
       .set("resources", candidates)
@@ -145,10 +147,10 @@ class MDGService : SAPService {
 
   Json mergeDuplicates(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
-    if (!("primary_bp_id" in request) || request["primary_bp_id"].type != Json.Type.string) {
+    if (!("primary_bp_id" in request) || request["primary_bp_id"].isString) {
       throw new MDGValidationException("primary_bp_id is required");
     }
-    if (!("duplicate_bp_id" in request) || request["duplicate_bp_id"].type != Json.Type.string) {
+    if (!("duplicate_bp_id" in request) || request["duplicate_bp_id"].isString) {
       throw new MDGValidationException("duplicate_bp_id is required");
     }
 
@@ -158,10 +160,10 @@ class MDGService : SAPService {
     auto primary = _store.getBusinessPartner(tenantId, primaryId);
     auto duplicate = _store.getBusinessPartner(tenantId, duplicateId);
     if (primary.bpId.length == 0) {
-      throw new MDGNotFoundException("Primary business partner", tenantId ~ "/" ~ primaryId);
+      throw new MDGNotFoundException("Primary business partner", tenantId.toString ~ "/" ~ primaryId);
     }
     if (duplicate.bpId.length == 0) {
-      throw new MDGNotFoundException("Duplicate business partner", tenantId ~ "/" ~ duplicateId);
+      throw new MDGNotFoundException("Duplicate business partner", tenantId.toString ~ "/" ~ duplicateId);
     }
 
     if (primary.email.length == 0)
@@ -189,6 +191,7 @@ class MDGService : SAPService {
 
     auto rule = qualityRuleFromJson(tenantId, ruleId, request);
     validateRule(rule);
+
     auto saved = _store.upsertRule(rule);
 
     return Json.emptyObject
@@ -199,10 +202,8 @@ class MDGService : SAPService {
 
   Json listRules(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
-    Json resources = Json.emptyArray;
-    foreach (rule; _store.listRules(tenantId)) {
-      resources ~= rule.toJson();
-    }
+
+    auto resources = _store.listRules(tenantId).map!(rule => rule.toJson).array;
 
     return Json.emptyObject
       .set("tenant_id", tenantId)
@@ -212,6 +213,7 @@ class MDGService : SAPService {
 
   Json evaluateDataQuality(UUID tenantId) {
     validateId(tenantId, "Tenant ID");
+    
     auto rules = _store.listRules(tenantId);
     auto bps = _store.listBusinessPartners(tenantId);
 
@@ -227,12 +229,12 @@ class MDGService : SAPService {
         ++evaluated;
         if (!passesRule(bp, rule)) {
           ++failed;
-          Json item = Json.emptyObject;
-          item["bp_id"] = bp.bpId;
-          item["rule_id"] = rule.ruleId;
-          item["rule_name"] = rule.name;
-          item["field"] = rule.field;
-          violations ~= item;
+
+          violations ~= Json.emptyObject
+            .set("bp_id", bp.bpId)
+            .set("rule_id", rule.ruleId)
+            .set("rule_name", rule.name)
+            .set("field", rule.field);
         }
       }
     }
@@ -282,7 +284,7 @@ class MDGService : SAPService {
       }
       return value.length >= minValue;
     case "contains":
-      if (!("needle" in rule.options) || rule.options["needle"].type != Json.Type.string) {
+      if (!("needle" in rule.options) || rule.options["needle"].isString) {
         return true;
       }
       return value.canFind(rule.options["needle"].get!string);

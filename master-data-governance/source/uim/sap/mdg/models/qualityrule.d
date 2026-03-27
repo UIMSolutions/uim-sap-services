@@ -7,30 +7,30 @@ mixin(ShowModule!());
 @safe:
 
 class MDGQualityRule : SAPTenantObject {
-  mixin(SAPtenantObject!MDGQualityRule);
+  mixin(SAPObjectTemplate!MDGQualityRule);
 
   override bool initialize(Json[string] initData) {
     if (!super.initialize(initData)) {
       return false;
     }
 
-    if ("rule_id" in request && request["rule_id"].isString) {
-      ruleId = UUID(request["rule_id"].get!string);
+    if ("rule_id" in initData && initData["rule_id"].isString) {
+      ruleId = UUID(initData["rule_id"].get!string);
     }
-    if ("name" in request && request["name"].isString) {
-      name = request["name"].get!string;
+    if ("name" in initData && initData["name"].isString) {
+      name = initData["name"].get!string;
     }
-    if ("field" in request && request["field"].isString) {
-      field = request["field"].get!string;
+    if ("field" in initData && initData["field"].isString) {
+      field = initData["field"].get!string;
     }
-    if ("rule_type" in request && request["rule_type"].isString) {
-      ruleType = toLower(request["rule_type"].get!string);
+    if ("rule_type" in initData && initData["rule_type"].isString) {
+      ruleType = toLower(initData["rule_type"].get!string);
     }
-    if ("enabled" in request && request["enabled"].isBoolean) {
-      enabled = request["enabled"].get!bool;
+    if ("enabled" in initData && initData["enabled"].isBoolean) {
+      enabled = initData["enabled"].get!bool;
     }
-    if ("options" in request && request["options"].isObject) {
-      options = request["options"];
+    if ("options" in initData && initData["options"].isObject) {
+      options = initData["options"];
     }
 
     return true;

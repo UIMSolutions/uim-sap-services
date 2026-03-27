@@ -10,17 +10,12 @@ mixin(ShowModule!());
 class MDGStore : SAPStore {
   private MDGBusinessPartner[string] _businessPartners;
   private MDGQualityRule[string] _rules;
-  private Mutex _lock;
-
-  this() {
-    _lock = new Mutex;
-  }
 
   MDGBusinessPartner upsertBusinessPartner(MDGBusinessPartner bp) {
     synchronized (_lock) {
       auto key = bpKey(bp.tenantId, bp.bpId);
-      if (auto existing = key in _businessPartners) {
-        bp.createdAt = existing.createdAt;
+      if (key in _businessPartners) {
+        bp.createdAt = _businessPartners[key].createdAt;
       }
       _businessPartners[key] = bp;
       return bp;
@@ -30,7 +25,7 @@ class MDGStore : SAPStore {
   bool deleteBusinessPartner(UUID tenantId, string bpId) {
     synchronized (_lock) {
       auto key = bpKey(tenantId, bpId);
-      if ((key in _businessPartners) is null) {
+      if (!(key in _businessPartners)) {
         return false;
       }
       _businessPartners.remove(key);
@@ -41,8 +36,8 @@ class MDGStore : SAPStore {
   MDGBusinessPartner getBusinessPartner(UUID tenantId, string bpId) {
     synchronized (_lock) {
       auto key = bpKey(tenantId, bpId);
-      if (auto value = key in _businessPartners) {
-        return *value;
+      if (key in _businessPartners) {
+        return _businessPartners[key];
       }
     }
     return MDGBusinessPartner.init;
@@ -71,8 +66,8 @@ class MDGStore : SAPStore {
   MDGQualityRule getRule(UUID tenantId, string ruleId) {
     synchronized (_lock) {
       auto key = ruleKey(tenantId, ruleId);
-      if (auto rule = key in _rules) {
-        return *rule;
+      if (key in _rules) {
+        return _rules[key];
       }
     }
     return MDGQualityRule.init;
