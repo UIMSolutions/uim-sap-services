@@ -7,17 +7,16 @@ module uim.sap.con.store;
 
 import core.sync.mutex : Mutex;
 
-import uim.sap.con.models;
+import uim.sap.con;
+
+mixin(ShowModule!());
+
+@safe:
 
 class CONStore : SAPStore {
   mixin(SAPStoreTemplate!CONStore);
 
   protected CONDestination[string] _destinations;
-  protected Mutex _lock;
-
-  this() {
-    _lock = new Mutex;
-  }
 
   CONDestination upsertDestination(CONDestination destination) {
     synchronized (_lock) {
@@ -108,24 +107,4 @@ class CONStore : SAPStore {
     }
     return total;
   }
-
-  private string compositeKey(UUID tenantId, string destinationName) {
-    return tenantId ~ ":" ~ destinationName;
-  }
-
-  private bool startsWithTenant(string key, UUID tenantId) {
-    return key.length > tenantId.length + 1 && key[0 .. tenantId.length] == tenantId && key[tenantId
-      .length] == ':';
-  }
-
-  private size_t indexOfSeparator(string key) {
-    foreach (i, c; key) {
-      if (c == ':') {
-        return i;
-      }
-    }
-    return 0;
-  }
-
-
 }

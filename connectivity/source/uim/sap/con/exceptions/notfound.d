@@ -12,7 +12,7 @@ mixin(ShowModule!());
 @safe:
 
 class CONNotFoundException : CONException {
-    this(string kind, string id) {
-        super(kind ~ " not found: " ~ id);
-    }
+  this(string kind, string id) {
+    super(kind ~ " not found: " ~ id);
+  }
 }

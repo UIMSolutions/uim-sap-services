@@ -5,4 +5,5 @@ public {
   import uim.sap.service.mixins.obj;
   import uim.sap.service.mixins.server;
   import uim.sap.service.mixins.service;
+  import uim.sap.service.mixins.store;
 }

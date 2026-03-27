@@ -25,7 +25,7 @@ mixin(ShowModule!());
   *     clientSecret: "my-client-secret"
   * );
   * MGTService service = new MGTService(config);
-  */ 
+  */
 class MGTService : SAPService {
   mixin(SAPServiceTemplate!MGTService);
 
@@ -38,10 +38,10 @@ class MGTService : SAPService {
   }
 
   override Json health() {
-    auto cfg = cast(MGTConfig) config();
+    auto cfg = cast(MGTConfig)config();
     return super.health()
-    .set("subdomain", cfg.subdomain)
-    .set("region", cfg.region);
+      .set("subdomain", cfg.subdomain)
+      .set("region", cfg.region);
   }
 
   Json environments() {

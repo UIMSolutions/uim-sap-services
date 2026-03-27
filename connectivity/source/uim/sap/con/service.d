@@ -7,6 +7,8 @@ module uim.sap.con.service;
 
 import uim.sap.con;
 
+mixin(ShowModule!());
+
 @safe:
 
 class CONService : SAPService {

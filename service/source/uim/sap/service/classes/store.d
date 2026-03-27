@@ -8,6 +8,9 @@ mixin(ShowModule!());
 @safe:
 
 class SAPStore {
+
+  protected Mutex _lock;
+
   this() {
     initialize();
   }
@@ -30,11 +33,13 @@ class SAPStore {
   }
 
   bool initialize(Json[] initData) {
+    _lock = new Mutex;
     // Initialization logic for the object
     return true;
   }
-  
+
   bool initialize(Json[string] initData = null) {
+    _lock = new Mutex;
     // Initialization logic for the store
     return true;
   }

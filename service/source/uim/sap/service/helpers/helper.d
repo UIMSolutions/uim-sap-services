@@ -192,3 +192,25 @@ string lastSegment(string path) {
 bool matchesBasePath(string path, string basePath) {
   return path == basePath ? true : path.startsWith(basePath ~ "/");
 }
+
+   string compositeKey(UUID tenantId, string destinationName) {
+    return tenantId ~ ":" ~ destinationName;
+  }
+
+   bool startsWithTenant(string key, UUID tenantId) {
+    return startsWithTenant(key, tenantId.toString());
+   }
+
+   bool startsWithTenant(string key, string tenantId) {
+    return key.length > tenantId.length + 1 && key[0 .. tenantId.length] == tenantId && key[tenantId
+      .length] == ':';
+  }
+
+   size_t indexOfSeparator(string key) {
+    foreach (i, c; key) {
+      if (c == ':') {
+        return i;
+      }
+    }
+    return 0;
+  }

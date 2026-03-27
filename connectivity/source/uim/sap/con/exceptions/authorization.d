@@ -12,7 +12,7 @@ mixin(ShowModule!());
 @safe:
 
 class CONAuthorizationException : CONException {
-    this(string msg) {
-        super(msg);
-    }
+  this(string msg) {
+    super(msg);
+  }
 }
