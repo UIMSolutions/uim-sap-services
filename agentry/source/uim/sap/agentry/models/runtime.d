@@ -25,7 +25,7 @@ class AGTRuntimeInstance : SAPTenantObject {
       appId = UUID(initData["app_id"].get!string);
     }
     if ("target_environment" in initData && initData["target_environment"].isString) {
-      targetEnvironment = initData["target_environment"].get!string;
+      targetEnvironment = initData["target_environment"].getString;
     }
     if ("deployed_version_id" in initData && initData["deployed_version_id"].isString) {
       deployedVersionId = UUID(initData["deployed_version_id"].get!string);

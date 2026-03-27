@@ -29,13 +29,13 @@ class AGTMobileApp : SAPTenantObject {
       appId = UUID(initData["app_id"].get!string);
     }
     if ("name" in initData && initData["name"].isString) {
-      name = initData["name"].get!string;
+      name = initData["name"].getString;
     }
     if ("backend_system" in initData && initData["backend_system"].isString) {
-      backendSystem = initData["backend_system"].get!string;
+      backendSystem = initData["backend_system"].getString;
     }
     if ("owner_team" in initData && initData["owner_team"].isString) {
-      ownerTeam = initData["owner_team"].get!string;
+      ownerTeam = initData["owner_team"].getString;
     }
     if ("lifecycle" in initData && initData["lifecycle"].isString) {
       lifecycle = initData["lifecycle"].get!string.toLower;

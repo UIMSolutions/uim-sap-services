@@ -11,56 +11,63 @@ mixin(ShowModule!());
 
 @safe:
 
-
 class AEMNotificationRule : SAPTenantObject {
-    mixin(SAPObjectTemplate!AEMNotificationRule);
+  mixin(SAPObjectTemplate!AEMNotificationRule);
 
-    UUID ruleId;
-    string metric;
-    double threshold;
-    string severity = "warning";
-    bool enabled = true;
-    string channel = "email";
-
-    override override Json toJson()  {
-        Json resultJson = super.toJson();
-
-        resultJson["rule_id"] = ruleId;
-        resultJson["metric"] = metric;
-        resultJson["threshold"] = threshold;
-        resultJson["severity"] = severity;
-        resultJson["enabled"] = enabled;
-        resultJson["channel"] = channel;
-
-        return resultJson;
+  override bool initialize(Json[string] initData) {
+    if (!super.initialize(initData)) {
+      return false;
     }
-}
 
-AEMNotificationRule notificationRuleFromJson(UUID tenantId, string ruleId, Json request) {
-  AEMNotificationRule rule = new AEMNotificationRule();
-  rule.tenantId = tenantId;
-  rule.ruleId = ruleId;
-  rule.metric = "queue_depth";
-  rule.threshold = 100.0;
-  rule.updatedAt = Clock.currTime();
+    if ("rule_id" in request && request["rule_id"].isString) {
+      ruleId = UUID(request["rule_id"].get!string);
+    }
+    if ("metric" in request && request["metric"].isString) {
+      metric = toLower(request["metric"].get!string);
+    }
+    if ("threshold" in request && request["threshold"].isFloat) {
+      threshold = request["threshold"].get!double;
+    } else if ("threshold" in request && request["threshold"].isInteger) {
+      threshold = cast(double)request["threshold"].get!long;
+    }
+    if ("severity" in request && request["severity"].isString) {
+      severity = toLower(request["severity"].get!string);
+    }
+    if ("enabled" in request && request["enabled"].isBoolean) {
+      enabled = request["enabled"].get!bool;
+    }
+    if ("channel" in request && request["channel"].isString) {
+      channel = request["channel"].getString;
+    }
 
-  if ("metric" in request && request["metric"].isString) {
-    rule.metric = toLower(request["metric"].get!string);
-  }
-  if ("threshold" in request && request["threshold"].isFloat) {
-    rule.threshold = request["threshold"].get!double;
-  } else if ("threshold" in request && request["threshold"].isInteger) {
-    rule.threshold = cast(double)request["threshold"].get!long;
-  }
-  if ("severity" in request && request["severity"].isString) {
-    rule.severity = toLower(request["severity"].get!string);
-  }
-  if ("enabled" in request && request["enabled"].isBoolean) {
-    rule.enabled = request["enabled"].get!bool;
-  }
-  if ("channel" in request && request["channel"].isString) {
-    rule.channel = request["channel"].get!string;
+    return true;
   }
 
-  return rule;
+  UUID ruleId;
+  string metric;
+  double threshold;
+  string severity = "warning";
+  bool enabled = true;
+  string channel = "email";
+
+  override override Json toJson() {
+    return super.toJson()
+      .set("rule_id", ruleId)
+      .set("metric", metric)
+      .set("threshold", threshold)
+      .set("severity", severity)
+      .set("enabled", enabled)
+      .set("channel", channel);
+  }
+
+  static AEMNotificationRule notificationRuleFromJson(UUID tenantId, string ruleId, Json request) {
+    AEMNotificationRule rule = new AEMNotificationRule();
+    rule.tenantId = tenantId;
+    rule.ruleId = ruleId;
+    rule.metric = "queue_depth";
+    rule.threshold = 100.0;
+    rule.updatedAt = Clock.currTime();
+
+    return rule;
+  }
 }

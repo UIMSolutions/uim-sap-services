@@ -96,7 +96,7 @@ class AEMService : SAPService {
       throw new AEMValidationException("topic is required");
     }
 
-    auto topic = request["topic"].get!string;
+    auto topic = request["topic"].getString;
     if (!mesh.topics.canFind(topic)) {
       mesh.topics ~= topic;
     }

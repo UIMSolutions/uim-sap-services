@@ -57,13 +57,13 @@ class AEMEventMesh : SAPTenantObject {
     }
 
     if ("name" in initData && initData["name"].isString) {
-      name = initData["name"].get!string;
+      name = initData["name"].getString;
     }
     
     if ("topics" in initData && initData["topics"].isArray) {
       foreach (topicJson; initData["topics"].toArray) {
         if (topicJson.isString) {
-          topics ~= topicJson.get!string;
+          topics ~= topicJson.getString;
         }
       }
     }

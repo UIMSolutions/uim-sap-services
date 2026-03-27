@@ -42,7 +42,7 @@ class AGTBackendSystem : SAPTenantObject {
       systemType = toLower(initData["system_type"].get!string);
     }
     if ("endpoint" in initData && initData["endpoint"].isString) {
-      endpoint = initData["endpoint"].get!string;
+      endpoint = initData["endpoint"].getString;
     }
     if ("auth_mode" in initData && initData["auth_mode"].isString) {
       authMode = toLower(initData["auth_mode"].get!string);

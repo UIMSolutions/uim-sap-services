@@ -27,15 +27,15 @@ class ARTProgramRequest : SAPObject {
     }
 
     if ("program" in initData && initData["program"].isString) {
-      program = initData["program"].get!string;
+      program = initData["program"].getString;
     }
 
     if ("user" in initData && initData["user"].isString) {
-      user = initData["user"].get!string;
+      user = initData["user"].getString;
     }
 
     if ("client" in initData && initData["client"].isString) {
-      client = initData["client"].get!string;
+      client = initData["client"].getString;
     }
 
     language = initData.getString("language", "EN");

@@ -23,20 +23,47 @@ mixin(ShowModule!());
   * The subscription can be serialized to JSON for storage or transmission, and can be created from JSON input.
   */
 class AEMSubscription : SAPTenantObject {
+  mixin(SAPTenantObject!AEMSubscription);
+
+  override bool initialize(Json[string] initData) {
+    if (!super.initialize(initData)) {
+      return false;
+    }
+
+    if ("subscription_id" in request && request["subscription_id"].isString) {
+      subscriptionId = UUID(request["subscription_id"].get!string);
+    }
+    if ("component_id" in request && request["component_id"].isString) {
+      componentId = UUID(request["component_id"].get!string);
+    }
+    if ("mesh_id" in request && request["mesh_id"].isString) {
+      meshId = UUID(request["mesh_id"].get!string);
+    }
+    if ("topic" in request && request["topic"].isString) {
+      topic = request["topic"].getString;
+    }
+
+    subscriptionId = "subscription_id" in request ? UUID(request["subscription_id"].get!string) : randomUUID();
+
+    componentId = "component_id" in request ? UUID(request["component_id"].get!string) : UUID(
+      componentId);
+    updatedAt = "updated_at" in request ? Clock.currTime(
+      request["updated_at"].get!string) : Clock.currTime();
+
+    return true;
+  }
+
   UUID subscriptionId;
   UUID componentId;
   UUID meshId;
   string topic;
 
   override Json toJson() {
-    Json resultJson = super.toJson();
-
-    resultJson["subscription_id"] = subscriptionId.toJson;
-    resultJson["component_id"] = componentId.toJson;
-    resultJson["mesh_id"] = meshId.toJson;
-    resultJson["topic"] = topic;
-    
-    return resultJson;
+    return super.toJson()
+      .set("subscription_id", subscriptionId.toJson)
+      .set("component_id", componentId.toJson)
+      .set("mesh_id", meshId.toJson)
+      .set("topic", topic);
   }
   ///
   unittest {
@@ -58,21 +85,8 @@ class AEMSubscription : SAPTenantObject {
 }
 
 AEMSubscription subscriptionFromJson(UUID tenantId, string componentId, Json request) {
-  AEMSubscription subscription = new AEMSubscription();
+  AEMSubscription subscription = new AEMSubscription(request);
   subscription.tenantId = tenantId;
-  subscription.subscriptionId = randomUUID();
-  subscription.componentId = UUID(componentId);
-  subscription.updatedAt = Clock.currTime();
-
-  if ("subscription_id" in request && request["subscription_id"].isString) {
-    subscription.subscriptionId = UUID(request["subscription_id"].get!string);
-  }
-  if ("mesh_id" in request && request["mesh_id"].isString) {
-    subscription.meshId = UUID(request["mesh_id"].get!string);
-  }
-  if ("topic" in request && request["topic"].isString) {
-    subscription.topic = request["topic"].get!string;
-  }
 
   return subscription;
 }

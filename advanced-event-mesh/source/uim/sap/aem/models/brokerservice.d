@@ -44,16 +44,16 @@ class AEMBrokerService : SAPTenantObject {
     broker.updatedAt = broker.createdAt;
 
     if ("broker_service_id" in request && request["broker_service_id"].isString) {
-        broker.brokerServiceId = request["broker_service_id"].get!string;
+        broker.brokerServiceId = request["broker_service_id"].getString;
     }
     if ("name" in request && request["name"].isString) {
-        broker.name = request["name"].get!string;
+        broker.name = request["name"].getString;
     }
     if ("plan" in request && request["plan"].isString) {
-        broker.plan = request["plan"].get!string;
+        broker.plan = request["plan"].getString;
     }
     if ("region" in request && request["region"].isString) {
-        broker.region = request["region"].get!string;
+        broker.region = request["region"].getString;
     }
     if ("status" in request && request["status"].isString) {
         broker.status = toLower(request["status"].get!string);

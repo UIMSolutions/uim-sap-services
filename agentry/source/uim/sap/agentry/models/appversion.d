@@ -41,10 +41,10 @@ class AGTAppVersion : SAPTenantObject {
       versionId = toUUID(initData["version_id"].get!string);
     }
     if ("version_label" in initData && initData["version_label"].isString) {
-      versionLabel = initData["version_label"].get!string;
+      versionLabel = initData["version_label"].getString;
     }
     if ("change_log" in initData && initData["change_log"].isString) {
-      changeLog = initData["change_log"].get!string;
+      changeLog = initData["change_log"].getString;
     }
     if ("build_status" in initData && initData["build_status"].isString) {
       buildStatus = toLower(initData["build_status"].get!string);

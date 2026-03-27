@@ -195,7 +195,7 @@ class AGTService : SAPService {
       throw new AGTValidationException("version_id is required");
     }
 
-    auto versionId = request["version_id"].get!string;
+    auto versionId = request["version_id"].getString;
     auto versions = _store.listVersions(tenantId, instance.appId.toString);
     bool knownVersion = false;
     foreach (appVersion; versions) {

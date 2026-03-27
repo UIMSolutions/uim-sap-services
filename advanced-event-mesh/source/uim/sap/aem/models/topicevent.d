@@ -28,7 +28,7 @@ class AEMTopicEvent : SAPTenantObject {
     }
 
     if ("topic" in initData && initData["topic"].isString) {
-      topic = initData["topic"].get!string;
+      topic = initData["topic"].getString;
     }
     publisher = initData.getString("publisher", "unknown");
     payload = initData.getObject("payload", Json.emptyObject);

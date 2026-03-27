@@ -13,29 +13,27 @@ class AGTTestRun : SAPTenantObject {
     }
 
     if ("app_id" in initData && initData["app_id"].isString) {
-      appId = toUUID(initData["app_id"].get!string);
+      appId = UUID(initData["app_id"].get!string);
     }
     if ("test_run_id" in initData && initData["test_run_id"].isString) {
-      testRunId = toUUID(initData["test_run_id"].get!string);
+      testRunId = UUID(initData["test_run_id"].get!string);
     }
     if ("version_id" in initData && initData["version_id"].isString) {
-      versionId = toUUID(initData["version_id"].get!string);
+      versionId = UUID(initData["version_id"].get!string);
     }
-    if ("environment" in initData && initData["environment"].isString) {
-      environment = initData["environment"].get!string;
-    }
-    if ("result_status" in initData && initData["result_status"].isString) {
-      resultStatus = toLower(initData["result_status"].get!string);
-    }
-    if ("passed_cases" in initData && initData["passed_cases"].isInteger) {
-      passedCases = initData["passed_cases"].get!long;
-    }
-    if ("failed_cases" in initData && initData["failed_cases"].isInteger) {
-      failedCases = initData["failed_cases"].get!long;
-    }
+    environment = initData.getString("environment", "default");
+    resultStatus = toLower(initData.getString("result_status", "passed"));
+    passedCases = initData.getLong("passed_cases", 0);
+    failedCases = initData.getLong("failed_cases", 0);
+    
     if ("executed_at" in initData && initData["executed_at"].isString) {
       executedAt = SysTime.fromISOExtString(initData["executed_at"].get!string);
     }
+
+    testRunId = "testRunId" in initData ? UUID(initData["testRunId"].get!string) : randomUUID();
+    environment = initData.getString("environment", "qa");
+    resultStatus = initData.getString("resultStatus", "passed");
+    executedAt = "executedAt" in initData ? SysTime.fromISOExtString(initData["executedAt"].get!string) : Clock.currTime();
 
     return true;
   }
@@ -65,10 +63,6 @@ class AGTTestRun : SAPTenantObject {
     AGTTestRun testRun = new AGTTestRun(request);
     testRun.tenantId = tenantId;
     testRun.appId = toUUID(appId);
-    testRun.testRunId = randomUUID();
-    testRun.environment = "qa";
-    testRun.resultStatus = "passed";
-    testRun.executedAt = Clock.currTime();
 
     return testRun;
   }
