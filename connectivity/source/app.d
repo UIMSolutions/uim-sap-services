@@ -8,8 +8,9 @@ module app;
 import uim.sap.con;
 mixin(ShowModule!());
 
-@safe:
-void main() {
+@safe:version (unittest) {
+} else {
+  void main() {
   CONConfig config = new CONConfig();
   config.host = envOr("CON_HOST", "0.0.0.0");
   config.port = readPort(envOr("CON_PORT", "8085"), 8085);
@@ -36,3 +37,4 @@ void main() {
   server.run();
 }
 
+}

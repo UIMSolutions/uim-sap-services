@@ -6,8 +6,9 @@ module s4hana.examples.basic_usage;
 import uim.sap.s4hana;
 import vibe.data.json : Json;
 import std.stdio : writeln;
-
-void main() {
+version (unittest) {
+} else {
+  void main() {
     auto config = S4HANAConfig.createBasic(
         "https://my-s4hana.example.com",
         "SAPUSER",

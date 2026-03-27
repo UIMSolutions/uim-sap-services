@@ -38,7 +38,7 @@ class CONServer : SAPServer {
 
       auto segments = normalizedSegments(subPath);
       if (segments.length >= 3 && segments[0] == "v1" && segments[1] == "tenants") {
-        auto tenantId = segments[2];
+        auto tenantId = UUID(segments[2]);
 
         if (segments.length == 4 && segments[3] == "destinations" && req.method == HTTPMethod.GET) {
           res.writeJsonBody(_service.listDestinations(tenantId), 200);

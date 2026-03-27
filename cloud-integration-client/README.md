@@ -34,8 +34,9 @@ For dub.json:
 ```d
 import uim.sap.cpi;
 import vibe.data.json : Json;
-
-void main() {
+version (unittest) {
+} else {
+  void main() {
     auto config = CPIConfig.createBasic(
         "https://mytenant.it-cpi020.cfapps.eu10.hana.ondemand.com",
         "CPI_USER",

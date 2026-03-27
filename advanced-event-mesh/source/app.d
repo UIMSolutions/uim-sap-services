@@ -17,8 +17,9 @@ mixin(ShowModule!());
 @safe:
 
 version (unittest) {
+} else {version (unittest) {
 } else {
-void main() {
+  void main() {
     AEMConfig config = new AEMConfig;
     config.host = envOr("AEM_HOST", "0.0.0.0");
     config.port = readPort(envOr("AEM_PORT", "8088"), 8088);

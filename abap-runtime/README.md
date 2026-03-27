@@ -31,8 +31,9 @@ dependency "uim-art" version="~>1.0.0"
 ```d
 import vibe.data.json : Json;
 import uim.sap.art;
-
-void main() {
+version (unittest) {
+} else {
+  void main() {
     ARTRuntimeConfig config;
     config.host = "127.0.0.1";
     config.port = 8080;

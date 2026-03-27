@@ -10,8 +10,9 @@ import uim.sap.datasphere;
 mixin(ShowModule!());
 
 @safe:
-
-void main() {
+version (unittest) {
+} else {
+  void main() {
     DatasphereConfig config  = new DatasphereConfig();
     config.host = envOr("DATASPHERE_HOST", "0.0.0.0");
     config.port = readPort(envOr("DATASPHERE_PORT", "8098"), 8098);

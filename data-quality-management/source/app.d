@@ -1,8 +1,9 @@
 module app;
 
 import uim.sap.dqm;
-
-void main() {
+version (unittest) {
+} else {
+  void main() {
   DQMConfig config = new DQMConfig();
   config.host = envOr("DQM_HOST", "0.0.0.0");
   config.port = readPort(envOr("DQM_PORT", "8091"), 8091);

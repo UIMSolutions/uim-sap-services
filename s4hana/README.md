@@ -33,8 +33,9 @@ For `dub.json`:
 ```d
 import uim.sap.s4hana;
 import vibe.data.json : Json;
-
-void main() {
+version (unittest) {
+} else {
+  void main() {
     auto config = S4HANAConfig.createBasic(
         "https://my-s4hana.example.com",
         "SAPUSER",

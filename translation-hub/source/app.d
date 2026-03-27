@@ -227,8 +227,9 @@ private string landingPage() {
 </html>
 HTML";
 }
-
-void main() {
+version (unittest) {
+} else {
+  void main() {
   auto cfg = loadConfig();
 
   auto providerRegistry = new ProviderRegistry();

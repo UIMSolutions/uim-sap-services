@@ -172,6 +172,7 @@ Json optionalObject(Json request, string key) {
   return Json.emptyObject;
 }
 
+// Composite key generation for tenantId and destinationName.
 string compositeKey(UUID a, UUID b) {
   return compositeKey(a.toString(), b.toString());
 }
@@ -180,10 +181,15 @@ string compositeKey(UUID a, string b) {
   return compositeKey(a.toString(), b);
 }
 
+string compositeKey(string a, UUID b) {
+  return compositeKey(a, b.toString());
+}
+
 string compositeKey(string a, string b) {
   return a ~ ":" ~ b;
 }
 
+// Extracts the last segment of a path, e.g. "foo/bar/baz" -> "baz".
 string lastSegment(string path) {
   auto parts = path.split("/");
   return parts.length == 0 ? "" : parts[$ - 1];
@@ -193,9 +199,6 @@ bool matchesBasePath(string path, string basePath) {
   return path == basePath ? true : path.startsWith(basePath ~ "/");
 }
 
-   string compositeKey(UUID tenantId, string destinationName) {
-    return tenantId ~ ":" ~ destinationName;
-  }
 
    bool startsWithTenant(string key, UUID tenantId) {
     return startsWithTenant(key, tenantId.toString());

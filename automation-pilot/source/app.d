@@ -9,8 +9,9 @@ import uim.sap.atp;
 
 mixin(ShowModule!());
 
-@safe:
-void main() {
+@safe:version (unittest) {
+} else {
+  void main() {
   ATPConfig config = new ATPConfig;
   config.host = envOr("ATP_HOST", "0.0.0.0");
   config.port = readPort(envOr("ATP_PORT", "8097"), 8097);

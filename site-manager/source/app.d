@@ -8,8 +8,9 @@ module app;
 import uim.sap.smg;
 mixin(ShowModule!());
 
-@safe:
-void main() {
+@safe:version (unittest) {
+} else {
+  void main() {
   SMGConfig config = new SMGConfig;
   config.host = envOr("SMG_HOST", "0.0.0.0");
   config.port = readPort(envOr("SMG_PORT", "8094"), 8094);

@@ -5,8 +5,9 @@ import uim.sap.mgt;
 mixin(ShowModule!());
 
 @safe:
-
-void main() {
+version (unittest) {
+} else {
+  void main() {
   MGTConfig config = new MGTConfig;
   config.host = envOr("MGT_HOST", "0.0.0.0");
   config.port = readPort(envOr("MGT_PORT", "8088"), 8088);

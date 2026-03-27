@@ -5,8 +5,9 @@ import uim.sap.cag;
 mixin(ShowModule!());
 
 @safe:
-
-void main() {
+version (unittest) {
+} else {
+  void main() {
   CAGConfig config = new CAGConfig();
   config.host = envOr("CAG_HOST", "0.0.0.0");
   config.port = readPort(envOr("CAG_PORT", "8096"), 8096);

@@ -23,8 +23,9 @@ dub build
 
 ```d
 import uim.sap.btp;
-
-void main() {
+version (unittest) {
+} else {
+  void main() {
   auto cfg = defaultConfig("MY_TENANT", "MY_SUBDOMAIN", "api.sap.hana.ondemand.com");
   cfg.username = "user@example.com";
   cfg.password = "password";

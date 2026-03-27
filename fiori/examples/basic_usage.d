@@ -10,8 +10,9 @@ module examples.basic_usage;
 import std.stdio : writeln;
 import vibe.d;
 import uim.sap.fiori;
-
-void main() {
+version (unittest) {
+} else {
+  void main() {
     // Example 1: Basic configuration and connection
     writeln("Example 1: Basic Configuration");
     {

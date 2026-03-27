@@ -7,8 +7,9 @@ import uim.sap.dataretention;
 mixin(ShowModule!());
 
 @safe:
-
-void main() {
+version (unittest) {
+} else {
+  void main() {
   DRMConfig config = new DRMConfig();
   config.host = envOr("DRM_HOST", "0.0.0.0");
   config.port = readPort(envOr("DRM_PORT", "8110"), 8110);

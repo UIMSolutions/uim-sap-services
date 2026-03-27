@@ -7,8 +7,9 @@ module app;
 
 import uim.sap.pre;
 @safe:
-
-void main() {
+version (unittest) {
+} else {
+  void main() {
     PREConfig config = new PREConfig();
     config.host = envOr("PRE_HOST", "0.0.0.0");
     config.port = readPort(envOr("PRE_PORT", "8093"), 8093);

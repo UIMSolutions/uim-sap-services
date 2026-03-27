@@ -10,8 +10,9 @@ import std.process : environment;
 import std.stdio : writeln;
 
 import uim.sap.clf;
-
-void main() {
+version (unittest) {
+} else {
+  void main() {
     CLFConfig config = new CLFConfig;
     config.host = envOr("CLF_HOST", "0.0.0.0");
     config.port = readPort(envOr("CLF_PORT", "8082"), 8082);

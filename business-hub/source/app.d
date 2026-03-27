@@ -10,8 +10,9 @@ import uim.sap.buh;
 mixin(ShowModule!());
 
 @safe:
-
-void main() {
+version (unittest) {
+} else {
+  void main() {
   BUHConfig config = new BUHConfig();
   config.host = envOr("BUH_HOST", "0.0.0.0");
   config.port = readPort(envOr("BUH_PORT", "8083"), 8083);

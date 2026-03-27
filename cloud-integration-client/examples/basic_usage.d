@@ -6,8 +6,9 @@ module cpi.examples.basic_usage;
 import uim.sap.cpi;
 import vibe.data.json : Json;
 import std.stdio : writeln;
-
-void main() {
+version (unittest) {
+} else {
+  void main() {
   auto config = CPIConfig.createBasic(
     "https://mytenant.it-cpi020.cfapps.eu10.hana.ondemand.com",
     "CPI_USER",

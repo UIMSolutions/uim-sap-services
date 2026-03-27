@@ -5,8 +5,9 @@ import source.models.custom_domain;
 import std.stdio;
 import std.array;
 import std.exception;
-
-void main() {
+version (unittest) {
+} else {
+  void main() {
   // Test case for creating a custom domain
   void testCreateCustomDomain() {
     auto service = new CustomDomainService();

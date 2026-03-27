@@ -1,8 +1,9 @@
 module app;
 
 import uim.sap.kst;
-
-void main() {
+version (unittest) {
+} else {
+  void main() {
     KSTConfig config = new KSTConfig();
     config.host = envOr("KST_HOST", "0.0.0.0");
     config.port = readPort(envOr("KST_PORT", "8087"), 8087);

@@ -5,8 +5,9 @@ import source.services.btp_extension_service;
 import std.stdio;
 import std.array;
 import std.json;
-
-void main() {
+version (unittest) {
+} else {
+  void main() {
     // Test setup
     auto service = new BtpExtensionService();
 

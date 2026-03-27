@@ -7,8 +7,9 @@
  */
 import uim.sap.ids;
 import std.stdio : writeln, writefln;
-
-void main() {
+version (unittest) {
+} else {
+  void main() {
     writeln("=== Cloud Identity Services Library Examples ===\n");
     
     // Example 1: Basic Connection

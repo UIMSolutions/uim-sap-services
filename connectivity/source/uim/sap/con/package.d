@@ -10,6 +10,7 @@ public {
 
   import uim.sap.con.config;
   import uim.sap.con.exceptions;
+  import uim.sap.con.helpers;
   import uim.sap.con.models;
   import uim.sap.con.store;
   import uim.sap.con.service;

@@ -15,8 +15,9 @@ mixin(ShowModule!());
 
    server.run();
 } */ 
-
-void main() {
+version (unittest) {
+} else {
+  void main() {
     MONConfig config = new MONConfig;
     config.host = envOr("MON_HOST", "0.0.0.0");
     config.port = readPort(envOr("MON_PORT", "8090"), 8090);

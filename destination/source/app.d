@@ -10,8 +10,9 @@ import uim.sap.dst;
 mixin(ShowModule!());
 
 @safe:
-
-void main() {
+version (unittest) {
+} else {
+  void main() {
   DSTConfig config = new DSTConfig();
   config.host = envOr("DST_HOST", "0.0.0.0");
   config.port = readPort(envOr("DST_PORT", "8104"), 8104);

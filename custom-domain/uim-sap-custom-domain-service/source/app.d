@@ -2,8 +2,9 @@ module app;
 
 import vibe.vibe;
 import source.routes.api_routes;
-
-void main() {
+version (unittest) {
+} else {
+  void main() {
     // Initialize the Vibe.D web server
     auto settings = new HTTPServerSettings;
     settings.port = 8080; // Set the server port

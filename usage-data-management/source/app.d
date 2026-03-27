@@ -7,8 +7,9 @@ import uim.sap.usagedatamanagement;
 mixin(ShowModule!());
 
 @safe:
-
-void main() {
+version (unittest) {
+} else {
+  void main() {
   UDMConfig config = new UDMConfig();
   config.host = envOr("UDM_HOST", "0.0.0.0");
   config.port = readPort(envOr("UDM_PORT", "8109"), 8109);

@@ -23,38 +23,38 @@ class CONService : SAPService {
   }
 
   override Json health() {
-			CONConfig cfg = cast(CONConfig)_config;
-			
+    CONConfig cfg = cast(CONConfig)_config;
+
     return super.health()
-    .set("connector_location_id", cfg.connectorLocationId)
-    .set("destinations", cast(long)_store.countDestinations());
+      .set("connector_location_id", cfg.connectorLocationId)
+      .set("destinations", cast(long)_store.countDestinations());
   }
 
   Json supportedProtocols() {
     Json protocols = CON_SUPPORTED_PROTOCOLS.toJson;
 
     return Json.emptyObject
-    .set("protocols", protocols)
-    .set("supports_hybrid_connectivity", true)
-    .set("supports_identity_propagation", true)
-    .set("supports_multitenancy", true)
-    .set("firewall_changes_required", false);
+      .set("protocols", protocols)
+      .set("supports_hybrid_connectivity", true)
+      .set("supports_identity_propagation", true)
+      .set("supports_multitenancy", true)
+      .set("firewall_changes_required", false);
   }
 
   Json upsertDestination(UUID tenantId, string destinationName, Json request) {
     validateTenant(tenantId);
     validateName(destinationName, "Destination name");
 
-    auto destination = destinationFromJson(tenantId, destinationName, request);
+    auto destination = CONDestination(tenantId, destinationName, request);
     validateDestination(destination);
     destination.updatedAt = Clock.currTime();
 
     auto saved = _store.upsertDestination(destination);
 
     return Json.emptyObject
-    .set("success", true)
-    .set("destination", saved.toJson())
-    .set("deployment_benefit", "hybrid tunnel without firewall reconfiguration");
+      .set("success", true)
+      .set("destination", saved.toJson())
+      .set("deployment_benefit", "hybrid tunnel without firewall reconfiguration");
   }
 
   Json listDestinations(UUID tenantId) {
@@ -75,11 +75,11 @@ class CONService : SAPService {
 
     auto destination = _store.getDestination(tenantId, destinationName);
     if (destination.name.length == 0) {
-      throw new CONNotFoundException("Destination", tenantId ~ "/" ~ destinationName);
+      throw new CONNotFoundException("Destination", tenantId.toString ~ "/" ~ destinationName);
     }
 
     return Json.emptyObject
-    .set("destination", destination.toJson());
+      .set("destination", destination.toJson());
   }
 
   Json deleteDestination(UUID tenantId, string destinationName) {
@@ -87,7 +87,7 @@ class CONService : SAPService {
     validateName(destinationName, "Destination name");
 
     if (!_store.deleteDestination(tenantId, destinationName)) {
-      throw new CONNotFoundException("Destination", tenantId ~ "/" ~ destinationName);
+      throw new CONNotFoundException("Destination", tenantId.toString ~ "/" ~ destinationName);
     }
 
     return Json.emptyObject
@@ -133,7 +133,7 @@ class CONService : SAPService {
 
     auto destination = _store.getDestination(tenantId, destinationName);
     if (destination.name.length == 0) {
-      throw new CONNotFoundException("Destination", tenantId ~ "/" ~ destinationName);
+      throw new CONNotFoundException("Destination", tenantId.toString ~ "/" ~ destinationName);
     }
 
     bool forwardIdentity = true;
@@ -158,7 +158,7 @@ class CONService : SAPService {
       .set("target_host", destination.targetHost)
       .set("target_port", cast(long)destination.targetPort)
       .set("target_path", destination.targetPath)
-      .set("connector_location_id", _config.connectorLocationId)
+      .set("connector_location_id", (cast(CONConfig)_config).connectorLocationId)
       .set("network_path", destination.onPremise ? "cloud-connector-tunnel" : "direct")
       .set("firewall_changes_required", false);
 

@@ -5,8 +5,9 @@ import std.process : environment;
 import std.stdio : writeln;
 
 import uim.sap.cia;
-
-void main() {
+version (unittest) {
+} else {
+  void main() {
   CIAConfig config = new CIAConfig;
   config.host = envOr("CIA_HOST", "0.0.0.0");
   config.port = readPort(envOr("CIA_PORT", "8098"), 8098);

@@ -4,8 +4,9 @@ import uim.sap.slm;
 mixin(ShowModule!());
 
 @safe:
-
-void main() {
+version (unittest) {
+} else {
+  void main() {
   SLMConfig config = new SLMConfig();
   config.host = envOr("SLM_HOST", "0.0.0.0");
   config.port = readPort(envOr("SLM_PORT", "8120"), 8120);

@@ -4,8 +4,9 @@ import uim.sap.mob;
 mixin(ShowModule!());
 
 @safe:
-
-void main() {
+version (unittest) {
+} else {
+  void main() {
   MOBConfig config = new MOBConfig();
   config.host = envOr("MOB_HOST", "0.0.0.0");
   config.port = readPort(envOr("MOB_PORT", "8089"), 8089);

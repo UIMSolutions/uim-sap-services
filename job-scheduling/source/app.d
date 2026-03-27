@@ -9,8 +9,9 @@ import uim.sap.jobs;
 
 mixin(ShowModule!());
 
-@safe:
-void main() {
+@safe:version (unittest) {
+} else {
+  void main() {
   JobSchedulingConfig config = new JobSchedulingConfig();
   config.host = envOr("JOBS_HOST", "0.0.0.0");
   config.port = readPort(envOr("JOBS_PORT", "8101"), 8101);

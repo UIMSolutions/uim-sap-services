@@ -5,8 +5,9 @@ import uim.sap.isa;
 mixin(ShowModule!());
 
 @safe:
-
-void main() {
+version (unittest) {
+} else {
+  void main() {
   ISAConfig config = new ISAConfig();
   config.host = envOr("ISA_HOST", "0.0.0.0");
   config.port = readPort(envOr("ISA_PORT", "8088"), 8088);

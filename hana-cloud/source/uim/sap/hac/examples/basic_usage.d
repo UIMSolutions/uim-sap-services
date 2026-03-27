@@ -8,8 +8,9 @@
 import uim.sap;
 import std.stdio : writeln, writefln;
 import vibe.data.json;
-
-void main() {
+version (unittest) {
+} else {
+  void main() {
     writeln("=== UIM HANA Cloud Library Examples ===\n");
     
     // Example 1: Basic Connection

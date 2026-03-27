@@ -34,8 +34,9 @@ For dub.json:
 ```d
 import uim.sap.hanadb;
 import vibe.data.json : Json;
-
-void main() {
+version (unittest) {
+} else {
+  void main() {
     auto cfg = HanaDBConfig.createBasic(
         "https://my-hana.example.com",
         "MY_SCHEMA",

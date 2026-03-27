@@ -43,8 +43,9 @@ Or to your `dub.json`:
 
 ```d
 import uim.sap.ids;
-
-void main() {
+version (unittest) {
+} else {
+  void main() {
     // Create an IAS client
     auto client = IdentityClient.createIAS(
         "myaccount.accounts.ondemand.com",
@@ -63,8 +64,9 @@ void main() {
 
 ```d
 import uim.sap.ids;
-
-void main() {
+version (unittest) {
+} else {
+  void main() {
     auto client = IdentityClient.createIAS("tenant.host.com", "clientId", "secret");
     
     // Create a user
@@ -101,8 +103,9 @@ void main() {
 
 ```d
 import uim.sap.ids;
-
-void main() {
+version (unittest) {
+} else {
+  void main() {
     auto client = IdentityClient.createIAS("tenant.host.com", "clientId", "secret");
     
     // Create users
@@ -135,8 +138,9 @@ void main() {
 
 ```d
 import uim.sap.ids;
-
-void main() {
+version (unittest) {
+} else {
+  void main() {
     auto client = IdentityClient.createIAS("tenant.host.com", "clientId", "secret");
     
     // SCIM filter syntax
@@ -168,8 +172,9 @@ void main() {
 ```d
 import uim.sap.ids;
 import core.time : seconds;
-
-void main() {
+version (unittest) {
+} else {
+  void main() {
     IdentityConfig config;
     config.serviceType = IdentityServiceType.IAS;
     config.tenantHost = "myaccount.accounts.ondemand.com";

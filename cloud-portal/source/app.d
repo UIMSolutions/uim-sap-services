@@ -10,8 +10,9 @@ import uim.sap.cps;
 mixin(ShowModule!());
 
 @safe:
-
-void main() {
+version (unittest) {
+} else {
+  void main() {
   CPSConfig config = new CPSConfig();
   config.host = envOr("CPS_HOST", "0.0.0.0");
   config.port = readPort(envOr("CPS_PORT", "8089"), 8089);

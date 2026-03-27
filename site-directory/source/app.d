@@ -10,8 +10,9 @@ import uim.sap.sdi;
 mixin(ShowModule!());
 
 @safe:
-
-void main() {
+version (unittest) {
+} else {
+  void main() {
   SDIConfig config = new SDIConfig;
   config.host = envOr("SDI_HOST", "0.0.0.0");
   config.port = readPort(envOr("SDI_PORT", "8096"), 8096);

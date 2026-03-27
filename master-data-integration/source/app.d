@@ -9,8 +9,9 @@ import uim.sap.mdi;
 
 mixin(ShowModule!());
 
-@safe:
-void main() {
+@safe:version (unittest) {
+} else {
+  void main() {
   MDIConfig config = new MDIConfig();
   config.host = envOr("MDI_HOST", "0.0.0.0");
   config.port = readPort(envOr("MDI_PORT", "8092"), 8092);

@@ -5,8 +5,9 @@ import uim.sap.bas;
 mixin(ShowModule!());
 
 @safe:
-
-void main() {
+version (unittest) {
+} else {
+  void main() {
   BASConfig config = new BASConfig;
   config.host = envOr("BAS_HOST", "0.0.0.0");
   config.port = readPort(envOr("BAS_PORT", "8088"), 8088);

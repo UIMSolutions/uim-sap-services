@@ -9,8 +9,9 @@ import uim.sap.mdg;
 
 mixin(ShowModule!());
 
-@safe:
-void main() {
+@safe:version (unittest) {
+} else {
+  void main() {
   MDGConfig config = new MDGConfig();
   config.host = envOr("MDG_HOST", "0.0.0.0");
   config.port = readPort(envOr("MDG_PORT", "8087"), 8087);

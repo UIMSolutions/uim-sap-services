@@ -12,80 +12,86 @@ mixin(ShowModule!());
 @safe:
 
 class CONDestination : SAPTenantObject {
-mixin(SAPObjectTemplate!CONDestination);
+  mixin(SAPObjectTemplate!CONDestination);
+
+  override bool initialize(Json[string] initData = null) {
+    if (!super.initialize(initData)) {
+      return false;
+    }
+
+    if ("protocol" in initData && initData["protocol"].isString) {
+      protocol = normalizeProtocol(initData["protocol"].get!string);
+    }
+    if ("target_host" in initData && initData["target_host"].isString) {
+      targetHost = initData["target_host"].get!string;
+    }
+    if ("target_port" in initData && initData["target_port"].isInteger) {
+      auto value = initData["target_port"].get!long;
+      if (value > 0 && value <= ushort.max) {
+        targetPort = cast(ushort)value;
+      }
+    }
+    if ("target_path" in initData && initData["target_path"].isString) {
+      targetPath = initData["target_path"].get!string;
+    }
+    if ("on_premise" in initData && initData["on_premise"].isBoolean) {
+      onPremise = initData["on_premise"].get!bool;
+    }
+    if ("cloud_database" in initData && initData["cloud_database"].isBoolean) {
+      cloudDatabase = initData["cloud_database"].get!bool;
+    }
+    if ("identity_propagation_enabled" in initData && initData["identity_propagation_enabled"]
+      .isBoolean) {
+      identityPropagationEnabled = initData["identity_propagation_enabled"].get!bool;
+    }
+    if ("metadata" in initData && initData["metadata"].isObject) {
+      metadata = initData["metadata"];
+    } else {
+      metadata = Json.emptyObject;
+    }
+
+    if (protocol == "jdbc" || protocol == "odbc") {
+      cloudDatabase = true;
+    }
+
+    if (targetPort == 0 && protocol.length > 0) {
+      targetPort = defaultPortForProtocol(protocol);
+    }
+
+    return true;
+  }
 
   string name;
   string protocol;
   string targetHost;
   ushort targetPort;
   string targetPath;
-
   bool onPremise = true;
   bool cloudDatabase = false;
   bool identityPropagationEnabled = true;
-
   Json metadata;
 
-  override Json toJson()  {
+  override Json toJson() {
     return super.toJson
-    .set("name", name)
-    .set("protocol", protocol)
-    .set("target_host", targetHost)
-    .set("target_port", cast(long)targetPort)
-    .set("target_path", targetPath)
-    .set("on_premise", onPremise)
-    .set("cloud_database", cloudDatabase)
-    .set("identity_propagation_enabled", identityPropagationEnabled)
-    .set("metadata", metadata);
-  }
-}
-
-CONDestination destinationFromJson(UUID tenantId, string name, Json request) {
-  CONDestination destination;
-  destination.tenantId = tenantId;
-  destination.name = name;
-  destination.createdAt = Clock.currTime();
-  destination.updatedAt = destination.createdAt;
-  destination.targetPath = "/";
-
-  if ("protocol" in request && request["protocol"].isString) {
-    destination.protocol = normalizeProtocol(request["protocol"].get!string);
-  }
-  if ("target_host" in request && request["target_host"].isString) {
-    destination.targetHost = request["target_host"].get!string;
-  }
-  if ("target_port" in request && request["target_port"].isInteger) {
-    auto value = request["target_port"].get!long;
-    if (value > 0 && value <= ushort.max) {
-      destination.targetPort = cast(ushort)value;
-    }
-  }
-  if ("target_path" in request && request["target_path"].isString) {
-    destination.targetPath = request["target_path"].get!string;
-  }
-  if ("on_premise" in request && request["on_premise"].isBoolean) {
-    destination.onPremise = request["on_premise"].get!bool;
-  }
-  if ("cloud_database" in request && request["cloud_database"].isBoolean) {
-    destination.cloudDatabase = request["cloud_database"].get!bool;
-  }
-  if ("identity_propagation_enabled" in request && request["identity_propagation_enabled"]
-    .isBoolean) {
-    destination.identityPropagationEnabled = request["identity_propagation_enabled"].get!bool;
-  }
-  if ("metadata" in request && request["metadata"].isObject) {
-    destination.metadata = request["metadata"];
-  } else {
-    destination.metadata = Json.emptyObject;
+      .set("name", name)
+      .set("protocol", protocol)
+      .set("target_host", targetHost)
+      .set("target_port", cast(long)targetPort)
+      .set("target_path", targetPath)
+      .set("on_premise", onPremise)
+      .set("cloud_database", cloudDatabase)
+      .set("identity_propagation_enabled", identityPropagationEnabled)
+      .set("metadata", metadata);
   }
 
-  if (destination.protocol == "jdbc" || destination.protocol == "odbc") {
-    destination.cloudDatabase = true;
-  }
+  static CONDestination opCall(UUID tenantId, string name, Json request) {
+    CONDestination destination = new CONDestination(request);
+    destination.tenantId = tenantId;
+    destination.name = name;
+    destination.createdAt = Clock.currTime();
+    destination.updatedAt = destination.createdAt;
+    destination.targetPath = "/";
 
-  if (destination.targetPort == 0 && destination.protocol.length > 0) {
-    destination.targetPort = defaultPortForProtocol(destination.protocol);
+    return destination;
   }
-
-  return destination;
 }

@@ -6,8 +6,9 @@ module hanaclint.examples.basic_usage;
 import uim.sap.hanadb;
 import vibe.data.json : Json;
 import std.stdio : writeln;
-
-void main() {
+version (unittest) {
+} else {
+  void main() {
     auto cfg = HanaDBConfig.createBasic(
         "https://my-hana.example.com",
         "MY_SCHEMA",

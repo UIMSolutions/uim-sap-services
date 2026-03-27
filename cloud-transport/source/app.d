@@ -4,8 +4,9 @@ import uim.sap.ctm;
 mixin(ShowModule!());
 
 @safe:
-
-void main() {
+version (unittest) {
+} else {
+  void main() {
   CTMConfig config = new CTMConfig();
   config.host = envOr("CTM_HOST", "0.0.0.0");
   config.port = readPort(envOr("CTM_PORT", "8100"), 8100);

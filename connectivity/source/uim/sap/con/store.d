@@ -74,13 +74,13 @@ class CONStore : SAPStore {
     return values;
   }
 
-  string[] listTenantIds() {
-    string[] ids;
+  UUID[] listTenantIds() {
+    UUID[] ids;
     synchronized (_lock) {
       foreach (key; _destinations.keys) {
         auto separator = indexOfSeparator(key);
         if (separator > 0) {
-          auto tenantId = key[0 .. separator];
+          auto tenantId = UUID(key[0 .. separator]);
           if (!containsTenant(ids, tenantId)) {
             ids ~= tenantId;
           }
@@ -97,14 +97,8 @@ class CONStore : SAPStore {
   }
 
   size_t countDestinations(UUID tenantId) {
-    size_t total;
     synchronized (_lock) {
-      foreach (key; _destinations.keys) {
-        if (startsWithTenant(key, tenantId)) {
-          ++total;
-        }
-      }
+      return _destinations.keys.filter!(key => startsWithTenant(key, tenantId)).array.length;
     }
-    return total;
   }
 }

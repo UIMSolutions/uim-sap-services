@@ -9,8 +9,9 @@ import uim.sap.tkc;
 
 mixin(ShowModule!());
 
-@safe:
-void main() {
+@safe:version (unittest) {
+} else {
+  void main() {
   TKCConfig config = new TKCConfig();
   config.host = envOr("TKC_HOST", "0.0.0.0");
   config.port = readPort(envOr("TKC_PORT", "8096"), 8096);

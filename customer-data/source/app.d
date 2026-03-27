@@ -8,8 +8,9 @@ import vibe.core.core : runApplication;
 import vibe.data.json : Json;
 
 import uim.sap.cdc;
-
-void main() {
+version (unittest) {
+} else {
+  void main() {
   CDCConfig config = new CDCConfig();
   config.host = envOr("CDC_HOST", "0.0.0.0");
   config.port = readPort(envOr("CDC_PORT", "8097"), 8097);

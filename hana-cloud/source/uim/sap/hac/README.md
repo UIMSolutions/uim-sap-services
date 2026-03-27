@@ -37,8 +37,9 @@ Or to your `dub.json`:
 
 ```d
 import uim.sap;
-
-void main() {
+version (unittest) {
+} else {
+  void main() {
     // Create a client with basic authentication
     auto client = HanaClient.create(
         "myinstance.hanacloud.ondemand.com",
@@ -62,8 +63,9 @@ void main() {
 
 ```d
 import uim.sap;
-
-void main() {
+version (unittest) {
+} else {
+  void main() {
     auto client = HanaClient.create("host", "db", "user", "pass");
     client.connect();
     
@@ -91,8 +93,9 @@ void main() {
 
 ```d
 import uim.sap;
-
-void main() {
+version (unittest) {
+} else {
+  void main() {
     auto client = HanaClient.create("host", "db", "user", "pass");
     client.connect();
     
@@ -146,8 +149,9 @@ auto client = new HanaClient(config);
 ```d
 import uim.sap;
 import core.time : seconds;
-
-void main() {
+version (unittest) {
+} else {
+  void main() {
     ConnectionConfig config;
     config.host = "myinstance.hanacloud.ondemand.com";
     config.port = 443;

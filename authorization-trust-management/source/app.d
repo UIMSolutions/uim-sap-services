@@ -7,8 +7,9 @@ import std.stdio : writeln;
 import vibe.core.core : runApplication;
 
 import uim.sap.atm;
-
-void main() {
+version (unittest) {
+} else {
+  void main() {
     ATMConfig config = new ATMConfig;
     config.host = envOr("ATM_HOST", "0.0.0.0");
     config.port = readPort(envOr("ATM_PORT", "8088"), 8088);

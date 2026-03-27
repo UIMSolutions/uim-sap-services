@@ -1,8 +1,9 @@
 module app;
 
 import uim.sap.kym;
-
-void main() {
+version (unittest) {
+} else {
+  void main() {
     KYMConfig config = new KYMConfig();
     config.host = envOr("KYM_HOST", "0.0.0.0");
     config.port = readPort(envOr("KYM_PORT", "8088"), 8088);

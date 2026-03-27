@@ -7,8 +7,9 @@ import uim.sap.servicemanager;
 mixin(ShowModule!());
 
 @safe:
-
-void main() {
+version (unittest) {
+} else {
+  void main() {
   SVMConfig config = new SVMConfig();
   config.host = envOr("SVM_HOST", "0.0.0.0");
   config.port = readPort(envOr("SVM_PORT", "8111"), 8111);

@@ -10,8 +10,9 @@ import uim.sap.har;
 mixin(ShowModule!());
 
 @safe:
-
-void main() {
+version (unittest) {
+} else {
+  void main() {
   HARConfig config = new HARConfig;
   config.host = envOr("HTM_REPO_HOST", "0.0.0.0");
   config.port = readPort(envOr("HTM_REPO_PORT", "8094"), 8094);

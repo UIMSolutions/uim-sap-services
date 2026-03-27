@@ -10,8 +10,9 @@ import std.process : environment;
 import std.stdio : writeln;
 
 import uim.sap.clg;
-
-void main() {
+version (unittest) {
+} else {
+  void main() {
   CLGConfig config = new CLGConfig;
   config.host = envOr("CLG_HOST", "127.0.0.1");
   config.port = readPort(envOr("CLG_PORT", "8081"), 8081);

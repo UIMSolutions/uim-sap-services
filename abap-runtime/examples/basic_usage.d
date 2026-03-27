@@ -10,8 +10,9 @@ import std.stdio : writeln;
 import vibe.data.json : Json;
 
 import uim.sap.art;
-
-void main() {
+version (unittest) {
+} else {
+  void main() {
     ARTRuntimeConfig config = new ARTRuntimeConfig();
     config.host = "127.0.0.1";
     config.port = 8080;

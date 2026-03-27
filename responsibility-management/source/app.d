@@ -9,8 +9,9 @@ import uim.sap.rms;
 
 mixin(ShowModule!());
 
-@safe:
-void main() {
+@safe:version (unittest) {
+} else {
+  void main() {
   RMSConfig config = new RMSConfig();
   config.host = envOr("RMS_HOST", "0.0.0.0");
   config.port = readPort(envOr("RMS_PORT", "8095"), 8095);

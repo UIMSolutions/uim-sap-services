@@ -1,8 +1,9 @@
 module app;
 
 import uim.sap.dpi;
-
-void main() {
+version (unittest) {
+} else {
+  void main() {
   DPIConfig config = new DPIConfig();
   config.host = envOr("DPI_HOST", "0.0.0.0");
   config.port = readPort(envOr("DPI_PORT", "8093"), 8093);

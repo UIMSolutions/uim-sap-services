@@ -10,8 +10,9 @@ import uim.sap.cis;
 mixin(ShowModule!());
 
 @safe:
-
-void main() {
+version (unittest) {
+} else {
+  void main() {
   CISConfig config = new CISConfig();
   config.host = envOr("CIS_HOST", "0.0.0.0");
   config.port = readPort(envOr("CIS_PORT", "8088"), 8088);
