@@ -51,18 +51,18 @@ MOBNotification notificationFromJson(string appId, Json req) {
   n.sentAt = Clock.currTime();
 
   if ("title" in req && req["title"].isString)
-    n.title = req["title"].get!string;
+    n.title = req["title"].getString;
   if ("body" in req && req["body"].isString)
-    n.body_ = req["body"].get!string;
+    n.body_ = req["body"].getString;
   if ("priority" in req && req["priority"].isString)
     n.priority = parsePushPriority(req["priority"].get!string);
   if ("target_users" in req && req["target_users"].isArray) {
     foreach (v; req["target_users"])
       if (v.isString)
-        n.targetUsers ~= v.get!string;
+        n.targetUsers ~= v.getString;
   }
   if ("category" in req && req["category"].isString)
-    n.category = req["category"].get!string;
+    n.category = req["category"].getString;
   if ("custom_data" in req)
     n.customData = req["custom_data"];
   return n;

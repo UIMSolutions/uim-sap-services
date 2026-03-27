@@ -59,11 +59,11 @@ PDMNotification notificationFromJson(UUID notificationId, UUID subjectId, UUID t
     if ("channel" in req && req["channel"].isString)
         n.channel = parseNotificationChannel(req["channel"].get!string);
     if ("recipient" in req && req["recipient"].isString)
-        n.recipient = req["recipient"].get!string;
+        n.recipient = req["recipient"].getString;
     if ("subject" in req && req["subject"].isString)
-        n.subject = req["subject"].get!string;
+        n.subject = req["subject"].getString;
     if ("body" in req && req["body"].isString)
-        n.body_ = req["body"].get!string;
+        n.body_ = req["body"].getString;
     if ("template_id" in req && req["template_id"].isString)
         n.templateId = UUID(req["template_id"].get!string);
 

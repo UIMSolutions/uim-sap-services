@@ -61,15 +61,15 @@ class PDMDataRequest : SAPTenantObject {
     if ("request_type" in req && req["request_type"].isString)
       r.requestType = parseRequestType(req["request_type"].get!string);
     if ("description" in req && req["description"].isString)
-      r.description = req["description"].get!string;
+      r.description = req["description"].getString;
     if ("requested_by" in req && req["requested_by"].isString)
-      r.requestedBy = req["requested_by"].get!string;
+      r.requestedBy = req["requested_by"].getString;
     if ("assigned_to" in req && req["assigned_to"].isString)
-      r.assignedTo = req["assigned_to"].get!string;
+      r.assignedTo = req["assigned_to"].getString;
     if ("affected_applications" in req && req["affected_applications"].isArray) {
       foreach (v; req["affected_applications"].toArray)
         if (v.isString)
-          r.affectedApplications ~= v.get!string;
+          r.affectedApplications ~= v.getString;
     }
 
     // Default deadline: 30 days from creation (GDPR requirement)

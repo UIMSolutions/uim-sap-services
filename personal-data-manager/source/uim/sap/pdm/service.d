@@ -150,19 +150,19 @@ class PDMService : SAPService {
 
     PDMDataSubject s = _store.getSubject(tenantId, subjectId);
     if ("first_name" in req && req["first_name"].isString)
-      s.firstName = req["first_name"].get!string;
+      s.firstName = req["first_name"].getString;
     if ("last_name" in req && req["last_name"].isString)
-      s.lastName = req["last_name"].get!string;
+      s.lastName = req["last_name"].getString;
     if ("display_name" in req && req["display_name"].isString)
-      s.displayName = req["display_name"].get!string;
+      s.displayName = req["display_name"].getString;
     if ("email" in req && req["email"].isString)
-      s.email = req["email"].get!string;
+      s.email = req["email"].getString;
     if ("phone" in req && req["phone"].isString)
-      s.phone = req["phone"].get!string;
+      s.phone = req["phone"].getString;
     if ("company_name" in req && req["company_name"].isString)
-      s.companyName = req["company_name"].get!string;
+      s.companyName = req["company_name"].getString;
     if ("department" in req && req["department"].isString)
-      s.department = req["department"].get!string;
+      s.department = req["department"].getString;
     s.updatedAt = Clock.currTime();
     _store.upsertSubject(s);
     return s.toJson();
@@ -360,7 +360,7 @@ class PDMService : SAPService {
     r.completedAt = Clock.currTime();
     r.updatedAt = r.completedAt;
     if ("resolution" in req && req["resolution"].isString)
-      r.resolution = req["resolution"].get!string;
+      r.resolution = req["resolution"].getString;
     _store.upsertRequest(r);
     return r.toJson();
   }
@@ -378,7 +378,7 @@ class PDMService : SAPService {
     r.status = PDMRequestStatus.rejected;
     r.updatedAt = Clock.currTime();
     if ("resolution" in req && req["resolution"].isString)
-      r.resolution = req["resolution"].get!string;
+      r.resolution = req["resolution"].getString;
     _store.upsertRequest(r);
     return r.toJson();
   }

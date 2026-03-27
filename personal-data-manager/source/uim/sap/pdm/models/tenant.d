@@ -52,12 +52,12 @@ class PDMTenant : SAPTenantObject {
     t.name = "name" in req && req["name"].isString 
       ? req["name"].get!string : tenantId.toString;
     if ("description" in req && req["description"].isString)
-        t.description = req["description"].get!string;
+        t.description = req["description"].getString;
     if ("contact_email" in req && req["contact_email"].isString)
-        t.contactEmail = req["contact_email"].get!string;
+        t.contactEmail = req["contact_email"].getString;
     if ("metadata" in req && req["metadata"].type == Json.Type.object) {
         foreach (string k, v; req["metadata"].toMap)
-            if (v.isString) t.metadata[k] = v.get!string;
+            if (v.isString) t.metadata[k] = v.getString;
     }
 
     return t;

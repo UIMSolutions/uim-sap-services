@@ -55,11 +55,11 @@ MOBApplication applicationFromJson(string appId, Json req) {
     app.updatedAt = app.createdAt;
 
     if ("name" in req && req["name"].isString)
-        app.name = req["name"].get!string;
+        app.name = req["name"].getString;
     else
         app.name = appId;
     if ("description" in req && req["description"].isString)
-        app.description = req["description"].get!string;
+        app.description = req["description"].getString;
     if ("app_type" in req && req["app_type"].isString)
         app.appType = parseAppType(req["app_type"].get!string);
     if ("platform" in req && req["platform"].isString)
@@ -67,12 +67,12 @@ MOBApplication applicationFromJson(string appId, Json req) {
     if ("sdk_type" in req && req["sdk_type"].isString)
         app.sdkType = parseSdkType(req["sdk_type"].get!string);
     if ("bundle_id" in req && req["bundle_id"].isString)
-        app.bundleId = req["bundle_id"].get!string;
+        app.bundleId = req["bundle_id"].getString;
     if ("backend_url" in req && req["backend_url"].isString)
-        app.backendUrl = req["backend_url"].get!string;
+        app.backendUrl = req["backend_url"].getString;
     if ("metadata" in req && req["metadata"].type == Json.Type.object) {
         foreach (string k, v; req["metadata"])
-            if (v.isString) app.metadata[k] = v.get!string;
+            if (v.isString) app.metadata[k] = v.getString;
     }
     return app;
 }

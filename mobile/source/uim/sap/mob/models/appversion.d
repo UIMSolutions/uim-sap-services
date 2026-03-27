@@ -43,16 +43,16 @@ MOBAppVersion appVersionFromJson(string appId, string versionId, Json req) {
   ver.createdAt = Clock.currTime();
 
   if ("release_notes" in req && req["release_notes"].isString)
-    ver.releaseNotes = req["release_notes"].get!string;
+    ver.releaseNotes = req["release_notes"].getString;
   if ("package_url" in req && req["package_url"].isString)
-    ver.packageUrl = req["package_url"].get!string;
+    ver.packageUrl = req["package_url"].getString;
   if ("package_size_bytes" in req && req["package_size_bytes"].isInteger)
     ver.packageSizeBytes = cast(size_t)req["package_size_bytes"].get!long;
   if ("checksum" in req && req["checksum"].isString)
-    ver.checksum = req["checksum"].get!string;
+    ver.checksum = req["checksum"].getString;
   if ("mandatory_update" in req && req["mandatory_update"].isBoolean)
     ver.mandatoryUpdate = req["mandatory_update"].get!bool;
   if ("min_os_version" in req && req["min_os_version"].isString)
-    ver.minOsVersion = req["min_os_version"].get!string;
+    ver.minOsVersion = req["min_os_version"].getString;
   return ver;
 }

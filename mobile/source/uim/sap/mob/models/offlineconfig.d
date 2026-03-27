@@ -54,7 +54,7 @@ class MOBOfflineConfig : SAPObject {
   if ("entity_sets" in req && req["entity_sets"].isArray) {
     foreach (v; req["entity_sets"])
       if (v.isString)
-        oc.entitySets ~= v.get!string;
+        oc.entitySets ~= v.getString;
   }
   if ("max_offline_store_mb" in req && req["max_offline_store_mb"].isInteger)
     oc.maxOfflineStoreMB = cast(size_t)req["max_offline_store_mb"].get!long;
@@ -63,7 +63,7 @@ class MOBOfflineConfig : SAPObject {
   if ("conflict_detection" in req && req["conflict_detection"].isBoolean)
     oc.conflictDetection = req["conflict_detection"].get!bool;
   if ("odata_service_url" in req && req["odata_service_url"].isString)
-    oc.odataServiceUrl = req["odata_service_url"].get!string;
+    oc.odataServiceUrl = req["odata_service_url"].getString;
   return oc;
 }
 }

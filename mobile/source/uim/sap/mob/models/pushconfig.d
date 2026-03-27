@@ -47,15 +47,15 @@ MOBPushConfig pushConfigFromJson(string appId, Json req) {
   if ("provider" in req && req["provider"].isString)
     pc.provider = parsePushProvider(req["provider"].get!string);
   if ("server_key" in req && req["server_key"].isString)
-    pc.serverKey = req["server_key"].get!string;
+    pc.serverKey = req["server_key"].getString;
   if ("sender_id" in req && req["sender_id"].isString)
-    pc.senderId = req["sender_id"].get!string;
+    pc.senderId = req["sender_id"].getString;
   if ("apns_team_id" in req && req["apns_team_id"].isString)
-    pc.apnsTeamId = req["apns_team_id"].get!string;
+    pc.apnsTeamId = req["apns_team_id"].getString;
   if ("apns_key_id" in req && req["apns_key_id"].isString)
-    pc.apnsKeyId = req["apns_key_id"].get!string;
+    pc.apnsKeyId = req["apns_key_id"].getString;
   if ("apns_bundle_id" in req && req["apns_bundle_id"].isString)
-    pc.apnsBundleId = req["apns_bundle_id"].get!string;
+    pc.apnsBundleId = req["apns_bundle_id"].getString;
   if ("sandbox" in req && req["sandbox"].isBoolean)
     pc.sandbox = req["sandbox"].get!bool;
   return pc;

@@ -68,19 +68,19 @@ PDMPersonalDataRecord recordFromJson(UUID recordId, UUID subjectId, UUID tenantI
   if ("legal_basis" in req && req["legal_basis"].isString)
     r.legalBasis = parseLegalBasis(req["legal_basis"].get!string);
   if ("field_name" in req && req["field_name"].isString)
-    r.fieldName = req["field_name"].get!string;
+    r.fieldName = req["field_name"].getString;
   if ("field_value" in req && req["field_value"].isString)
-    r.fieldValue = req["field_value"].get!string;
+    r.fieldValue = req["field_value"].getString;
   if ("application_name" in req && req["application_name"].isString)
-    r.applicationName = req["application_name"].get!string;
+    r.applicationName = req["application_name"].getString;
   if ("application_id" in req && req["application_id"].isString)
-    r.applicationId = req["application_id"].get!string;
+    r.applicationId = req["application_id"].getString;
   if ("data_store" in req && req["data_store"].isString)
-    r.dataStore = req["data_store"].get!string;
+    r.dataStore = req["data_store"].getString;
   if ("sensitive" in req && req["sensitive"].isBoolean)
     r.sensitive = req["sensitive"].get!bool;
   if ("retention_period" in req && req["retention_period"].isString)
-    r.retentionPeriod = req["retention_period"].get!string;
+    r.retentionPeriod = req["retention_period"].getString;
 
   return r;
 }

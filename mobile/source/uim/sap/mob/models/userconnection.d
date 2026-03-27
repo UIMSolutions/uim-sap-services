@@ -44,16 +44,16 @@ MOBUserConnection userConnectionFromJson(string appId, string userId, Json req) 
   uc.lastAccessAt = uc.registeredAt;
 
   if ("device_id" in req && req["device_id"].isString)
-    uc.deviceId = req["device_id"].get!string;
+    uc.deviceId = req["device_id"].getString;
   if ("device_model" in req && req["device_model"].isString)
-    uc.deviceModel = req["device_model"].get!string;
+    uc.deviceModel = req["device_model"].getString;
   if ("os_version" in req && req["os_version"].isString)
-    uc.osVersion = req["os_version"].get!string;
+    uc.osVersion = req["os_version"].getString;
   if ("app_version" in req && req["app_version"].isString)
-    uc.appVersion = req["app_version"].get!string;
+    uc.appVersion = req["app_version"].getString;
   if ("platform" in req && req["platform"].isString)
     uc.platform = parsePlatform(req["platform"].get!string);
   if ("push_token" in req && req["push_token"].isString)
-    uc.pushToken = req["push_token"].get!string;
+    uc.pushToken = req["push_token"].getString;
   return uc;
 }

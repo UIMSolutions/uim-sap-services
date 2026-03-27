@@ -83,7 +83,7 @@ class PDMDataUsage : SAPTenantObject {
     u.lastAccessedAt = u.createdAt;
 
     if ("application_name" in req && req["application_name"].isString)
-      u.applicationName = req["application_name"].get!string;
+      u.applicationName = req["application_name"].getString;
     if ("application_id" in req && req["application_id"].isString)
       u.applicationId = UUID(req["application_id"].get!string);
     if ("data_category" in req && req["data_category"].isString)
@@ -93,9 +93,9 @@ class PDMDataUsage : SAPTenantObject {
     if ("legal_basis" in req && req["legal_basis"].isString)
       u.legalBasis = parseBasis(req["legal_basis"].get!string);
     if ("description" in req && req["description"].isString)
-      u.description = req["description"].get!string;
+      u.description = req["description"].getString;
     if ("retention_period" in req && req["retention_period"].isString)
-      u.retentionPeriod = req["retention_period"].get!string;
+      u.retentionPeriod = req["retention_period"].getString;
 
     return u;
   }

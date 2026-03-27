@@ -75,7 +75,7 @@ MOBSecurityPolicy securityPolicyFromJson(string appId, Json req) {
   if ("allowed_domains" in req && req["allowed_domains"].isArray) {
     foreach (v; req["allowed_domains"])
       if (v.isString)
-        sp.allowedDomains ~= v.get!string;
+        sp.allowedDomains ~= v.getString;
   }
   if ("session_timeout_mins" in req && req["session_timeout_mins"].isInteger)
     sp.sessionTimeoutMins = cast(size_t)req["session_timeout_mins"].get!long;

@@ -75,29 +75,29 @@ class PDMDataSubject : SAPTenantObject {
     if ("subject_type" in req && req["subject_type"].isString)
       s.subjectType = parseSubjectType(req["subject_type"].get!string);
     if ("first_name" in req && req["first_name"].isString)
-      s.firstName = req["first_name"].get!string;
+      s.firstName = req["first_name"].getString;
     if ("last_name" in req && req["last_name"].isString)
-      s.lastName = req["last_name"].get!string;
+      s.lastName = req["last_name"].getString;
     if ("display_name" in req && req["display_name"].isString)
-      s.displayName = req["display_name"].get!string;
+      s.displayName = req["display_name"].getString;
     if ("email" in req && req["email"].isString)
-      s.email = req["email"].get!string;
+      s.email = req["email"].getString;
     if ("phone" in req && req["phone"].isString)
-      s.phone = req["phone"].get!string;
+      s.phone = req["phone"].getString;
     if ("company_name" in req && req["company_name"].isString)
-      s.companyName = req["company_name"].get!string;
+      s.companyName = req["company_name"].getString;
     if ("company_id" in req && req["company_id"].isString)
       s.companyId = UUID(req["company_id"].get!string);
     if ("department" in req && req["department"].isString)
-      s.department = req["department"].get!string;
+      s.department = req["department"].getString;
     if ("external_id" in req && req["external_id"].isString)
       s.externalId = UUID(req["external_id"].get!string);
     if ("source_system" in req && req["source_system"].isString)
-      s.sourceSystem = req["source_system"].get!string;
+      s.sourceSystem = req["source_system"].getString;
     if ("metadata" in req && req["metadata"].type == Json.Type.object) {
       foreach (string k, v; req["metadata"].toMap)
         if (v.isString)
-          s.metadata[k] = v.get!string;
+          s.metadata[k] = v.getString;
     }
 
     if (s.displayName.length == 0 && s.firstName.length > 0)
