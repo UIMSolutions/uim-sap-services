@@ -49,7 +49,7 @@ class CONConfig : SAPConfig {
       authToken(initData.getString("authToken", ""));
     }
 
-    connectorLocationId(initData.getString("connectorLocationId", "default-location"));
+    connectorLocationId(initData.getString("connectorLocationId", defaultLocationId.toString())); // "default-location"
 
     return true;
   }

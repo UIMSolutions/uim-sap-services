@@ -18,3 +18,9 @@ public {
 }
 
 enum UIM_CON_VERSION = "1.0.0";
+
+import uim.sap.service;
+UUID defaultLocationId;
+static this() {
+  defaultLocationId = randomUUID();
+}

@@ -74,7 +74,7 @@ class CONService : SAPService {
     validateName(destinationName, "Destination name");
 
     auto destination = _store.getDestination(tenantId, destinationName);
-    if (destination.name.length == 0) {
+    if (destination is null || destination.name.length == 0) {
       throw new CONNotFoundException("Destination", tenantId.toString ~ "/" ~ destinationName);
     }
 
@@ -132,7 +132,7 @@ class CONService : SAPService {
     validateName(destinationName, "Destination name");
 
     auto destination = _store.getDestination(tenantId, destinationName);
-    if (destination.name.length == 0) {
+    if (destination is null || destination.name.length == 0) {
       throw new CONNotFoundException("Destination", tenantId.toString ~ "/" ~ destinationName);
     }
 

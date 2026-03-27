@@ -8,7 +8,8 @@ module app;
 import uim.sap.con;
 mixin(ShowModule!());
 
-@safe:version (unittest) {
+@safe:
+version (unittest) {
 } else {
   void main() {
   CONConfig config = new CONConfig();
@@ -17,7 +18,7 @@ mixin(ShowModule!());
   config.basePath = envOr("CON_BASE_PATH", "/api/con");
   config.serviceName = envOr("CON_SERVICE_NAME", "uim-con");
   config.serviceVersion = envOr("CON_SERVICE_VERSION", UIM_CON_VERSION);
-  config.connectorLocationId = envOr("CON_CONNECTOR_LOCATION_ID", "default-location");
+  config.connectorLocationId = envOr("CON_CONNECTOR_LOCATION_ID", defaultLocationId.toString()); // "default-location"
 
   auto token = envOr("CON_AUTH_TOKEN", "");
   if (token.length > 0) {

@@ -22,18 +22,15 @@ class CONDestination : SAPTenantObject {
     if ("protocol" in initData && initData["protocol"].isString) {
       protocol = normalizeProtocol(initData["protocol"].get!string);
     }
-    if ("target_host" in initData && initData["target_host"].isString) {
-      targetHost = initData["target_host"].get!string;
-    }
+    targetHost = initData.getString("target_host", "");
     if ("target_port" in initData && initData["target_port"].isInteger) {
       auto value = initData["target_port"].get!long;
       if (value > 0 && value <= ushort.max) {
         targetPort = cast(ushort)value;
       }
     }
-    if ("target_path" in initData && initData["target_path"].isString) {
-      targetPath = initData["target_path"].get!string;
-    }
+    targetPath = initData.getString("target_path", "/");
+
     if ("on_premise" in initData && initData["on_premise"].isBoolean) {
       onPremise = initData["on_premise"].get!bool;
     }
@@ -56,6 +53,18 @@ class CONDestination : SAPTenantObject {
 
     if (targetPort == 0 && protocol.length > 0) {
       targetPort = defaultPortForProtocol(protocol);
+    }
+
+    if ("created_at" in initData && initData["created_at"].isString) {
+      createdAt = SysTime.fromISOExtString(initData["created_at"].getString);
+    } else {
+      createdAt = Clock.currTime();
+    }
+
+    if ("updated_at" in initData && initData["updated_at"].isString) {
+      updatedAt = SysTime.fromISOExtString(initData["updated_at"].getString);
+    } else {
+      updatedAt = createdAt;
     }
 
     return true;
@@ -88,9 +97,16 @@ class CONDestination : SAPTenantObject {
     CONDestination destination = new CONDestination(request);
     destination.tenantId = tenantId;
     destination.name = name;
-    destination.createdAt = Clock.currTime();
-    destination.updatedAt = destination.createdAt;
-    destination.targetPath = "/";
+
+    return destination;
+  }
+
+  static CONDestination opCall(UUID tenantId, string name, string path = "/", bool premise = true) {
+    CONDestination destination = new CONDestination();
+    destination.tenantId = tenantId;
+    destination.name = name;
+    destination.targetPath = path;
+    destination.onPremise = premise;
 
     return destination;
   }

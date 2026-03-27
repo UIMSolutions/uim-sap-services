@@ -12,12 +12,12 @@ mixin(ShowModule!());
 @safe:
 
 class CONTenantSummary : SAPTenantObject {
-mixin(SAPObjectTemplate!CONTenantSummary);
+  mixin(SAPObjectTemplate!CONTenantSummary);
 
-    size_t destinations;
+  size_t destinations;
 
-    override Json toJson()  {
-        return super.toJson()
-        .set("destinations", cast(long)destinations);
-    }
+  override Json toJson() {
+    return super.toJson()
+      .set("destinations", cast(long)destinations);
+  }
 }
