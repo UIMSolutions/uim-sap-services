@@ -49,13 +49,13 @@ class DMADocumentVersion : SAPTenantObject {
     }
 
     if ("comment" in request && request["comment"].isString)
-      v.comment = request["comment"].get!string;
+      v.comment = request["comment"].getString;
     if ("size_bytes" in request && request["size_bytes"].isInteger)
       v.sizeBytes = request["size_bytes"].get!long;
     if ("mime_type" in request && request["mime_type"].isString)
-      v.mimeType = request["mime_type"].get!string;
+      v.mimeType = request["mime_type"].getString;
     if ("created_by" in request && request["created_by"].isString)
-      v.createdBy = request["created_by"].get!string;
+      v.createdBy = request["created_by"].getString;
     if ("is_major" in request && request["is_major"].isBoolean) {
       v.isMajor = request["is_major"].get!bool;
       if (v.isMajor) {
@@ -64,7 +64,7 @@ class DMADocumentVersion : SAPTenantObject {
     }
     
     if ("version_label" in request && request["version_label"].isString)
-      v.versionLabel = request["version_label"].get!string;
+      v.versionLabel = request["version_label"].getString;
 
     return v;
   }

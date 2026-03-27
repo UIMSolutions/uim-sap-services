@@ -30,13 +30,13 @@ class EVMSubscription : SAPTenantObject {
     s.subscriptionId = randomUUID();
 
     if ("topic_name" in request && request["topic_name"].isString) {
-      s.topicName = request["topic_name"].get!string;
+      s.topicName = request["topic_name"].getString;
     }
     if ("queue_name" in request && request["queue_name"].isString) {
-      s.queueName = request["queue_name"].get!string;
+      s.queueName = request["queue_name"].getString;
     }
     if ("delivery_mode" in request && request["delivery_mode"].isString) {
-      s.deliveryMode = request["delivery_mode"].get!string;
+      s.deliveryMode = request["delivery_mode"].getString;
     }
 
     s.createdAt = Clock.currTime();

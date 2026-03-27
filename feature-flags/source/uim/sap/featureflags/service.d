@@ -100,17 +100,17 @@ class FFLService : SAPService {
 
     // Apply partial updates
     if ("description" in request && request["description"].isString) {
-      existing.description = request["description"].get!string;
+      existing.description = request["description"].getString;
     }
     if ("enabled" in request && request["enabled"].isBoolean) {
       existing.enabled = request["enabled"].get!bool;
     }
     if ("status" in request && request["status"].isString) {
-      existing.status = request["status"].get!string;
+      existing.status = request["status"].getString;
     }
     if ("default_variation_id" in request && request["default_variation_id"].type == Json
       .Type.string) {
-      existing.defaultVariationId = request["default_variation_id"].get!string;
+      existing.defaultVariationId = request["default_variation_id"].getString;
     }
 
     // Replace variations if supplied

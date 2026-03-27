@@ -241,10 +241,10 @@ class PersonalizationService : SAPService {
         
         if ("d" in json) {
             auto d = json["d"];
-            if ("Theme" in d) settings.theme = d["Theme"].get!string;
-            if ("Language" in d) settings.language = d["Language"].get!string;
-            if ("DateFormat" in d) settings.dateFormat = d["DateFormat"].get!string;
-            if ("TimeFormat" in d) settings.timeFormat = d["TimeFormat"].get!string;
+            if ("Theme" in d) settings.theme = d["Theme"].getString;
+            if ("Language" in d) settings.language = d["Language"].getString;
+            if ("DateFormat" in d) settings.dateFormat = d["DateFormat"].getString;
+            if ("TimeFormat" in d) settings.timeFormat = d["TimeFormat"].getString;
         }
         
         return settings;
@@ -264,8 +264,8 @@ class PersonalizationService : SAPService {
         
         if ("d" in json) {
             auto d = json["d"];
-            if ("VariantName" in d) variant.name = d["VariantName"].get!string;
-            if ("VariantKey" in d) variant.key = d["VariantKey"].get!string;
+            if ("VariantName" in d) variant.name = d["VariantName"].getString;
+            if ("VariantKey" in d) variant.key = d["VariantKey"].getString;
             if ("VariantData" in d) variant.data = parseJsonString(d["VariantData"].get!string);
             if ("IsDefault" in d) variant.isDefault = d["IsDefault"].get!bool;
         }

@@ -34,13 +34,13 @@ class EVMWebhook : SAPTenantObject {
     w.webhookId = randomUUID();
 
     if ("queue_name" in request && request["queue_name"].isString) {
-      w.queueName = request["queue_name"].get!string;
+      w.queueName = request["queue_name"].getString;
     }
     if ("callback_url" in request && request["callback_url"].isString) {
-      w.callbackUrl = request["callback_url"].get!string;
+      w.callbackUrl = request["callback_url"].getString;
     }
     if ("method" in request && request["method"].isString) {
-      w.method = request["method"].get!string;
+      w.method = request["method"].getString;
     }
 
     w.createdAt = Clock.currTime();

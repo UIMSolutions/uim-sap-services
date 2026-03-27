@@ -143,9 +143,9 @@ class DMAService : SAPService {
       throw new DMANotFoundException("Folder", folderId);
 
     if ("name" in request && request["name"].isString)
-      folder.name = request["name"].get!string;
+      folder.name = request["name"].getString;
     if ("description" in request && request["description"].isString)
-      folder.description = request["description"].get!string;
+      folder.description = request["description"].getString;
     if ("properties" in request && request["properties"].isObject)
       folder.properties = request["properties"];
 
@@ -207,7 +207,7 @@ class DMAService : SAPService {
 
     string targetParentId = "";
     if ("target_folder_id" in request && request["target_folder_id"].isString)
-      targetParentId = request["target_folder_id"].get!string;
+      targetParentId = request["target_folder_id"].getString;
 
     if (targetParentId.length > 0) {
       ensureFolder(targetParentId);
@@ -236,7 +236,7 @@ class DMAService : SAPService {
 
     string targetParentId = "";
     if ("target_folder_id" in request && request["target_folder_id"].isString)
-      targetParentId = request["target_folder_id"].get!string;
+      targetParentId = request["target_folder_id"].getString;
     if (targetParentId.length > 0)
       ensureFolder(targetParentId);
 
@@ -294,7 +294,7 @@ class DMAService : SAPService {
 
       // Store initial content if provided
       if ("content" in request && request["content"].isString) {
-        auto content = request["content"].get!string;
+        auto content = request["content"].getString;
         if (saved.encrypted) {
           import std.string : representation;
 
@@ -334,20 +334,20 @@ class DMAService : SAPService {
     if (doc.status == DocumentStatus.checkedOut) {
       string actor = "system";
       if ("modified_by" in request && request["modified_by"].isString)
-        actor = request["modified_by"].get!string;
+        actor = request["modified_by"].getString;
       if (doc.checkedOutBy != actor)
         throw new DMAConflictException(
           "Document is checked out by " ~ doc.checkedOutBy);
     }
 
     if ("name" in request && request["name"].isString)
-      doc.name = request["name"].get!string;
+      doc.name = request["name"].getString;
     if ("description" in request && request["description"].isString)
-      doc.description = request["description"].get!string;
+      doc.description = request["description"].getString;
     if ("mime_type" in request && request["mime_type"].isString)
-      doc.mimeType = request["mime_type"].get!string;
+      doc.mimeType = request["mime_type"].getString;
     if ("modified_by" in request && request["modified_by"].isString)
-      doc.modifiedBy = request["modified_by"].get!string;
+      doc.modifiedBy = request["modified_by"].getString;
 
     auto saved = _store.updateDocument(doc);
 
@@ -381,7 +381,7 @@ class DMAService : SAPService {
 
     string targetFolderId = "";
     if ("target_folder_id" in request && request["target_folder_id"].isString)
-      targetFolderId = request["target_folder_id"].get!string;
+      targetFolderId = request["target_folder_id"].getString;
     if (targetFolderId.length > 0)
       ensureFolder(targetFolderId);
 
@@ -400,7 +400,7 @@ class DMAService : SAPService {
 
     string targetFolderId = "";
     if ("target_folder_id" in request && request["target_folder_id"].isString)
-      targetFolderId = request["target_folder_id"].get!string;
+      targetFolderId = request["target_folder_id"].getString;
     if (targetFolderId.length > 0)
       ensureFolder(targetFolderId);
 
@@ -508,7 +508,7 @@ class DMAService : SAPService {
     if ("properties" in request && request["properties"].isObject)
       doc.properties = request["properties"];
     if ("description" in request && request["description"].isString)
-      doc.description = request["description"].get!string;
+      doc.description = request["description"].getString;
 
     auto saved = _store.updateDocument(doc);
 
@@ -545,7 +545,7 @@ class DMAService : SAPService {
     if ("properties" in request && request["properties"].isObject)
       folder.properties = request["properties"];
     if ("description" in request && request["description"].isString)
-      folder.description = request["description"].get!string;
+      folder.description = request["description"].getString;
 
     auto saved = _store.updateFolder(folder);
 
@@ -586,7 +586,7 @@ class DMAService : SAPService {
     if (doc.status == DocumentStatus.checkedOut) {
       string actor = "system";
       if ("created_by" in request && request["created_by"].isString)
-        actor = request["created_by"].get!string;
+        actor = request["created_by"].getString;
       if (doc.checkedOutBy != actor)
         throw new DMAConflictException(
           "Document is checked out by " ~ doc.checkedOutBy);
@@ -598,7 +598,7 @@ class DMAService : SAPService {
 
     // Store content if provided
     if ("content" in request && request["content"].isString) {
-      auto content = request["content"].get!string;
+      auto content = request["content"].getString;
       if (doc.encrypted) {
         import std.string : representation;
 
@@ -652,7 +652,7 @@ class DMAService : SAPService {
 
     string actor = "system";
     if ("user" in request && request["user"].isString)
-      actor = request["user"].get!string;
+      actor = request["user"].getString;
 
     doc.status = DocumentStatus.checkedOut;
     doc.checkedOutBy = actor;
@@ -676,7 +676,7 @@ class DMAService : SAPService {
 
     string actor = "system";
     if ("user" in request && request["user"].isString)
-      actor = request["user"].get!string;
+      actor = request["user"].getString;
     if (doc.checkedOutBy != actor)
       throw new DMAConflictException(
         "Document was checked out by " ~ doc.checkedOutBy ~ ", not " ~ actor);
@@ -692,7 +692,7 @@ class DMAService : SAPService {
       ver.createdBy = actor;
 
       if ("content" in request && request["content"].isString) {
-        auto content = request["content"].get!string;
+        auto content = request["content"].getString;
         if (doc.encrypted) {
           import std.string : representation;
 

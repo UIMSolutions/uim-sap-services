@@ -67,15 +67,15 @@ class DMADocument : SAPObject {
   d.latestVersionId = randomUUID();
 
   if ("name" in request && request["name"].isString)
-    d.name = request["name"].get!string;
+    d.name = request["name"].getString;
   if ("description" in request && request["description"].isString)
-    d.description = request["description"].get!string;
+    d.description = request["description"].getString;
   if ("mime_type" in request && request["mime_type"].isString)
-    d.mimeType = request["mime_type"].get!string;
+    d.mimeType = request["mime_type"].getString;
   if ("size_bytes" in request && request["size_bytes"].isInteger)
     d.sizeBytes = request["size_bytes"].get!long;
   if ("created_by" in request && request["created_by"].isString)
-    d.createdBy = request["created_by"].get!string;
+    d.createdBy = request["created_by"].getString;
   if ("properties" in request && request["properties"].isObject)
     d.properties = request["properties"];
 

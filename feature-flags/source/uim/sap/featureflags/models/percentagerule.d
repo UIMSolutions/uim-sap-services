@@ -54,7 +54,7 @@ class FFLPercentageRule : SAPObject {
         foreach (item; request["entries"]) {
           FFLPercentageEntry entry;
           if ("variation_id" in item && item["variation_id"].isString) {
-            entry.variationId = item["variation_id"].get!string;
+            entry.variationId = item["variation_id"].getString;
           }
           if ("weight" in item && item["weight"].isInteger) {
             entry.weight = cast(uint)item["weight"].get!long;
@@ -64,7 +64,7 @@ class FFLPercentageRule : SAPObject {
       }();
     }
     if ("rule_id" in request && request["rule_id"].isString) {
-      r.ruleId = request["rule_id"].get!string;
+      r.ruleId = request["rule_id"].getString;
     }
 
     return r;

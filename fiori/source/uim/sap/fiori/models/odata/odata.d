@@ -58,21 +58,21 @@ struct ODataError {
             auto errorObj = json["error"];
             
             if ("code" in errorObj) {
-                error.code = errorObj["code"].get!string;
+                error.code = errorObj["code"].getString;
             }
             
             if ("message" in errorObj) {
                 if (errorObj["message"].isObject && "value" in errorObj["message"]) {
                     // OData v2
-                    error.message = errorObj["message"]["value"].get!string;
+                    error.message = errorObj["message"]["value"].getString;
                 } else if (errorObj["message"].isString) {
                     // OData v4
-                    error.message = errorObj["message"].get!string;
+                    error.message = errorObj["message"].getString;
                 }
             }
             
             if ("target" in errorObj) {
-                error.target = errorObj["target"].get!string;
+                error.target = errorObj["target"].getString;
             }
             
             if ("innererror" in errorObj || "innerError" in errorObj) {

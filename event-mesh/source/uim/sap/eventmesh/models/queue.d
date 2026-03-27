@@ -34,7 +34,7 @@ EVMQueue queueFromJson(UUID tenantId, Json request) {
   q.tenantId = tenantId;
 
   if ("queue_name" in request && request["queue_name"].isString) {
-    q.queueName = request["queue_name"].get!string;
+    q.queueName = request["queue_name"].getString;
   }
   if ("max_depth" in request && request["max_depth"].isInteger) {
     q.maxDepth = request["max_depth"].get!long;

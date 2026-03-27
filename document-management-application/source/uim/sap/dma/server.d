@@ -149,7 +149,7 @@ class DMAServer : SAPServer {
       string folderId = "";
       auto body_ = req.json;
       if ("folder_id" in body_ && body_["folder_id"].isString)
-        folderId = body_["folder_id"].get!string;
+        folderId = body_["folder_id"].getString;
       res.writeJsonBody(_service.listDocumentsSorted(repoId, folderId, body_), 200);
       return true;
     }
@@ -170,7 +170,7 @@ class DMAServer : SAPServer {
         parentId = req.query["parent_folder_id"];
       auto body_ = req.json;
       if ("parent_folder_id" in body_ && body_["parent_folder_id"].isString)
-        parentId = body_["parent_folder_id"].get!string;
+        parentId = body_["parent_folder_id"].getString;
       res.writeJsonBody(_service.createFolder(repoId, parentId, body_), 201);
       return true;
     }
@@ -190,7 +190,7 @@ class DMAServer : SAPServer {
         folderId = req.query["folder_id"];
       auto body_ = req.json;
       if ("folder_id" in body_ && body_["folder_id"].isString)
-        folderId = body_["folder_id"].get!string;
+        folderId = body_["folder_id"].getString;
       res.writeJsonBody(_service.createDocument(repoId, folderId, body_), 201);
       return true;
     }

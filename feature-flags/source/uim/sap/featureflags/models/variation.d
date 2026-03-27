@@ -38,16 +38,16 @@ class FFLVariation : SAPObject {
     v.variationId = randomUUID();
 
     if ("name" in request && request["name"].isString) {
-        v.name = request["name"].get!string;
+        v.name = request["name"].getString;
     }
     if ("value" in request && request["value"].isString) {
-        v.value = request["value"].get!string;
+        v.value = request["value"].getString;
     }
     if ("weight" in request && request["weight"].isInteger) {
         v.weight = cast(uint) request["weight"].get!long;
     }
     if ("variation_id" in request && request["variation_id"].isString) {
-        v.variationId = request["variation_id"].get!string;
+        v.variationId = request["variation_id"].getString;
     }
 
     return v;

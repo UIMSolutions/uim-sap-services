@@ -40,15 +40,15 @@ class DMARepository : SAPObject {
   repo.rootFolderId = randomUUID();
 
   if ("name" in request && request["name"].isString)
-    repo.name = request["name"].get!string;
+    repo.name = request["name"].getString;
   if ("description" in request && request["description"].isString)
-    repo.description = request["description"].get!string;
+    repo.description = request["description"].getString;
   if ("vendor_name" in request && request["vendor_name"].isString)
-    repo.vendorName = request["vendor_name"].get!string;
+    repo.vendorName = request["vendor_name"].getString;
   if ("product_name" in request && request["product_name"].isString)
-    repo.productName = request["product_name"].get!string;
+    repo.productName = request["product_name"].getString;
   if ("product_version" in request && request["product_version"].isString)
-    repo.productVersion = request["product_version"].get!string;
+    repo.productVersion = request["product_version"].getString;
   if ("cmis_compliant" in request && request["cmis_compliant"].isBoolean)
     repo.cmisCompliant = request["cmis_compliant"].get!bool;
   if ("encryption_enabled" in request && request["encryption_enabled"].isBoolean)

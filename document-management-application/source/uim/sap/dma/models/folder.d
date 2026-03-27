@@ -49,11 +49,11 @@ class DMAFolder : SAPObject {
     f.createdBy = "system";
 
     if ("name" in request && request["name"].isString)
-      f.name = request["name"].get!string;
+      f.name = request["name"].getString;
     if ("description" in request && request["description"].isString)
-      f.description = request["description"].get!string;
+      f.description = request["description"].getString;
     if ("created_by" in request && request["created_by"].isString)
-      f.createdBy = request["created_by"].get!string;
+      f.createdBy = request["created_by"].getString;
     if ("properties" in request && request["properties"].isObject)
       f.properties = request["properties"];
 

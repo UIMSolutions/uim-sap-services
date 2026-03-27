@@ -132,16 +132,16 @@ class AuthManager {
                     }
                     
                     auto json = res.readJson();
-                    currentToken.accessToken = json["access_token"].get!string;
-                    currentToken.tokenType = json["token_type"].get!string;
+                    currentToken.accessToken = json["access_token"].getString;
+                    currentToken.tokenType = json["token_type"].getString;
                     currentToken.expiresIn = json["expires_in"].get!long;
                     currentToken.obtainedAt = Clock.currTime();
                     
                     if ("refresh_token" in json) {
-                        currentToken.refreshToken = json["refresh_token"].get!string;
+                        currentToken.refreshToken = json["refresh_token"].getString;
                     }
                     if ("scope" in json) {
-                        currentToken.scope_ = json["scope"].get!string;
+                        currentToken.scope_ = json["scope"].getString;
                     }
                 }
             );

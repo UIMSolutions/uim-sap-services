@@ -184,8 +184,8 @@ class HanaClient {
         
         for (size_t i = 0; i < result.rowCount; i++) {
             ColumnMetadata col;
-            col.name = result.getCell(i, "COLUMN_NAME").get!string;
-            col.dataType = result.getCell(i, "DATA_TYPE_NAME").get!string;
+            col.name = result.getCell(i, "COLUMN_NAME").getString;
+            col.dataType = result.getCell(i, "DATA_TYPE_NAME").getString;
             
             auto lengthCell = result.getCell(i, "LENGTH");
             if (!lengthCell.isNull) {
@@ -222,7 +222,7 @@ class HanaClient {
         string[] tables;
         
         for (size_t i = 0; i < result.rowCount; i++) {
-            tables ~= result.getCell(i, "TABLE_NAME").get!string;
+            tables ~= result.getCell(i, "TABLE_NAME").getString;
         }
         
         return tables;
@@ -245,7 +245,7 @@ class HanaClient {
         string[] views;
         
         for (size_t i = 0; i < result.rowCount; i++) {
-            views ~= result.getCell(i, "VIEW_NAME").get!string;
+            views ~= result.getCell(i, "VIEW_NAME").getString;
         }
         
         return views;
@@ -261,7 +261,7 @@ class HanaClient {
         string[] schemas;
         
         for (size_t i = 0; i < result.rowCount; i++) {
-            schemas ~= result.getCell(i, "SCHEMA_NAME").get!string;
+            schemas ~= result.getCell(i, "SCHEMA_NAME").getString;
         }
         
         return schemas;
@@ -316,7 +316,7 @@ class HanaClient {
         ensureConnected();
         auto result = executeQuery("SELECT VERSION FROM SYS.M_DATABASE");
         if (result.rowCount > 0) {
-            return result.getCell(0, 0).get!string;
+            return result.getCell(0, 0).getString;
         }
         return "Unknown";
     }
@@ -397,16 +397,16 @@ class HanaClient {
                         if (!response.success) {
                             if ("error" in response.data) {
                                 if (response.data["error"].isString) {
-                                    response.errorMessage = response.data["error"].get!string;
+                                    response.errorMessage = response.data["error"].getString;
                                 } else if ("message" in response.data["error"]) {
-                                    response.errorMessage = response.data["error"]["message"].get!string;
+                                    response.errorMessage = response.data["error"]["message"].getString;
                                 }
                                 
                                 if ("code" in response.data["error"]) {
                                     response.errorCode = response.data["error"]["code"].get!int;
                                 }
                             } else if ("message" in response.data) {
-                                response.errorMessage = response.data["message"].get!string;
+                                response.errorMessage = response.data["message"].getString;
                             }
                         }
                     }
@@ -430,7 +430,7 @@ class HanaClient {
             auto cols = data["columns"];
             if (cols.isArray) {
                 foreach (col; cols) {
-                    result.columns ~= col.get!string;
+                    result.columns ~= col.getString;
                 }
             }
         }
@@ -461,7 +461,7 @@ class HanaClient {
         }
         
         if ("cursor" in data) {
-            result.nextCursor = data["cursor"].get!string;
+            result.nextCursor = data["cursor"].getString;
         }
         
         return result;

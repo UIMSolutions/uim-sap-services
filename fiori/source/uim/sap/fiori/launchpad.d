@@ -255,8 +255,8 @@ if (config.sapLanguage.length > 0) {
     private LaunchpadGroup parseGroup(Json json) {
         LaunchpadGroup group;
         
-        if ("id" in json) group.id = json["id"].get!string;
-        if ("title" in json) group.title = json["title"].get!string;
+        if ("id" in json) group.id = json["id"].getString;
+        if ("title" in json) group.title = json["title"].getString;
         if ("isPreset" in json) group.isPreset = json["isPreset"].get!bool;
         if ("isVisible" in json) group.isVisible = json["isVisible"].get!bool;
         
@@ -278,12 +278,12 @@ if (config.sapLanguage.length > 0) {
     private LaunchpadTile parseTile(Json json) {
         LaunchpadTile tile;
         
-        if ("id" in json) tile.id = json["id"].get!string;
-        if ("title" in json) tile.title = json["title"].get!string;
-        if ("subtitle" in json) tile.subtitle = json["subtitle"].get!string;
-        if ("icon" in json) tile.icon = json["icon"].get!string;
-        if ("info" in json) tile.info = json["info"].get!string;
-        if ("targetUrl" in json) tile.targetUrl = json["targetUrl"].get!string;
+        if ("id" in json) tile.id = json["id"].getString;
+        if ("title" in json) tile.title = json["title"].getString;
+        if ("subtitle" in json) tile.subtitle = json["subtitle"].getString;
+        if ("icon" in json) tile.icon = json["icon"].getString;
+        if ("info" in json) tile.info = json["info"].getString;
+        if ("targetUrl" in json) tile.targetUrl = json["targetUrl"].getString;
         
         return tile;
     }
@@ -294,9 +294,9 @@ if (config.sapLanguage.length > 0) {
         if ("d" in json && "results" in json["d"]) {
             foreach (item; json["d"]["results"]) {
                 LaunchpadCatalog catalog;
-                if ("id" in item) catalog.id = item["id"].get!string;
-                if ("title" in item) catalog.title = item["title"].get!string;
-                if ("description" in item) catalog.description = item["description"].get!string;
+                if ("id" in item) catalog.id = item["id"].getString;
+                if ("title" in item) catalog.title = item["title"].getString;
+                if ("description" in item) catalog.description = item["description"].getString;
                 catalogs ~= catalog;
             }
         }

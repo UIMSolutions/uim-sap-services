@@ -28,10 +28,10 @@ EVMTopic topicFromJson(UUID tenantId, Json request) {
   t.tenantId = tenantId;
 
   if ("topic_name" in request && request["topic_name"].isString) {
-    t.topicName = request["topic_name"].get!string;
+    t.topicName = request["topic_name"].getString;
   }
   if ("description" in request && request["description"].isString) {
-    t.description = request["description"].get!string;
+    t.description = request["description"].getString;
   }
 
   t.createdAt = Clock.currTime();

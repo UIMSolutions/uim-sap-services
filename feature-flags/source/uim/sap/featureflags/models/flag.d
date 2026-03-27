@@ -34,22 +34,22 @@ class FFLFlag : SAPTenantObject {
     }
 
 if ("flag_name" in request && request["flag_name"].isString) {
-      flagName = request["flag_name"].get!string;
+      flagName = request["flag_name"].getString;
     }
     if ("description" in request && request["description"].isString) {
-      description = request["description"].get!string;
+      description = request["description"].getString;
     }
     if ("flag_type" in request && request["flag_type"].isString) {
-      flagType = request["flag_type"].get!string;
+      flagType = request["flag_type"].getString;
     }
     if ("enabled" in request && request["enabled"].isBoolean) {
       enabled = request["enabled"].get!bool;
     }
     if ("status" in request && request["status"].isString) {
-      status = request["status"].get!string;
+      status = request["status"].getString;
     }
     if ("default_variation_id" in request && request["default_variation_id"].isString) {
-      defaultVariationId = request["default_variation_id"].get!string;
+      defaultVariationId = request["default_variation_id"].getString;
     }
 
     return true;
@@ -120,7 +120,7 @@ if ("flag_name" in request && request["flag_name"].isString) {
 
     // Import support: preserve IDs when present
     if ("flag_id" in request && request["flag_id"].isString) {
-      f.flagId = request["flag_id"].get!string;
+      f.flagId = request["flag_id"].getString;
     }
 
     if ("evaluation_count" in request && request["evaluation_count"].isInteger) {

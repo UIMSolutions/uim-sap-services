@@ -65,9 +65,9 @@ Tenant tenantFromJson(Json request) {
   t.active = true;
 
   if ("name" in request && request["name"].isString)
-    t.name = request["name"].get!string;
+    t.name = request["name"].getString;
   if ("description" in request && request["description"].isString)
-    t.description = request["description"].get!string;
+    t.description = request["description"].getString;
 
   return t;
 }
@@ -115,15 +115,15 @@ Repository repositoryFromJson(UUID tenantId, Json request) {
   repo.rootFolderId = randomUUID();
 
   if ("name" in request && request["name"].isString)
-    repo.name = request["name"].get!string;
+    repo.name = request["name"].getString;
   if ("description" in request && request["description"].isString)
-    repo.description = request["description"].get!string;
+    repo.description = request["description"].getString;
   if ("vendor_name" in request && request["vendor_name"].isString)
-    repo.vendorName = request["vendor_name"].get!string;
+    repo.vendorName = request["vendor_name"].getString;
   if ("product_name" in request && request["product_name"].isString)
-    repo.productName = request["product_name"].get!string;
+    repo.productName = request["product_name"].getString;
   if ("product_version" in request && request["product_version"].isString)
-    repo.productVersion = request["product_version"].get!string;
+    repo.productVersion = request["product_version"].getString;
   if ("cmis_compliant" in request && request["cmis_compliant"].isBoolean)
     repo.cmisCompliant = request["cmis_compliant"].get!bool;
   if ("encryption_enabled" in request && request["encryption_enabled"].isBoolean)
@@ -182,11 +182,11 @@ Folder folderFromJson(UUID tenantId, string repositoryId, string parentFolderId,
   f.createdBy = "system";
 
   if ("name" in request && request["name"].isString)
-    f.name = request["name"].get!string;
+    f.name = request["name"].getString;
   if ("description" in request && request["description"].isString)
-    f.description = request["description"].get!string;
+    f.description = request["description"].getString;
   if ("created_by" in request && request["created_by"].isString)
-    f.createdBy = request["created_by"].get!string;
+    f.createdBy = request["created_by"].getString;
   if ("properties" in request && request["properties"].isObject)
     f.properties = request["properties"];
 
@@ -261,15 +261,15 @@ Document documentFromJson(UUID tenantId, string repositoryId, string folderId, J
   d.latestVersionId = randomUUID();
 
   if ("name" in request && request["name"].isString)
-    d.name = request["name"].get!string;
+    d.name = request["name"].getString;
   if ("description" in request && request["description"].isString)
-    d.description = request["description"].get!string;
+    d.description = request["description"].getString;
   if ("mime_type" in request && request["mime_type"].isString)
-    d.mimeType = request["mime_type"].get!string;
+    d.mimeType = request["mime_type"].getString;
   if ("size_bytes" in request && request["size_bytes"].isInteger)
     d.sizeBytes = request["size_bytes"].get!long;
   if ("created_by" in request && request["created_by"].isString)
-    d.createdBy = request["created_by"].get!string;
+    d.createdBy = request["created_by"].getString;
   if ("properties" in request && request["properties"].isObject)
     d.properties = request["properties"];
 
@@ -333,13 +333,13 @@ DocumentVersion versionFromJson(UUID tenantId, string documentId,
   }
 
   if ("comment" in request && request["comment"].isString)
-    v.comment = request["comment"].get!string;
+    v.comment = request["comment"].getString;
   if ("size_bytes" in request && request["size_bytes"].isInteger)
     v.sizeBytes = request["size_bytes"].get!long;
   if ("mime_type" in request && request["mime_type"].isString)
-    v.mimeType = request["mime_type"].get!string;
+    v.mimeType = request["mime_type"].getString;
   if ("created_by" in request && request["created_by"].isString)
-    v.createdBy = request["created_by"].get!string;
+    v.createdBy = request["created_by"].getString;
   if ("is_major" in request && request["is_major"].isBoolean) {
     v.isMajor = request["is_major"].get!bool;
     if (v.isMajor) {
@@ -347,7 +347,7 @@ DocumentVersion versionFromJson(UUID tenantId, string documentId,
     }
   }
   if ("version_label" in request && request["version_label"].isString)
-    v.versionLabel = request["version_label"].get!string;
+    v.versionLabel = request["version_label"].getString;
 
   return v;
 }
@@ -418,13 +418,13 @@ UIComponentConfig uiConfigFromJson(UUID tenantId, Json request) {
   cfg.tenantId = tenantId;
 
   if ("repository_id" in request && request["repository_id"].isString)
-    cfg.repositoryId = request["repository_id"].get!string;
+    cfg.repositoryId = request["repository_id"].getString;
   if ("root_folder_id" in request && request["root_folder_id"].isString)
-    cfg.rootFolderId = request["root_folder_id"].get!string;
+    cfg.rootFolderId = request["root_folder_id"].getString;
   if ("theme" in request && request["theme"].isString)
-    cfg.theme = request["theme"].get!string;
+    cfg.theme = request["theme"].getString;
   if ("locale" in request && request["locale"].isString)
-    cfg.locale = request["locale"].get!string;
+    cfg.locale = request["locale"].getString;
   if ("show_breadcrumbs" in request && request["show_breadcrumbs"].isBoolean)
     cfg.showBreadcrumbs = request["show_breadcrumbs"].get!bool;
   if ("show_version_history" in request && request["show_version_history"].isBoolean)
@@ -488,17 +488,17 @@ IntegrationLink linkFromJson(UUID tenantId, Json request) {
   lnk.createdBy = "system";
 
   if ("external_object_id" in request && request["external_object_id"].isString)
-    lnk.externalObjectId = request["external_object_id"].get!string;
+    lnk.externalObjectId = request["external_object_id"].getString;
   if ("external_object_type" in request && request["external_object_type"].isString)
-    lnk.externalObjectType = request["external_object_type"].get!string;
+    lnk.externalObjectType = request["external_object_type"].getString;
   if ("document_id" in request && request["document_id"].isString)
-    lnk.documentId = request["document_id"].get!string;
+    lnk.documentId = request["document_id"].getString;
   if ("repository_id" in request && request["repository_id"].isString)
-    lnk.repositoryId = request["repository_id"].get!string;
+    lnk.repositoryId = request["repository_id"].getString;
   if ("description" in request && request["description"].isString)
-    lnk.description = request["description"].get!string;
+    lnk.description = request["description"].getString;
   if ("created_by" in request && request["created_by"].isString)
-    lnk.createdBy = request["created_by"].get!string;
+    lnk.createdBy = request["created_by"].getString;
 
   return lnk;
 }
