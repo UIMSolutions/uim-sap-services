@@ -253,20 +253,18 @@ HTML";
 
   Json listContent(UUID tenantId) {
     validateTenant(tenantId);
-    Json resources = Json.emptyArray;
-    foreach (item; _store.listContent(tenantId))
-      resources ~= item.toJson();
 
-    Json payload = Json.emptyObject;
-    payload["tenant_id"] = tenantId;
-    payload["resources"] = resources;
-    payload["total_results"] = cast(long)resources.length;
-    return payload;
+    auto resources = _store.listContent(tenantId).map!(item => item.toJson()).array;
+
+    return Json.emptyObject
+      .set("tenant_id", tenantId)
+      .set("resources", resources)
+      .set("total_results", cast(long)resources.length);
   }
 
   Json upsertContent(UUID tenantId, Json data) {
     validateTenant(tenantId);
-    auto contentid = requiredUUID(data, "content_id");
+    auto contentId = requiredUUID(data, "content_id");
     auto now = Clock.currTime();
 
     CAGContentItem existing;
@@ -351,9 +349,8 @@ HTML";
 
   Json listAssemblies(UUID tenantId) {
     validateTenant(tenantId);
-    Json resources = Json.emptyArray;
-    foreach (item; _store.listAssemblies(tenantId))
-      resources ~= item.toJson();
+    
+    auto resources = _store.listAssemblies(tenantId).map!(item => item.toJson()).array;
 
     return Json.emptyObject
       .set("tenant_id", tenantId)
@@ -447,11 +444,10 @@ HTML";
     foreach (contentId; assembly.resolvedContentIds) {
       CAGContentItem item;
       if (_store.tryGetContent(tenantId, contentId, item)) {
-        Json moduleData = Json.emptyObject
+        modules ~= Json.emptyObject
           .set("name", item.contentId)
           .set("type", item.contentType)
           .set("version", item.contentVersion);
-        modules ~= moduleData;
       }
     }
 
@@ -461,7 +457,6 @@ HTML";
       .set("mtar_name", assembly.mtarName)
       .set("download_url", assembly.mtarDownloadUrl)
       .set("modules", modules);
-
   }
 
   Json exportAssembly(UUID tenantId, string assemblyId, Json data) {

@@ -21,8 +21,8 @@ class CONStore : SAPStore {
   CONDestination upsertDestination(CONDestination destination) {
     synchronized (_lock) {
       auto key = compositeKey(destination.tenantId, destination.name);
-      if (auto existing = key in _destinations) {
-        destination.createdAt = existing.createdAt;
+      if (key in _destinations) {
+        destination.createdAt = _destinations[key].createdAt;
       }
       _destinations[key] = destination;
       return destination;
@@ -32,7 +32,7 @@ class CONStore : SAPStore {
   bool deleteDestination(UUID tenantId, string name) {
     synchronized (_lock) {
       auto key = compositeKey(tenantId, name);
-      if ((key in _destinations) is null) {
+      if (key !in _destinations) {
         return false;
       }
       _destinations.remove(key);
@@ -43,8 +43,8 @@ class CONStore : SAPStore {
   CONDestination getDestination(UUID tenantId, string name) {
     synchronized (_lock) {
       auto key = compositeKey(tenantId, name);
-      if (auto destination = key in _destinations) {
-        return *destination;
+      if (key in _destinations) {
+        return _destinations[key];
       }
     }
     auto missing = new CONDestination();
@@ -53,27 +53,16 @@ class CONStore : SAPStore {
   }
 
   CONDestination[] listDestinations(UUID tenantId) {
-    CONDestination[] values;
     synchronized (_lock) {
-      foreach (key, destination; _destinations) {
-        if (startsWithTenant(key, tenantId)) {
-          values ~= destination;
-        }
-      }
+      _destinations.byKeyValue(kv => startsWithTenant(kv.key, tenantId)).map!(kv => kv.value).array;
     }
-    return values;
   }
 
   CONDestination[] listCloudDatabases(UUID tenantId) {
-    CONDestination[] values;
     synchronized (_lock) {
-      foreach (key, destination; _destinations) {
-        if (startsWithTenant(key, tenantId) && destination.cloudDatabase) {
-          values ~= destination;
-        }
-      }
+      return _destinations.byKeyValue(kv => startsWithTenant(kv.key, tenantId) && kv
+          .value.cloudDatabase).map!(kv => kv.value).array;
     }
-    return values;
   }
 
   UUID[] listTenantIds() {
@@ -112,10 +101,8 @@ unittest {
   auto store = new CONStore();
   auto tenantId = randomUUID();
   // Test creating a destination
-  auto dest1 = CONDestination(tenantId, "Destination1", 
-    // "targetPath" is optional and should default to "/" if not provided
-    "http://example.com/api", 
-    // "onPremise" is optional and should default to true if not provided
+  auto dest1 = CONDestination(tenantId, "Destination1",// "targetPath" is optional and should default to "/" if not provided
+    "http://example.com/api",// "onPremise" is optional and should default to true if not provided
     false);
   auto dest2 = CONDestination(tenantId, "Destination2", "http://example.com/api2", true);
 

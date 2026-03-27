@@ -7,41 +7,39 @@ mixin(ShowModule!());
 @safe:
 
 /// A service binding connects a microservice or function to an SAP or external service
-struct KYMServiceBinding {
-    string name;
-    string namespace;
-    string serviceInstanceName;
-    string consumerName;
-    string consumerKind = "microservice";
-    Json parameters;
-    Json credentials;
-    KYMResourceStatus status = KYMResourceStatus.PENDING;
-    SysTime createdAt;
-    SysTime updatedAt;
+class KYMServiceBinding : SAPObject {
+  mixin(SAPObject!KYMServiceBinding);
 
-    override Json toJson()  {
-        Json payload = Json.emptyObject;
-        payload["name"] = name;
-        payload["namespace"] = namespace;
-        payload["service_instance_name"] = serviceInstanceName;
-        payload["consumer_name"] = consumerName;
-        payload["consumer_kind"] = consumerKind;
-        payload["parameters"] = parameters;
-        payload["status"] = cast(string) status;
-        payload["created_at"] = createdAt.toISOExtString();
-        payload["updated_at"] = updatedAt.toISOExtString();
-        return payload;
-    }
+  string name;
+  string namespace;
+  string serviceInstanceName;
+  string consumerName;
+  string consumerKind = "microservice";
+  Json parameters;
+  Json credentials;
+  KYMResourceStatus status = KYMResourceStatus.PENDING;
 
-    Json toJsonWithCredentials() const {
-        Json payload = toJson();
-        payload["credentials"] = credentials;
-        return payload;
-    }
-}
+  override Json toJson() {
+    return super.toJson()
+      .set("name", name)
+      .set("namespace", namespace)
+      .set("service_instance_name", serviceInstanceName)
+      .set("consumer_name", consumerName)
+      .set("consumer_kind", consumerKind)
+      .set("parameters", parameters)
+      .set("status", cast(string)status)
+      .set("created_at", createdAt.toISOExtString())
+      .set("updated_at", updatedAt.toISOExtString());
+  }
 
-KYMServiceBinding serviceBindingFromJson(string namespace, string name, Json request) {
-    KYMServiceBinding sb;
+  Json toJsonWithCredentials() {
+    Json payload = toJson();
+    payload["credentials"] = credentials;
+    return payload;
+  }
+
+  static KYMServiceBinding serviceBindingFromJson(string namespace, string name, Json request) {
+    KYMServiceBinding sb = new KYMServiceBinding();
     sb.name = name;
     sb.namespace = namespace;
     sb.createdAt = Clock.currTime();
@@ -49,18 +47,20 @@ KYMServiceBinding serviceBindingFromJson(string namespace, string name, Json req
     sb.status = KYMResourceStatus.RUNNING;
 
     if ("service_instance_name" in request && request["service_instance_name"].isString)
-        sb.serviceInstanceName = request["service_instance_name"].get!string;
+      sb.serviceInstanceName = request["service_instance_name"].get!string;
     if ("consumer_name" in request && request["consumer_name"].isString)
-        sb.consumerName = request["consumer_name"].get!string;
+      sb.consumerName = request["consumer_name"].get!string;
     if ("consumer_kind" in request && request["consumer_kind"].isString)
-        sb.consumerKind = request["consumer_kind"].get!string;
+      sb.consumerKind = request["consumer_kind"].get!string;
     if ("parameters" in request && request["parameters"].isObject)
-        sb.parameters = request["parameters"];
+      sb.parameters = request["parameters"];
     else
-        sb.parameters = Json.emptyObject;
+      sb.parameters = Json.emptyObject;
     if ("credentials" in request && request["credentials"].isObject)
-        sb.credentials = request["credentials"];
+      sb.credentials = request["credentials"];
     else
-        sb.credentials = Json.emptyObject;
+      sb.credentials = Json.emptyObject;
     return sb;
+  }
+
 }

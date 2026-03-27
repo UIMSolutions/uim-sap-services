@@ -48,7 +48,7 @@ class HARService : SAPService {
         throw new HARValidationException("files entries must be objects");
       }
 
-      UploadedAsset file;
+      UploadedAsset file = new UploadedAsset();
       file.path = getString(item, "path", "");
       file.contentBase64 = getString(item, "content_base64", "");
       file.contentType = getString(item, "content_type", "");
@@ -59,11 +59,11 @@ class HARService : SAPService {
     invalidateAppCache(tenant.tenantId, tenant.spaceId, appId);
 
     auto info = _store.tryGetVersionInfo(tenant.tenantId, tenant.spaceId, appId, versionId);
-    Json payload = Json.emptyObject;
-    payload["uploaded"] = true;
-    payload["version"] = info.toJson();
-    payload["zero_downtime"] = "Application router stays untouched, only static content version pointer changes.";
-    return payload;
+
+    return Json.emptyObject
+      .set("uploaded", true)
+      .set("version", info.toJson())
+      .set("zero_downtime", "Application router stays untouched, only static content version pointer changes.");
   }
 
   Json activateVersion(TenantContext tenant, string appId, string versionId) {

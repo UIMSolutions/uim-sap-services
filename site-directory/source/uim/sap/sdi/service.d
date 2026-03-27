@@ -250,8 +250,4 @@ class SDIService : SAPService {
   private string defaultRuntimeUrl(UUID tenantId, string siteAlias) const {
     return "https://runtime.local/" ~ tenantId ~ "/" ~ siteAlias;
   }
-
-  private Json toJsonArray(string[] values) const {
-    return values.toJson;
-  }
 }

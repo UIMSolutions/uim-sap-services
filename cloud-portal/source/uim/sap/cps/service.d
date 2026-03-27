@@ -56,9 +56,8 @@ class CPSService : SAPService {
     if (site.siteId.length == 0)
       throw new CPSNotFoundException("Site", tenantId ~ "/" ~ siteId);
 
-    Json payload = Json.emptyObject;
-    payload["site"] = site.toJson();
-    return payload;
+    return Json.emptyObject
+      .set("site", site.toJson());
   }
 
   Json deleteSite(UUID tenantId, string siteId) {

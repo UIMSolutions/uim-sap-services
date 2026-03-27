@@ -19,16 +19,15 @@ struct KYMMetrics {
     long totalFunctionInvocations;
 
     override Json toJson()  {
-        Json payload = Json.emptyObject;
-        payload["total_namespaces"] = totalNamespaces;
-        payload["total_functions"] = totalFunctions;
-        payload["total_microservices"] = totalMicroservices;
-        payload["total_subscriptions"] = totalSubscriptions;
-        payload["total_api_rules"] = totalApiRules;
-        payload["total_service_bindings"] = totalServiceBindings;
-        payload["total_events_published"] = totalEventsPublished;
-        payload["total_events_delivered"] = totalEventsDelivered;
-        payload["total_function_invocations"] = totalFunctionInvocations;
-        return payload;
+      return super.toJson()
+        .set("total_namespaces", totalNamespaces)
+        .set("total_functions", totalFunctions)
+        .set("total_microservices", totalMicroservices)
+        .set("total_subscriptions", totalSubscriptions)
+        .set("total_api_rules", totalApiRules)
+        .set("total_service_bindings", totalServiceBindings)
+        .set("total_events_published", totalEventsPublished)
+        .set("total_events_delivered", totalEventsDelivered)
+        .set("total_function_invocations", totalFunctionInvocations);
     }
 }

@@ -67,7 +67,7 @@ class MONService : SAPService {
       throw new MONValidationException("endpoint is required");
     }
 
-    MONAvailabilityCheck check;
+    MONAvailabilityCheck check = new MONAvailabilityCheck();
     check.checkId = newCheckId("avail");
     check.targetType = targetType;
     check.targetId = targetId;
@@ -100,7 +100,7 @@ class MONService : SAPService {
       throw new MONValidationException("at least one email recipient is required");
     }
 
-    MONAlertEmailChannel channel;
+    MONAlertEmailChannel channel = new MONAlertEmailChannel();
     channel.enabled = getBoolean(request, "enabled", true);
     channel.recipients = recipients;
     channel.sender = getString(request, "sender", "noreply@uim.local");
@@ -120,7 +120,7 @@ class MONService : SAPService {
       throw new MONValidationException("url is required");
     }
 
-    MONAlertWebhookChannel channel;
+    MONAlertWebhookChannel channel = new MONAlertWebhookChannel();
     channel.enabled = getBoolean(request, "enabled", true);
     channel.url = url;
     channel.secret = getString(request, "secret", "");
@@ -149,7 +149,7 @@ class MONService : SAPService {
       throw new MONValidationException("attribute is required");
     }
 
-    MONJMXCheck check;
+    MONJMXCheck check = new MONJMXCheck();
     check.checkId = newCheckId("jmx");
     check.targetId = targetId;
     check.mbean = mbean;
@@ -204,7 +204,7 @@ class MONService : SAPService {
       throw new MONValidationException("endpoint is required");
     }
 
-    MONCustomCheck check;
+    MONCustomCheck check = new MONCustomCheck();
     check.checkId = newCheckId("custom");
     check.name = name;
     check.targetType = targetType;
@@ -253,14 +253,6 @@ class MONService : SAPService {
     return Json.emptyObject
       .set("check_name", checkName)
       .set("thresholds", thresholds);
-  }
-
-  private Json toJsonArray(MONMetricSample[] metrics) {
-    Json payload = Json.emptyArray;
-    foreach (item; metrics) {
-      payload ~= item.toJson();
-    }
-    return payload;
   }
 
   private MONMetricSample[] buildApplicationMetrics(string appId) {

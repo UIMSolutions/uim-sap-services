@@ -43,28 +43,23 @@ mixin(ShowModule!());
   * ```
   * Note: The `toJson()` method is used to serialize the provisioning job into a JSON format that can be returned in API responses or stored in a database. The actual implementation of the `toJson()` method may vary based on the specific requirements of the application and the structure of the JSON payload expected by the
   */
-struct CISProvisioningJob {
-  UUID tenantId;
+class CISProvisioningJob : SAPTenantObject {
+  mixin(SAPtenantObject!CISProvisioningJob);
+  
   UUID jobId;
   string sourceSystem;
   string targetSystem;
   string mode;
   string status;
   Json filters;
-  SysTime createdAt;
-  SysTime updatedAt;
 
   override Json toJson()  {
-    Json info = super.toJson;
-    payload["job_id"] = jobId;
-    payload["tenant_id"] = tenantId;
-    payload["source_system"] = sourceSystem;
-    payload["target_system"] = targetSystem;
-    payload["mode"] = mode;
-    payload["status"] = status;
-    payload["filters"] = filters;
-    payload["created_at"] = createdAt.toISOExtString();
-    payload["updated_at"] = updatedAt.toISOExtString();
-    return payload;
+    return super.toJson
+    .set("job_id", jobId)
+    .set("source_system", sourceSystem)
+    .set("target_system", targetSystem)
+    .set("mode", mode)
+    .set("status", status)
+    .set("filters", filters);
   }
 }

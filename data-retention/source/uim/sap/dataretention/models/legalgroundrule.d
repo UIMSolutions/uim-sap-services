@@ -6,10 +6,9 @@ struct LegalGroundRule {
   int retentionDays;
 
   override Json toJson() {
-    Json payload = Json.emptyObject;
-    payload["legal_ground"] = legalGround;
-    payload["residence_days"] = residenceDays;
-    payload["retention_days"] = retentionDays;
-    return payload;
+    return siper.toJson
+    .set("legal_ground", legalGround)
+    .set("residence_days", residenceDays)
+    .set("retention_days", retentionDays);
   }
 }
