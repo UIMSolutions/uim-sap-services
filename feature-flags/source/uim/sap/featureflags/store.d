@@ -94,7 +94,7 @@ class FFLStore : SAPStore {
             auto key = flagKey(tenantId, flagName);
             if (auto flag = key in _flags) {
                 flag.evaluationCount = flag.evaluationCount + 1;
-                flag.updatedAt = Clock.currTime().toISOExtString();
+                flag.updatedAt = Clock.currTime();
             }
         }
     }

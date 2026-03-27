@@ -120,7 +120,7 @@ class IPVService : SAPService {
     if ("connector_type" in request && request["connector_type"].isString)
       existing.connectorType = request["connector_type"].get!string;
 
-    existing.updatedAt = Clock.currTime().toISOExtString();
+    existing.updatedAt = Clock.currTime();
     auto saved = _store.upsertSystem(existing);
 
     return Json.emptyObject
@@ -214,7 +214,7 @@ class IPVService : SAPService {
       existing.groupIds = gids;
     }
 
-    existing.updatedAt = Clock.currTime().toISOExtString();
+    existing.updatedAt = Clock.currTime();
     existing.lastModifiedAt = existing.updatedAt;
     auto saved = _store.upsertUser(existing);
 
@@ -703,7 +703,7 @@ class IPVService : SAPService {
           // Apply mapping transformations
           auto provisionedUser = applyUserTransformations(user, transformations);
           provisionedUser.status = "synced";
-          provisionedUser.updatedAt = Clock.currTime().toISOExtString();
+          provisionedUser.updatedAt = Clock.currTime();
           provisionedUser.lastModifiedAt = provisionedUser.updatedAt;
           _store.upsertUser(provisionedUser);
           ++job.usersWritten;
@@ -744,7 +744,7 @@ class IPVService : SAPService {
           }
 
           group.status = "synced";
-          group.updatedAt = Clock.currTime().toISOExtString();
+          group.updatedAt = Clock.currTime();
           _store.upsertGroup(group);
           ++job.groupsWritten;
 
@@ -758,7 +758,7 @@ class IPVService : SAPService {
     _store.updateSystemCounts(tenantId, job.sourceSystemId,
       cast(long)sourceUsers.length, cast(long)sourceGroups.length);
 
-    job.updatedAt = Clock.currTime().toISOExtString();
+    job.updatedAt = Clock.currTime();
     _store.upsertJob(job);
   }
 

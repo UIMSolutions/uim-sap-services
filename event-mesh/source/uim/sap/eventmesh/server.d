@@ -61,7 +61,7 @@ class EVMServer : SAPServer {
 
       // All business routes are under /v1/tenants/{tenantId}/...
       if (segments.length >= 3 && segments[0] == "v1" && segments[1] == "tenants") {
-        auto tenantId = segments[2];
+        auto tenantId = UUID(segments[2]);
 
         // --- Queue routes ---
         if (segments.length == 4 && segments[3] == "queues") {

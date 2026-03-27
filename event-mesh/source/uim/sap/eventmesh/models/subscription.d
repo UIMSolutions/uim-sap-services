@@ -24,7 +24,7 @@ class EVMSubscription : SAPTenantObject {
       .set("active", active);
   }
 
-  static EVMSubscription subscriptionFromJson(UUID tenantId, Json request) {
+  static EVMSubscription opCall(UUID tenantId, Json request) {
     EVMSubscription s = new EVMSubscription(request);
     s.tenantId = tenantId;
     s.subscriptionId = randomUUID();

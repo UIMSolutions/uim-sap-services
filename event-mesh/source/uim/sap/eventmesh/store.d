@@ -115,7 +115,7 @@ class EVMStore : SAPStore {
       if (tKey in _topics) {
         auto topic = _topics[tKey];
         ++topic.subscriberCount;
-        topic.updatedAt = Clock.currTime().toISOExtString();
+        topic.updatedAt = Clock.currTime();
       }
 
       return subscription;
@@ -157,7 +157,7 @@ class EVMStore : SAPStore {
       if (key in _queues) {
         auto queue = _queues[key];
         ++queue.messageCount;
-        queue.updatedAt = Clock.currTime().toISOExtString();
+        queue.updatedAt = Clock.currTime();
       }
     }
   }

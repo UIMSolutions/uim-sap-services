@@ -96,7 +96,7 @@ class HARsitoryStore : SAPStore {
     foreach (item; versions) {
       auto current = item;
       current.active = current.versionId == versionId;
-      current.updatedAt = Clock.currTime().toISOExtString();
+      current.updatedAt = Clock.currTime();
       writeVersionMetadata(current);
     }
 

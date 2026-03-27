@@ -140,7 +140,7 @@ class FFLService : SAPService {
       existing.percentageRule = percentageRuleFromJson(request["percentage_rule"]);
     }
 
-    existing.updatedAt = Clock.currTime().toISOExtString();
+    existing.updatedAt = Clock.currTime();
     auto saved = _store.upsertFlag(existing);
 
     Json result = Json.emptyObject;
@@ -174,7 +174,7 @@ class FFLService : SAPService {
     }
 
     flag.enabled = !flag.enabled;
-    flag.updatedAt = Clock.currTime().toISOExtString();
+    flag.updatedAt = Clock.currTime();
     auto saved = _store.upsertFlag(flag);
 
     return Json.emptyObject
@@ -257,7 +257,7 @@ class FFLService : SAPService {
         }
         // Ensure tenant ownership
         flag.tenantId = tenantId;
-        flag.updatedAt = Clock.currTime().toISOExtString();
+        flag.updatedAt = Clock.currTime();
         flags ~= flag;
       }
     }();

@@ -56,7 +56,7 @@ class EVMService : SAPService {
 
     auto queue = _store.getQueue(tenantId, queueName);
     if (queue.queueName.length == 0) {
-      throw new EVMNotFoundException("Queue", tenantId ~ "/" ~ queueName);
+      throw new EVMNotFoundException("Queue", tenantId.toString() ~ "/" ~ queueName);
     }
 
     return Json.emptyObject
@@ -69,7 +69,7 @@ class EVMService : SAPService {
     validateId(queueName, "Queue name");
 
     if (!_store.deleteQueue(tenantId, queueName)) {
-      throw new EVMNotFoundException("Queue", tenantId ~ "/" ~ queueName);
+      throw new EVMNotFoundException("Queue", tenantId.toString() ~ "/" ~ queueName);
     }
 
     return Json.emptyObject
@@ -115,22 +115,18 @@ class EVMService : SAPService {
   Json createSubscription(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
 
-    auto subscription = subscriptionFromJson(tenantId, request);
-    if (subscription.topicName.length == 0) {
-      throw new EVMValidationException("topic_name is required");
-    }
-    if (subscription.queueName.length == 0) {
-      throw new EVMValidationException("queue_name is required");
-    }
+    EVMSubscription subscription = EVMSubscription(tenantId, request);
+    validateString(subscription.topicName, "topic_name");
+    validateString(subscription.queueName, "queue_name");
 
     auto topic = _store.getTopic(tenantId, subscription.topicName);
     if (topic.topicName.length == 0) {
-      throw new EVMNotFoundException("Topic", tenantId ~ "/" ~ subscription.topicName);
+      throw new EVMNotFoundException("Topic", tenantId.toString() ~ "/" ~ subscription.topicName);
     }
 
     auto queue = _store.getQueue(tenantId, subscription.queueName);
     if (queue.queueName.length == 0) {
-      throw new EVMNotFoundException("Queue", tenantId ~ "/" ~ subscription.queueName);
+      throw new EVMNotFoundException("Queue", tenantId.toString() ~ "/" ~ subscription.queueName);
     }
 
     auto saved = _store.addSubscription(subscription);
@@ -159,7 +155,7 @@ class EVMService : SAPService {
 
     auto topic = _store.getTopic(tenantId, topicName);
     if (topic.topicName.length == 0) {
-      throw new EVMNotFoundException("Topic", tenantId ~ "/" ~ topicName);
+      throw new EVMNotFoundException("Topic", tenantId.toString() ~ "/" ~ topicName);
     }
 
     auto message = messageFromJson(tenantId, topicName, request);
@@ -180,7 +176,7 @@ class EVMService : SAPService {
 
     // Update topic stats
     topic.messagesPublished = topic.messagesPublished + 1;
-    topic.updatedAt = Clock.currTime().toISOExtString();
+    topic.updatedAt = Clock.currTime();
     _store.upsertTopic(topic);
 
     return Json.emptyObject
@@ -252,13 +248,8 @@ class EVMService : SAPService {
     validateId(tenantId, "Tenant ID");
 
     auto webhook = webhookFromJson(tenantId, request);
-    if (webhook.queueName.length == 0) {
-      throw new EVMValidationException("queue_name is required");
-    }
-    
-    if (webhook.callbackUrl.length == 0) {
-      throw new EVMValidationException("callback_url is required");
-    }
+    validateString(webhook.queueName, "queue_name");
+    validateString(webhook.callbackUrl, "callback_url");
 
     auto queue = _store.getQueue(tenantId, webhook.queueName);
     if (queue.queueName.length == 0) {

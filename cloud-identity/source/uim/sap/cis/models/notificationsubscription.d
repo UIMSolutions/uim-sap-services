@@ -35,20 +35,17 @@ mixin(ShowModule!());
   * ```
   * Note: The `toJson()` method is used to serialize the notification subscription into a JSON format that can be returned in API responses or stored in a database. The actual implementation of the `toJson()` method may vary based on the specific requirements of the application and the structure of the JSON payload expected by the API consumers. The `sourceSystem` field helps specify which system is generating the notifications, while the `callbackUrl` field defines where those notifications should be sent. The `updatedAt` field is essential for tracking changes to the subscription and ensuring that the most current version is being applied. The combination of these fields allows for effective management of notification subscriptions within the CIS module, enabling administrators to set up and maintain subscriptions for various source systems and ensure that notifications are delivered to the correct endpoints when relevant events occur. 
  */
-struct CISNotificationSubscription {
-  UUID tenantId;
-  string subscriptionId;
+class CISNotificationSubscription : SAPTenantObject {
+  mixin(SAPtenantObject!CISNotificationSubscription);
+
+  UUID subscriptionId;
   string sourceSystem;
   string callbackUrl;
-  SysTime updatedAt;
 
   override Json toJson()  {
-    Json info = super.toJson;
-    payload["subscription_id"] = subscriptionId;
-    payload["tenant_id"] = tenantId;
-    payload["source_system"] = sourceSystem;
-    payload["callback_url"] = callbackUrl;
-    payload["updated_at"] = updatedAt.toISOExtString();
-    return payload;
+    return super.toJson()
+    .set("subscription_id", subscriptionId)
+    .set("source_system", sourceSystem)
+    .set("callback_url", callbackUrl);
   }
 }

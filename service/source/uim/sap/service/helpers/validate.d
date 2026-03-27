@@ -73,3 +73,10 @@ bool validateAuth(HTTPServerRequest req, ISAPConfig cfg) {
         segs ~= p;
     return segs;
   }
+
+  bool validateString(string value, string fieldName) {
+  if (value.length == 0) {
+    throw new SAPValidationException(fieldName ~ " cannot be empty");
+  }
+  return true;
+}
