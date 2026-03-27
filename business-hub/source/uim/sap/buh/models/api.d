@@ -37,25 +37,25 @@ class BUHApi : SAPObject {
     }
 
     if ("name" in initData && initData["name"].isString) {
-      api.name = initData["name"].get!string;
+      api.name = initData["name"].getString;
     }
     if ("provider" in initData && initData["provider"].isString) {
-      api.provider = initData["provider"].get!string;
+      api.provider = initData["provider"].getString;
     }
     if ("version" in initData && initData["version"].isString) {
-      api.apiVersion = initData["version"].get!string;
+      api.apiVersion = initData["version"].getString;
     }
     if ("visibility" in initData && initData["visibility"].isString) {
-      api.visibility = initData["visibility"].get!string;
+      api.visibility = initData["visibility"].getString;
     }
     if ("summary" in initData && initData["summary"].isString) {
-      api.summary = initData["summary"].get!string;
+      api.summary = initData["summary"].getString;
     }
 
     if ("tags" in initData && initData["tags"].isArray) {
       foreach (entry; initData["tags"]) {
         if (entry.isString) {
-          api.tags ~= entry.get!string;
+          api.tags ~= entry.getString;
         }
       }
     }

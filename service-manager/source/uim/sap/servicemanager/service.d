@@ -163,10 +163,10 @@ class SVMService : SAPService {
     }
 
     if ("status" in request && request["status"].isString) {
-      current.status = request["status"].get!string;
+      current.status = request["status"].getString;
     }
     if ("environment_id" in request && request["environment_id"].isString) {
-      current.environmentId = request["environment_id"].get!string;
+      current.environmentId = request["environment_id"].getString;
     }
     current.updatedAt = Clock.currTime();
 
@@ -200,7 +200,7 @@ class SVMService : SAPService {
       throw new SVMValidationException("target_environment is required");
     }
 
-    auto target = request["target_environment"].get!string;
+    auto target = request["target_environment"].getString;
     if (target.length == 0) {
       throw new SVMValidationException("target_environment cannot be empty");
     }

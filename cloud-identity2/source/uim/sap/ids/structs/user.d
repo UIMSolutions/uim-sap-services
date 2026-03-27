@@ -223,15 +223,13 @@ struct User {
     }
 
     if (phoneNumbers.length > 0) {
-      Json[] phonesJson;
-      foreach (phone; phoneNumbers) {
-        auto phoneJson = Json.emptyObject;
-        phoneJson["value"] = phone.value;
-        phoneJson["type"] = phone.type;
-        phoneJson["primary"] = phone.primary;
-        phonesJson ~= phoneJson;
-      }
-      json["phoneNumbers"] = Json(phonesJson);
+      Json[] phonesJson = phoneNumbers.map!(phone => Json.emptyObject
+        .set("value", phone.value)
+        .set("type", phone.type)
+        .set("primary", phone.primary)
+      ).array;
+
+      json["phoneNumbers"] = phonesJson.toJson;
     }
 
     return json;
@@ -244,52 +242,52 @@ struct User {
     User user;
 
     if ("id" in json) {
-      user.id = json["id"].get!string;
+      user.id = json["id"].getString;
     }
 
     if ("externalId" in json) {
-      user.externalId = json["externalId"].get!string;
+      user.externalId = json["externalId"].getString;
     }
 
     if ("userName" in json) {
-      user.userName = json["userName"].get!string;
+      user.userName = json["userName"].getString;
     }
 
     if ("name" in json) {
       auto nameJson = json["name"];
       if ("formatted" in nameJson)
-        user.name.formatted = nameJson["formatted"].get!string;
+        user.name.formatted = nameJson["formatted"].getString;
       if ("givenName" in nameJson)
-        user.name.givenName = nameJson["givenName"].get!string;
+        user.name.givenName = nameJson["givenName"].getString;
       if ("familyName" in nameJson)
-        user.name.familyName = nameJson["familyName"].get!string;
+        user.name.familyName = nameJson["familyName"].getString;
       if ("middleName" in nameJson)
-        user.name.middleName = nameJson["middleName"].get!string;
+        user.name.middleName = nameJson["middleName"].getString;
       if ("honorificPrefix" in nameJson)
-        user.name.honorificPrefix = nameJson["honorificPrefix"].get!string;
+        user.name.honorificPrefix = nameJson["honorificPrefix"].getString;
       if ("honorificSuffix" in nameJson)
-        user.name.honorificSuffix = nameJson["honorificSuffix"].get!string;
+        user.name.honorificSuffix = nameJson["honorificSuffix"].getString;
     }
 
     if ("displayName" in json) {
-      user.displayName = json["displayName"].get!string;
+      user.displayName = json["displayName"].getString;
     }
 
     if ("title" in json) {
-      user.title = json["title"].get!string;
+      user.title = json["title"].getString;
     }
 
     if ("active" in json) {
-      user.active = json["active"].get!bool;
+      user.active = json["active"].getBoolean
     }
 
     if ("emails" in json && json["emails"].isArray) {
       foreach (emailJson; json["emails"]) {
         Email email;
         if ("value" in emailJson)
-          email.value = emailJson["value"].get!string;
+          email.value = emailJson["value"].getString;
         if ("type" in emailJson)
-          email.type = emailJson["type"].get!string;
+          email.type = emailJson["type"].getString;
         if ("primary" in emailJson)
           email.primary = emailJson["primary"].get!bool;
         user.emails ~= email;
@@ -300,9 +298,9 @@ struct User {
       foreach (phoneJson; json["phoneNumbers"]) {
         PhoneNumber phone;
         if ("value" in phoneJson)
-          phone.value = phoneJson["value"].get!string;
+          phone.value = phoneJson["value"].getString;
         if ("type" in phoneJson)
-          phone.type = phoneJson["type"].get!string;
+          phone.type = phoneJson["type"].getString;
         if ("primary" in phoneJson)
           phone.primary = phoneJson["primary"].get!bool;
         user.phoneNumbers ~= phone;

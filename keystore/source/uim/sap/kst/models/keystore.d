@@ -39,7 +39,7 @@ class KSTKeystore : SAPStore {
     }
 
     if ("description" in request && initData["description"].isString) {
-      description = initData["description"].get!string;
+      description = initData["description"].getString;
     }
     metadata = initData.getObject("metadata", Json.emptyObject);
 

@@ -19,19 +19,19 @@ class CLFServiceInstance : SAPObject {
     }
 
     if ("guid" in initData && initData["guid"].isString) {
-      guid = initData["guid"].get!string;
+      guid = initData["guid"].getString;
     }
 
     if ("name" in initData && initData["name"].isString) {
-      name = initData["name"].get!string;
+      name = initData["name"].getString;
     }
     
     if ("service_guid" in payload && payload["service_guid"].isString) {
-      instance.serviceGuid = payload["service_guid"].get!string;
+      instance.serviceGuid = payload["service_guid"].getString;
     }
     
     if ("space_guid" in payload && payload["space_guid"].isString) {
-      instance.spaceGuid = payload["space_guid"].get!string;
+      instance.spaceGuid = payload["space_guid"].getString;
     }
 
     status = initData.getSString("status", "create succeeded");

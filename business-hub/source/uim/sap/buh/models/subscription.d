@@ -19,13 +19,13 @@ class BUHSubscription : SAPObject {
     }
 
     if ("api_id" in initData && initData["api_id"].isString) {
-      apiId = initData["api_id"].get!string;
+      apiId = initData["api_id"].getString;
     }
     if ("application_name" in initData && initData["application_name"].isString) {
-      applicationName = initData["application_name"].get!string;
+      applicationName = initData["application_name"].getString;
     }
     if ("plan" in initData && initData["plan"].isString) {
-      plan = initData["plan"].get!string;
+      plan = initData["plan"].getString;
     }
 
     return true;

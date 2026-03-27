@@ -53,7 +53,7 @@ KSTKeyEntry keyEntryFromJson(string alias_, Json request) {
   if ("key_usage" in request && request["key_usage"].isArray) {
     foreach (item; request["key_usage"].toArray) {
       if (item.isString)
-        entry.keyUsage ~= item.get!string;
+        entry.keyUsage ~= item.getString;
     }
   }
   

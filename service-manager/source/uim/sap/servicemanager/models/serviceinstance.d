@@ -50,7 +50,7 @@ SVMServiceInstance parseServiceInstance(UUID tenantId, Json request) {
   if ("shared_to_environments" in request && request["shared_to_environments"].isArray) {
     foreach (item; request["shared_to_environments"].toArray) {
       if (item.isString) {
-        auto value = item.get!string;
+        auto value = item.getString;
         if (value.length > 0) {
           instanceItem.sharedToEnvironments ~= value;
         }

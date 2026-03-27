@@ -29,10 +29,10 @@ class CLFSpace : SAPObject {
     space.guId = randomUUID();
     space.createdAt = Clock.currTime();
     if ("name" in payload && payload["name"].isString) {
-      space.name = payload["name"].get!string;
+      space.name = payload["name"].getString;
     }
     if ("organization_guid" in payload && payload["organization_guid"].isString) {
-      space.organizationGuid = payload["organization_guid"].get!string;
+      space.organizationGuid = payload["organization_guid"].getString;
     }
     return space;
   }

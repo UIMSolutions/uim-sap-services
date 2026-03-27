@@ -69,7 +69,7 @@ class CISService : SAPService {
 
     string userName;
     if ("userName" in request && request["userName"].isString) {
-      userName = request["userName"].get!string;
+      userName = request["userName"].getString;
     }
 
     return Json.emptyObject
@@ -168,15 +168,15 @@ class CISService : SAPService {
     rule.updatedAt = Clock.currTime();
 
     if ("target_idp" in request && request["target_idp"].isString)
-      rule.targetIdp = request["target_idp"].get!string;
+      rule.targetIdp = request["target_idp"].getString;
     if ("is_default" in request && request["is_default"].isBoolean)
       rule.isDefault = request["is_default"].get!bool;
     if ("email_domain" in request && request["email_domain"].isString)
-      rule.emailDomain = request["email_domain"].get!string;
+      rule.emailDomain = request["email_domain"].getString;
     if ("user_type" in request && request["user_type"].isString)
-      rule.userType = request["user_type"].get!string;
+      rule.userType = request["user_type"].getString;
     if ("group" in request && request["group"].isString)
-      rule.group = request["group"].get!string;
+      rule.group = request["group"].getString;
 
     if (rule.targetIdp.length == 0)
       throw new CISValidationException("target_idp is required");
@@ -210,11 +210,11 @@ class CISService : SAPService {
     policy.allowedUserTypes = Json.emptyArray;
 
     if ("name" in request && request["name"].isString)
-      policy.name = request["name"].get!string;
+      policy.name = request["name"].getString;
     if ("resource_type" in request && request["resource_type"].isString)
-      policy.resourceType = request["resource_type"].get!string;
+      policy.resourceType = request["resource_type"].getString;
     if ("instance_id" in request && request["instance_id"].isString)
-      policy.instanceId = request["instance_id"].get!string;
+      policy.instanceId = request["instance_id"].getString;
     if ("allowed_groups" in request && request["allowed_groups"].isArray)
       policy.allowedGroups = request["allowed_groups"];
     if ("allowed_user_types" in request && request["allowed_user_types"].isArray)
@@ -245,13 +245,13 @@ class CISService : SAPService {
       throw new CISValidationException("instance_id is required");
     }
 
-    auto instanceId = request["instance_id"].get!string;
+    auto instanceId = request["instance_id"].getString;
     string group;
     string userType;
     if ("group" in request && request["group"].isString)
-      group = request["group"].get!string;
+      group = request["group"].getString;
     if ("user_type" in request && request["user_type"].isString)
-      userType = request["user_type"].get!string;
+      userType = request["user_type"].getString;
 
     bool allowed = false;
     foreach (policy; _store.listPolicies(tenantId)) {
@@ -284,7 +284,7 @@ class CISService : SAPService {
     if ("groups" in request && request["groups"].isArray)
       policy.groups = request["groups"];
     if ("user_type" in request && request["user_type"].isString)
-      policy.userType = request["user_type"].get!string;
+      policy.userType = request["user_type"].getString;
     if ("authentication_method" in request && request["authentication_method"].isString)
       policy.authenticationMethod = toLower(request["authentication_method"].get!string);
     if ("require_two_factor" in request && request["require_two_factor"].isBoolean)
@@ -315,11 +315,11 @@ class CISService : SAPService {
     string method;
 
     if ("ip" in request && request["ip"].isString)
-      ip = request["ip"].get!string;
+      ip = request["ip"].getString;
     if ("group" in request && request["group"].isString)
-      group = request["group"].get!string;
+      group = request["group"].getString;
     if ("user_type" in request && request["user_type"].isString)
-      userType = request["user_type"].get!string;
+      userType = request["user_type"].getString;
     if ("authentication_method" in request && request["authentication_method"].isString)
       method = toLower(request["authentication_method"].get!string);
 
@@ -355,11 +355,11 @@ class CISService : SAPService {
     job.filters = Json.emptyObject;
 
     if ("job_id" in request && request["job_id"].isString)
-      job.jobId = request["job_id"].get!string;
+      job.jobId = request["job_id"].getString;
     if ("source_system" in request && request["source_system"].isString)
-      job.sourceSystem = request["source_system"].get!string;
+      job.sourceSystem = request["source_system"].getString;
     if ("target_system" in request && request["target_system"].isString)
-      job.targetSystem = request["target_system"].get!string;
+      job.targetSystem = request["target_system"].getString;
     if ("mode" in request && request["mode"].isString)
       job.mode = normalizeMode(request["mode"].get!string);
     if ("filters" in request && request["filters"].isObject)
@@ -411,11 +411,11 @@ class CISService : SAPService {
     sub.updatedAt = Clock.currTime();
 
     if ("subscription_id" in request && request["subscription_id"].isString)
-      sub.subscriptionId = request["subscription_id"].get!string;
+      sub.subscriptionId = request["subscription_id"].getString;
     if ("source_system" in request && request["source_system"].isString)
-      sub.sourceSystem = request["source_system"].get!string;
+      sub.sourceSystem = request["source_system"].getString;
     if ("callback_url" in request && request["callback_url"].isString)
-      sub.callbackUrl = request["callback_url"].get!string;
+      sub.callbackUrl = request["callback_url"].getString;
 
     if (sub.sourceSystem.length == 0 || sub.callbackUrl.length == 0) {
       throw new CISValidationException("source_system and callback_url are required");

@@ -198,7 +198,7 @@ class HARService : SAPService {
 
   private string getString(Json payload, string key, string fallback) {
     if (key in payload && payload[key].isString) {
-      return payload[key].get!string;
+      return payload[key].getString;
     }
     return fallback;
   }

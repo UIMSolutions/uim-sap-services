@@ -30,7 +30,7 @@ string[] readStringArray(Json data, string key) {
     if (!item.isString)
       throw new SAPValidationException(key ~ " must contain strings");
 
-    values ~= item.get!string;
+    values ~= item.getString;
   }
   return values;
 }

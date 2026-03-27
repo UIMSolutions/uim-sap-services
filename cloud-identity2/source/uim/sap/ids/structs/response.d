@@ -59,7 +59,7 @@ struct SCIMError {
         SCIMError error;
         
         if ("detail" in json) {
-            error.detail = json["detail"].get!string;
+            error.detail = json["detail"].getString;
         }
         
         if ("status" in json) {
@@ -72,7 +72,7 @@ struct SCIMError {
         }
         
         if ("scimType" in json) {
-            error.scimType = json["scimType"].get!string;
+            error.scimType = json["scimType"].getString;
         }
         
         return error;
@@ -123,7 +123,7 @@ struct IdentityResponse {
             return error.detail;
         }
         if ("message" in data) {
-            return data["message"].get!string;
+            return data["message"].getString;
         }
         return "Unknown error";
     }

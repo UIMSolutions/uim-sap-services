@@ -10,7 +10,7 @@ UUID requiredUUID(Json request, string key) {
   requiredKey(request, key);
   requiredStringType(request, key);
 
-  auto value = request[key].get!string;
+  auto value = request[key].getString;
   if (value.length == 0 || !value.isUUID) {
     throw new SAPValidationException(key ~ " must be a valid UUID");
   }
@@ -26,7 +26,7 @@ string requiredString(Json data, string key) {
   requiredKey(data, key);
   requiredStringType(data, key);
 
-  auto value = data[key].get!string;
+  auto value = data[key].getString;
   if (value.length == 0) {
     throw new SAPValidationException(key ~ " cannot be empty");
   }

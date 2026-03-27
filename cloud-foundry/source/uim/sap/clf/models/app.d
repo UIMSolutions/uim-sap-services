@@ -35,13 +35,13 @@ class CLFApp : SAPObject {
   app.guId = randomUUID();
   app.createdAt = Clock.currTime();
   if ("name" in payload && payload["name"].isString) {
-    app.name = payload["name"].get!string;
+    app.name = payload["name"].getString;
   }
   if ("space_guid" in payload && payload["space_guid"].isString) {
-    app.spaceGuid = payload["space_guid"].get!string;
+    app.spaceGuid = payload["space_guid"].getString;
   }
   if ("state" in payload && payload["state"].isString) {
-    app.state = payload["state"].get!string;
+    app.state = payload["state"].getString;
   }
   if ("instances" in payload && payload["instances"].isInteger) {
     auto parsed = payload["instances"].get!long;

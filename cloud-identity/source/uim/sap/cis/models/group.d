@@ -57,9 +57,9 @@ class CISGroup : SAPTenantObject {
     group.members = Json.emptyArray;
 
     if ("id" in request && request["id"].isString)
-      group.groupId = request["id"].get!string;
+      group.groupId = request["id"].getString;
     if ("displayName" in request && request["displayName"].isString)
-      group.displayName = request["displayName"].get!string;
+      group.displayName = request["displayName"].getString;
     if ("members" in request && request["members"].isArray)
       group.members = request["members"];
 

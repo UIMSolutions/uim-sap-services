@@ -132,7 +132,7 @@ string nowTimestamp() {
 
 string optionalString(Json request, string key, string fallback) {
   if (key in request && request[key].isString) {
-    auto value = request[key].get!string;
+    auto value = request[key].getString;
     return value.length > 0 ? value : fallback;
   }
   return fallback;
@@ -145,7 +145,7 @@ string[] stringArray(Json request, string key) {
 
   foreach (item; request[key].toArray) {
     if (item.isString) {
-      auto value = item.get!string;
+      auto value = item.getString;
       if (value.length > 0)
         values ~= value;
     }

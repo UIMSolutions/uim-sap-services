@@ -80,16 +80,16 @@ class CISUser : SAPTenantObject {
     user.attributes = Json.emptyObject;
 
     if ("id" in request && request["id"].isString) {
-      user.userId = request["id"].get!string;
+      user.userId = request["id"].getString;
     }
     if ("userName" in request && request["userName"].isString) {
-      user.userName = request["userName"].get!string;
+      user.userName = request["userName"].getString;
     }
     if ("email" in request && request["email"].isString) {
-      user.email = request["email"].get!string;
+      user.email = request["email"].getString;
     }
     if ("user_type" in request && request["user_type"].isString) {
-      user.userType = request["user_type"].get!string;
+      user.userType = request["user_type"].getString;
     }
     if ("active" in request && request["active"].isBoolean) {
       user.active = request["active"].get!bool;

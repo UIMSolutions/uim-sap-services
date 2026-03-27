@@ -262,7 +262,7 @@ class KSTService : SAPService {
       }
     }
 
-    auto data = request["data"].get!string;
+    auto data = request["data"].getString;
     auto signature = signData(data, keyMaterial);
 
     KSTSignResult result = new KSTSignResult;
@@ -298,8 +298,8 @@ class KSTService : SAPService {
       throw new KSTCryptoException("Unable to decrypt key for verification");
     }
 
-    auto data = request["data"].get!string;
-    auto sig = request["signature"].get!string;
+    auto data = request["data"].getString;
+    auto sig = request["signature"].getString;
     auto valid = verifySignature(data, keyMaterial, sig);
 
     KSTSignResult result = new KSTSignResult;
@@ -332,7 +332,7 @@ class KSTService : SAPService {
       throw new KSTCryptoException("Unable to decrypt key for encryption");
     }
 
-    auto plaintext = request["plaintext"].get!string;
+    auto plaintext = request["plaintext"].getString;
     auto ciphertext = encryptData(plaintext, keyMaterial);
 
     return Json.emptyObject
@@ -385,10 +385,10 @@ class KSTService : SAPService {
       throw new KSTValidationException("certificate (string) is required");
     }
 
-    auto certContent = request["certificate"].get!string;
+    auto certContent = request["certificate"].getString;
     string keystoreName = "trusted-certs";
     if ("keystore" in request && request["keystore"].isString)
-      keystoreName = request["keystore"].get!string;
+      keystoreName = request["keystore"].getString;
 
     if (!_store.hasKeystore(keystoreName)) {
       throw new KSTNotFoundException("Keystore", keystoreName);
@@ -426,7 +426,7 @@ class KSTService : SAPService {
       return requestKey;
 
       if ("encryption_key" in request && request["encryption_key"].isString) {
-        auto rk = request["encryption_key"].get!string;
+        auto rk = request["encryption_key"].getString;
         if (rk.length > 0)
           return rk;
       }

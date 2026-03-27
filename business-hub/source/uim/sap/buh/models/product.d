@@ -34,15 +34,15 @@ class BUHProduct : SAPObject {
     product.createdAt = Clock.currTime();
 
     if ("name" in payload && payload["name"].isString) {
-      product.name = payload["name"].get!string;
+      product.name = payload["name"].getString;
     }
     if ("description" in payload && payload["description"].isString) {
-      product.description = payload["description"].get!string;
+      product.description = payload["description"].getString;
     }
     if ("api_ids" in payload && payload["api_ids"].isArray) {
       foreach (entry; payload["api_ids"]) {
         if (entry.isString) {
-          product.apiIds ~= entry.get!string;
+          product.apiIds ~= entry.getString;
         }
       }
     }

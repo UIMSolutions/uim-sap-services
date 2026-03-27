@@ -92,24 +92,24 @@ struct Group {
         Group group;
         
         if ("id" in json) {
-            group.id = json["id"].get!string;
+            group.id = json["id"].getString;
         }
         
         if ("externalId" in json) {
-            group.externalId = json["externalId"].get!string;
+            group.externalId = json["externalId"].getString;
         }
         
         if ("displayName" in json) {
-            group.displayName = json["displayName"].get!string;
+            group.displayName = json["displayName"].getString;
         }
         
         if ("members" in json && json["members"].isArray) {
             foreach (memberJson; json["members"]) {
                 GroupMember member;
-                if ("value" in memberJson) member.value = memberJson["value"].get!string;
-                if ("display" in memberJson) member.display = memberJson["display"].get!string;
-                if ("type" in memberJson) member.type = memberJson["type"].get!string;
-                if ("$ref" in memberJson) member.ref_ = memberJson["$ref"].get!string;
+                if ("value" in memberJson) member.value = memberJson["value"].getString;
+                if ("display" in memberJson) member.display = memberJson["display"].getString;
+                if ("type" in memberJson) member.type = memberJson["type"].getString;
+                if ("$ref" in memberJson) member.ref_ = memberJson["$ref"].getString;
                 group.members ~= member;
             }
         }

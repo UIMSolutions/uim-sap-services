@@ -19,7 +19,7 @@ class CLFOrg : SAPObject {
     }
 
     if ("name" in initData && initData["name"].isString) {
-      name = initData["name"].get!string;
+      name = initData["name"].getString;
     }
 
     return true;

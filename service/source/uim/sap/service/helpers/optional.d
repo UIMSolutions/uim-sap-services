@@ -19,7 +19,7 @@ string optionalString(Json data, string key, string fallback) {
     return fallback;
 
   requiredStringType(data, key);
-  return data[key].get!string;
+  return data[key].getString;
 }
 
 Json optionalObject(Json data, string key, Json fallback = Json.emptyObject) {

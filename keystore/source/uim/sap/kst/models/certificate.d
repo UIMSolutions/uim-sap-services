@@ -48,23 +48,23 @@ class KSTCertificate : SAPObject {
   cert.createdAt = Clock.currTime();
 
   if ("alias" in request && request["alias"].isString)
-    cert.alias_ = request["alias"].get!string;
+    cert.alias_ = request["alias"].getString;
   if ("subject" in request && request["subject"].isString)
-    cert.subject = request["subject"].get!string;
+    cert.subject = request["subject"].getString;
   if ("issuer" in request && request["issuer"].isString)
-    cert.issuer = request["issuer"].get!string;
+    cert.issuer = request["issuer"].getString;
   if ("serial_number" in request && request["serial_number"].isString)
-    cert.serialNumber = request["serial_number"].get!string;
+    cert.serialNumber = request["serial_number"].getString;
   if ("not_before" in request && request["not_before"].isString)
-    cert.notBefore = request["not_before"].get!string;
+    cert.notBefore = request["not_before"].getString;
   if ("not_after" in request && request["not_after"].isString)
-    cert.notAfter = request["not_after"].get!string;
+    cert.notAfter = request["not_after"].getString;
   if ("fingerprint" in request && request["fingerprint"].isString)
-    cert.fingerprint = request["fingerprint"].get!string;
+    cert.fingerprint = request["fingerprint"].getString;
   if ("format" in request && request["format"].isString)
     cert.format = parseFormat(request["format"].get!string);
   if ("content" in request && request["content"].isString)
-    cert.content = request["content"].get!string;
+    cert.content = request["content"].getString;
   return cert;
 
 }

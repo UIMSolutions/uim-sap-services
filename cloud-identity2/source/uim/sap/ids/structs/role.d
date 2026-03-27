@@ -66,15 +66,15 @@ struct Role {
         Role role;
         
         if ("id" in json) {
-            role.id = json["id"].get!string;
+            role.id = json["id"].getString;
         }
         
         if ("name" in json) {
-            role.name = json["name"].get!string;
+            role.name = json["name"].getString;
         }
         
         if ("description" in json) {
-            role.description = json["description"].get!string;
+            role.description = json["description"].getString;
         }
         
         if ("isSystemRole" in json) {
@@ -83,7 +83,7 @@ struct Role {
         
         if ("permissions" in json && json["permissions"].isArray) {
             foreach (perm; json["permissions"]) {
-                role.permissions ~= perm.get!string;
+                role.permissions ~= perm.getString;
             }
         }
         
