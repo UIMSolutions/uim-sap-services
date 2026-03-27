@@ -36,16 +36,16 @@ class IPVNotification : SAPTenantObject {
     }
 
     if ("source_system_id" in request && request["source_system_id"].isString) {
-      sourceSystemId = request["source_system_id"].get!string;
+      sourceSystemId = request["source_system_id"].getString;
     }
     if ("callback_url" in request && request["callback_url"].isString) {
-      callbackUrl = request["callback_url"].get!string;
+      callbackUrl = request["callback_url"].getString;
     }
     if ("active" in request && request["active"].isBoolean) {
       active = request["active"].get!bool;
     }
     if ("subscription_id" in request && request["subscription_id"].isString) {
-      subscriptionId = request["subscription_id"].get!string;
+      subscriptionId = request["subscription_id"].getString;
     }
     else {
       subscriptionId = randomUUID();
@@ -54,7 +54,7 @@ class IPVNotification : SAPTenantObject {
     if ("event_types" in request && request["event_types"].isArray) {
       foreach (item; request["event_types"].toArray) {
         if (item.isString) {
-          eventTypes ~= item.get!string;
+          eventTypes ~= item.getString;
         }
       }
     }

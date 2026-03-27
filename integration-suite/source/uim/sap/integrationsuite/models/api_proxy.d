@@ -86,17 +86,17 @@ INTApiProxy apiProxyFromJson(UUID tenantId, Json request) {
   p.proxyId = randomUUID();
 
   if ("name" in request && request["name"].isString)
-    p.name = request["name"].get!string;
+    p.name = request["name"].getString;
   if ("description" in request && request["description"].isString)
-    p.description = request["description"].get!string;
+    p.description = request["description"].getString;
   if ("base_path" in request && request["base_path"].isString)
-    p.basePath = request["base_path"].get!string;
+    p.basePath = request["base_path"].getString;
   if ("target_url" in request && request["target_url"].isString)
-    p.targetUrl = request["target_url"].get!string;
+    p.targetUrl = request["target_url"].getString;
   if ("version" in request && request["version"].isString)
-    p.version_ = request["version"].get!string;
+    p.version_ = request["version"].getString;
   if ("auth_scheme" in request && request["auth_scheme"].isString)
-    p.authScheme = request["auth_scheme"].get!string;
+    p.authScheme = request["auth_scheme"].getString;
 
   p.createdAt = Clock.currTime().toINTOExtString();
   p.updatedAt = p.createdAt;

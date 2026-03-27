@@ -48,17 +48,17 @@ INTAssessment assessmentFromJson(UUID tenantId, Json request) {
   a.assessmentId = randomUUID();
 
   if ("name" in request && request["name"].isString)
-    a.name = request["name"].get!string;
+    a.name = request["name"].getString;
   if ("description" in request && request["description"].isString)
-    a.description = request["description"].get!string;
+    a.description = request["description"].getString;
   if ("integration_domain" in request && request["integration_domain"].isString)
-    a.integrationDomain = request["integration_domain"].get!string;
+    a.integrationDomain = request["integration_domain"].getString;
   if ("integration_style" in request && request["integration_style"].isString)
-    a.integrationStyle = request["integration_style"].get!string;
+    a.integrationStyle = request["integration_style"].getString;
   if ("recommended_technology" in request && request["recommended_technology"].isString)
-    a.recommendedTechnology = request["recommended_technology"].get!string;
+    a.recommendedTechnology = request["recommended_technology"].getString;
   if ("assessor" in request && request["assessor"].isString)
-    a.assessor = request["assessor"].get!string;
+    a.assessor = request["assessor"].getString;
   if ("findings" in request)
     a.findings = request["findings"];
   else

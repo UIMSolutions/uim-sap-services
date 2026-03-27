@@ -81,19 +81,19 @@ class INTAgreement : SAPTenantObject {
     }
 
 if ("partner_id" in request && request["partner_id"].isString)
-    {partnerId = request["partner_id"].get!string;}
+    {partnerId = request["partner_id"].getString;}
   if ("name" in request && request["name"].isString)
-    {name = request["name"].get!string;}
+    {name = request["name"].getString;}
   if ("description" in request && request["description"].isString)
-    {description = request["description"].get!string;}
+    {description = request["description"].getString;}
   if ("document_standard" in request && request["document_standard"].isString)
-    {documentStandard = request["document_standard"].get!string;}
+    {documentStandard = request["document_standard"].getString;}
   if ("direction" in request && request["direction"].isString)
-    {direction = request["direction"].get!string;}
+    {direction = request["direction"].getString;}
   if ("valid_from" in request && request["valid_from"].isString)
-    {validFrom = request["valid_from"].get!string;}
+    {validFrom = request["valid_from"].getString;}
   if ("valid_to" in request && request["valid_to"].isString)
-    {validTo = request["valid_to"].get!string;}
+    {validTo = request["valid_to"].getString;}
 
     return true;
   }

@@ -105,19 +105,19 @@ INTMapping mappingFromJson(UUID tenantId, Json request) {
   m.mappingId = randomUUID();
 
   if ("name" in request && request["name"].isString)
-    m.name = request["name"].get!string;
+    m.name = request["name"].getString;
   if ("description" in request && request["description"].isString)
-    m.description = request["description"].get!string;
+    m.description = request["description"].getString;
   if ("source_format" in request && request["source_format"].isString)
-    m.sourceFormat = request["source_format"].get!string;
+    m.sourceFormat = request["source_format"].getString;
   if ("target_format" in request && request["target_format"].isString)
-    m.targetFormat = request["target_format"].get!string;
+    m.targetFormat = request["target_format"].getString;
   if ("source_schema" in request && request["source_schema"].isString)
-    m.sourceSchema = request["source_schema"].get!string;
+    m.sourceSchema = request["source_schema"].getString;
   if ("target_schema" in request && request["target_schema"].isString)
-    m.targetSchema = request["target_schema"].get!string;
+    m.targetSchema = request["target_schema"].getString;
   if ("generation_method" in request && request["generation_method"].isString)
-    m.generationMethod = request["generation_method"].get!string;
+    m.generationMethod = request["generation_method"].getString;
   if ("mapping_rules" in request)
     m.mappingRules = request["mapping_rules"];
   else

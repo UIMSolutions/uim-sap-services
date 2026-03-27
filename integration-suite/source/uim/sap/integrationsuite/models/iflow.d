@@ -76,23 +76,23 @@ class INTIFlow : SAPTenantObject {
     f.iflowId = randomUUID();
 
     if ("name" in request && request["name"].isString)
-      f.name = request["name"].get!string;
+      f.name = request["name"].getString;
     if ("description" in request && request["description"].isString)
-      f.description = request["description"].get!string;
+      f.description = request["description"].getString;
     if ("package_id" in request && request["package_id"].isString)
-      f.packageId = request["package_id"].get!string;
+      f.packageId = request["package_id"].getString;
     if ("version" in request && request["version"].isString)
-      f.version_ = request["version"].get!string;
+      f.version_ = request["version"].getString;
     if ("runtime" in request && request["runtime"].isString)
-      f.runtime = request["runtime"].get!string;
+      f.runtime = request["runtime"].getString;
     if ("sender" in request && request["sender"].isString)
-      f.sender = request["sender"].get!string;
+      f.sender = request["sender"].getString;
     if ("receiver" in request && request["receiver"].isString)
-      f.receiver = request["receiver"].get!string;
+      f.receiver = request["receiver"].getString;
     if ("protocol" in request && request["protocol"].isString)
-      f.protocol = request["protocol"].get!string;
+      f.protocol = request["protocol"].getString;
     if ("endpoint_url" in request && request["endpoint_url"].isString)
-      f.endpointUrl = request["endpoint_url"].get!string;
+      f.endpointUrl = request["endpoint_url"].getString;
 
     f.createdAt = Clock.currTime().toINTOExtString();
     f.updatedAt = f.createdAt;

@@ -56,7 +56,7 @@ class IPVJob : SAPTenantObject {
       () @trusted {
         foreach (item; initData["target_system_ids"]) {
           if (item.isString)
-            targetSystemIds ~= item.get!string;
+            targetSystemIds ~= item.getString;
         }
       }();
     }
@@ -112,21 +112,21 @@ class IPVJob : SAPTenantObject {
       j.jobId = randomUUID();
 
       if ("job_name" in request && request["job_name"].isString)
-        j.jobName = request["job_name"].get!string;
+        j.jobName = request["job_name"].getString;
       if ("source_system_id" in request && request["source_system_id"].isString)
-        j.sourceSystemId = request["source_system_id"].get!string;
+        j.sourceSystemId = request["source_system_id"].getString;
       if ("read_mode" in request && request["read_mode"].isString)
-        j.readMode = request["read_mode"].get!string;
+        j.readMode = request["read_mode"].getString;
       if ("delta_token" in request && request["delta_token"].isString)
-        j.deltaToken = request["delta_token"].get!string;
+        j.deltaToken = request["delta_token"].getString;
       if ("job_id" in request && request["job_id"].isString)
-        j.jobId = request["job_id"].get!string;
+        j.jobId = request["job_id"].getString;
 
       if ("target_system_ids" in request && request["target_system_ids"].isArray) {
         () @trusted {
           foreach (item; request["target_system_ids"]) {
             if (item.isString)
-              j.targetSystemIds ~= item.get!string;
+              j.targetSystemIds ~= item.getString;
           }
         }();
       }

@@ -78,21 +78,21 @@ class INTDataAsset : SAPTenantObject {
   a.assetId = randomUUID();
 
   if ("name" in request && request["name"].isString)
-    a.name = request["name"].get!string;
+    a.name = request["name"].getString;
   if ("description" in request && request["description"].isString)
-    a.description = request["description"].get!string;
+    a.description = request["description"].getString;
   if ("asset_type" in request && request["asset_type"].isString)
-    a.assetType = request["asset_type"].get!string;
+    a.assetType = request["asset_type"].getString;
   if ("format" in request && request["format"].isString)
-    a.format = request["format"].get!string;
+    a.format = request["format"].getString;
   if ("access_policy" in request && request["access_policy"].isString)
-    a.accessPolicy = request["access_policy"].get!string;
+    a.accessPolicy = request["access_policy"].getString;
   if ("provider" in request && request["provider"].isString)
-    a.provider = request["provider"].get!string;
+    a.provider = request["provider"].getString;
   if ("data_space_name" in request && request["data_space_name"].isString)
-    a.dataSpaceName = request["data_space_name"].get!string;
+    a.dataSpaceName = request["data_space_name"].getString;
   if ("contract_id" in request && request["contract_id"].isString)
-    a.contractId = request["contract_id"].get!string;
+    a.contractId = request["contract_id"].getString;
 
   a.createdAt = Clock.currTime().toINTOExtString();
   a.updatedAt = a.createdAt;

@@ -110,15 +110,15 @@ class IPVService : SAPService {
       throw new IPVNotFoundException("System", tenantId ~ "/" ~ systemName);
 
     if ("description" in request && request["description"].isString)
-      existing.description = request["description"].get!string;
+      existing.description = request["description"].getString;
     if ("endpoint_url" in request && request["endpoint_url"].isString)
-      existing.endpointUrl = request["endpoint_url"].get!string;
+      existing.endpointUrl = request["endpoint_url"].getString;
     if ("auth_type" in request && request["auth_type"].isString)
-      existing.authType = request["auth_type"].get!string;
+      existing.authType = request["auth_type"].getString;
     if ("status" in request && request["status"].isString)
-      existing.status = request["status"].get!string;
+      existing.status = request["status"].getString;
     if ("connector_type" in request && request["connector_type"].isString)
-      existing.connectorType = request["connector_type"].get!string;
+      existing.connectorType = request["connector_type"].getString;
 
     existing.updatedAt = Clock.currTime();
     auto saved = _store.upsertSystem(existing);
@@ -191,24 +191,24 @@ class IPVService : SAPService {
       throw new IPVNotFoundException("User", tenantId ~ "/" ~ userId);
 
     if ("email" in request && request["email"].isString)
-      existing.email = request["email"].get!string;
+      existing.email = request["email"].getString;
     if ("first_name" in request && request["first_name"].isString)
-      existing.firstName = request["first_name"].get!string;
+      existing.firstName = request["first_name"].getString;
     if ("last_name" in request && request["last_name"].isString)
-      existing.lastName = request["last_name"].get!string;
+      existing.lastName = request["last_name"].getString;
     if ("display_name" in request && request["display_name"].isString)
-      existing.displayName = request["display_name"].get!string;
+      existing.displayName = request["display_name"].getString;
     if ("active" in request && request["active"].isBoolean)
       existing.active = request["active"].get!bool;
     if ("status" in request && request["status"].isString)
-      existing.status = request["status"].get!string;
+      existing.status = request["status"].getString;
 
     if ("group_ids" in request && request["group_ids"].isArray) {
       string[] gids;
       () @trusted {
         foreach (item; request["group_ids"]) {
           if (item.isString)
-            gids ~= item.get!string;
+            gids ~= item.getString;
         }
       }();
       existing.groupIds = gids;

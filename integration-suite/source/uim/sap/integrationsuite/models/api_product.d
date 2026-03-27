@@ -75,17 +75,17 @@ INTApiProduct apiProductFromJson(UUID tenantId, Json request) {
   p.productId = randomUUID();
 
   if ("name" in request && request["name"].isString)
-    p.name = request["name"].get!string;
+    p.name = request["name"].getString;
   if ("description" in request && request["description"].isString)
-    p.description = request["description"].get!string;
+    p.description = request["description"].getString;
   if ("version" in request && request["version"].isString)
-    p.version_ = request["version"].get!string;
+    p.version_ = request["version"].getString;
   if ("rate_limit_policy" in request && request["rate_limit_policy"].isString)
-    p.rateLimitPolicy = request["rate_limit_policy"].get!string;
+    p.rateLimitPolicy = request["rate_limit_policy"].getString;
   if ("proxy_ids" in request && request["proxy_ids"].isArray) {
     foreach (item; request["proxy_ids"]) {
       if (item.isString)
-        p.proxyIds ~= item.get!string;
+        p.proxyIds ~= item.getString;
     }
   }
 

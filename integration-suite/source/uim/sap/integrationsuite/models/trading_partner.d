@@ -20,25 +20,25 @@ class INTTradingPartner : SAPTenantObject {
     }
 
     if ("name" in request && request["name"].isString) {
-      name = request["name"].get!string;
+      name = request["name"].getString;
     }
     if ("description" in request && request["description"].isString) {
-      description = request["description"].get!string;
+      description = request["description"].getString;
     }
     if ("partner_type" in request && request["partner_type"].isString) {
-      partnerType = request["partner_type"].get!string;
+      partnerType = request["partner_type"].getString;
     }
     if ("identifier_type" in request && request["identifier_type"].isString) {
-      identifierType = request["identifier_type"].get!string;
+      identifierType = request["identifier_type"].getString;
     }
     if ("identifier" in request && request["identifier"].isString) {
-      identifier = request["identifier"].get!string;
+      identifier = request["identifier"].getString;
     }
     if ("contact_email" in request && request["contact_email"].isString) {
-      contactEmail = request["contact_email"].get!string;
+      contactEmail = request["contact_email"].getString;
     }
     if ("contact_phone" in request && request["contact_phone"].isString) {
-      contactPhone = request["contact_phone"].get!string;
+      contactPhone = request["contact_phone"].getString;
     }
 
     return true;

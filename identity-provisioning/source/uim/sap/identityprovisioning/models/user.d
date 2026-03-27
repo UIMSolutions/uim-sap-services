@@ -60,31 +60,31 @@ IPVUser userFromJson(UUID tenantId, Json request) {
   u.userId = randomUUID();
 
   if ("user_name" in request && request["user_name"].isString)
-    u.userName = request["user_name"].get!string;
+    u.userName = request["user_name"].getString;
   if ("external_id" in request && request["external_id"].isString)
-    u.externalId = request["external_id"].get!string;
+    u.externalId = request["external_id"].getString;
   if ("email" in request && request["email"].isString)
-    u.email = request["email"].get!string;
+    u.email = request["email"].getString;
   if ("first_name" in request && request["first_name"].isString)
-    u.firstName = request["first_name"].get!string;
+    u.firstName = request["first_name"].getString;
   if ("last_name" in request && request["last_name"].isString)
-    u.lastName = request["last_name"].get!string;
+    u.lastName = request["last_name"].getString;
   if ("display_name" in request && request["display_name"].isString)
-    u.displayName = request["display_name"].get!string;
+    u.displayName = request["display_name"].getString;
   if ("active" in request && request["active"].isBoolean)
     u.active = request["active"].get!bool;
   if ("source_system_id" in request && request["source_system_id"].isString)
-    u.sourceSystemId = request["source_system_id"].get!string;
+    u.sourceSystemId = request["source_system_id"].getString;
   if ("status" in request && request["status"].isString)
-    u.status = request["status"].get!string;
+    u.status = request["status"].getString;
   if ("user_id" in request && request["user_id"].isString)
-    u.userId = request["user_id"].get!string;
+    u.userId = request["user_id"].getString;
 
   if ("group_ids" in request && request["group_ids"].isArray) {
     () @trusted {
       foreach (item; request["group_ids"]) {
         if (item.isString)
-          u.groupIds ~= item.get!string;
+          u.groupIds ~= item.getString;
       }
     }();
   }

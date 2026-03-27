@@ -58,25 +58,25 @@ IPVTransformation transformationFromJson(UUID tenantId, Json request) {
   t.transformationId = randomUUID();
 
   if ("system_id" in request && request["system_id"].isString)
-    t.systemId = request["system_id"].get!string;
+    t.systemId = request["system_id"].getString;
   if ("entity_type" in request && request["entity_type"].isString)
-    t.entityType = request["entity_type"].get!string;
+    t.entityType = request["entity_type"].getString;
   if ("source_attribute" in request && request["source_attribute"].isString)
-    t.sourceAttribute = request["source_attribute"].get!string;
+    t.sourceAttribute = request["source_attribute"].getString;
   if ("target_attribute" in request && request["target_attribute"].isString)
-    t.targetAttribute = request["target_attribute"].get!string;
+    t.targetAttribute = request["target_attribute"].getString;
   if ("action" in request && request["action"].isString)
-    t.action = request["action"].get!string;
+    t.action = request["action"].getString;
   if ("condition" in request && request["condition"].isString)
-    t.condition = request["condition"].get!string;
+    t.condition = request["condition"].getString;
   if ("default_value" in request && request["default_value"].isString)
-    t.defaultValue = request["default_value"].get!string;
+    t.defaultValue = request["default_value"].getString;
   if ("priority" in request && request["priority"].isInteger)
     t.priority = request["priority"].get!long;
   if ("active" in request && request["active"].isBoolean)
     t.active = request["active"].get!bool;
   if ("transformation_id" in request && request["transformation_id"].isString)
-    t.transformationId = request["transformation_id"].get!string;
+    t.transformationId = request["transformation_id"].getString;
 
   t.createdAt = Clock.currTime();
   t.updatedAt = t.createdAt;

@@ -61,21 +61,21 @@ IPVSystem systemFromJson(UUID tenantId, Json request) {
   s.systemId = randomUUID();
 
   if ("system_name" in request && request["system_name"].isString)
-    s.systemName = request["system_name"].get!string;
+    s.systemName = request["system_name"].getString;
   if ("description" in request && request["description"].isString)
-    s.description = request["description"].get!string;
+    s.description = request["description"].getString;
   if ("system_type" in request && request["system_type"].isString)
-    s.systemType = request["system_type"].get!string;
+    s.systemType = request["system_type"].getString;
   if ("connector_type" in request && request["connector_type"].isString)
-    s.connectorType = request["connector_type"].get!string;
+    s.connectorType = request["connector_type"].getString;
   if ("endpoint_url" in request && request["endpoint_url"].isString)
-    s.endpointUrl = request["endpoint_url"].get!string;
+    s.endpointUrl = request["endpoint_url"].getString;
   if ("auth_type" in request && request["auth_type"].isString)
-    s.authType = request["auth_type"].get!string;
+    s.authType = request["auth_type"].getString;
   if ("status" in request && request["status"].isString)
-    s.status = request["status"].get!string;
+    s.status = request["status"].getString;
   if ("system_id" in request && request["system_id"].isString)
-    s.systemId = request["system_id"].get!string;
+    s.systemId = request["system_id"].getString;
 
   s.createdAt = Clock.currTime();
   s.updatedAt = s.createdAt;

@@ -86,15 +86,15 @@ class INTHybridRuntime : SAPTenantObject {
     r.runtimeId = randomUUID();
 
     if ("name" in request && request["name"].isString)
-      r.name = request["name"].get!string;
+      r.name = request["name"].getString;
     if ("description" in request && request["description"].isString)
-      r.description = request["description"].get!string;
+      r.description = request["description"].getString;
     if ("location" in request && request["location"].isString)
-      r.location = request["location"].get!string;
+      r.location = request["location"].getString;
     if ("runtime_type" in request && request["runtime_type"].isString)
-      r.runtimeType = request["runtime_type"].get!string;
+      r.runtimeType = request["runtime_type"].getString;
     if ("version" in request && request["version"].isString)
-      r.version_ = request["version"].get!string;
+      r.version_ = request["version"].getString;
 
     r.createdAt = Clock.currTime().toINTOExtString();
     r.updatedAt = r.createdAt;

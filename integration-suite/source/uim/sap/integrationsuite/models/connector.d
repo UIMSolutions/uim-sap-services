@@ -74,17 +74,17 @@ INTConnector connectorFromJson(UUID tenantId, Json request) {
   c.connectorId = randomUUID();
 
   if ("name" in request && request["name"].isString)
-    c.name = request["name"].get!string;
+    c.name = request["name"].getString;
   if ("description" in request && request["description"].isString)
-    c.description = request["description"].get!string;
+    c.description = request["description"].getString;
   if ("connector_type" in request && request["connector_type"].isString)
-    c.connectorType = request["connector_type"].get!string;
+    c.connectorType = request["connector_type"].getString;
   if ("provider" in request && request["provider"].isString)
-    c.provider = request["provider"].get!string;
+    c.provider = request["provider"].getString;
   if ("auth_scheme" in request && request["auth_scheme"].isString)
-    c.authScheme = request["auth_scheme"].get!string;
+    c.authScheme = request["auth_scheme"].getString;
   if ("base_url" in request && request["base_url"].isString)
-    c.baseUrl = request["base_url"].get!string;
+    c.baseUrl = request["base_url"].getString;
   if ("configuration" in request)
     c.configuration = request["configuration"];
   else

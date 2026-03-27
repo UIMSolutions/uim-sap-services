@@ -103,25 +103,25 @@ INTContentPack contentPackFromJson(UUID tenantId, Json request) {
   p.packId = randomUUID();
 
   if ("name" in request && request["name"].isString)
-    p.name = request["name"].get!string;
+    p.name = request["name"].getString;
   if ("description" in request && request["description"].isString)
-    p.description = request["description"].get!string;
+    p.description = request["description"].getString;
   if ("vendor" in request && request["vendor"].isString)
-    p.vendor = request["vendor"].get!string;
+    p.vendor = request["vendor"].getString;
   if ("version" in request && request["version"].isString)
-    p.version_ = request["version"].get!string;
+    p.version_ = request["version"].getString;
   if ("category" in request && request["category"].isString)
-    p.category = request["category"].get!string;
+    p.category = request["category"].getString;
   if ("iflow_ids" in request && request["iflow_ids"].isArray) {
     foreach (item; request["iflow_ids"]) {
       if (item.isString)
-        p.iflowIds ~= item.get!string;
+        p.iflowIds ~= item.getString;
     }
   }
   if ("mapping_ids" in request && request["mapping_ids"].isArray) {
     foreach (item; request["mapping_ids"]) {
       if (item.isString)
-        p.mappingIds ~= item.get!string;
+        p.mappingIds ~= item.getString;
     }
   }
 

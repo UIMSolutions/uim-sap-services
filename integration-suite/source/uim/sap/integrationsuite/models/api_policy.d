@@ -44,13 +44,13 @@ INTApiPolicy apiPolicyFromJson(UUID tenantId, Json request) {
   p.policyId = randomUUID();
 
   if ("name" in request && request["name"].isString)
-    p.name = request["name"].get!string;
+    p.name = request["name"].getString;
   if ("description" in request && request["description"].isString)
-    p.description = request["description"].get!string;
+    p.description = request["description"].getString;
   if ("policy_type" in request && request["policy_type"].isString)
-    p.policyType = request["policy_type"].get!string;
+    p.policyType = request["policy_type"].getString;
   if ("enforcement" in request && request["enforcement"].isString)
-    p.enforcement = request["enforcement"].get!string;
+    p.enforcement = request["enforcement"].getString;
   if ("enabled" in request && request["enabled"].isBoolean)
     p.enabled = request["enabled"].get!bool;
   if ("configuration" in request)

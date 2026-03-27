@@ -20,27 +20,27 @@ class INTODataService : SAPTenantObject {
     }
 
     if ("service_id" in request && request["service_id"].isString) {
-      serviceId = request["service_id"].get!string;
+      serviceId = request["service_id"].getString;
     }
     if ("name" in request && request["name"].isString) {
-      name = request["name"].get!string;
+      name = request["name"].getString;
     }
     if ("description" in request && request["description"].isString) {
-      description = request["description"].get!string;
+      description = request["description"].getString;
     }
     if ("service_url" in request && request["service_url"].isString) {
-      serviceUrl = request["service_url"].get!string;
+      serviceUrl = request["service_url"].getString;
     }
     if ("odata_version" in request && request["odata_version"].isString) {
-      odataVersion = request["odata_version"].get!string;
+      odataVersion = request["odata_version"].getString;
     }
     if ("backend_system" in request && request["backend_system"].isString) {
-      backendSystem = request["backend_system"].get!string;
+      backendSystem = request["backend_system"].getString;
     }
     if ("entity_sets" in request && request["entity_sets"].isArray) {
       foreach (item; request["entity_sets"].toArray) {
         if (item.isString) {
-          entitySets ~= item.get!string;
+          entitySets ~= item.getString;
         }
       }
     }
@@ -82,7 +82,7 @@ class INTODataService : SAPTenantObject {
 INTODataService odataServiceFromJson(UUID tenantId, Json request) {
   INTODataService svc = new INTODataService(request);
   svc.tenantId = tenantId;
-  
+
   svc.serviceId = randomUUID();
   svc.createdAt = Clock.currTime().toINTOExtString();
   svc.updatedAt = svc.createdAt;

@@ -67,19 +67,19 @@ class INTMessageLog : SAPTenantObject {
   l.logId = randomUUID();
 
   if ("iflow_id" in request && request["iflow_id"].isString)
-    l.iflowId = request["iflow_id"].get!string;
+    l.iflowId = request["iflow_id"].getString;
   if ("correlation_id" in request && request["correlation_id"].isString)
-    l.correlationId = request["correlation_id"].get!string;
+    l.correlationId = request["correlation_id"].getString;
   if ("status" in request && request["status"].isString)
-    l.status = request["status"].get!string;
+    l.status = request["status"].getString;
   if ("sender" in request && request["sender"].isString)
-    l.sender = request["sender"].get!string;
+    l.sender = request["sender"].getString;
   if ("receiver" in request && request["receiver"].isString)
-    l.receiver = request["receiver"].get!string;
+    l.receiver = request["receiver"].getString;
   if ("payload_size_bytes" in request && request["payload_size_bytes"].isInteger)
     l.payloadSizeBytes = request["payload_size_bytes"].get!long;
   if ("error_message" in request && request["error_message"].isString)
-    l.errorMessage = request["error_message"].get!string;
+    l.errorMessage = request["error_message"].getString;
   if ("duration_ms" in request && request["duration_ms"].isInteger)
     l.durationMs = request["duration_ms"].get!long;
 

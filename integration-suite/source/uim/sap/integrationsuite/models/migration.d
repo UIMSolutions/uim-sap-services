@@ -51,21 +51,21 @@ class INTMigration : SAPTenantObject {
     m.migrationId = randomUUID();
 
     if ("name" in request && request["name"].isString)
-      m.name = request["name"].get!string;
+      m.name = request["name"].getString;
     if ("description" in request && request["description"].isString)
-      m.description = request["description"].get!string;
+      m.description = request["description"].getString;
     if ("source_system" in request && request["source_system"].isString)
-      m.sourceSystem = request["source_system"].get!string;
+      m.sourceSystem = request["source_system"].getString;
     if ("source_version" in request && request["source_version"].isString)
-      m.sourceVersion = request["source_version"].get!string;
+      m.sourceVersion = request["source_version"].getString;
     if ("scenario_type" in request && request["scenario_type"].isString)
-      m.scenarioType = request["scenario_type"].get!string;
+      m.scenarioType = request["scenario_type"].getString;
     if ("complexity" in request && request["complexity"].isString)
-      m.complexity = request["complexity"].get!string;
+      m.complexity = request["complexity"].getString;
     if ("estimated_hours" in request && request["estimated_hours"].isInteger)
       m.estimatedHours = request["estimated_hours"].get!long;
     if ("target_runtime" in request && request["target_runtime"].isString)
-      m.targetRuntime = request["target_runtime"].get!string;
+      m.targetRuntime = request["target_runtime"].getString;
     if ("scenario_details" in request)
       m.scenarioDetails = request["scenario_details"];
     else

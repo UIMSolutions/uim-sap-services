@@ -68,25 +68,25 @@ IPVGroup groupFromJson(UUID tenantId, Json request) {
   g.groupId = randomUUID();
 
   if ("group_name" in request && request["group_name"].isString)
-    g.groupName = request["group_name"].get!string;
+    g.groupName = request["group_name"].getString;
   if ("external_id" in request && request["external_id"].isString)
-    g.externalId = request["external_id"].get!string;
+    g.externalId = request["external_id"].getString;
   if ("display_name" in request && request["display_name"].isString)
-    g.displayName = request["display_name"].get!string;
+    g.displayName = request["display_name"].getString;
   if ("description" in request && request["description"].isString)
-    g.description = request["description"].get!string;
+    g.description = request["description"].getString;
   if ("source_system_id" in request && request["source_system_id"].isString)
-    g.sourceSystemId = request["source_system_id"].get!string;
+    g.sourceSystemId = request["source_system_id"].getString;
   if ("status" in request && request["status"].isString)
-    g.status = request["status"].get!string;
+    g.status = request["status"].getString;
   if ("group_id" in request && request["group_id"].isString)
-    g.groupId = request["group_id"].get!string;
+    g.groupId = request["group_id"].getString;
 
   if ("member_user_ids" in request && request["member_user_ids"].isArray) {
     () @trusted {
       foreach (item; request["member_user_ids"]) {
         if (item.isString)
-          g.memberUserIds ~= item.get!string;
+          g.memberUserIds ~= item.getString;
       }
     }();
   }

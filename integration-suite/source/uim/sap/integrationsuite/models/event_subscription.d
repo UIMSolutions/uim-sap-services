@@ -60,11 +60,11 @@ class INTEventSubscription : SAPTenantObject {
     s.subscriptionId = randomUUID();
 
     if ("topic_name" in request && request["topic_name"].isString)
-      s.topicName = request["topic_name"].get!string;
+      s.topicName = request["topic_name"].getString;
     if ("callback_url" in request && request["callback_url"].isString)
-      s.callbackUrl = request["callback_url"].get!string;
+      s.callbackUrl = request["callback_url"].getString;
     if ("delivery_mode" in request && request["delivery_mode"].isString)
-      s.deliveryMode = request["delivery_mode"].get!string;
+      s.deliveryMode = request["delivery_mode"].getString;
 
     s.createdAt = Clock.currTime().toINTOExtString();
     s.updatedAt = s.createdAt;
