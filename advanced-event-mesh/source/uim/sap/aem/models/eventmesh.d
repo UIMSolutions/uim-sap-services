@@ -41,7 +41,7 @@ mixin(ShowModule!());
 FromJson` function ensures that the `tenantId` and `brokerServiceId` are set and that a unique `meshId` is generated if it is not included in the request. The `toJson` method provides a standardized way to serialize the event mesh's data for use in various parts of the application, such as API responses or database storage.
   */
 class AEMEventMesh : SAPTenantObject {
-  mixin(SAPObjectTemplate!AEMEventMesh);
+  mixin(SAPTenantObjectTemplate!AEMEventMesh);
 
   override bool initialize(Json[string] initData = null) {
     if (!super.initialize(initData)) {

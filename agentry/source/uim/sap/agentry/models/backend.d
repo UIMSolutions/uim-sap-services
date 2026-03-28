@@ -28,7 +28,7 @@ mixin(ShowModule!());
   * ```
  */
 class AGTBackendSystem : SAPTenantObject {
-  mixin(SAPObjectTemplate!AGTBackendSystem);
+  mixin(SAPTenantObjectTemplate!AGTBackendSystem);
 
   override bool initialize(Json[string] initData) {
     if (!super.initialize(initData)) {

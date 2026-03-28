@@ -12,7 +12,7 @@ mixin(ShowModule!());
 @safe:
 
 class AEMNotificationRule : SAPTenantObject {
-  mixin(SAPObjectTemplate!AEMNotificationRule);
+  mixin(SAPTenantObjectTemplate!AEMNotificationRule);
 
   override bool initialize(Json[string] initData) {
     if (!super.initialize(initData)) {

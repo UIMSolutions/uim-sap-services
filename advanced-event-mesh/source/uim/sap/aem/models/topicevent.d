@@ -12,7 +12,7 @@ mixin(ShowModule!());
 @safe:
 
 class AEMTopicEvent : SAPTenantObject {
-  mixin(SAPObjectTemplate!AEMTopicEvent);
+  mixin(SAPTenantObjectTemplate!AEMTopicEvent);
 
   override bool initialize(Json[string] initData = null) {
     if (!super.initialize(initData)) {

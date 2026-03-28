@@ -5,7 +5,7 @@ mixin(ShowModule!());
 
 @safe:
 class AGTTestRun : SAPTenantObject {
-  mixin(SAPObjectTemplate!AGTTestRun);
+  mixin(SAPTenantObjectTemplate!AGTTestRun);
 
   override bool initialize(Json[string] initData) {
     if (!super.initialize(initData)) {

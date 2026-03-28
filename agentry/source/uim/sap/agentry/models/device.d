@@ -10,7 +10,7 @@ mixin(ShowModule!());
 
 @safe:
 class AGTDevice : SAPTenantObject {
-  mixin(SAPObjectTemplate!AGTDevice);
+  mixin(SAPTenantObjectTemplate!AGTDevice);
 
   override bool initialize(Json[string] initData) {
     if (!super.initialize(initData)) {

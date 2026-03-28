@@ -12,7 +12,7 @@ mixin(ShowModule!());
 @safe:
 
 class AEMBrokerService : SAPTenantObject {
-  mixin(SAPObjectTemplate!AEMBrokerService);
+  mixin(SAPTenantObjectTemplate!AEMBrokerService);
 
   UUID brokerServiceId;
   string name;

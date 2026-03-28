@@ -48,7 +48,7 @@ mixin(ShowModule!());
   * JSON payload expected by the API consumers. The fields included in the JSON output can be adjusted as needed to fit the use case, and additional fields can be added to the `AEMMonitoringAlert` struct if necessary to capture more information about the alert or its context.
   */
 class AEMMonitoringAlert : SAPTenantObject {
-  mixin(SAPObjectTemplate!AEMMonitoringAlert);
+  mixin(SAPTenantObjectTemplate!AEMMonitoringAlert);
 
   UUID alertId;
   string metric;

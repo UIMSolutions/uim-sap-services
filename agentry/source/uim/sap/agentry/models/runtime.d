@@ -5,7 +5,7 @@ mixin(ShowModule!());
 
 @safe:
 class AGTRuntimeInstance : SAPTenantObject {
-  mixin(SAPObjectTemplate!AGTRuntimeInstance);
+  mixin(SAPTenantObjectTemplate!AGTRuntimeInstance);
 
   UUID instanceId;
   UUID appId;

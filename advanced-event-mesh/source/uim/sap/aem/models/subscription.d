@@ -82,7 +82,7 @@ class AEMSubscription : SAPTenantObject {
     assert(json["topic"].get!string == sub.topic);
   }
 
-  AEMSubscription subscriptionFromJson(UUID tenantId, string componentId, Json request) {
+  AEMSubscription opCall(UUID tenantId, string componentId, Json request) {
     AEMSubscription subscription = new AEMSubscription(request);
     subscription.tenantId = tenantId;
 
