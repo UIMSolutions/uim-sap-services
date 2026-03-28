@@ -230,7 +230,7 @@ class AGTService : SAPService {
   Json upsertDevice(UUID tenantId, Json request) {
     validateId(tenantId, "Tenant ID");
 
-    auto device = AGTDevice(tenantId, request);
+    auto device = new AGTDevice(tenantId, request);
     if (device.appId.toString.length == 0) {
       throw new AGTValidationException("app_id is required");
     }

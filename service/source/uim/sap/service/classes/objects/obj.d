@@ -28,20 +28,28 @@ class SAPObject {
     initialize(initData);
   }
 
+  bool initialize() {
+    createdAt = Clock.currTime();
+    updatedAt = createdAt;
+  }
+
   bool initialize(Json[] initData) {
-    // Initialization logic for the object
+    initialize;
+    
     return true;
   }
 
-  bool initialize(Json[string] initData = null) {
-    // Initialization logic for the object
+  bool initialize(Json[string] initData) {
+    initialize;
 
     if (initData.hasKey("created_at")) {
       createdAt = SysTime.fromISOExtString(initData["created_at"].getString);
     }   
+    
     if (initData.hasKey("updated_at")) {
       updatedAt = SysTime.fromISOExtString(initData["updated_at"].getString);
     }
+
     return true;
   }
 

@@ -35,13 +35,15 @@ class AGTAppVersion : SAPTenantObject {
     }
 
     if ("app_id" in initData && initData["app_id"].isString) {
-      appId = toUUID(initData["app_id"].get!string);
+      appId = UUID(initData["app_id"].get!string);
     }
+
+    versionId = randomUUID();
     if ("version_id" in initData && initData["version_id"].isString) {
-      versionId = toUUID(initData["version_id"].get!string);
+      versionId = UUID(initData["version_id"].get!string);
     }
     if ("version_label" in initData && initData["version_label"].isString) {
-      versionLabel = initData["version_label"].getString;
+      versionLabel = initData.getString("version_label", "1.0.0");
     }
     if ("change_log" in initData && initData["change_log"].isString) {
       changeLog = initData["change_log"].getString;
@@ -68,14 +70,11 @@ class AGTAppVersion : SAPTenantObject {
       .set("build_status", buildStatus);
   }
 
-  static AGTAppVersion opCall(UUID tenantId, string appId, Json request) {
+  static AGTAppVersion opCall(UUID tenantId, UUID appId, Json request) {
     AGTAppVersion appVersion = new AGTAppVersion(request);
-    
+
     appVersion.tenantId = tenantId;
     appVersion.appId = UUID(appId);
-    appVersion.versionId = randomUUID();
-    appVersion.versionLabel = "1.0.0";
-    appVersion.createdAt = Clock.currTime();
 
     return appVersion;
   }

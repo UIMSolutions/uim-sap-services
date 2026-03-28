@@ -9,6 +9,21 @@ mixin(ShowModule!());
 class SAPTenantObject : SAPObject {
   mixin(SAPObjectTemplate!SAPTenantObject);
 
+  this(UUID tenantId) {
+    super();
+    this.tenantId(tenantId);
+  }
+
+  this(UUID tenantId, Json[] initData) {
+    super(initData);
+    this.tenantId(tenantId);
+  }
+
+  this(UUID tenantId, Json[string] initData) {
+    super(initData);
+    this.tenantId(tenantId);
+  }
+
   override bool initialize(Json[string] initData = null) {
     if (!super.initialize(initData)) {
       return false;
@@ -22,15 +37,13 @@ class SAPTenantObject : SAPObject {
   }
 
   override Json toJson() {
-    Json info = super.toJson();
-    // Add tenant-specific fields to the JSON object
-    info["tenantId"] = _tenantId.toString();
-    return info;  
+    return super.toJson()
+      .set("tenantId", _tenantId.toString());
   }
   ///
   unittest {
-    SAPTenantObject obj = new SAPTenantObject();
-    obj.tenantId = randomUUID();
+    UUID id = randomUUID();
+    SAPTenantObject obj = new SAPTenantObject(id);
     Json json = obj.toJson();
     assert(json["tenantId"].get!string == obj.tenantId.toString());
   }
@@ -40,15 +53,19 @@ class SAPTenantObject : SAPObject {
   UUID tenantId() const {
     return _tenantId;
   }
+
   void tenantId(UUID id) {
     _tenantId = id;
   }
   ///
   unittest {
-    SAPTenantObject obj = new SAPTenantObject();
     UUID id = randomUUID();
-    obj.tenantId = id;
+    SAPTenantObject obj = new SAPTenantObject(id);
     assert(obj.tenantId == id);
+
+    UUID id2 = randomUUID();
+    obj.tenantId(id2);
+    assert(obj.tenantId == id2);
   }
   // #endregion tenantId
 }

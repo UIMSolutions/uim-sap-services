@@ -14,31 +14,33 @@ mixin(ShowModule!());
 class AEMNotificationRule : SAPTenantObject {
   mixin(SAPTenantObjectTemplate!AEMNotificationRule);
 
+  this(UUID tenantId, UUID ruleId, Json initData) {
+    super(initData);
+    this.tenantId = tenantId;
+    this.ruleId = ruleId;
+  }
+
   override bool initialize(Json[string] initData) {
     if (!super.initialize(initData)) {
       return false;
     }
 
-    if ("rule_id" in request && request["rule_id"].isString) {
-      ruleId = UUID(request["rule_id"].get!string);
+    if ("rule_id" in initData && initData["rule_id"].isString) {
+      ruleId = UUID(initData["rule_id"].get!string);
     }
-    if ("metric" in request && request["metric"].isString) {
-      metric = toLower(request["metric"].get!string);
+    if ("metric" in initData && initData["metric"].isString) {
+      metric = toLower(initData["metric"].get!string);
     }
-    if ("threshold" in request && request["threshold"].isFloat) {
-      threshold = request["threshold"].get!double;
-    } else if ("threshold" in request && request["threshold"].isInteger) {
-      threshold = cast(double)request["threshold"].get!long;
+    if ("threshold" in initData && initData["threshold"].isFloat) {
+      threshold = initData["threshold"].get!double;
+    } else if ("threshold" in initData && initData["threshold"].isInteger) {
+      threshold = cast(double)initData["threshold"].get!long;
     }
-    if ("severity" in request && request["severity"].isString) {
-      severity = toLower(request["severity"].get!string);
+      severity = toLower(initData.getString("severity", "warning"));
+    if ("enabled" in initData && initData["enabled"].isBoolean) {
+      enabled = initData["enabled"].get!bool;
     }
-    if ("enabled" in request && request["enabled"].isBoolean) {
-      enabled = request["enabled"].get!bool;
-    }
-    if ("channel" in request && request["channel"].isString) {
-      channel = request["channel"].getString;
-    }
+      channel = initData.getString("channel", "email");
 
     return true;
   }
@@ -46,11 +48,11 @@ class AEMNotificationRule : SAPTenantObject {
   UUID ruleId;
   string metric;
   double threshold;
-  string severity = "warning";
+  string severity;
   bool enabled = true;
-  string channel = "email";
+  string channel;
 
-  override override Json toJson() {
+  override Json toJson() {
     return super.toJson()
       .set("rule_id", ruleId)
       .set("metric", metric)
@@ -60,7 +62,7 @@ class AEMNotificationRule : SAPTenantObject {
       .set("channel", channel);
   }
 
-  static AEMNotificationRule notificationRuleFromJson(UUID tenantId, string ruleId, Json request) {
+  static AEMNotificationRule notificationRuleFromJson(UUID tenantId, UUID ruleId, Json request) {
     AEMNotificationRule rule = new AEMNotificationRule();
     rule.tenantId = tenantId;
     rule.ruleId = ruleId;
