@@ -10,7 +10,7 @@ mixin(ShowModule!());
 // CIDBuildLog – a log entry produced during a build
 // ---------------------------------------------------------------------------
 class CIDBuildLog : SAPTenantObject {
-  mixin(SAPObjectTemplate!CIDBuildLog);
+  mixin(SAPTenantObjectTemplate!CIDBuildLog);
 
   UUID logId;
   UUID buildId;

@@ -5,7 +5,7 @@ mixin(ShowModule!());
 
 @safe:
 class CPSLaunchpadModule : SAPTenantObject {
-  mixin(SAPObjectTemplate!CPSLaunchpadModule);
+  mixin(SAPTenantObjectTemplate!CPSLaunchpadModule);
 
   UUID moduleId;
   string solutionName;

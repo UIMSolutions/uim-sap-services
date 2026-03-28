@@ -1,7 +1,7 @@
 module uim.sap.cag.models.transportqueue;
 
 class CAGTransportQueue : SAPTenantObject {
-  mixin(SAPObjectTemplate!CAGTransportQueue);
+  mixin(SAPTenantObjectTemplate!CAGTransportQueue);
 
   UUID queueId;
   string name;

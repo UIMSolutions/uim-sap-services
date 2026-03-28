@@ -9,7 +9,7 @@ mixin(ShowModule!());
 // CIDRepository – a connected Git repository
 // ---------------------------------------------------------------------------
 class CIDRepository : SAPTenantObject {
-  mixin(SAPObjectTemplate!CIDRepository);
+  mixin(SAPTenantObjectTemplate!CIDRepository);
 
   UUID repoId;
   string name;

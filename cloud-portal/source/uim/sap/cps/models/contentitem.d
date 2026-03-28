@@ -5,7 +5,7 @@ mixin(ShowModule!());
 
 @safe:
 class CPSContentItem : SAPTenantObject {
-  mixin(SAPObjectTemplate!CPSContentItem);
+  mixin(SAPTenantObjectTemplate!CPSContentItem);
 
   string itemType;
   UUID itemId;

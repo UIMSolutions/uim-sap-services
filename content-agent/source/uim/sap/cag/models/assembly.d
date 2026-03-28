@@ -7,7 +7,7 @@ mixin(ShowModule!());
 @safe:
 
 class CAGAssembly : SAPTenantObject {
-  mixin(SAPObjectTemplate!CAGAssembly);
+  mixin(SAPTenantObjectTemplate!CAGAssembly);
 
   string assemblyId;
   string name;

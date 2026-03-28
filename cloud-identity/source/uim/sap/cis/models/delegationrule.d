@@ -44,7 +44,7 @@ mixin(ShowModule!());
   * Delegation rules are a critical component of the authentication flow in the CIS module, enabling flexible and dynamic routing of authentication requests to different identity providers based on user attributes and organizational policies. By defining delegation rules, administrators can ensure that users are authenticated through the appropriate channels, enhancing security and user experience. The combination of criteria such as email domain, user type, and group membership allows for granular control over the delegation process, making it possible to implement complex authentication scenarios that align with the organization's requirements. 
   */
 class CISDelegationRule : SAPTenantObject {
-  mixin(SAPObjectTemplate!CISDelegationRule);
+  mixin(SAPTenantObjectTemplate!CISDelegationRule);
 
   UUID ruleId;
   string targetIdp;

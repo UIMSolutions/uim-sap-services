@@ -9,7 +9,7 @@ mixin(ShowModule!());
 // User – a person who can be assigned tasks
 // ---------------------------------------------------------------------------
 class CIAUser : SAPTenantObject {
-  mixin(SAPObjectTemplate!CIAUser);
+  mixin(SAPTenantObjectTemplate!CIAUser);
 
   UUID id;
   string name;

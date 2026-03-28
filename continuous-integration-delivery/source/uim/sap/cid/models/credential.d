@@ -9,7 +9,7 @@ mixin(ShowModule!());
 // CIDCredential – a stored credential for private repositories
 // ---------------------------------------------------------------------------
 class CIDCredential : SAPTenantObject {
-  mixin(SAPObjectTemplate!CIDCredential);
+  mixin(SAPTenantObjectTemplate!CIDCredential);
 
   UUID credentialId;
   string name;

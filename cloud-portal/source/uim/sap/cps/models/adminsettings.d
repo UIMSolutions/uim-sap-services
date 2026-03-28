@@ -5,7 +5,7 @@ mixin(ShowModule!());
 
 @safe:
 class CPSAdminSettings : SAPTenantObject {
-  mixin(SAPObjectTemplate!CPSAdminSettings);
+  mixin(SAPTenantObjectTemplate!CPSAdminSettings);
 
   Json themes;
   Json transports;

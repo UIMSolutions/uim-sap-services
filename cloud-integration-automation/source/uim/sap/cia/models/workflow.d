@@ -9,7 +9,7 @@ mixin(ShowModule!());
 // Workflow – a running instance of a scenario for a tenant
 // ---------------------------------------------------------------------------
 class CIAWorkflow : SAPTenantObject {
-  mixin(SAPObjectTemplate!CIAWorkflow);
+  mixin(SAPTenantObjectTemplate!CIAWorkflow);
 
   UUID id;
   UUID scenarioId;

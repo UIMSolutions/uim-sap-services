@@ -5,7 +5,7 @@ mixin(ShowModule!());
 
 @safe:
 class CPSContentProvider : SAPTenantObject {
-  mixin(SAPObjectTemplate!CPSContentProvider);
+  mixin(SAPTenantObjectTemplate!CPSContentProvider);
 
   UUID providerId;
   string solutionName;
