@@ -6,7 +6,6 @@ module uim.sap.ctm.models.importqueue;
 class CTMImportQueueEntry : SAPTenantObject {
     mixin(SAPObjectTemplate!CTMImportQueueEntry);
 
-    UUID tenantId;
     UUID nodeId;
     UUID requestId;
     /// Position in the queue (lower = earlier)

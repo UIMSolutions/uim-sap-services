@@ -12,7 +12,7 @@ mixin(ShowModule!());
 @safe:
 
 /// A recorded user–item interaction used for training and inference.
-class PREInteraction : SAPObject {
+class PREInteraction : SAPTenantObject {
   mixin(SAPObjectTemplate!PREInteraction);
 
   UUID interactionId;

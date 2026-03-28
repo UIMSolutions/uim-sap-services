@@ -8,33 +8,27 @@ mixin(ShowModule!());
 
 @safe:
 
+class BusinessPurposeRule : SAPTenantObject {
+  mixin(SAPObjectTemplate!BusinessPurposeRule);
 
-struct BusinessPurposeRule {
-  UUID tenantId;
   string purposeRuleId;
   string applicationGroup;
   string purposeName;
   string referenceDateField;
   LegalGroundRule[] legalGroundRules;
-  SysTime createdAt;
-  SysTime updatedAt;
 
   override Json toJson() {
     Json grounds = legalGroundRules.map!(g => g.toJson()).array.toJson();
 
     return Json.emptyObject
-      .set("tenant_id", tenantId)
       .set("purpose_rule_id", purposeRuleId)
       .set("application_group", applicationGroup)
       .set("purpose_name", purposeName)
       .set("reference_date_field", referenceDateField)
-      .set("legal_grounds", grounds)
-      .set("created_at", createdAt.toISOExtString())
-      .set("updated_at", updatedAt.toISOExtString());
+      .set("legal_grounds", grounds);
   }
-}
 
-BusinessPurposeRule parseBusinessPurposeRule(UUID tenantId, Json request) {
+  static BusinessPurposeRule opCall(UUID tenantId, Json request) {
   BusinessPurposeRule rule;
   rule.tenantId = tenantId;
   rule.purposeRuleId = request.getString("purpose_rule_id", createId());
@@ -59,6 +53,9 @@ BusinessPurposeRule parseBusinessPurposeRule(UUID tenantId, Json request) {
 
   return rule;
 }
+}
+
+
 
 
 

@@ -41,8 +41,73 @@ mixin(ShowModule!());
   * Json response = proxy.toJson(); // Convert API Proxy to JSON for API response
   * For more information on API Proxies and their management, refer to the SAP Integration Suite documentation.
   */
-struct INTApiProxy {
-  UUID tenantId;
+class INTApiProxy : SAPTenantObject {
+  mixin(SAPtenantObject!INTApiProxy);
+
+  override bool initialize(Json[string] initData) {
+    if (!super.initialize(initData)) {
+      return false;
+    }
+
+    if ("proxy_id" in request && request["proxy_id"].isString) {
+      proxyId = request["proxy_id"].getString;
+    }
+    if ("name" in request && request["name"].isString) {
+      name = request["name"].getString;
+    }
+    if ("description" in request && request["description"].isString) {
+      description = request["description"].getString;
+    }
+    if ("base_path" in request && request["base_path"].isString) {
+      basePath = request["base_path"].getString;
+    }
+    if ("target_url" in request && request["target_url"].isString) {
+      targetUrl = request["target_url"].getString;
+    }
+    if ("version" in request && request["version"].isString) {
+      version_ = request["version"].getString;
+    }
+    if ("status" in request && request["status"].isString) {
+      status = request["status"].getString;
+    }
+    if ("auth_scheme" in request && request["auth_scheme"].isString) {
+      authScheme = request["auth_scheme"].getString;
+    }
+    if ("call_count" in request && request["call_count"].isNumber) {
+      callCount = request["call_count"].get!long;
+    }
+    if ("error_count" in request && request["error_count"].isNumber) {
+      errorCount = request["error_count"].get!long;
+    }
+    if ("policies" in request && request["policies"].isArray) {
+      foreach (item; request["policies"].toArray) {
+        if (item.isString) {
+          policies ~= item.getString;
+        }
+      }
+    }
+
+    p.proxyId = randomUUID();
+
+    if ("name" in request && request["name"].isString)
+      p.name = request["name"].getString;
+    if ("description" in request && request["description"].isString)
+      p.description = request["description"].getString;
+    if ("base_path" in request && request["base_path"].isString)
+      p.basePath = request["base_path"].getString;
+    if ("target_url" in request && request["target_url"].isString)
+      p.targetUrl = request["target_url"].getString;
+    if ("version" in request && request["version"].isString)
+      p.version_ = request["version"].getString;
+    if ("auth_scheme" in request && request["auth_scheme"].isString)
+      p.authScheme = request["auth_scheme"].getString;
+
+    p.createdAt = Clock.currTime().toINTOExtString();
+    p.updatedAt = p.createdAt;
+
+    return true;
+  }
+
   UUID proxyId;
   string name;
   string description;
@@ -57,13 +122,12 @@ struct INTApiProxy {
   string createdAt;
   string updatedAt;
 
-  override Json toJson()  {
+  override Json toJson() {
     Json pols = Json.emptyArray;
     foreach (p; policies)
       pols ~= Json(p);
 
     return super.toJson()
-      .set("tenant_id", tenantId)
       .set("proxy_id", proxyId)
       .set("name", name)
       .set("description", description)
@@ -74,31 +138,14 @@ struct INTApiProxy {
       .set("auth_scheme", authScheme)
       .set("call_count", callCount)
       .set("error_count", errorCount)
-      .set("policies", pols)
-      .set("created_at", createdAt)
-      .set("updated_at", updatedAt);
+      .set("policies", pols);
   }
-}
 
-INTApiProxy apiProxyFromJson(UUID tenantId, Json request) {
-  INTApiProxy p;
-  p.tenantId = tenantId;
-  p.proxyId = randomUUID();
+  static INTApiProxy apiProxyFromJson(UUID tenantId, Json request) {
+    INTApiProxy p;
+    p.tenantId = tenantId;
 
-  if ("name" in request && request["name"].isString)
-    p.name = request["name"].getString;
-  if ("description" in request && request["description"].isString)
-    p.description = request["description"].getString;
-  if ("base_path" in request && request["base_path"].isString)
-    p.basePath = request["base_path"].getString;
-  if ("target_url" in request && request["target_url"].isString)
-    p.targetUrl = request["target_url"].getString;
-  if ("version" in request && request["version"].isString)
-    p.version_ = request["version"].getString;
-  if ("auth_scheme" in request && request["auth_scheme"].isString)
-    p.authScheme = request["auth_scheme"].getString;
+    return p;
+  }
 
-  p.createdAt = Clock.currTime().toINTOExtString();
-  p.updatedAt = p.createdAt;
-  return p;
 }

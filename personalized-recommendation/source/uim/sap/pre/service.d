@@ -26,7 +26,7 @@ class PREService : SAPService {
   //  Item Catalog
   // ──────────────────────────────────────
 
-  Json addItem(UUID tenantId, Json data_) {
+  Json addItem(UUID tenantId, Json settings) {
     ensureTenant(tenantId);
     if (_store.countItems(tenantId) >= config.maxItemsPerTenant) {
       throw new PREQuotaExceededException("Maximum items per tenant exceeded");
@@ -61,7 +61,7 @@ class PREService : SAPService {
     return arr;
   }
 
-  Json updateItem(UUID tenantId, string itemId, Json data_) {
+  Json updateItem(UUID tenantId, string itemId, Json settings) {
     ensureTenant(tenantId);
     auto p = _store.getItem(tenantId, itemId);
     if (p is null) {
@@ -113,13 +113,13 @@ class PREService : SAPService {
   //  User Management
   // ──────────────────────────────────────
 
-  Json registerUser(UUID tenantId, Json data_) {
+  Json registerUser(UUID tenantId, Json settings) {
     ensureTenant(tenantId);
     if (_store.countUsers(tenantId) >= config.maxUsersPerTenant) {
       throw new PREQuotaExceededException("Maximum users per tenant exceeded");
     }
 
-    auto user = userFromJson(body_);
+    PREUser user = PREUser(settings);
     user.tenantId = tenantId;
     if (user.userId.length == 0)
       user.userId = generateUserId();
@@ -130,7 +130,7 @@ class PREService : SAPService {
     return userToJson(user);
   }
 
-  Json getUser(UUID tenantId, string userId) {
+  Json getUser(UUID tenantId, UUID userId) {
     ensureTenant(tenantId);
     auto p = _store.getUser(tenantId, userId);
     if (p is null) {
@@ -148,23 +148,23 @@ class PREService : SAPService {
     return arr;
   }
 
-  Json updateUser(UUID tenantId, string userId, Json data_) {
+  Json updateUser(UUID tenantId, UUID userId, Json data) {
     ensureTenant(tenantId);
     auto p = _store.getUser(tenantId, userId);
     if (p is null) {
       throw new PRENotFoundException("User not found: " ~ userId);
     }
 
-    if ("displayName" in body_)
-      p.displayName = body_["displayName"].getString;
-    if ("preferences" in body_) {
+    if ("displayName" in data)
+      p.displayName = data["displayName"].getString;
+    if ("preferences" in data) {
       p.preferences = [];
-      foreach (pr; body_["preferences"])
+      foreach (pr; data["preferences"])
         p.preferences ~= pr.getString;
     }
-    if ("context" in body_) {
+    if ("context" in data) {
       string[string] ctx;
-      foreach (string k, v; body_["context"])
+      foreach (string k, v; data["context"].toMap)
         ctx[k] = v.getString;
       p.context = ctx;
     }
@@ -172,7 +172,7 @@ class PREService : SAPService {
     return userToJson(*p);
   }
 
-  Json deleteUser(UUID tenantId, string userId) {
+  Json deleteUser(UUID tenantId, UUID userId) {
     ensureTenant(tenantId);
     if (!_store.removeUser(tenantId, userId)) {
       throw new PRENotFoundException("User not found: " ~ userId);
@@ -186,9 +186,9 @@ class PREService : SAPService {
   //  Interaction Tracking
   // ──────────────────────────────────────
 
-  Json recordInteraction(UUID tenantId, Json data_) {
+  Json recordInteraction(UUID tenantId, Json settings) {
     ensureTenant(tenantId);
-    auto interaction = interactionFromJson(body_);
+    auto interaction = interactionFromJson(settings);
     interaction.tenantId = tenantId;
     if (interaction.interactionId.length == 0)
       interaction.interactionId = generateInteractionId();
@@ -207,8 +207,8 @@ class PREService : SAPService {
       throw new PREQuotaExceededException("Maximum interactions per user exceeded");
     }
 
-    if ("interactionType" in body_) {
-      interaction.interactionType = parseInteractionType(body_["interactionType"].get!string);
+    if ("interactionType" in data) {
+      interaction.interactionType = parseInteractionType(data["interactionType"].get!string);
     }
 
     interaction.timestamp = nowTimestamp();
@@ -238,13 +238,13 @@ class PREService : SAPService {
   //  Model Management
   // ──────────────────────────────────────
 
-  Json createModel(UUID tenantId, Json data_) {
+  Json createModel(UUID tenantId, Json settings) {
     ensureTenant(tenantId);
     if (_store.countModels(tenantId) >= config.maxModelsPerTenant) {
       throw new PREQuotaExceededException("Maximum models per tenant exceeded");
     }
 
-    auto model = modelFromJson(body_);
+    auto model = modelFromJson(settings);
     model.tenantId = tenantId;
     if (model.modelId.length == 0)
       model.modelId = generateModelId();
@@ -252,10 +252,10 @@ class PREService : SAPService {
     model.createdAt = nowTimestamp();
     model.updatedAt = model.createdAt;
 
-    if ("modelType" in body_)
-      model.modelType = parseModelType(body_["modelType"].get!string);
-    if ("scenarioType" in body_)
-      model.scenarioType = parseScenarioType(body_["scenarioType"].get!string);
+    if ("modelType" in data)
+      model.modelType = parseModelType(data["modelType"].get!string);
+    if ("scenarioType" in data)
+      model.scenarioType = parseScenarioType(data["scenarioType"].get!string);
 
     _store.addModel(tenantId, model);
     return modelToJson(model);
@@ -349,17 +349,17 @@ class PREService : SAPService {
   //  Scenario Management
   // ──────────────────────────────────────
 
-  Json createScenario(UUID tenantId, Json data_) {
+  Json createScenario(UUID tenantId, Json settings) {
     ensureTenant(tenantId);
-    auto scenario = scenarioFromJson(body_);
+    auto scenario = scenarioFromJson(settings);
     scenario.tenantId = tenantId;
     if (scenario.scenarioId.length == 0)
       scenario.scenarioId = generateScenarioId();
     scenario.createdAt = nowTimestamp();
     scenario.updatedAt = scenario.createdAt;
 
-    if ("scenarioType" in body_)
-      scenario.scenarioType = parseScenarioType(body_["scenarioType"].get!string);
+    if ("scenarioType" in settings)
+      scenario.scenarioType = parseScenarioType(settings.getString("scenarioType"));
 
     // Validate model reference if given
     if (scenario.modelId.length > 0) {

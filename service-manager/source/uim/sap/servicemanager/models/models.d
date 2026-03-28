@@ -8,24 +8,22 @@ mixin(ShowModule!());
 
 @safe:
 
-struct SVMPlatform {
-  UUID tenantId;
-  string platformId;
+class SVMPlatform : SAPTenantObject {
+  mixin(SAPtenantObject!SVMPlatform);
+
+  UUID platformId;
   string name;
   string runtimeType;
   string apiEndpoint;
   string status;
-  SysTime createdAt;
 
   override Json toJson()  {
     return super.toJson
-    .set("tenant_id", tenantId)
     .set("platform_id", platformId)
     .set("name", name)
     .set("runtime_type", runtimeType)
     .set("api_endpoint", apiEndpoint)
-    .set("status", status)
-    .set("created_at", createdAt.toISOExtString());
+    .set("status", status);
   }
 }
 

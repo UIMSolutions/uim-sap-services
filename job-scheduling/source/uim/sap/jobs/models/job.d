@@ -11,9 +11,10 @@ mixin(ShowModule!());
 
 @safe:
 
-struct Job {
-    UUID tenantId;
-    string jobId;
+class Job : SAPTenantObject {
+  mixin(SAPtenantObject!Job);
+
+    UUID jobId;
     string name;
     string description;
     string actionEndpoint;
@@ -24,24 +25,18 @@ struct Job {
     bool longRunningTask;
     string oauthToken;
     bool active;
-    SysTime createdAt;
-    SysTime updatedAt;
 
     override Json toJson()  {
-        Json data = Json.emptyObject;
-        data["tenant_id"] = tenantId;
-        data["job_id"] = jobId;
-        data["name"] = name;
-        data["description"] = description;
-        data["action_endpoint"] = actionEndpoint;
-        data["http_method"] = httpMethod;
-        data["payload"] = payload;
-        data["runtime"] = runtime;
-        data["execution_mode"] = executionMode;
-        data["long_running_task"] = longRunningTask;
-        data["active"] = active;
-        data["created_at"] = createdAt.toISOExtString();
-        data["updated_at"] = updatedAt.toISOExtString();
-        return data;
+      return super.toJson()
+        .set("job_id", jobId)
+        .set("name", name)
+        .set("description", description)
+        .set("action_endpoint", actionEndpoint)
+        .set("http_method", httpMethod)
+        .set("payload", payload)
+        .set("runtime", runtime)
+        .set("execution_mode", executionMode)
+        .set("long_running_task", longRunningTask)
+        .set("active", active);
     }
 }

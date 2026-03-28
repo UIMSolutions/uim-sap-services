@@ -12,15 +12,14 @@ mixin(ShowModule!());
 @safe:
 
 /// A user whose interactions are tracked for personalisation.
-struct PREUser {
+class PREUser : SAPTenantObject {
+  mixin(SAPObjectTemplate!PREUser);
+
   UUID userId;
-  UUID tenantId;
   string displayName;
   PREUserSegment segment = PREUserSegment.new_user;
   string[] preferences;
   string[string] context;
-  string createdAt;
-  string updatedAt;
 }
 
 Json userToJson(const ref PREUser u) {
@@ -34,23 +33,21 @@ Json userToJson(const ref PREUser u) {
 
   return Json.emptyObject
     .set("userId", u.userId)
-    .set("tenantId", u.tenantId)
     .set("displayName", u.displayName)
     .set("segment", u.segment.to!string)
     .set("preferences", arr)
-    .set("context", obj)
-    .set("createdAt", u.createdAt)
-    .set("updatedAt", u.updatedAt);
-}
+    .set("context", obj);
 
-PREUser userFromJson(Json j) {
-  PREUser u;
-  u.userId = j["userId"].getString;
-  u.tenantId = j.getString("tenantId", "");
-  u.displayName = j.getString("displayName", "");
-  foreach (p; j["preferences"].toMap)
-    u.preferences ~= p.getString;
-  foreach (string k, v; j["context"].toMap)
-    u.context[k] = v.getString;
-  return u;
+  static PREUser opCall(Json j) {
+    PREUser u;
+    u.userId = j["userId"].getString;
+    u.tenantId = j.getString("tenantId", "");
+    u.displayName = j.getString("displayName", "");
+    foreach (p; j["preferences"].toMap)
+      u.preferences ~= p.getString;
+    foreach (string k, v; j["context"].toMap)
+      u.context[k] = v.getString;
+    return u;
+  }
+
 }

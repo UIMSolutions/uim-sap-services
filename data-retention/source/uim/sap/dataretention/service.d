@@ -41,7 +41,7 @@ class DRMService : SAPService {
   Json upsertBusinessPurpose(UUID tenantId, Json request) {
     validateTenant(tenantId);
 
-    auto rule = parseBusinessPurposeRule(tenantId, request);
+    BusinessPurposeRule rule = BusinessPurposeRule(tenantId, request);
     validateBusinessPurpose(rule);
     rule.updatedAt = Clock.currTime();
 
