@@ -18,7 +18,7 @@ mixin(ShowModule!());
   * - toJson(): Serializes the secret input object to JSON format for storage or transmission.
   */
 class ATPSecretInput : SAPTenantObject {
-  mixin(SAPObjectTemplate!ATPSecretInput);
+  mixin(SAPTenantObjectTemplate!ATPSecretInput);
 
   string key;
   string maskedValue;

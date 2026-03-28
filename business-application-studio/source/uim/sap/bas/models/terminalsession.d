@@ -7,7 +7,7 @@ mixin(ShowModule!());
 @safe:
 
 class BASTerminalSession : SAPTenantObject {
-  mixin(SAPObjectTemplate!BASTerminalSession);
+  mixin(SAPTenantObjectTemplate!BASTerminalSession);
 
   UUID workspaceId;
   UUID sessionId;

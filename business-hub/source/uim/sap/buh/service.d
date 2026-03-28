@@ -86,7 +86,7 @@ class BUHService : SAPService {
   }
 
   Json createSubscription(Json request) {
-    auto subscription = subscriptionFromJson(request);
+    auto subscription = new AEMSubscription(request);
     if (subscription.apiId.length == 0) {
       throw new BUHValidationException("api_id is required");
     }

@@ -8,7 +8,7 @@ mixin(ShowModule!());
 
 
 class BASWizardRun : SAPTenantObject {
-  mixin(SAPObjectTemplate!BASWizardRun);
+  mixin(SAPTenantObjectTemplate!BASWizardRun);
 
   UUID runId;
   UUID workspaceId;

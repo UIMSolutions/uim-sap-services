@@ -22,7 +22,7 @@ mixin(ShowModule!());
   * - toJson(): Serializes the catalog object to JSON format for storage or transmission.
   */
 class ATPCatalog : SAPTenantObject {
-  mixin(SAPObjectTemplate!ATPCatalog);
+  mixin(SAPTenantObjectTemplate!ATPCatalog);
   
   UUID catalogId;
   string name;

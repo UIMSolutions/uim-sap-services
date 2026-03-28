@@ -25,7 +25,7 @@ mixin(ShowModule!());
   * - toJson(): Serializes the execution object to JSON format for storage or transmission.
   */
 class ATPExecution : SAPTenantObject {
-  mixin(SAPObjectTemplate!ATPExecution);
+  mixin(SAPTenantObjectTemplate!ATPExecution);
 
   UUID executionId;
   UUID commandId;
