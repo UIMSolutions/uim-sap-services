@@ -6,7 +6,7 @@ mixin(ShowModule!());
 
 @safe:
 class MDGBusinessPartner : SAPTenantObject {
-  mixin(SAPObjectTemplate!MDGBusinessPartner);
+  mixin(SAPTenantObjectTemplate!MDGBusinessPartner);
 
   override bool initialize(Json[string] initData) {
     if (!super.initialize(initData)) {

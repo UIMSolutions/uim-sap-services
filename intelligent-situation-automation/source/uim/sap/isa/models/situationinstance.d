@@ -5,7 +5,7 @@ mixin(ShowModule!());
 
 @safe:
 class SituationInstance : SAPTenantObject {
-  mixin(SAPObjectTemplate!SituationInstance);
+  mixin(SAPTenantObjectTemplate!SituationInstance);
 
   UUID id;
   string situationType;

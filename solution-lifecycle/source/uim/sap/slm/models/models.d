@@ -10,7 +10,7 @@ mixin(ShowModule!());
 // SLMSolution – a deployed solution in a subaccount
 // ---------------------------------------------------------------------------
 class SLMSolution : SAPTenantObject {
-  mixin(SAPObjectTemplate!SLMSolution);
+  mixin(SAPTenantObjectTemplate!SLMSolution);
 
   UUID solutionId;
   string name;
@@ -88,7 +88,7 @@ struct SLMComponent {
 // SLMDeployment – a deployment/update operation record
 // ---------------------------------------------------------------------------
 class SLMDeployment : SAPTenantObject {
-  mixin(SAPObjectTemplate!SLMDeployment);
+  mixin(SAPTenantObjectTemplate!SLMDeployment);
 
   UUID deploymentId;
   UUID solutionId;

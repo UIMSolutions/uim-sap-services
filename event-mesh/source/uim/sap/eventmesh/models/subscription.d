@@ -7,7 +7,7 @@ mixin(ShowModule!());
 @safe:
 
 class EVMSubscription : SAPTenantObject {
-  mixin(SAPObjectTemplate!EVMSubscription);
+  mixin(SAPTenantObjectTemplate!EVMSubscription);
 
   UUID subscriptionId;
   string topicName;

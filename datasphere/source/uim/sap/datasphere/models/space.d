@@ -27,7 +27,7 @@ mixin(ShowModule!());
   * - updatedAt: The timestamp of the last update to this space.
  */
 class DATSpace : SAPTenantObject {
-  mixin(SAPObjectTemplate!DATSpace);
+  mixin(SAPTenantObjectTemplate!DATSpace);
 
   UUID spaceId;
   string name;

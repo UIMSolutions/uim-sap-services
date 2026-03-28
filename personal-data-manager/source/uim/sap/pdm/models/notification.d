@@ -13,7 +13,7 @@ mixin(ShowModule!());
 
 /// Notification sent to a data subject about their personal data
 class PDMNotification : SAPTenantObject {
-  mixin(SAPObjectTemplate!PDMNotification);
+  mixin(SAPTenantObjectTemplate!PDMNotification);
 
     UUID notificationId;
     UUID subjectId;

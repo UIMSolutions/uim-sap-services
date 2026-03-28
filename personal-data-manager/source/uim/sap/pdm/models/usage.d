@@ -39,7 +39,7 @@ mixin(ShowModule!());
   * ```
   */
 class PDMDataUsage : SAPTenantObject {
-  mixin(SAPObjectTemplate!PDMDataUsage);
+  mixin(SAPTenantObjectTemplate!PDMDataUsage);
 
   UUID usageId;
   UUID subjectId;

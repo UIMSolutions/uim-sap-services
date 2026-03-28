@@ -13,7 +13,7 @@ mixin(ShowModule!());
 
 /// A personal data record — describes what personal data is stored and where
 class PDMPersonalDataRecord : SAPTenantObject {
-  mixin(SAPObjectTemplate!PDMPersonalDataRecord);
+  mixin(SAPTenantObjectTemplate!PDMPersonalDataRecord);
 
   UUID recordId;
   UUID subjectId;

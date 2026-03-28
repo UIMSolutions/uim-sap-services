@@ -13,7 +13,7 @@ mixin(ShowModule!());
 
 /// Tenant in a multitenant deployment
 class PDMTenant : SAPTenantObject {
-  mixin(SAPObjectTemplate!PDMTenant);
+  mixin(SAPTenantObjectTemplate!PDMTenant);
 
     string name;
     string description;

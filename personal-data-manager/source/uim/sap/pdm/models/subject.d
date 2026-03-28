@@ -13,7 +13,7 @@ mixin(ShowModule!());
 
 /// Data subject — an identified or identifiable natural/legal person
 class PDMDataSubject : SAPTenantObject {
-  mixin(SAPObjectTemplate!PDMDataSubject);
+  mixin(SAPTenantObjectTemplate!PDMDataSubject);
 
   UUID subjectId;
   PDMSubjectType subjectType = PDMSubjectType.privatePerson;

@@ -31,7 +31,7 @@ mixin(ShowModule!());
   * - correlationId: A unique identifier that correlates related messages across different systems and processes
 */
 class INTMessageLog : SAPTenantObject {
-  mixin(SAPObjectTemplate!INTMessageLog);
+  mixin(SAPTenantObjectTemplate!INTMessageLog);
 
   UUID logId;
   UUID iflowId;

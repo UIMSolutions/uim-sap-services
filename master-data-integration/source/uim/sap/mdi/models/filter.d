@@ -30,8 +30,8 @@ mixin(ShowModule!());
   * - `active`: A boolean indicating whether the filter is active.  
   * - `updatedAt`: A timestamp indicating when the filter was last updated.
   */
-class MDIFilter : SAPtenantObject {
-  mixin(SAPObjectTemplate!MDIFilter);
+class MDIFilter : SAPTenantObject {
+  mixin(SAPTenantObjectTemplate!MDIFilter);
 
   UUID filterId;
   string objectType;

@@ -7,7 +7,7 @@ mixin(ShowModule!());
 @safe:
 
 class EVMTopic : SAPTenantObject {
-  mixin(SAPObjectTemplate!EVMTopic);
+  mixin(SAPTenantObjectTemplate!EVMTopic);
 
   string topicName;
   string description;

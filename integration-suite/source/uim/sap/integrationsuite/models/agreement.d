@@ -73,7 +73,7 @@ mixin(ShowModule!());
   * - agreementFromJson: A helper function that creates an INTAgreement instance from a JSON request, typically used when creating a new agreement via an API endpoint.
   */
 class INTAgreement : SAPTenantObject {
-  mixin(SAPObjectTemplate!INTAgreement);
+  mixin(SAPTenantObjectTemplate!INTAgreement);
 
   override bool initialize(Json[string] initData = null) {
     if (!super.initialize(initData)) {

@@ -26,7 +26,7 @@ mixin(ShowModule!());
  *  variations by weight).
  */
 class FFLFlag : SAPTenantObject {
-  mixin(SAPObjectTemplate!FFLFlag);
+  mixin(SAPTenantObjectTemplate!FFLFlag);
 
   override bool initialize(Json[string] initData = null) {
     if (!super.initialize(iniData)) {

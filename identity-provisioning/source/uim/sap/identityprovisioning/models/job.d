@@ -36,7 +36,7 @@ mixin(ShowModule!());
   * - completedAt: The timestamp when the job completed execution (if applicable).
  */
 class IPVJob : SAPTenantObject {
-  mixin(SAPObjectTemplate!IPVJob);
+  mixin(SAPTenantObjectTemplate!IPVJob);
 
   override bool initialize(Json[string] initData = null) {
     if (!super.initialize(initData)) {

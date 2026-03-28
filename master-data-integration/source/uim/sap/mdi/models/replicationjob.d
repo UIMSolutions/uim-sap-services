@@ -36,8 +36,8 @@ mixin(ShowModule!());
   * - `createdAt`: A timestamp indicating when the replication job was created.
   * - `updatedAt`: A timestamp indicating when the replication job was last updated.
  */
-class MDIReplicationJob : SAPtenantObject {
-  mixin(SAPObjectTemplate!MDIReplicationJob);
+class MDIReplicationJob : SAPTenantObject {
+  mixin(SAPTenantObjectTemplate!MDIReplicationJob);
 
   UUID jobId;
   UUID sourceClientId;

@@ -12,7 +12,7 @@ mixin(ShowModule!());
 @safe:
 
 class CMGContentItem : SAPTenantObject {
-  mixin(SAPObjectTemplate!CMGContentItem);
+  mixin(SAPTenantObjectTemplate!CMGContentItem);
 
     UUID itemId;
     string contentType;

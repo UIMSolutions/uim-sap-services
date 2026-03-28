@@ -7,7 +7,7 @@ mixin(ShowModule!());
 @safe:
 
 class EVMQueue : SAPTenantObject {
-  mixin(SAPObjectTemplate!EVMQueue);
+  mixin(SAPTenantObjectTemplate!EVMQueue);
 
   string queueName;
   long maxDepth = 1000;

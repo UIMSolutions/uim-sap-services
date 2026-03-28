@@ -14,7 +14,7 @@ mixin(ShowModule!());
 // DSTDestination – a configured destination (connection to remote service)
 // ---------------------------------------------------------------------------
 class DSTDestination : SAPTenantObject {
-  mixin(SAPObjectTemplate!DSTDestination);
+  mixin(SAPTenantObjectTemplate!DSTDestination);
 
   string name;
   string description;

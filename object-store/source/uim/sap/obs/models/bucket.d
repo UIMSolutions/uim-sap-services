@@ -15,7 +15,7 @@ import uim.sap.obs.enumerations;
 
 /// Object store bucket (S3 bucket / Azure Blob container / GCS bucket)
 class OBSBucket : SAPTenantObject {
-  mixin(SAPObjectTemplate!OBSBucket);
+  mixin(SAPTenantObjectTemplate!OBSBucket);
 
   UUID bucketId;
   string name;

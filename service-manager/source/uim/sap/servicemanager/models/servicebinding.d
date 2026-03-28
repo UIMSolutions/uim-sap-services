@@ -22,7 +22,7 @@ module uim.sap.servicemanager.models.servicebinding;
   * - deleted: The service binding has been deleted and is no longer available.
  */
 class SVMServiceBinding : SAPTenantObject {
-  mixin(SAPObjectTemplate!SVMServiceBinding);
+  mixin(SAPTenantObjectTemplate!SVMServiceBinding);
 
   UUID bindingId;
   UUID instanceId;

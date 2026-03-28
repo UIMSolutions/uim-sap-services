@@ -1,7 +1,7 @@
 module uim.sap.dataretention.models.archivedestructionjob;
 
 class ArchiveDestructionJob : SAPTenantObject {
-  mixin(SAPObjectTemplate!ArchiveDestructionJob);
+  mixin(SAPTenantObjectTemplate!ArchiveDestructionJob);
 
   UUID jobId;
   string operation;

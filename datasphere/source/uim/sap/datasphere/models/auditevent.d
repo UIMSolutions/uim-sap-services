@@ -26,7 +26,7 @@ mixin(ShowModule!());
   * - createdAt: The timestamp when the audit event was created.
  */
 class DATAuditEvent : SAPTenantObject {
-  mixin(SAPObjectTemplate!DATAuditEvent);
+  mixin(SAPTenantObjectTemplate!DATAuditEvent);
 
   UUID eventId;
   string operation;

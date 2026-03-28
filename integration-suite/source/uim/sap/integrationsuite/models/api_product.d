@@ -41,7 +41,7 @@ mixin(ShowModule!());
   *   Json response = product.toJson();
   */
 class INTApiProduct : SAPTenantObject {
-  mixin(SAPObjectTemplate!INTApiProduct);
+  mixin(SAPTenantObjectTemplate!INTApiProduct);
 
   UUID productId;
   string name;

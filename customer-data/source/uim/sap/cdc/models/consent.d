@@ -12,7 +12,7 @@ mixin(ShowModule!());
 @safe:
 
 class CDCConsent : SAPTenantObject {
-  mixin(SAPObjectTemplate!CDCConsent);
+  mixin(SAPTenantObjectTemplate!CDCConsent);
 
   UUID userId;
   UUID consentId;

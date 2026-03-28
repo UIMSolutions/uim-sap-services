@@ -25,7 +25,7 @@ import uim.sap.dpi;
     * - deleted: A boolean indicating whether this record has been marked as deleted.  
     */
 class DPIPersonalDataRecord : SAPTenantObject {
-  mixin(SAPObjectTemplate!DPIPersonalDataRecord);
+  mixin(SAPTenantObjectTemplate!DPIPersonalDataRecord);
 
   override bool initialize(Json[string] initData = null) {
     if (!super.initialize(initData)) {

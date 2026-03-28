@@ -1,7 +1,7 @@
 module uim.sap.servicemanager.models.serviceinstance;
 
 class SVMServiceInstance : SAPTenantObject {
-  mixin(SAPObjectTemplate!SVMServiceInstance);
+  mixin(SAPTenantObjectTemplate!SVMServiceInstance);
 
   UUID instanceId;
   UUID environmentId;

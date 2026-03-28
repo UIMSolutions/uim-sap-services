@@ -9,7 +9,7 @@ mixin(ShowModule!());
 @safe:
 
 class BusinessPurposeRule : SAPTenantObject {
-  mixin(SAPObjectTemplate!BusinessPurposeRule);
+  mixin(SAPTenantObjectTemplate!BusinessPurposeRule);
 
   string purposeRuleId;
   string applicationGroup;

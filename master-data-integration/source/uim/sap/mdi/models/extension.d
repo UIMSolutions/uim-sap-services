@@ -6,7 +6,7 @@ mixin(ShowModule!());
 
 @safe:
 class MDIExtension : SAPTenantObject {
-  mixin(SAPObjectTemplate!MDIExtension);
+  mixin(SAPTenantObjectTemplate!MDIExtension);
 
   UUID extensionId;
   string objectType;

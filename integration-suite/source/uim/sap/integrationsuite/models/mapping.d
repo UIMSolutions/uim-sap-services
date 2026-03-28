@@ -71,7 +71,7 @@ mixin(ShowModule!());
   * For more information on data mappings and their management, refer to the SAP Integration Suite documentation.
   */
 class INTMapping : SAPTenantObject {
-  mixin(SAPObjectTemplate!INTMapping);
+  mixin(SAPTenantObjectTemplate!INTMapping);
 
   UUID mappingId;
   string name;

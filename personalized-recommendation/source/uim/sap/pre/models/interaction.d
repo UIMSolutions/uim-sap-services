@@ -13,7 +13,7 @@ mixin(ShowModule!());
 
 /// A recorded user–item interaction used for training and inference.
 class PREInteraction : SAPTenantObject {
-  mixin(SAPObjectTemplate!PREInteraction);
+  mixin(SAPTenantObjectTemplate!PREInteraction);
 
   UUID interactionId;
   UUID userId;

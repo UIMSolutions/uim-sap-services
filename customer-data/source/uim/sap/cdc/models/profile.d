@@ -13,7 +13,7 @@ mixin(ShowModule!());
 
 
 class CDCProfile : SAPTenantObject {
-  mixin(SAPObjectTemplate!CDCProfile);
+  mixin(SAPTenantObjectTemplate!CDCProfile);
 
   UUID userId;
   string email;

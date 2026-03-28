@@ -6,7 +6,7 @@ module uim.sap.docmgmtintegration.models.tenant;
 
 /// Represents a tenant in the multi-tenant system.
 class Tenant : SAPTenantObject {
-  mixin(SAPObjectTemplate!Tenant);
+  mixin(SAPTenantObjectTemplate!Tenant);
 
   UUID tenantId;
   string name;

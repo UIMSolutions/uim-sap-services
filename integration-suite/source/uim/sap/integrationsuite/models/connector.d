@@ -40,7 +40,7 @@ mixin(ShowModule!());
   * For more information on connectors and their management, refer to the SAP Integration Suite documentation.
   */
 class INTConnector : SAPTenantObject {
-  mixin(SAPObjectTemplate!INTConnector);
+  mixin(SAPTenantObjectTemplate!INTConnector);
 
   UUID connectorId;
   string name;

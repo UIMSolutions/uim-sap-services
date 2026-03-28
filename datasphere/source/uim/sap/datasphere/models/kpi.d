@@ -26,7 +26,7 @@ mixin(ShowModule!());
   * - updatedAt: The timestamp when the KPI was last updated.
   */
 class DATKpi : SAPTenantObject {
-  mixin(SAPObjectTemplate!DATKpi);
+  mixin(SAPTenantObjectTemplate!DATKpi);
 
   UUID kpiId;
   string name;

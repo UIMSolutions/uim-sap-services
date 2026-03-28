@@ -12,7 +12,7 @@ mixin(ShowModule!());
 @safe:
 
 class CDCRiskProvider : SAPTenantObject {
-  mixin(SAPObjectTemplate!CDCRiskProivider);
+  mixin(SAPTenantObjectTemplate!CDCRiskProivider);
 
   UUID providerId;
   string name;

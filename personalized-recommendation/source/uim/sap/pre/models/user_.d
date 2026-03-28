@@ -13,7 +13,7 @@ mixin(ShowModule!());
 
 /// A user whose interactions are tracked for personalisation.
 class PREUser : SAPTenantObject {
-  mixin(SAPObjectTemplate!PREUser);
+  mixin(SAPTenantObjectTemplate!PREUser);
 
   UUID userId;
   string displayName;

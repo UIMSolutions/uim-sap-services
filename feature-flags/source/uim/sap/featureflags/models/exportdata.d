@@ -13,7 +13,7 @@ mixin(ShowModule!());
 
 /** Container used for export/import of all flags from a tenant. */
 class FFLExportData : SAPTenantObject {
-  mixin(SAPObjectTemplate!FFLExportData);
+  mixin(SAPTenantObjectTemplate!FFLExportData);
 
   string exportedAt;
   string serviceVersion;

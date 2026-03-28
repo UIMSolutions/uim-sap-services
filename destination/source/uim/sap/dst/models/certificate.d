@@ -12,7 +12,7 @@ mixin(ShowModule!());
 @safe:
 
 class DSTCertificate : SAPTenantObject {
-  mixin(SAPObjectTemplate!DSTCertificate);
+  mixin(SAPTenantObjectTemplate!DSTCertificate);
 
   string name;
   string description;

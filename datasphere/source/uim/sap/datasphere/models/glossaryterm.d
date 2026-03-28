@@ -23,7 +23,7 @@ mixin(ShowModule!());
   * - updatedAt: The timestamp of the last update to this glossary term.
   */
 class DATGlossaryTerm : SAPTenantObject {
-  mixin(SAPObjectTemplate!DATGlossaryTerm);
+  mixin(SAPTenantObjectTemplate!DATGlossaryTerm);
 
   UUID termId;
   string term;

@@ -21,7 +21,7 @@ import uim.sap.dpi;
  * - createdAt: The timestamp when this export was created.  
  */
 class DPIExport : SAPTenantObject {
-  mixin(SAPObjectTemplate!DPIExport);
+  mixin(SAPTenantObjectTemplate!DPIExport);
 
   UUID exportId;
   UUID subjectId;

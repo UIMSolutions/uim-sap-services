@@ -33,7 +33,7 @@ mixin(ShowModule!());
   * For more information on event subscriptions and their management, refer to the SAP Integration Suite documentation.
   */
 class INTEventSubscription : SAPTenantObject {
-  mixin(SAPObjectTemplate!INTEventSubscription);
+  mixin(SAPTenantObjectTemplate!INTEventSubscription);
 
   UUID subscriptionId;
   string topicName;

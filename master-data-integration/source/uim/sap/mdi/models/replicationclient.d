@@ -29,7 +29,7 @@ mixin(ShowModule!());
   * - `updatedAt`: A timestamp indicating when the replication client was last updated.
  */
 class MDIReplicationClient : SAPTenantObject {
-  mixin(SAPObjectTemplate!MDIReplicationClient);
+  mixin(SAPTenantObjectTemplate!MDIReplicationClient);
 
   UUID clientId;
   string name;

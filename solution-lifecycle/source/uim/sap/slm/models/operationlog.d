@@ -4,7 +4,7 @@ module uim.sap.slm.models.operationlog;
 // SLMOperationLog – audit/monitoring log for solution operations
 // ---------------------------------------------------------------------------
 class SLMOperationLog : SAPTenantObject {
-  mixin(SAPObjectTemplate!SLMOperationLog);
+  mixin(SAPTenantObjectTemplate!SLMOperationLog);
 
   UUID logId;
   UUID solutionId;

@@ -35,7 +35,7 @@ mixin(ShowModule!());
   * For more information on iFlows and their management, refer to the SAP Integration Suite documentation.
   */
 class INTIFlow : SAPTenantObject {
-  mixin(SAPObjectTemplate!INTIFlow);
+  mixin(SAPTenantObjectTemplate!INTIFlow);
 
   UUID iflowId;
   string name;

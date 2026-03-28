@@ -7,7 +7,7 @@ mixin(ShowModule!());
 @safe:
 
 class EVMDeadLetter : SAPTenantObject {
-  mixin(SAPObjectTemplate!EVMDeadLetter);
+  mixin(SAPTenantObjectTemplate!EVMDeadLetter);
   
   override bool initialize(Json[string] initData = null) {
     if (!super.initialize(initData)) {

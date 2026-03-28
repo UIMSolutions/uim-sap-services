@@ -36,7 +36,7 @@ mixin(ShowModule!());
   * - toJson(): Converts the site details into a JSON object for API responses or storage.
   */
 class SMGSite : SAPTenantObject {
-  mixin(SAPObjectTemplate!SMGSite);
+  mixin(SAPTenantObjectTemplate!SMGSite);
 
   UUID siteId;
   string siteName;

@@ -5,7 +5,7 @@ mixin(ShowModule!());
 
 @safe:
 class DataContextReport : SAPTenantObject {
-  mixin(SAPObjectTemplate!DataContextReport);
+  mixin(SAPTenantObjectTemplate!DataContextReport);
 
   UUID id;
   string title;

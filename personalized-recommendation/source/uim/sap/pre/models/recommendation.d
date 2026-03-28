@@ -13,7 +13,7 @@ mixin(ShowModule!());
 
 /// A single recommendation result returned to the caller.
 class PRERecommendation : SAPTenantObject {
-  mixin(SAPObjectTemplate!PRERecommendation);
+  mixin(SAPTenantObjectTemplate!PRERecommendation);
 
   UUID recommendationId;
   UUID userId;

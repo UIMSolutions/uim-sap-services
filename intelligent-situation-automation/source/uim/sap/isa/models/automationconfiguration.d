@@ -10,7 +10,7 @@ mixin(ShowModule!());
 
 @safe:
 class AutomationConfiguration : SAPTenantObject {
-  mixin(SAPObjectTemplate!AutomationConfiguration);
+  mixin(SAPTenantObjectTemplate!AutomationConfiguration);
 
   UUID id;
   string name;

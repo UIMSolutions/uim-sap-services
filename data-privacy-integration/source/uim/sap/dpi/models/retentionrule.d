@@ -24,7 +24,7 @@ mixin(ShowModule!());
  * - updatedAt: The timestamp of the last update to this rule.  
  */
 class DPIRetentionRule : SAPTenantObject {
-  mixin(SAPObjectTemplate!DPIRetentionRule);
+  mixin(SAPTenantObjectTemplate!DPIRetentionRule);
 
   UUID ruleId;
   string dataCategory;
