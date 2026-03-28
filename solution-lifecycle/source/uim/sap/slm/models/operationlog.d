@@ -6,7 +6,6 @@ module uim.sap.slm.models.operationlog;
 class SLMOperationLog : SAPTenantObject {
   mixin(SAPObjectTemplate!SLMOperationLog);
 
-  UUID tenantId;
   UUID logId;
   UUID solutionId;
   UUID deploymentId;

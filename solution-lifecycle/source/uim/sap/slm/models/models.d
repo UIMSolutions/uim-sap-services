@@ -9,8 +9,9 @@ mixin(ShowModule!());
 // ---------------------------------------------------------------------------
 // SLMSolution – a deployed solution in a subaccount
 // ---------------------------------------------------------------------------
-struct SLMSolution {
-  UUID tenantId;
+class SLMSolution : SAPTenantObject {
+  mixin(SAPObjectTemplate!SLMSolution);
+
   UUID solutionId;
   string name;
   string description;
@@ -30,12 +31,9 @@ struct SLMSolution {
   bool multitenant;
   /// The user who deployed the solution
   string deployedBy;
-  SysTime createdAt;
-  SysTime updatedAt;
 
   override Json toJson() {
     return super.toJson()
-      .set("tenant_id", tenantId)
       .set("solution_id", solutionId)
       .set("name", name)
       .set("description", description)
@@ -47,9 +45,7 @@ struct SLMSolution {
       .set("space_id", spaceId)
       .set("org_id", orgId)
       .set("multitenant", multitenant)
-      .set("deployed_by", deployedBy)
-      .set("created_at", createdAt.toISOExtString())
-      .set("updated_at", updatedAt.toISOExtString());
+      .set("deployed_by", deployedBy);
   }
 }
 

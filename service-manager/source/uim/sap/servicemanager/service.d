@@ -121,7 +121,7 @@ class SVMService : SAPService {
   Json upsertServiceInstance(UUID tenantId, Json request) {
     validateTenant(tenantId);
 
-    auto instanceItem = parseServiceInstance(tenantId, request);
+    SVMServiceInstance instanceItem = SVMServiceInstance(tenantId, request);
     if (instanceItem.offeringName.length == 0) {
       throw new SVMValidationException("offering_name is required");
     }

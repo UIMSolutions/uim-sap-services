@@ -6,8 +6,9 @@ mixin(ShowModule!());
 
 @safe:
 
-struct SDISite {
-  UUID tenantId;
+class SDISite : SAPTenantObject {
+  mixin(SAPtenantObject!SDISite);
+
   UUID siteId;
   string name;
   string description;
@@ -17,8 +18,6 @@ struct SDISite {
   string[] roles;
   SDISiteSettings settings;
   Json importBundle;
-  SysTime createdAt;
-  SysTime updatedAt;
 
   override Json toJson()  {
     Json roleValues = Json.emptyArray;
@@ -26,7 +25,6 @@ struct SDISite {
       roleValues ~= role;
 
     return super.toJson
-    .set("tenant_id", tenantId)
     .set("site_id", siteId)
     .set("name", name)
     .set("description", description)
@@ -34,12 +32,10 @@ struct SDISite {
     .set("runtime_url", runtimeUrl)
     .set("is_default", isDefault)
     .set("roles", roleValues)
-    .set("settings", settings.toJson())
-    .set("created_at", createdAt.toISOExtString())
-    .set("updated_at", updatedAt.toISOExtString());
+    .set("settings", settings.toJson());
   }
 
-  Json toTileJson() const {
+  Json toTileJson() {
     return Json.emptyObject
       .set("site_id", siteId)
       .set("title", name)

@@ -3,8 +3,9 @@ module uim.sap.slm.models.subscription;
 // ---------------------------------------------------------------------------
 // SLMSubscription – a multitenant subscription from a consumer subaccount
 // ---------------------------------------------------------------------------
-struct SLMSubscription {
-  UUID tenantId;
+class SLMSubscription : SAPTenantObject {
+  mixin(SAPtenantObject!SLMSubscription);
+
   UUID subscriptionId;
   UUID solutionId;
   /// The subscribing (consumer) subaccount
@@ -20,7 +21,6 @@ struct SLMSubscription {
 
   override Json toJson() {
     return super.toJson()
-      .set("tenant_id", tenantId)
       .set("subscription_id", subscriptionId)
       .set("solution_id", solutionId)
       .set("consumer_subaccount_id", consumerSubaccountId)

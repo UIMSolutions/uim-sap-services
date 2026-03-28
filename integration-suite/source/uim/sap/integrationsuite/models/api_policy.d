@@ -11,37 +11,54 @@ mixin(ShowModule!());
 
 @safe:
 
-struct INTApiPolicy {
-  UUID tenantId;
-  UUID policyId;
-  string name;
-  string description;
-  string policyType = "security"; // security | traffic | mediation
-  string enforcement = "request"; // request | response | fault
-  bool enabled = true;
-  Json configuration;
-  string createdAt;
-  string updatedAt;
+/**
+  * Represents an API policy in the SAP Integration Suite.
+  * Contains properties for policy configuration and enforcement.
+  * Can be extended to support specific types of policies (e.g. security, traffic management).
+  *
+  * Example usage:
+  * class MyCustomPolicy : INTApiPolicy {
+  *   override bool initialize(Json[string] initData = null) {
+  *     if (!super.initialize(initData)) {
+  *       return false;
+  *     }
+  *     // Custom initialization logic here
+  *     return true;
+  *   }
+  * }
+  */
+class INTApiPolicy : SAPTenantObject {
+  mixin(SAPObjectTemplate!INTApiPolicy);
 
-  override Json toJson() {
-    return super.toJson()
-      .set("tenant_id", tenantId)
-      .set("policy_id", policyId)
-      .set("name", name)
-      .set("description", description)
-      .set("policy_type", policyType)
-      .set("enforcement", enforcement)
-      .set("enabled", enabled)
-      .set("configuration", configuration)
-      .set("created_at", createdAt)
-      .set("updated_at", updatedAt);
-  }
-}
+  override bool initialize(Json[string] initData = null) {
+    if (!super.initialize(initData)) {
+      return false;
+    }
+    if (initData !is null) {
+      if (initData.hasKey("policyId") && initData.isString("policyId")) {
+        policyId(initData.getString("policyId"));
+      }
+      if (initData.hasKey("name") && initData.isString("name")) {
+        name(initData.getString("name"));
+      }
+      if (initData.hasKey("description") && initData.isString("description")) {
+        description(initData.getString("description"));
+      }
+      if (initData.hasKey("policyType") && initData.isString("policyType")) {
+        policyType(initData.getString("policyType"));
+      }
+      if (initData.hasKey("enforcement") && initData.isString("enforcement")) {
+        enforcement(initData.getString("enforcement"));
+      }
+      if (initData.hasKey("enabled") && initData.isBoolean("enabled")) {
+        enabled(initData.get!bool("enabled"));
+      }
+      if (initData.hasKey("configuration")) {
+        configuration(initData["configuration"]);
+      }
+    }
 
-INTApiPolicy apiPolicyFromJson(UUID tenantId, Json request) {
-  INTApiPolicy p;
-  p.tenantId = tenantId;
-  p.policyId = randomUUID();
+      p.policyId = randomUUID();
 
   if ("name" in request && request["name"].isString)
     p.name = request["name"].getString;
@@ -60,5 +77,32 @@ INTApiPolicy apiPolicyFromJson(UUID tenantId, Json request) {
 
   p.createdAt = Clock.currTime().toINTOExtString();
   p.updatedAt = p.createdAt;
+    return true;
+  }
+
+  UUID policyId;
+  string name;
+  string description;
+  string policyType = "security"; // security | traffic | mediation
+  string enforcement = "request"; // request | response | fault
+  bool enabled = true;
+  Json configuration;
+
+  override Json toJson() {
+    return super.toJson()
+      .set("policy_id", policyId)
+      .set("name", name)
+      .set("description", description)
+      .set("policy_type", policyType)
+      .set("enforcement", enforcement)
+      .set("enabled", enabled)
+      .set("configuration", configuration);
+  }
+}
+
+INTApiPolicy apiPolicyFromJson(UUID tenantId, Json request) {
+  INTApiPolicy p = new INTApiPolicy(request);
+  p.tenantId = tenantId;
+
   return p;
 }

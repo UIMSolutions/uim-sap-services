@@ -34,25 +34,19 @@ mixin(ShowModule!());
 class INTEventTopic : SAPTenantObject {
   mixin(SAPtenantObject!INTEventTopic);
   
-  UUID tenantId;
   string topicId;
   string topicName;
   string description;
   long subscriberCount = 0;
   long messagesPublished = 0;
-  string createdAt;
-  string updatedAt;
 
   override Json toJson()  {
     return super.toJson()
-    .set("tenant_id", tenantId)
     .set("topic_id", topicId)
     .set("topic_name", topicName)
     .set("description", description)
     .set("subscriber_count", subscriberCount)
-    .set("messages_published", messagesPublished)
-    .set("created_at", createdAt)
-    .set("updated_at", updatedAt);
+    .set("messages_published", messagesPublished);
   }
 }
 

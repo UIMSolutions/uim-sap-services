@@ -59,7 +59,6 @@ mixin(ShowModule!());
 class INTContentPack : SAPTenantObject {
   mixin(SAPtenantObject!INTContentPack);
   
-  UUID tenantId;
   string packId;
   string name;
   string description;
@@ -70,8 +69,6 @@ class INTContentPack : SAPTenantObject {
   string[] mappingIds;
   string status = "available"; // available | installed | deprecated
   string installedAt;
-  string createdAt;
-  string updatedAt;
 
   override Json toJson()  {
         Json flows = Json.emptyArray;
@@ -83,7 +80,6 @@ class INTContentPack : SAPTenantObject {
       maps ~= Json(id);
 
     return super.toJson()
-    .set("tenant_id", tenantId)
     .set("pack_id", packId)
     .set("name", name)
     .set("description", description)
@@ -93,9 +89,7 @@ class INTContentPack : SAPTenantObject {
     .set("iflow_ids", flows)
     .set("mapping_ids", maps)
     .set("status", status)
-    .set("installed_at", installedAt)
-    .set("created_at", createdAt)
-    .set("updated_at", updatedAt);
+    .set("installed_at", installedAt);
   }
 }
 

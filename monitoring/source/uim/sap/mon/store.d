@@ -16,18 +16,60 @@ mixin(ShowModule!());
 class MONStore : SAPStore {
   mixin(SAPStore!MONStore);
 
-  protected MONMetricSample[][string] _applicationMetricHistory;
-  protected MONMetricSample[][string] _databaseMetricHistory;
-  protected MONAvailabilityCheck[string] _availabilityChecks;
-  protected MONJMXCheck[string] _jmxChecks;
-  protected MONCustomCheck[string] _customChecks;
-  protected Json[string] _thresholdOverrides;
+  protected MONMetricSample[][UUID] _applicationMetricHistory;
+  protected MONMetricSample[][UUID] _databaseMetricHistory;
+  protected MONAvailabilityCheck[UUID] _availabilityChecks;
+  protected MONJMXCheck[UUID] _jmxChecks;
+  protected MONCustomCheck[UUID] _customChecks;
+  protected Json[UUID] _thresholdOverrides;
   protected MONAlertEmailChannel _emailChannel;
   protected MONAlertWebhookChannel _webhookChannel;
   protected bool _hasEmailChannel = false;
   protected bool _hasWebhookChannel = false;
 
-  MONMetricSample[] appendApplicationMetrics(string appId, MONMetricSample[] metrics) {
+  // Application Metrics
+  // Database Metrics
+  // Availability Checks
+  // JMX Checks
+  // Custom Checks
+  // Alert Channels
+  // Threshold Overrides  
+
+  /**
+    * Appends a new metric sample for a specific application.
+    * @param appId The unique identifier of the application.
+    * @param metric The metric sample to append.
+    * @return The appended metric sample.
+    *
+    * This method ensures thread-safe access to the application metric history by synchronizing on a mutex.
+    * It adds the new metric sample to the history for the specified application and trims the history to maintain a maximum size.
+    *
+    * Example usage:
+    * MONMetricSample sample = new MONMetricSample(...);
+    * store.appendApplicationMetric(appId, sample);
+    */
+  MONMetricSample appendApplicationMetric(UUID appId, MONMetricSample metric) {
+    synchronized (_lock) {
+      _applicationMetricHistory[appId] ~= metric;
+      trimHistory(_applicationMetricHistory[appId]);
+      return metric;
+    }
+  }
+
+  /** 
+    * Appends multiple metric samples for a specific application.
+    * @param appId The unique identifier of the application.
+    * @param metrics The array of metric samples to append.
+    * @return The appended metric samples.
+    *
+    * This method ensures thread-safe access to the application metric history by synchronizing on a mutex.
+    * It adds the new metric samples to the history for the specified application and trims the history to maintain a maximum size.
+    *
+    * Example usage:
+    * MONMetricSample[] samples = [new MONMetricSample(...), new MONMetricSample(...)];
+    * store.appendApplicationMetrics(appId, samples);
+    */
+  MONMetricSample[] appendApplicationMetrics(UUID appId, MONMetricSample[] metrics) {
     synchronized (_lock) {
       foreach (item; metrics) {
         _applicationMetricHistory[appId] ~= item;
@@ -37,7 +79,28 @@ class MONStore : SAPStore {
     }
   }
 
-  MONMetricSample[] appendDatabaseMetrics(string databaseId, MONMetricSample[] metrics) {
+  /**
+    * Appends a new metric sample for a specific database.
+    * @param databaseId The unique identifier of the database.
+    * @param metric The metric sample to append.
+    * @return The appended metric sample.
+    *
+    * This method ensures thread-safe access to the database metric history by synchronizing on a mutex.
+    * It adds the new metric sample to the history for the specified database and trims the history to maintain a maximum size.
+    *
+    * Example usage:
+    * MONMetricSample sample = new MONMetricSample(...);
+    * store.appendDatabaseMetric(databaseId, sample);
+    */
+  MONMetricSample appendDatabaseMetric(UUID databaseId, MONMetricSample metric) {
+    synchronized (_lock) {
+      _databaseMetricHistory[databaseId] ~= metric;
+      trimHistory(_databaseMetricHistory[databaseId]);
+      return metric;
+    }
+  }
+
+  MONMetricSample[] appendDatabaseMetrics(UUID databaseId, MONMetricSample[] metrics) {
     synchronized (_lock) {
       foreach (item; metrics) {
         _databaseMetricHistory[databaseId] ~= item;
