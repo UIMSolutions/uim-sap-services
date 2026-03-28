@@ -12,18 +12,18 @@ class SAPTenantController {
   }
 
   // Endpoint to create a new tenant
-  void createTenant(Tenant tenant) {
-    multitenancyService.createTenant(tenant);
+  void createTenant(ISAPTenant tenant) {
+    // todo: multitenancyService.createTenant(tenant);
     // Return success response
   }
 
   // Endpoint to get tenant details
-  Tenant getTenant(UUID tenantId) {
+  ISAPTenant getTenant(UUID tenantId) {
     return multitenancyService.getTenant(tenantId);
   }
 
   // Endpoint to update tenant information
-  void updateTenant(UUID tenantId, Tenant tenant) {
+  void updateTenant(UUID tenantId, ISAPTenant tenant) {
     multitenancyService.updateTenant(tenantId, tenant);
     // Return success response
   }
@@ -35,7 +35,7 @@ class SAPTenantController {
   }
 
   // Endpoint to list all tenants
-  Tenant[] listTenants() {
+  ISAPTenant[] listTenants() {
     return multitenancyService.listTenants();
   }
 }

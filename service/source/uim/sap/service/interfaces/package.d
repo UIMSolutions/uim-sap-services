@@ -5,4 +5,6 @@ public {
   import uim.sap.service.interfaces.server;
   import uim.sap.service.interfaces.service;
   import uim.sap.service.interfaces.store;
+  import uim.sap.service.interfaces.object;
+  import uim.sap.service.interfaces.tenant;
 }

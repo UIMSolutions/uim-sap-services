@@ -9,7 +9,7 @@ public {
   import uim.sap.service.classes.config;
   import uim.sap.service.classes.server;
   import uim.sap.service.classes.service;
-  import uim.sap.service.classes.store;
+  import uim.sap.service.classes.stores;
 
   import uim.sap.service.classes.objects;
   import uim.sap.service.classes.tenants;

@@ -5,7 +5,7 @@ import uim.sap.service;
 mixin(ShowModule!());
 
 @safe:
-class SAPTenant {
+class SAPTenant : ISAPTenant {
   UUID id; // Unique identifier for the tenant
   string name; // Name of the tenant
   string domain; // Custom domain associated with the tenant
@@ -23,6 +23,19 @@ class SAPTenant {
     this.createdAt = DateTime.nowUTC();
     this.updatedAt = DateTime.nowUTC();
     this.settings = settings;
+  }
+
+  bool isValid() {
+    return validate();
+  }
+  
+  bool validate() {
+    // Basic validation logic for tenant properties
+    if (id == null || name == "" || domain == "" || owner == "") {
+      return false;
+    }
+    // Additional validation can be added here (e.g., domain format)
+    return true;
   }
 
   // Method to update tenant settings

@@ -5,3 +5,6 @@ import uim.sap.service;
 mixin(ShowModule!());
 
 @safe:
+
+class SAPMemoryTenant {
+}
