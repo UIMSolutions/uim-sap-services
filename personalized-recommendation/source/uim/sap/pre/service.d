@@ -188,7 +188,7 @@ class PREService : SAPService {
 
   Json recordInteraction(UUID tenantId, Json settings) {
     ensureTenant(tenantId);
-    auto interaction = interactionFromJson(settings);
+    PREInteraction interaction = PREInteraction(settings);
     interaction.tenantId = tenantId;
     if (interaction.interactionId.length == 0)
       interaction.interactionId = generateInteractionId();

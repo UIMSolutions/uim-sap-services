@@ -1,5 +1,10 @@
 module uim.sap.service.classes.tenants.tenant;
 
+import uim.sap.service;
+
+mixin(ShowModule!());
+
+@safe:
 class SAPTenant {
   UUID id; // Unique identifier for the tenant
   string name; // Name of the tenant

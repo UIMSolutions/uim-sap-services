@@ -18,47 +18,44 @@ class PREInteraction : SAPTenantObject {
   UUID interactionId;
   UUID userId;
   UUID itemId;
-  UUID tenantId;
   PREInteractionType interactionType = PREInteractionType.view;
   double weight = 1.0;
   string[string] context;
   string timestamp;
 
   override Json toJson() {
-  Json obj = Json.emptyObject;
-  foreach (k, v; context)
-    obj[k] = v;
+    Json obj = Json.emptyObject;
+    foreach (k, v; context)
+      obj[k] = v;
 
-  return super.toJson()
-    .set("interactionId", interactionId)
-    .set("userId", userId)
-    .set("itemId", itemId)
-    .set("tenantId", tenantId)
-    .set("interactionType", interactionType.to!string)
-    .set("weight", weight)
-    .set("context", obj)
-    .set("timestamp", timestamp);
-}
-}
-
-
-
-PREInteraction interactionFromJson(Json j) {
-  PREInteraction i = new PREInteraction(j);
-  i.interactionId = j.getString("interactionId", "");
-  i.userId = j["userId"].getString;
-  i.itemId = j["itemId"].getString;
-  i.tenantId = j.getString("tenantId", "");
-  if ("weight" in j) {
-    auto wv = j["weight"];
-    if (wv.isFloat)
-      i.weight = wv.get!double;
-    else if (wv.isInteger)
-      i.weight = cast(double)wv.get!long;
+    return super.toJson()
+      .set("interactionId", interactionId)
+      .set("userId", userId)
+      .set("itemId", itemId)
+      .set("tenantId", tenantId)
+      .set("interactionType", interactionType.to!string)
+      .set("weight", weight)
+      .set("context", obj)
+      .set("timestamp", timestamp);
   }
-  if ("context" in j) {
-    foreach (string k, v; j["context"].toMap)
-      i.context[k] = v.getString;
+
+  static PREInteraction opCall(Json settings) {
+    PREInteraction i = new PREInteraction(settings);
+    i.interactionId = settings.getString("interactionId", "");
+    i.userId = settings.getString("userId");
+    i.itemId = settings.getString("itemId");
+    i.tenantId = settings.getString("tenantId", "");
+    if ("weight" in settings) {
+      auto wv = settings["weight"];
+      if (wv.isFloat)
+        i.weight = wv.get!double;
+      else if (wv.isInteger)
+        i.weight = cast(double)wv.get!long;
+    }
+    if ("context" in settings) {
+      foreach (string k, v; settings["context"].toMap)
+        i.context[k] = v.getString;
+    }
+    return i;
   }
-  return i;
 }

@@ -1,4 +1,4 @@
-module uim.sap.service.classes.store;
+module uim.sap.service.classes.stores.store;
 
 import core.sync.mutex : Mutex;
 import uim.sap.service;

@@ -1,5 +1,9 @@
 module uim.sap.service.classes.tenants.middleware;
+import uim.sap.service;
 
+mixin(ShowModule!());
+
+@safe:
 class SAPTenantMiddleware {
     private TenantRepository tenantRepository;
 

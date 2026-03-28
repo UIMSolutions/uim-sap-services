@@ -4,7 +4,8 @@ import uim.sap.service;
 
 mixin(ShowModule!());
 
-@safe /**
+@safe:
+ /**
   * SAPServer - Base class for all SAP service HTTP servers
   * Provides common functionality like:
   * - Base path handling
