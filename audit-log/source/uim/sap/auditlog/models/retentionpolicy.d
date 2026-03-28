@@ -14,7 +14,7 @@ mixin(ShowModule!());
   * updatedAt: The timestamp of the last update to the retention policy.
   */
 class ADLRetentionPolicy : SAPTenantObject {
-  mixin(SAPObjectTemplate!ADLRetentionPolicy);
+  mixin(SAPTenantObjectTemplate!ADLRetentionPolicy);
 
   int retentionDays;
   string plan;

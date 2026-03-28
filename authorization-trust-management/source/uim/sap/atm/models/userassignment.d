@@ -1,7 +1,7 @@
 module uim.sap.atm.models.userassignment;
 
 class ATMUserAssignment : SAPTenantObject {
-  mixin(SAPObjectTemplate!ATMUserAssignment);
+  mixin(SAPTenantObjectTemplate!ATMUserAssignment);
 
   UUID userId;
   UUID idpId;

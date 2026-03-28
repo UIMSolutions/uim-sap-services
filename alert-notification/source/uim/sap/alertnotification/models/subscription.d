@@ -11,7 +11,7 @@ mixin(ShowModule!());
 
 @safe:
 class AlertSubscription : SAPTenantObject {
-  mixin(SAPObjectTemplate!AlertSubscription);
+  mixin(SAPTenantObjectTemplate!AlertSubscription);
 
   UUID subscriptionId;
   string name;

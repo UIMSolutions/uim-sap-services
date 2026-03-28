@@ -1,7 +1,7 @@
 module uim.sap.atm.models.technicalrole;
 
 class ATMTechnicalRole : SAPTenantObject {
-  mixin(SAPObjectTemplate!ATMTechnicalRole);
+  mixin(SAPTenantObjectTemplate!ATMTechnicalRole);
 
   override bool initialize(Json[string] initData = null) {
     if (!super.initialize(initData)) {

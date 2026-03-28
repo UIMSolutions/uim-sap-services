@@ -1,7 +1,7 @@
 module uim.sap.atm.models.sessioncontext;
 
 class ATMSessionContext : SAPTenantObject {
-  mixin(SAPObjectTemplate!ATMSessionContext);
+  mixin(SAPTenantObjectTemplate!ATMSessionContext);
 
   UUID userId;
   UUID idpId;
