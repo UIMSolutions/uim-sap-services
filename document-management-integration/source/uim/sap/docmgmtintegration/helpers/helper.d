@@ -19,3 +19,19 @@ string escapeCsv(string value) {
   auto escaped = value.replace("\"", "\"\"");
   return "\"" ~ escaped ~ "\"";
 }
+
+// ---------------------------------------------------------------------------
+// Breadcrumb
+// ---------------------------------------------------------------------------
+
+struct Breadcrumb {
+  string folderId;
+  string name;
+
+  override Json toJson() {
+    Json r = Json.emptyObject;
+    r["folder_id"] = folderId;
+    r["name"] = name;
+    return r;
+  }
+}
