@@ -6,8 +6,8 @@ mixin(ShowModule!());
 
 @safe:
 
-class CRECredential : SAPObject {
-  mixin(SAPObjectTemplate!CRECredential);
+class CRECredential : SAPEntity {
+  mixin(SAPEntityTemplate!CRECredential);
 
   UUID instanceId;
   string name;

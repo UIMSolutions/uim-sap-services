@@ -6,8 +6,8 @@ mixin(ShowModule!());
 
 @safe:
 
-class SAPTenantObject : SAPObject {
-  mixin(SAPObjectTemplate!SAPTenantObject);
+class SAPTenantObject : SAPEntity {
+  mixin(SAPEntityTemplate!SAPTenantObject);
 
   this(UUID tenantId) {
     super();

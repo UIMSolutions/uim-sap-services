@@ -7,8 +7,8 @@ module uim.sap.aas.models.metricsnapshot;
 import uim.sap.aas;
 
 @safe:
-class AASMetricSnapshot : SAPObject {
-  mixin(SAPObjectTemplate!AASMetricSnapshot);
+class AASMetricSnapshot : SAPEntity {
+  mixin(SAPEntityTemplate!AASMetricSnapshot);
 
   double cpuPercent;
   double memoryPercent;

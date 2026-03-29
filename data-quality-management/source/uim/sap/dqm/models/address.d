@@ -6,8 +6,8 @@ mixin(ShowModule!());
 
 @safe:
 
-class DQMAddress : SAPObject {
-  mixin(SAPObjectTemplate!DQMAddress);
+class DQMAddress : SAPEntity {
+  mixin(SAPEntityTemplate!DQMAddress);
 
   string line1;
   string line2;

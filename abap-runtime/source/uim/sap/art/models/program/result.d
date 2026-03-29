@@ -6,8 +6,8 @@ mixin(ShowModule!());
 
 @safe:
 
-class ARTProgramResult : SAPObject {
-  mixin(SAPObjectTemplate!ARTProgramResult);
+class ARTProgramResult : SAPEntity {
+  mixin(SAPEntityTemplate!ARTProgramResult);
 
   override bool initialize(Json[string] initData = null) {
     if (!super.initialize(initData)) {

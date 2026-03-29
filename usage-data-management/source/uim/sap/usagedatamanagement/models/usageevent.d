@@ -9,7 +9,7 @@ mixin(ShowModule!());
 @safe:
 
 class UsageEvent : SAPTenantObject {
-mixin(SAPObjectTemplate!UsageEvent); 
+mixin(SAPEntityTemplate!UsageEvent); 
 
   UUID usageEventId;
   UUID accountId;

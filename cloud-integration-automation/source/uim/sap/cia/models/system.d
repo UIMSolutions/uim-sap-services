@@ -8,7 +8,7 @@ mixin(ShowModule!());
 // System – an entry in the system landscape (SAP Cloud, On-Premises, …)
 // ---------------------------------------------------------------------------
 class CIASystem : SAPTenantObject {
-mixin(SAPObjectTemplate!CIASystem);
+mixin(SAPEntityTemplate!CIASystem);
 
   UUID id;
   string name;

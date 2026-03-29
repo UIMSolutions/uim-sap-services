@@ -5,7 +5,7 @@ import uim.sap.service;
 mixin(ShowModule!());
 
 @safe:
-string sapObjectTemplate() {
+string SAPEntityTemplate() {
   return q{
     this() {
       super();
@@ -25,8 +25,8 @@ string sapObjectTemplate() {
   };
 }
 
-template SAPObjectTemplate(alias Symbol) {
-  const char[] SAPObjectTemplate = sapObjectTemplate();
+template SAPEntityTemplate(alias Symbol) {
+  const char[] SAPEntityTemplate = SAPEntityTemplate();
 }
 
 string sapTenantObjectTemplate() {

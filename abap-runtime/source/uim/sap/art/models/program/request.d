@@ -18,8 +18,8 @@ mixin(ShowModule!());
   * @property parameters A JSON object containing any parameters to pass to the program.
   * @property correlationId An optional correlation ID for tracing the request across systems.
   */
-class ARTProgramRequest : SAPObject {
-  mixin(SAPObjectTemplate!ARTProgramRequest);
+class ARTProgramRequest : SAPEntity {
+  mixin(SAPEntityTemplate!ARTProgramRequest);
 
   override bool initialize(Json[string] initData = null) {
     if (!super.initialize(initData)) {

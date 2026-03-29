@@ -40,8 +40,8 @@ mixin(ShowModule!());
   *   jmxCheck.enabled = true;
   *   jmxCheck.createdAt = Clock.currTime();
   */
-class MONJMXCheck : SAPObject {
-  mixin(SAPObjectTemplate!MONJMXCheck);
+class MONJMXCheck : SAPEntity {
+  mixin(SAPEntityTemplate!MONJMXCheck);
 
   UUID checkId;
   UUID targetId;

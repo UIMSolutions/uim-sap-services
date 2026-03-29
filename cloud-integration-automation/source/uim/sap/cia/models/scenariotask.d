@@ -8,8 +8,8 @@ mixin(ShowModule!());
 // ---------------------------------------------------------------------------
 // ScenarioTaskTemplate – a task template embedded in a scenario definition
 // ---------------------------------------------------------------------------
-class CIAScenarioTaskTemplate : SAPObject {
-  mixin(SAPObjectTemplate!CIAScenarioTaskTemplate);
+class CIAScenarioTaskTemplate : SAPEntity {
+  mixin(SAPEntityTemplate!CIAScenarioTaskTemplate);
 
   int order;
   string name;

@@ -30,8 +30,8 @@ import uim.sap.aas;
   * Json json = decision.toJson();
   * ```
   */
-class AASScaleDecision : SAPObject {
-  mixin(SAPObjectTemplate!AASScaleDecision);
+class AASScaleDecision : SAPEntity {
+  mixin(SAPEntityTemplate!AASScaleDecision);
 
   UUID appId;
   uint currentInstances;

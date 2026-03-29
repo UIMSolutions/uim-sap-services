@@ -12,8 +12,8 @@ mixin(ShowModule!());
 @safe:
 
 /** Result returned by the flag-evaluation endpoint. */
-class FFLEvaluation : SAPObject {
-  mixin(SAPObjectTemplate!FFLEvalution);
+class FFLEvaluation : SAPEntity {
+  mixin(SAPEntityTemplate!FFLEvalution);
 
   UUID flagId;
   string flagName;

@@ -7,8 +7,8 @@ mixin(ShowModule!());
 @safe:
 
 /// Offline/OData synchronization configuration per application
-class MOBOfflineConfig : SAPObject {
-  mixin(SAPObjectTemplate!MOBOfflineConfig);
+class MOBOfflineConfig : SAPEntity {
+  mixin(SAPEntityTemplate!MOBOfflineConfig);
 
   UUID appId;
   bool enabled;

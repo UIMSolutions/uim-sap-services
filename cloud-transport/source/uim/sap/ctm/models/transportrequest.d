@@ -4,7 +4,7 @@ module uim.sap.ctm.models.transportrequest;
 // CTMTransportRequest – a transport request moving through the landscape
 // ---------------------------------------------------------------------------
 class CTMTransportRequest : SAPTenantObject {
-      mixin(SAPObjectTemplate!CTMTransportRequest);
+      mixin(SAPEntityTemplate!CTMTransportRequest);
 
     UUID requestId;
     string description;

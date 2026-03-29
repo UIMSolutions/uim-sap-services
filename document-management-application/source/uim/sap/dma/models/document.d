@@ -7,8 +7,8 @@ mixin(ShowModule!());
 @safe:
 
 /// A document (file) stored in a repository folder.
-class DMADocument : SAPObject {
-  mixin(SAPObjectTemplate!DMADocument);
+class DMADocument : SAPEntity {
+  mixin(SAPEntityTemplate!DMADocument);
 
   UUID documentId;
   UUID repositoryId;

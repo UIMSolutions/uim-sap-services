@@ -12,8 +12,8 @@ mixin(ShowModule!());
 @safe:
 
 /// Represents an X.509 certificate
-class KSTCertificate : SAPObject {
-  mixin(SAPObjectTemplate!KSTCertificate);
+class KSTCertificate : SAPEntity {
+  mixin(SAPEntityTemplate!KSTCertificate);
 
   string alias_;
   string subject;

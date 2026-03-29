@@ -7,8 +7,8 @@ mixin(ShowModule!());
 @safe:
 
 /// A service binding connects a microservice or function to an SAP or external service
-class KYMServiceBinding : SAPObject {
-  mixin(SAPObject!KYMServiceBinding);
+class KYMServiceBinding : SAPEntity {
+  mixin(SAPEntity!KYMServiceBinding);
 
   string name;
   string namespace;

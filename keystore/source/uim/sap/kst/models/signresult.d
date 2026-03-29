@@ -12,8 +12,8 @@ mixin(ShowModule!());
 @safe:
 
 /// Result of a sign or verify operation
-class KSTSignResult : SAPObject {
-  mixin(SAPObjectTemplate!KSTSignResult);
+class KSTSignResult : SAPEntity {
+  mixin(SAPEntityTemplate!KSTSignResult);
 
   string keystoreName;
   string keyAlias;

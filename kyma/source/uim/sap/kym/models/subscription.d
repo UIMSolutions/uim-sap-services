@@ -7,8 +7,8 @@ mixin(ShowModule!());
 @safe:
 
 /// An event subscription linking an event type to a consumer (function or microservice)
-class KYMSubscription : SAPObject {
-  mixin(SAPObject!KYMSubscription);
+class KYMSubscription : SAPEntity {
+  mixin(SAPEntity!KYMSubscription);
 
   override bool initialize(Json[string] initData) {
     if (!super.initialize(initData)) {

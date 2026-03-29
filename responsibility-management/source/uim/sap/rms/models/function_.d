@@ -5,8 +5,8 @@
 *****************************************************************************************************************/
 module uim.sap.rms.models.function_;
 
-class FunctionDef : SAPObject {
-mixin(SAPObjectTemplate!FunctionDef);
+class FunctionDef : SAPEntity {
+mixin(SAPEntityTemplate!FunctionDef);
 
     string code;
     string name;

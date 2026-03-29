@@ -12,7 +12,7 @@ mixin(ShowModule!());
 @safe:
 
 class DeterminationLog : SAPTenantObject {
-mixin(SAPObjectTemplate!DeterminationLog);
+mixin(SAPEntityTemplate!DeterminationLog);
 
     UUID id;
     string timestamp;

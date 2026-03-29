@@ -8,7 +8,7 @@ mixin(ShowModule!());
 // AutomationResult – outcome of an automated technical configuration step
 // ---------------------------------------------------------------------------
 class CIAAutomationResult : SAPTenantObject {
-mixin(SAPObjectTemplate!CIAAutomationResult);
+mixin(SAPEntityTemplate!CIAAutomationResult);
 
   UUID workflowId;
   UUID taskId;

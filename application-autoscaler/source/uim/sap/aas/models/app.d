@@ -10,8 +10,8 @@ import uim.sap.aas;
 mixin(ShowModule!());
 
 @safe:
-class AASApp : SAPObject {
-  mixin(SAPObjectTemplate!AASApp);
+class AASApp : SAPEntity {
+  mixin(SAPEntityTemplate!AASApp);
 
 override bool initialize(Json[string] initData = null)
 

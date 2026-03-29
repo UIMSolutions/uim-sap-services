@@ -6,8 +6,8 @@ mixin(ShowModule!());
 
 @safe:
 
-class CREServiceKey : SAPObject {
-  mixin(SAPObjectTemplate!CREServiceKey);
+class CREServiceKey : SAPEntity {
+  mixin(SAPEntityTemplate!CREServiceKey);
 
   UUID instanceId;
   UUID keyId;

@@ -7,8 +7,8 @@ mixin(ShowModule!());
 // ---------------------------------------------------------------------------
 // Parameter – a key/value pair scoped to a workflow (reused across tasks)
 // ---------------------------------------------------------------------------
-class CIAParameter : SAPObject {
-mixin(SAPObjectTemplate!CIAParameter);
+class CIAParameter : SAPEntity {
+mixin(SAPEntityTemplate!CIAParameter);
 
   UUID workflowId;
   string key;

@@ -18,8 +18,8 @@ mixin(ShowModule!());
   *
   * The `fromJson` method allows creating a `CLGLogEntry` instance from a JSON payload, while the `toJson` method converts an instance back to JSON format.
   */
-class CLGLogEntry : SAPObject {
- mixin(SAPObjectTemplate!CLGLogEntry);
+class CLGLogEntry : SAPEntity {
+ mixin(SAPEntityTemplate!CLGLogEntry);
 
 override bool initialize(Json[string] initData = null) {
 	if (!super.initialize(initData)) {

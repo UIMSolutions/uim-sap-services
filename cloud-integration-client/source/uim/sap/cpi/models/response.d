@@ -12,8 +12,8 @@ mixin(ShowModule!());
 
 @safe:
 
-class CPIResponse : SAPObject {
-  mixin(SAPObjectTemplate!CPIResponse);
+class CPIResponse : SAPEntity {
+  mixin(SAPEntityTemplate!CPIResponse);
 
   bool success;
   int statusCode;

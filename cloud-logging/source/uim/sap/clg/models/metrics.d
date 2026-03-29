@@ -11,8 +11,8 @@ mixin(ShowModule!());
 
 @safe:
 
-class CLGMetrics : SAPObject {
-  mixin(SAPObjectTemplate!CLGMetrics);
+class CLGMetrics : SAPEntity {
+  mixin(SAPEntityTemplate!CLGMetrics);
 
   size_t totalEntries;
   long[CLGLogLevel] entriesByLevel;

@@ -10,8 +10,8 @@ import uim.sap.buh;
 mixin(ShowModule!());
 
 @safe:
-class BUHProduct : SAPObject {
-  mixin(SAPObjectTemplate!BUHProduct);
+class BUHProduct : SAPEntity {
+  mixin(SAPEntityTemplate!BUHProduct);
 
   UUID id;
   string name;

@@ -18,8 +18,8 @@ mixin(ShowModule!());
  *  the identifier is hashed to a consistent bucket (0-99) and the
  *  bucket is matched against the cumulative weight ranges.
  */
-class FFLPercentageEntry : SAPObject {
-  mixin(SAPObjectTemplate!FFLPercentageEntry);
+class FFLPercentageEntry : SAPEntity {
+  mixin(SAPEntityTemplate!FFLPercentageEntry);
 
   UUID variationId;
   uint weight = 0;
@@ -31,8 +31,8 @@ class FFLPercentageEntry : SAPObject {
   }
 }
 
-class FFLPercentageRule : SAPObject {
-  mixin(SAPObjectTemplate!FFLPercentageRule);
+class FFLPercentageRule : SAPEntity {
+  mixin(SAPEntityTemplate!FFLPercentageRule);
 
   string ruleId;
   FFLPercentageEntry[] entries;

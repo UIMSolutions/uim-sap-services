@@ -12,8 +12,8 @@ mixin(ShowModule!());
 @safe:
 
 /// Represents a cryptographic key entry (private key, secret key, or key pair)
-class KSTKeyEntry : SAPObject {
-  mixin(SAPObjectTemplate!KSTKeyEntry);
+class KSTKeyEntry : SAPEntity {
+  mixin(SAPEntityTemplate!KSTKeyEntry);
 
   string alias_;
   KSTEntryType entryType = KSTEntryType.PRIVATE_KEY;

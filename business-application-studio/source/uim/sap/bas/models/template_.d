@@ -6,8 +6,8 @@ mixin(ShowModule!());
 
 @safe:
 
-class BASTemplate : SAPObject {
-  mixin(SAPObjectTemplate!BASTemplate);
+class BASTemplate : SAPEntity {
+  mixin(SAPEntityTemplate!BASTemplate);
 
   UUID templateId;
   UUID scenarioId;

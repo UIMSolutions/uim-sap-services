@@ -7,8 +7,8 @@ mixin(ShowModule!());
 @safe:
 
 /// An API rule exposes a function or microservice via an HTTP endpoint
-class KYMApiRule : SAPObject {
-    mixin(SAPObjectTemplate!KYMApiRule);
+class KYMApiRule : SAPEntity {
+    mixin(SAPEntityTemplate!KYMApiRule);
 
     string name;
     string namespace;

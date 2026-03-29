@@ -47,7 +47,7 @@ Json` function provides a way to create an instance of `AEMEDAComponent` from a 
 FromJson` function ensures that the `tenantId` is set and that a unique `componentId` is generated if it is not included in the request. The `toJson` method provides a standardized way to serialize the component's data for use in various parts of the application, such as API responses or database storage.
   */
   class AEMEDAComponent : SAPTenantObject {
-    mixin(SAPObjectTemplate!AEMEDAComponent);
+    mixin(SAPEntityTemplate!AEMEDAComponent);
 
   UUID componentId;
   string name;

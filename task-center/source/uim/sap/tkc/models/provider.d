@@ -11,8 +11,8 @@ mixin(ShowModule!());
 
 @safe:
 
-class TKCProvider : SAPObject {
-  mixin(SAPObjectTemplate!TKCProvider);
+class TKCProvider : SAPEntity {
+  mixin(SAPEntityTemplate!TKCProvider);
 
   UUID providerId;
   string name;

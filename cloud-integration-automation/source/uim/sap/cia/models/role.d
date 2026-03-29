@@ -7,8 +7,8 @@ mixin(ShowModule!());
 // ---------------------------------------------------------------------------
 // Role – a named permission group that tasks can be assigned to
 // ---------------------------------------------------------------------------
-class CIARole : SAPObject {
-mixin(SAPObjectTemplate!CIARole);
+class CIARole : SAPEntity {
+mixin(SAPEntityTemplate!CIARole);
 
   UUID id;
   string name; // e.g. "Basis Administrator", "Cloud Admin"

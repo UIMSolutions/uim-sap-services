@@ -6,8 +6,8 @@ mixin(ShowModule!());
 
 @safe:
 
-class Team : SAPObject {
-mixin(SAPObjectTemplate!Team);
+class Team : SAPEntity {
+mixin(SAPEntityTemplate!Team);
 
   string id;
   string name;

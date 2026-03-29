@@ -21,8 +21,8 @@ mixin(ShowModule!());
   * - subjectPrefix: A string that will be prefixed to the subject of all alert emails sent through this channel.
   * - updatedAt: The timestamp of the last update to this configuration.
   */
-class MONAlertEmailChannel : SAPObject {
-  mixin(SAPObjectTemplate!MONAlertEmailChannel);
+class MONAlertEmailChannel : SAPEntity {
+  mixin(SAPEntityTemplate!MONAlertEmailChannel);
 
   bool enabled;
   string[] recipients;

@@ -6,8 +6,8 @@ mixin(ShowModule!());
 
 @safe:
 
-class CREServiceInstance : SAPObject {
-  mixin(SAPObjectTemplate!CREServiceInstance);
+class CREServiceInstance : SAPEntity {
+  mixin(SAPEntityTemplate!CREServiceInstance);
 
   override bool initialize(Json[string] initData = null) {
     if (!super.initialize(initData)) {

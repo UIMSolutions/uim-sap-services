@@ -25,8 +25,8 @@ mixin(ShowModule!());
   * - `level`: An optional log level to filter the logs.
   * - `limit`: The maximum number of log entries to return, with a default value of 100.
   */
-class CLGLogQuery : SAPObject {
-mixin(SAPObjectTemplate!CLGLogQuery);
+class CLGLogQuery : SAPEntity {
+mixin(SAPEntityTemplate!CLGLogQuery);
 
 override bool initialize(Json[string] initData = null) {
 if (!super.initialize(initData)) {

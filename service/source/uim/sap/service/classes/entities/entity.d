@@ -6,7 +6,7 @@ mixin(ShowModule!());
 
 @safe:
 
-class SAPObject {
+class SAPEntity {
   this() {
     initialize();
   }
@@ -63,7 +63,7 @@ class SAPObject {
   }
   /// 
   unittest {
-    auto obj = new SAPObject();
+    auto obj = new SAPEntity();
 
     auto now = Clock.currTime;
     obj.createdAt(now);
@@ -81,7 +81,7 @@ class SAPObject {
   }
   /// 
   unittest {
-    auto obj = new SAPObject();
+    auto obj = new SAPEntity();
     auto now = Clock.currTime;
     obj.updatedAt(now);
     assert(obj.updatedAt == now);

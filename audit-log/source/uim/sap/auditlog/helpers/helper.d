@@ -18,8 +18,8 @@ bool isRecommendedAuditEventType(string eventType) {
   return AUDIT_LOG_RECOMMENDED_EVENT_TYPES.canFind(toLower(eventType));
 }
 
-class AuditLogWriteResult : SAPObject {
-  mixin(SAPObjectTemplate!AuditLogWriteResult);
+class AuditLogWriteResult : SAPEntity {
+  mixin(SAPEntityTemplate!AuditLogWriteResult);
 
   bool success;
   UUID eventId;

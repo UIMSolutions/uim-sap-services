@@ -11,8 +11,8 @@ mixin(ShowModule!());
 
 @safe:
 
-class ARTRuntimeHealth : SAPObject {
-  mixin(SAPObjectTemplate!ARTRuntimeHealth);
+class ARTRuntimeHealth : SAPEntity {
+  mixin(SAPEntityTemplate!ARTRuntimeHealth);
 
   bool ok;
   string runtimeName;

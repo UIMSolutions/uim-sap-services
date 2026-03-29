@@ -4,7 +4,7 @@ module uim.sap.ctm.models.route;
 // CTMRoute – a directional connection between two nodes
 // ---------------------------------------------------------------------------
 class CTMRoute : SAPTenantObject {
-    mixin(SAPObjectTemplate!CTMRoute);
+    mixin(SAPEntityTemplate!CTMRoute);
 
     UUID routeId;
     UUID sourceNodeId;

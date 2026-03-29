@@ -9,7 +9,7 @@ mixin(ShowModule!());
 // TaskLog – a monitoring log entry for a workflow or task
 // ---------------------------------------------------------------------------
 class CIATaskLog : SAPTenantObject {
-mixin(SAPObjectTemplate!CIATaskLog);
+mixin(SAPEntityTemplate!CIATaskLog);
 
   UUID workflowId;
   UUID taskId; // empty string if workflow-level log

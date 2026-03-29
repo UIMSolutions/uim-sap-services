@@ -20,8 +20,8 @@ mixin(ShowModule!());
   * The `tags` array allows for categorization and easier searching of APIs based on keywords.
   * The `createdAt` field records the timestamp of when the API was created, which can be useful for tracking and auditing purposes.
   */
-class BUHApi : SAPObject {
-  mixin(SAPObjectTemplate!BUHApi);
+class BUHApi : SAPEntity {
+  mixin(SAPEntityTemplate!BUHApi);
 
   UUID id;
   string name;

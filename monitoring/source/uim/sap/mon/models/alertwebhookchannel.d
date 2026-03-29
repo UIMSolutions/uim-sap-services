@@ -36,8 +36,8 @@ mixin(ShowModule!());
  *   webhookConfig.method = "POST";
  *   webhookConfig.updatedAt = Clock.currTime();  
  */
-class MONAlertWebhookChannel : SAPObject {
-  mixin(SAPObjectTemplate!MONAlertWebhookChannel);
+class MONAlertWebhookChannel : SAPEntity {
+  mixin(SAPEntityTemplate!MONAlertWebhookChannel);
 
   bool enabled;
   string url;

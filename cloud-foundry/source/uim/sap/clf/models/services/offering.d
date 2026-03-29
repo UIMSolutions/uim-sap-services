@@ -11,8 +11,8 @@ mixin(ShowModule!());
 
 @safe:
 
-class CLFServiceOffering : SAPObject {
-  mixin(SAPObjectTemplate!CLFServiceOffering);
+class CLFServiceOffering : SAPEntity {
+  mixin(SAPEntityTemplate!CLFServiceOffering);
 
   string guid;
   string label;

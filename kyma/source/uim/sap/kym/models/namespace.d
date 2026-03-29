@@ -7,8 +7,8 @@ mixin(ShowModule!());
 @safe:
 
 /// A Kyma namespace isolates workloads like a Kubernetes namespace
-class KYMNamespace : SAPObject {
-  mixin(SAPObject!KYMNamespace);
+class KYMNamespace : SAPEntity {
+  mixin(SAPEntity!KYMNamespace);
 
   override bool initialize(Json[string] initData) {
     if (!super.initialize(initData)) {

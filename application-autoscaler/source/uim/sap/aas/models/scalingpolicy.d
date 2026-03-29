@@ -9,8 +9,8 @@ import uim.sap.aas;
 
 @safe:
 
-class AASScalingPolicy : SAPObject {
-  mixin(SAPObjectTemplate!AASScalingPolicy);
+class AASScalingPolicy : SAPEntity {
+  mixin(SAPEntityTemplate!AASScalingPolicy);
 
   UUID id;
   UUID appId;

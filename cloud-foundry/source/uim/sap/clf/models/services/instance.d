@@ -10,8 +10,8 @@ import uim.sap.clf;
 mixin(ShowModule!());
 
 @safe:
-class CLFServiceInstance : SAPObject {
-  mixin(SAPObjectTemplate!CLFServiceInstance);
+class CLFServiceInstance : SAPEntity {
+  mixin(SAPEntityTemplate!CLFServiceInstance);
 
   override bool initialize(Json[string] initData = null) {
     if (!super.initialize(initData)) {

@@ -10,8 +10,8 @@ import uim.sap.buh;
 mixin(ShowModule!());
 
 @safe:
-class BUHSubscription : SAPObject {
-  mixin(SAPObjectTemplate!BUHSubscription);
+class BUHSubscription : SAPEntity {
+  mixin(SAPEntityTemplate!BUHSubscription);
 
   override bool initialize(Json[string] initData = null) {
     if (!super.initialize(initData)) {

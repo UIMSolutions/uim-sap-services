@@ -11,8 +11,8 @@ mixin(ShowModule!());
 
 @safe:
 
-class TKCTaskAction : SAPObject {
-  mixin(SAPObjectTemplate!TKCTaskAction);
+class TKCTaskAction : SAPEntity {
+  mixin(SAPEntityTemplate!TKCTaskAction);
 
   string action;
   string performedBy;

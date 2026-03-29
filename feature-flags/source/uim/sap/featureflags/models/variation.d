@@ -17,8 +17,8 @@ mixin(ShowModule!());
  *  evaluates to this variation, plus a `weight` used by the
  *  percentage-delivery strategy to distribute traffic.
  */
-class FFLVariation : SAPObject {
-  mixin(SAPObjectTemplate!FFLVariation);
+class FFLVariation : SAPEntity {
+  mixin(SAPEntityTemplate!FFLVariation);
 
     string variationId;
     string name;

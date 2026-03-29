@@ -11,8 +11,8 @@ mixin(ShowModule!());
 
 @safe:
 
-class MONCustomCheck : SAPObject {
-  mixin(SAPObjectTemplate!MONCustomCheck);
+class MONCustomCheck : SAPEntity {
+  mixin(SAPEntityTemplate!MONCustomCheck);
 
   UUID checkId;
   string name;

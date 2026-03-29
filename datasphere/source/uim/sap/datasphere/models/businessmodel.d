@@ -27,7 +27,7 @@ mixin(ShowModule!());
   * - updatedAt: The timestamp of the last update to this business model.
   */
 class DATBusinessModel : SAPTenantObject {  
-  mixin(SAPObjectTemplate!DATBusinessModel);
+  mixin(SAPEntityTemplate!DATBusinessModel);
 
   UUID modelId;
   string name;

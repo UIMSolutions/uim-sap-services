@@ -7,8 +7,8 @@ mixin(ShowModule!());
 @safe:
 
 /// A folder (container) in the document hierarchy.
-class DMAFolder : SAPObject {
-  mixin(SAPObjectTemplate!DMAFolder);
+class DMAFolder : SAPEntity {
+  mixin(SAPEntityTemplate!DMAFolder);
 
   UUID folderId;
   UUID repositoryId;

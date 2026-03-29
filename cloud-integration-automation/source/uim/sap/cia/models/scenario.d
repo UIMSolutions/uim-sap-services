@@ -8,8 +8,8 @@ mixin(ShowModule!());
 // ---------------------------------------------------------------------------
 // Scenario – an integration scenario template (e.g. S/4HANA → SuccessFactors)
 // ---------------------------------------------------------------------------
-class CIAScenario : SAPObject {
-  mixin(SAPObjectTemplate!CIAScenario);
+class CIAScenario : SAPEntity {
+  mixin(SAPEntityTemplate!CIAScenario);
 
   UUID id;
   string name;

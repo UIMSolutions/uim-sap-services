@@ -7,8 +7,8 @@ mixin(ShowModule!());
 @safe:
 
 /// A serverless Function deployed in a namespace
-class KYMFunction : SAPObject {
-  mixin(SAPObjectTemplate!KYMFunction);
+class KYMFunction : SAPEntity {
+  mixin(SAPEntityTemplate!KYMFunction);
 
   string name;
   string namespace;

@@ -27,8 +27,8 @@ mixin(ShowModule!());
  * - enabled: A boolean indicating whether this availability check is currently enabled.
  * - createdAt: The timestamp when this availability check configuration was created.
  */
-class MONAvailabilityCheck : SAPObject {
-  mixin(SAPObjectTemplate!MONAvailabilityCheck);
+class MONAvailabilityCheck : SAPEntity {
+  mixin(SAPEntityTemplate!MONAvailabilityCheck);
 
   UUID checkId;
   string targetType;

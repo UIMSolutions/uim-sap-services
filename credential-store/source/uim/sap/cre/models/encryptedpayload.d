@@ -6,8 +6,8 @@ mixin(ShowModule!());
 
 @safe:
 
-class CREEncryptedPayload : SAPObject {
-    mixin(SAPObjectTemplate!CREEncryptedPayload);
+class CREEncryptedPayload : SAPEntity {
+    mixin(SAPEntityTemplate!CREEncryptedPayload);
 
     ubyte[] cipherBytes;
     ubyte[] nonceBytes;

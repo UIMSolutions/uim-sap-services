@@ -30,7 +30,7 @@ mixin(ShowModule!());
   * - updatedAt: The timestamp of the last update to this connection.  
   */
 class DATIntegrationConnection : SAPTenantObject  {
-  mixin(SAPObjectTemplate!DATIntegrationConnection);
+  mixin(SAPEntityTemplate!DATIntegrationConnection);
 
   UUID connectionId;
   string name;

@@ -11,8 +11,8 @@ mixin(ShowModule!());
 
 @safe:
 
-class ResponsibilityRule : SAPObject {
-	mixin(SAPObjectTemplate!ResponsibilityRule);
+class ResponsibilityRule : SAPEntity {
+	mixin(SAPEntityTemplate!ResponsibilityRule);
 
     UUID id;
     string name;

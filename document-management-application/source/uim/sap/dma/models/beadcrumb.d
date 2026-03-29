@@ -7,7 +7,7 @@ mixin(ShowModule!());
 @safe:
 
 /// A single step in a breadcrumb path.
-class DMABreadcrumb : SAPObject {
+class DMABreadcrumb : SAPEntity {
   UUID folderId;
   string name;
 

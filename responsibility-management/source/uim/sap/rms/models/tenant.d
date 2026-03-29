@@ -12,7 +12,7 @@ mixin(ShowModule!());
 @safe:
 
 class TenantContext : SAPTenantObject {
-mixin(SAPObjectTemplate!TenantContext);
+mixin(SAPEntityTemplate!TenantContext);
 
      UUID spaceId;
 }

@@ -6,8 +6,8 @@ mixin(ShowModule!());
 
 @safe:
 
-class BASScenario : SAPObject {
-  mixin(SAPObjectTemplate!BASScenario);
+class BASScenario : SAPEntity {
+  mixin(SAPEntityTemplate!BASScenario);
 
   UUID scenarioId;
   string name;

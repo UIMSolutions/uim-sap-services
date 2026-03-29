@@ -6,8 +6,8 @@ mixin(ShowModule!());
 
 @safe:
 
-class CPIRequest : SAPObject {
-  mixin(SAPObjectTemplate!CPIRequest);
+class CPIRequest : SAPEntity {
+  mixin(SAPEntityTemplate!CPIRequest);
 
   string path;
   string[string] query;

@@ -10,8 +10,8 @@ import uim.sap.clf;
 mixin(ShowModule!());
 
 @safe:
-class CLFOrg : SAPObject {
-  mixin(SAPObjectTemplate!CLFOrg);
+class CLFOrg : SAPEntity {
+  mixin(SAPEntityTemplate!CLFOrg);
 
   override bool initialize(Json[string] initData = null) {
     if (!super.initialize(initData)) {

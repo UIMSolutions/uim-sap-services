@@ -2,8 +2,8 @@ module models;
 
 import std.datetime : Clock, SysTime;
 
-class SoftwareTranslateRequest  : SAPObject {
-mixin(SAPObjectTemplate!SoftwareTranslateResponse);
+class SoftwareTranslateRequest  : SAPEntity {
+mixin(SAPEntityTemplate!SoftwareTranslateResponse);
 
     string sourceLanguage;
     string targetLanguage;
@@ -12,8 +12,8 @@ mixin(SAPObjectTemplate!SoftwareTranslateResponse);
     string domain;   // sap | generic | custom
 }
 
-class SoftwareTranslateResponse : SAPObject {
-mixin(SAPObjectTemplate!SoftwareTranslateResponse);
+class SoftwareTranslateResponse : SAPEntity {
+mixin(SAPEntityTemplate!SoftwareTranslateResponse);
 
     string sourceLanguage;
     string targetLanguage;
@@ -24,8 +24,8 @@ mixin(SAPObjectTemplate!SoftwareTranslateResponse);
     SysTime timestamp;
 }
 
-UUID DocumentTranslateSyncRequest : SAPObject {
-mixin(SAPObjectTemplate!SoftwareTranslateResponse);
+UUID DocumentTranslateSyncRequest : SAPEntity {
+mixin(SAPEntityTemplate!SoftwareTranslateResponse);
 
     string sourceLanguage;
     string targetLanguage;
@@ -34,8 +34,8 @@ mixin(SAPObjectTemplate!SoftwareTranslateResponse);
     string provider; // sap-nmt | llm
 }
 
-class DocumentTranslateSyncResponse  : SAPObject {
-mixin(SAPObjectTemplate!SoftwareTranslateResponse);
+class DocumentTranslateSyncResponse  : SAPEntity {
+mixin(SAPEntityTemplate!SoftwareTranslateResponse);
 
     UUID requestId;
     string provider;
@@ -44,8 +44,8 @@ mixin(SAPObjectTemplate!SoftwareTranslateResponse);
     SysTime timestamp;
 }
 
-class DocumentTranslateAsyncRequest  : SAPObject {
-mixin(SAPObjectTemplate!SoftwareTranslateResponse);
+class DocumentTranslateAsyncRequest  : SAPEntity {
+mixin(SAPEntityTemplate!SoftwareTranslateResponse);
 
     string sourceLanguage;
     string targetLanguage;
@@ -61,8 +61,8 @@ enum JobStatus : string {
     failed = "failed"
 }
 
-class AsyncJob  : SAPObject {
-mixin(SAPObjectTemplate!SoftwareTranslateResponse);
+class AsyncJob  : SAPEntity {
+mixin(SAPEntityTemplate!SoftwareTranslateResponse);
 
     UUID id;
     JobStatus status;
@@ -75,8 +75,8 @@ mixin(SAPObjectTemplate!SoftwareTranslateResponse);
     SysTime updatedAt;
 }
 
-class Project  : SAPObject {
-mixin(SAPObjectTemplate!SoftwareTranslateResponse);
+class Project  : SAPEntity {
+mixin(SAPEntityTemplate!SoftwareTranslateResponse);
 
     UUID id;
     string name;
@@ -86,8 +86,8 @@ mixin(SAPObjectTemplate!SoftwareTranslateResponse);
     SysTime createdAt;
 }
 
-class LanguageAsset  : SAPObject {
-mixin(SAPObjectTemplate!SoftwareTranslateResponse);
+class LanguageAsset  : SAPEntity {
+mixin(SAPEntityTemplate!SoftwareTranslateResponse);
 
     UUID id;
     string name;
@@ -98,8 +98,8 @@ mixin(SAPObjectTemplate!SoftwareTranslateResponse);
     SysTime createdAt;
 }
 
-struct ApiError  : SAPObject {
-mixin(SAPObjectTemplate!SoftwareTranslateResponse);
+struct ApiError  : SAPEntity {
+mixin(SAPEntityTemplate!SoftwareTranslateResponse);
 
     string error;
     string details;

@@ -10,8 +10,8 @@ import uim.sap.clf;
 mixin(ShowModule!());
 
 @safe:
-class CLFApp : SAPObject {
-  mixin(SAPObjectTemplate!CLFApp);
+class CLFApp : SAPEntity {
+  mixin(SAPEntityTemplate!CLFApp);
 
   string guid;
   string name;

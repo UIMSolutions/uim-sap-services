@@ -23,8 +23,8 @@ mixin(ShowModule!());
   * - unit: The unit of measurement for the metric value (e.g., "milliseconds", "percent").
   * - collectedAt: The timestamp when this metric sample was collected.
   */
-class MONMetricSample : SAPObject {
-  mixin(SAPObjectTemplate!MONMetricSample);
+class MONMetricSample : SAPEntity {
+  mixin(SAPEntityTemplate!MONMetricSample);
 
   string targetType;
   UUID targetId;

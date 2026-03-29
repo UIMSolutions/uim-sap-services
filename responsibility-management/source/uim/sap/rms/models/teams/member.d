@@ -24,8 +24,8 @@ mixin(ShowModule!());
     * - notificationsEnabled: A boolean indicating if the user has enabled notifications for the team.
     * - functions: An array of strings representing the functions assigned to the user within the team.
     */
-class TeamMember : SAPObject {
-mixin(SAPObjectTemplate!TeamMember);
+class TeamMember : SAPEntity {
+mixin(SAPEntityTemplate!TeamMember);
 
     UUID userId;
     string displayName;

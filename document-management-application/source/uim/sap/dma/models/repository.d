@@ -7,7 +7,7 @@ mixin(ShowModule!());
 @safe:
 
 /// Describes a connected CMIS-compliant repository.
-class DMARepository : SAPObject {
+class DMARepository : SAPEntity {
   string repositoryId;
   string name;
   string description;
