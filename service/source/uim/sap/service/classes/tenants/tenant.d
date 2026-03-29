@@ -5,16 +5,15 @@ import uim.sap.service;
 mixin(ShowModule!());
 
 @safe:
-class SAPTenant : ISAPTenant {
-  // Constructor to initialize a new tenant
-  this(UUID id, string name, string domain, string owner, Json settings) {
-    this.id = id;
-    this.name = name;
-    this.domain = domain;
-    this.owner = owner;
-    this.createdAt = SysTime.nowUTC();
-    this.updatedAt = SysTime.nowUTC();
-    this.settings = settings;
+class SAPTenant : SAPEntity, ISAPTenant {
+  mixin(SAPEntityTemplate!SAPTenant);
+
+  override bool initialize(Json[string] initData = null) {
+    if (!super.initialize(initData)) {
+      return false;
+    }
+
+    return validate();
   }
 
   UUID _id; // Unique identifier for the tenant
@@ -57,22 +56,6 @@ class SAPTenant : ISAPTenant {
     _owner = value;
   }
 
-  SysTime _createdAt; // Creation timestamp
-  SysTime createdAt() {
-    return _createdAt;
-  }
-  void createdAt(SysTime value) {
-    _createdAt = value;
-  }
-
-  SysTime _updatedAt; // Last updated timestamp
-  SysTime updatedAt() {
-    return _updatedAt;
-  }
-  void updatedAt(SysTime value) {
-    _updatedAt = value;
-  }
-
   Json _settings; // Tenant-specific settings in JSON format
   Json settings() {
     return _settings;
@@ -87,21 +70,21 @@ class SAPTenant : ISAPTenant {
   
   bool validate() {
     // Basic validation logic for tenant properties
-    if (id == null || name == "" || domain == "" || owner == "") {
-      return false;
-    }
+    // if (id == null || name == "" || domain == "" || owner == "") {
+    //   return false;
+    // }
     // Additional validation can be added here (e.g., domain format)
     return true;
   }
 
   // Method to update tenant settings
-  void updateSettings(Json newSettings) {
-    settings = newSettings;
-    updatedAt = SysTime.nowUTC();
+  void update(Json settings) {    
+    // settings = newSettings;
+    // updatedAt = SysTime.nowUTC();
   }
 
-  Json toJson() {
-    return Json.empty
+  override Json toJson() {
+    return super.toJson()
       .set("id", id.toString())
       .set("name", name)
       .set("description", description)

@@ -12,40 +12,22 @@ class SAPEntity {
   }
 
   this(Json initData) {
-    if (initData.isArray) {
-      initialize(initData.toArray);
-    }
     if (initData.isObject) {
       initialize(initData.toMap);
     }
-  }
-
-  this(Json[] initData) {
-    initialize(initData);
   }
 
   this(Json[string] initData) {
     initialize(initData);
   }
 
-  bool initialize() {
+  bool initialize(Json[string] initData = null) {
     createdAt = Clock.currTime();
-    updatedAt = createdAt;
-  }
-
-  bool initialize(Json[] initData) {
-    initialize;
-    
-    return true;
-  }
-
-  bool initialize(Json[string] initData) {
-    initialize;
-
     if (initData.hasKey("created_at")) {
       createdAt = SysTime.fromISOExtString(initData["created_at"].getString);
     }   
     
+    updatedAt = createdAt;
     if (initData.hasKey("updated_at")) {
       updatedAt = SysTime.fromISOExtString(initData["updated_at"].getString);
     }

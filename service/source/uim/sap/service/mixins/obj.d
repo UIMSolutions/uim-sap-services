@@ -5,7 +5,7 @@ import uim.sap.service;
 mixin(ShowModule!());
 
 @safe:
-string SAPEntityTemplate() {
+string sapEntityTemplate() {
   return q{
     this() {
       super();
@@ -15,9 +15,6 @@ string SAPEntityTemplate() {
       super(initData);
     }
 
-    this(Json[] initData) {
-      super(initData);
-    }
 
     this(Json[string] initData) {
       super(initData);
@@ -26,10 +23,10 @@ string SAPEntityTemplate() {
 }
 
 template SAPEntityTemplate(alias Symbol) {
-  const char[] SAPEntityTemplate = SAPEntityTemplate();
+  const char[] SAPEntityTemplate = sapEntityTemplate();
 }
 
-string SAPTenantEntityTemplate() {
+string sapTenantEntityTemplate() {
   return q{
     this() {
       super();
@@ -41,10 +38,6 @@ string SAPTenantEntityTemplate() {
     }
 
     this(Json initData) {
-      super(initData);
-    }
-
-    this(Json[] initData) {
       super(initData);
     }
 
@@ -60,5 +53,5 @@ string SAPTenantEntityTemplate() {
 }
 
 template SAPTenantEntityTemplate(alias Symbol) {
-  const char[] SAPTenantEntityTemplate = SAPTenantEntityTemplate();
+  const char[] SAPTenantEntityTemplate = sapTenantEntityTemplate();
 }

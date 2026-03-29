@@ -1,6 +1,6 @@
-module uim.sap.service.classes.objects;
+module uim.sap.service.classes.entities;
 
 public {
-  import uim.sap.service.classes.objects.obj;
-  import uim.sap.service.classes.objects.tenant;
+  import uim.sap.service.classes.entities.entity;
+  import uim.sap.service.classes.entities.tenant;
 }

@@ -1,4 +1,4 @@
-module uim.sap.service.classes.objects.tenant;
+module uim.sap.service.classes.entities.tenant;
 
 import uim.sap.service;
 
@@ -11,11 +11,6 @@ class SAPTenantEntity : SAPEntity {
 
   this(UUID tenantId) {
     super();
-    this.tenantId(tenantId);
-  }
-
-  this(UUID tenantId, Json[] initData) {
-    super(initData);
     this.tenantId(tenantId);
   }
 

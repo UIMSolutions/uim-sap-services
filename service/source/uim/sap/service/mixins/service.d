@@ -14,10 +14,6 @@ string sapServiceTemplate() {
       super(initData);
     }
 
-    this(Json[] initData) {
-      super(initData);
-    }
-
     this(Json[string] initData) {
       super(initData);
     }
