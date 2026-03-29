@@ -1,0 +1,54 @@
+@startuml sequence_story_analysis_planning
+!theme plain
+
+title Analytics Cloud - Story Creation, Ad-Hoc Analysis, and Planning Flow
+
+actor Creator
+actor Planner
+participant "AnalyticsServer" as Server
+participant "AnalyticsService" as Service
+participant "AnalyticsStore" as Store
+
+== Story Creation ==
+
+Creator -> Server : POST /stories
+Server -> Service : createStory(tenant, payload)
+Service -> Store : appendStory(story)
+Server --> Creator : 201 story created
+
+Creator -> Server : PUT /stories/{id}
+Server -> Service : updateStory(tenant, id, payload)
+Service -> Store : updateStory(tenant, id, story)
+Server --> Creator : 200 story updated
+
+== Ad-Hoc Analysis ==
+
+Creator -> Server : POST /analysis/query
+Server -> Service : queryAnalysis(tenant, query)
+Service -> Store : getModel(tenant, model_id)
+Service --> Server : analysis result (pivot-table data)
+Server --> Creator : 200 analysis response
+
+== Planning with What-If ==
+
+Planner -> Server : POST /plans
+Server -> Service : createPlan(tenant, payload)
+Service -> Store : getModel(tenant, model_id)
+Service -> Store : appendPlan(plan)
+Server --> Planner : 201 plan created
+
+Planner -> Server : POST /scenarios/simulate
+Server -> Service : simulateScenario(tenant, adjustments)
+Service -> Store : getPlan(tenant, plan_id)
+Service --> Server : scenario outcomes + confidence
+Server --> Planner : 200 simulation results
+
+== Prediction ==
+
+Creator -> Server : POST /predictions
+Server -> Service : createPrediction(tenant, payload)
+Service -> Store : appendPrediction(prediction)
+Service --> Server : prediction with metrics
+Server --> Creator : 201 prediction ready
+
+@enduml

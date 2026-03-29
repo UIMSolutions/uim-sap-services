@@ -6,6 +6,7 @@ mixin(ShowModule!());
 
 @safe:
 
+/*
 class SAPTenantController {
   this(MultitenancyService multitenancyService) {
     this.multitenancyService = multitenancyService;
@@ -39,3 +40,4 @@ class SAPTenantController {
     return multitenancyService.listTenants();
   }
 }
+*/

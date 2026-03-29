@@ -7,23 +7,23 @@ mixin(ShowModule!());
 @safe:
 
 class SAPTenantRepository {
-  private Tenant[UUID] tenants;
+  private ISAPTenant[UUID] tenants;
 
   this() {
     // Load tenants from a data source or initialize an empty array
     tenants = null;
   }
 
-  void addTenant(Tenant tenant) {
+  void addTenant(ISAPTenant tenant) {
     tenants[tenant.id] = tenant;
     writeln("Tenant added: ", tenant.name);
   }
 
-  Tenant getTenant(UUID tenantId) {
+  ISAPTenant getTenant(UUID tenantId) {
     return tenantId in tenants ? tenants[tenantId] : null;
   }
 
-  void updateTenant(UUID tenantId, Tenant updatedTenant) {
+  void updateTenant(UUID tenantId, ISAPTenant updatedTenant) {
     if (tenantId in tenants) {
       tenants[tenantId] = updatedTenant;
       writeln("Tenant updated: ", updatedTenant.name);
@@ -41,7 +41,7 @@ class SAPTenantRepository {
     writeln("Tenant not found: ", tenantId);
   }
 
-  Tenant[] getAllTenants() {
+  ISAPTenant[] getAllTenants() {
     return tenants.values.array;
   }
 

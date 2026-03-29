@@ -1,0 +1,39 @@
+@startuml class_model
+!theme plain
+
+title UIM SAP Analytics Cloud Service - Class Model
+
+package "uim.sap.analytics" {
+  class AnalyticsConfig
+  class AnalyticsServer
+  class AnalyticsService
+  class AnalyticsStore
+
+  class AnalyticsStory
+  class AnalyticsDashboard
+  class AnalyticsDataset
+  class AnalyticsDataModel
+  class AnalyticsPlan
+  class AnalyticsPrediction
+  class AnalyticsConnection
+  class AnalyticsUser
+}
+
+AnalyticsServer --> AnalyticsService
+AnalyticsService --> AnalyticsConfig
+AnalyticsService --> AnalyticsStore
+
+AnalyticsStore o-- AnalyticsStory
+AnalyticsStore o-- AnalyticsDashboard
+AnalyticsStore o-- AnalyticsDataset
+AnalyticsStore o-- AnalyticsDataModel
+AnalyticsStore o-- AnalyticsPlan
+AnalyticsStore o-- AnalyticsPrediction
+AnalyticsStore o-- AnalyticsConnection
+AnalyticsStore o-- AnalyticsUser
+
+AnalyticsPlan ..> AnalyticsDataModel : references
+AnalyticsDataset ..> AnalyticsConnection : references
+AnalyticsPrediction ..> AnalyticsDataModel : references
+
+@enduml

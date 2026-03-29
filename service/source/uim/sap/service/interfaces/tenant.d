@@ -6,7 +6,7 @@ mixin(ShowModule!());
 
 @safe:
 
-interface ISAPTenant : ISAPObject {
+interface ISAPTenant : ISAPEntity {
   bool isValid();
 
   bool validate();

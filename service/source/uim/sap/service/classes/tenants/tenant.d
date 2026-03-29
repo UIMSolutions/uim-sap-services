@@ -12,10 +12,10 @@ class SAPTenant : ISAPTenant {
   string owner; // Owner of the tenant
   DateTime createdAt; // Creation timestamp
   DateTime updatedAt; // Last updated timestamp
-  JsonObject settings; // Tenant-specific settings in JSON format
+  Json settings; // Tenant-specific settings in JSON format
 
   // Constructor to initialize a new tenant
-  this(UUID id, string name, string domain, string owner, JsonObject settings) {
+  this(UUID id, string name, string domain, string owner, Json settings) {
     this.id = id;
     this.name = name;
     this.domain = domain;
@@ -39,7 +39,7 @@ class SAPTenant : ISAPTenant {
   }
 
   // Method to update tenant settings
-  void updateSettings(JsonObject newSettings) {
+  void updateSettings(Json newSettings) {
     settings = newSettings;
     updatedAt = DateTime.nowUTC();
   }

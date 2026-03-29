@@ -1,0 +1,58 @@
+@startuml component_architecture
+!theme plain
+
+title UIM SAP Analytics Cloud Service - Component Architecture
+
+actor "BI User / Creator" as Creator
+actor "Planner" as Planner
+actor "Data Admin" as Admin
+actor "Mobile User" as Mobile
+actor "Third-Party App" as ThirdParty
+
+node "Analytics Cloud Service Runtime" {
+  component "AnalyticsServer\n(vibe.d REST API)" as Api
+
+  package "Domain Services" {
+    component "Story & Dashboard\nManagement" as UX
+    component "Planning &\nScenario Engine" as Planning
+    component "Data Connectivity\n& Modeling" as DataConn
+    component "Smart Capabilities\n(Predictions/ML)" as Smart
+    component "Administration\n& User Management" as AdminSvc
+    component "Mobile & Embedding" as MobileEmbed
+  }
+
+  database "AnalyticsStore\n(In-Memory Multi-Tenant)" as Store
+}
+
+cloud "SAP Datasphere" as Datasphere
+
+Creator --> Api : Stories, Dashboards
+Planner --> Api : Plans, What-If
+Admin --> Api : Users, Connections, Overview
+Mobile --> Api : Mobile Catalog
+ThirdParty --> Api : Embed API
+
+Api --> UX : route
+Api --> Planning : route
+Api --> DataConn : route
+Api --> Smart : route
+Api --> AdminSvc : route
+Api --> MobileEmbed : route
+
+UX --> Store : persist stories/dashboards
+Planning --> Store : persist plans
+DataConn --> Store : persist connections/datasets/models
+Smart --> Store : persist predictions
+AdminSvc --> Store : persist users
+
+DataConn ..> Datasphere : optional integration
+
+note right of Smart
+Smart Capabilities:
+- What-if scenario simulation
+- Automated ML (time series,
+  classification, regression)
+- Prediction with confidence metrics
+end note
+
+@enduml
