@@ -14,8 +14,8 @@ import uim.sap.obs.enumerations;
 @safe:
 
 /// Secure credentials to access a bucket
-class OBSCredential : SAPTenantObject {
-  mixin(SAPtenantObject!OBSCredential);
+class OBSCredential : SAPTenantEntity {
+  mixin(SAPTenantEntity!OBSCredential);
 
   UUID credentialId;
   UUID bucketId;

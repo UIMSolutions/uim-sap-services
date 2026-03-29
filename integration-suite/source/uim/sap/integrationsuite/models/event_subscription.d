@@ -32,8 +32,8 @@ mixin(ShowModule!());
   * - eventSubscriptionFromJson(UUID tenantId, Json request): Creates a new subscription instance from a JSON request, generating a unique subscriptionId and setting the createdAt and updatedAt timestamps. 
   * For more information on event subscriptions and their management, refer to the SAP Integration Suite documentation.
   */
-class INTEventSubscription : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!INTEventSubscription);
+class INTEventSubscription : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!INTEventSubscription);
 
   UUID subscriptionId;
   string topicName;

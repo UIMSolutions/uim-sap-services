@@ -11,8 +11,8 @@ mixin(ShowModule!());
 
 @safe:
 
-class INTODataService : SAPTenantObject {
-  mixin(SAPtenantObject!INTODataService);
+class INTODataService : SAPTenantEntity {
+  mixin(SAPTenantEntity!INTODataService);
 
   override bool initialize(Json[string] initData) {
     if (!super.initialize(initData)) {

@@ -26,8 +26,8 @@ mixin(ShowModule!());
   * - active: A boolean indicating whether the space is currently active.
   * - updatedAt: The timestamp of the last update to this space.
  */
-class DATSpace : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!DATSpace);
+class DATSpace : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!DATSpace);
 
   UUID spaceId;
   string name;

@@ -12,8 +12,8 @@ mixin(ShowModule!());
 @safe:
 
 /// A single recommendation result returned to the caller.
-class PRERecommendation : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!PRERecommendation);
+class PRERecommendation : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!PRERecommendation);
 
   UUID recommendationId;
   UUID userId;

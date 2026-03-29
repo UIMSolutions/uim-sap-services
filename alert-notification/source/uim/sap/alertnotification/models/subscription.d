@@ -10,8 +10,8 @@ import uim.sap.alertnotification;
 mixin(ShowModule!());
 
 @safe:
-class AlertSubscription : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!AlertSubscription);
+class AlertSubscription : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!AlertSubscription);
 
   UUID subscriptionId;
   string name;

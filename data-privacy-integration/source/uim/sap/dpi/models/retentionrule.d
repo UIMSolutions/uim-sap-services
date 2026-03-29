@@ -23,8 +23,8 @@ mixin(ShowModule!());
  * - active: A boolean indicating whether the rule is currently active.
  * - updatedAt: The timestamp of the last update to this rule.  
  */
-class DPIRetentionRule : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!DPIRetentionRule);
+class DPIRetentionRule : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!DPIRetentionRule);
 
   UUID ruleId;
   string dataCategory;

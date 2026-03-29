@@ -20,8 +20,8 @@ mixin(ShowModule!());
   * Methods:
   * - toJson(): Serializes the schedule object to JSON format for storage or transmission 
   */
-class ATPSchedule : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!ATPSchedule);
+class ATPSchedule : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!ATPSchedule);
 
   UUID scheduleId;
   string targetType;

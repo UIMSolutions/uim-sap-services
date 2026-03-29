@@ -40,8 +40,8 @@ mixin(ShowModule!());
   *   // Serializing an API Product to JSON for response
   *   Json response = product.toJson();
   */
-class INTApiProduct : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!INTApiProduct);
+class INTApiProduct : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!INTApiProduct);
 
   UUID productId;
   string name;

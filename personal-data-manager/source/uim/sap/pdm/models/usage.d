@@ -38,8 +38,8 @@ mixin(ShowModule!());
   * usage.createdAt = Clock.currTime();
   * ```
   */
-class PDMDataUsage : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!PDMDataUsage);
+class PDMDataUsage : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!PDMDataUsage);
 
   UUID usageId;
   UUID subjectId;

@@ -29,7 +29,7 @@ template SAPEntityTemplate(alias Symbol) {
   const char[] SAPEntityTemplate = SAPEntityTemplate();
 }
 
-string sapTenantObjectTemplate() {
+string SAPTenantEntityTemplate() {
   return q{
     this() {
       super();
@@ -59,6 +59,6 @@ string sapTenantObjectTemplate() {
   };
 }
 
-template SAPTenantObjectTemplate(alias Symbol) {
-  const char[] SAPTenantObjectTemplate = sapTenantObjectTemplate();
+template SAPTenantEntityTemplate(alias Symbol) {
+  const char[] SAPTenantEntityTemplate = SAPTenantEntityTemplate();
 }

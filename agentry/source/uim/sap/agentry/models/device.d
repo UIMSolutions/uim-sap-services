@@ -9,8 +9,8 @@ import uim.sap.agentry;
 mixin(ShowModule!());
 
 @safe:
-class AGTDevice : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!AGTDevice);
+class AGTDevice : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!AGTDevice);
 
   override bool initialize(Json[string] initData) {
     if (!super.initialize(initData)) {

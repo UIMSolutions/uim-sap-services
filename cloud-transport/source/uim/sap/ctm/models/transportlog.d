@@ -9,7 +9,7 @@ mixin(ShowModule!());
 // ---------------------------------------------------------------------------
 // CTMTransportLog – an audit/monitoring log entry
 // ---------------------------------------------------------------------------
-class CTMTransportLog : SAPTenantObject {
+class CTMTransportLog : SAPTenantEntity {
     mixin(SAPEntityTemplate!CTMTransportLog);
 
     UUID logId;

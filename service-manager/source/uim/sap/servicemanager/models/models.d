@@ -8,8 +8,8 @@ mixin(ShowModule!());
 
 @safe:
 
-class SVMPlatform : SAPTenantObject {
-  mixin(SAPtenantObject!SVMPlatform);
+class SVMPlatform : SAPTenantEntity {
+  mixin(SAPTenantEntity!SVMPlatform);
 
   UUID platformId;
   string name;

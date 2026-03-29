@@ -56,8 +56,8 @@ mixin(ShowModule!());
   *
   * For more information on content packs and their management, refer to the SAP Integration Suite documentation.
   */
-class INTContentPack : SAPTenantObject {
-  mixin(SAPtenantObject!INTContentPack);
+class INTContentPack : SAPTenantEntity {
+  mixin(SAPTenantEntity!INTContentPack);
   
   string packId;
   string name;

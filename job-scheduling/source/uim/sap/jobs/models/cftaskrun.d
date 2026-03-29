@@ -11,8 +11,8 @@ mixin(ShowModule!());
 
 @safe:
 
-class CFTaskRun : SAPTenantObject {
-  mixin(SAPtenantObject!CFTaskRun);
+class CFTaskRun : SAPTenantEntity {
+  mixin(SAPTenantEntity!CFTaskRun);
 
   UUID taskRunId;
   string taskName;

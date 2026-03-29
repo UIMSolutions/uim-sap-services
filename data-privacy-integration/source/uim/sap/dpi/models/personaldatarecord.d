@@ -24,8 +24,8 @@ import uim.sap.dpi;
     * - updatedAt: The timestamp when this record was last updated.
     * - deleted: A boolean indicating whether this record has been marked as deleted.  
     */
-class DPIPersonalDataRecord : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!DPIPersonalDataRecord);
+class DPIPersonalDataRecord : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!DPIPersonalDataRecord);
 
   override bool initialize(Json[string] initData = null) {
     if (!super.initialize(initData)) {

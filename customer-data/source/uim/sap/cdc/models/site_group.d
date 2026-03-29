@@ -11,8 +11,8 @@ mixin(ShowModule!());
 
 @safe:
 
-class CDCSiteGroup : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!CDCSiteGroup);
+class CDCSiteGroup : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!CDCSiteGroup);
 
   UUID groupId;
   string name;

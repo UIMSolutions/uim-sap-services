@@ -7,8 +7,8 @@ mixin(ShowModule!());
 @safe:
 
 /// A trained recommendation model.
-class PREModel : SAPTenantObject {
-  mixin(SAPtenantObject!PREModel);
+class PREModel : SAPTenantEntity {
+  mixin(SAPTenantEntity!PREModel);
 
   override bool initialize(Json[string] initData) {
     if (!super.initialize(initData)) {

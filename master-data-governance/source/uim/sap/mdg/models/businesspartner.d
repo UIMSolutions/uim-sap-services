@@ -5,8 +5,8 @@ import uim.sap.mdg;
 mixin(ShowModule!());
 
 @safe:
-class MDGBusinessPartner : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!MDGBusinessPartner);
+class MDGBusinessPartner : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!MDGBusinessPartner);
 
   override bool initialize(Json[string] initData) {
     if (!super.initialize(initData)) {

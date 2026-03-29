@@ -11,8 +11,8 @@ mixin(ShowModule!());
 
 @safe:
 
-class CONDestination : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!CONDestination);
+class CONDestination : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!CONDestination);
 
   override bool initialize(Json[string] initData = null) {
     if (!super.initialize(initData)) {

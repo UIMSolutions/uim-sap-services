@@ -6,8 +6,8 @@ mixin(ShowModule!());
 
 @safe:
 
-class SDISite : SAPTenantObject {
-  mixin(SAPtenantObject!SDISite);
+class SDISite : SAPTenantEntity {
+  mixin(SAPTenantEntity!SDISite);
 
   UUID siteId;
   string name;

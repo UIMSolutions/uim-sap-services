@@ -12,8 +12,8 @@ mixin(ShowModule!());
 @safe:
 
 /// Tenant in a multitenant deployment
-class PDMTenant : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!PDMTenant);
+class PDMTenant : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!PDMTenant);
 
     string name;
     string description;

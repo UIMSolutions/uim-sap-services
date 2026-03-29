@@ -8,7 +8,7 @@ mixin(ShowModule!());
 // ---------------------------------------------------------------------------
 // TaskLog – a monitoring log entry for a workflow or task
 // ---------------------------------------------------------------------------
-class CIATaskLog : SAPTenantObject {
+class CIATaskLog : SAPTenantEntity {
 mixin(SAPEntityTemplate!CIATaskLog);
 
   UUID workflowId;

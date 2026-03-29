@@ -4,8 +4,8 @@ import uim.sap.isa;
 mixin(ShowModule!());
 
 @safe:
-class SituationInstance : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!SituationInstance);
+class SituationInstance : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!SituationInstance);
 
   UUID id;
   string situationType;

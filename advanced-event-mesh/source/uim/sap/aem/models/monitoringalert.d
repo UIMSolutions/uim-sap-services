@@ -47,8 +47,8 @@ mixin(ShowModule!());
   * Note: The `toJson()` method is used to serialize the alert instance into a JSON format that can be returned in API responses or stored in a database. The actual implementation of the `toJson()` method may vary based on the specific requirements of the application and the structure of the
   * JSON payload expected by the API consumers. The fields included in the JSON output can be adjusted as needed to fit the use case, and additional fields can be added to the `AEMMonitoringAlert` struct if necessary to capture more information about the alert or its context.
   */
-class AEMMonitoringAlert : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!AEMMonitoringAlert);
+class AEMMonitoringAlert : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!AEMMonitoringAlert);
 
   UUID alertId;
   string metric;

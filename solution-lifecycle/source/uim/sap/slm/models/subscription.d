@@ -3,8 +3,8 @@ module uim.sap.slm.models.subscription;
 // ---------------------------------------------------------------------------
 // SLMSubscription – a multitenant subscription from a consumer subaccount
 // ---------------------------------------------------------------------------
-class SLMSubscription : SAPTenantObject {
-  mixin(SAPtenantObject!SLMSubscription);
+class SLMSubscription : SAPTenantEntity {
+  mixin(SAPTenantEntity!SLMSubscription);
 
   UUID subscriptionId;
   UUID solutionId;

@@ -20,8 +20,8 @@ mixin(ShowModule!());
  *  `systemType` values: "source", "target", "proxy"
  *  `connectorType` values: "sap-ias", "sap-sf", "scim", "ldap", "custom", …
  */
-class IPVSystem : SAPTenantObject {
-  mixin(SAPtenantObject!IPVSystem);
+class IPVSystem : SAPTenantEntity {
+  mixin(SAPTenantEntity!IPVSystem);
 
   override bool initialize(Json[string] initData) {
     if (!super.initialize(initData)) {

@@ -11,8 +11,8 @@ mixin(ShowModule!());
 
 @safe:
 
-class AEMNotificationRule : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!AEMNotificationRule);
+class AEMNotificationRule : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!AEMNotificationRule);
 
   this(UUID tenantId, UUID ruleId, Json initData) {
     super(initData);

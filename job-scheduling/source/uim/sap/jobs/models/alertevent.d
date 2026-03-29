@@ -11,8 +11,8 @@ mixin(ShowModule!());
 
 @safe:
 
-class AlertEvent : SAPTenantObject {
-  mixin(SAPtenantObject!AlertEvent);
+class AlertEvent : SAPTenantEntity {
+  mixin(SAPTenantEntity!AlertEvent);
 
   override bool initialize(Json[string] initData) {
     if (!super.initialize(initData)) {

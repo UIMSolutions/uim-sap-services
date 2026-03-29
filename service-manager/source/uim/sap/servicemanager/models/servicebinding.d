@@ -21,8 +21,8 @@ module uim.sap.servicemanager.models.servicebinding;
   * - inactive: The service binding is inactive and cannot be used to access the associated service instance.
   * - deleted: The service binding has been deleted and is no longer available.
  */
-class SVMServiceBinding : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!SVMServiceBinding);
+class SVMServiceBinding : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!SVMServiceBinding);
 
   UUID bindingId;
   UUID instanceId;

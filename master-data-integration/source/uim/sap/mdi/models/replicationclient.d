@@ -28,8 +28,8 @@ mixin(ShowModule!());
   * - `systemType`: The type of system the replication client is associated with (e.g., "sap").
   * - `updatedAt`: A timestamp indicating when the replication client was last updated.
  */
-class MDIReplicationClient : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!MDIReplicationClient);
+class MDIReplicationClient : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!MDIReplicationClient);
 
   UUID clientId;
   string name;

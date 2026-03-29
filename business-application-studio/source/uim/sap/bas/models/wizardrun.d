@@ -7,8 +7,8 @@ mixin(ShowModule!());
 @safe:
 
 
-class BASWizardRun : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!BASWizardRun);
+class BASWizardRun : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!BASWizardRun);
 
   UUID runId;
   UUID workspaceId;

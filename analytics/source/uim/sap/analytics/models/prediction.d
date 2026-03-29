@@ -10,8 +10,8 @@ mixin(ShowModule!());
 
 @safe:
 
-class AnalyticsPrediction : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!AnalyticsPrediction);
+class AnalyticsPrediction : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!AnalyticsPrediction);
 
   string predictionId;
   string name;

@@ -27,8 +27,8 @@ mixin(ShowModule!());
   * - createdAt: The timestamp when the subscription was created.
   * - updatedAt: The timestamp when the subscription was last updated.
  */
-class IPVNotification : SAPTenantObject {
-  mixin(SAPtenantObject!IPVNotification);
+class IPVNotification : SAPTenantEntity {
+  mixin(SAPTenantEntity!IPVNotification);
 
   override bool initialize(Json[string] initData) {
     if (!super.initialize(initData)) {

@@ -1,7 +1,7 @@
 module uim.sap.atm.models.identityprovider;
 
-class ATMIdentityProvider : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!ATMIdentityProvider);
+class ATMIdentityProvider : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!ATMIdentityProvider);
 
   UUID idpId;
   string name;

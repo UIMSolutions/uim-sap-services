@@ -8,8 +8,8 @@ mixin(ShowModule!());
 // ---------------------------------------------------------------------------
 // User – a person who can be assigned tasks
 // ---------------------------------------------------------------------------
-class CIAUser : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!CIAUser);
+class CIAUser : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!CIAUser);
 
   UUID id;
   string name;

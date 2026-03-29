@@ -4,8 +4,8 @@ import uim.sap.cps;
 mixin(ShowModule!());
 
 @safe:
-class CPSLaunchpadModule : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!CPSLaunchpadModule);
+class CPSLaunchpadModule : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!CPSLaunchpadModule);
 
   UUID moduleId;
   string solutionName;

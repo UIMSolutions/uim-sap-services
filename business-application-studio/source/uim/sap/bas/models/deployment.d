@@ -6,8 +6,8 @@ mixin(ShowModule!());
 
 @safe:
 
-class BASDeployment : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!BASDeployment);
+class BASDeployment : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!BASDeployment);
 
   UUID workspaceId;
   UUID deploymentId;

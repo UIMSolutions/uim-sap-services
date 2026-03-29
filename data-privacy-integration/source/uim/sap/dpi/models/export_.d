@@ -20,8 +20,8 @@ import uim.sap.dpi;
  * - records: A JSON array containing the personal data records included in this export.
  * - createdAt: The timestamp when this export was created.  
  */
-class DPIExport : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!DPIExport);
+class DPIExport : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!DPIExport);
 
   UUID exportId;
   UUID subjectId;

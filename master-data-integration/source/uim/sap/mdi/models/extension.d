@@ -5,8 +5,8 @@ import uim.sap.mdi;
 mixin(ShowModule!());
 
 @safe:
-class MDIExtension : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!MDIExtension);
+class MDIExtension : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!MDIExtension);
 
   UUID extensionId;
   string objectType;

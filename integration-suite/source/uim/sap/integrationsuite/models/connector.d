@@ -39,8 +39,8 @@ mixin(ShowModule!());
   * Json response = connector.toJson(); // Convert connector to JSON for API response
   * For more information on connectors and their management, refer to the SAP Integration Suite documentation.
   */
-class INTConnector : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!INTConnector);
+class INTConnector : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!INTConnector);
 
   UUID connectorId;
   string name;

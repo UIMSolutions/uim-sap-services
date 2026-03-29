@@ -9,8 +9,8 @@ import uim.sap.isa;
 mixin(ShowModule!());
 
 @safe:
-class AutomationConfiguration : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!AutomationConfiguration);
+class AutomationConfiguration : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!AutomationConfiguration);
 
   UUID id;
   string name;

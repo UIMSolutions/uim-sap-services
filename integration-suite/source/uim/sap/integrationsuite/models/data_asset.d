@@ -42,8 +42,8 @@ mixin(ShowModule!());
   *
   * For more information on data assets and their management, refer to the SAP Integration Suite documentation.
   */
-class INTDataAsset : SAPTenantObject {
-  mixin(SAPtenantObject!INTDataAsset);
+class INTDataAsset : SAPTenantEntity {
+  mixin(SAPTenantEntity!INTDataAsset);
 
   UUID assetId;
   string name;

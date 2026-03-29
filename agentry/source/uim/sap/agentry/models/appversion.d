@@ -26,8 +26,8 @@ mixin(ShowModule!());
   * - `initialize`: Initializes the app version object from a JSON input.
   * - `toJson`: Serializes the app version object to JSON format.
   */
-class AGTAppVersion : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!AGTAppVersion);
+class AGTAppVersion : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!AGTAppVersion);
 
   override bool initialize(Json[string] initData) {
     if (!super.initialize(initData)) {

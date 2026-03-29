@@ -6,8 +6,8 @@ module uim.sap.docmgmtintegration.models.integrationlink;
 
 /// Links business objects from external applications to documents in the
 /// document management system, enabling embedded document scenarios.
-class IntegrationLink : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!IntegrationLink);
+class IntegrationLink : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!IntegrationLink);
 
   override bool initialize(Json request) {
     if (!super.initialize(request)) {

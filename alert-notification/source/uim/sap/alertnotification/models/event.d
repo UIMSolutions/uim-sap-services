@@ -10,8 +10,8 @@ import uim.sap.alertnotification;
 mixin(ShowModule!());
 
 @safe:
-class AlertEvent : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!AlertEvent);
+class AlertEvent : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!AlertEvent);
 
   override bool initialize(Json[string] initData = null) {
     if (!super.initialize(initData)) {

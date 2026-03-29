@@ -6,8 +6,8 @@ mixin(ShowModule!());
 
 @safe:
 
-class CAGTransportActivity : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!CAGTransportActivity);
+class CAGTransportActivity : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!CAGTransportActivity);
 
   UUID activityId;
   string assemblyId;

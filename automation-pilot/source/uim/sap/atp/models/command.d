@@ -22,8 +22,8 @@ mixin(ShowModule!());
   * Methods:
   * - toJson(): Serializes the command object to JSON format for storage or transmission.
   */
-class ATPCommand : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!ATPCommand);
+class ATPCommand : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!ATPCommand);
 
   UUID commandId;
   UUID catalogId;

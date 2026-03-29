@@ -10,8 +10,8 @@ mixin(ShowModule!());
 
 @safe:
 
-class AnalyticsConnection : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!AnalyticsConnection);
+class AnalyticsConnection : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!AnalyticsConnection);
 
   string connectionId;
   string name;

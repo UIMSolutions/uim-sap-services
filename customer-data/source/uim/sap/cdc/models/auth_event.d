@@ -11,8 +11,8 @@ mixin(ShowModule!());
 
 @safe:
 
-class CDCAuthEvent : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!CDCAuthEvent);
+class CDCAuthEvent : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!CDCAuthEvent);
 
   UUID eventId;
   UUID userId;

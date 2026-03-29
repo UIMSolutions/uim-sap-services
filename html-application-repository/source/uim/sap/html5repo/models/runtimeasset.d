@@ -1,7 +1,7 @@
 module uim.sap.html5repo.models.runtimeasset;
 
-class RuntimeAsset : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!RuntimeAsset);
+class RuntimeAsset : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!RuntimeAsset);
 
   override bool initialize(Json[string] initData = null) {
     if (!super.initialize(initData)) {

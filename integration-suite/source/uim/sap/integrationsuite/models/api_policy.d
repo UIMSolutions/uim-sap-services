@@ -27,8 +27,8 @@ mixin(ShowModule!());
   *   }
   * }
   */
-class INTApiPolicy : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!INTApiPolicy);
+class INTApiPolicy : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!INTApiPolicy);
 
   override bool initialize(Json[string] initData = null) {
     if (!super.initialize(initData)) {

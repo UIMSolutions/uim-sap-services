@@ -14,8 +14,8 @@ mixin(ShowModule!());
 // ---------------------------------------------------------------------------
 // DSTAuditLog – audit trail for destination operations
 // ---------------------------------------------------------------------------
-class DSTAuditLog : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!DSTAuditLog);
+class DSTAuditLog : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!DSTAuditLog);
 
   string logId;
   string destinationName;

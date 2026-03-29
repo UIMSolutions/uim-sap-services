@@ -12,8 +12,8 @@ mixin(ShowModule!());
 @safe:
 
 /// A catalog item that can be recommended.
-class PREItem : SAPTenantObject {
-  mixin(SAPtenantObject!PREItem);
+class PREItem : SAPTenantEntity {
+  mixin(SAPTenantEntity!PREItem);
 
   override bool initialize(Json[string] initData) {
     if (!super.initialize(initData)) {

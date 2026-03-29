@@ -46,8 +46,8 @@ mixin(ShowModule!());
   * Note: The `toJson()` method is used to serialize the user object into a JSON format that can be returned in API responses or stored in a database. The actual implementation of the `toJson()` method may vary based on the specific requirements of the application and the structure of the JSON payload expected
   * by the API consumers. The `groups` field allows for representing the user's group memberships, while the `attributes` field provides flexibility for storing additional custom information about the user that may be relevant for provisioning, notifications, or risk policies within the CIS module. The `createdAt` and `updatedAt` fields are essential for tracking the lifecycle of the user object and ensuring that the most current information is being used in any operations involving the user. 
  */
-class CISUser : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!CISUser);
+class CISUser : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!CISUser);
 
   UUID userId;
   string userName;

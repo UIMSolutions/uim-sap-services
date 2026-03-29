@@ -22,8 +22,8 @@ mixin(ShowModule!());
   * - topic: The event topic to which the subscription is subscribed.
   * The subscription can be serialized to JSON for storage or transmission, and can be created from JSON input.
   */
-class AEMSubscription : SAPTenantObject {
-  mixin(SAPTenantObject!AEMSubscription);
+class AEMSubscription : SAPTenantEntity {
+  mixin(SAPTenantEntity!AEMSubscription);
 
   override bool initialize(Json[string] initData) {
     if (!super.initialize(initData)) {

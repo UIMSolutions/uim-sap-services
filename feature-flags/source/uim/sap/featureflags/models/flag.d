@@ -25,8 +25,8 @@ mixin(ShowModule!());
  *  and, for String flags, `percentageRule` (distributing traffic across
  *  variations by weight).
  */
-class FFLFlag : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!FFLFlag);
+class FFLFlag : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!FFLFlag);
 
   override bool initialize(Json[string] initData = null) {
     if (!super.initialize(iniData)) {

@@ -1,7 +1,7 @@
 module uim.sap.atm.models.rolecollection;
 
-class ATMRoleCollection : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!ATMRoleCollection);
+class ATMRoleCollection : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!ATMRoleCollection);
 
   override bool initialize(Json[string] initData = null) {
     if (!super.initialize(initData)) {

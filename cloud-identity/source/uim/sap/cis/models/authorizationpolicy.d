@@ -43,8 +43,8 @@ mixin(ShowModule!());
   * `resourceType` and `instanceId` fields help specify the exact resources that the policy governs, while the `updatedAt` field is essential for tracking changes to the policy and ensuring that the most current version is being applied. 
   * The `name` field provides a human-readable identifier for the policy, which can be useful for administrators when managing multiple policies. The combination of `resourceType` and `instanceId` allows for fine-grained control over which resources the policy applies to, enabling scenarios such as allowing access to a specific application or database instance. The `allowedGroups` and `allowedUserTypes` fields enable targeting specific user segments for access control, enhancing the security and manageability of the authorization policies within the CIS module. 
   */
-class CISAuthorizationPolicy : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!CISAuthorizationPolicy);
+class CISAuthorizationPolicy : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!CISAuthorizationPolicy);
 
   UUID policyId;
   string name;

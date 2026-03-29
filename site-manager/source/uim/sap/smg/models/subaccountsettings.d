@@ -37,8 +37,8 @@ mixin(ShowModule!());
   * Methods:
   * - toJson(): Converts the subaccount settings into a JSON object for API responses or storage.
   */
-class SMGSubaccountSettings : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!SMGSubaccountSettings);
+class SMGSubaccountSettings : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!SMGSubaccountSettings);
 
   UUID defaultSiteId;
   string launchpadMode;

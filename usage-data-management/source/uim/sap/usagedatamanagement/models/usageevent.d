@@ -8,7 +8,7 @@ mixin(ShowModule!());
 
 @safe:
 
-class UsageEvent : SAPTenantObject {
+class UsageEvent : SAPTenantEntity {
 mixin(SAPEntityTemplate!UsageEvent); 
 
   UUID usageEventId;

@@ -30,8 +30,8 @@ mixin(ShowModule!());
   * - iflowId: The ID of the integration flow that processed the message.
   * - correlationId: A unique identifier that correlates related messages across different systems and processes
 */
-class INTMessageLog : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!INTMessageLog);
+class INTMessageLog : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!INTMessageLog);
 
   UUID logId;
   UUID iflowId;

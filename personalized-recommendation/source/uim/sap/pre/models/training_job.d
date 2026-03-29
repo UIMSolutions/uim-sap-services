@@ -12,8 +12,8 @@ mixin(ShowModule!());
 @safe:
 
 /// Tracks the status of a model-training job.
-class PRETrainingJob : SAPTenantObject {
-  mixin(SAPtenantObject!PRETrainingJob);
+class PRETrainingJob : SAPTenantEntity {
+  mixin(SAPTenantEntity!PRETrainingJob);
 
   string jobId;
   string modelId;

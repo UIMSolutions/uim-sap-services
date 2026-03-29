@@ -50,8 +50,8 @@ mixin(ShowModule!());
   *
   * For more information on hybrid runtimes and their management, refer to the SAP Integration Suite documentation.
   */
-class INTHybridRuntime : SAPTenantObject {
-  mixin(SAPtenantObject!INTHybridRuntime);
+class INTHybridRuntime : SAPTenantEntity {
+  mixin(SAPTenantEntity!INTHybridRuntime);
 
   UUID runtimeId;
   string name;

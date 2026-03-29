@@ -4,8 +4,8 @@ import uim.sap.isa;
 mixin(ShowModule!());
 
 @safe:
-class DataContextReport : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!DataContextReport);
+class DataContextReport : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!DataContextReport);
 
   UUID id;
   string title;

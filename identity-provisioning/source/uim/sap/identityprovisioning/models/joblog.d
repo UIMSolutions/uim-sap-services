@@ -16,8 +16,8 @@ mixin(ShowModule!());
  *  `level` values: "info", "warning", "error"
  *  `entityType` values: "user", "group", "system", "job"
  */
-class IPVJobLog : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!IPVJobLog);
+class IPVJobLog : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!IPVJobLog);
 
   override bool initialize(Json[string] initData = null) {
     if (!super.initialize(initData)) {

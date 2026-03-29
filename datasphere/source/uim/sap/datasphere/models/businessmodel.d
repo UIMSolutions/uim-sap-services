@@ -26,7 +26,7 @@ mixin(ShowModule!());
   * - measures: An array of measure names included in the business model.
   * - updatedAt: The timestamp of the last update to this business model.
   */
-class DATBusinessModel : SAPTenantObject {  
+class DATBusinessModel : SAPTenantEntity {  
   mixin(SAPEntityTemplate!DATBusinessModel);
 
   UUID modelId;

@@ -11,8 +11,8 @@ mixin(ShowModule!());
 
 @safe:
 
-class CONTenantSummary : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!CONTenantSummary);
+class CONTenantSummary : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!CONTenantSummary);
 
   size_t destinations;
 

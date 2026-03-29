@@ -4,8 +4,8 @@ import uim.sap.agentry;
 mixin(ShowModule!());
 
 @safe:
-class AGTTestRun : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!AGTTestRun);
+class AGTTestRun : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!AGTTestRun);
 
   override bool initialize(Json[string] initData) {
     if (!super.initialize(initData)) {

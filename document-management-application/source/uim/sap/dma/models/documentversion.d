@@ -1,8 +1,8 @@
 module uim.sap.dma.models.documentversion;
 
 /// A specific version of a document.
-class DMADocumentVersion : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!DMADocumentVersion);
+class DMADocumentVersion : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!DMADocumentVersion);
   
   UUID versionId;
   UUID documentId;

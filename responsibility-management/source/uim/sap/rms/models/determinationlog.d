@@ -11,7 +11,7 @@ mixin(ShowModule!());
 
 @safe:
 
-class DeterminationLog : SAPTenantObject {
+class DeterminationLog : SAPTenantEntity {
 mixin(SAPEntityTemplate!DeterminationLog);
 
     UUID id;

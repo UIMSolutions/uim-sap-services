@@ -5,8 +5,8 @@ mixin(ShowModule!());
 
 @safe:
 
-class AuditLogEvent : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!AuditLogEvent);
+class AuditLogEvent : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!AuditLogEvent);
 
   override bool initialize(Json[string] initData = null) {
     if (!super.initialize(initData)) {

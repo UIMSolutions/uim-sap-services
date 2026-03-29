@@ -28,8 +28,8 @@ mixin(ShowModule!());
   * - status: The current status of the data model (e.g., "active", "inactive", "error").
   * - updatedAt: The timestamp of the last update to this data model.
  */
-class DATDataModel : SAPTenantObject {
-  mixin(SAPtenantObject!DATDataModel);
+class DATDataModel : SAPTenantEntity {
+  mixin(SAPTenantEntity!DATDataModel);
 
   UUID modelId;
   string name;

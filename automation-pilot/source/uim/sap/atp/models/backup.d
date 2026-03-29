@@ -18,8 +18,8 @@ mixin(ShowModule!());
   * Methods:
   * - toJson(): Serializes the backup object to JSON format for storage or transmission.
   */
-class ATPBackup : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!ATPBackup);
+class ATPBackup : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!ATPBackup);
 
   UUID backupId;
   string mode;

@@ -11,8 +11,8 @@ mixin(ShowModule!());
 
 @safe:
 
-class RunLog : SAPTenantObject {
-  mixin(SAPtenantObject!RunLog);
+class RunLog : SAPTenantEntity {
+  mixin(SAPTenantEntity!RunLog);
 
   UUID runId;
   UUID jobId;

@@ -12,8 +12,8 @@ mixin(ShowModule!());
 @safe:
 
 /// A business scenario that ties a model to a recommendation use-case.
-class PREScenario : SAPTenantObject {
-  mixin(SAPtenantObject!PREScenario);
+class PREScenario : SAPTenantEntity {
+  mixin(SAPTenantEntity!PREScenario);
 
   override bool initialize(Json[string] initData) {
     if (!super.initialize(initData)) {

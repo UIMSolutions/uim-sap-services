@@ -11,8 +11,8 @@ mixin(ShowModule!());
 
 @safe:
 
-class CDCConsent : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!CDCConsent);
+class CDCConsent : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!CDCConsent);
 
   UUID userId;
   UUID consentId;

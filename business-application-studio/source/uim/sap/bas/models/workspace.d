@@ -6,8 +6,8 @@ mixin(ShowModule!());
 
 @safe:
 
-class BASWorkspace : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!BASWorkspace);
+class BASWorkspace : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!BASWorkspace);
 
   override bool initialize(Json[string] initData = null) {
     if (!super.initialize(initData)) {

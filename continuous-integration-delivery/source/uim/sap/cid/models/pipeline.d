@@ -8,8 +8,8 @@ mixin(ShowModule!());
 // ---------------------------------------------------------------------------
 // CIDPipeline – a CI/CD pipeline configuration
 // ---------------------------------------------------------------------------
-class CIDPipeline : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!CIDPipeline);
+class CIDPipeline : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!CIDPipeline);
 
   UUID pipelineId;
   string name;

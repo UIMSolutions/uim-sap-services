@@ -28,8 +28,8 @@ mixin(ShowModule!());
   * - createdAt: The timestamp when the group was created.
   * - updatedAt: The timestamp when the group was last updated.
   */
-class IPVGroup : SAPTenantObject {
-  mixin(SAPtenantObject!IPVGroup);
+class IPVGroup : SAPTenantEntity {
+  mixin(SAPTenantEntity!IPVGroup);
 
   override bool initialize(Json[string] initData) {
     if (!super.initialize(initData)) {

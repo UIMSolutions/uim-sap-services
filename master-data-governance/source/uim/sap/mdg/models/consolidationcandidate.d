@@ -6,8 +6,8 @@ mixin(ShowModule!());
 
 @safe:
 
-class MDGConsolidationCandidate : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!MDGConsolidationCandidate);
+class MDGConsolidationCandidate : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!MDGConsolidationCandidate);
 
   UUID primaryBpId;
   UUID duplicateBpId;

@@ -11,8 +11,8 @@ mixin(ShowModule!());
 
 @safe:
 
-class INTMigration : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!INTMigration);
+class INTMigration : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!INTMigration);
 
   UUID migrationId;
   string name;

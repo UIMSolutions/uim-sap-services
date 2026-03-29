@@ -27,8 +27,8 @@ mixin(ShowModule!());
   * AGTBackendSystem backend = AGTBackendSystem("tenant-id-123", requestData);
   * ```
  */
-class AGTBackendSystem : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!AGTBackendSystem);
+class AGTBackendSystem : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!AGTBackendSystem);
 
   override bool initialize(Json[string] initData) {
     if (!super.initialize(initData)) {

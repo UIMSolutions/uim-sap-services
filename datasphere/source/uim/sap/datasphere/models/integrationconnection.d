@@ -29,7 +29,7 @@ mixin(ShowModule!());
   * - status: The current status of the connection (e.g., "active", "inactive", "error").
   * - updatedAt: The timestamp of the last update to this connection.  
   */
-class DATIntegrationConnection : SAPTenantObject  {
+class DATIntegrationConnection : SAPTenantEntity  {
   mixin(SAPEntityTemplate!DATIntegrationConnection);
 
   UUID connectionId;

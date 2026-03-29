@@ -12,8 +12,8 @@ mixin(ShowModule!());
 @safe:
 
 /** A user identity that is provisioned between systems. */
-class IPVUser : SAPTenantObject {
-  mixin(SAPtenantObject!IPVUser);
+class IPVUser : SAPTenantEntity {
+  mixin(SAPTenantEntity!IPVUser);
 
   override bool initialize(Json[string] initData) {
     if (!super.initialize(initData)) {

@@ -12,8 +12,8 @@ mixin(ShowModule!());
 @safe:
 
 /// Data subject request — a formal request regarding personal data (GDPR Art. 15-22)
-class PDMDataRequest : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!PDMDataRequest);
+class PDMDataRequest : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!PDMDataRequest);
 
   UUID requestId;
   UUID subjectId;

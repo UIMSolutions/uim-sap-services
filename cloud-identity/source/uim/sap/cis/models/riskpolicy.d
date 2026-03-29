@@ -45,8 +45,8 @@ mixin(ShowModule!());
   * Note: The `toJson()` method is used to serialize the risk policy into a JSON format that can be returned in API responses or stored in a database. The actual implementation of the `toJson()` method may vary based on the specific requirements of the application and the structure of the JSON payload expected by the API consumers. 
   * The `ipRanges` field allows administrators to specify which IP addresses or ranges are considered risky, while the `groups` field enables targeting specific user groups for the application of the risk policy. The `userType` and `authenticationMethod` fields provide additional granularity in defining the conditions under which the risk policy should be enforced. The `requireTwoFactor` field is a critical component that indicates whether users matching the criteria defined in the policy must use two-factor authentication to access resources, thereby enhancing security. The `updatedAt` field is essential for tracking changes to the policy and ensuring that the most current version is being applied.  
  */
-class CISRiskPolicy : SAPTenantObject {
-  mixin(SAPtenantObject!CISRiskPolicy);
+class CISRiskPolicy : SAPTenantEntity {
+  mixin(SAPTenantEntity!CISRiskPolicy);
 
   UUID policyId;
   Json ipRanges;

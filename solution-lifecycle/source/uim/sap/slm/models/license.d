@@ -3,8 +3,8 @@ module uim.sap.slm.models.license;
 // ---------------------------------------------------------------------------
 // SLMLicense – license information associated with a solution
 // ---------------------------------------------------------------------------
-class SLMLicense : SAPTenantObject {
-  mixin(SAPtenantObject!SLMLicense);
+class SLMLicense : SAPTenantEntity {
+  mixin(SAPTenantEntity!SLMLicense);
 
   UUID licenseId;
   UUID solutionId;

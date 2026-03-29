@@ -40,8 +40,8 @@ mixin(ShowModule!());
   * Note: The example usage demonstrates how to create a new `AEMEventMesh` instance from a JSON request and then convert it back to JSON for an API response. The `mesh
 FromJson` function ensures that the `tenantId` and `brokerServiceId` are set and that a unique `meshId` is generated if it is not included in the request. The `toJson` method provides a standardized way to serialize the event mesh's data for use in various parts of the application, such as API responses or database storage.
   */
-class AEMEventMesh : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!AEMEventMesh);
+class AEMEventMesh : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!AEMEventMesh);
 
   override bool initialize(Json[string] initData = null) {
     if (!super.initialize(initData)) {

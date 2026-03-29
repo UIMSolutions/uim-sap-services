@@ -21,8 +21,8 @@ mixin(ShowModule!());
   * Methods:
   * - toJson(): Serializes the event trigger object to JSON format for storage or transmission.
   */
-class ATPEventTrigger : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!ATPEventTrigger);
+class ATPEventTrigger : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!ATPEventTrigger);
 
   UUID triggerId;
   string eventSource;

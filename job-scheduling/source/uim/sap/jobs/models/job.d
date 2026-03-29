@@ -11,8 +11,8 @@ mixin(ShowModule!());
 
 @safe:
 
-class Job : SAPTenantObject {
-  mixin(SAPtenantObject!Job);
+class Job : SAPTenantEntity {
+  mixin(SAPTenantEntity!Job);
 
     UUID jobId;
     string name;

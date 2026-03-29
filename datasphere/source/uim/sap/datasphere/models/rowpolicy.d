@@ -26,7 +26,7 @@ mixin(ShowModule!());
     * 
     * Note: The actual implementation of how the expression is evaluated and enforced is beyond the scope of this struct and would be handled by the underlying data access layer in Datasphere.
     */
-class DATRowPolicy : SAPTenantObject {
+class DATRowPolicy : SAPTenantEntity {
     mixin(SAPEntityTemplate!DATRowPolicy);
 
     UUID policyId;

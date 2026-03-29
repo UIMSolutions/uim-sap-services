@@ -6,8 +6,8 @@ mixin(ShowModule!());
 
 @safe:
 
-class EVMWebhook : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!EVMWebhook);
+class EVMWebhook : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!EVMWebhook);
 
   UUID webhookId;
   string queueName;

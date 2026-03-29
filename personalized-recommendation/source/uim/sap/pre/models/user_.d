@@ -12,8 +12,8 @@ mixin(ShowModule!());
 @safe:
 
 /// A user whose interactions are tracked for personalisation.
-class PREUser : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!PREUser);
+class PREUser : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!PREUser);
 
   UUID userId;
   string displayName;

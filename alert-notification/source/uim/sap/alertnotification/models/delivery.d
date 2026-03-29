@@ -11,8 +11,8 @@ mixin(ShowModule!());
 
 @safe:
 
-class AlertDelivery : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!AlertDelivery);
+class AlertDelivery : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!AlertDelivery);
 
   UUID deliveryId;
   UUID alertId;

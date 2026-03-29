@@ -4,8 +4,8 @@ import uim.sap.cps;
 mixin(ShowModule!());
 
 @safe:
-class CPSContentItem : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!CPSContentItem);
+class CPSContentItem : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!CPSContentItem);
 
   string itemType;
   UUID itemId;

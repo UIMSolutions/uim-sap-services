@@ -4,8 +4,8 @@ import uim.sap.cps;
 mixin(ShowModule!());
 
 @safe:
-class CPSContentProvider : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!CPSContentProvider);
+class CPSContentProvider : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!CPSContentProvider);
 
   UUID providerId;
   string solutionName;

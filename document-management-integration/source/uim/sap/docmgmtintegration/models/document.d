@@ -5,8 +5,8 @@ module uim.sap.docmgmtintegration.models.document;
 // ---------------------------------------------------------------------------
 
 /// A document (file) stored in a repository folder, scoped to a tenant.
-class Document : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!Document);
+class Document : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!Document);
 
   UUID documentId;
   UUID repositoryId;

@@ -6,8 +6,8 @@ mixin(ShowModule!());
 
 @safe:
 
-class MDGQualityRule : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!MDGQualityRule);
+class MDGQualityRule : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!MDGQualityRule);
 
   override bool initialize(Json[string] initData) {
     if (!super.initialize(initData)) {

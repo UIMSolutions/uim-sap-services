@@ -11,8 +11,8 @@ mixin(ShowModule!());
 
 @safe:
 
-class INTTradingPartner : SAPTenantObject {
-  mixin(SAPtenantObject!INTTradingPartner);
+class INTTradingPartner : SAPTenantEntity {
+  mixin(SAPTenantEntity!INTTradingPartner);
 
   override bool initialize(Json[string] initData) {
     if (!super.initialize(initData)) {

@@ -12,8 +12,8 @@ mixin(ShowModule!());
 @safe:
 
 
-class CDCProfile : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!CDCProfile);
+class CDCProfile : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!CDCProfile);
 
   UUID userId;
   string email;

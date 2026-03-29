@@ -5,8 +5,8 @@ module uim.sap.docmgmtintegration.models.folder;
 // ---------------------------------------------------------------------------
 
 /// A folder (container) in the document hierarchy, scoped to a tenant.
-class Folder : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!Folder);
+class Folder : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!Folder);
 
   UUID folderId;
   UUID repositoryId;

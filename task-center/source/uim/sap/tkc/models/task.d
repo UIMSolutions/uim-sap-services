@@ -11,8 +11,8 @@ mixin(ShowModule!());
 
 @safe:
 
-class TKCTask : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!TKCTask);
+class TKCTask : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!TKCTask);
 
   UUID taskId;
   UUID providerId;

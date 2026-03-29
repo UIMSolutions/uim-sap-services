@@ -4,8 +4,8 @@ import uim.sap.agentry;
 mixin(ShowModule!());
 
 @safe:
-class AGTRuntimeInstance : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!AGTRuntimeInstance);
+class AGTRuntimeInstance : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!AGTRuntimeInstance);
 
   UUID instanceId;
   UUID appId;

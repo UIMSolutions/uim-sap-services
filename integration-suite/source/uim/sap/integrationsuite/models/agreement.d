@@ -72,8 +72,8 @@ mixin(ShowModule!());
   * - toJson: Converts the agreement instance to a JSON object for easy serialization.
   * - agreementFromJson: A helper function that creates an INTAgreement instance from a JSON request, typically used when creating a new agreement via an API endpoint.
   */
-class INTAgreement : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!INTAgreement);
+class INTAgreement : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!INTAgreement);
 
   override bool initialize(Json[string] initData = null) {
     if (!super.initialize(initData)) {

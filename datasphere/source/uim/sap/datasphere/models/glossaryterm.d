@@ -22,8 +22,8 @@ mixin(ShowModule!());
   * - definition: A detailed definition of the glossary term.
   * - updatedAt: The timestamp of the last update to this glossary term.
   */
-class DATGlossaryTerm : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!DATGlossaryTerm);
+class DATGlossaryTerm : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!DATGlossaryTerm);
 
   UUID termId;
   string term;

@@ -13,8 +13,8 @@ mixin(ShowModule!());
   * premiumCostPerThousandEvents: The cost for retaining 1000 events under the premium plan.
   * updatedAt: The timestamp of the last update to the retention policy.
   */
-class ADLRetentionPolicy : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!ADLRetentionPolicy);
+class ADLRetentionPolicy : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!ADLRetentionPolicy);
 
   int retentionDays;
   string plan;

@@ -12,8 +12,8 @@ mixin(ShowModule!());
 @safe:
 
 /// A personal data record — describes what personal data is stored and where
-class PDMPersonalDataRecord : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!PDMPersonalDataRecord);
+class PDMPersonalDataRecord : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!PDMPersonalDataRecord);
 
   UUID recordId;
   UUID subjectId;

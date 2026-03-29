@@ -6,8 +6,8 @@ mixin(ShowModule!());
 
 @safe:
 
-class CPSSite : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!CPSSite);
+class CPSSite : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!CPSSite);
 
   UUID siteId;
   string name;

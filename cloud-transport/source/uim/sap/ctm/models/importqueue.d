@@ -3,7 +3,7 @@ module uim.sap.ctm.models.importqueue;
 // ---------------------------------------------------------------------------
 // CTMImportQueueEntry – an entry in a node's import queue
 // ---------------------------------------------------------------------------
-class CTMImportQueueEntry : SAPTenantObject {
+class CTMImportQueueEntry : SAPTenantEntity {
     mixin(SAPEntityTemplate!CTMImportQueueEntry);
 
     UUID nodeId;

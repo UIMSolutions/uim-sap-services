@@ -5,8 +5,8 @@ module uim.sap.docmgmtintegration.models.repository;
 // ---------------------------------------------------------------------------
 
 /// Describes a connected CMIS-compliant repository, scoped to a tenant.
-class Repository : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!Repository);
+class Repository : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!Repository);
 
   UUID repositoryId;
   string name;

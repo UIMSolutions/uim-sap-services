@@ -11,8 +11,8 @@ mixin(ShowModule!());
 
 @safe:
 
-class Schedule : SAPTenantObject {
-  mixin(SAPtenantObject!Schedule);
+class Schedule : SAPTenantEntity {
+  mixin(SAPTenantEntity!Schedule);
 
   UUID scheduleId;
   UUID jobId;

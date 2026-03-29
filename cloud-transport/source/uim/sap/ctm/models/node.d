@@ -3,8 +3,8 @@ module uim.sap.ctm.models.node;
 // ---------------------------------------------------------------------------
 // CTMNode – a logical environment in the transport landscape
 // ---------------------------------------------------------------------------
-class CTMNode : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!CTMNode);
+class CTMNode : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!CTMNode);
 
   UUID nodeId;
   string name;

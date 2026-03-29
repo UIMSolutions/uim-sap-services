@@ -6,8 +6,8 @@ mixin(ShowModule!());
 
 @safe:
 
-class DataSubjectRecord : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!DataSubjectRecord);
+class DataSubjectRecord : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!DataSubjectRecord);
 
   UUID dataSubjectId;
   string applicationGroup;

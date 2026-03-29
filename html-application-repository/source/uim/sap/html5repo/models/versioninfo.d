@@ -1,7 +1,7 @@
 module uim.sap.html5repo.models.versioninfo;
 
-class AppVersionInfo : SAPTenantObject {
-  mixin(SAPtenantObject!AppVersionInfo);
+class AppVersionInfo : SAPTenantEntity {
+  mixin(SAPTenantEntity!AppVersionInfo);
 
   override bool initialize(Json[string] initData) {
     if (!super.initialize(initData)) {

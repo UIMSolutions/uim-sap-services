@@ -8,7 +8,7 @@ mixin(ShowModule!());
 // ---------------------------------------------------------------------------
 // Task – a single guided step in a workflow
 // ---------------------------------------------------------------------------
-class CIATask : SAPTenantObject {
+class CIATask : SAPTenantEntity {
 mixin(SAPEntityTemplate!CIATask);
 
   UUID workflowId;

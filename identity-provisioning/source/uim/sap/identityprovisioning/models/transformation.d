@@ -19,8 +19,8 @@ mixin(ShowModule!());
  *  `entityType` values: "user", "group"
  *  `action` values: "map", "filter", "skip", "default"
  */
-class IPVTransformation : SAPTenantObject {
-  mixin(SAPtenantObject!IPVTransformation);
+class IPVTransformation : SAPTenantEntity {
+  mixin(SAPTenantEntity!IPVTransformation);
   override bool initialize(Json[string] initData) {
     if (!super.initialize(initData)) {
       return false;

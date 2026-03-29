@@ -9,8 +9,8 @@ mixin(ShowModule!());
 // ---------------------------------------------------------------------------
 // CIDBuild – a single pipeline run / execution
 // ---------------------------------------------------------------------------
-class CIDBuild : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!CIDBuild);
+class CIDBuild : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!CIDBuild);
 
   UUID buildId;
   UUID pipelineId;

@@ -41,8 +41,8 @@ mixin(ShowModule!());
   * Json response = proxy.toJson(); // Convert API Proxy to JSON for API response
   * For more information on API Proxies and their management, refer to the SAP Integration Suite documentation.
   */
-class INTApiProxy : SAPTenantObject {
-  mixin(SAPtenantObject!INTApiProxy);
+class INTApiProxy : SAPTenantEntity {
+  mixin(SAPTenantEntity!INTApiProxy);
 
   override bool initialize(Json[string] initData) {
     if (!super.initialize(initData)) {

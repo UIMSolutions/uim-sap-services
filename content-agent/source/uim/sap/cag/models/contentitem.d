@@ -6,8 +6,8 @@ mixin(ShowModule!());
 
 @safe:
 
-class CAGContentItem : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!CAGContentItem);
+class CAGContentItem : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!CAGContentItem);
 
   UUID contentId;
   string title;

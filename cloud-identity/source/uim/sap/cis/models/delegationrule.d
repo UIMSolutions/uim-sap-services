@@ -43,8 +43,8 @@ mixin(ShowModule!());
   * JSON payload expected by the API consumers. The `emailDomain`, `userType`, and `group` fields allow for defining specific criteria for when the delegation rule should be applied, while the `isDefault` field indicates whether this rule should be used as the default delegation mechanism when no other rules match. The `updatedAt` field is essential for tracking changes to the delegation rule and ensuring that the most current version is being applied in authentication scenarios.
   * Delegation rules are a critical component of the authentication flow in the CIS module, enabling flexible and dynamic routing of authentication requests to different identity providers based on user attributes and organizational policies. By defining delegation rules, administrators can ensure that users are authenticated through the appropriate channels, enhancing security and user experience. The combination of criteria such as email domain, user type, and group membership allows for granular control over the delegation process, making it possible to implement complex authentication scenarios that align with the organization's requirements. 
   */
-class CISDelegationRule : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!CISDelegationRule);
+class CISDelegationRule : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!CISDelegationRule);
 
   UUID ruleId;
   string targetIdp;

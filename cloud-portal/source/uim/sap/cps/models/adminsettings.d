@@ -4,8 +4,8 @@ import uim.sap.cps;
 mixin(ShowModule!());
 
 @safe:
-class CPSAdminSettings : SAPTenantObject {
-  mixin(SAPTenantObjectTemplate!CPSAdminSettings);
+class CPSAdminSettings : SAPTenantEntity {
+  mixin(SAPTenantEntityTemplate!CPSAdminSettings);
 
   Json themes;
   Json transports;
