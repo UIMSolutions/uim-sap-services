@@ -4,6 +4,7 @@ import uim.sap.service;
 mixin(ShowModule!());
 
 @safe:
+/*
 class SAPTenantMiddleware {
   private SAPTenantRepository tenantRepository;
 
@@ -31,3 +32,4 @@ class SAPTenantMiddleware {
     }
   }
 }
+*/

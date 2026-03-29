@@ -1,4 +1,4 @@
-module uim.sap.service.classes.objects.obj;
+module uim.sap.service.classes.entities.entity;
 
 import uim.sap.service;
 import std.datetime.systime;
