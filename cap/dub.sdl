@@ -1,0 +1,46 @@
+name "cap"
+description "SAP Cloud Application Programming Model for D - declarative services with CDS entities, CQL queries, and automatic REST APIs"
+homepage "https://www.sueel.de/uim/sap/cap"
+authors "Ozan Nurettin Süel"
+copyright "Copyright 2018 - 2026, ONS"
+license "Apache-2.0"
+
+targetName "uim-sap-cap"
+targetType "library"
+
+dependency "uim-sap:service" path=".."
+
+sourcePaths "source"
+importPaths "source"
+
+buildRequirements "allowWarnings" "silenceDeprecations"
+buildOptions "ignoreDeprecations" "debugInfo"
+
+configuration "default" {
+    targetType "library"
+}
+
+configuration "modules" {
+    targetType "library"
+    versions "show_module"
+}
+
+configuration "tests" {
+    targetType "library"
+    versions "show_module" "show_test"
+}
+
+configuration "inits" {
+    targetType "library"
+    versions "show_module" "show_init"
+}
+
+configuration "calls" {
+    targetType "library"
+    versions "show_module" "show_test" "show_function"
+}
+
+configuration "verbose" {
+    targetType "library"
+    versions "show_module" "show_test" "show_init" "show_function"
+}

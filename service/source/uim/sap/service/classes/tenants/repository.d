@@ -5,7 +5,7 @@ import uim.sap.service;
 mixin(ShowModule!());
 
 @safe:
-
+/*
 class SAPTenantRepository {
   private ISAPTenant[UUID] tenants;
 
@@ -46,10 +46,11 @@ class SAPTenantRepository {
   }
 
   void loadTenantsFromJson(string jsonData) {
-    auto json = parseJSON(jsonData);
+    auto json = parseJsonString(jsonData);
     foreach (tenantJson; json["tenants"].array) {
       tenants[Tenant(tenantJson["id"].get!string, tenantJson["name"].getString).id] = Tenant(
         tenantJson["id"].get!string, tenantJson["name"].getString);
     }
   }
 }
+*/

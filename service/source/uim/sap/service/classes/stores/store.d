@@ -25,7 +25,6 @@ class SAPStore {
     initialize(initData);
   }
 
-
   bool initialize(Json[string] initData = null) {
     _lock = new Mutex;
     // Initialization logic for the store

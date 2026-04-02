@@ -44,6 +44,7 @@ sourceFiles "./source/uim/sap/all.d"
 
 // Subpackages
 subPackage "service"
+subPackage "cap"
 
 subPackage "abap-runtime"
 subPackage "advanced-event-mesh"

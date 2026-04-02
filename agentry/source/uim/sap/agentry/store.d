@@ -15,25 +15,28 @@ mixin(ShowModule!());
 class AGTStore : SAPStore {
   mixin(SAPStoreTemplate!AGTStore);
 
-  protected AGTMobileApp[string] _apps;
-  protected AGTAppVersion[][string] _versionsByApp;
-  protected AGTTestRun[][string] _testRunsByApp;
-  protected AGTRuntimeInstance[string] _instances;
-  protected AGTDevice[string] _devices;
-  protected AGTBackendSystem[string] _backends;
-  protected Mutex _lock;
+  protected AGTTenant[UUID] _tenants;
+  AGTTenant tenant(UUID tenantId) {
+    synchronized (_lock) {
+      return _tenants.get(tenantId, null);
+    }
+  }
 
-  this() {
-    _lock = new Mutex;
+  AGTTenant tenant(AGTTenant tenant) {
+    synchronized (_lock) {
+      _tenants[tenant.tenantId] = tenant;
+      return tenant;
+    }
   }
 
   AGTMobileApp upsertApp(AGTMobileApp app) {
     synchronized (_lock) {
-      auto key = appKey(app.tenantId, app.appId);
-      if (auto existing = key in _apps) {
-        app.createdAt = existing.createdAt;
+      auto tenant = tenant(app.tenantId);
+      if (tenant is null) {
+        return null;
       }
-      _apps[key] = app;
+
+      tenant.app(app);
       return app;
     }
   }
@@ -44,48 +47,55 @@ class AGTStore : SAPStore {
 
   AGTMobileApp getApp(UUID tenantId, string appId) {
     synchronized (_lock) {
-      auto key = appKey(tenantId, appId);
-      if (auto value = key in _apps) {
-        return *value;
+      auto tenant = tenant(tenantId);
+      if (tenant is null) {
+        return null;
       }
+
+      return tenant.app(appId);
     }
-    return new AGTMobileApp;
   }
 
   AGTMobileApp[] listApps(UUID tenantId) {
-    return listApps(tenantId.toString);
+    auto tenant = tenant(tenantId);
+    if (tenant is null) {
+      return null;
+    }
+
+    return tenant.apps;
   }
 
   AGTMobileApp[] listApps(UUID tenantId) {
-    AGTMobileApp[] list;
     synchronized (_lock) {
-      foreach (key, app; _apps) {
-        if (belongsToTenant(key, tenantId)) {
-          list ~= app;
-        }
+      auto tenant = tenant(tenantId);
+      if (tenant is null) {
+        return null;
       }
+
+      return tenant.apps;
     }
-    return list;
   }
 
   AGTAppVersion addVersion(AGTAppVersion appVersion) {
     synchronized (_lock) {
-      auto key = appKey(appVersion.tenantId, appVersion.appId);
-      _versionsByApp[key] ~= appVersion;
+      auto tenant = tenant(appVersion.tenantId);
+      if (tenant is null) {
+        return null;
+      }
+
+      tenant.versions(appVersion.appId, tenant.versions(appVersion.appId) ~= appVersion);
       return appVersion;
     }
   }
 
   AGTAppVersion[] listVersions(UUID tenantId, UUID appId) {
-    return listVersions(tenantId.toString, appId.toString);
-  }
-
-  AGTAppVersion[] listVersions(UUID tenantId, string appId) {
     synchronized (_lock) {
-      auto key = appKey(tenantId, appId);
-      if (auto list = key in _versionsByApp) {
-        return (*list).dup;
+      auto tenant = tenant(tenantId);
+      if (tenant is null) {
+        return null;
       }
+
+      return tenant.versions(appId);
     }
     return null;
   }
@@ -101,12 +111,12 @@ class AGTStore : SAPStore {
   AGTTestRun[] listTestRuns(UUID tenantId, UUID appId) {
     return listTestRuns(tenantId.toString, appId.toString);
   }
-  
+
   AGTTestRun[] listTestRuns(UUID tenantId, string appId) {
     synchronized (_lock) {
       auto key = appKey(tenantId, appId);
-      if (auto list = key in _testRunsByApp) {
-        return (*list).dup;
+      if (key in _testRunsByApp) {
+        return _testRunsByApp[key].dup;
       }
     }
     return null;
@@ -127,7 +137,7 @@ class AGTStore : SAPStore {
   AGTRuntimeInstance getInstance(UUID tenantId, UUID instanceId) {
     synchronized (_lock) {
       auto key = instanceKey(tenantId, instanceId);
-      if (auto value = key in _instances) {
+      if (key in _instances) {
         return _instances[key];
       }
     }
@@ -137,7 +147,7 @@ class AGTStore : SAPStore {
   AGTRuntimeInstance[] listInstances(UUID tenantId) {
     return listInstances(tenantId.toString);
   }
-  
+
   AGTRuntimeInstance[] listInstances(UUID tenantId) {
     AGTRuntimeInstance[] list;
     synchronized (_lock) {
@@ -159,17 +169,17 @@ class AGTStore : SAPStore {
   }
 
   AGTDevice getDevice(UUID tenantId, UUID deviceId) {
-    return getDevice(tenantId.toString, deviceId.toString);
-  }
-
-  AGTDevice getDevice(UUID tenantId, string deviceId) {
     synchronized (_lock) {
-      auto key = deviceKey(tenantId, deviceId);
-      if (auto value = key in _devices) {
-        return _devices[key];
-      }
+      auto tenant = getTenant(tenantId);
+      if (tenant is null)
+        return null;
+
+      return tenant.device(deviceId);
+
+      
+
+      )
     }
-    return new AGTDevice;
   }
 
   AGTDevice[] listDevices(UUID tenantId) {
