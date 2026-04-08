@@ -8,15 +8,15 @@
  * License: Apache-2.0
  * Authors: Ozan Nurettin Süel
  */
-module uim.sap;
+module uim.sap.hac;
 
 // Public imports
-public import uim.sap.client;
-public import uim.sap.auth;
-public import uim.sap.query;
+public import uim.sap.hac.client;
+public import uim.sap.hac.auth;
+public import uim.sap.hac.query;
 public import uim.sap.exceptions;
 public import uim.sap.models;
-public import uim.sap.utils;
+public import uim.sap.hac.utils;
 
 // Version information
 enum UIM_VERSION = "1.0.0";

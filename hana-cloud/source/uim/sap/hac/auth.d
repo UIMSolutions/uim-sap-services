@@ -5,7 +5,7 @@
  * License: Apache-2.0
  * Authors: Ozan Nurettin Süel
  */
-module uim.sap.auth;
+module uim.sap.hac.auth;
 
 import uim.sap.models;
 import uim.sap.exceptions;

@@ -3,11 +3,11 @@
 * License: Subject to the terms of the Apache 2.0 license, as written in the included LICENSE.txt file. 
 * Authors: Ozan Nurettin Süel (aka UI-Manufaktur UG *R.I.P*)
 *****************************************************************************************************************/
-module uim.sap.client;
+module uim.sap.hac.client;
 
 import uim.sap.models;
-import uim.sap.auth;
-import uim.sap.query;
+import uim.sap.hac.auth;
+import uim.sap.hac.query;
 import uim.sap.exceptions;
 
 import vibe.http.client;
@@ -350,7 +350,7 @@ class HanaClient {
         return payload;
     }
     
-    private SAPResponse makeRequest(HTTPMethod method, string url, Json payload = Json.emptyObject;) {
+    private SAPResponse makeRequest(HTTPMethod method, string url, Json payload = Json.emptyObject) {
         SAPResponse response;
         response.timestamp = Clock.currTime();
         
